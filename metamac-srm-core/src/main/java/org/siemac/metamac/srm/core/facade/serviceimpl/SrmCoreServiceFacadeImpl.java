@@ -78,6 +78,7 @@ import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDo2DtoMappe
 import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDto2DoMapper;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
@@ -2224,7 +2225,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<ItemVisualisationResult> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn, String locale) throws MetamacException {
+    public List<OrganisationMetamacVisualisationResult> retrieveOrganisationsByOrganisationSchemeUrn(ServiceContext ctx, String organisationSchemeUrn, String locale) throws MetamacException {
         // Security
         OrganisationsSecurityUtils.canRetrieveOrganisationsByOrganisationSchemeUrn(ctx);
 

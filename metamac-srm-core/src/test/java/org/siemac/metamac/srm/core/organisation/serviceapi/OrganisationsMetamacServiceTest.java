@@ -41,6 +41,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacAsserts;
 import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacDoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
@@ -2041,30 +2041,34 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         // LOCALE = 'es'
         {
             String locale = "es";
-            List<ItemVisualisationResult> organisations = organisationsService.retrieveOrganisationsByOrganisationSchemeUrn(getServiceContextAdministrador(), organisationSchemeUrn, locale);
+            List<OrganisationMetamacVisualisationResult> organisations = organisationsService.retrieveOrganisationsByOrganisationSchemeUrn(getServiceContextAdministrador(), organisationSchemeUrn,
+                    locale);
 
             // Validate
             assertEquals(8, organisations.size());
             {
                 // Organisation 01 (validate all metadata)
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisation.getUrn());
                 assertEquals("ORGANISATION01", organisation.getCode());
+                assertEquals(OrganisationTypeEnum.ORGANISATION_UNIT, organisation.getType());
                 assertEquals("Nombre organisationScheme-1-v2-organisation-1", organisation.getName());
                 assertEquals(Long.valueOf(121), organisation.getItemIdDatabase());
                 assertEquals(null, organisation.getParent());
                 assertEquals(null, organisation.getParentIdDatabase());
+                MetamacAsserts.assertEqualsDate("2011-01-01 01:02:03", organisation.getCreatedDate());
             }
             {
                 // Organisation 02
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getUrn());
                 assertEquals("ORGANISATION02", organisation.getCode());
                 assertEquals("Nombre organisationScheme-1-v2-organisation-2", organisation.getName());
+                MetamacAsserts.assertEqualsDate("2011-03-02 04:05:06", organisation.getCreatedDate());
             }
             {
                 // Organisation 02 01 (validate parent)
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisation.getUrn());
                 assertEquals("ORGANISATION02", organisation.getParent().getCode());
                 assertEquals("Nombre organisationScheme-1-v2-organisation-2-1", organisation.getName());
@@ -2073,7 +2077,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             }
             {
                 // Organisation 02 01 01
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisation.getUrn());
                 assertEquals("ORGANISATION0201", organisation.getParent().getCode());
                 assertEquals("Nombre organisationScheme-1-v2-organisation-2-1-1", organisation.getName());
@@ -2081,25 +2085,25 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             }
             {
                 // Organisation 03
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisation.getUrn());
                 assertEquals("nombre organisation-3", organisation.getName());
             }
             {
                 // Organisation 04
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisation.getUrn());
                 assertEquals("nombre organisation-4", organisation.getName());
             }
             {
                 // Organisation 04 01
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1);
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisation.getUrn());
                 assertEquals("nombre organisation 4-1", organisation.getName());
             }
             {
                 // Organisation 04 01 01
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1);
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisation.getUrn());
                 assertEquals("ORGANISATION0401", organisation.getParent().getCode());
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisation.getParent().getUrn());
@@ -2110,48 +2114,49 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         // LOCALE = 'en'
         {
             String locale = "en";
-            List<ItemVisualisationResult> organisations = organisationsService.retrieveOrganisationsByOrganisationSchemeUrn(getServiceContextAdministrador(), organisationSchemeUrn, locale);
+            List<OrganisationMetamacVisualisationResult> organisations = organisationsService.retrieveOrganisationsByOrganisationSchemeUrn(getServiceContextAdministrador(), organisationSchemeUrn,
+                    locale);
 
             // Validate
             assertEquals(8, organisations.size());
             {
                 // Organisation 01
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
                 assertEquals("Name organisationScheme-1-v2-organisation-1", organisation.getName());
             }
             {
                 // Organisation 02
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
                 assertEquals(null, organisation.getName());
             }
             {
                 // Organisation 02 01
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
                 assertEquals("Name organisationScheme-1-v2-organisation-2-1", organisation.getName());
             }
             {
                 // Organisation 02 01 01
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
                 assertEquals(null, organisation.getName());
             }
             {
                 // Organisation 03
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
                 assertEquals("name organisation-3", organisation.getName());
             }
             {
                 // Organisation 04
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
                 assertEquals(null, organisation.getName());
             }
             {
                 // Organisation 04 01
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1);
                 assertEquals(null, organisation.getName());
             }
             {
                 // Organisation 04 01 01
-                ItemVisualisationResult organisation = getItemVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1);
+                OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1);
                 assertEquals("Name organisationScheme-1-v2-organisation-4-1-1", organisation.getName());
             }
         }
@@ -2349,6 +2354,16 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             }
         }
         fail("List does not contain item with urn " + urn);
+        return null;
+    }
+
+    protected OrganisationMetamacVisualisationResult getOrganisationVisualisationResult(List<OrganisationMetamacVisualisationResult> actuals, String codeUrn) {
+        for (OrganisationMetamacVisualisationResult actual : actuals) {
+            if (actual.getUrn().equals(codeUrn)) {
+                return actual;
+            }
+        }
+        fail("not found");
         return null;
     }
 

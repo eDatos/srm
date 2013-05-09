@@ -244,92 +244,92 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_1_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_1_V2, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_2_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_3_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_4_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.VALIDATION_REJECTED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.VALIDATION_REJECTED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_5_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_6_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_7_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_7_V2, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_8_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_9_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_10_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_10_V2, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_10_V3, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_11_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_12_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_13_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_14_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
@@ -484,22 +484,22 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_1_V2, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_2_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_8_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_9_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
@@ -515,22 +515,22 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_1_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_3_V1, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_7_V2, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CodelistMetamacBasicDto codelistMetamacDto = result.getResults().get(i++);
                 assertEquals(CODELIST_10_V2, codelistMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistMetamacDto.getLifeCycle().getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }

@@ -5,6 +5,7 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.dto.IdentifiableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.ItemMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.ItemSchemeMetamacBasicDto;
+import org.siemac.metamac.srm.core.base.dto.LifeCycleBasicDto;
 import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
 import org.siemac.metamac.srm.core.base.dto.MaintainableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.NameableArtefactMetamacBasicDto;
@@ -54,6 +55,8 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
         target.setResourceLastUpdated(CoreCommonUtil.transformDateTimeToDate(source.getItemScheme().getResourceLastUpdated()));
         target.setItemSchemeUuid(source.getItemScheme().getUuid());
         target.setCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getCreatedDate()));
+
+        target.setLifeCycle(lifeCycleDoToBasicDto(lifeCycleSource));
         maintainableArtefactDoToMaintainableArtefactBasicDto(source.getMaintainableArtefact(), lifeCycleSource, target);
     }
 
@@ -63,12 +66,15 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
         target.setResourceLastUpdated(CoreCommonUtil.transformDateTimeToDate(source.getStructure().getResourceLastUpdated()));
         target.setStructureUuid(source.getStructure().getUuid());
         target.setCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getCreatedDate()));
+
+        target.setLifeCycle(lifeCycleDoToBasicDto(lifeCycleSource));
         maintainableArtefactDoToMaintainableArtefactBasicDto(source.getMaintainableArtefact(), lifeCycleSource, target);
     }
 
     @Override
     public void itemDoToItemBasicDto(Item source, ItemMetamacBasicDto target) {
         target.setItemSchemeVersionUrn(source.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        target.setCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getCreatedDate()));
         nameableArtefactDoToNameableArtefactBasicDto(source, target);
     }
 
@@ -97,13 +103,20 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
             maintainerDto.setType(RelatedResourceTypeEnum.AGENCY); // always is Agency
             target.setMaintainer(maintainerDto);
         }
-        target.setProcStatus(lifeCycleSource.getProcStatus());
-        target.setInternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(lifeCycleSource.getInternalPublicationDate()));
-        target.setInternalPublicationUser(lifeCycleSource.getInternalPublicationUser());
-        target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(lifeCycleSource.getExternalPublicationDate()));
-        target.setExternalPublicationUser(lifeCycleSource.getExternalPublicationUser());
         target.setValidTo(CoreCommonUtil.transformDateTimeToDate(source.getValidTo()));
         nameableArtefactDoToNameableArtefactBasicDto(source, target);
     }
 
+    private LifeCycleBasicDto lifeCycleDoToBasicDto(SrmLifeCycleMetadata source) {
+        if (source == null) {
+            return null;
+        }
+        LifeCycleBasicDto target = new LifeCycleBasicDto();
+        target.setProcStatus(source.getProcStatus());
+        target.setInternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getInternalPublicationDate()));
+        target.setInternalPublicationUser(source.getInternalPublicationUser());
+        target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getExternalPublicationDate()));
+        target.setExternalPublicationUser(source.getExternalPublicationUser());
+        return target;
+    }
 }

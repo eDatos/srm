@@ -63,6 +63,7 @@ public class OrganisationsMetamacAsserts extends OrganisationsAsserts {
     }
 
     public static void assertEqualsOrganisation(OrganisationMetamac expected, OrganisationMetamacBasicDto actual) {
+        assertEquals(expected.getOrganisationType(), actual.getType());
         BaseAsserts.assertEqualsItemBasicDto(expected, actual);
     }
 

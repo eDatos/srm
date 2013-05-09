@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.dto.IdentifiableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.ItemMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.ItemSchemeMetamacBasicDto;
+import org.siemac.metamac.srm.core.base.dto.LifeCycleBasicDto;
 import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
 import org.siemac.metamac.srm.core.base.dto.MaintainableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.NameableArtefactMetamacBasicDto;
@@ -85,36 +86,33 @@ public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceap
     public static void assertEqualsStructureBasicDto(StructureVersion expected, SrmLifeCycleMetadata expectedLifecycle, StructureMetamacBasicDto actual) {
         assertNotNull(expected);
         assertNotNull(actual);
-        assertEquals(expected.getStructure().getUuid(), actual.getStructureUuid());
-        assertNotNull(actual.getResourceCreatedDate());
-        assertEquals(CoreCommonUtil.transformDateTimeToDate(expected.getStructure().getResourceCreatedDate()), actual.getResourceCreatedDate());
-        assertNotNull(actual.getResourceLastUpdated());
-        assertEquals(CoreCommonUtil.transformDateTimeToDate(expected.getStructure().getResourceLastUpdated()), actual.getResourceLastUpdated());
-        assertNotNull(actual.getCreatedDate());
-        assertEquals(CoreCommonUtil.transformDateTimeToDate(expected.getCreatedDate()), actual.getCreatedDate());
+        assertEqualsNotNull(expected.getStructure().getUuid(), actual.getStructureUuid());
+        assertEqualsNotNull(CoreCommonUtil.transformDateTimeToDate(expected.getStructure().getResourceCreatedDate()), actual.getResourceCreatedDate());
+        assertEqualsNotNull(CoreCommonUtil.transformDateTimeToDate(expected.getStructure().getResourceLastUpdated()), actual.getResourceLastUpdated());
+        assertEqualsNotNull(CoreCommonUtil.transformDateTimeToDate(expected.getCreatedDate()), actual.getCreatedDate());
 
+        assertEqualsLifeCycleBasicDto(expectedLifecycle, actual.getLifeCycle());
         assertEqualsMaintainableArtefactBasicDto(expected.getMaintainableArtefact(), expectedLifecycle, actual);
     }
 
     public static void assertEqualsItemSchemeBasicDto(ItemSchemeVersion expected, SrmLifeCycleMetadata expectedLifecycle, ItemSchemeMetamacBasicDto actual) {
         assertNotNull(expected);
         assertNotNull(actual);
-        assertEquals(expected.getItemScheme().getIsTaskInBackground(), actual.getIsTaskInBackground());
-        assertEquals(expected.getItemScheme().getUuid(), actual.getItemSchemeUuid());
-        assertNotNull(actual.getResourceCreatedDate());
-        assertEquals(CoreCommonUtil.transformDateTimeToDate(expected.getItemScheme().getResourceCreatedDate()), actual.getResourceCreatedDate());
-        assertNotNull(actual.getResourceLastUpdated());
-        assertEquals(CoreCommonUtil.transformDateTimeToDate(expected.getItemScheme().getResourceLastUpdated()), actual.getResourceLastUpdated());
-        assertNotNull(actual.getCreatedDate());
-        assertEquals(CoreCommonUtil.transformDateTimeToDate(expected.getCreatedDate()), actual.getCreatedDate());
+        assertEqualsNotNull(expected.getItemScheme().getIsTaskInBackground(), actual.getIsTaskInBackground());
+        assertEqualsNotNull(expected.getItemScheme().getUuid(), actual.getItemSchemeUuid());
+        assertEqualsNotNull(CoreCommonUtil.transformDateTimeToDate(expected.getItemScheme().getResourceCreatedDate()), actual.getResourceCreatedDate());
+        assertEqualsNotNull(CoreCommonUtil.transformDateTimeToDate(expected.getItemScheme().getResourceLastUpdated()), actual.getResourceLastUpdated());
+        assertEqualsNotNull(CoreCommonUtil.transformDateTimeToDate(expected.getCreatedDate()), actual.getCreatedDate());
 
+        assertEqualsLifeCycleBasicDto(expectedLifecycle, actual.getLifeCycle());
         assertEqualsMaintainableArtefactBasicDto(expected.getMaintainableArtefact(), expectedLifecycle, actual);
     }
 
     public static void assertEqualsItemBasicDto(Item expected, ItemMetamacBasicDto actual) {
         assertNotNull(expected);
         assertNotNull(actual);
-        assertEquals(expected.getItemSchemeVersion().getMaintainableArtefact().getUrn(), actual.getItemSchemeVersionUrn());
+        assertEqualsNotNull(expected.getItemSchemeVersion().getMaintainableArtefact().getUrn(), actual.getItemSchemeVersionUrn());
+        assertEqualsNotNull(CoreCommonUtil.transformDateTimeToDate(expected.getCreatedDate()), actual.getCreatedDate());
 
         assertEqualsNameableArtefactBasicDto(expected.getNameableArtefact(), actual);
     }
@@ -124,12 +122,7 @@ public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceap
         assertNotNull(actual);
         BaseAsserts.assertEqualsRelatedResource(expected.getMaintainer().getNameableArtefact(), actual.getMaintainer());
         assertEquals(CoreCommonUtil.transformDateTimeToDate(expected.getValidTo()), actual.getValidTo());
-        assertEquals(expected.getVersionLogic(), actual.getVersionLogic());
-        assertEquals(expectedLifecycle.getProcStatus(), actual.getProcStatus());
-        assertEquals(CoreCommonUtil.transformDateTimeToDate(expectedLifecycle.getInternalPublicationDate()), actual.getInternalPublicationDate());
-        assertEquals(expectedLifecycle.getInternalPublicationUser(), actual.getInternalPublicationUser());
-        assertEquals(CoreCommonUtil.transformDateTimeToDate(expectedLifecycle.getExternalPublicationDate()), actual.getExternalPublicationDate());
-        assertEquals(expectedLifecycle.getExternalPublicationUser(), actual.getExternalPublicationUser());
+        assertEqualsNotNull(expected.getVersionLogic(), actual.getVersionLogic());
 
         assertEqualsNameableArtefactBasicDto(expected, actual);
     }
@@ -137,9 +130,6 @@ public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceap
     public static void assertEqualsNameableArtefactBasicDto(NameableArtefact expected, NameableArtefactMetamacBasicDto actual) {
         assertNotNull(expected);
         assertNotNull(actual);
-        assertEquals(expected.getCode(), actual.getCode());
-        assertEquals(expected.getUrn(), actual.getUrn());
-        assertEquals(expected.getUrnProvider(), actual.getUrnProvider());
 
         assertEqualsIdentifiableArtefactBasicDto(expected, actual);
     }
@@ -147,8 +137,24 @@ public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceap
     public static void assertEqualsIdentifiableArtefactBasicDto(IdentifiableArtefact expected, IdentifiableArtefactMetamacBasicDto actual) {
         assertNotNull(expected);
         assertNotNull(actual);
-        assertEquals(expected.getCode(), actual.getCode());
-        assertEquals(expected.getUrn(), actual.getUrn());
-        assertEquals(expected.getUrnProvider(), actual.getUrnProvider());
+        assertEqualsNotNull(expected.getCode(), actual.getCode());
+        assertEqualsNotNull(expected.getUrn(), actual.getUrn());
+        assertEqualsNotNull(expected.getUrnProvider(), actual.getUrnProvider());
+    }
+
+    public static void assertEqualsLifeCycleBasicDto(SrmLifeCycleMetadata expected, LifeCycleBasicDto actual) {
+        assertNotNull(expected);
+        assertNotNull(actual);
+        assertEquals(expected.getProcStatus(), actual.getProcStatus());
+        assertEquals(CoreCommonUtil.transformDateTimeToDate(expected.getInternalPublicationDate()), actual.getInternalPublicationDate());
+        assertEquals(expected.getInternalPublicationUser(), actual.getInternalPublicationUser());
+        assertEquals(CoreCommonUtil.transformDateTimeToDate(expected.getExternalPublicationDate()), actual.getExternalPublicationDate());
+        assertEquals(expected.getExternalPublicationUser(), actual.getExternalPublicationUser());
+    }
+
+    public static void assertEqualsNotNull(Object expected, Object actual) {
+        assertNotNull(expected);
+        assertNotNull(actual);
+        assertEquals(expected, actual);
     }
 }

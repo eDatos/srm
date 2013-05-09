@@ -201,52 +201,52 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_2_V1, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_3_V1, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_4_V1, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.VALIDATION_REJECTED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_5_V1, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_6_V1, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_7_V1, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_7_V2, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_8_V1, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DIFFUSION_VALIDATION, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
@@ -366,12 +366,12 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_1_V2, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_2_V1, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.DRAFT, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
@@ -387,17 +387,17 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_1_V1, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_3_V1, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             {
                 CategorySchemeMetamacBasicDto categorySchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CATEGORY_SCHEME_7_V2, categorySchemeMetamacDto.getUrn());
-                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getProcStatus());
+                assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, categorySchemeMetamacDto.getLifeCycle().getProcStatus());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }

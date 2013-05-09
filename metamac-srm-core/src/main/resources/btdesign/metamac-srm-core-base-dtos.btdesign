@@ -9,42 +9,50 @@ Application SrmDtosBaseCore {
     	basePackage=org.siemac.metamac.srm.core.base.dto
     
   		DataTransferObject IdentifiableArtefactMetamacBasicDto {
-            String code;
-            String urn;
-            String urnProvider;
+            String code required;
+            String urn required;
+            String urnProvider required;
 		} 
 		
   		DataTransferObject NameableArtefactMetamacBasicDto extends @IdentifiableArtefactMetamacBasicDto {
-            - @InternationalStringDto name;
+            - @InternationalStringDto name required;
 		} 
 		
   		DataTransferObject MaintainableArtefactMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
-            String versionLogic;
-            - @RelatedResourceDto maintainer;            
-  			- @ProcStatusEnum procStatus;
-            JAVADATE createdDate;
-            JAVADATE resourceCreatedDate;
-            JAVADATE resourceLastUpdated;
-			JAVADATE internalPublicationDate nullable;
-			String internalPublicationUser nullable;
-			JAVADATE externalPublicationDate nullable;
-			String externalPublicationUser nullable;
+            String versionLogic required;
+            - @RelatedResourceDto maintainer required;            
             JAVADATE validTo nullable;
 		}    
 		
    		DataTransferObject StructureMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
-   			String structureUuid;
+   			String structureUuid required;
+            JAVADATE createdDate required;
+            - @LifeCycleBasicDto lifeCycle required;
+            JAVADATE resourceCreatedDate required;
+            JAVADATE resourceLastUpdated required;
 		}		
  
    		DataTransferObject ItemSchemeMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
-   			String itemSchemeUuid;
-			"True when a task is being executed in background"
+   			String itemSchemeUuid required;
+            JAVADATE createdDate required;
+            - @LifeCycleBasicDto lifeCycle required;
 			Boolean isTaskInBackground nullable;
+            JAVADATE resourceCreatedDate required;
+            JAVADATE resourceLastUpdated required;
 		}
 		
   		DataTransferObject ItemMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
-            String itemSchemeVersionUrn;
+            String itemSchemeVersionUrn required;
+            JAVADATE createdDate required;
 		} 
+		
+    	DataTransferObject LifeCycleBasicDto {
+			- @ProcStatusEnum procStatus required;
+			JAVADATE internalPublicationDate nullable;
+			String internalPublicationUser nullable;
+			JAVADATE externalPublicationDate nullable;
+			String externalPublicationUser nullable;
+		} 		
 				
     	DataTransferObject LifeCycleDto {
 			"Status"

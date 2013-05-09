@@ -77,7 +77,7 @@ Application OrganisationsMetamac {
 			"Deletes organisation"
     		deleteOrganisation(String urn) throws MetamacException;
     		"Retrieves organisations by organisation scheme in locale requested"
-    		List<ItemVisualisationResult> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn, String locale) throws MetamacException;
+    		List<OrganisationMetamacVisualisationResult> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn, String locale) throws MetamacException;
 
     		"Finds contacts by criteria"
     		PagedResult<@Contact> findOrganisationContactsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
@@ -113,7 +113,7 @@ Application OrganisationsMetamac {
 				@OrganisationMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
 				List<ItemResult> findOrganisationsByOrganisationSchemeUnordered(Long itemSchemeVersionId, ItemMetamacResultSelection resultSelection);
-				List<ItemVisualisationResult> findOrganisationsByOrganisationSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException;
+				List<OrganisationMetamacVisualisationResult> findOrganisationsByOrganisationSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException;
 				checkOrganisationTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 			}
 		}

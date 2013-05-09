@@ -329,7 +329,7 @@ Application SrmFacadeCore {
 			"Deletes organisation"
             deleteOrganisation(String urn) throws MetamacException;
     		"Retrieves organisations by organisation scheme in locale requested"
-    		List<ItemVisualisationResult> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn, String locale) throws MetamacException;
+    		List<OrganisationMetamacVisualisationResult> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn, String locale) throws MetamacException;
 
             "Finds contacts by criteria"
             MetamacCriteriaResult<@ContactDto> findOrganisationContactsByCondition(MetamacCriteria criteria) throws MetamacException;
