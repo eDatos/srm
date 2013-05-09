@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.dsd.serviceapi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -180,10 +181,14 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Test
     @Override
     public void testUpdateDataStructureDefinition() throws Exception {
-        // TODO Test dsd
-        // TODO hacer 2 tests para la modificación del code: 1) permitir modificar si es primera versión y es final. 2) dar error si no es primera versión
-        // TODO test no se puede crear de un maintainer != default
+        ServiceContext ctx = getServiceContextAdministrador();
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(ctx, DSD_2_V1);
+        dataStructureDefinitionVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
 
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionUpdated = dataStructureDefinitionMetamacService.updateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
+        assertNotNull(dataStructureDefinitionVersionUpdated);
+        assertEquals("user1", dataStructureDefinitionVersionUpdated.getCreatedBy());
+        assertEquals(ctx.getUserId(), dataStructureDefinitionVersionUpdated.getLastUpdatedBy());
     }
 
     @Test
