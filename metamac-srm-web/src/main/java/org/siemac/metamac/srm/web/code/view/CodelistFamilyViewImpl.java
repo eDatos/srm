@@ -9,7 +9,6 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
-import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistFamilyDS;
@@ -31,7 +30,6 @@ import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedActio
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
@@ -234,8 +232,7 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
     private void createEditionForm() {
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
-        RequiredTextItem code = new RequiredTextItem(CodelistFamilyDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(SemanticIdentifiersUtils.getCodelistFamilyIdentifierCustomValidator());
+        ViewTextItem code = new ViewTextItem(CodelistFamilyDS.CODE, getConstants().identifiableArtefactCode());
         MultiLanguageTextItem name = new MultiLanguageTextItem(CodelistFamilyDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         ViewTextItem urn = new ViewTextItem(CodelistFamilyDS.URN, getConstants().identifiableArtefactUrn());
@@ -264,7 +261,6 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
 
     public CodelistFamilyDto getCodelistFamilyDto() {
         // Identifiers
-        codelistFamilyDto.setCode(identifiersEditionForm.getValueAsString(CodelistFamilyDS.CODE));
         codelistFamilyDto.setName((InternationalStringDto) identifiersEditionForm.getValue(CodelistFamilyDS.NAME));
 
         return codelistFamilyDto;

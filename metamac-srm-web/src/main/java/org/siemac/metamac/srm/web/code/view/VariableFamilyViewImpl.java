@@ -9,7 +9,6 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
-import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.VariableDS;
 import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
@@ -31,7 +30,6 @@ import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedActio
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
@@ -235,8 +233,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
     private void createEditionForm() {
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
-        RequiredTextItem code = new RequiredTextItem(VariableFamilyDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(SemanticIdentifiersUtils.getVariableFamilyIdentifierCustomValidator());
+        ViewTextItem code = new ViewTextItem(VariableFamilyDS.CODE, getConstants().identifiableArtefactCode());
         MultiLanguageTextItem name = new MultiLanguageTextItem(VariableFamilyDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         ViewTextItem urn = new ViewTextItem(VariableFamilyDS.URN, getConstants().identifiableArtefactUrn());
@@ -265,7 +262,6 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
 
     public VariableFamilyDto getVariableFamilyDto() {
         // Identifiers
-        variableFamilyDto.setCode(identifiersEditionForm.getValueAsString(VariableFamilyDS.CODE));
         variableFamilyDto.setName((InternationalStringDto) identifiersEditionForm.getValue(VariableFamilyDS.NAME));
 
         return variableFamilyDto;
