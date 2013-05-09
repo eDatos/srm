@@ -23,12 +23,15 @@ import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
+import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
+import org.siemac.metamac.srm.web.client.widgets.webcommon.CustomLinkItemNavigationClickHandler;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
@@ -322,7 +325,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
-        ViewTextItem agency = new ViewTextItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
+        RelatedResourceLinkItem agency = new RelatedResourceLinkItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(CategorySchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsForm.setFields(agency, procStatus);
 
@@ -393,7 +396,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
-        ViewTextItem agency = new ViewTextItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
+        RelatedResourceLinkItem agency = new RelatedResourceLinkItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(CategorySchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsEditionForm.setFields(agency, procStatus);
 
@@ -511,7 +514,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Production descriptors
-        productionDescriptorsForm.setValue(CategorySchemeDS.MAINTAINER, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(categorySchemeDto.getMaintainer()));
+        ((RelatedResourceLinkItem) productionDescriptorsForm.getItem(CategorySchemeDS.MAINTAINER)).setRelatedResource(categorySchemeDto.getMaintainer());
         productionDescriptorsForm.setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
 
         // Diffusion descriptors
@@ -560,7 +563,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         contentDescriptorsEditionForm.markForRedraw();
 
         // Production descriptors
-        productionDescriptorsEditionForm.setValue(CategorySchemeDS.MAINTAINER, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(categorySchemeDto.getMaintainer()));
+        ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(CategorySchemeDS.MAINTAINER)).setRelatedResource(categorySchemeDto.getMaintainer());
         productionDescriptorsEditionForm
                 .setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
 
@@ -692,6 +695,20 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !CategoriesFormUtils.canCategorySchemeCodeBeEdited(categorySchemeDto);
+            }
+        };
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // CLICK HANDLERS
+    // ------------------------------------------------------------------------------------------------------------
+
+    private CustomLinkItemNavigationClickHandler getCustomLinkItemNavigationClickHandler() {
+        return new CustomLinkItemNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
             }
         };
     }
