@@ -99,8 +99,8 @@ public class CodesMetamacAsserts extends CodesAsserts {
         }
         assertEqualsInternationalString(entity.getShortName(), dto.getShortName());
         assertEqualsInternationalString(entity.getDescriptionSource(), dto.getDescriptionSource());
-        assertEquals(entity.getIsRecommended(), dto.getIsRecommended());
-        assertEquals(entity.getAccessType(), dto.getAccessType());
+        BaseAsserts.assertEqualsNotNull(entity.getIsRecommended(), dto.getIsRecommended());
+        BaseAsserts.assertEqualsNotNull(entity.getAccessType(), dto.getAccessType());
         assertEqualsNullability(entity.getReplacedByCodelist(), dto.getReplacedByCodelist());
         if (entity.getReplacedByCodelist() != null) {
             assertEquals(entity.getReplacedByCodelist().getMaintainableArtefact().getUrn(), dto.getReplacedByCodelist().getUrn());

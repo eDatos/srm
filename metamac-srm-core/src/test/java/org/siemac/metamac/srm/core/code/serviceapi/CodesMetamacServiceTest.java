@@ -43,6 +43,7 @@ import org.joda.time.tz.DateTimeZoneBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.DirtyDatabase;
+import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
@@ -2957,6 +2958,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(null, code.getParent());
                 assertEquals(null, code.getParentIdDatabase());
                 assertEquals(Integer.valueOf(0), code.getOrder());
+                MetamacAsserts.assertEqualsDate("2011-01-01 01:02:03", code.getCreatedDate());
             }
             {
                 // Code 02
@@ -2965,6 +2967,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals("CODE02", code.getCode());
                 assertEquals("Nombre codelist-1-v2-code-2 Canaria, Gran", code.getName());
                 assertEquals(Integer.valueOf(1), code.getOrder());
+                MetamacAsserts.assertEqualsDate("2011-03-02 04:05:06", code.getCreatedDate());
             }
             {
                 // Code 02 01 (validate parent)

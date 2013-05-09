@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.code.repositoryimpl;
 
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.booleanToBooleanDatabase;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getBoolean;
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getDate;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getInteger;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getLong;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
@@ -361,7 +362,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
         // Find. NOTE: this query return null label if locale not exits for a code
         StringBuilder sbCodes = new StringBuilder();
-        sbCodes.append("SELECT i.ID as ITEM_ID, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, c." + orderColumn + ", c." + opennessColumn + " ");
+        sbCodes.append("SELECT i.ID as ITEM_ID, i.CREATED_DATE, i.CREATED_DATE_TZ, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, c." + orderColumn + ", c." + opennessColumn + " ");
         sbCodes.append("FROM TB_M_CODES c ");
         sbCodes.append("INNER JOIN TB_ITEMS_BASE i on c.TB_CODES = i.ID ");
         sbCodes.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
@@ -528,6 +529,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         }
         int i = 0;
         target.setItemIdDatabase(getLong(source[i++]));
+        target.setCreatedDate(getDate(source[i++], source[i++]));
         target.setUrn(getString(source[i++]));
         target.setCode(getString(source[i++]));
         target.setParentIdDatabase(getLong(source[i++]));
