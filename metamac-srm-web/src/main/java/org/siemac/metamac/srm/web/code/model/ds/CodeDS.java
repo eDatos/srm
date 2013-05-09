@@ -6,7 +6,6 @@ public class CodeDS extends ItemDS {
 
     public static final String SHORT_NAME                   = "code-short-name";
     public static final String VARIABLE_ELEMENT             = "code-var-elem";
-    public static final String VARIABLE_ELEMENT_VIEW        = "code-var-elem-view";
     public static final String VARIABLE_ELEMENT_EDITION     = "code-var-elem-edition";
 
     public static final String ID_DATABASE                  = "code-id";
