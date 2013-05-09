@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.client.view.handlers;
 
 import java.util.List;
 
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
+
 public interface CategorisationUiHandlers extends BaseUiHandlers {
 
     void retrieveCategorisations(String artefactCategorisedUrn);

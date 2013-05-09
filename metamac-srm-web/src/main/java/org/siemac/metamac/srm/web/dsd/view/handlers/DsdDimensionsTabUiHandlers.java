@@ -2,12 +2,13 @@ package org.siemac.metamac.srm.web.dsd.view.handlers;
 
 import java.util.List;
 
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
+
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
-import com.gwtplatform.mvp.client.UiHandlers;
 
-public interface DsdDimensionsTabUiHandlers extends UiHandlers {
+public interface DsdDimensionsTabUiHandlers extends BaseUiHandlers {
 
     void createDefaultDimension(String dsdUrn, TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionType);
     void saveDimension(DimensionComponentDto dimensionComponentDto);
