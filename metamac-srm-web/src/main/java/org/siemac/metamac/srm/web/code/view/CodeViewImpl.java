@@ -13,7 +13,9 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
+import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.webcommon.CustomLinkItemNavigationClickHandler;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.presenter.CodePresenter;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
@@ -27,6 +29,7 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
@@ -197,7 +200,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CodeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
-        ViewTextItem variableElement = new ViewTextItem(CodeDS.VARIABLE_ELEMENT_VIEW, getConstants().variableElement());
+        RelatedResourceLinkItem variableElement = new RelatedResourceLinkItem(CodeDS.VARIABLE_ELEMENT_VIEW, getConstants().variableElement(), getCustomLinkItemNavigationClickHandler());
         contentDescriptorsForm.setFields(description, variableElement);
 
         // Comments
@@ -325,8 +328,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
         // Content descriptors
         contentDescriptorsForm.setValue(CodeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codeDto.getDescription()));
-        contentDescriptorsForm.setValue(CodeDS.VARIABLE_ELEMENT_VIEW,
-                codeDto.getVariableElement() != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codeDto.getVariableElement()) : StringUtils.EMPTY);
+        ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(CodeDS.VARIABLE_ELEMENT_VIEW)).setRelatedResource(codeDto.getVariableElement());
         contentDescriptorsForm.markForRedraw();
 
         // Comments
@@ -471,6 +473,20 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !CodesFormUtils.canCodeCodeBeEdited(codelistMetamacDto);
+            }
+        };
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // CLICK HANDLERS
+    // ------------------------------------------------------------------------------------------------------------
+
+    private CustomLinkItemNavigationClickHandler getCustomLinkItemNavigationClickHandler() {
+        return new CustomLinkItemNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
             }
         };
     }
