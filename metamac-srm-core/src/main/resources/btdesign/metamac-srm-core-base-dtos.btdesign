@@ -22,24 +22,22 @@ Application SrmDtosBaseCore {
             String versionLogic;
             - @RelatedResourceDto maintainer;            
   			- @ProcStatusEnum procStatus;
+            JAVADATE createdDate;
+            JAVADATE resourceCreatedDate;
+            JAVADATE resourceLastUpdated;
 			JAVADATE internalPublicationDate nullable;
 			String internalPublicationUser nullable;
 			JAVADATE externalPublicationDate nullable;
 			String externalPublicationUser nullable;
-            "Date from which version is superceded"
             JAVADATE validTo nullable;
 		}    
 		
    		DataTransferObject StructureMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
-   			Long structureId;
-            JAVADATE resourceCreatedDate;
-            JAVADATE resourceLastUpdated;
+   			String structureUuid;
 		}		
  
    		DataTransferObject ItemSchemeMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
-   			Long itemSchemeId;
-            JAVADATE resourceCreatedDate;
-            JAVADATE resourceLastUpdated;
+   			String itemSchemeUuid;
 			"True when a task is being executed in background"
 			Boolean isTaskInBackground nullable;
 		}

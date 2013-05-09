@@ -38,6 +38,8 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
     }
 
     public static void assertEqualsConceptScheme(ConceptSchemeVersionMetamac expected, ConceptSchemeMetamacBasicDto actual) {
+        assertEquals(expected.getType(), actual.getType());
+        assertEqualsExternalItem(expected.getRelatedOperation(), actual.getRelatedOperation());
         BaseAsserts.assertEqualsItemSchemeBasicDto(expected, expected.getLifeCycleMetadata(), actual);
     }
 

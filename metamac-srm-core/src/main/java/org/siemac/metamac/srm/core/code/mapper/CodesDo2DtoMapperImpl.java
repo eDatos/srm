@@ -70,6 +70,8 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             return null;
         }
         CodelistMetamacBasicDto target = new CodelistMetamacBasicDto();
+        target.setIsRecommended(source.getIsRecommended());
+        target.setVariable(variableDoToRelatedResourceDto(source.getVariable()));
         itemSchemeVersionDoToItemSchemeBasicDto(source, source.getLifeCycleMetadata(), target);
         return target;
     }

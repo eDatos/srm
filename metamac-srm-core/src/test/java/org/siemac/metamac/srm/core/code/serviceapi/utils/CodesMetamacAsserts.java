@@ -82,6 +82,8 @@ public class CodesMetamacAsserts extends CodesAsserts {
     }
 
     public static void assertEqualsCodelist(CodelistVersionMetamac expected, CodelistMetamacBasicDto actual) {
+        assertEquals(expected.getIsRecommended(), actual.getIsRecommended());
+        assertEqualsVariableRelatedResourceDto(expected.getVariable(), actual.getVariable(), MapperEnum.DO2DTO);
         BaseAsserts.assertEqualsItemSchemeBasicDto(expected, expected.getLifeCycleMetadata(), actual);
     }
 

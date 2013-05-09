@@ -40,6 +40,8 @@ Application DtosMetamacCodeDomain {
 		
 		"Dto for CodelistMetamac"
 		DataTransferObject CodelistMetamacBasicDto extends @ItemSchemeMetamacBasicDto {
+			Boolean isRecommended;
+			- @RelatedResourceDto variable;
 		}		
 
 		"Dto for CodeMetamac"

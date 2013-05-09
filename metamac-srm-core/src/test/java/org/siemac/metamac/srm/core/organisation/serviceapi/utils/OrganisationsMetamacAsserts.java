@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.core.organisation.serviceapi.utils;
 
+import static org.junit.Assert.assertEquals;
+
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -37,6 +39,7 @@ public class OrganisationsMetamacAsserts extends OrganisationsAsserts {
     }
 
     public static void assertEqualsOrganisationScheme(OrganisationSchemeVersionMetamac expected, OrganisationSchemeMetamacBasicDto actual) {
+        assertEquals(expected.getOrganisationSchemeType(), actual.getType());
         BaseAsserts.assertEqualsItemSchemeBasicDto(expected, expected.getLifeCycleMetadata(), actual);
     }
 
