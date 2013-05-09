@@ -1,9 +1,10 @@
 package org.siemac.metamac.srm.web.dsd.view.handlers;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
-import com.gwtplatform.mvp.client.UiHandlers;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 
-public interface DsdPrimaryMeasureTabUiHandlers extends UiHandlers {
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
+
+public interface DsdPrimaryMeasureTabUiHandlers extends BaseUiHandlers {
 
     void savePrimaryMeasure(ComponentDto componentDto);
 

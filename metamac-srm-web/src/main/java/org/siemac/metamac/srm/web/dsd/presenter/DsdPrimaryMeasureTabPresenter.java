@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.presenter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -203,5 +204,16 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
                 getView().setCodelistsForEnumeratedRepresentation(result);
             }
         });
+    }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
     }
 }

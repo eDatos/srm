@@ -8,7 +8,6 @@ public class PrimaryMeasureDS {
     public static final String URN_PROVIDER                           = "pm-urn-provider";
 
     public static final String CONCEPT                                = "pm-con";
-    public static final String CONCEPT_EDITION_VIEW                   = "pm-con-ed-view";   // Not mapped in DTO
     public static final String CONCEPT_VIEW                           = "pm-con-view";      // Not mapped in DTO
 
     public static final String REPRESENTATION_TYPE                    = "pm-repr-type";

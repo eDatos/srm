@@ -9,7 +9,10 @@ import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.webcommon.CustomLinkItemNavigationClickHandler;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.dsd.model.ds.PrimaryMeasureDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdPrimaryMeasureTabPresenter;
@@ -21,6 +24,7 @@ import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -117,7 +121,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         ViewTextItem code = new ViewTextItem(PrimaryMeasureDS.CODE, getConstants().identifiableArtefactCode());
         ViewTextItem urn = new ViewTextItem(PrimaryMeasureDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(PrimaryMeasureDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        ViewTextItem concept = new ViewTextItem(PrimaryMeasureDS.CONCEPT_VIEW, getConstants().concept());
+        RelatedResourceLinkItem concept = new RelatedResourceLinkItem(PrimaryMeasureDS.CONCEPT, getConstants().concept(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE, getConstants().representation());
         ViewTextItem enumeratedRepresentation = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, getConstants().representationEnumerated());
         form.setFields(code, urn, urnProvider, concept, staticRepresentationTypeItem, enumeratedRepresentation);
@@ -146,13 +150,12 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         // CONCEPT
 
-        ViewTextItem concept = new ViewTextItem(PrimaryMeasureDS.CONCEPT, getConstants().concept()); // This item is never shown. Stores the concept URN
-        concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        SearchRelatedResourceLinkItem concept = createConceptItem(PrimaryMeasureDS.CONCEPT, getConstants().concept()); // Shown in editionMode, only when the concept is editable
+        concept.setShowIfCondition(getConceptFormItemIfFunction());
 
-        SearchViewTextItem staticEditableConcept = createConceptItem(PrimaryMeasureDS.CONCEPT_EDITION_VIEW, getConstants().concept()); // Shown in editionMode, only when the concept is editable
-        staticEditableConcept.setShowIfCondition(getConceptFormItemIfFunction());
-
-        ViewTextItem staticConcept = new ViewTextItem(PrimaryMeasureDS.CONCEPT_VIEW, getConstants().concept()); // This item is shown when the concept can not be edited
+        RelatedResourceLinkItem staticConcept = new RelatedResourceLinkItem(PrimaryMeasureDS.CONCEPT_VIEW, getConstants().concept(), getCustomLinkItemNavigationClickHandler()); // This item is shown
+                                                                                                                                                                                 // when the concept can
+                                                                                                                                                                                 // not be edited
         staticConcept.setShowIfCondition(getStaticConceptFormItemIfFunction());
 
         // REPRESENTATION TYPE
@@ -174,8 +177,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         ViewTextItem enumeratedRepresentationView = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW, getConstants().representationEnumerated());
         enumeratedRepresentationView.setShowIfCondition(getStaticEnumeratedRepresentationFormItemIfFunction()); // This item is shown when the enumerated representation can not be edited
 
-        editionForm.setFields(code, urn, urnProvider, concept, staticEditableConcept, staticConcept, representationTypeItem, staticRepresentationTypeItem, enumeratedRepresentation,
-                enumeratedRepresentationEditionView, enumeratedRepresentationView);
+        editionForm.setFields(code, urn, urnProvider, concept, staticConcept, representationTypeItem, staticRepresentationTypeItem, enumeratedRepresentation, enumeratedRepresentationEditionView,
+                enumeratedRepresentationView);
 
         // FACET
 
@@ -242,7 +245,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         form.setValue(PrimaryMeasureDS.URN_PROVIDER, componentDto.getUrnProvider());
 
         // Concept
-        form.setValue(PrimaryMeasureDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(componentDto.getCptIdRef()));
+        ((RelatedResourceLinkItem) form.getItem(PrimaryMeasureDS.CONCEPT)).setRelatedResource(componentDto.getCptIdRef());
 
         // Representation
         facetForm.hide();
@@ -281,9 +284,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         editionForm.setValue(PrimaryMeasureDS.URN_PROVIDER, componentDto.getUrnProvider());
 
         // Concept
-        editionForm.setValue(PrimaryMeasureDS.CONCEPT, componentDto.getCptIdRef() != null ? componentDto.getCptIdRef().getUrn() : null);
-        editionForm.setValue(PrimaryMeasureDS.CONCEPT_EDITION_VIEW, RelatedResourceUtils.getRelatedResourceName(componentDto.getCptIdRef()));
-        editionForm.setValue(PrimaryMeasureDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(componentDto.getCptIdRef()));
+        ((SearchRelatedResourceLinkItem) editionForm.getItem(PrimaryMeasureDS.CONCEPT)).setRelatedResource(componentDto.getCptIdRef());
+        ((RelatedResourceLinkItem) editionForm.getItem(PrimaryMeasureDS.CONCEPT_VIEW)).setRelatedResource(componentDto.getCptIdRef());
 
         // Representation
         editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).clearValue();
@@ -330,8 +332,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     public ComponentDto getDsdPrimaryMeasure() {
         // Concept
-        primaryMeasure.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)) ? null : RelatedResourceUtils.createRelatedResourceDto(RelatedResourceTypeEnum.CONCEPT,
-                editionForm.getValueAsString(PrimaryMeasureDS.CONCEPT)));
+        primaryMeasure.setCptIdRef(((SearchRelatedResourceLinkItem) editionForm.getItem(PrimaryMeasureDS.CONCEPT)).getRelatedResourceDto());
 
         // Representation
         if (editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue() != null && !editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).getValue().toString().isEmpty()) {
@@ -397,10 +398,10 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         return representationTypeItem;
     }
 
-    private SearchViewTextItem createConceptItem(String name, String title) {
+    private SearchRelatedResourceLinkItem createConceptItem(String name, String title) {
         final int FIRST_RESULT = 0;
         final int MAX_RESULTS = 8;
-        final SearchViewTextItem conceptItem = new SearchViewTextItem(name, title);
+        final SearchRelatedResourceLinkItem conceptItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
         conceptItem.setRequired(true);
         conceptItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
@@ -443,9 +444,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                         RelatedResourceDto selectedConcept = searchConceptWindow.getSelectedRelatedResource();
                         searchConceptWindow.markForDestroy();
                         // Set selected concepts in form
-                        editionForm.setValue(PrimaryMeasureDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
-                        editionForm.setValue(PrimaryMeasureDS.CONCEPT_EDITION_VIEW,
-                                selectedConcept != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept) : null);
+                        ((SearchRelatedResourceLinkItem) editionForm.getItem(PrimaryMeasureDS.CONCEPT)).setRelatedResource(selectedConcept);
                         editionForm.validate(false);
                     }
                 });
@@ -571,6 +570,20 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 // Shown when the representation type selected is ENUMERATION and the enumerated representation can NOT be edited
                 return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(PrimaryMeasureDS.REPRESENTATION_TYPE))
                         && !DsdsFormUtils.canPrimaryMeasureEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // CLICK HANDLERS
+    // ------------------------------------------------------------------------------------------------------------
+
+    private CustomLinkItemNavigationClickHandler getCustomLinkItemNavigationClickHandler() {
+        return new CustomLinkItemNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
             }
         };
     }
