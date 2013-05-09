@@ -325,4 +325,15 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
             }
         });
     }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
 }

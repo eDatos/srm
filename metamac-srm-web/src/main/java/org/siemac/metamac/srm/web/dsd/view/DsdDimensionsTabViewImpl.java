@@ -31,6 +31,7 @@ import org.siemac.metamac.srm.web.dsd.widgets.NewDimensionWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -41,6 +42,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
+import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigationClickHandler;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
@@ -281,7 +283,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem dimensionType = new ViewTextItem(DimensionDS.TYPE_VIEW, getConstants().dsdDimensionsType());
         ViewTextItem concept = new ViewTextItem(DimensionDS.CONCEPT_EDITION_VIEW, getConstants().concept());
 
-        RelatedResourceListItem conceptRoleItem = new RelatedResourceListItem(DimensionDS.ROLE, getConstants().dsdDimensionsRole(), false);
+        RelatedResourceListItem conceptRoleItem = new RelatedResourceListItem(DimensionDS.ROLE, getConstants().dsdDimensionsRole(), false, getListRecordNavigationClickHandler());
         conceptRoleItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -350,7 +352,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         RelatedResourceListItem conceptRoleItem = createRoleItem(DimensionDS.ROLE, getConstants().dsdDimensionsRole());
         conceptRoleItem.setShowIfCondition(getRoleFormItemIfFunction());
 
-        RelatedResourceListItem staticConceptRoleItem = new RelatedResourceListItem(DimensionDS.ROLE_VIEW, getConstants().dsdDimensionsRole(), false);
+        RelatedResourceListItem staticConceptRoleItem = new RelatedResourceListItem(DimensionDS.ROLE_VIEW, getConstants().dsdDimensionsRole(), false, getListRecordNavigationClickHandler());
         staticConceptRoleItem.setShowIfCondition(getStaticRoleFormItemIfFunction());
 
         // REPRESENTATION TYPE
@@ -884,7 +886,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         final int FIRST_RESULT = 0;
         final int MAX_RESULTS = 8;
 
-        RelatedResourceListItem relatedResources = new RelatedResourceListItem(name, title, true);
+        RelatedResourceListItem relatedResources = new RelatedResourceListItem(name, title, true, getListRecordNavigationClickHandler());
         relatedResources.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -1255,6 +1257,20 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 return CommonUtils.isDimensionConceptSchemeEnumeratedRepresentationVisible(editionForm.getValueAsString(DimensionDS.REPRESENTATION_TYPE),
                         editionForm.getValueAsString(DimensionDS.TYPE))
                         && !DsdsFormUtils.canDimensionConceptSchemeEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // CLICK HANDLERS
+    // ------------------------------------------------------------------------------------------------------------
+
+    private ListRecordNavigationClickHandler getListRecordNavigationClickHandler() {
+        return new ListRecordNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
             }
         };
     }

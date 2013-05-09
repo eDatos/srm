@@ -42,6 +42,7 @@ import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -57,6 +58,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
+import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigationClickHandler;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -242,7 +244,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewTextItem sdmxRelatedArtefact = new ViewTextItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
         ViewTextItem type = new ViewTextItem(ConceptDS.TYPE, getConstants().conceptType());
-        RelatedResourceListItem roles = new RelatedResourceListItem(ConceptDS.ROLES, getConstants().conceptRoles(), false);
+        RelatedResourceListItem roles = new RelatedResourceListItem(ConceptDS.ROLES, getConstants().conceptRoles(), false, getListRecordNavigationClickHandler());
         roles.setShowIfCondition(getRolesFormItemIfFunction());
         ViewTextItem representation = new ViewTextItem(RepresentationDS.TYPE, getConstants().representation());
         representation.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
@@ -708,7 +710,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         final int FIRST_RESULT = 0;
         final int MAX_RESULTS = 8;
 
-        RelatedResourceListItem rolesItem = new RelatedResourceListItem(name, title, true);
+        RelatedResourceListItem rolesItem = new RelatedResourceListItem(name, title, true, getListRecordNavigationClickHandler());
         rolesItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -1127,6 +1129,20 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 // Shown when the representation type selected is ENUMERATION and the enumerated representation can NOT be edited
                 return org.siemac.metamac.srm.web.dsd.utils.CommonUtils.isRepresentationTypeEnumerated(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE))
                         && !ConceptsFormUtils.canConceptEnumeratedRepresentationBeEdited(conceptSchemeMetamacDto);
+            }
+        };
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // CLICK HANDLERS
+    // ------------------------------------------------------------------------------------------------------------
+
+    private ListRecordNavigationClickHandler getListRecordNavigationClickHandler() {
+        return new ListRecordNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
             }
         };
     }

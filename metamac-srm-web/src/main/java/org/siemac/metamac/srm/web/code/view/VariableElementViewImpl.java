@@ -23,6 +23,7 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -31,6 +32,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTex
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
+import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigationClickHandler;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.user.client.ui.Widget;
@@ -206,7 +208,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         ViewTextItem validFrom = new ViewTextItem(VariableElementDS.VALID_FROM, getConstants().variableElementValidFrom());
         ViewTextItem validTo = new ViewTextItem(VariableElementDS.VALID_TO, getConstants().variableElementValidTo());
-        RelatedResourceListItem replaceToElements = new RelatedResourceListItem(VariableElementDS.REPLACE_TO_ELEMENTS, getConstants().variableElementReplaceToVariableElements(), false);
+        RelatedResourceListItem replaceToElements = new RelatedResourceListItem(VariableElementDS.REPLACE_TO_ELEMENTS, getConstants().variableElementReplaceToVariableElements(), false,
+                getListRecordNavigationClickHandler());
         ViewTextItem replacedByElement = new ViewTextItem(VariableElementDS.REPLACED_BY_ELEMENT, getConstants().variableElementReplacedByVariableElement());
         diffusionDescriptorsForm.setFields(validFrom, validTo, replaceToElements, replacedByElement);
 
@@ -300,7 +303,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
 
-        RelatedResourceListItem replaceToItem = new RelatedResourceListItem(VariableElementDS.REPLACE_TO_ELEMENTS, getConstants().variableElementReplaceToVariableElements(), true);
+        RelatedResourceListItem replaceToItem = new RelatedResourceListItem(VariableElementDS.REPLACE_TO_ELEMENTS, getConstants().variableElementReplaceToVariableElements(), true,
+                getListRecordNavigationClickHandler());
         replaceToItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -378,5 +382,19 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
                 getUiHandlers().createSegregation(sourceUrn, targetUrns);
             }
         });
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // CLICK HANDLERS
+    // ------------------------------------------------------------------------------------------------------------
+
+    private ListRecordNavigationClickHandler getListRecordNavigationClickHandler() {
+        return new ListRecordNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
+            }
+        };
     }
 }

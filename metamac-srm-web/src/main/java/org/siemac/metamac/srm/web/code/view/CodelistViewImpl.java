@@ -21,10 +21,13 @@ import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
+import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
+import org.siemac.metamac.srm.web.client.widgets.webcommon.CustomLinkItemNavigationClickHandler;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistPresenter;
@@ -45,8 +48,8 @@ import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
-import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.InformationLabel;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
@@ -58,9 +61,9 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTex
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
+import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigationClickHandler;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -597,20 +600,22 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem isExternalReference = new ViewTextItem(CodelistDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CodelistDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         ViewTextItem isRecommended = new ViewTextItem(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
-        ViewTextItem family = new ViewTextItem(CodelistDS.FAMILY_VIEW, getConstants().codelistFamily());
-        ViewTextItem variable = new ViewTextItem(CodelistDS.VARIABLE_VIEW, getConstants().variable());
+        RelatedResourceLinkItem family = new RelatedResourceLinkItem(CodelistDS.FAMILY, getConstants().codelistFamily(), getCustomLinkItemNavigationClickHandler());
+        RelatedResourceLinkItem variable = new RelatedResourceLinkItem(CodelistDS.VARIABLE, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
         contentDescriptorsForm.setFields(description, descriptionSource, partial, isExternalReference, isFinal, isRecommended, family, variable);
 
         // PRODUCTION DESCRIPTORS
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
-        ViewTextItem agency = new ViewTextItem(CodelistDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
+        RelatedResourceLinkItem agency = new RelatedResourceLinkItem(CodelistDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(CodelistDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsForm.setFields(agency, procStatus);
 
         // DIFFUSION DESCRIPTORS
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
-        RelatedResourceListItem replaceToCodelists = new RelatedResourceListItem(CodelistDS.REPLACE_TO_CODELISTS, getConstants().codelistReplaceToCodelists(), false);
-        ViewTextItem replacedByCodelist = new ViewTextItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist());
+        RelatedResourceListItem replaceToCodelists = new RelatedResourceListItem(CodelistDS.REPLACE_TO_CODELISTS, getConstants().codelistReplaceToCodelists(), false,
+                getListRecordNavigationClickHandler());
+        RelatedResourceLinkItem replacedByCodelist = new RelatedResourceLinkItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist(),
+                getCustomLinkItemNavigationClickHandler());
         ViewTextItem accessType = new ViewTextItem(CodelistDS.ACCESS_TYPE, getConstants().codelistAccessType());
         ViewTextItem defaultOrder = new ViewTextItem(CodelistDS.DEFAULT_ORDER, getConstants().codelistDefaultOrder());
         ViewTextItem defaultOpennessLevel = new ViewTextItem(CodelistDS.DEFAULT_OPENNESS_LEVEL, getConstants().codelistDefaultOpennessLevel());
@@ -678,24 +683,21 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem isExternalReference = new ViewTextItem(CodelistDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CodelistDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         BooleanSelectItem isRecommended = new BooleanSelectItem(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
-        ViewTextItem family = new ViewTextItem(CodelistDS.FAMILY, getConstants().codelistFamily());
-        family.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem familyView = createFamilyItem(CodelistDS.FAMILY_VIEW, getConstants().codelistFamily());
-        ViewTextItem variable = new ViewTextItem(CodelistDS.VARIABLE, getConstants().variable());
-        variable.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem variableView = createVariableItem(CodelistDS.VARIABLE_VIEW, getConstants().variable());
-        contentDescriptorsEditionForm.setFields(description, descriptionSource, partial, isExternalReference, isFinal, isRecommended, family, familyView, variable, variableView);
+        SearchRelatedResourceLinkItem family = createFamilyItem(CodelistDS.FAMILY, getConstants().codelistFamily());
+        SearchRelatedResourceLinkItem variable = createVariableItem(CodelistDS.VARIABLE, getConstants().variable());
+        contentDescriptorsEditionForm.setFields(description, descriptionSource, partial, isExternalReference, isFinal, isRecommended, family, variable);
 
         // PRODUCTION DESCRIPTORS
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
-        ViewTextItem agency = new ViewTextItem(CodelistDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
+        RelatedResourceLinkItem agency = new RelatedResourceLinkItem(CodelistDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(CodelistDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         productionDescriptorsEditionForm.setFields(agency, procStatus);
 
         // DIFFUSION DESCRIPTORS
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         RelatedResourceListItem replaceToCodelists = createReplaceToCodelistsItem(CodelistDS.REPLACE_TO_CODELISTS, getConstants().codelistReplaceToCodelists());
-        ViewTextItem replacedByCodelist = new ViewTextItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist());
+        RelatedResourceLinkItem replacedByCodelist = new RelatedResourceLinkItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist(),
+                getCustomLinkItemNavigationClickHandler());
         CustomSelectItem accessType = new CustomSelectItem(CodelistDS.ACCESS_TYPE, getConstants().codelistAccessType());
         accessType.setValueMap(CommonUtils.getAccessTypeHashMap());
         CustomSelectItem defaultOrder = new CustomSelectItem(CodelistDS.DEFAULT_ORDER, getConstants().codelistDefaultOrder()); // ValueMap is set in setCodelistOrders method
@@ -738,7 +740,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     private void setCodelistViewMode(CodelistMetamacDto codelistDto) {
-        // Identifiers
+
+        // IDENTIFIERS
+
         identifiersForm.setValue(CodelistDS.CODE, codelistDto.getCode());
         identifiersForm.setValue(CodelistDS.URI, codelistDto.getUriProvider());
         identifiersForm.setValue(CodelistDS.URN, codelistDto.getUrn());
@@ -747,7 +751,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         identifiersForm.setValue(CodelistDS.NAME, RecordUtils.getInternationalStringRecord(codelistDto.getName()));
         identifiersForm.setValue(CodelistDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(codelistDto.getShortName()));
 
-        // Content descriptors
+        // CONTENT DESCRIPTORS
+
         contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codelistDto.getDescription()));
         contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(codelistDto.getDescriptionSource()));
         contentDescriptorsForm.setValue(CodelistDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsPartial()));
@@ -757,17 +762,17 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         contentDescriptorsForm.setValue(CodelistDS.FINAL, codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants()
                 .no()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(CodelistDS.IS_RECOMMENDED, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsRecommended()));
-        contentDescriptorsForm.setValue(CodelistDS.FAMILY_VIEW,
-                codelistDto.getFamily() != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getFamily()) : StringUtils.EMPTY);
-        contentDescriptorsForm.setValue(CodelistDS.VARIABLE_VIEW,
-                codelistDto.getVariable() != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getVariable()) : StringUtils.EMPTY);
+        ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(CodelistDS.FAMILY)).setRelatedResource(codelistDto.getFamily());
+        ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(CodelistDS.VARIABLE)).setRelatedResource(codelistDto.getVariable());
 
-        // Production descriptors
-        productionDescriptorsForm.setValue(CodelistDS.MAINTAINER, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getMaintainer()));
+        // PRODUCTION DESCRIPTORS
+
+        ((RelatedResourceLinkItem) productionDescriptorsForm.getItem(CodelistDS.MAINTAINER)).setRelatedResource(codelistDto.getMaintainer());
         productionDescriptorsForm.setValue(CodelistDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
 
-        // Diffusion descriptors
-        diffusionDescriptorsForm.setValue(CodelistDS.REPLACED_BY_CODELIST, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
+        // DIFFUSION DESCRIPTORS
+
+        ((RelatedResourceLinkItem) diffusionDescriptorsForm.getItem(CodelistDS.REPLACED_BY_CODELIST)).setRelatedResource(codelistDto.getReplacedByCodelist());
         ((RelatedResourceListItem) diffusionDescriptorsForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(codelistDto.getReplaceToCodelists());
         diffusionDescriptorsForm.setValue(CodelistDS.ACCESS_TYPE, CommonUtils.getAccessTypeName(codelistDto.getAccessType()));
         diffusionDescriptorsForm.setValue(CodelistDS.DEFAULT_ORDER, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getDefaultOrderVisualisation()));
@@ -778,7 +783,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         diffusionDescriptorsForm.setValue(CodelistDS.VALID_FROM, codelistDto.getValidFrom());
         diffusionDescriptorsForm.setValue(CodelistDS.VALID_TO, codelistDto.getValidTo());
 
-        // Version responsibility
+        // VERSION RESPONSIBILITY
+
         versionResponsibilityForm.setValue(CodelistDS.PRODUCTION_VALIDATION_USER, codelistDto.getLifeCycle().getProductionValidationUser());
         versionResponsibilityForm.setValue(CodelistDS.PRODUCTION_VALIDATION_DATE, codelistDto.getLifeCycle().getProductionValidationDate());
         versionResponsibilityForm.setValue(CodelistDS.DIFFUSION_VALIDATION_USER, codelistDto.getLifeCycle().getDiffusionValidationUser());
@@ -788,15 +794,17 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         versionResponsibilityForm.setValue(CodelistDS.EXTERNAL_PUBLICATION_USER, codelistDto.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityForm.setValue(CodelistDS.EXTERNAL_PUBLICATION_DATE, codelistDto.getLifeCycle().getExternalPublicationDate());
 
-        // Comments
+        // COMMENTS
+
         commentsForm.setValue(CodelistDS.COMMENTS, RecordUtils.getInternationalStringRecord(codelistDto.getComment()));
 
-        // Annotations
+        // ANNOTATIONS
+
         annotationsPanel.setAnnotations(codelistDto.getAnnotations(), codelistDto);
     }
 
     private void setCodelistEditionMode(CodelistMetamacDto codelistDto) {
-        // Identifiers
+        // IDENTIFIERS
         identifiersEditionForm.setValue(CodelistDS.CODE, codelistDto.getCode());
         identifiersEditionForm.setValue(CodelistDS.CODE_VIEW, codelistDto.getCode());
         identifiersEditionForm.setValue(CodelistDS.URI, codelistDto.getUriProvider());
@@ -807,7 +815,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         identifiersEditionForm.setValue(CodelistDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(codelistDto.getShortName()));
         identifiersEditionForm.markForRedraw();
 
-        // Content descriptors
+        // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm.setValue(CodelistDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codelistDto.getDescription()));
         ((MultilanguageRichTextEditorItem) contentDescriptorsEditionForm.getItem(CodelistDS.DESCRIPTION_SOURCE)).setValueInternational(codelistDto.getDescriptionSource());
         contentDescriptorsEditionForm.setValue(CodelistDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsPartial()));
@@ -816,21 +824,16 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         contentDescriptorsEditionForm.setValue(CodelistDS.FINAL, codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
                 .getConstants().no()) : StringUtils.EMPTY);
         ((BooleanSelectItem) contentDescriptorsEditionForm.getItem(CodelistDS.IS_RECOMMENDED)).setBooleanValue(codelistDto.getIsRecommended());
-        contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY_VIEW,
-                codelistDto.getFamily() != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getFamily()) : StringUtils.EMPTY);
-        contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY, codelistDto.getFamily() != null ? codelistDto.getFamily().getUrn() : StringUtils.EMPTY);
-        contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE_VIEW,
-                codelistDto.getVariable() != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getVariable()) : StringUtils.EMPTY);
-        contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE, codelistDto.getVariable() != null ? codelistDto.getVariable().getUrn() : StringUtils.EMPTY);
+        ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.FAMILY)).setRelatedResource(codelistDto.getFamily());
+        ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.VARIABLE)).setRelatedResource(codelistDto.getVariable());
 
-        // Production descriptors
-        productionDescriptorsEditionForm.setValue(CodelistDS.MAINTAINER, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getMaintainer()));
+        // PRODUCTION DESCRIPTORS
+        ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(CodelistDS.MAINTAINER)).setRelatedResource(codelistDto.getMaintainer());
         productionDescriptorsEditionForm.setValue(CodelistDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
         productionDescriptorsEditionForm.markForRedraw();
 
-        // Diffusion descriptors
-        diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACED_BY_CODELIST,
-                org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(codelistDto.getReplacedByCodelist()));
+        // DIFFUSION DESCRIPTORS
+        ((RelatedResourceLinkItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACED_BY_CODELIST)).setRelatedResource(codelistDto.getReplacedByCodelist());
         ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(codelistDto.getReplaceToCodelists());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.ACCESS_TYPE, codelistDto.getAccessType() != null ? codelistDto.getAccessType().name() : StringUtils.EMPTY);
         diffusionDescriptorsEditionForm
@@ -843,7 +846,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         diffusionDescriptorsEditionForm.setValue(CodelistDS.VALID_FROM, DateUtils.getFormattedDate(codelistDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(CodelistDS.VALID_TO, DateUtils.getFormattedDate(codelistDto.getValidTo()));
 
-        // Version responsibility
+        // VERSION RESPONSIBILITY
         versionResponsibilityEditionForm.setValue(CodelistDS.PRODUCTION_VALIDATION_USER, codelistDto.getLifeCycle().getProductionValidationUser());
         versionResponsibilityEditionForm.setValue(CodelistDS.PRODUCTION_VALIDATION_DATE, codelistDto.getLifeCycle().getProductionValidationDate());
         versionResponsibilityEditionForm.setValue(CodelistDS.DIFFUSION_VALIDATION_USER, codelistDto.getLifeCycle().getDiffusionValidationUser());
@@ -853,10 +856,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         versionResponsibilityEditionForm.setValue(CodelistDS.EXTERNAL_PUBLICATION_USER, codelistDto.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityEditionForm.setValue(CodelistDS.EXTERNAL_PUBLICATION_DATE, codelistDto.getLifeCycle().getExternalPublicationDate());
 
-        // Comments
+        // COMMENTS
         commentsEditionForm.setValue(CodelistDS.COMMENTS, RecordUtils.getInternationalStringRecord(codelistDto.getComment()));
 
-        // Annotations
+        // ANNOTATIONS
         annotationsEditionPanel.setAnnotations(codelistDto.getAnnotations(), codelistDto);
     }
 
@@ -870,10 +873,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         codelistDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CodelistDS.DESCRIPTION));
         codelistDto.setDescriptionSource(((MultilanguageRichTextEditorItem) contentDescriptorsEditionForm.getItem(CodelistDS.DESCRIPTION_SOURCE)).getValue());
         codelistDto.setIsRecommended(((BooleanSelectItem) contentDescriptorsEditionForm.getItem(CodelistDS.IS_RECOMMENDED)).getBooleanValue());
-        codelistDto.setFamily(!StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(CodelistDS.FAMILY)) ? RelatedResourceUtils.createRelatedResourceDto(contentDescriptorsEditionForm
-                .getValueAsString(CodelistDS.FAMILY)) : null);
-        codelistDto.setVariable(!StringUtils.isBlank(contentDescriptorsEditionForm.getValueAsString(CodelistDS.VARIABLE)) ? RelatedResourceUtils.createRelatedResourceDto(contentDescriptorsEditionForm
-                .getValueAsString(CodelistDS.VARIABLE)) : null);
+        codelistDto.setFamily(((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.FAMILY)).getRelatedResourceDto());
+        codelistDto.setVariable(((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.VARIABLE)).getRelatedResourceDto());
 
         // Diffusion descriptors
         codelistDto.getReplaceToCodelists().clear();
@@ -972,9 +973,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     // FORM ITEMS CREATION
     // ------------------------------------------------------------------------------------------------------------
 
-    private SearchViewTextItem createFamilyItem(String name, String title) {
+    private SearchRelatedResourceLinkItem createFamilyItem(String name, String title) {
 
-        SearchViewTextItem familyItem = new SearchViewTextItem(name, title);
+        SearchRelatedResourceLinkItem familyItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
         familyItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -986,9 +987,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                         RelatedResourceDto selectedFamily = searchFamilyWindow.getSelectedRelatedResource();
                         searchFamilyWindow.markForDestroy();
                         // Set selected family in form
-                        contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY, selectedFamily != null ? selectedFamily.getUrn() : null);
-                        contentDescriptorsEditionForm.setValue(CodelistDS.FAMILY_VIEW,
-                                selectedFamily != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedFamily) : null);
+                        ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.FAMILY)).setRelatedResource(selectedFamily);
                     }
                 });
             }
@@ -1026,7 +1025,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
 
-        RelatedResourceListItem replaceToItem = new RelatedResourceListItem(name, title, true);
+        RelatedResourceListItem replaceToItem = new RelatedResourceListItem(name, title, true, getListRecordNavigationClickHandler());
         replaceToItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -1068,10 +1067,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         return replaceToItem;
     }
 
-    private SearchViewTextItem createVariableItem(String name, String title) {
+    private SearchRelatedResourceLinkItem createVariableItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
-        final SearchViewTextItem variableItem = new SearchViewTextItem(name, title);
+        final SearchRelatedResourceLinkItem variableItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
         variableItem.setRequired(true);
         variableItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
@@ -1107,9 +1106,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                         RelatedResourceDto selectedVariable = searchVariableWindow.getSelectedRelatedResource();
                         searchVariableWindow.markForDestroy();
                         // Set selected variable in form
-                        contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE, selectedVariable != null ? selectedVariable.getUrn() : null);
-                        contentDescriptorsEditionForm.setValue(CodelistDS.VARIABLE_VIEW,
-                                selectedVariable != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedVariable) : null);
+                        ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.VARIABLE)).setRelatedResource(selectedVariable);
                         contentDescriptorsEditionForm.validate(false);
                     }
                 });
@@ -1140,6 +1137,30 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !CodesFormUtils.canCodelistCodeBeEdited(codelistDto);
+            }
+        };
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // CLICK HANDLERS
+    // ------------------------------------------------------------------------------------------------------------
+
+    private CustomLinkItemNavigationClickHandler getCustomLinkItemNavigationClickHandler() {
+        return new CustomLinkItemNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
+            }
+        };
+    }
+
+    private ListRecordNavigationClickHandler getListRecordNavigationClickHandler() {
+        return new ListRecordNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
             }
         };
     }

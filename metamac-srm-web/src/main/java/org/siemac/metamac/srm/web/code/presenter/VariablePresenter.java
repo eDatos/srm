@@ -304,13 +304,6 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     }
 
     @Override
-    public void goToVariableElement(String code) {
-        if (!StringUtils.isBlank(code)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeVariableElementPlaceRequest(code));
-        }
-    }
-
-    @Override
     public void createSegregation(String variableElementUrn, List<String> variableElementUrns) {
         createVariableElementOperation(VariableElementOperationTypeEnum.SEGREGATION, variableElementUrns, variableElementUrn);
     }
@@ -385,5 +378,23 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     @Override
     public void resourceImportationFailed(String fileName) {
         ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(getMessages().resourceErrorImport()), MessageTypeEnum.ERROR);
+    }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
+
+    @Override
+    public void goToVariableElement(String code) {
+        if (!StringUtils.isBlank(code)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeVariableElementPlaceRequest(code));
+        }
     }
 }

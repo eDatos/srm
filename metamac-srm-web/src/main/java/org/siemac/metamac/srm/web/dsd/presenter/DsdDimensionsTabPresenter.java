@@ -383,4 +383,15 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         }
         return relationType;
     }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
 }

@@ -258,4 +258,15 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
             }
         });
     }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
 }
