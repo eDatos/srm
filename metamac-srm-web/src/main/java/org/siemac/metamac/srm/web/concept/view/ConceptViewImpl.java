@@ -252,7 +252,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewTextItem representation = new ViewTextItem(RepresentationDS.TYPE, getConstants().representation());
         representation.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         ViewTextItem representationView = new ViewTextItem(RepresentationDS.TYPE_VIEW, getConstants().representation());
-        ViewTextItem enumeratedRepresentation = new ViewTextItem(RepresentationDS.ENUMERATED_CODELIST, getConstants().codelist());
+        RelatedResourceLinkItem enumeratedRepresentation = new RelatedResourceLinkItem(RepresentationDS.ENUMERATED_CODELIST, getConstants().codelist(), getCustomLinkItemNavigationClickHandler());
         enumeratedRepresentation.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -495,8 +495,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 conceptDto.getCoreRepresentation() != null
                         ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation().getRepresentationType())
                         : null);
-        contentDescriptorsForm.setValue(RepresentationDS.ENUMERATED_CODELIST,
-                conceptDto.getCoreRepresentation() != null ? RelatedResourceUtils.getRelatedResourceName(conceptDto.getCoreRepresentation().getEnumeration()) : null);
+        ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(RepresentationDS.ENUMERATED_CODELIST)).setRelatedResource(conceptDto.getCoreRepresentation() != null ? conceptDto
+                .getCoreRepresentation().getEnumeration() : null);
         contentDescriptorsForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
         contentDescriptorsForm.setValue(ConceptDS.TYPE,
                 conceptDto.getConceptType() != null ? CommonWebUtils.getElementName(conceptDto.getConceptType().getIdentifier(), conceptDto.getConceptType().getDescription()) : null);
