@@ -103,6 +103,10 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
             return null;
         }
         ConceptMetamacBasicDto target = new ConceptMetamacBasicDto();
+        target.setAcronym(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getAcronym()));
+        target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
+        target.setVariable(codesDo2DtoMapper.variableDoToRelatedResourceDto(source.getVariable()));
+
         itemDoToItemBasicDto(source, target);
         return target;
     }

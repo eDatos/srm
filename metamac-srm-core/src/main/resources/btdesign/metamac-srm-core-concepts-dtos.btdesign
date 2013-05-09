@@ -46,6 +46,9 @@ Application DtosMetamacConceptDomain {
 		
 		"Dto for ConceptMetamac"
 		DataTransferObject ConceptMetamacBasicDto extends @ItemMetamacBasicDto {
+			- @InternationalStringDto acronym nullable;
+			- @RelatedResourceDto variable nullable;
+			- @ConceptRoleEnum sdmxRelatedArtefact nullable;
 		}
 		
         "Dto for ConceptType"

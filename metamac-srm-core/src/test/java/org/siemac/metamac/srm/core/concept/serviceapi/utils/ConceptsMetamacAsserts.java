@@ -98,6 +98,10 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
     }
 
     public static void assertEqualsConcept(ConceptMetamac expected, ConceptMetamacBasicDto actual) {
+        assertEqualsInternationalString(expected.getAcronym(), actual.getAcronym());
+        BaseAsserts.assertEqualsNotNull(expected.getSdmxRelatedArtefact(), actual.getSdmxRelatedArtefact());
+        CodesMetamacAsserts.assertEqualsVariableRelatedResourceDto(expected.getVariable(), actual.getVariable(), MapperEnum.DO2DTO);
+
         BaseAsserts.assertEqualsItemBasicDto(expected, actual);
     }
 
@@ -154,7 +158,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalString(entity.getDescriptionSource(), dto.getDescriptionSource());
         assertEqualsInternationalString(entity.getContext(), dto.getContext());
         assertEqualsInternationalString(entity.getDocMethod(), dto.getDocMethod());
-        assertEquals(entity.getSdmxRelatedArtefact(), dto.getSdmxRelatedArtefact());
+        BaseAsserts.assertEqualsNotNull(entity.getSdmxRelatedArtefact(), dto.getSdmxRelatedArtefact());
         assertEquals(entity.getConceptType().getIdentifier(), dto.getConceptType().getIdentifier());
         assertEqualsInternationalString(entity.getDerivation(), dto.getDerivation());
         assertEqualsInternationalString(entity.getLegalActs(), dto.getLegalActs());
