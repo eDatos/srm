@@ -2,10 +2,9 @@ package org.siemac.metamac.srm.web.concept.model.record;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
+import org.siemac.metamac.web.common.client.widgets.NavigableListGridRecord;
 
-import com.smartgwt.client.widgets.grid.ListGridRecord;
-
-public class ConceptRecord extends ListGridRecord {
+public class ConceptRecord extends NavigableListGridRecord {
 
     public ConceptRecord() {
     }

@@ -270,7 +270,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // Relation between concepts
         relationBetweenConceptsForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
         ViewTextItem extendsConcept = new ViewTextItem(ConceptDS.EXTENDS_VIEW, getConstants().conceptExtends());
-        ConceptsListItem relatedConcepts = new ConceptsListItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts(), false);
+        ConceptsListItem relatedConcepts = new ConceptsListItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts(), false, getListRecordNavigationClickHandler());
         relationBetweenConceptsForm.setFields(extendsConcept, relatedConcepts);
 
         // Legal acts
@@ -819,7 +819,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     private ConceptsListItem createRelatedConceptsItem(String name, String title) {
-        ConceptsListItem relatedConceptsItem = new ConceptsListItem(name, title, true);
+        ConceptsListItem relatedConceptsItem = new ConceptsListItem(name, title, true, getListRecordNavigationClickHandler());
         relatedConceptsItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override

@@ -412,6 +412,9 @@ public class PlaceRequestUtils {
             } else if (SrmUrnParserUtils.isCategoryUrn(urn)) {
                 String categorySchemeUrn = SrmUrnParserUtils.getCategorySchemeUrnFromCategoryUrn(urn);
                 return buildAbsoluteCategoryPlaceRequest(categorySchemeUrn, urn);
+            } else if (SrmUrnParserUtils.isConceptUrn(urn)) {
+                String conceptSchemeUrn = SrmUrnParserUtils.getConceptSchemeUrnFromConceptUrn(urn);
+                return buildAbsoluteConceptPlaceRequest(conceptSchemeUrn, urn);
             }
         }
         return null;

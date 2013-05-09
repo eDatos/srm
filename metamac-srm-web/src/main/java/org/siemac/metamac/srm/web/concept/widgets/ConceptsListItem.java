@@ -5,11 +5,14 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.srm.core.common.service.utils.shared.SrmUrnParserUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.form.fields.BaseListItem;
+import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigationClickHandler;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -17,8 +20,10 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class ConceptsListItem extends BaseListItem {
 
-    public ConceptsListItem(String name, String title, boolean editionMode) {
+    public ConceptsListItem(String name, String title, boolean editionMode, ListRecordNavigationClickHandler recordClickHandler) {
         super(name, title, editionMode);
+
+        listGrid.addRecordClickHandler(recordClickHandler);
 
         ListGridField codeField = new ListGridField(ConceptDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("40%");
@@ -31,7 +36,7 @@ public class ConceptsListItem extends BaseListItem {
         listGrid.removeAllData();
         for (ConceptMetamacBasicDto conceptMetamacDto : conceptMetamacDtos) {
             ConceptRecord record = RecordUtils.getConceptRecord(conceptMetamacDto);
-            listGrid.addData(record);
+            addConceptRecordToListGrid(record);
         }
     }
 
@@ -39,7 +44,7 @@ public class ConceptsListItem extends BaseListItem {
         listGrid.removeAllData();
         for (ItemVisualisationResult item : itemVisualisationResults) {
             ConceptRecord record = RecordUtils.getConceptRecord(item);
-            listGrid.addData(record);
+            addConceptRecordToListGrid(record);
         }
     }
 
@@ -53,5 +58,12 @@ public class ConceptsListItem extends BaseListItem {
             }
         }
         return urns;
+    }
+
+    private void addConceptRecordToListGrid(ConceptRecord record) {
+        String conceptUrn = record.getUrn();
+        String conceptSchemeUrn = SrmUrnParserUtils.getConceptSchemeUrnFromConceptUrn(conceptUrn);
+        record.setLocation(PlaceRequestUtils.buildAbsoluteConceptPlaceRequest(conceptSchemeUrn, conceptUrn));
+        listGrid.addData(record);
     }
 }
