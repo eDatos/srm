@@ -393,7 +393,7 @@ public class SrmServiceUtils {
         return result;
     }
 
-    public static Map<String, Component> createMapOfComponentsByOriginalUrn(Set<Component> components) {
+    public static Map<String, Component> createMapOfComponentsByOriginalUrn(List<Component> components) {
         Map<String, Component> result = new HashMap<String, Component>(components.size());
         for (Component component : components) {
             String originalUrn = GeneratorUrnUtils.makeUrnFromTemporal(component.getUrn());
