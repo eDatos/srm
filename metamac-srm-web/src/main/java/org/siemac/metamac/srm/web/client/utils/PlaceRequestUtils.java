@@ -321,6 +321,13 @@ public class PlaceRequestUtils {
         return placeRequest;
     }
 
+    public static List<PlaceRequest> buildAbsoluteVariableFamilyPlaceRequest(String variableFamilyCode) {
+        List<PlaceRequest> placeRequests = buildAbsoluteVariableFamiliesPlaceRequest();
+        PlaceRequest variableFamilyPlace = buildRelativeVariableFamilyPlaceRequest(variableFamilyCode);
+        placeRequests.add(variableFamilyPlace);
+        return placeRequests;
+    }
+
     public static List<PlaceRequest> buildAbsoluteVariableFamiliesPlaceRequest() {
         List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
         placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
@@ -387,21 +394,21 @@ public class PlaceRequestUtils {
             if (SdmxSrmUrnParserUtils.isCodelistUrn(urn)) {
                 return buildAbsoluteCodelistPlaceRequest(urn);
             } else if (SrmUrnParserUtils.isCodeUrn(urn)) {
-                // TODO
-                // String codelistUrn = null;
-                // return buildAbsoluteCodePlaceRequest(codelistUrn, urn);
+                String codelistUrn = SrmUrnParserUtils.getCodelistUrnFromCodeUrn(urn);
+                return buildAbsoluteCodePlaceRequest(codelistUrn, urn);
             } else if (SrmUrnParserUtils.isCodelistFamilyUrn(urn)) {
                 return buildAbsoluteCodelistFamilyPlaceRequest(relatedResourceDto.getCode());
             } else if (SrmUrnParserUtils.isVariableFamilyUrn(urn)) {
-
+                return buildAbsoluteVariableFamilyPlaceRequest(relatedResourceDto.getCode());
             } else if (SrmUrnParserUtils.isVariableUrn(urn)) {
                 return buildAbsoluteVariablePlaceRequest(relatedResourceDto.getCode());
             } else if (SrmUrnParserUtils.isVariableElementUrn(urn)) {
-                // // TODO
-                // String variableCode = null;
-                // return buildAbsoluteVariableElementPlaceRequest(variableCode, relatedResourceDto.getCode());
+                String variableUrn = SrmUrnParserUtils.getVariableUrnFromVariableElementUrn(urn);
+                String variableCode = UrnUtils.removePrefix(variableUrn);
+                return buildAbsoluteVariableElementPlaceRequest(variableCode, relatedResourceDto.getCode());
             } else if (SrmUrnParserUtils.isAgencyUrn(urn)) {
-
+                String agencySchemeUrn = SrmUrnParserUtils.getAgencySchemeUrnFromAgencyUrn(urn);
+                return buildAbsoluteOrganisationPlaceRequest(agencySchemeUrn, urn, OrganisationSchemeTypeEnum.AGENCY_SCHEME);
             }
         }
         return null;
