@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
+import org.siemac.metamac.srm.core.common.service.utils.shared.SrmUrnParserUtils;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.navigation.shared.PlaceRequestParams;
 
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxSrmUrnParserUtils;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
@@ -300,6 +303,13 @@ public class PlaceRequestUtils {
         return placeRequest;
     }
 
+    public static List<PlaceRequest> buildAbsoluteCodelistFamilyPlaceRequest(String code) {
+        List<PlaceRequest> placeRequests = buildAbsoluteCodelistFamiliesPlaceRequest();
+        PlaceRequest codelistPlace = buildRelativeCodelistFamilyPlaceRequest(code);
+        placeRequests.add(codelistPlace);
+        return placeRequests;
+    }
+
     // Variable families
 
     public static String getVariableFamilyParamFromUrl(PlaceManager placeManager) {
@@ -365,6 +375,36 @@ public class PlaceRequestUtils {
         List<PlaceRequest> placeRequestHierarchy = buildAbsoluteVariablePlaceRequest(variableCode);
         placeRequestHierarchy.add(buildRelativeVariableElementPlaceRequest(variableElementCode));
         return placeRequestHierarchy;
+    }
+
+    // ---------------------------------------------------------------------------
+    // GENERIC METHODS
+    // ---------------------------------------------------------------------------
+
+    public static List<PlaceRequest> buildAbsoluteResourcePlaceRequest(RelatedResourceDto relatedResourceDto) {
+        if (relatedResourceDto != null) {
+            String urn = relatedResourceDto.getUrn();
+            if (SdmxSrmUrnParserUtils.isCodelistUrn(urn)) {
+                return buildAbsoluteCodelistPlaceRequest(urn);
+            } else if (SrmUrnParserUtils.isCodeUrn(urn)) {
+                // TODO
+                // String codelistUrn = null;
+                // return buildAbsoluteCodePlaceRequest(codelistUrn, urn);
+            } else if (SrmUrnParserUtils.isCodelistFamilyUrn(urn)) {
+                return buildAbsoluteCodelistFamilyPlaceRequest(relatedResourceDto.getCode());
+            } else if (SrmUrnParserUtils.isVariableFamilyUrn(urn)) {
+
+            } else if (SrmUrnParserUtils.isVariableUrn(urn)) {
+                return buildAbsoluteVariablePlaceRequest(relatedResourceDto.getCode());
+            } else if (SrmUrnParserUtils.isVariableElementUrn(urn)) {
+                // // TODO
+                // String variableCode = null;
+                // return buildAbsoluteVariableElementPlaceRequest(variableCode, relatedResourceDto.getCode());
+            } else if (SrmUrnParserUtils.isAgencyUrn(urn)) {
+
+            }
+        }
+        return null;
     }
 
     // ---------------------------------------------------------------------------
