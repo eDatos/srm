@@ -70,8 +70,10 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefactProperties.IdentifiableArtefactProperty;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeProperties.ItemSchemeProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
+import com.arte.statistic.sdmx.srm.core.base.domain.StructureProperties.StructureProperty;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
@@ -292,6 +294,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
                     return DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus();
+                case RESOURCE_CREATED_DATE:
+                    return getResourceCreatedDateLeafProperty(DataStructureDefinitionVersionMetamacProperties.structure(), DataStructureDefinitionVersionMetamac.class);
+                case RESOURCE_LAST_UPDATED:
+                    return getResourceLastUpdatedLeafProperty(DataStructureDefinitionVersionMetamacProperties.structure(), DataStructureDefinitionVersionMetamac.class);
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact(), DataStructureDefinitionVersionMetamac.class);
                 default:
@@ -364,6 +370,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
                     return ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus();
+                case RESOURCE_CREATED_DATE:
+                    return getResourceCreatedDateLeafProperty(ConceptSchemeVersionMetamacProperties.itemScheme(), ConceptSchemeVersionMetamac.class);
+                case RESOURCE_LAST_UPDATED:
+                    return getResourceLastUpdatedLeafProperty(ConceptSchemeVersionMetamacProperties.itemScheme(), ConceptSchemeVersionMetamac.class);
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact(), ConceptSchemeVersionMetamac.class);
                 default:
@@ -490,6 +500,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
                     return OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus();
+                case RESOURCE_CREATED_DATE:
+                    return getResourceCreatedDateLeafProperty(OrganisationSchemeVersionMetamacProperties.itemScheme(), OrganisationSchemeVersionMetamac.class);
+                case RESOURCE_LAST_UPDATED:
+                    return getResourceLastUpdatedLeafProperty(OrganisationSchemeVersionMetamacProperties.itemScheme(), OrganisationSchemeVersionMetamac.class);
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(OrganisationSchemeVersionMetamacProperties.maintainableArtefact(), OrganisationSchemeVersionMetamac.class);
                 default:
@@ -648,6 +662,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return CategorySchemeVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
                     return CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus();
+                case RESOURCE_CREATED_DATE:
+                    return getResourceCreatedDateLeafProperty(CategorySchemeVersionMetamacProperties.itemScheme(), CategorySchemeVersionMetamac.class);
+                case RESOURCE_LAST_UPDATED:
+                    return getResourceLastUpdatedLeafProperty(CategorySchemeVersionMetamacProperties.itemScheme(), CategorySchemeVersionMetamac.class);
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(CategorySchemeVersionMetamacProperties.maintainableArtefact(), CategorySchemeVersionMetamac.class);
                 default:
@@ -773,6 +791,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return CodelistVersionMetamacProperties.maintainableArtefact().urn();
                 case PROC_STATUS:
                     return CodelistVersionMetamacProperties.lifeCycleMetadata().procStatus();
+                case RESOURCE_CREATED_DATE:
+                    return getResourceCreatedDateLeafProperty(CodelistVersionMetamacProperties.itemScheme(), CodelistVersionMetamac.class);
+                case RESOURCE_LAST_UPDATED:
+                    return getResourceLastUpdatedLeafProperty(CodelistVersionMetamacProperties.itemScheme(), CodelistVersionMetamac.class);
                 case LAST_UPDATED:
                     return getLastUpdatedLeafProperty(CodelistVersionMetamacProperties.maintainableArtefact(), CodelistVersionMetamac.class);
                 case CODELIST_FAMILY_URN:
@@ -997,6 +1019,26 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
         public Property<VariableElement> retrievePropertyOrderDefault() throws MetamacException {
             return VariableElementProperties.id();
         }
+    }
+
+    @SuppressWarnings("rawtypes")
+    private LeafProperty getResourceCreatedDateLeafProperty(ItemSchemeProperty itemSchemeProperty, Class entityClass) {
+        return CriteriaUtils.getDatetimedLeafProperty(itemSchemeProperty.resourceCreatedDate(), entityClass);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private LeafProperty getResourceLastUpdatedLeafProperty(ItemSchemeProperty itemSchemeProperty, Class entityClass) {
+        return CriteriaUtils.getDatetimedLeafProperty(itemSchemeProperty.resourceLastUpdated(), entityClass);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private LeafProperty getResourceCreatedDateLeafProperty(StructureProperty structureProperty, Class entityClass) {
+        return CriteriaUtils.getDatetimedLeafProperty(structureProperty.resourceCreatedDate(), entityClass);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private LeafProperty getResourceLastUpdatedLeafProperty(StructureProperty structureProperty, Class entityClass) {
+        return CriteriaUtils.getDatetimedLeafProperty(structureProperty.resourceLastUpdated(), entityClass);
     }
 
     @SuppressWarnings("rawtypes")

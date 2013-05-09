@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 
@@ -48,6 +49,9 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
     @Autowired
     private CategoriesMetamacService               categoriesMetamacService;
 
+    @Autowired
+    private BaseService                            baseService;
+
     public CategorySchemeLifeCycleImpl() {
         this.callback = new CategorySchemeLifeCycleCallback();
     }
@@ -65,8 +69,12 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public Object updateSrmResource(Object srmResourceVersion) {
-            return itemSchemeVersionRepository.save(getCategorySchemeVersionMetamac(srmResourceVersion));
+        public Object updateSrmResource(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            CategorySchemeVersionMetamac categorySchemeVersion = getCategorySchemeVersionMetamac(srmResourceVersion);
+            // Update item scheme
+            baseService.updateItemSchemeLastUpdated(ctx, categorySchemeVersion);
+            // Update item scheme version
+            return itemSchemeVersionRepository.save(categorySchemeVersion);
         }
 
         @Override

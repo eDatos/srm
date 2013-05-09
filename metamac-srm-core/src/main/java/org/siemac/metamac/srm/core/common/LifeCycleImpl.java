@@ -73,7 +73,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         lifeCycle.setProcStatus(targetStatus);
         lifeCycle.setProductionValidationDate(new DateTime());
         lifeCycle.setProductionValidationUser(ctx.getUserId());
-        srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
+        srmResourceVersion = callback.updateSrmResource(ctx, srmResourceVersion);
 
         return srmResourceVersion;
     }
@@ -97,7 +97,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         lifeCycle.setProcStatus(targetStatus);
         lifeCycle.setDiffusionValidationDate(new DateTime());
         lifeCycle.setDiffusionValidationUser(ctx.getUserId());
-        srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
+        srmResourceVersion = callback.updateSrmResource(ctx, srmResourceVersion);
 
         return srmResourceVersion;
     }
@@ -123,7 +123,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         lifeCycle.setProductionValidationUser(null);
         lifeCycle.setDiffusionValidationDate(null);
         lifeCycle.setDiffusionValidationUser(null);
-        srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
+        srmResourceVersion = callback.updateSrmResource(ctx, srmResourceVersion);
 
         return srmResourceVersion;
     }
@@ -149,7 +149,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         lifeCycle.setProductionValidationUser(null);
         lifeCycle.setDiffusionValidationDate(null);
         lifeCycle.setDiffusionValidationUser(null);
-        srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
+        srmResourceVersion = callback.updateSrmResource(ctx, srmResourceVersion);
 
         return srmResourceVersion;
     }
@@ -172,7 +172,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         lifeCycle.setInternalPublicationUser(ctx.getUserId());
         MaintainableArtefact maintainableArtefact = callback.getMaintainableArtefact(srmResourceVersion);
         maintainableArtefact.setFinalLogicClient(Boolean.TRUE);
-        srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
+        srmResourceVersion = callback.updateSrmResource(ctx, srmResourceVersion);
         srmResourceVersion = callback.publishInternallyConcreteResource(ctx, srmResourceVersion);
         srmResourceVersion = callback.markSrmResourceAsFinal(ctx, srmResourceVersion, forceLastestFinal);
 
@@ -244,7 +244,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         }
         lifeCycle.setExternalPublicationDate(externalPublicationDate);
         lifeCycle.setExternalPublicationUser(ctx.getUserId());
-        srmResourceVersion = callback.updateSrmResource(srmResourceVersion);
+        srmResourceVersion = callback.updateSrmResource(ctx, srmResourceVersion);
 
         // Start validity of categorisations and mark as public
         if (callback.canHaveCategorisations()) {
@@ -415,7 +415,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Operations to retrieve, find...
         public Object retrieveSrmResourceByProcStatus(String urn, ProcStatusEnum[] procStatus) throws MetamacException;
-        public Object updateSrmResource(Object srmResourceVersion);
+        public Object updateSrmResource(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
         public SrmLifeCycleMetadata getLifeCycleMetadata(Object srmResourceVersion);
         public MaintainableArtefact getMaintainableArtefact(Object srmResourceVersion);
         public List<Object> findSrmResourceVersionsOfSrmResourceInProcStatus(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum... procStatus);

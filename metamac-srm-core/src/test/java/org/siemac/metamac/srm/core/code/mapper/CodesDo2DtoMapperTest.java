@@ -13,8 +13,10 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
@@ -51,10 +53,24 @@ public class CodesDo2DtoMapperTest extends SrmBaseTest {
     }
 
     @Test
+    public void testCodelistMetamacDoToBasicDto() {
+        CodelistVersionMetamac entity = mockCodelistWithAllMetadata();
+        CodelistMetamacBasicDto dto = codesDo2DtoMapper.codelistMetamacDoToBasicDto(entity);
+        CodesMetamacAsserts.assertEqualsCodelist(entity, dto);
+    }
+
+    @Test
     public void testCodeMetamacDoToDto() {
         CodeMetamac entity = mockCodeWithAllMetadata();
 
         CodeMetamacDto dto = codesDo2DtoMapper.codeMetamacDoToDto(entity);
+        CodesMetamacAsserts.assertEqualsCode(entity, dto);
+    }
+
+    @Test
+    public void testCodeMetamacDoToBasicDto() {
+        CodeMetamac entity = mockCodeWithAllMetadata();
+        CodeMetamacBasicDto dto = codesDo2DtoMapper.codeMetamacDoToBasicDto(entity);
         CodesMetamacAsserts.assertEqualsCode(entity, dto);
     }
 

@@ -8,7 +8,9 @@ import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
@@ -40,10 +42,24 @@ public class ConceptsDo2DtoMapperTest extends SrmBaseTest {
     }
 
     @Test
+    public void testConceptSchemeMetamacDoToBasicDto() {
+        ConceptSchemeVersionMetamac entity = ConceptsMetamacDoMocks.mockConceptSchemeFixedValues("agency01", "conceptScheme01", "01.000");
+        ConceptSchemeMetamacBasicDto dto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToBasicDto(entity);
+        ConceptsMetamacAsserts.assertEqualsConceptScheme(entity, dto);
+    }
+
+    @Test
     public void testConceptMetamacDoToDto() {
         ConceptMetamac entity = mockConceptWithAllMetadata();
 
         ConceptMetamacDto dto = conceptsDo2DtoMapper.conceptMetamacDoToDto(entity);
+        ConceptsMetamacAsserts.assertEqualsConcept(entity, dto);
+    }
+
+    @Test
+    public void testConceptMetamacDoToBasicDto() {
+        ConceptMetamac entity = mockConceptWithAllMetadata();
+        ConceptMetamacBasicDto dto = conceptsDo2DtoMapper.conceptMetamacDoToBasicDto(entity);
         ConceptsMetamacAsserts.assertEqualsConcept(entity, dto);
     }
 

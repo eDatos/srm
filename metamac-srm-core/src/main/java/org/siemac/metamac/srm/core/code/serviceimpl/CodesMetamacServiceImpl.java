@@ -85,6 +85,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
@@ -102,6 +103,9 @@ import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
  */
 @Service("codesMetamacService")
 public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
+
+    @Autowired
+    private BaseService                    baseService;
 
     @Autowired
     private CodesService                   codesService;
@@ -589,6 +593,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Save codes
         saveCodesEfficiently(codesToPersist, codesToPersistByCode);
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersionTarget);
     }
 
     @Override
@@ -675,6 +680,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Save codes
         saveCodesEfficiently(codesToPersist, codesToPersistByCode);
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
     }
 
     @Override
@@ -769,6 +775,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             CodeMetamac codeMetamac = (CodeMetamac) code;
             getCodeMetamacRepository().save(codeMetamac);
         }
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
     }
 
     @Override
@@ -850,6 +857,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             variableElement.addCode(code);
             code.setShortName(null); // reset short name
         }
+        baseService.updateItemSchemeLastUpdated(ctx, code.getItemSchemeVersion());
         return getCodeMetamacRepository().save(code);
     }
 
@@ -868,6 +876,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         // Update all
         getCodeMetamacRepository().updateCodesVariableElements(variableElementsIdByCodeId, codelistVersion.getId(), variable.getId());
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
     }
 
     @Override
@@ -916,6 +925,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
         }
         // Note: openness configuration remains inmutable
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
         code = getCodeMetamacRepository().save(code);
     }
 
@@ -937,6 +947,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Update code
         SrmServiceUtils.setCodeOrder(code, codelistOrderVisualisation.getColumnIndex(), newCodeIndex);
         getCodeMetamacRepository().save(code);
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
     }
 
     @Override
@@ -954,6 +965,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         for (String codeUrn : openness.keySet()) {
             getCodeMetamacRepository().updateCodeOpennessColumn(codelistVersion, codeUrn, columnIndex, openness.get(codeUrn));
         }
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
     }
 
     @Override
@@ -1164,6 +1176,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
             codelistFamily.addCodelist(codelistVersion);
             getCodelistVersionMetamacRepository().save(codelistVersion);
+            baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
         }
     }
 
@@ -1182,6 +1195,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Remove codelist from family
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
         codelistFamily.removeCodelist(codelistVersion);
         getCodelistFamilyRepository().save(codelistFamily);
     }
@@ -1702,6 +1716,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Create
         setCodelistOrderVisualisationUrnUnique(codelistVersion, codelistOrderVisualisation, true);
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
         return getCodelistOrderVisualisationRepository().save(codelistOrderVisualisation);
     }
 
@@ -1719,7 +1734,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public CodelistOrderVisualisation updateCodelistOrderVisualisation(ServiceContext ctx, CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCodelistOrderVisualisation(codelistOrderVisualisation, null);
-        checkCodelistCanBeModified(codelistOrderVisualisation.getCodelistVersion());
+        CodelistVersionMetamac codelistVersion = codelistOrderVisualisation.getCodelistVersion();
+        checkCodelistCanBeModified(codelistVersion);
 
         // If code has been changed, update URN
         if (codelistOrderVisualisation.getNameableArtefact().getIsCodeUpdated()) {
@@ -1731,6 +1747,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistOrderVisualisation.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
         // Update
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
         return getCodelistOrderVisualisationRepository().save(codelistOrderVisualisation);
     }
 
@@ -1751,6 +1768,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Delete
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
         getCodelistOrderVisualisationRepository().delete(codelistOrderVisualisationToDelete);
         // Clear ordenations in code columns
         getCodeMetamacRepository().clearCodesOrderColumn(codelistVersion, codelistOrderVisualisationToDelete.getColumnIndex());
@@ -1788,6 +1806,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Create
         setCodelistOpennessVisualisationUrnUnique(codelistVersion, codelistOpennessVisualisation, true);
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
         return getCodelistOpennessVisualisationRepository().save(codelistOpennessVisualisation);
     }
 
@@ -1805,7 +1824,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public CodelistOpennessVisualisation updateCodelistOpennessVisualisation(ServiceContext ctx, CodelistOpennessVisualisation codelistOpennessVisualisation) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCodelistOpennessVisualisation(codelistOpennessVisualisation, null);
-        checkCodelistCanBeModified(codelistOpennessVisualisation.getCodelistVersion());
+        CodelistVersionMetamac codelistVersion = codelistOpennessVisualisation.getCodelistVersion();
+        checkCodelistCanBeModified(codelistVersion);
 
         // If code has been changed, update URN
         if (codelistOpennessVisualisation.getNameableArtefact().getIsCodeUpdated()) {
@@ -1817,6 +1837,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistOpennessVisualisation.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
         // Update
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
         return getCodelistOpennessVisualisationRepository().save(codelistOpennessVisualisation);
     }
 
@@ -1837,6 +1858,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Delete
+        baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
         getCodelistOpennessVisualisationRepository().delete(codelistOpennessVisualisationToDelete);
         // Clear configurations in code columns
         getCodeMetamacRepository().clearCodesOpennessColumnByCodelist(codelistVersion, codelistOpennessVisualisationToDelete.getColumnIndex());

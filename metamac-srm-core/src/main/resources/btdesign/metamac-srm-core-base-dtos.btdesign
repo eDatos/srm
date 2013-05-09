@@ -31,9 +31,15 @@ Application SrmDtosBaseCore {
 		}    
 		
    		DataTransferObject StructureMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+   			Long structureId;
+            JAVADATE resourceCreatedDate;
+            JAVADATE resourceLastUpdated;
 		}		
  
    		DataTransferObject ItemSchemeMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
+   			Long itemSchemeId;
+            JAVADATE resourceCreatedDate;
+            JAVADATE resourceLastUpdated;
 			"True when a task is being executed in background"
 			Boolean isTaskInBackground nullable;
 		}

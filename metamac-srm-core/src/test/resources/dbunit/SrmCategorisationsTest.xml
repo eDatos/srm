@@ -49,6 +49,10 @@
         UUID="itemScheme-100"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- **************************************************************************************  -->                
@@ -260,6 +264,10 @@
         UUID="itemScheme-1"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- **************************************************************************************  -->                
@@ -412,6 +420,10 @@
         UUID="itemScheme-2"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- **************************************************************************************  -->                
@@ -700,6 +712,10 @@
         UUID="itemScheme-5"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- **************************************************************************************  -->                
@@ -914,6 +930,10 @@
         UUID="itemScheme-7"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- **************************************************************************************  -->                

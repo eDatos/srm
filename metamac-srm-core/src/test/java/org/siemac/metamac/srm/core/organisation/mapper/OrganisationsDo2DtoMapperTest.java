@@ -6,7 +6,9 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacAsserts;
 import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacDoMocks;
@@ -39,10 +41,26 @@ public class OrganisationsDo2DtoMapperTest extends SrmBaseTest {
         OrganisationSchemeMetamacDto dto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(entity);
         OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(entity, dto);
     }
+
+    @Test
+    public void testOrganisationSchemeMetamacDoToBasicDto() throws MetamacException {
+        OrganisationSchemeVersionMetamac entity = OrganisationsMetamacDoMocks.mockOrganisationSchemeFixedValues("agency01", "organisationScheme01", "01.000",
+                OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
+        OrganisationSchemeMetamacBasicDto dto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToBasicDto(entity);
+        OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(entity, dto);
+    }
+
     @Test
     public void testOrganisationMetamacDoToDto() throws MetamacException {
         OrganisationMetamac entity = mockOrganisationWithAllMetadata(OrganisationSchemeTypeEnum.AGENCY_SCHEME, OrganisationTypeEnum.AGENCY);
         OrganisationMetamacDto dto = organisationsDo2DtoMapper.organisationMetamacDoToDto(entity);
+        OrganisationsMetamacAsserts.assertEqualsOrganisation(entity, dto);
+    }
+
+    @Test
+    public void testOrganisationMetamacDoToBasicDto() throws MetamacException {
+        OrganisationMetamac entity = mockOrganisationWithAllMetadata(OrganisationSchemeTypeEnum.AGENCY_SCHEME, OrganisationTypeEnum.AGENCY);
+        OrganisationMetamacBasicDto dto = organisationsDo2DtoMapper.organisationMetamacDoToBasicDto(entity);
         OrganisationsMetamacAsserts.assertEqualsOrganisation(entity, dto);
     }
 

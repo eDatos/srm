@@ -15,8 +15,10 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
+import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
@@ -74,8 +76,13 @@ public class CodesMetamacAsserts extends CodesAsserts {
         // SDMX
         CodesAsserts.assertEqualsCodelistDto(expected, actual);
     }
+
     public static void assertEqualsCodelist(CodelistVersionMetamac expected, CodelistMetamacDto actual) {
         assertEqualsCodelist(expected, actual, MapperEnum.DO2DTO);
+    }
+
+    public static void assertEqualsCodelist(CodelistVersionMetamac expected, CodelistMetamacBasicDto actual) {
+        BaseAsserts.assertEqualsItemSchemeBasicDto(expected, expected.getLifeCycleMetadata(), actual);
     }
 
     public static void assertEqualsCodelist(CodelistMetamacDto expected, CodelistVersionMetamac actual) {
@@ -107,6 +114,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         // SDMX
         CodesAsserts.assertEqualsCodelist(entity, dto, mapperEnum);
     }
+
     // ------------------------------------------------------------------------------------
     // CODE
     // ------------------------------------------------------------------------------------
@@ -123,13 +131,8 @@ public class CodesMetamacAsserts extends CodesAsserts {
         CodesAsserts.assertEqualsCode(expected, actual);
     }
 
-    public static void assertEqualsCodeDto(CodeMetamacDto expected, CodeMetamacDto actual) {
-        // Metamac
-        BaseAsserts.assertEqualsRelatedResourceDto(expected.getVariableElement(), actual.getVariableElement());
-        assertEqualsInternationalStringDto(expected.getShortName(), actual.getShortName());
-
-        // SDMX
-        CodesAsserts.assertEqualsCodeDto(expected, actual);
+    public static void assertEqualsCode(CodeMetamac expected, CodeMetamacBasicDto actual) {
+        BaseAsserts.assertEqualsItemBasicDto(expected, actual);
     }
 
     public static void assertEqualsCode(CodeMetamac expected, CodeMetamacDto actual) {
@@ -138,6 +141,15 @@ public class CodesMetamacAsserts extends CodesAsserts {
 
     public static void assertEqualsCode(CodeMetamacDto expected, CodeMetamac actual) {
         assertEqualsCode(actual, expected, MapperEnum.DTO2DO);
+    }
+
+    public static void assertEqualsCodeDto(CodeMetamacDto expected, CodeMetamacDto actual) {
+        // Metamac
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getVariableElement(), actual.getVariableElement());
+        assertEqualsInternationalStringDto(expected.getShortName(), actual.getShortName());
+
+        // SDMX
+        CodesAsserts.assertEqualsCodeDto(expected, actual);
     }
 
     private static void assertEqualsCode(CodeMetamac entity, CodeMetamacDto dto, MapperEnum mapperEnum) {

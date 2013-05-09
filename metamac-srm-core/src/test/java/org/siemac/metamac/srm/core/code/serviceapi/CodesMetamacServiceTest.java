@@ -842,6 +842,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", codelistVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
     }
 
@@ -1006,6 +1008,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", codelistVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
     }
 
@@ -1087,6 +1091,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", codelistVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
     }
 
@@ -1167,6 +1173,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(codelistVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", codelistVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
     }
 
@@ -1260,6 +1268,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(codelistVersion.getMaintainableArtefact().getFinalLogic());
             assertTrue(codelistVersion.getMaintainableArtefact().getLatestFinal());
+            assertEqualsDate("2011-01-01 01:02:03", codelistVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
     }
 
@@ -1507,6 +1517,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(ctx.getUserId(), codelistVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getMaintainableArtefact().getValidFrom().toDate()));
             assertNull(codelistVersion.getMaintainableArtefact().getValidTo());
+            assertEqualsDate("2011-01-01 01:02:03", codelistVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate previous published externally versions
         {
@@ -2237,6 +2249,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String code040101TargetUrn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).CODE01B01";
 
         // Validate
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistTargetUrn);
+        assertEqualsDate("2011-01-01 01:02:03", codelistVersion.getItemScheme().getResourceCreatedDate().toDate());
+        assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getItemScheme().getResourceLastUpdated().toDate()));
+
+        // Validate items
         List<CodeMetamacVisualisationResult> hierarchyAfter = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistTargetUrn, "es", null, null);
         assertEquals(9 + 4, hierarchyAfter.size());
         getCodeMetamacVisualisationResult(hierarchyAfter, CODELIST_1_V2_CODE_1);
@@ -3506,6 +3523,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "CODE03", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_INFO_RESOURCE_UPDATED.getCode(), "CODE0201", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
+
+        // Validate item scheme
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEqualsDate("2011-01-01 01:02:03", codelistVersion.getItemScheme().getResourceCreatedDate().toDate());
+        assertTrue(DateUtils.isSameDay(new Date(), codelistVersion.getItemScheme().getResourceLastUpdated().toDate()));
 
         // Validate codes
 
@@ -6168,6 +6190,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNotNull(codelistOrderVisualisationCreated.getId());
         assertNotNull(codelistOrderVisualisationCreated.getNameableArtefact().getUrn());
         assertEqualsCodelistOrderVisualisation(codelistOrderVisualisation, codelistOrderVisualisationCreated);
+        assertEqualsDate("2011-01-01 01:02:03", codelistOrderVisualisationCreated.getCodelistVersion().getItemScheme().getResourceCreatedDate().toDate());
+        assertTrue(DateUtils.isSameDay(new Date(), codelistOrderVisualisationCreated.getCodelistVersion().getItemScheme().getResourceLastUpdated().toDate()));
 
         // Validate codes
         List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn, "es", codelistOrderVisualisationCreated.getNameableArtefact().getUrn(), null);
@@ -6215,6 +6239,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate
         assertEqualsCodelistOrderVisualisation(codelistOrderVisualisation, codelistOrderVisualisationUpdated);
+        assertEqualsDate("2011-01-01 01:02:03", codelistOrderVisualisationUpdated.getCodelistVersion().getItemScheme().getResourceCreatedDate().toDate());
+        assertTrue(DateUtils.isSameDay(new Date(), codelistOrderVisualisationUpdated.getCodelistVersion().getItemScheme().getResourceLastUpdated().toDate()));
     }
 
     @Test
@@ -6929,6 +6955,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNotNull(codelistOpennessVisualisationCreated.getId());
         assertNotNull(codelistOpennessVisualisationCreated.getNameableArtefact().getUrn());
         assertEqualsCodelistOpennessVisualisation(codelistOpennessVisualisation, codelistOpennessVisualisationCreated);
+        assertEqualsDate("2011-01-01 01:02:03", codelistOpennessVisualisation.getCodelistVersion().getItemScheme().getResourceCreatedDate().toDate());
+        assertTrue(DateUtils.isSameDay(new Date(), codelistOpennessVisualisation.getCodelistVersion().getItemScheme().getResourceLastUpdated().toDate()));
 
         // Validate codes
         List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(ctx, codelistUrn, "es", null, codelistOpennessVisualisationCreated.getNameableArtefact().getUrn());
@@ -6977,6 +7005,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate
         assertEqualsCodelistOpennessVisualisation(codelistOpennessVisualisation, codelistOpennessVisualisationUpdated);
+        assertEqualsDate("2011-01-01 01:02:03", codelistOpennessVisualisation.getCodelistVersion().getItemScheme().getResourceCreatedDate().toDate());
+        assertTrue(DateUtils.isSameDay(new Date(), codelistOpennessVisualisation.getCodelistVersion().getItemScheme().getResourceLastUpdated().toDate()));
     }
 
     @Test

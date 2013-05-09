@@ -50,6 +50,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
@@ -69,6 +70,9 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEn
  */
 @Service("conceptsMetamacService")
 public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
+
+    @Autowired
+    private BaseService                      baseService;
 
     @Autowired
     private ConceptsService                  conceptsService;
@@ -566,11 +570,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptMetamac concept1 = retrieveConceptByUrn(ctx, urn1);
         ConceptMetamac concept2 = retrieveConceptByUrn(ctx, urn2);
         // Same concept scheme
-        if (!concept1.getItemSchemeVersion().getMaintainableArtefact().getUrn().equals(concept2.getItemSchemeVersion().getMaintainableArtefact().getUrn())) {
+        if (!concept1.getItemSchemeVersion().getId().equals(concept2.getItemSchemeVersion().getId())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_INCORRECT).withMessageParameters("Concept scheme must be same in two concepts").build();
         }
         // Concept scheme not published
-        retrieveConceptSchemeVersionCanBeModified(ctx, concept1.getItemSchemeVersion().getMaintainableArtefact().getUrn()); // note: itemScheme is the same to two concepts
+        ItemSchemeVersion conceptSchemeVersion = concept1.getItemSchemeVersion();// note: itemScheme is the same to two concepts
+        retrieveConceptSchemeVersionCanBeModified(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn());
 
         // Not add relation if is already added
         for (Concept conceptRelatedActual : concept1.getRelatedConcepts()) {
@@ -584,6 +589,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         getConceptMetamacRepository().save(concept1);
         concept2.addRelatedConcept(concept1);
         getConceptMetamacRepository().save(concept2);
+        // Mark last update date
+        baseService.updateItemSchemeLastUpdated(ctx, conceptSchemeVersion);
     }
 
     @Override
@@ -594,7 +601,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Concept scheme not published
         ConceptMetamac concept1 = retrieveConceptByUrn(ctx, urn1);
-        retrieveConceptSchemeVersionCanBeModified(ctx, concept1.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        ItemSchemeVersion conceptSchemeVersion = concept1.getItemSchemeVersion();
+        retrieveConceptSchemeVersionCanBeModified(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn());
 
         ConceptMetamac concept2 = retrieveConceptByUrn(ctx, urn2);
 
@@ -603,6 +611,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         getConceptMetamacRepository().save(concept1);
         concept2.removeRelatedConcept(concept1);
         getConceptMetamacRepository().save(concept2);
+        // Mark last update date
+        baseService.updateItemSchemeLastUpdated(ctx, conceptSchemeVersion);
     }
 
     @Override
@@ -655,6 +665,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Add Role
         concept.addRoleConcept(conceptRole);
         getConceptMetamacRepository().save(concept);
+
+        // Mark last update date
+        baseService.updateItemSchemeLastUpdated(ctx, conceptSchemeVersionOfConcept);
     }
 
     @Override
@@ -665,12 +678,16 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Check concept scheme of concept 'urn' can be modified
         ConceptMetamac concept = retrieveConceptByUrn(ctx, urn);
-        retrieveConceptSchemeVersionCanBeModified(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        ItemSchemeVersion conceptSchemeVersion = concept.getItemSchemeVersion();
+        retrieveConceptSchemeVersionCanBeModified(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn());
 
         // Delete
         ConceptMetamac conceptRole = retrieveConceptByUrn(ctx, conceptRoleUrn);
         concept.removeRoleConcept(conceptRole);
         getConceptMetamacRepository().save(concept);
+
+        // Mark last update date
+        baseService.updateItemSchemeLastUpdated(ctx, conceptSchemeVersion);
     }
 
     @Override

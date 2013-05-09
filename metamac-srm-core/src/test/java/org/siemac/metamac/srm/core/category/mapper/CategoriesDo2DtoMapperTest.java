@@ -4,7 +4,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacAsserts;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDoMocks;
@@ -35,10 +37,24 @@ public class CategoriesDo2DtoMapperTest extends SrmBaseTest {
     }
 
     @Test
+    public void testCategorySchemeMetamacDoToBasicDto() {
+        CategorySchemeVersionMetamac entity = CategoriesMetamacDoMocks.mockCategorySchemeFixedValues("agency01", "categoryScheme01", "01.000");
+        CategorySchemeMetamacBasicDto dto = categoriesDo2DtoMapper.categorySchemeMetamacDoToBasicDto(entity);
+        CategoriesMetamacAsserts.assertEqualsCategoryScheme(entity, dto);
+    }
+
+    @Test
     public void testCategoryMetamacDoToDto() {
         CategoryMetamac entity = mockCategoryWithAllMetadata();
 
         CategoryMetamacDto dto = categoriesDo2DtoMapper.categoryMetamacDoToDto(entity);
+        CategoriesMetamacAsserts.assertEqualsCategory(entity, dto);
+    }
+
+    @Test
+    public void testCategoryMetamacDoToBasicDto() {
+        CategoryMetamac entity = mockCategoryWithAllMetadata();
+        CategoryMetamacBasicDto dto = categoriesDo2DtoMapper.categoryMetamacDoToBasicDto(entity);
         CategoriesMetamacAsserts.assertEqualsCategory(entity, dto);
     }
 

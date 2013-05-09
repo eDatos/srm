@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
@@ -49,6 +50,9 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
     @Autowired
     private OrganisationsMetamacService                organisationsMetamacService;
 
+    @Autowired
+    private BaseService                                baseService;
+
     public OrganisationSchemeLifeCycleImpl() {
         this.callback = new OrganisationSchemeLifeCycleCallback();
     }
@@ -66,8 +70,12 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public Object updateSrmResource(Object srmResourceVersion) {
-            return itemSchemeVersionRepository.save(getOrganisationSchemeVersionMetamac(srmResourceVersion));
+        public Object updateSrmResource(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
+            // Update item scheme
+            baseService.updateItemSchemeLastUpdated(ctx, organisationSchemeVersion);
+            // Update item scheme version
+            return itemSchemeVersionRepository.save(organisationSchemeVersion);
         }
 
         @Override

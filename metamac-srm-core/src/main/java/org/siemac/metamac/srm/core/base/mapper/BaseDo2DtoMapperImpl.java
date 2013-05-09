@@ -50,11 +50,17 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
     @Override
     public void itemSchemeVersionDoToItemSchemeBasicDto(ItemSchemeVersion source, SrmLifeCycleMetadata lifeCycleSource, ItemSchemeMetamacBasicDto target) {
         target.setIsTaskInBackground(source.getItemScheme().getIsTaskInBackground());
+        target.setResourceCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getItemScheme().getResourceCreatedDate()));
+        target.setResourceLastUpdated(CoreCommonUtil.transformDateTimeToDate(source.getItemScheme().getResourceLastUpdated()));
+        target.setItemSchemeId(source.getItemScheme().getId());
         maintainableArtefactDoToMaintainableArtefactBasicDto(source.getMaintainableArtefact(), lifeCycleSource, target);
     }
 
     @Override
     public void structureVersionDoToStructureBasicDto(StructureVersion source, SrmLifeCycleMetadata lifeCycleSource, StructureMetamacBasicDto target) {
+        target.setResourceCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getStructure().getResourceCreatedDate()));
+        target.setResourceLastUpdated(CoreCommonUtil.transformDateTimeToDate(source.getStructure().getResourceLastUpdated()));
+        target.setStructureId(source.getStructure().getId());
         maintainableArtefactDoToMaintainableArtefactBasicDto(source.getMaintainableArtefact(), lifeCycleSource, target);
     }
 

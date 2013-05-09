@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
 import java.util.Date;
@@ -556,6 +557,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", conceptSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
     }
 
@@ -739,6 +742,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", conceptSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate retrieving
         {
@@ -753,6 +758,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", conceptSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
     }
 
@@ -824,6 +831,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", conceptSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate restrieving
         {
@@ -907,6 +916,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(conceptSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", conceptSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate retrieving
         {
@@ -999,6 +1010,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertTrue(conceptSchemeVersion.getMaintainableArtefact().getLatestFinal());
             assertFalse(conceptSchemeVersion.getMaintainableArtefact().getPublicLogic());
             assertFalse(conceptSchemeVersion.getMaintainableArtefact().getLatestPublic());
+            assertEqualsDate("2011-01-01 01:02:03", conceptSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate retrieving
         {
@@ -1154,6 +1167,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertNull(conceptSchemeVersion.getMaintainableArtefact().getValidTo());
             assertTrue(conceptSchemeVersion.getMaintainableArtefact().getPublicLogic());
             assertTrue(conceptSchemeVersion.getMaintainableArtefact().getLatestPublic());
+            assertEqualsDate("2011-01-01 01:02:03", conceptSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate retrieving
         {

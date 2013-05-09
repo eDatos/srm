@@ -49,6 +49,10 @@
         UUID="itemScheme-100"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- **************************************************************************************  -->                
@@ -262,6 +266,10 @@
         UUID="itemScheme-1"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- **************************************************************************************  -->                
@@ -1082,6 +1090,10 @@
         UUID="itemScheme-2"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
@@ -1331,6 +1343,10 @@
         UUID="itemScheme-3"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- Version 1 -->
@@ -1803,6 +1819,10 @@
         UUID="itemScheme-4"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
@@ -1960,6 +1980,10 @@
         UUID="itemScheme-5"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
@@ -2117,6 +2141,10 @@
         UUID="itemScheme-6"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
@@ -2275,6 +2303,10 @@
         UUID="itemScheme-7"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- Version 1 -->
@@ -2581,6 +2613,10 @@
         UUID="itemScheme-8"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
 
     <!-- Version 1 -->
@@ -2740,6 +2776,10 @@
         UUID="itemScheme-9"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <TB_ITEM_SCHEMES_VERSIONS
@@ -2836,6 +2876,10 @@
         UUID="itemScheme-10"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- Version 1 -->
@@ -3226,6 +3270,10 @@
         UUID="itemScheme-11"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- Version 1 -->
@@ -3386,6 +3434,10 @@
         UUID="itemScheme-12"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- Version 1 -->
@@ -3545,6 +3597,10 @@
         UUID="itemScheme-13"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- Version 1 -->
@@ -3831,6 +3887,10 @@
         UUID="itemScheme-14"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- **************************************************************************************  -->                
@@ -4389,6 +4449,10 @@
         UUID="itemScheme-201"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- Version 1 -->
@@ -4598,6 +4662,10 @@
         UUID="itemScheme-202"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- Version 1 -->
@@ -4700,6 +4768,10 @@
         UUID="itemScheme-203"
         VERSION="1"
         VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
     />
     
     <!-- Version 1 -->

@@ -1038,7 +1038,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     /**
      * Finds concepts could be concept in primary measure, time dimension, measure dimension or dimension in DSD
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     private PagedResult<ConceptMetamac> findConceptsCanBeDsdSpecificDimensionByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn,
             ConceptRoleEnum... conceptRolesEnum) throws MetamacException {
 

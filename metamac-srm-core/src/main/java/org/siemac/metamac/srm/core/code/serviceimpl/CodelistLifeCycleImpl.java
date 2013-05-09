@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
 
@@ -53,6 +54,9 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
     @Autowired
     private CodesMetamacService              codesMetamacService;
 
+    @Autowired
+    private BaseService                      baseService;
+
     public CodelistLifeCycleImpl() {
         this.callback = new CodelistLifeCycleCallback();
     }
@@ -70,8 +74,12 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public Object updateSrmResource(Object srmResourceVersion) {
-            return itemSchemeVersionRepository.save(getCodelistVersionMetamac(srmResourceVersion));
+        public Object updateSrmResource(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            CodelistVersionMetamac codelistVersion = getCodelistVersionMetamac(srmResourceVersion);
+            // Update item scheme
+            baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
+            // Update item scheme version
+            return itemSchemeVersionRepository.save(codelistVersion);
         }
 
         @Override

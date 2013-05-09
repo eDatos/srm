@@ -4,10 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualisationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DimensionVisualisationInfoDto;
 import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
@@ -33,6 +35,10 @@ public class DataStructureDefinitionsMetamacAsserts extends DataStructureDefinit
 
         // Sdmx
         DataStructureDefinitionAsserts.assertEqualsDataStructureDefinition(expected, actual);
+    }
+
+    public static void assertEqualsDataStructureDefinition(DataStructureDefinitionVersionMetamac expected, DataStructureDefinitionMetamacBasicDto actual) {
+        BaseAsserts.assertEqualsStructureBasicDto(expected, expected.getLifeCycleMetadata(), actual);
     }
 
     public static void assertEqualsDataStructureDefinition(DataStructureDefinitionMetamacDto expected, DataStructureDefinitionVersionMetamac actual) {

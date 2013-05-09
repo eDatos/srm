@@ -3,7 +3,9 @@ package org.siemac.metamac.srm.core.category.serviceapi.utils;
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.utils.CategoriesAsserts;
@@ -38,6 +40,10 @@ public class CategoriesMetamacAsserts extends CategoriesAsserts {
         assertEqualsCategoryScheme(actual, expected, MapperEnum.DTO2DO);
     }
 
+    public static void assertEqualsCategoryScheme(CategorySchemeVersionMetamac expected, CategorySchemeMetamacBasicDto actual) {
+        BaseAsserts.assertEqualsItemSchemeBasicDto(expected, expected.getLifeCycleMetadata(), actual);
+    }
+
     public static void assertEqualsCategory(CategoryMetamac expected, CategoryMetamac actual) {
 
         // Metamac
@@ -60,6 +66,10 @@ public class CategoriesMetamacAsserts extends CategoriesAsserts {
 
     public static void assertEqualsCategory(CategoryMetamacDto expected, CategoryMetamac actual) {
         assertEqualsCategory(actual, expected, MapperEnum.DTO2DO);
+    }
+
+    public static void assertEqualsCategory(CategoryMetamac expected, CategoryMetamacBasicDto actual) {
+        BaseAsserts.assertEqualsItemBasicDto(expected, actual);
     }
 
     private static void assertEqualsCategoryScheme(CategorySchemeVersionMetamac entity, CategorySchemeMetamacDto dto, MapperEnum mapperEnum) {

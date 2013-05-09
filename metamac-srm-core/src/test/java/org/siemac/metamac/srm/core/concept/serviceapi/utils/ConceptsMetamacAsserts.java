@@ -7,7 +7,9 @@ import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 
@@ -33,6 +35,10 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
 
         // Sdmx
         ConceptsAsserts.assertEqualsConceptSchemeDto(expected, actual);
+    }
+
+    public static void assertEqualsConceptScheme(ConceptSchemeVersionMetamac expected, ConceptSchemeMetamacBasicDto actual) {
+        BaseAsserts.assertEqualsItemSchemeBasicDto(expected, expected.getLifeCycleMetadata(), actual);
     }
 
     public static void assertEqualsConceptScheme(ConceptSchemeVersionMetamac expected, ConceptSchemeMetamacDto actual) {
@@ -87,6 +93,10 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
 
     public static void assertEqualsConcept(ConceptMetamacDto expected, ConceptMetamac actual) {
         assertEqualsConcept(actual, expected, MapperEnum.DTO2DO);
+    }
+
+    public static void assertEqualsConcept(ConceptMetamac expected, ConceptMetamacBasicDto actual) {
+        BaseAsserts.assertEqualsItemBasicDto(expected, actual);
     }
 
     public static void assertEqualsConceptType(ConceptType expected, ConceptTypeDto actual) {

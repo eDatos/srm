@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
 import java.util.Date;
@@ -338,6 +339,8 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", categorySchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate retrieving
         {
@@ -481,6 +484,8 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", categorySchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate retrieving
         {
@@ -566,6 +571,8 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", categorySchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate restrieving
         {
@@ -649,6 +656,8 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(categorySchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", categorySchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate retrieving
         {
@@ -741,6 +750,8 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertTrue(categorySchemeVersion.getMaintainableArtefact().getLatestFinal());
             assertFalse(categorySchemeVersion.getMaintainableArtefact().getPublicLogic());
             assertFalse(categorySchemeVersion.getMaintainableArtefact().getLatestPublic());
+            assertEqualsDate("2011-01-01 01:02:03", categorySchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate retrieving
         {
@@ -878,6 +889,8 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
             assertTrue(categorySchemeVersion.getMaintainableArtefact().getPublicLogic());
             assertTrue(categorySchemeVersion.getMaintainableArtefact().getLatestPublic());
+            assertEqualsDate("2011-01-01 01:02:03", categorySchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate retrieving
         {

@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.serviceapi.utils.DataStructureDefinitionMetamacDoMocks;
 import org.siemac.metamac.srm.core.dsd.serviceapi.utils.DataStructureDefinitionsMetamacAsserts;
@@ -91,6 +92,16 @@ public class DataStructureDefinitionMetamacDo2DtoMapperTest extends SrmBaseTest 
         DataStructureDefinitionMetamacDto dto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
         DataStructureDefinitionsMetamacAsserts.assertEqualsDataStructureDefinition(dto, dataStructureDefinitionVersionMetamac);
     }
+
+    @Test
+    public void testDataStructureDefinitionMetamacDoToBasicDto() throws MetamacException {
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = DataStructureDefinitionMetamacDoMocks.mockDataStructureDefinitionVersionMetamacFixedValues("agency01", "dsd01",
+                "01.000");
+
+        DataStructureDefinitionMetamacBasicDto dto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToBasicDto(dataStructureDefinitionVersionMetamac);
+        DataStructureDefinitionsMetamacAsserts.assertEqualsDataStructureDefinition(dataStructureDefinitionVersionMetamac, dto);
+    }
+
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmDsdTest.xml";

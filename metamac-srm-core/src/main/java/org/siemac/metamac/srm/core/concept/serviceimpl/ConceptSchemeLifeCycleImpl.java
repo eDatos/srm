@@ -30,6 +30,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
 
@@ -51,6 +52,9 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
     @Autowired
     private ConceptsMetamacService                conceptsMetamacService;
 
+    @Autowired
+    private BaseService                           baseService;
+
     public ConceptSchemeLifeCycleImpl() {
         this.callback = new ConceptSchemeLifeCycleCallback();
     }
@@ -68,8 +72,12 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public Object updateSrmResource(Object srmResourceVersion) {
-            return itemSchemeVersionRepository.save(getConceptSchemeVersionMetamac(srmResourceVersion));
+        public Object updateSrmResource(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(srmResourceVersion);
+            // Update item scheme
+            baseService.updateItemSchemeLastUpdated(ctx, conceptSchemeVersion);
+            // Update item scheme version
+            return itemSchemeVersionRepository.save(conceptSchemeVersion);
         }
 
         @Override

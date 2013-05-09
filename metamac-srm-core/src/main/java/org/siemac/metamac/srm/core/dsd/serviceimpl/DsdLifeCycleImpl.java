@@ -34,6 +34,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Component;
 import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
 import com.arte.statistic.sdmx.srm.core.structure.domain.Dimension;
@@ -49,7 +50,6 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionType
 @Service("dsdLifeCycle")
 public class DsdLifeCycleImpl extends LifeCycleImpl {
 
-    @Autowired
     private StructureVersionRepository                      structureVersionRepository;
 
     @Autowired
@@ -59,7 +59,10 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
     private DataStructureDefinitionService                  dataStructureDefinitionService;
 
     @Autowired
-    private DataStructureDefinitionMetamacService                              dataStructureDefinitionMetamacService;
+    private DataStructureDefinitionMetamacService           dataStructureDefinitionMetamacService;
+
+    @Autowired
+    private BaseService                                     baseService;
 
     public DsdLifeCycleImpl() {
         this.callback = new DataStructureDefinitionLifeCycleCallback();
@@ -78,8 +81,12 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public Object updateSrmResource(Object srmResourceVersion) {
-            return structureVersionRepository.save(getDataStructureDefinitionVersionMetamac(srmResourceVersion));
+        public Object updateSrmResource(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = getDataStructureDefinitionVersionMetamac(srmResourceVersion);
+            // Update item scheme
+            baseService.updateStructureLastUpdated(ctx, dataStructureDefinitionVersion);
+            // Update item scheme version
+            return structureVersionRepository.save(dataStructureDefinitionVersion);
         }
 
         @Override

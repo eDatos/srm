@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
 import java.util.Date;
@@ -412,6 +413,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", organisationSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
     }
 
@@ -556,6 +559,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", organisationSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
     }
 
@@ -627,6 +632,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", organisationSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate restrieving
         {
@@ -710,6 +717,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getInternalPublicationUser());
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationDate());
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
+            assertEqualsDate("2011-01-01 01:02:03", organisationSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate retrieving
         {
@@ -803,6 +812,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getLatestFinal());
             assertFalse(organisationSchemeVersion.getMaintainableArtefact().getPublicLogic());
             assertFalse(organisationSchemeVersion.getMaintainableArtefact().getLatestPublic());
+            assertEqualsDate("2011-01-01 01:02:03", organisationSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate retrieving
         {
@@ -970,6 +981,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getPublicLogic());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getLatestPublic());
+            assertEqualsDate("2011-01-01 01:02:03", organisationSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+            assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
         }
         // Validate retrieving
         {

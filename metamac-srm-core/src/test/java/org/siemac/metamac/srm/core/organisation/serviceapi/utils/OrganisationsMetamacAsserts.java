@@ -3,7 +3,9 @@ package org.siemac.metamac.srm.core.organisation.serviceapi.utils;
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.utils.OrganisationsAsserts;
@@ -34,6 +36,10 @@ public class OrganisationsMetamacAsserts extends OrganisationsAsserts {
         assertEqualsOrganisationScheme(actual, expected, MapperEnum.DTO2DO);
     }
 
+    public static void assertEqualsOrganisationScheme(OrganisationSchemeVersionMetamac expected, OrganisationSchemeMetamacBasicDto actual) {
+        BaseAsserts.assertEqualsItemSchemeBasicDto(expected, expected.getLifeCycleMetadata(), actual);
+    }
+
     // ORGANISATION
 
     public static void assertEqualsOrganisation(OrganisationMetamac expected, OrganisationMetamac actual) {
@@ -51,6 +57,10 @@ public class OrganisationsMetamacAsserts extends OrganisationsAsserts {
 
     public static void assertEqualsOrganisation(OrganisationMetamacDto expected, OrganisationMetamac actual) {
         assertEqualsOrganisation(actual, expected, MapperEnum.DTO2DO);
+    }
+
+    public static void assertEqualsOrganisation(OrganisationMetamac expected, OrganisationMetamacBasicDto actual) {
+        BaseAsserts.assertEqualsItemBasicDto(expected, actual);
     }
 
     private static void assertEqualsOrganisationScheme(OrganisationSchemeVersionMetamac entity, OrganisationSchemeMetamacDto dto, MapperEnum mapperEnum) {
