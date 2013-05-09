@@ -20,7 +20,6 @@ public class ConceptDS extends ItemDS {
     public static final String DERIVATION            = "con-derivation";
     // RELATION WITH CONCEPS
     public static final String EXTENDS               = "con-extends";
-    public static final String EXTENDS_VIEW          = "con-extends-view";
     public static final String RELATED_CONCEPTS      = "con-related-concepts";
     // LEGAL ACTS
     public static final String LEGAL_ACTS            = "con-legal-acts";

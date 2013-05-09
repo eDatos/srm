@@ -58,7 +58,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTex
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigationClickHandler;
@@ -66,7 +65,6 @@ import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigatio
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -272,7 +270,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         // Relation between concepts
         relationBetweenConceptsForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
-        ViewTextItem extendsConcept = new ViewTextItem(ConceptDS.EXTENDS_VIEW, getConstants().conceptExtends());
+        RelatedResourceLinkItem extendsConcept = new RelatedResourceLinkItem(ConceptDS.EXTENDS, getConstants().conceptExtends(), getCustomLinkItemNavigationClickHandler());
         ConceptsListItem relatedConcepts = new ConceptsListItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts(), false, getListRecordNavigationClickHandler());
         relationBetweenConceptsForm.setFields(extendsConcept, relatedConcepts);
 
@@ -376,11 +374,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         // RELATION BETWEEN CONCEPTS
         relationBetweenConceptsEditionForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
-        ViewTextItem extendsConcept = new ViewTextItem(ConceptDS.EXTENDS, getConstants().conceptExtends());
-        extendsConcept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem extendsConceptView = createExtendsItem(ConceptDS.EXTENDS_VIEW, getConstants().conceptExtends());
+        SearchRelatedResourceLinkItem extendsConcept = createExtendsItem(ConceptDS.EXTENDS, getConstants().conceptExtends());
         ConceptsListItem relatedConcepts = createRelatedConceptsItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts());
-        relationBetweenConceptsEditionForm.setFields(extendsConcept, extendsConceptView, relatedConcepts);
+        relationBetweenConceptsEditionForm.setFields(extendsConcept, relatedConcepts);
 
         // LEGAL ACTS
         legalActsEditionForm = new GroupDynamicForm(getConstants().conceptLegalActs());
@@ -516,7 +512,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         classDescriptorsForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
         // Relation between concepts
-        relationBetweenConceptsForm.setValue(ConceptDS.EXTENDS_VIEW, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptDto.getConceptExtends()));
+        ((RelatedResourceLinkItem) relationBetweenConceptsForm.getItem(ConceptDS.EXTENDS)).setRelatedResource(conceptDto.getConceptExtends());
         ((ConceptsListItem) relationBetweenConceptsForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
         // Legal acts
@@ -574,8 +570,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         classDescriptorsEditionForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
 
         // RELATION BETWEEN CONCEPTS
-        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptDto.getConceptExtends()));
-        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS, conceptDto.getConceptExtends() != null ? conceptDto.getConceptExtends().getUrn() : StringUtils.EMPTY);
+        ((SearchRelatedResourceLinkItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.EXTENDS)).setRelatedResource(conceptDto.getConceptExtends());
 
         ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
@@ -631,8 +626,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         conceptDto.setDerivation((InternationalStringDto) classDescriptorsEditionForm.getValue(ConceptDS.DERIVATION));
 
         // Relation between concepts
-        conceptDto.setConceptExtends(StringUtils.isBlank(relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                RelatedResourceTypeEnum.CONCEPT, relationBetweenConceptsEditionForm.getValueAsString(ConceptDS.EXTENDS)));
+        conceptDto.setConceptExtends(((SearchRelatedResourceLinkItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.EXTENDS)).getRelatedResourceDto());
         // Related concepts get in getRelatedConcepts method
 
         // Legal acts
@@ -758,10 +752,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         return rolesItem;
     }
 
-    private SearchViewTextItem createExtendsItem(String name, String title) {
+    private SearchRelatedResourceLinkItem createExtendsItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
-        SearchViewTextItem extendsItem = new SearchViewTextItem(name, title);
+        SearchRelatedResourceLinkItem extendsItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
         extendsItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -804,9 +798,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                         RelatedResourceDto selectedConcept = searchExtendsWindow.getSelectedRelatedResource();
                         searchExtendsWindow.markForDestroy();
                         // Set selected concepts in form
-                        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS, selectedConcept != null ? selectedConcept.getUrn() : null);
-                        relationBetweenConceptsEditionForm.setValue(ConceptDS.EXTENDS_VIEW,
-                                selectedConcept != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept) : null);
+                        ((SearchRelatedResourceLinkItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.EXTENDS)).setRelatedResource(selectedConcept);
                     }
                 });
             }
