@@ -409,6 +409,9 @@ public class PlaceRequestUtils {
             } else if (SrmUrnParserUtils.isAgencyUrn(urn)) {
                 String agencySchemeUrn = SrmUrnParserUtils.getAgencySchemeUrnFromAgencyUrn(urn);
                 return buildAbsoluteOrganisationPlaceRequest(agencySchemeUrn, urn, OrganisationSchemeTypeEnum.AGENCY_SCHEME);
+            } else if (SrmUrnParserUtils.isCategoryUrn(urn)) {
+                String categorySchemeUrn = SrmUrnParserUtils.getCategorySchemeUrnFromCategoryUrn(urn);
+                return buildAbsoluteCategoryPlaceRequest(categorySchemeUrn, urn);
             }
         }
         return null;
