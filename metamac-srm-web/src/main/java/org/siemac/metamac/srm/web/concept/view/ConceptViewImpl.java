@@ -19,9 +19,12 @@ import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
+import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.webcommon.CustomLinkItemNavigationClickHandler;
 import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -239,7 +242,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewMultiLanguageTextItem descriptionSource = new ViewMultiLanguageTextItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
         ViewMultiLanguageTextItem context = new ViewMultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         ViewMultiLanguageTextItem docMethod = new ViewMultiLanguageTextItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
-        ViewTextItem variable = new ViewTextItem(ConceptDS.VARIABLE_VIEW, getConstants().variable());
+        RelatedResourceLinkItem variable = new RelatedResourceLinkItem(ConceptDS.VARIABLE, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
         variable.setShowIfCondition(getVariableFormItemIfFunction());
         ViewTextItem sdmxRelatedArtefact = new ViewTextItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
@@ -322,9 +325,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         MultiLanguageTextItem descriptionSource = new MultiLanguageTextItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
         MultiLanguageTextItem context = new MultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         MultilanguageRichTextEditorItem docMethod = new MultilanguageRichTextEditorItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
-        ViewTextItem variable = new ViewTextItem(ConceptDS.VARIABLE, getConstants().variable());
-        variable.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem variableView = createVariableItem(ConceptDS.VARIABLE_VIEW, getConstants().variable());
+        SearchRelatedResourceLinkItem variableView = createVariableItem(ConceptDS.VARIABLE, getConstants().variable());
         variableView.setShowIfCondition(getVariableFormItemIfFunction());
         RequiredSelectItem sdmxRelatedArtefact = new RequiredSelectItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setValueMap(CommonUtils.getConceptRoleHashMap());
@@ -363,8 +364,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewTextItem codelistView = new ViewTextItem(RepresentationDS.ENUMERATED_CODELIST_VIEW, MetamacSrmWeb.getConstants().codelist());
         codelistView.setShowIfCondition(getStaticEnumeratedRepresentationFormItemIfFunction()); // This item is shown when the enumerated representation can not be edited
 
-        contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod, variable, variableView, sdmxRelatedArtefact, type, roles, representationType,
-                staticRepresentationType, codelist, codelistEditionView, codelistView);
+        contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod, variableView, sdmxRelatedArtefact, type, roles, representationType, staticRepresentationType,
+                codelist, codelistEditionView, codelistView);
 
         // NON ENUMERATED REPRESENTATION
         facetEditionForm = new ConceptFacetForm();
@@ -488,7 +489,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
         contentDescriptorsForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
         contentDescriptorsForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
-        contentDescriptorsForm.setValue(ConceptDS.VARIABLE_VIEW, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptDto.getVariable()));
+        ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(ConceptDS.VARIABLE)).setRelatedResource(conceptDto.getVariable());
         contentDescriptorsForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getRepresentationType().name() : null);
         contentDescriptorsForm.setValue(RepresentationDS.TYPE_VIEW,
                 conceptDto.getCoreRepresentation() != null
@@ -546,8 +547,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
         contentDescriptorsEditionForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
         contentDescriptorsEditionForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
-        contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE_VIEW, org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(conceptDto.getVariable()));
-        contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE, conceptDto.getVariable() != null ? conceptDto.getVariable().getUrn() : StringUtils.EMPTY);
+        ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE)).setRelatedResource(conceptDto.getVariable());
         contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getRepresentationType().name() : null);
         contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE_VIEW,
                 conceptDto.getCoreRepresentation() != null
@@ -604,7 +604,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         conceptDto.setDescriptionSource((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.DESCRIPTION_SOURCE));
         conceptDto.setContext((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.CONTEXT));
         conceptDto.setDocMethod((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.DOC_METHOD));
-        conceptDto.setVariable(RelatedResourceUtils.createRelatedResourceDto(contentDescriptorsEditionForm.getValueAsString(ConceptDS.VARIABLE)));
+        conceptDto.setVariable(((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE)).getRelatedResourceDto());
         if (!StringUtils.isEmpty(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE))) {
             if (conceptDto.getCoreRepresentation() == null) {
                 conceptDto.setCoreRepresentation(new RepresentationDto());
@@ -911,11 +911,11 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         return null;
     }
 
-    private SearchViewTextItem createVariableItem(String name, String title) {
+    private SearchRelatedResourceLinkItem createVariableItem(String name, String title) {
         final int FIRST_RESULT = 0;
         final int MAX_RESULTS = 8;
 
-        SearchViewTextItem variableItem = new SearchViewTextItem(name, title);
+        SearchRelatedResourceLinkItem variableItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
         variableItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -958,9 +958,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                         searchVariableWindow.markForDestroy();
 
                         // Set selected family in form
-                        contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE, selectedVariable != null ? selectedVariable.getUrn() : null);
-                        contentDescriptorsEditionForm.setValue(ConceptDS.VARIABLE_VIEW,
-                                selectedVariable != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedVariable) : null);
+                        ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE)).setRelatedResource(selectedVariable);
 
                         // Reset the codelist associated with the enumerated representation of the concept (the codelist depends on the variable selected)
                         contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST, StringUtils.EMPTY);
@@ -1136,6 +1134,16 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     // ------------------------------------------------------------------------------------------------------------
     // CLICK HANDLERS
     // ------------------------------------------------------------------------------------------------------------
+
+    private CustomLinkItemNavigationClickHandler getCustomLinkItemNavigationClickHandler() {
+        return new CustomLinkItemNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
+            }
+        };
+    }
 
     private ListRecordNavigationClickHandler getListRecordNavigationClickHandler() {
         return new ListRecordNavigationClickHandler() {

@@ -12,7 +12,6 @@ public class ConceptDS extends ItemDS {
     public static final String CONTEXT               = "con-context";
     public static final String DOC_METHOD            = "con-doc-method";
     public static final String VARIABLE              = "con-var";
-    public static final String VARIABLE_VIEW         = "con-var-view";        // Not mapped in DTO
     // CLASS DESCRIPTORS
     public static final String SDMX_RELATED_ARTEFACT = "con-sdmx-art";
     public static final String TYPE                  = "con-type";
