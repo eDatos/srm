@@ -14,9 +14,11 @@ import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.webcommon.CustomLinkItemNavigationClickHandler;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.dsd.model.ds.DimensionDS;
 import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
@@ -281,7 +283,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         form = new GroupDynamicForm(getConstants().dsdDimensionDetails());
         ViewTextItem code = new ViewTextItem(DimensionDS.CODE_VIEW, getConstants().dsdDimensionsId());
         ViewTextItem dimensionType = new ViewTextItem(DimensionDS.TYPE_VIEW, getConstants().dsdDimensionsType());
-        ViewTextItem concept = new ViewTextItem(DimensionDS.CONCEPT_EDITION_VIEW, getConstants().concept());
+        RelatedResourceLinkItem concept = new RelatedResourceLinkItem(DimensionDS.CONCEPT, getConstants().concept(), getCustomLinkItemNavigationClickHandler());
 
         RelatedResourceListItem conceptRoleItem = new RelatedResourceListItem(DimensionDS.ROLE, getConstants().dsdDimensionsRole(), false, getListRecordNavigationClickHandler());
         conceptRoleItem.setShowIfCondition(new FormItemIfFunction() {
@@ -293,8 +295,9 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         });
 
         ViewTextItem staticRepresentationTypeItem = new ViewTextItem(DimensionDS.REPRESENTATION_TYPE, getConstants().representation());
-        ViewTextItem codelist = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, getConstants().codelist());
-        ViewTextItem conceptScheme = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, getConstants().conceptScheme());
+        RelatedResourceLinkItem codelist = new RelatedResourceLinkItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, getConstants().codelist(), getCustomLinkItemNavigationClickHandler());
+        RelatedResourceLinkItem conceptScheme = new RelatedResourceLinkItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, getConstants().conceptScheme(),
+                getCustomLinkItemNavigationClickHandler());
 
         ViewTextItem urn = new ViewTextItem(DimensionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
@@ -615,7 +618,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // Type
         form.setValue(DimensionDS.TYPE_VIEW, CommonUtils.getDimensionTypeName(dimensionComponentDto));
         // Concept
-        form.setValue(DimensionDS.CONCEPT_EDITION_VIEW, RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getCptIdRef()));
+        ((RelatedResourceLinkItem) form.getItem(DimensionDS.CONCEPT)).setRelatedResource(dimensionComponentDto.getCptIdRef());
 
         // Role
         form.getItem(DimensionDS.ROLE).hide();
@@ -642,7 +645,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                     form.getItem(DimensionDS.REPRESENTATION_TYPE).setValue(getCoreMessages().representationTypeEnumENUMERATION());
                     if (!TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                        form.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST, RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getLocalRepresentation().getEnumeration()));
+                        ((RelatedResourceLinkItem) form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)).setRelatedResource(dimensionComponentDto.getLocalRepresentation().getEnumeration());
                         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST).show();
                     }
 
@@ -652,8 +655,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                     form.getItem(DimensionDS.REPRESENTATION_TYPE).setValue(getCoreMessages().representationTypeEnumENUMERATION());
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                        form.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME,
-                                RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getLocalRepresentation().getEnumeration()));
+                        ((RelatedResourceLinkItem) form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)).setRelatedResource(dimensionComponentDto.getLocalRepresentation()
+                                .getEnumeration());
                         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME).show();
                     }
                 }
@@ -1264,6 +1267,16 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     // ------------------------------------------------------------------------------------------------------------
     // CLICK HANDLERS
     // ------------------------------------------------------------------------------------------------------------
+
+    private CustomLinkItemNavigationClickHandler getCustomLinkItemNavigationClickHandler() {
+        return new CustomLinkItemNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
+            }
+        };
+    }
 
     private ListRecordNavigationClickHandler getListRecordNavigationClickHandler() {
         return new ListRecordNavigationClickHandler() {
