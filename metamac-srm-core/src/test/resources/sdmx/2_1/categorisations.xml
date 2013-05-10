@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mes:Structure xmlns:mes="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message ../schemas/SDMXMessage.xsd">
+	<mes:Header>
+		<mes:ID>MT_1306407683895</mes:ID>
+		<mes:Test>false</mes:Test>
+		<mes:Prepared>2011-05-26T12:01:23.895+01:00</mes:Prepared>
+		<mes:Sender id="SDMX01"/>
+	</mes:Header>
+	<mes:Structures>
+		
+		<str:Categorisations xmlns:str="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure">
+	      <str:Categorisation agencyID="SDMX01" id="CATEGORISATION_01" isExternalReference="false" isFinal="true" serviceURL="http://tempuri.org" structureURL="http://tempuri.org" uri="http://tempuri.org" urn="http://tempuri.org" validFrom="2001-12-31T12:00:00" validTo="2001-12-31T12:00:00" version="1.0">
+	        <com:Annotations xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+	          <com:Annotation id="ANNOT_01" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">
+	            <com:AnnotationTitle xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">com:AnnotationTitle</com:AnnotationTitle>
+	            <com:AnnotationType xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">com:AnnotationType</com:AnnotationType>
+	            <com:AnnotationURL xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">http://tempuri.org</com:AnnotationURL>
+	            <com:AnnotationText xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">com:AnnotationText</com:AnnotationText>
+	          </com:Annotation>
+	        </com:Annotations>
+	        <com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">com:Name</com:Name>
+	        <com:Description xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">com:Description</com:Description>
+	        <str:Source>
+	        	<URN>urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME01(01.000)</URN>
+	        </str:Source>
+	        <str:Target>
+	        	<URN>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(01.000).CATEGORY01</URN>
+	        </str:Target>
+	      </str:Categorisation>
+	    </str:Categorisations>
+	    
+	</mes:Structures>
+</mes:Structure>
