@@ -31,8 +31,6 @@ import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
-import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
@@ -43,7 +41,6 @@ import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLa
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigationClickHandler;
 
@@ -54,7 +51,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RelationshipDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
@@ -423,13 +419,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // ENUMERATED REPRESENTATION
 
-        ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, getConstants().codelist());
-        codelist.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction()); // This item is never shown. Stores the enumerated representation (codelist URN)
+        SearchRelatedResourceLinkItem codelist = createEnumeratedRepresentationItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, getConstants().codelist());
+        codelist.setShowIfCondition(getEnumeratedRepresentationFormItemIfFunction()); // Shown in editionMode, only when the enumerated representation is editable
 
-        SearchViewTextItem codelistEditionView = createEnumeratedRepresentationItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW, getConstants().codelist());
-        codelistEditionView.setShowIfCondition(getEnumeratedRepresentationFormItemIfFunction()); // Shown in editionMode, only when the enumerated representation is editable
-
-        ViewTextItem codelistView = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist());
+        RelatedResourceLinkItem codelistView = new RelatedResourceLinkItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, getConstants().codelist(),
+                getCustomLinkItemNavigationClickHandler());
         codelistView.setShowIfCondition(getStaticEnumeratedRepresentationFormItemIfFunction()); // This item is shown when the enumerated representation can not be edited
 
         // URNs
@@ -439,8 +433,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, staticConcept, roleItem, staticRoleItem, relatedTo, staticRelatedTo,
                 groupKeysForDimensionRelationshipItem, staticGroupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
-                groupKeyFormForGroupRelationship, staticGroupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistEditionView, codelistView, urn,
-                urnProvider);
+                groupKeyFormForGroupRelationship, staticGroupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistView, urn, urnProvider);
 
         // Facet Form
 
@@ -683,7 +676,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Representation
         editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
-        editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW).clearValue();
         editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).clearValue();
         editionForm.getItem(DataAttributeDS.REPRESENTATION_TYPE).clearValue();
         editionForm.getItem(DataAttributeDS.REPRESENTATION_TYPE_VIEW).clearValue();
@@ -697,10 +689,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
                 editionForm.setValue(DataAttributeDS.REPRESENTATION_TYPE, RepresentationTypeEnum.ENUMERATION.toString());
                 editionForm.setValue(DataAttributeDS.REPRESENTATION_TYPE_VIEW, MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATION());
-                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, dataAttributeDto.getLocalRepresentation().getEnumeration().getUrn());
-                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW,
-                        RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumeration()));
-                editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumeration()));
+                ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST))
+                        .setRelatedResource(dataAttributeDto.getLocalRepresentation().getEnumeration());
+                ((RelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW)).setRelatedResource(dataAttributeDto.getLocalRepresentation().getEnumeration());
 
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
 
@@ -797,8 +788,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
                 dataAttributeDto.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.ENUMERATION);
                 dataAttributeDto.getLocalRepresentation().setEnumeration(
-                        StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                                RelatedResourceTypeEnum.CODELIST, editionForm.getValueAsString(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)));
+                        ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)).getRelatedResourceDto());
                 dataAttributeDto.getLocalRepresentation().setTextFormat(null);
 
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(representationType)) {
@@ -826,6 +816,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         return dataAttributeDto;
     }
+
     @Override
     public boolean validate() {
         return Visibility.HIDDEN.equals(facetEditionForm.getVisibility()) ? editionForm.validate(false) : (editionForm.validate(false) && facetEditionForm.validate(false));
@@ -954,8 +945,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                         ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT)).setRelatedResource(selectedConcept);
 
                         // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
-                        editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, StringUtils.EMPTY);
-                        editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW, StringUtils.EMPTY); // FIXME
+                        ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)).clearRelatedResource();
 
                         editionForm.markForRedraw();
                         editionForm.validate(false);
@@ -1025,17 +1015,18 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         return relatedResources;
     }
 
-    private SearchViewTextItem createEnumeratedRepresentationItem(String name, String title) {
+    private SearchRelatedResourceLinkItem createEnumeratedRepresentationItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
-        final SearchViewTextItem codelistItem = new SearchViewTextItem(name, title);
+        final SearchRelatedResourceLinkItem codelistItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
         codelistItem.setRequired(true);
         codelistItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
 
-                final String conceptUrn = editionForm.getValueAsString(DataAttributeDS.CONCEPT);
+                RelatedResourceDto concept = ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT)).getRelatedResourceDto();
+                final String conceptUrn = concept != null ? concept.getUrn() : null;
 
                 if (StringUtils.isBlank(conceptUrn)) {
                     // If a concept has not been selected, show a message and do not let the user to select a codelist
@@ -1071,10 +1062,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                             RelatedResourceDto selectedCodelist = searchCodelistForEnumeratedRepresentationWindow.getSelectedRelatedResource();
                             searchCodelistForEnumeratedRepresentationWindow.markForDestroy();
                             // Set selected codelist in form
-                            editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, selectedCodelist != null ? selectedCodelist.getUrn() : null);
-                            editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW, selectedCodelist != null
-                                    ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedCodelist)
-                                    : null);
+                            ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)).setRelatedResource(selectedCodelist);
                             editionForm.validate(false);
                         }
                     });
