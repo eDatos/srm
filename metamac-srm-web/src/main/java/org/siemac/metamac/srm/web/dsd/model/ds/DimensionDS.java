@@ -20,7 +20,6 @@ public class DimensionDS {
     public static final String REPRESENTATION_TYPE_VIEW                              = "dim-repr-type-view";          // Not mapped in DTO
 
     public static final String ENUMERATED_REPRESENTATION_CODELIST                    = "dim-repr-enum-code";
-    public static final String ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW       = "dim-repr-enum-cl-ed-view";    // Not mapped in DTO
     public static final String ENUMERATED_REPRESENTATION_CODELIST_VIEW               = "dim-repr-enum-cl-view";       // Not mapped in DTO
 
     public static final String ENUMERATED_REPRESENTATION_CONCEPT_SCHEME              = "dim-repr-enum-scheme";
