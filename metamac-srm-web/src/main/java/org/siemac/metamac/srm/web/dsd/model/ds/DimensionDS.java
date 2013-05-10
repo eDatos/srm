@@ -11,7 +11,6 @@ public class DimensionDS {
     public static final String TYPE_VIEW                                             = "dim-type-view";               // Not mapped in DTO
 
     public static final String CONCEPT                                               = "dim-con";
-    public static final String CONCEPT_EDITION_VIEW                                  = "dim-con-ed-view";             // Not mapped in DTO
     public static final String CONCEPT_VIEW                                          = "dim-con-view";                // Not mapped in DTO
 
     public static final String ROLE                                                  = "dim-role";
