@@ -472,7 +472,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // Check does not exist any version 'no final'
         ItemSchemeVersion organisationSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinalClient(organisationSchemeVersionToCopy.getItemScheme().getId());
         if (organisationSchemeVersionNoFinal != null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED_VERSION_NOT_PUBLISHED)
                     .withMessageParameters(organisationSchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
         }
     }

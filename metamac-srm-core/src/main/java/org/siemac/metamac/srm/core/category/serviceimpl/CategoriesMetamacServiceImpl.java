@@ -554,7 +554,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         // Check does not exist any version 'no final'
         ItemSchemeVersion categorySchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinalClient(categorySchemeVersionToCopy.getItemScheme().getId());
         if (categorySchemeVersionNoFinal != null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED_VERSION_NOT_PUBLISHED)
                     .withMessageParameters(categorySchemeVersionNoFinal.getMaintainableArtefact().getUrn()).build();
         }
     }

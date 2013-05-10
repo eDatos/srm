@@ -1961,7 +1961,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Check does not exist any version 'no final'
         ItemSchemeVersion codelistVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinalClient(codelistVersionToCopy.getItemScheme().getId());
         if (codelistVersionNoFinal != null) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED)
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED_VERSION_NOT_PUBLISHED)
                     .withMessageParameters(codelistVersionNoFinal.getMaintainableArtefact().getUrn()).build();
         }
     }
