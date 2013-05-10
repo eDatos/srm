@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.webcommon.CustomLinkItemNavigationClickHandler;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -345,14 +346,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // CONCEPT
 
-        ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT, getConstants().concept()); // This item is never shown. Stores the concept URN
-        concept.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        SearchRelatedResourceLinkItem concept = createConceptItem(DataAttributeDS.CONCEPT, getConstants().concept());
+        concept.setShowIfCondition(getConceptFormItemIfFunction()); // Shown in editionMode, only when the concept is editable
 
-        SearchViewTextItem staticEditableConcept = createConceptItem(DataAttributeDS.CONCEPT_EDITION_VIEW, getConstants().concept());
-        staticEditableConcept.setShowIfCondition(getConceptFormItemIfFunction()); // Shown in editionMode, only when the concept is editable
-
-        ViewTextItem staticConcept = new ViewTextItem(DataAttributeDS.CONCEPT_VIEW, getConstants().concept()); // This item is shown when the concept can not be edited
-        staticConcept.setShowIfCondition(getStaticConceptFormItemIfFunction());
+        RelatedResourceLinkItem staticConcept = new RelatedResourceLinkItem(DataAttributeDS.CONCEPT_VIEW, getConstants().concept(), getCustomLinkItemNavigationClickHandler());
+        staticConcept.setShowIfCondition(getStaticConceptFormItemIfFunction()); // This item is shown when the concept can not be edited
 
         // ROLE
 
@@ -439,7 +437,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, staticEditableConcept, staticConcept, roleItem, staticRoleItem, relatedTo, staticRelatedTo,
+        editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, staticConcept, roleItem, staticRoleItem, relatedTo, staticRelatedTo,
                 groupKeysForDimensionRelationshipItem, staticGroupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
                 groupKeyFormForGroupRelationship, staticGroupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistEditionView, codelistView, urn,
                 urnProvider);
@@ -643,9 +641,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         editionForm.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
 
         // Concept
-        editionForm.setValue(DataAttributeDS.CONCEPT, dataAttributeDto.getCptIdRef() != null ? dataAttributeDto.getCptIdRef().getUrn() : null);
-        editionForm.setValue(DataAttributeDS.CONCEPT_EDITION_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getCptIdRef()));
-        editionForm.setValue(DataAttributeDS.CONCEPT_VIEW, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getCptIdRef()));
+        ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT)).setRelatedResource(dataAttributeDto.getCptIdRef());
+        ((RelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT_VIEW)).setRelatedResource(dataAttributeDto.getCptIdRef());
 
         // RelateTo
         editionForm.clearValue(DataAttributeDS.RELATED_TO);
@@ -753,8 +750,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         dataAttributeDto.getRole().addAll(selectedRoles);
 
         // Concept
-        dataAttributeDto.setCptIdRef(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.CONCEPT)) ? null : RelatedResourceUtils.createRelatedResourceDto(RelatedResourceTypeEnum.CONCEPT,
-                editionForm.getValueAsString(DataAttributeDS.CONCEPT)));
+        dataAttributeDto.setCptIdRef(((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT)).getRelatedResourceDto());
 
         // Usage Status
         dataAttributeDto.setUsageStatus(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.USAGE_STATUS)) ? null : UsageStatus.valueOf(editionForm
@@ -909,10 +905,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         return representationTypeItem;
     }
 
-    private SearchViewTextItem createConceptItem(String name, String title) {
+    private SearchRelatedResourceLinkItem createConceptItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
-        final SearchViewTextItem conceptItem = new SearchViewTextItem(name, title);
+        final SearchRelatedResourceLinkItem conceptItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
         conceptItem.setRequired(true);
         conceptItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
@@ -955,13 +951,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                         RelatedResourceDto selectedConcept = searchConceptWindow.getSelectedRelatedResource();
                         searchConceptWindow.markForDestroy();
                         // Set selected concepts in form
-                        editionForm.setValue(DataAttributeDS.CONCEPT, selectedConcept != null ? selectedConcept.getUrn() : null);
-                        editionForm.setValue(DataAttributeDS.CONCEPT_EDITION_VIEW,
-                                selectedConcept != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConcept) : null);
+                        ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT)).setRelatedResource(selectedConcept);
 
                         // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
                         editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, StringUtils.EMPTY);
-                        editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW, StringUtils.EMPTY);
+                        editionForm.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST_EDITION_VIEW, StringUtils.EMPTY); // FIXME
 
                         editionForm.markForRedraw();
                         editionForm.validate(false);
