@@ -4,7 +4,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -436,7 +435,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         }
     }
 
-    private String getDimensionCodesSeparatedByComma(Set<ComponentDto> dimensionComponentDtosSet) {
+    private String getDimensionCodesSeparatedByComma(List<ComponentDto> dimensionComponentDtosSet) {
         List<ComponentDto> dimensionComponentDtos = new ArrayList<ComponentDto>();
         dimensionComponentDtos.addAll(dimensionComponentDtosSet);
         StringBuilder dimensionBuilder = new StringBuilder();
@@ -447,7 +446,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         return dimensionBuilder.toString();
     }
 
-    private String[] getDimensionComponentDtoUrnsAsArray(Set<ComponentDto> dimensionComponentDtos) {
+    private String[] getDimensionComponentDtoUrnsAsArray(List<ComponentDto> dimensionComponentDtos) {
         List<String> urns = new ArrayList<String>();
         for (ComponentDto dimension : dimensionComponentDtos) {
             urns.add(dimension.getUrn());
