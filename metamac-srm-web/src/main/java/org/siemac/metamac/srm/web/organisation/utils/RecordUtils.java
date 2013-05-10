@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.organisation.utils;
 
 import static org.siemac.metamac.web.common.client.utils.InternationalStringUtils.getLocalisedString;
 
+import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
@@ -13,7 +14,6 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -42,15 +42,11 @@ public class RecordUtils {
         OrganisationSchemeRecord record = new OrganisationSchemeRecord();
         record.setCode(organisationSchemeDto.getCode());
         record.setName(getLocalisedString(organisationSchemeDto.getName()));
-        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getProcStatus()));
+        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
         record.setType(CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
         record.setVersionLogic(organisationSchemeDto.getVersionLogic());
         record.setUrn(organisationSchemeDto.getUrn());
         record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(organisationSchemeDto.getMaintainer()));
-        record.setInternalPublicationDate(DateUtils.getFormattedDate(organisationSchemeDto.getInternalPublicationDate()));
-        record.setInternalPublicationUser(organisationSchemeDto.getInternalPublicationUser());
-        record.setExternalPublicationDate(DateUtils.getFormattedDate(organisationSchemeDto.getExternalPublicationDate()));
-        record.setExternalPublicationUser(organisationSchemeDto.getExternalPublicationUser());
         record.setOrganisationSchemeBasicDto(organisationSchemeDto);
         return record;
     }
@@ -73,7 +69,7 @@ public class RecordUtils {
         return record;
     }
 
-    public static OrganisationRecord getOrganisationRecord(ItemVisualisationResult organisation, OrganisationTypeEnum organisationTypeEnum) {
+    public static OrganisationRecord getOrganisationRecord(OrganisationMetamacVisualisationResult organisation, OrganisationTypeEnum organisationTypeEnum) {
         OrganisationRecord record = new OrganisationRecord();
         record.setId(organisation.getItemIdDatabase());
         record.setCode(organisation.getCode());

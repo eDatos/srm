@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
+import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
@@ -35,7 +36,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
@@ -466,9 +466,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     }
 
     @Override
-    public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults) {
+    public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<OrganisationMetamacVisualisationResult> itemVisualisationResults) {
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeMetamacDto.getType())) {
-            organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemVisualisationResults);
+            // FIXME organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemVisualisationResults);
             organisationsTreeGrid.selectItem(organisationDto.getUrn());
             organisationsTreeGridLayout.show();
         } else {

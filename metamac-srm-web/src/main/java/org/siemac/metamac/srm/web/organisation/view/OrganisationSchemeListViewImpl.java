@@ -231,7 +231,8 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         boolean allSelectedSchemesCanBeDeleted = true;
         for (ListGridRecord record : records) {
             OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDto = ((OrganisationSchemeRecord) record).getOrganisationSchemeBasicDto();
-            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getProcStatus())) {
+            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getLifeCycle().getProcStatus())
+                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getLifeCycle().getProcStatus())) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;
             }
@@ -248,7 +249,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         for (ListGridRecord record : records) {
             OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDto = ((OrganisationSchemeRecord) record).getOrganisationSchemeBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getProcStatus()) || organisationSchemeMetamacDto.getValidTo() != null) {
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()) || organisationSchemeMetamacDto.getValidTo() != null) {
                 allSelectedSchemesValidityCanBeCanceled = false;
             }
         }

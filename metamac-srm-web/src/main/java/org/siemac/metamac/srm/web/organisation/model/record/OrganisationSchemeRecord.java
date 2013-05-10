@@ -36,7 +36,7 @@ public class OrganisationSchemeRecord extends ItemSchemeRecord {
     }
 
     public ProcStatusEnum getProcStatus() {
-        return ((OrganisationSchemeMetamacBasicDto) getAttributeAsObject(OrganisationSchemeDS.DTO)).getProcStatus();
+        return ((OrganisationSchemeMetamacBasicDto) getAttributeAsObject(OrganisationSchemeDS.DTO)).getLifeCycle().getProcStatus();
     }
 
     public OrganisationSchemeMetamacBasicDto getOrganisationSchemeBasicDto() {

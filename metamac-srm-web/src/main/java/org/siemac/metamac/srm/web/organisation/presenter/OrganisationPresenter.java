@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
@@ -88,7 +89,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
         void setOrganisation(OrganisationMetamacDto organisationDto, Long contactToShowId);
         void setOrganisation(OrganisationMetamacDto organisationDto, OrganisationSchemeMetamacDto organisationSchemeMetamacDto, Long contactToShowId);
         void setContacts(List<ContactDto> contactDtos, Long contactToShowId);
-        void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults);
+        void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<OrganisationMetamacVisualisationResult> itemVisualisationResults);
     }
 
     @ContentSlot
@@ -253,7 +254,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
             }
             @Override
             public void onWaitSuccess(GetOrganisationsBySchemeResult result) {
-                final List<ItemVisualisationResult> itemVisualisationResults = result.getOrganisations();
+                final List<OrganisationMetamacVisualisationResult> itemVisualisationResults = result.getOrganisations();
                 dispatcher.execute(new GetOrganisationSchemeAction(OrganisationPresenter.this.organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationSchemeResult>() {
 
                     @Override

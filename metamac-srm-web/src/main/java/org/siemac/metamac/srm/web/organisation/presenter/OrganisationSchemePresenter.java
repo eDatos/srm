@@ -10,6 +10,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
@@ -120,7 +121,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
         void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto);
         void setOrganisationSchemeVersions(List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDtos);
-        void setOrganisationList(List<ItemVisualisationResult> organisationDtos);
+        void setOrganisationList(List<OrganisationMetamacVisualisationResult> organisationDtos);
         void startOrganisationSchemeEdition();
         void setLatestOrganisationSchemeForInternalPublication(GetOrganisationSchemesResult result);
 
