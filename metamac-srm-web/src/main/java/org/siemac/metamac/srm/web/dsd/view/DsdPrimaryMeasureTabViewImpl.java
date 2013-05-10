@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.dsd.view;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 
-import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
@@ -22,22 +21,18 @@ import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdPrimaryMeasureTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
-import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -169,17 +164,14 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         // ENUMERATED REPRESENTATION
 
-        ViewTextItem enumeratedRepresentation = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, getConstants().representationEnumerated());
-        enumeratedRepresentation.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction()); // This item is never shown. Stores the enumerated representation (codelist URN)
-
-        SearchViewTextItem enumeratedRepresentationEditionView = createEnumeratedRepresentationItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_EDITION_VIEW, getConstants().representationEnumerated());
+        SearchRelatedResourceLinkItem enumeratedRepresentationEditionView = createEnumeratedRepresentationItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, getConstants().representationEnumerated());
         enumeratedRepresentationEditionView.setShowIfCondition(getEnumeratedRepresentationFormItemIfFunction()); // Shown in editionMode, only when the enumerated representation is editable
 
-        ViewTextItem enumeratedRepresentationView = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW, getConstants().representationEnumerated());
+        RelatedResourceLinkItem enumeratedRepresentationView = new RelatedResourceLinkItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW, getConstants().representationEnumerated(),
+                getCustomLinkItemNavigationClickHandler());
         enumeratedRepresentationView.setShowIfCondition(getStaticEnumeratedRepresentationFormItemIfFunction()); // This item is shown when the enumerated representation can not be edited
 
-        editionForm.setFields(code, urn, urnProvider, concept, staticConcept, representationTypeItem, staticRepresentationTypeItem, enumeratedRepresentation, enumeratedRepresentationEditionView,
-                enumeratedRepresentationView);
+        editionForm.setFields(code, urn, urnProvider, concept, staticConcept, representationTypeItem, staticRepresentationTypeItem, enumeratedRepresentationEditionView, enumeratedRepresentationView);
 
         // FACET
 
@@ -290,7 +282,6 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
         // Representation
         editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).clearValue();
-        editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_EDITION_VIEW).clearValue();
         editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).clearValue();
         editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).clearValue();
         editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE_VIEW).clearValue();
@@ -304,10 +295,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
                 editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(RepresentationTypeEnum.ENUMERATION.toString());
                 editionForm.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE_VIEW).setValue(getCoreMessages().representationTypeEnumENUMERATION());
-                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).setValue(componentDto.getLocalRepresentation().getEnumeration().getUrn());
-                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_EDITION_VIEW).setValue(
-                        RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
-                editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
+                ((SearchRelatedResourceLinkItem) editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)).setRelatedResource(componentDto.getLocalRepresentation().getEnumeration());
+                ((RelatedResourceLinkItem) editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_VIEW)).setRelatedResource(componentDto.getLocalRepresentation().getEnumeration());
 
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getRepresentationType())) {
 
@@ -348,9 +337,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 // Code List
 
                 primaryMeasure.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.ENUMERATION);
-                primaryMeasure.getLocalRepresentation().setEnumeration(
-                        StringUtils.isBlank(editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                                RelatedResourceTypeEnum.CODELIST, editionForm.getValueAsString(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)));
+                primaryMeasure.getLocalRepresentation().setEnumeration(((SearchRelatedResourceLinkItem) editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)).getRelatedResourceDto());
                 primaryMeasure.getLocalRepresentation().setTextFormat(null);
 
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(representationType)) {
@@ -454,10 +441,10 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         return conceptItem;
     }
 
-    private SearchViewTextItem createEnumeratedRepresentationItem(String name, String title) {
+    private SearchRelatedResourceLinkItem createEnumeratedRepresentationItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
-        final SearchViewTextItem enumeratedRepresentationItem = new SearchViewTextItem(name, title);
+        final SearchRelatedResourceLinkItem enumeratedRepresentationItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
         enumeratedRepresentationItem.setRequired(true);
         enumeratedRepresentationItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
@@ -490,9 +477,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                         RelatedResourceDto selectedCodelist = searchCodelistForEnumeratedRepresentationWindow.getSelectedRelatedResource();
                         searchCodelistForEnumeratedRepresentationWindow.markForDestroy();
                         // Set selected codelist in form
-                        editionForm.setValue(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, selectedCodelist != null ? selectedCodelist.getUrn() : null);
-                        editionForm.setValue(PrimaryMeasureDS.ENUMERATED_REPRESENTATION_EDITION_VIEW,
-                                selectedCodelist != null ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedCodelist) : null);
+                        ((SearchRelatedResourceLinkItem) editionForm.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)).setRelatedResource(selectedCodelist);
                         editionForm.validate(false);
                     }
                 });
