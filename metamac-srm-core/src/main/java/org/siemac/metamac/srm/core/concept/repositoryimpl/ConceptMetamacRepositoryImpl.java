@@ -1,9 +1,11 @@
 package org.siemac.metamac.srm.core.concept.repositoryimpl;
 
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getDate;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getLong;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.withoutTranslation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +18,13 @@ import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
+import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.RelatedResourceVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 
@@ -33,9 +36,6 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
 
     @Autowired
     private ConceptRepository   conceptRepository;
-
-    @Autowired
-    private ItemRepository      itemRepository;
 
     private static final String COLUMN_NAME_PLURAL_NAME        = "PLURAL_NAME_FK";
     private static final String COLUMN_NAME_ACRONYM            = "ACRONYM_FK";
@@ -59,9 +59,62 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         return null;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
-    public List<ItemVisualisationResult> findConceptsByConceptSchemeUnorderedToVisualisation(Long conceptSchemeVersionId, String locale) throws MetamacException {
-        return itemRepository.findItemsByItemSchemeUnorderedToVisualisation(conceptSchemeVersionId, locale);
+    public List<ConceptMetamacVisualisationResult> findConceptsByConceptSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException {
+        // Find items. Returns only one row by item. NOTE: this query return null label if locale not exits for a code.
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT i.ID as ITEM_ID, i.CREATED_DATE, i.CREATED_DATE_TZ, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, lsName.LABEL as NAME, lsAcronym.LABEL as ACRONYM, c.SDMX_RELATED_ARTEFACT ");
+        sb.append("FROM TB_M_CONCEPTS c ");
+        sb.append("INNER JOIN TB_ITEMS_BASE i on c.TB_CONCEPTS = i.ID ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsName on lsName.INTERNATIONAL_STRING_FK = a.NAME_FK and lsName.locale = :locale ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsAcronym on lsAcronym.INTERNATIONAL_STRING_FK = c.ACRONYM_FK and lsAcronym.locale = :locale ");
+        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId");
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        query.setParameter("locale", locale);
+        List itemsResultSql = query.getResultList();
+
+        // Transform object[] results
+        List<ConceptMetamacVisualisationResult> targets = new ArrayList<ConceptMetamacVisualisationResult>(itemsResultSql.size());
+        Map<Long, ConceptMetamacVisualisationResult> mapItemByItemId = new HashMap<Long, ConceptMetamacVisualisationResult>(itemsResultSql.size());
+        for (Object itemResultSql : itemsResultSql) {
+            Object[] itemResultSqlArray = (Object[]) itemResultSql;
+            ConceptMetamacVisualisationResult target = itemResultSqlToConceptVisualisationResult(itemResultSqlArray);
+            targets.add(target);
+            mapItemByItemId.put(target.getItemIdDatabase(), target);
+        }
+
+        // Variable . Execute one independent query to retrieve variable s is more efficient than do a global query
+        StringBuilder sbVariables = new StringBuilder();
+        sbVariables.append("SELECT i.ID as ITEM_ID, v.ID as V_ID, av.URN as V_URN, av.URN_PROVIDER as V_URN_PROVIDER, av.CODE as V_CODE, ls.LABEL as V_NAME ");
+        sbVariables.append("FROM TB_M_CONCEPTS c ");
+        sbVariables.append("INNER JOIN TB_ITEMS_BASE i on c.TB_CONCEPTS = i.ID ");
+        sbVariables.append("INNER JOIN TB_M_VARIABLES v on v.ID = c.VARIABLE_FK ");
+        sbVariables.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS av on v.NAMEABLE_ARTEFACT_FK = av.ID ");
+        sbVariables.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = av.NAME_FK and ls.locale = :locale ");
+        sbVariables.append("WHERE i.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
+        Query queryVariables = getEntityManager().createNativeQuery(sbVariables.toString());
+        queryVariables.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        queryVariables.setParameter("locale", locale);
+        List variablesResultSql = queryVariables.getResultList();
+        for (Object variableResultSql : variablesResultSql) {
+            Object[] variableResultSqlArray = (Object[]) variableResultSql;
+            Long actualItemId = getLong(variableResultSqlArray[0]);
+            ConceptMetamacVisualisationResult target = mapItemByItemId.get(actualItemId);
+            RelatedResourceVisualisationResult variable = variableResultSqlToRelatedResourceVisualisationResult(variableResultSqlArray);
+            target.setVariable(variable);
+        }
+
+        // Parent: fill manually with java code
+        for (ConceptMetamacVisualisationResult target : targets) {
+            if (target.getParentIdDatabase() != null) {
+                ConceptMetamacVisualisationResult parent = mapItemByItemId.get(target.getParentIdDatabase());
+                target.setParent(parent);
+            }
+        }
+        return targets;
     }
 
     @Override
@@ -280,5 +333,31 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
                                                                               return getConceptExtensionPoint(item).getLegalActs();
                                                                           }
                                                                       };
+    }
+
+    private ConceptMetamacVisualisationResult itemResultSqlToConceptVisualisationResult(Object[] source) throws MetamacException {
+        ConceptMetamacVisualisationResult target = new ConceptMetamacVisualisationResult();
+        int i = 0;
+        target.setItemIdDatabase(getLong(source[i++]));
+        target.setCreatedDate(getDate(source[i++], source[i++]));
+        target.setUrn(getString(source[i++]));
+        target.setCode(getString(source[i++]));
+        target.setParentIdDatabase(getLong(source[i++]));
+        target.setName(getString(source[i++]));
+        target.setAcronym(getString(source[i++]));
+        target.setSdmxRelatedArtefact(ConceptRoleEnum.valueOf(getString(source[i++])));
+        return target;
+    }
+
+    private RelatedResourceVisualisationResult variableResultSqlToRelatedResourceVisualisationResult(Object[] source) {
+        RelatedResourceVisualisationResult target = new RelatedResourceVisualisationResult();
+        int i = 0;
+        i++; // skip item id
+        i++; // skip variable id
+        target.setUrn(getString(source[i++]));
+        target.setUrnProvider(getString(source[i++]));
+        target.setCode(getString(source[i++]));
+        target.setTitle(getString(source[i++]));
+        return target;
     }
 }

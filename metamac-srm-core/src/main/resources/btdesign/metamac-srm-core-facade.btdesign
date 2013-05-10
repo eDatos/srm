@@ -389,7 +389,7 @@ Application SrmFacadeCore {
 			"Deletes concept"
             deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme in locale requested"
-    		List<ItemVisualisationResult> retrieveConceptsByConceptSchemeUrn(String conceptSchemeUrn, String locale) throws MetamacException;
+    		List<ConceptMetamacVisualisationResult> retrieveConceptsByConceptSchemeUrn(String conceptSchemeUrn, String locale) throws MetamacException;
     		
     		"Adds a concepts relation (related concepts)"
     		addRelatedConcept(String urn1, String urn2) throws MetamacException;

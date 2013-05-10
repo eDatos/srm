@@ -626,7 +626,7 @@
               DOC_METHOD_FK="[null]"
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
-              SDMX_RELATED_ARTEFACT="ATTRIBUTE"
+              SDMX_RELATED_ARTEFACT="DIMENSION"
               EXTENDS_FK="[null]"
               VARIABLE_FK="[null]"
               TB_CONCEPTS="122"
@@ -642,7 +642,7 @@
                 UUID="conceptScheme-1-v2-concept-2"
                 VERSION="1"
                 CREATED_BY="user1"
-                CREATED_DATE="2012-01-01 01:02:03"
+                CREATED_DATE="2011-03-02 04:05:06"
                 CREATED_DATE_TZ="Europe/London"
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
@@ -682,15 +682,15 @@
 
             <TB_M_CONCEPTS
               PLURAL_NAME_FK="[null]"
-              ACRONYM_FK="[null]"
+              ACRONYM_FK="90"
               DESCRIPTION_SOURCE_FK="[null]"
               CONTEXT_FK="[null]"
               DOC_METHOD_FK="[null]"
               DERIVATION_FK="[null]"
               LEGAL_ACTS_FK="[null]"
-              SDMX_RELATED_ARTEFACT="ATTRIBUTE"
+              SDMX_RELATED_ARTEFACT="PRIMARY_MEASURE"
               EXTENDS_FK="[null]"
-              VARIABLE_FK="[null]"
+              VARIABLE_FK="2"
               TB_CONCEPTS="1221"
              />
         
@@ -5098,8 +5098,16 @@
     
     <TB_LOCALISED_STRINGS
         ID="181"
-        LABEL="Acronym conceptScheme-1-v2-concept-1"
+        LABEL="Acrónimo conceptScheme-1-v2-concept-1"
         LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="18"
+    />  
+
+    <TB_LOCALISED_STRINGS
+        ID="182"
+        LABEL="Acronym conceptScheme-1-v2-concept-1"
+        LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="18"
     />  
@@ -5525,12 +5533,18 @@
     
     <TB_LOCALISED_STRINGS
         ID="491"
-        LABEL="nombre"
+        LABEL="nombre variable 1"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="49"
     />       
-    
+    <TB_LOCALISED_STRINGS
+        ID="492"
+        LABEL="name variable 1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="49"
+    />       
     
     <TB_INTERNATIONAL_STRINGS
         ID="50"
@@ -5552,7 +5566,7 @@
     
     <TB_LOCALISED_STRINGS
         ID="511"
-        LABEL="nombre"
+        LABEL="nombre variable 2"
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="51"
@@ -6123,5 +6137,26 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="89"
     />                                                                                                                                 
-                    
+        
+   <TB_INTERNATIONAL_STRINGS
+        ID="90"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="901"
+        LABEL="Acrónimo conceptScheme-1-v2-concept-2-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="90"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="902"
+        LABEL="Acronym conceptScheme-1-v2-concept-2-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="90"
+    />                        
+                            
 </dataset>

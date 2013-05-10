@@ -89,7 +89,7 @@ Application ConceptsMetamac {
 			"Deletes concept"
     		deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme in locale requested"
-    		List<ItemVisualisationResult> retrieveConceptsByConceptSchemeUrn(String conceptSchemeUrn, String locale) throws MetamacException;
+    		List<ConceptMetamacVisualisationResult> retrieveConceptsByConceptSchemeUrn(String conceptSchemeUrn, String locale) throws MetamacException;
     		"Adds a concepts relation"
     		addRelatedConcept(String urn1, String urn2) throws MetamacException;
     		"Deletes a concepts relation"
@@ -177,7 +177,7 @@ Application ConceptsMetamac {
 				@ConceptMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
 				List<ItemResult> findConceptsByConceptSchemeUnordered(Long conceptSchemeVersionId, ItemMetamacResultSelection resultSelection);
-				List<ItemVisualisationResult> findConceptsByConceptSchemeUnorderedToVisualisation(Long conceptSchemeVersionId, String locale) throws MetamacException;
+				List<ConceptMetamacVisualisationResult> findConceptsByConceptSchemeUnorderedToVisualisation(Long conceptSchemeVersionId, String locale) throws MetamacException;
 				checkConceptTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 			}
 		}
