@@ -32,7 +32,6 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdDimensionsTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.dsd.widgets.NewDimensionWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
-import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -43,7 +42,6 @@ import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigationClickHandler;
 
@@ -378,14 +376,12 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // ConceptScheme
 
-        ViewTextItem conceptScheme = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, getConstants().conceptScheme()); // This item is never shown. Stores the conceptScheme URN
-        conceptScheme.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-
-        SearchViewTextItem staticEditableConceptScheme = createMeasureDimensionEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_EDITION_VIEW, getConstants()
+        SearchRelatedResourceLinkItem staticEditableConceptScheme = createMeasureDimensionEnumeratedRepresentationItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, getConstants()
                 .conceptScheme());
         staticEditableConceptScheme.setShowIfCondition(getConceptSchemeEnumeratedRepresentationFormItemIfFunction()); // Shown in editionMode, only when the conceptScheme is editable
 
-        ViewTextItem staticConceptScheme = new ViewTextItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, getConstants().conceptScheme());
+        RelatedResourceLinkItem staticConceptScheme = new RelatedResourceLinkItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW, getConstants().conceptScheme(),
+                getCustomLinkItemNavigationClickHandler());
         staticConceptScheme.setShowIfCondition(getStaticConceptSchemeEnumeratedRepresentationFormItemIfFunction()); // This item is shown when the conceptScheme can not be edited
 
         // URNs
@@ -394,7 +390,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         ViewTextItem urnProvider = new ViewTextItem(DimensionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
         editionForm.setFields(code, staticCodeEdit, dimensionType, dimensionTypeView, concept, staticConcept, conceptRoleItem, staticConceptRoleItem, representationTypeItem,
-                staticRepresentationTypeItem, staticEditableCodelist, staticCodelist, conceptScheme, staticEditableConceptScheme, staticConceptScheme, urn, urnProvider);
+                staticRepresentationTypeItem, staticEditableCodelist, staticCodelist, staticEditableConceptScheme, staticConceptScheme, urn, urnProvider);
 
         // FACET
 
@@ -554,8 +550,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 dimensionComponentDto.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.ENUMERATION);
                 if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                     dimensionComponentDto.getLocalRepresentation().setEnumeration(
-                            StringUtils.isBlank(editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)) ? null : RelatedResourceUtils.createRelatedResourceDto(
-                                    RelatedResourceTypeEnum.CONCEPT_SCHEME, editionForm.getValueAsString(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)));
+                            ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)).getRelatedResourceDto());
                 } else {
                     dimensionComponentDto.getLocalRepresentation().setEnumeration(
                             ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)).getRelatedResourceDto());
@@ -697,7 +692,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST).clearValue();
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST_VIEW).clearValue();
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME).clearValue();
-        editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_EDITION_VIEW).clearValue();
         editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW).clearValue();
         editionForm.getItem(DimensionDS.REPRESENTATION_TYPE).clearValue();
         editionForm.getItem(DimensionDS.REPRESENTATION_TYPE_VIEW).clearValue();
@@ -728,11 +722,10 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                     // ConceptScheme
 
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, dimensionComponentDto.getLocalRepresentation().getEnumeration().getUrn());
-                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_EDITION_VIEW,
-                                RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getLocalRepresentation().getEnumeration()));
-                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW,
-                                RelatedResourceUtils.getRelatedResourceName(dimensionComponentDto.getLocalRepresentation().getEnumeration()));
+                        ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)).setRelatedResource(dimensionComponentDto.getLocalRepresentation()
+                                .getEnumeration());
+                        ((RelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW)).setRelatedResource(dimensionComponentDto.getLocalRepresentation()
+                                .getEnumeration());
                     }
                 }
 
@@ -997,15 +990,18 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         return conceptItem;
     }
 
-    private SearchViewTextItem createMeasureDimensionEnumeratedRepresentationItem(String name, String title) {
-        final SearchViewTextItem conceptSchemeItem = new SearchViewTextItem(name, title);
+    private SearchRelatedResourceLinkItem createMeasureDimensionEnumeratedRepresentationItem(String name, String title) {
+        final SearchRelatedResourceLinkItem conceptSchemeItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
         conceptSchemeItem.setRequired(true);
         // Info icon
         FormItemIcon measureDimensionInfo = new FormItemIcon();
         measureDimensionInfo.setSrc(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.info().getURL());
         measureDimensionInfo.setPrompt(getConstants().dsdMeasureDimensionRepresentation());
+
         conceptSchemeItem.setIconVAlign(VerticalAlignment.TOP);
-        conceptSchemeItem.setIcons(conceptSchemeItem.getSearchIcon(), measureDimensionInfo);
+        conceptSchemeItem.setIconWidth(14);
+        conceptSchemeItem.setIconHeight(14);
+        conceptSchemeItem.setIcons(conceptSchemeItem.getSearchIcon(), conceptSchemeItem.getClearIcon(), measureDimensionInfo);
 
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
@@ -1041,10 +1037,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                         RelatedResourceDto selectedConceptScheme = searchConceptSchemeForEnumeratedRepresentationWindow.getSelectedRelatedResource();
                         searchConceptSchemeForEnumeratedRepresentationWindow.markForDestroy();
                         // Set selected concept scheme in form
-                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME, selectedConceptScheme != null ? selectedConceptScheme.getUrn() : null);
-                        editionForm.setValue(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_EDITION_VIEW, selectedConceptScheme != null
-                                ? org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceName(selectedConceptScheme)
-                                : null);
+                        ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)).setRelatedResource(selectedConceptScheme);
                         editionForm.validate(false);
                     }
                 });
