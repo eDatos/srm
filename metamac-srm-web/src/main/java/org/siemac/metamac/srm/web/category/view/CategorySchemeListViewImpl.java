@@ -244,8 +244,8 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
         boolean allSelectedSchemesCanBeDeleted = true;
         for (ListGridRecord record : records) {
             CategorySchemeMetamacBasicDto categorySchemeMetamacDto = ((CategorySchemeRecord) record).getCategorySchemeBasicDto();
-            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getProcStatus()) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getProcStatus())
-                    || !CategoriesClientSecurityUtils.canDeleteCategoryScheme()) {
+            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getLifeCycle().getProcStatus())
+                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getLifeCycle().getProcStatus()) || !CategoriesClientSecurityUtils.canDeleteCategoryScheme()) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;
             }
@@ -262,7 +262,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
         for (ListGridRecord record : records) {
             CategorySchemeMetamacBasicDto categorySchemeMetamacDto = ((CategorySchemeRecord) record).getCategorySchemeBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getProcStatus()) || categorySchemeMetamacDto.getValidTo() != null
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getLifeCycle().getProcStatus()) || categorySchemeMetamacDto.getValidTo() != null
                     || !CategoriesClientSecurityUtils.canCancelCategorySchemeValidity()) {
                 allSelectedSchemesValidityCanBeCanceled = false;
             }

@@ -31,7 +31,7 @@ public class CategorySchemeRecord extends ItemSchemeRecord {
     }
 
     public ProcStatusEnum getProcStatus() {
-        return ((CategorySchemeMetamacBasicDto) getAttributeAsObject(CategorySchemeDS.DTO)).getProcStatus();
+        return ((CategorySchemeMetamacBasicDto) getAttributeAsObject(CategorySchemeDS.DTO)).getLifeCycle().getProcStatus();
     }
 
     public CategorySchemeMetamacBasicDto getCategorySchemeBasicDto() {
