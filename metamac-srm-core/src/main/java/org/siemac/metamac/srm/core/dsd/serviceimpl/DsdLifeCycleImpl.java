@@ -50,6 +50,7 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionType
 @Service("dsdLifeCycle")
 public class DsdLifeCycleImpl extends LifeCycleImpl {
 
+    @Autowired
     private StructureVersionRepository                      structureVersionRepository;
 
     @Autowired

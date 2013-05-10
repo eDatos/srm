@@ -473,6 +473,9 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         dataStructureDefinitionVersion.removeAllDimensionVisualisationInfos();
         dataStructureDefinitionVersion = versioningDimensionVisualisationInfo(ctx, dataStructureTemporalVersion, dataStructureDefinitionVersion);
 
+        // Delete temporal version
+        deleteDataStructureDefinition(ctx, dataStructureTemporalVersion.getMaintainableArtefact().getUrn());
+
         return dataStructureDefinitionVersion;
     }
 
