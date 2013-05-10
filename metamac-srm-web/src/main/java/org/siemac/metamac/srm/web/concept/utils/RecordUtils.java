@@ -39,14 +39,10 @@ public class RecordUtils {
         ConceptSchemeRecord record = new ConceptSchemeRecord();
         record.setCode(conceptSchemeDto.getCode());
         record.setName(getLocalisedString(conceptSchemeDto.getName()));
-        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getProcStatus()));
+        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
         record.setVersionLogic(conceptSchemeDto.getVersionLogic());
         record.setUrn(conceptSchemeDto.getUrn());
         record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(conceptSchemeDto.getMaintainer()));
-        record.setInternalPublicationDate(DateUtils.getFormattedDate(conceptSchemeDto.getInternalPublicationDate()));
-        record.setInternalPublicationUser(conceptSchemeDto.getInternalPublicationUser());
-        record.setExternalPublicationDate(DateUtils.getFormattedDate(conceptSchemeDto.getExternalPublicationDate()));
-        record.setExternalPublicationUser(conceptSchemeDto.getExternalPublicationUser());
         record.setConceptSchemeBasicDto(conceptSchemeDto);
         return record;
     }

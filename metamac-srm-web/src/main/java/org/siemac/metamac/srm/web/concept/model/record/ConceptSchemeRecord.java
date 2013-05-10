@@ -33,7 +33,7 @@ public class ConceptSchemeRecord extends ItemSchemeRecord {
     }
 
     public ProcStatusEnum getProcStatus() {
-        return ((ConceptSchemeMetamacBasicDto) getAttributeAsObject(ConceptSchemeDS.DTO)).getProcStatus();
+        return ((ConceptSchemeMetamacBasicDto) getAttributeAsObject(ConceptSchemeDS.DTO)).getLifeCycle().getProcStatus();
     }
 
     public String getDescription() {

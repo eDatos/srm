@@ -56,14 +56,10 @@ public class RecordUtils {
         CodelistRecord record = new CodelistRecord();
         record.setCode(codelistDto.getCode());
         record.setName(getLocalisedString(codelistDto.getName()));
-        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getProcStatus()));
+        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
         record.setVersionLogic(codelistDto.getVersionLogic());
         record.setUrn(codelistDto.getUrn());
         record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(codelistDto.getMaintainer()));
-        record.setInternalPublicationDate(DateUtils.getFormattedDate(codelistDto.getInternalPublicationDate()));
-        record.setInternalPublicationUser(codelistDto.getInternalPublicationUser());
-        record.setExternalPublicationDate(DateUtils.getFormattedDate(codelistDto.getExternalPublicationDate()));
-        record.setExternalPublicationUser(codelistDto.getExternalPublicationUser());
         record.setCodelistBasicDto(codelistDto);
         return record;
     }

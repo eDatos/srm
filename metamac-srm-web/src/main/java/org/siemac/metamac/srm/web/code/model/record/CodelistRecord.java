@@ -36,7 +36,7 @@ public class CodelistRecord extends ItemSchemeRecord {
     }
 
     public ProcStatusEnum getProcStatus() {
-        return ((CodelistMetamacBasicDto) getAttributeAsObject(CodelistDS.DTO)).getProcStatus();
+        return ((CodelistMetamacBasicDto) getAttributeAsObject(CodelistDS.DTO)).getLifeCycle().getProcStatus();
     }
 
     public String getDescription() {

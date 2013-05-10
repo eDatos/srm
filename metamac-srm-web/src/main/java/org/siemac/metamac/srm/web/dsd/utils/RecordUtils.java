@@ -46,7 +46,7 @@ public class RecordUtils {
         DsdRecord record = new DsdRecord();
         record.setCode(dsd.getCode());
         record.setName(InternationalStringUtils.getLocalisedString(dsd.getName()));
-        record.setProcStatus(CommonUtils.getProcStatusName(dsd.getProcStatus()));
+        record.setProcStatus(CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()));
         record.setVersion(dsd.getVersionLogic());
         record.setUrn(dsd.getUrn());
         record.setDsdBasicDto(dsd);
