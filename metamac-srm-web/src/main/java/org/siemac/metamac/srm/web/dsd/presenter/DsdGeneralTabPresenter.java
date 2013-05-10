@@ -18,6 +18,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.events.UpdateMaintainableArtefactEvent;
 import org.siemac.metamac.srm.web.client.events.UpdateMaintainableArtefactVersionsEvent;
 import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
@@ -359,6 +360,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                 retrieveCompleteDsd(result.getDataStructureDefinitionMetamacDto().getUrn(), true);
                 // Update the version list
                 UpdateMaintainableArtefactVersionsEvent.fire(DsdGeneralTabPresenter.this, result.getDataStructureDefinitionMetamacDto().getUrn());
+                // Update DSD urn in main page
+                updateDsdInMainDsdPage(result.getDataStructureDefinitionMetamacDto().getUrn());
             }
         });
     }
@@ -456,10 +459,18 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         });
     }
 
+    //
+    // NAVIGATION
+    //
+
     @Override
     public void goToDsd(String urn) {
         if (!StringUtils.isBlank(urn)) {
             placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeDsdPlaceRequest(urn), -2);
         }
+    }
+
+    private void updateDsdInMainDsdPage(String dsdUrn) {
+        UpdateMaintainableArtefactEvent.fire(this, dsdUrn);
     }
 }

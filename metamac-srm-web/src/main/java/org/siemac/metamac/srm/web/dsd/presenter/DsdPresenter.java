@@ -12,6 +12,8 @@ import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
+import org.siemac.metamac.srm.web.client.events.UpdateMaintainableArtefactEvent;
+import org.siemac.metamac.srm.web.client.events.UpdateMaintainableArtefactEvent.UpdateMaintainableArtefactHandler;
 import org.siemac.metamac.srm.web.client.events.UpdateMaintainableArtefactVersionsEvent;
 import org.siemac.metamac.srm.web.client.events.UpdateMaintainableArtefactVersionsEvent.UpdateMaintainableArtefactVersionsHandler;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
@@ -53,10 +55,17 @@ import com.smartgwt.client.widgets.tab.events.HasTabSelectedHandlers;
 import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
 import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
 
-public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.DsdProxy> implements DsdUiHandlers, SelectViewDsdDescriptorHandler, UpdateMaintainableArtefactVersionsHandler {
+public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.DsdProxy>
+        implements
+            DsdUiHandlers,
+            SelectViewDsdDescriptorHandler,
+            UpdateMaintainableArtefactVersionsHandler,
+            UpdateMaintainableArtefactHandler {
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
+
+    private String                                    dsdUrn;
 
     /**
      * Use this in leaf presenters, inside their {@link #revealInParent} method.
@@ -110,6 +119,8 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
         // Redirect to general tab
         getView().getDsdTabSet().selectTab(0);
         if (NameTokens.dsdPage.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
+            String dsdIdentifier = PlaceRequestUtils.getDsdParamFromUrl(placeManager);// DSD identifier is the URN without the prefix
+            this.dsdUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier);
             placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdGeneralPage));
         }
     }
@@ -122,10 +133,8 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
 
             @Override
             public void onTabSelected(TabSelectedEvent event) {
-                if (NameTokens.dsdPage.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
-                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdGeneralPage));
-                } else {
-                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdGeneralPage), -1);
+                if (!StringUtils.isBlank(dsdUrn)) {
+                    placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteDsdGeneralPlaceRequest(dsdUrn));
                 }
             }
         });
@@ -133,10 +142,8 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
 
             @Override
             public void onTabSelected(TabSelectedEvent event) {
-                if (NameTokens.dsdPage.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
-                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdPrimaryMeasurePage));
-                } else {
-                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdPrimaryMeasurePage), -1);
+                if (!StringUtils.isBlank(dsdUrn)) {
+                    placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteDsdPrimaryMeasurePlaceRequest(dsdUrn));
                 }
             }
         });
@@ -144,10 +151,8 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
 
             @Override
             public void onTabSelected(TabSelectedEvent event) {
-                if (NameTokens.dsdPage.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
-                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdDimensionsPage));
-                } else {
-                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdDimensionsPage), -1);
+                if (!StringUtils.isBlank(dsdUrn)) {
+                    placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteDsdDimensionsPlaceRequest(dsdUrn));
                 }
             }
         });
@@ -155,10 +160,8 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
 
             @Override
             public void onTabSelected(TabSelectedEvent event) {
-                if (NameTokens.dsdPage.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
-                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdAttributesPage));
-                } else {
-                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdAttributesPage), -1);
+                if (!StringUtils.isBlank(dsdUrn)) {
+                    placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteDsdAttributesPlaceRequest(dsdUrn));
                 }
             }
         });
@@ -166,10 +169,8 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
 
             @Override
             public void onTabSelected(TabSelectedEvent event) {
-                if (NameTokens.dsdPage.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
-                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdGroupKeysPage));
-                } else {
-                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdGroupKeysPage), -1);
+                if (!StringUtils.isBlank(dsdUrn)) {
+                    placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteDsdGroupKeysPlaceRequest(dsdUrn));
                 }
             }
         });
@@ -177,10 +178,8 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
 
             @Override
             public void onTabSelected(TabSelectedEvent event) {
-                if (NameTokens.dsdPage.equals(placeManager.getCurrentPlaceRequest().getNameToken())) {
-                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdCategorisationsPage));
-                } else {
-                    placeManager.revealRelativePlace(new PlaceRequest(NameTokens.dsdCategorisationsPage), -1);
+                if (!StringUtils.isBlank(dsdUrn)) {
+                    placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteDsdCategorisationsPlaceRequest(dsdUrn));
                 }
             }
         });
@@ -195,7 +194,7 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
         // Load DSD
         String dsdIdentifier = PlaceRequestUtils.getDsdParamFromUrl(placeManager);// DSD identifier is the URN without the prefix
         if (!StringUtils.isBlank(dsdIdentifier)) {
-            String dsdUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier);
+            this.dsdUrn = UrnUtils.generateUrn(UrnConstants.URN_SDMX_CLASS_DATASTRUCTURE_PREFIX, dsdIdentifier);
 
             // The DSD should be loaded before loading the DSD versions
             retrieveDsdAndVersions(dsdUrn);
@@ -232,6 +231,12 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
         retrieveDsdAndVersions(event.getUrn()); // Load also the DSD to select it in the versions list
     }
 
+    @ProxyEvent
+    @Override
+    public void onUpdateMaintainableArtefact(UpdateMaintainableArtefactEvent event) {
+        this.dsdUrn = event.getUrn();
+    }
+
     private void retrieveDsdAndVersions(String urn) {
         dispatcher.execute(new GetDsdAction(urn), new WaitingAsyncCallback<GetDsdResult>() {
 
@@ -260,6 +265,10 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
             }
         });
     }
+
+    //
+    // NAVIGATION
+    //
 
     @Override
     public void goToDsd(String urn) {

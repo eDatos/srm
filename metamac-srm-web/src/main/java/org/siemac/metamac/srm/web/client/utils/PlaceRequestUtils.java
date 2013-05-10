@@ -29,6 +29,48 @@ public class PlaceRequestUtils {
         return placeRequest;
     }
 
+    public static List<PlaceRequest> buildAbsoluteDsdGeneralPlaceRequest(String dsdUrn) {
+        List<PlaceRequest> placeRequests = buildAbsoluteDsdPlaceRequest(dsdUrn);
+        PlaceRequest dsdPlace = new PlaceRequest(NameTokens.dsdGeneralPage);
+        placeRequests.add(dsdPlace);
+        return placeRequests;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteDsdPrimaryMeasurePlaceRequest(String dsdUrn) {
+        List<PlaceRequest> placeRequests = buildAbsoluteDsdPlaceRequest(dsdUrn);
+        PlaceRequest dsdPlace = new PlaceRequest(NameTokens.dsdPrimaryMeasurePage);
+        placeRequests.add(dsdPlace);
+        return placeRequests;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteDsdDimensionsPlaceRequest(String dsdUrn) {
+        List<PlaceRequest> placeRequests = buildAbsoluteDsdPlaceRequest(dsdUrn);
+        PlaceRequest dsdPlace = new PlaceRequest(NameTokens.dsdDimensionsPage);
+        placeRequests.add(dsdPlace);
+        return placeRequests;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteDsdAttributesPlaceRequest(String dsdUrn) {
+        List<PlaceRequest> placeRequests = buildAbsoluteDsdPlaceRequest(dsdUrn);
+        PlaceRequest dsdPlace = new PlaceRequest(NameTokens.dsdAttributesPage);
+        placeRequests.add(dsdPlace);
+        return placeRequests;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteDsdGroupKeysPlaceRequest(String dsdUrn) {
+        List<PlaceRequest> placeRequests = buildAbsoluteDsdPlaceRequest(dsdUrn);
+        PlaceRequest dsdPlace = new PlaceRequest(NameTokens.dsdGroupKeysPage);
+        placeRequests.add(dsdPlace);
+        return placeRequests;
+    }
+
+    public static List<PlaceRequest> buildAbsoluteDsdCategorisationsPlaceRequest(String dsdUrn) {
+        List<PlaceRequest> placeRequests = buildAbsoluteDsdPlaceRequest(dsdUrn);
+        PlaceRequest dsdPlace = new PlaceRequest(NameTokens.dsdCategorisationsPage);
+        placeRequests.add(dsdPlace);
+        return placeRequests;
+    }
+
     public static List<PlaceRequest> buildAbsoluteDsdsPlaceRequest() {
         List<PlaceRequest> placeRequestHierarchy = new ArrayList<PlaceRequest>();
         placeRequestHierarchy.add(new PlaceRequest(NameTokens.structuralResourcesPage));
