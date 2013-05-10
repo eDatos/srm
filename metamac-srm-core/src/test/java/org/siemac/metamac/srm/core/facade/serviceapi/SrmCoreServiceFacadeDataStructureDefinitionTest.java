@@ -63,7 +63,7 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEn
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-public class SrmCoreServiceFacadeDsdTest extends SrmBaseTest {
+public class SrmCoreServiceFacadeDataStructureDefinitionTest extends SrmBaseTest {
 
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
