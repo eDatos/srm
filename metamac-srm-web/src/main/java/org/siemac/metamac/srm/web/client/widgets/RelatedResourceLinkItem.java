@@ -19,4 +19,9 @@ public class RelatedResourceLinkItem extends RelatedResourceBaseLinkItem<Related
     protected List<PlaceRequest> buildLocation(RelatedResourceDto relatedResourceDto) {
         return PlaceRequestUtils.buildAbsoluteResourcePlaceRequest(relatedResourceDto);
     }
+
+    @Override
+    public void clearValue() {
+        super.clearRelatedResource();
+    }
 }
