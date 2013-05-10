@@ -888,6 +888,7 @@
             <xs:group ref="common:ResourceGroup" />
             <xs:element name="managementAppLink" type="xs:string" />
             <xs:element name="lifeCycle" type="tns:LifeCycle" minOccurs="1" />
+            <xs:element name="createdDate" type="xs:dateTime" minOccurs="1" />            
             <xs:element name="replaceToVersion" type="xs:string" minOccurs="0" />
             <xs:element name="replacedByVersion" type="xs:string" minOccurs="0" />
             <xs:element name="comment" type="common:InternationalString" minOccurs="0" />

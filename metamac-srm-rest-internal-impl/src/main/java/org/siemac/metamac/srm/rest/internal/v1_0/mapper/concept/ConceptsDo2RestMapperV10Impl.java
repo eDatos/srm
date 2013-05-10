@@ -96,6 +96,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
         target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
+        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
     }
 
     @Override

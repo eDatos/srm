@@ -125,6 +125,7 @@
         <sr:externalPublicationDate>2012-12-04T01:01:01.001Z</sr:externalPublicationDate>
         <sr:externalPublicationUser>external-publication-user</sr:externalPublicationUser>
     </sr:lifeCycle>
+    <sr:createdDate>2013-10-01T10:12:13.014+01:00</sr:createdDate>
     <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
     <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
     <sr:comment>

@@ -243,6 +243,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
         target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
+        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
     }
 
     @Override
@@ -263,6 +264,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
         target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
+        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
     }
 
     @Override
@@ -283,6 +285,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
         target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
+        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
     }
 
     @Override
@@ -303,6 +306,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
         target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
+        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
     }
 
     @Override

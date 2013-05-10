@@ -136,6 +136,7 @@ public class OrganisationsTypeDataProviderDo2RestMapperTest {
         assertEquals("internal-publication-user", target.getLifeCycle().getInternalPublicationUser());
         assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getExternalPublicationDate());
         assertEquals("external-publication-user", target.getLifeCycle().getExternalPublicationUser());
+        assertEqualsDate(new DateTime(2013, 10, 1, 10, 12, 13, 14), target.getCreatedDate());
 
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDERS, target.getChildLinks().getChildLinks().get(0).getKind());

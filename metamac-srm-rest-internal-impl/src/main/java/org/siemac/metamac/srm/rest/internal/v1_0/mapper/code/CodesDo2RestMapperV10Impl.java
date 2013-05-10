@@ -109,6 +109,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
         target.setReplacedBy(toCodelistReplacedBy(source));
         target.setReplaceTo(toCodelistReplaceTo(source));
+        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
     }
 
     @Override

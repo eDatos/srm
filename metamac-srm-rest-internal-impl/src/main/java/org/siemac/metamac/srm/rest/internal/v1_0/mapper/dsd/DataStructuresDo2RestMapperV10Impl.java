@@ -101,6 +101,8 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         target.setStub(toDimensions(source.getStubDimensions()));
         target.setShowDecimals(source.getShowDecimals() != null ? BigInteger.valueOf(source.getShowDecimals()) : null);
         target.setShowDecimalsPrecisions(toShowDecimalPrecisions(source.getShowDecimalsPrecisions()));
+
+        target.setCreatedDate(toDate(source.getStructure().getResourceCreatedDate()));
     }
 
     @Override

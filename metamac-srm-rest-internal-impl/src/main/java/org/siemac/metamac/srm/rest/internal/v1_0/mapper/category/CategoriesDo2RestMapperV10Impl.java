@@ -80,6 +80,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
         target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
         target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
+        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
     }
 
     @Override
