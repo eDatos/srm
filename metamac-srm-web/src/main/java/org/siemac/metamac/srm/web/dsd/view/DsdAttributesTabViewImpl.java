@@ -14,12 +14,13 @@ import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.webcommon.CustomLinkItemNavigationClickHandler;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataAttributeDS;
-import org.siemac.metamac.srm.web.dsd.model.ds.PrimaryMeasureDS;
 import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
@@ -285,7 +286,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         form = new GroupDynamicForm(getConstants().dsdAttributeDetails());
         ViewTextItem code = new ViewTextItem(DataAttributeDS.CODE, getConstants().dsdAttributeId());
         ViewTextItem type = new ViewTextItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
-        ViewTextItem concept = new ViewTextItem(DataAttributeDS.CONCEPT, getConstants().concept());
+        RelatedResourceLinkItem concept = new RelatedResourceLinkItem(DataAttributeDS.CONCEPT, getConstants().concept(), getCustomLinkItemNavigationClickHandler());
         RelatedResourceListItem roleItem = new RelatedResourceListItem(DataAttributeDS.ROLE, getConstants().dsdAttributeRole(), false, getListRecordNavigationClickHandler());
         ViewTextItem usageStatusItem = new ViewTextItem(DataAttributeDS.USAGE_STATUS, getConstants().dsdAttributeUsageStatus());
         ViewTextItem relatedTo = new ViewTextItem(DataAttributeDS.RELATED_TO, getConstants().dsdAttributeRelatedWith());
@@ -295,7 +296,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 .dsdAttributeDimensionsForDimensionRelationship());
         ViewTextItem staticGroupKeyFormForGroupRelationship = new ViewTextItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP, getConstants().dsdAttributeGroupKeyForGroupRelationship());
         ViewTextItem staticRepresentationTypeItem = new ViewTextItem(DataAttributeDS.REPRESENTATION_TYPE, getConstants().representation());
-        ViewTextItem codelist = new ViewTextItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, getConstants().codelist());
+        RelatedResourceLinkItem codelist = new RelatedResourceLinkItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, getConstants().codelist(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         form.setFields(code, type, usageStatusItem, concept, roleItem, relatedTo, staticGroupKeysForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
@@ -554,7 +555,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         form.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
 
         // Concept
-        form.setValue(DataAttributeDS.CONCEPT, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getCptIdRef()));
+        ((RelatedResourceLinkItem) form.getItem(DataAttributeDS.CONCEPT)).setRelatedResource(dataAttributeDto.getCptIdRef());
 
         // Role
         form.getItem(DataAttributeDS.ROLE).hide();
@@ -609,7 +610,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 // CODELIST
 
                 form.setValue(DataAttributeDS.REPRESENTATION_TYPE, MetamacSrmWeb.getCoreMessages().representationTypeEnumENUMERATION());
-                form.setValue(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST, RelatedResourceUtils.getRelatedResourceName(dataAttributeDto.getLocalRepresentation().getEnumeration()));
+                ((RelatedResourceLinkItem) form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)).setRelatedResource(dataAttributeDto.getLocalRepresentation().getEnumeration());
                 form.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST).show();
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(dataAttributeDto.getLocalRepresentation().getRepresentationType())) {
 
@@ -1305,7 +1306,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // Shown when the representation type selected is ENUMERATION and the enumerated representation can be edited
-                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(PrimaryMeasureDS.REPRESENTATION_TYPE))
+                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(DataAttributeDS.REPRESENTATION_TYPE))
                         && DsdsFormUtils.canAttributeCodelistEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
@@ -1317,7 +1318,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 // Shown when the representation type selected is ENUMERATION and the enumerated representation can NOT be edited
-                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(PrimaryMeasureDS.REPRESENTATION_TYPE))
+                return CommonUtils.isRepresentationTypeEnumerated(editionForm.getValueAsString(DataAttributeDS.REPRESENTATION_TYPE))
                         && !DsdsFormUtils.canAttributeCodelistEnumeratedRepresentationBeEdited(dataStructureDefinitionMetamacDto);
             }
         };
@@ -1326,6 +1327,16 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     // ------------------------------------------------------------------------------------------------------------
     // CLICK HANDLERS
     // ------------------------------------------------------------------------------------------------------------
+
+    private CustomLinkItemNavigationClickHandler getCustomLinkItemNavigationClickHandler() {
+        return new CustomLinkItemNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
+            }
+        };
+    }
 
     private ListRecordNavigationClickHandler getListRecordNavigationClickHandler() {
         return new ListRecordNavigationClickHandler() {
