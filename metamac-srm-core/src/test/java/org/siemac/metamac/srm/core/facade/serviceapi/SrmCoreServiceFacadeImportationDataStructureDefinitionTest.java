@@ -13,11 +13,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.DirtyDatabase;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
-import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,24 +40,15 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
 @Transactional
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
+public class SrmCoreServiceFacadeImportationDataStructureDefinitionTest extends SrmBaseTest {
 
-    private static Logger                 logger = LoggerFactory.getLogger(SrmCoreServiceFacadeImportationTest.class);
-
-    @Autowired
-    protected SrmCoreServiceFacade        srmCoreServiceFacade;
+    private static Logger                logger = LoggerFactory.getLogger(SrmCoreServiceFacadeImportationDataStructureDefinitionTest.class);
 
     @Autowired
-    protected CodesMetamacService         codesMetamacService;
+    protected SrmCoreServiceFacade       srmCoreServiceFacade;
 
     @Autowired
-    protected OrganisationsMetamacService organisationsMetamacService;
-
-    @Autowired
-    protected ConceptsMetamacService      conceptsMetamacService;
-
-    @Autowired
-    protected PlatformTransactionManager  transactionManager;
+    protected PlatformTransactionManager transactionManager;
 
     @Override
     protected String getDataSetFile() {
@@ -97,6 +85,7 @@ public class SrmCoreServiceFacadeImportationTest extends SrmBaseTest {
                 TypeComponentList.DIMENSION_DESCRIPTOR);
         assertTrue(dimDescriptor.iterator().next().getAnnotations().isEmpty());
     }
+
     @Test
     @DirtyDatabase
     public void testImport_DSD_ECB_EXR_SG_FULL() throws Exception {

@@ -14,9 +14,11 @@ import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacServiceTest
 import org.siemac.metamac.srm.core.dsd.serviceapi.DataStructureDefinitionMetamacServiceTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeConceptsSecurityTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeConceptsTest;
-import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeDsdTest;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeDataStructureDefinitionTest;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeImportationCodesTest;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeImportationConceptTest;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeImportationDataStructureDefinitionTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeImportationOrganisationTest;
-import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeImportationTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeOrganisationsSecurityTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeOrganisationsTest;
 import org.siemac.metamac.srm.core.organisation.mapper.OrganisationsDo2DtoMapperTest;
@@ -31,10 +33,11 @@ import com.arte.statistic.sdmx.srm.core.structure.mapper.DataStructureDefinition
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({SrmCoreServiceFacadeConceptsTest.class, SrmCoreServiceFacadeOrganisationsTest.class, SrmCoreServiceFacadeConceptsSecurityTest.class, SrmCoreServiceFacadeDsdTest.class,
-        ConceptsMetamacServiceTest.class, BaseDo2DtoMapperTest.class, OrganisationsDo2DtoMapperTest.class, OrganisationsDto2DoMapperTest.class, ConceptsDo2DtoMapperTest.class,
-        ConceptsDto2DoMapperTest.class, SrmCoreServiceFacadeOrganisationsSecurityTest.class, OrganisationsMetamacServiceTest.class, DataStructureDefinitionMetamacServiceTest.class,
-        CategoriesServiceTest.class, CategoriesDto2DoMapperTest.class, CategoriesDo2DtoMapperTest.class, CodesMetamacServiceTest.class, CodesDo2DtoMapperTest.class, CodesDto2DoMapperTest.class,
-        DataStructureDefinitionDto2DoMapperTest.class, SrmCoreServiceFacadeImportationTest.class, SrmCoreServiceFacadeImportationOrganisationTest.class})
+@Suite.SuiteClasses({SrmCoreServiceFacadeConceptsTest.class, SrmCoreServiceFacadeOrganisationsTest.class, SrmCoreServiceFacadeConceptsSecurityTest.class,
+        SrmCoreServiceFacadeDataStructureDefinitionTest.class, ConceptsMetamacServiceTest.class, BaseDo2DtoMapperTest.class, OrganisationsDo2DtoMapperTest.class, OrganisationsDto2DoMapperTest.class,
+        ConceptsDo2DtoMapperTest.class, ConceptsDto2DoMapperTest.class, SrmCoreServiceFacadeOrganisationsSecurityTest.class, OrganisationsMetamacServiceTest.class,
+        DataStructureDefinitionMetamacServiceTest.class, CategoriesServiceTest.class, CategoriesDto2DoMapperTest.class, CategoriesDo2DtoMapperTest.class, CodesMetamacServiceTest.class,
+        CodesDo2DtoMapperTest.class, CodesDto2DoMapperTest.class, DataStructureDefinitionDto2DoMapperTest.class, SrmCoreServiceFacadeImportationDataStructureDefinitionTest.class,
+        SrmCoreServiceFacadeImportationOrganisationTest.class, SrmCoreServiceFacadeImportationConceptTest.class, SrmCoreServiceFacadeImportationCodesTest.class})
 public class SrmSuite {
 }

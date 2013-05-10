@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mes:Structure xmlns:mes="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message ../schemas/SDMXMessage.xsd">
+	<mes:Header>
+		<mes:ID>MT_1306407683895</mes:ID>
+		<mes:Test>false</mes:Test>
+		<mes:Prepared>2011-05-26T12:01:23.895+01:00</mes:Prepared>
+		<mes:Sender id="SDMX01"/>
+	</mes:Header>
+	<mes:Structures>
+		<str:CategorySchemes xmlns:str="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure">
+			<str:CategoryScheme id="SDW_ECONOMIC_CONCEPTS" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0)" agencyID="SDMX01" version="1.0" isFinal="true">
+				<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">SDW economic concepts</com:Name>
+				<str:Category id="2018800" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018800">
+					<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Monetary operations</com:Name>
+					<str:Category id="2018801" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018800.2018801">
+						<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Key interest rates</com:Name>
+					</str:Category>
+					<str:Category id="2018802" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018800.2018802">
+						<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Minimum reserves and liquidity</com:Name>
+					</str:Category>
+				</str:Category>
+				<str:Category id="2018803" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803">
+					<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Prices, output, demand and labour market</com:Name>
+					<str:Category id="2120783" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120783">
+						<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Prices</com:Name>
+						<str:Category id="2120778" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120783.2120778">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Consumer price indices</com:Name>
+						</str:Category>
+						<str:Category id="2120779" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120783.2120779">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Industrial producer prices</com:Name>
+						</str:Category>
+						<str:Category id="2120780" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120783.2120780">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Deflators</com:Name>
+						</str:Category>
+						<str:Category id="2120781" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120783.2120781">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Residential property price indicator</com:Name>
+						</str:Category>
+						<str:Category id="2120782" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120783.2120782">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Oil price</com:Name>
+						</str:Category>
+						<str:Category id="6513466" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120783.6513466">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">SDMX01 non-energy commodity prices</com:Name>
+						</str:Category>
+					</str:Category>
+					<str:Category id="2120784" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120784">
+						<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Costs</com:Name>
+						<str:Category id="2120785" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120784.2120785">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Compensation per employee</com:Name>
+						</str:Category>
+						<str:Category id="2120786" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120784.2120786">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Unit labour costs</com:Name>
+						</str:Category>
+						<str:Category id="2120787" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120784.2120787">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Hourly labour cost indices (LCI)</com:Name>
+						</str:Category>
+						<str:Category id="2120788" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120784.2120788">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Negotiated wages</com:Name>
+						</str:Category>
+					</str:Category>
+					<str:Category id="2018805" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2018805">
+						<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">National accounts and output indicators</com:Name>
+						<str:Category id="2120796" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2018805.2120796">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">GDP and expenditure components</com:Name>
+						</str:Category>
+						<str:Category id="2120797" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2018805.2120797">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Value added by economic activity</com:Name>
+						</str:Category>
+						<str:Category id="2120798" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2018805.2120798">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Capital stock, wealth</com:Name>
+						</str:Category>
+						<str:Category id="2120799" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2018805.2120799">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Industrial production</com:Name>
+						</str:Category>
+						<str:Category id="2120800" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2018805.2120800">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Industrial new orders and turnover and retail sales</com:Name>
+						</str:Category>
+						<str:Category id="2120801" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2018805.2120801">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Passenger car registrations</com:Name>
+						</str:Category>
+					</str:Category>
+					<str:Category id="2018808" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2018808">
+						<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Labour market indicators</com:Name>
+						<str:Category id="2120802" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2018808.2120802">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Employment</com:Name>
+						</str:Category>
+						<str:Category id="2120805" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2018808.2120805">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Unemployment</com:Name>
+						</str:Category>
+						<str:Category id="2120804" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2018808.2120804">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Labour productivity</com:Name>
+						</str:Category>
+						<str:Category id="2120803" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2018808.2120803">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Population</com:Name>
+						</str:Category>
+					</str:Category>
+					<str:Category id="2120837" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120837">
+						<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Surveys</com:Name>
+						<str:Category id="2971162" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018803.2120837.2971162">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">SDMX01 Survey of Professional Forecasters</com:Name>
+						</str:Category>
+					</str:Category>
+				</str:Category>
+				<str:Category id="2018773" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773">
+					<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Money, banking and financial markets</com:Name>
+					<str:Category id="2018810" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810">
+						<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Monetary aggregates and counterparts</com:Name>
+						<str:Category id="2120791" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2120791">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">M1 and components</com:Name>
+						</str:Category>
+						<str:Category id="2120793" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2120793">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">M3 and components</com:Name>
+						</str:Category>
+						<str:Category id="2018825" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2018825">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Counterparts of M3</com:Name>
+							<str:Category id="2120794" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2018825.2120794">
+								<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">MFI assets</com:Name>
+							</str:Category>
+						</str:Category>
+						<str:Category id="2018779" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2018779">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Exchange rates</com:Name>
+							<str:Category id="2018794" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2018779.2018794">
+								<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Bilateral</com:Name>
+							</str:Category>
+							<str:Category id="2018795" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2018779.2018795">
+								<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Effective</com:Name>
+							</str:Category>
+							<str:Category id="6374972" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2018779.6374972">
+								<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Harmonised competitiveness indicators</com:Name>
+							</str:Category>
+						</str:Category>
+						<str:Category id="2745" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745">
+							<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Payments and securities trading, clearing, settlement</com:Name>
+							<str:Category id="2746" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.2746">
+								<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Payments</com:Name>
+								<str:Category id="3447413" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.2746.3447413">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Transactions per type of payment instrument (number and value)</com:Name>
+								</str:Category>
+								<str:Category id="3447414" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.2746.3447414">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Transactions per type of terminal (number and value)</com:Name>
+								</str:Category>
+								<str:Category id="3447411" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.2746.3447411">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Payment card functions</com:Name>
+								</str:Category>
+								<str:Category id="3447412" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.2746.3447412">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Payment card accepting devices</com:Name>
+								</str:Category>
+								<str:Category id="3447416" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.2746.3447416">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Payments processed by selected IFTS (number and value)</com:Name>
+								</str:Category>
+								<str:Category id="3447415" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.2746.3447415">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Participation in selected IFTS</com:Name>
+								</str:Category>
+								<str:Category id="3447406" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.2746.3447406">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Settlement media used by non-MFIs</com:Name>
+								</str:Category>
+								<str:Category id="3447407" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.2746.3447407">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Settlement media used by credit institutions</com:Name>
+								</str:Category>
+								<str:Category id="3447409" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.2746.3447409">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Institutions offering payment services to non-MFIs</com:Name>
+								</str:Category>
+							</str:Category>
+							<str:Category id="4212911" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.4212911">
+								<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Securities trading</com:Name>
+								<str:Category id="4212920" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.4212911.4212920">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Number of participants</com:Name>
+								</str:Category>
+								<str:Category id="4212921" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.4212911.4212921">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Number of listed securities</com:Name>
+								</str:Category>
+								<str:Category id="4212922" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.4212911.4212922">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Market capitalisation of listed companies</com:Name>
+								</str:Category>
+								<str:Category id="4212923" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.4212911.4212923">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Executed trades</com:Name>
+								</str:Category>
+							</str:Category>
+							<str:Category id="4212912" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.4212912">
+								<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Securities clearing</com:Name>
+								<str:Category id="4212913" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.4212912.4212913">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Clearing members</com:Name>
+								</str:Category>
+								<str:Category id="4212914" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.4212912.4212914">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Non-OTC derivatives contracts</com:Name>
+								</str:Category>
+								<str:Category id="4212915" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.4212912.4212915">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">OTC derivatives transactions</com:Name>
+								</str:Category>
+								<str:Category id="4212916" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.4212912.4212916">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Repo transactions</com:Name>
+								</str:Category>
+								<str:Category id="4212917" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.4212912.4212917">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Cash securities transactions</com:Name>
+								</str:Category>
+								<str:Category id="4212918" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:SDW_ECONOMIC_CONCEPTS(1.0).2018773.2018810.2745.4212912.4212918">
+									<com:Name xml:lang="en" xmlns:com="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common">Contracts/ transactions cleared through a clearing link</com:Name>
+								</str:Category>
+							</str:Category>
+						</str:Category>
+					</str:Category>
+				</str:Category>
+			</str:CategoryScheme>
+		</str:CategorySchemes>
+	</mes:Structures>
+</mes:Structure>

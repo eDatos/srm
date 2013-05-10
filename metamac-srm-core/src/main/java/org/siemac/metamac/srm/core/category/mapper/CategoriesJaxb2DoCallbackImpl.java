@@ -109,17 +109,6 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
         // Fill Metadata
         categoriesMetamacService.preCreateCategory(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
     }
-    // @Override
-    // public void categorisationJaxToDoExtension(ServiceContext ctx, CategorisationType source, Categorisation target) throws MetamacException {
-    //
-    // // Fill Metadata
-    // // TODO call preCreateCategorisation
-    // categoriesMetamacService
-    // .preCreateCategorisation(ctx, target.getCategory().getNameableArtefact().getUrn(), target.getArtefactCategorised().getUrn(), target.getMaintainableArtefact().getCode());
-    //
-    // target.getMaintainableArtefact().setFinalLogic(Boolean.FALSE); // In Metamac, all artifacts imported are marked as final false
-    //
-    // }
 
     @Override
     public void categorisationJaxToDoExtensionPreCreate(ServiceContext ctx, CategorisationType source, Categorisation target) throws MetamacException {
