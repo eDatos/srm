@@ -2132,8 +2132,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         TaskInfo versioningResult = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
-            // TODO create version from organisation scheme temporal
-            throw new UnsupportedOperationException("TODO create version from organisation scheme temporal");
+            getOrganisationsMetamacService().createVersionFromTemporalOrganisationScheme(ctx, urnToCopy, versionType);
         } else {
             versioningResult = getOrganisationsMetamacService().versioningOrganisationScheme(ctx, urnToCopy, versionType);
         }
