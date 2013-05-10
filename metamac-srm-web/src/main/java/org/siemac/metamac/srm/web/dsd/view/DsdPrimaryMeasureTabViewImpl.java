@@ -123,7 +123,8 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         ViewTextItem urnProvider = new ViewTextItem(PrimaryMeasureDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         RelatedResourceLinkItem concept = new RelatedResourceLinkItem(PrimaryMeasureDS.CONCEPT, getConstants().concept(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem staticRepresentationTypeItem = new ViewTextItem(PrimaryMeasureDS.REPRESENTATION_TYPE, getConstants().representation());
-        ViewTextItem enumeratedRepresentation = new ViewTextItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, getConstants().representationEnumerated());
+        RelatedResourceLinkItem enumeratedRepresentation = new RelatedResourceLinkItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION, getConstants().representationEnumerated(),
+                getCustomLinkItemNavigationClickHandler());
         form.setFields(code, urn, urnProvider, concept, staticRepresentationTypeItem, enumeratedRepresentation);
 
         facetForm = new StaticFacetForm();
@@ -260,7 +261,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
                 // Codelist
 
                 form.getItem(PrimaryMeasureDS.REPRESENTATION_TYPE).setValue(getCoreMessages().representationTypeEnumENUMERATION());
-                form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).setValue(RelatedResourceUtils.getRelatedResourceName(componentDto.getLocalRepresentation().getEnumeration()));
+                ((RelatedResourceLinkItem) form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION)).setRelatedResource(componentDto.getLocalRepresentation().getEnumeration());
                 form.getItem(PrimaryMeasureDS.ENUMERATED_REPRESENTATION).show();
 
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(componentDto.getLocalRepresentation().getRepresentationType())) {
