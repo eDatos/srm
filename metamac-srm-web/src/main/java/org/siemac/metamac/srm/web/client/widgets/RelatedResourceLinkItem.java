@@ -3,8 +3,8 @@ package org.siemac.metamac.srm.web.client.widgets;
 import java.util.List;
 
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
-import org.siemac.metamac.srm.web.client.widgets.webcommon.CustomLinkItemNavigationClickHandler;
-import org.siemac.metamac.srm.web.client.widgets.webcommon.RelatedResourceBaseLinkItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.RelatedResourceBaseLinkItem;
+import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
