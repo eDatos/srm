@@ -8,6 +8,10 @@ public class DsdRecord extends VersionableResourceRecord {
     public DsdRecord() {
     }
 
+    public void setStatisticalOperation(String value) {
+        setAttribute(DataStructureDefinitionDS.STATISTICAL_OPERATION, value);
+    }
+
     public void setDsdBasicDto(DataStructureDefinitionMetamacBasicDto value) {
         setAttribute(DataStructureDefinitionDS.DTO, value);
     }

@@ -7,6 +7,7 @@ import java.util.List;
 import org.siemac.metamac.srm.core.base.dto.ItemSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.LifeCycleBasicDto;
 import org.siemac.metamac.srm.core.base.dto.MaintainableArtefactMetamacBasicDto;
+import org.siemac.metamac.srm.core.base.dto.StructureMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.model.record.VersionableResourceRecord;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
@@ -45,6 +46,17 @@ public class RecordUtils {
         record = getVersionableResourceRecord(record, itemSchemeMetamacBasicDto, lifeCycleDto);
         record.setCreationDate(DateUtils.getFormattedDate(itemSchemeMetamacBasicDto.getCreatedDate()));
         record.setResourceCreationDate(DateUtils.getFormattedDate(itemSchemeMetamacBasicDto.getResourceCreatedDate()));
+        return record;
+    }
+
+    //
+    // STRUCTURE
+    //
+
+    public static VersionableResourceRecord getStructureRecord(VersionableResourceRecord record, StructureMetamacBasicDto structureMetamacBasicDto, LifeCycleBasicDto lifeCycleDto) {
+        record = getVersionableResourceRecord(record, structureMetamacBasicDto, lifeCycleDto);
+        record.setCreationDate(DateUtils.getFormattedDate(structureMetamacBasicDto.getCreatedDate()));
+        record.setResourceCreationDate(DateUtils.getFormattedDate(structureMetamacBasicDto.getResourceCreatedDate()));
         return record;
     }
 

@@ -5,7 +5,6 @@ import java.util.List;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
-import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
@@ -13,6 +12,7 @@ import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
+import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
@@ -22,7 +22,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.google.gwt.resources.client.ImageResource;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class RecordUtils {
+public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
 
     /**
      * Returns {@link DsdRecord} from {@link DataStructureDefinitionMetamacBasicDto}
@@ -32,12 +32,8 @@ public class RecordUtils {
      */
     public static DsdRecord getDsdRecord(DataStructureDefinitionMetamacBasicDto dsd) {
         DsdRecord record = new DsdRecord();
-        record.setCode(dsd.getCode());
-        record.setName(InternationalStringUtils.getLocalisedString(dsd.getName()));
-        record.setProcStatus(CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()));
-        record.setVersionLogic(dsd.getVersionLogic());
-        record.setUrn(dsd.getUrn());
-        record.setDsdBasicDto(dsd);
+        record = (DsdRecord) getStructureRecord(record, dsd, dsd.getLifeCycle());
+        record.setStatisticalOperation(ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
         return record;
     }
 
