@@ -51,6 +51,7 @@ public class RecordUtils {
         record.setInternalPublicationUser(codelistDto.getLifeCycle().getInternalPublicationUser());
         record.setExternalPublicationDate(DateUtils.getFormattedDate(codelistDto.getLifeCycle().getExternalPublicationDate()));
         record.setExternalPublicationUser(codelistDto.getLifeCycle().getExternalPublicationUser());
+        record.setCodelistBasicDto(codelistDto);
         return record;
     }
 
