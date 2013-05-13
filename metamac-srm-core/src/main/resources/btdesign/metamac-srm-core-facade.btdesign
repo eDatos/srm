@@ -539,6 +539,11 @@ Application SrmFacadeCore {
     		importCodesCsvInBackground(String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 			"Imports code orders in csv format"
     		importCodeOrdersCsvInBackground(String codelistUrn, InputStream csvStream, String fileName) throws MetamacException;
+			"Exports codes in csv format"
+    		String exportCodesCsv(String codelistUrn) throws MetamacException;
+			"Exports code orders in csv format"
+    		String exportCodeOrdersCsv(String codelistUrn) throws MetamacException;
+    		
 	   		"Proposes a normalisation of variable elements to codes. If boolean is true, only normalise codes without variable element. To codes with variable element returns actual variable element"
 	   		List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(String codelistUrn, String locale, boolean proposeOnlyWithoutVariableElement) throws MetamacException;
     		

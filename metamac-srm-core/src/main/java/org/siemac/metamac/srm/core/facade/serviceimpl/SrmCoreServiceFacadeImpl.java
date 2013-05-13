@@ -1202,6 +1202,24 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public String exportCodesCsv(ServiceContext ctx, String codelistUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canExportCodesCsv(ctx);
+
+        // Export
+        return getCodesMetamacService().exportCodesCsv(ctx, codelistUrn);
+    }
+
+    @Override
+    public String exportCodeOrdersCsv(ServiceContext ctx, String codelistUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canExportCodeOrdersCsv(ctx);
+
+        // Export
+        return getCodesMetamacService().exportCodeOrdersCsv(ctx, codelistUrn);
+    }
+
+    @Override
     public CodeMetamacDto updateCode(ServiceContext ctx, CodeMetamacDto codeDto) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByCodeUrn(ctx, codeDto.getUrn());

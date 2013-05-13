@@ -270,4 +270,18 @@ public class CodesSecurityUtils extends CommonSecurityUtils {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
+
+    // EXPORTATIONS
+
+    public static void canExportCodesCsv(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canExportCodesCsv(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
+    public static void canExportCodeOrdersCsv(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canExportCodeOrdersCsv(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
 }
