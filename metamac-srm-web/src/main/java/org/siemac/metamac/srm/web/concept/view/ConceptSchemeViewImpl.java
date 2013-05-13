@@ -18,6 +18,7 @@ import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
+import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemePresenter;
@@ -454,7 +455,9 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         RelatedResourceLinkItem agency = new RelatedResourceLinkItem(ConceptSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsForm.setFields(agency, procStatus);
+        ViewTextItem creationDate = new ViewTextItem(ConceptSchemeDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem resourceCreationDate = new ViewTextItem(ConceptSchemeDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
+        productionDescriptorsForm.setFields(agency, procStatus, creationDate, resourceCreationDate);
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -554,7 +557,9 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         RelatedResourceLinkItem agency = new RelatedResourceLinkItem(ConceptSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(ConceptSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsEditionForm.setFields(agency, procStatus);
+        ViewTextItem creationDate = new ViewTextItem(ConceptSchemeDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem resourceCreationDate = new ViewTextItem(ConceptSchemeDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
+        productionDescriptorsEditionForm.setFields(agency, procStatus, creationDate, resourceCreationDate);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -626,6 +631,8 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
         ((RelatedResourceLinkItem) productionDescriptorsForm.getItem(ConceptSchemeDS.MAINTAINER)).setRelatedResource(conceptSchemeDto.getMaintainer());
         productionDescriptorsForm.setValue(ConceptSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
+        productionDescriptorsForm.setValue(CodelistDS.VERSION_CREATION_DATE, conceptSchemeDto.getCreatedDate());
+        productionDescriptorsForm.setValue(CodelistDS.RESOURCE_CREATION_DATE, conceptSchemeDto.getResourceCreatedDate());
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(ConceptSchemeDS.REPLACED_BY_VERSION, conceptSchemeDto.getReplacedByVersion());
@@ -679,6 +686,8 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         // Production descriptors
         ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(ConceptSchemeDS.MAINTAINER)).setRelatedResource(conceptSchemeDto.getMaintainer());
         productionDescriptorsEditionForm.setValue(ConceptSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
+        productionDescriptorsEditionForm.setValue(CodelistDS.VERSION_CREATION_DATE, conceptSchemeDto.getCreatedDate());
+        productionDescriptorsEditionForm.setValue(CodelistDS.RESOURCE_CREATION_DATE, conceptSchemeDto.getResourceCreatedDate());
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.REPLACED_BY_VERSION, conceptSchemeDto.getReplacedByVersion());

@@ -95,6 +95,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
     // View forms
     private GroupDynamicForm                             identifiersForm;
+    private GroupDynamicForm                             productionDescriptorsForm;
     private GroupDynamicForm                             contentDescriptorsForm;
     private StaticFacetForm                              facetForm;
     private GroupDynamicForm                             classDescriptorsForm;
@@ -105,6 +106,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
     // Edition forms
     private GroupDynamicForm                             identifiersEditionForm;
+    private GroupDynamicForm                             productionDescriptorsEditionForm;
     private GroupDynamicForm                             contentDescriptorsEditionForm;
     private ConceptFacetForm                             facetEditionForm;
     private StaticFacetForm                              facetStaticEditionForm;
@@ -156,6 +158,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 boolean translationsShowed = mainFormLayout.getTranslateToolStripButton().isSelected();
                 identifiersForm.setTranslationsShowed(translationsShowed);
                 identifiersEditionForm.setTranslationsShowed(translationsShowed);
+
+                productionDescriptorsForm.setTranslationsShowed(translationsShowed);
+                productionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
                 contentDescriptorsForm.setTranslationsShowed(translationsShowed);
                 contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
@@ -235,6 +240,11 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewTextItem urnProvider = new ViewTextItem(ConceptDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         identifiersForm.setFields(code, name, pluralName, acronym, uri, urn, urnProvider);
 
+        // Production descriptors
+        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(ConceptDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
+        productionDescriptorsForm.setFields(creationDate);
+
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(ConceptDS.DESCRIPTION, getConstants().nameableArtefactDescription());
@@ -289,6 +299,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         annotationsPanel = new AnnotationsPanel(true);
 
         mainFormLayout.addViewCanvas(identifiersForm);
+        mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
         mainFormLayout.addViewCanvas(facetForm);
         mainFormLayout.addViewCanvas(classDescriptorsForm);
@@ -317,6 +328,11 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewTextItem urn = new ViewTextItem(ConceptDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(ConceptDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         identifiersEditionForm.setFields(code, staticCode, name, pluralName, acronym, uri, urn, urnProvider);
+
+        // Production descriptors
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(ConceptDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
+        productionDescriptorsEditionForm.setFields(creationDate);
 
         // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
@@ -393,6 +409,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         annotationsEditionPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
+        mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(facetEditionForm);
         mainFormLayout.addEditionCanvas(facetStaticEditionForm);
@@ -479,6 +496,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         identifiersForm.setValue(ConceptDS.URN, conceptDto.getUrn());
         identifiersForm.setValue(ConceptDS.URN_PROVIDER, conceptDto.getUrnProvider());
 
+        // Production descriptors form
+        productionDescriptorsForm.setValue(ConceptDS.CREATION_DATE, conceptDto.getCreatedDate());
+
         // Content descriptors
         contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptDto.getDescription()));
         contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
@@ -536,6 +556,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         identifiersEditionForm.setValue(ConceptDS.URI, conceptDto.getUriProvider());
         identifiersEditionForm.setValue(ConceptDS.URN, conceptDto.getUrn());
         identifiersEditionForm.setValue(ConceptDS.URN_PROVIDER, conceptDto.getUrnProvider());
+
+        // PRODUCTION DESCRIPTORS FORM
+        productionDescriptorsEditionForm.setValue(ConceptDS.CREATION_DATE, conceptDto.getCreatedDate());
 
         // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptDto.getDescription()));
