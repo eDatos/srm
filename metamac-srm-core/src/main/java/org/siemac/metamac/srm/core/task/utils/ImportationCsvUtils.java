@@ -34,7 +34,7 @@ public class ImportationCsvUtils {
             String columnName = columnSplited[0];
             String headerExpected = headersExpected.get(headerExpectedIndex);
             if (!headerExpected.equals(columnName)) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, headerExpected));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN, headerExpected));
                 break;
             }
             if (SrmConstants.CSV_HEADER_CODE.equals(columnName)) {
@@ -52,7 +52,7 @@ public class ImportationCsvUtils {
         }
         if (CollectionUtils.isEmpty(exceptions)) {
             if (header.getShortName() == null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, SrmConstants.CSV_HEADER_SHORT_NAME));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN, SrmConstants.CSV_HEADER_SHORT_NAME));
             }
         }
         // description is optional
@@ -75,7 +75,7 @@ public class ImportationCsvUtils {
 
             String headerExpected = headersExpected.get(headerExpectedIndex);
             if (!headerExpected.equals(columnName)) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, headerExpected));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN, headerExpected));
                 break;
             }
             if (SrmConstants.CSV_HEADER_CODE.equals(columnName)) {
@@ -107,10 +107,10 @@ public class ImportationCsvUtils {
         }
         if (CollectionUtils.isEmpty(exceptions)) {
             if (header.getColumnsSize() == 0) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, SrmConstants.CSV_HEADER_CODE));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN, SrmConstants.CSV_HEADER_CODE));
             }
             if (header.getName() == null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, SrmConstants.CSV_HEADER_NAME));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN, SrmConstants.CSV_HEADER_NAME));
             }
             // description is optional
         }
@@ -131,7 +131,7 @@ public class ImportationCsvUtils {
             String columnName = headerColumns[i];
             if (i == 0) {
                 if (!SrmConstants.CSV_HEADER_CODE.equals(columnName)) {
-                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, SrmConstants.CSV_HEADER_CODE));
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN, SrmConstants.CSV_HEADER_CODE));
                     break;
                 }
                 header.setCodePosition(i);
@@ -148,7 +148,7 @@ public class ImportationCsvUtils {
         }
         if (CollectionUtils.isEmpty(exceptions)) {
             if (!header.hasOrderVisualisations()) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, SrmConstants.CSV_HEADER_ORDER));
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN, SrmConstants.CSV_HEADER_ORDER));
             }
         }
         return header;
@@ -192,12 +192,12 @@ public class ImportationCsvUtils {
     private static InternationalStringCsv columnHeaderToInternationalStringCsv(String[] headerColumns, int headerColumnIndex, String[] columnSplited, String headerExpected,
             InternationalStringCsv target, List<MetamacExceptionItem> exceptions) {
         if (columnSplited.length != 2) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, headerExpected));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN, headerExpected));
             return null;
         }
         String locale = columnSplited[1];
         if (StringUtils.isBlank(locale)) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT, headerExpected));
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN, headerExpected));
         }
         if (target == null) {
             target = new InternationalStringCsv();

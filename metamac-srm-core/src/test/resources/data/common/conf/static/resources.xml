@@ -5,5 +5,5 @@
     <!-- The following URN must be the same in the SQL script provided -->
     <entry key="metamac.organisation.urn">urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX01</entry>
     
-    <entry key="metamac.edition.languages">es,pt,en,ca,gl,eu,de,fr,it,ru,zh</entry>    
+    <entry key="metamac.edition.languages">es,pt,en,ca</entry>    
 </properties>

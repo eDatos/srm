@@ -19,7 +19,11 @@ import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsse
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsVariableElement;
 import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts.assertEqualsVariableFamily;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -3490,7 +3494,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testImportCodesCsv() throws Exception {
 
         final String codelistUrn = CODELIST_1_V2;
-        final String fileName = "importation-code-01.csv";
+        final String fileName = "codes2412816223099749235.csv";
         final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
         final StringBuilder jobKey = new StringBuilder();
         final boolean updateAlreadyExisting = true;
@@ -4140,8 +4144,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         int i = 0;
         TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type,
-                task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type, task
+                .getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
     }
 
@@ -4318,8 +4322,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         int i = 0;
         TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type,
-                task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type, task
+                .getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
     }
 
@@ -4356,8 +4360,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         int i = 0;
         TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_ORDER, Boolean.FALSE, type, task.getTaskResults()
-                .get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_ORDER, Boolean.FALSE, type, task
+                .getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
     }
 
@@ -8309,8 +8313,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         int i = 0;
         TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type,
-                task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_HEADER_INCORRECT_COLUMN.getCode(), ServiceExceptionParameters.IMPORTATION_CSV_COLUMN_CODE, Boolean.FALSE, type, task
+                .getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
     }
 
@@ -8355,6 +8359,38 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 .get(i++));
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_CSV_LINE_INCORRECT.getCode(), "7", Boolean.FALSE, type, task.getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
+    }
+
+    @Override
+    @Test
+    public void testExportCodesCsv() throws Exception {
+        String codelistUrn = CODELIST_1_V2;
+        String filename = codesService.exportCodesCsv(getServiceContextAdministrador(), codelistUrn);
+        assertNotNull(filename);
+
+        // Validate
+        File file = new File(filename);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        assertEquals("code\tparent\tvariableElement\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca", bufferedReader.readLine());
+        assertEquals("CODE01\t\tVARIABLE_ELEMENT_02\tIsla de Tenerife\t\tName codelist-1-v2-code-1\t\tDescripción codelist-1-v2-code-1\t\t\t", bufferedReader.readLine());
+        assertEquals("CODE02\t\t\tNombre codelist-1-v2-code-2 Canaria, Gran\t\t\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals("CODE0201\tCODE02\tVARIABLE_ELEMENT_01\tcodelist-1-v2-code-2- Isla de La Gomera\t\tName codelist-1-v2-code-2-1\t\tdescripción CODELIST_1_V2_CODE_2_1\t\t\t",
+                bufferedReader.readLine());
+        assertEquals("CODE020101\tCODE0201\t\tSanta Cruz de La Palma codelist-1-v2-code-2-1-1\t\t\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals("CODE0202\tCODE02\t\tIsla de El Hierro\t\t\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals("CODE03\t\tVARIABLE_ELEMENT_03\tFuerteventura\t\tname code-3\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals("CODE04\t\t\tLanzarote\t\t\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals("CODE0401\tCODE04\t\tCanarias, Tenerife\t\t\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals("CODE040101\tCODE0401\tVARIABLE_ELEMENT_01\tNombre codelist-1-v2-code-4-1-1\t\tName codelist-1-v2-code-4-1-1\t\t\t\t\t", bufferedReader.readLine());
+    }
+
+    @Override
+    @Test
+    public void testExportCodeOrdersCsv() throws Exception {
+        // TODO testExportCodeOrdersCsv
+
     }
 
     private VariableElementOperation getVariableElementOperationByCode(List<VariableElementOperation> operations, String code) {

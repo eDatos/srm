@@ -1,9 +1,13 @@
 package org.siemac.metamac.srm.core.code.serviceimpl;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,6 +20,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
@@ -35,6 +40,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -608,8 +614,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Import
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
-        BufferedReader bufferedReader = null;
         InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
         List<CodeMetamac> codesToPersist = new ArrayList<CodeMetamac>();
         Map<String, CodeMetamac> codesPreviousInCodelistByCode = new HashMap<String, CodeMetamac>();
         for (Item item : codelistVersion.getItems()) {
@@ -692,8 +698,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         checkCodelistCanBeModified(codelistVersion);
 
         // Import
-        BufferedReader bufferedReader = null;
         InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
 
         // Codes in codelist
         List<Item> codesInCodelist = codelistVersion.getItems();
@@ -776,6 +782,93 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             getCodeMetamacRepository().save(codeMetamac);
         }
         baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
+    }
+
+    @Override
+    public String exportCodesCsv(ServiceContext ctx, String codelistUrn) throws MetamacException {
+
+        CodesMetamacInvocationValidator.checkExportCodesCsv(codelistUrn, null);
+
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+        CodelistOrderVisualisation orderVisualisation = codelistVersion.getDefaultOrderVisualisation();
+        if (orderVisualisation == null) {
+            orderVisualisation = codelistVersion.getOrderVisualisations().get(0); // any order
+        }
+        Integer orderColumnIndex = orderVisualisation.getColumnIndex();
+
+        List<String> languages = srmConfiguration.retrieveLanguages();
+
+        // Export
+        OutputStream outputStream = null;
+        OutputStreamWriter writer = null;
+        try {
+            File file = File.createTempFile("codes", ".csv");
+            outputStream = new FileOutputStream(file);
+            writer = new OutputStreamWriter(outputStream, "UTF-8"); // TODO charset, pte web
+
+            // header
+            writer.write(SrmConstants.CSV_HEADER_CODE);
+            writer.write(SrmConstants.CSV_SEPARATOR);
+            writer.write(SrmConstants.CSV_HEADER_PARENT);
+            writer.write(SrmConstants.CSV_SEPARATOR);
+            writer.write(SrmConstants.CSV_HEADER_VARIABLE_ELEMENT);
+            for (String language : languages) {
+                writer.write(SrmConstants.CSV_SEPARATOR);
+                writer.write(SrmConstants.CSV_HEADER_NAME + SrmConstants.CSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+            }
+            for (String language : languages) {
+                writer.write(SrmConstants.CSV_SEPARATOR);
+                writer.write(SrmConstants.CSV_HEADER_DESCRIPTION + SrmConstants.CSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+            }
+
+            // codes
+            List<ItemResult> items = getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, CodeMetamacResultSelection.EXPORT);
+            for (ItemResult code : items) {
+                writer.write(SrmConstants.CSV_LINE_SEPARATOR);
+                // Code
+                writer.write(code.getCode());
+                // Parent
+                writer.write(SrmConstants.CSV_SEPARATOR);
+                if (code.getParent() != null) {
+                    writer.write(code.getParent().getCode());
+                }
+                // Variable element
+                writer.write(SrmConstants.CSV_SEPARATOR);
+                String variableElement = SrmServiceUtils.getCodeItemResultVariableElement(code);
+                if (variableElement != null) {
+                    writer.write(variableElement);
+                }
+                // Name
+                for (String language : languages) {
+                    String nameInLocale = code.getName().get(language);
+                    writer.write(SrmConstants.CSV_SEPARATOR);
+                    if (nameInLocale != null) {
+                        writer.write(nameInLocale);
+                    }
+                }
+                // Description
+                for (String language : languages) {
+                    String descriptionInLocale = code.getDescription().get(language);
+                    writer.write(SrmConstants.CSV_SEPARATOR);
+                    if (descriptionInLocale != null) {
+                        writer.write(descriptionInLocale);
+                    }
+                }
+            }
+            writer.flush();
+            return file.getAbsolutePath();
+        } catch (Exception e) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.EXPORTATION_CSV_ERROR).withMessageParameters(e).build();
+        } finally {
+            IOUtils.closeQuietly(outputStream);
+            IOUtils.closeQuietly(writer);
+        }
+    }
+
+    @Override
+    public String exportCodeOrdersCsv(ServiceContext ctx, String codelistUrn) throws MetamacException {
+        // TODO exportCodeOrdersCsv
+        return null;
     }
 
     @Override
@@ -1630,8 +1723,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Import
         Variable variable = retrieveVariableByUrn(variableUrn);
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
-        BufferedReader bufferedReader = null;
         InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
         List<VariableElement> variableElementsToPersist = new ArrayList<VariableElement>();
         Map<String, VariableElement> variableElementsPreviousInVariableByCode = new HashMap<String, VariableElement>();
         for (VariableElement variableElement : variable.getVariableElements()) {

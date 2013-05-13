@@ -23,6 +23,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
@@ -456,6 +457,14 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST, mapCodeByItemId);
         }
 
+        if (resultSelection instanceof CodeMetamacResultSelection) {
+            CodeMetamacResultSelection codeResultSelection = (CodeMetamacResultSelection) resultSelection;
+            if (codeResultSelection.isVariableElement()) {
+                // Variable element. Execute one independent query to retrieve variable elements is more efficient than do a global query
+                executeQueryCodeVariableElementAndUpdateCodeMetamacResult(idCodelist, mapCodeByItemId);
+            }
+        }
+
         // TODO Vistas materializadas en bbdd para que sea el mismo código independientemente de la bbdd? Mientras, hay que modificar spring-test.properties y resources.xml para indicar el driver
         // Order
         String orderColumn = getOrderColumnName(orderColumnIndex);
@@ -519,6 +528,30 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             Long actualItemId = getLong(shortNameResultSqlArray[0]);
             ItemResult target = mapCodeByItemId.get(actualItemId);
             internationalStringResultSqltoInternationalStringResult(shortNameResultSqlArray, ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).getShortName());
+        }
+    }
+
+    /**
+     * Variable element. Execute one independent query to retrieve variable elements is more efficient than do a global query
+     */
+    @SuppressWarnings("rawtypes")
+    private void executeQueryCodeVariableElementAndUpdateCodeMetamacResult(Long idCodelist, Map<Long, ItemResult> mapCodeByItemId) {
+        StringBuilder sbVariableElements = new StringBuilder();
+        sbVariableElements.append("SELECT i.ID as ITEM_ID, ave.CODE as VE_CODE ");
+        sbVariableElements.append("FROM TB_M_CODES c ");
+        sbVariableElements.append("INNER JOIN TB_ITEMS_BASE i on c.TB_CODES = i.ID ");
+        sbVariableElements.append("INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK ");
+        sbVariableElements.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS ave on ve.IDENTIFIABLE_ARTEFACT_FK = ave.ID ");
+        sbVariableElements.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+        Query queryVariableElements = getEntityManager().createNativeQuery(sbVariableElements.toString());
+        queryVariableElements.setParameter("codelistVersion", idCodelist);
+        List variableElementsResultSql = queryVariableElements.getResultList();
+        for (Object variableElementResultSql : variableElementsResultSql) {
+            Object[] variableElementResultSqlArray = (Object[]) variableElementResultSql;
+            Long actualItemId = getLong(variableElementResultSqlArray[0]);
+            String variableElementCode = getString(variableElementResultSqlArray[1]);
+            ItemResult target = mapCodeByItemId.get(actualItemId);
+            ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).setVariableElementCode(variableElementCode);
         }
     }
 

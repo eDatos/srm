@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.conf;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -22,6 +23,7 @@ public class SrmConfigurationImpl implements SrmConfiguration {
     private String               primaryMeasureConceptIdUrnDefault;
     private Boolean              isDatabaseOracle;
     private Boolean              isDatabaseSqlServer;
+    private List<String>         languages;
     private String               languageDefault;
 
     @Override
@@ -59,11 +61,25 @@ public class SrmConfigurationImpl implements SrmConfiguration {
     }
 
     @Override
+    public List<String> retrieveLanguages() throws MetamacException {
+        if (languages == null) {
+            List<Object> languagesProperty = retrievePropertyList(ConfigurationConstants.METAMAC_EDITION_LANGUAGES, Boolean.TRUE);
+            languages = new ArrayList<String>();
+            if (!CollectionUtils.isEmpty(languagesProperty)) {
+                for (Object languageProperty : languagesProperty) {
+                    languages.add((String) languageProperty);
+                }
+            }
+        }
+        return languages;
+    }
+
+    @Override
     public String retrieveLanguageDefault() throws MetamacException {
         if (languageDefault == null) {
-            List<Object> languages = retrievePropertyList(ConfigurationConstants.METAMAC_EDITION_LANGUAGES, Boolean.FALSE);
+            List<String> languages = retrieveLanguages();
             if (!CollectionUtils.isEmpty(languages)) {
-                languageDefault = (String) languages.get(0);
+                languageDefault = languages.get(0);
             }
         }
         return languageDefault;

@@ -52,7 +52,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType ARTEFACT_IS_ALREADY_REPLACED                                         = create("exception.srm.codelists.artefact.already_replaced");
     public static final CommonServiceExceptionType CODES_VARIABLE_ELEMENTS_NORMALISATION_ERROR                          = create("exception.srm.codelists.error.variable_elements_normalisation");
 
-    // Importation
+    // Importation and exportation
     public static final CommonServiceExceptionType IMPORTATION_EXIST_NOT_FINAL_VERSION                                  = create("exception.srm.importation.error.there_are_not_final_versions");
     public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR                                                = create("exception.srm.importation.csv.error");
     public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR_FILE_PARSING                                   = create("exception.srm.importation.csv.error.file_parse");
@@ -71,5 +71,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR_ALPHABETICAL_VISUALISATION_NOT_SUPPORTED       = create("exception.srm.importation.csv.error.order_visualisation.alphabetical_not_supported");
     public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR_CODE_NOT_FOUND                                 = create("exception.srm.importation.csv.error.code.not_found");
     public static final CommonServiceExceptionType IMPORTATION_CSV_ERROR_INCORRECT_NUMBER_CODES                         = create("exception.srm.importation.csv.error.incorrect_number_codes");
+
+    public static final CommonServiceExceptionType EXPORTATION_CSV_ERROR                                                = create("exception.srm.exportation.csv.error");
 
 }

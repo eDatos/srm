@@ -1,31 +1,38 @@
 package org.siemac.metamac.srm.core.conf;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.exception.MetamacException;
 
 public interface SrmConfiguration {
 
     /**
-     * Retrieve organisation that is maintainer default to create artefacts
+     * Retrieves organisation that is maintainer default to create artefacts
      */
     public String retrieveMaintainerUrnDefault() throws MetamacException;
 
     /**
-     * Retrieve the concept ID for concept identification default of primary measure to create artefacts
+     * Retrieves the concept ID for concept identification default of primary measure to create artefacts
      */
     public String retrievePrimaryMeasureConceptIdUrnDefault() throws MetamacException;
 
     /**
-     * Check if Database is Oracle
+     * Checks if Database is Oracle
      */
     public Boolean isDatabaseOracle() throws MetamacException;
 
     /**
-     * Check if Database is SQL Server
+     * Checks if Database is SQL Server
      */
     public Boolean isDatabaseSqlServer() throws MetamacException;
 
     /**
-     * Language as default
+     * Retrieves all languages managed by service
+     */
+    public List<String> retrieveLanguages() throws MetamacException;
+
+    /**
+     * Retrieves language as default
      */
     public String retrieveLanguageDefault() throws MetamacException;
 
