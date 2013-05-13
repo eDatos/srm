@@ -1,10 +1,9 @@
 package org.siemac.metamac.srm.web.client.model.record;
 
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
+import org.siemac.metamac.web.common.client.widgets.NavigableListGridRecord;
 
-import com.smartgwt.client.widgets.grid.ListGridRecord;
-
-public class ItemRecord extends ListGridRecord {
+public class ItemRecord extends NavigableListGridRecord {
 
     public ItemRecord() {
     }

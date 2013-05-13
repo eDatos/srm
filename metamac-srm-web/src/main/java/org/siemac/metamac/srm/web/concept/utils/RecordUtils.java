@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptTreeNode;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
@@ -27,18 +28,12 @@ public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordU
 
     // CONCEPTS
 
-    public static ConceptRecord getConceptRecord(ConceptMetamacDto conceptDto) {
-        ConceptRecord record = new ConceptRecord(conceptDto.getId(), conceptDto.getCode(), getLocalisedString(conceptDto.getName()), conceptDto.getUrn(), conceptDto.getItemSchemeVersionUrn(),
-                getLocalisedString(conceptDto.getDescription()));
-        return record;
-    }
-
     public static ConceptRecord getConceptRecord(ConceptMetamacBasicDto conceptDto) {
         ConceptRecord record = new ConceptRecord();
-        record.setCode(conceptDto.getCode());
-        record.setName(getLocalisedString(conceptDto.getName()));
-        record.setUrn(conceptDto.getUrn());
-        record.setConceptSchemeUrn(conceptDto.getItemSchemeVersionUrn());
+        record = (ConceptRecord) getItemRecord(record, conceptDto);
+        record.setAcronym(getLocalisedString(conceptDto.getAcronym()));
+        record.setVariable(RelatedResourceUtils.getRelatedResourceName(conceptDto.getVariable()));
+        record.setSdmxRelatedArtefact(CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
         record.setConceptBasicDto(conceptDto);
         return record;
     }

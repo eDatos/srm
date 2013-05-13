@@ -59,7 +59,7 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
 
             @Override
             public void onRecordClick(RecordClickEvent event) {
-                String conceptSchemeUrn = ((ConceptRecord) event.getRecord()).getConceptSchemeUrn();
+                String conceptSchemeUrn = ((ConceptRecord) event.getRecord()).getItemSchemeUrn();
                 String conceptUrn = ((ConceptRecord) event.getRecord()).getUrn();
                 getUiHandlers().goToConcept(conceptSchemeUrn, conceptUrn);
             }

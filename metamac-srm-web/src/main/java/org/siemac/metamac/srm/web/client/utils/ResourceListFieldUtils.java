@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.model.ds.VersionableResourceDS;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
@@ -48,6 +49,19 @@ public class ResourceListFieldUtils {
         statisticalOperation.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
         return ListGridUtils.addFields(getVersionableResourceFields(), typeField, statisticalOperation);
+    }
+
+    public static CustomListGridField[] getConceptFields() {
+        CustomListGridField acronym = new CustomListGridField(ConceptDS.ACRONYM, getConstants().conceptAcronym());
+        acronym.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+
+        CustomListGridField variable = new CustomListGridField(ConceptDS.VARIABLE, getConstants().variable());
+        variable.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+
+        CustomListGridField sdmxRelatedArtefact = new CustomListGridField(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
+        sdmxRelatedArtefact.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+
+        return ListGridUtils.addFields(getItemFields(), acronym, variable, sdmxRelatedArtefact);
     }
 
     //
@@ -117,7 +131,7 @@ public class ResourceListFieldUtils {
 
         CustomListGridField name = new CustomListGridField(ItemDS.NAME, getConstants().nameableArtefactName());
 
-        CustomListGridField creationDate = new CustomListGridField(ItemDS.CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        CustomListGridField creationDate = new CustomListGridField(ItemDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
         creationDate.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
         return new CustomListGridField[]{code, urn, name, creationDate};
