@@ -10,25 +10,16 @@ public class CodelistRecord extends ItemSchemeRecord {
     public CodelistRecord() {
     }
 
-    public CodelistRecord(Long id, String code, String name, String description, String status, String versionLogic, String urn, String maintainer, String internalPublicationDate,
-            String internalPublicationUser, String externalPublicationDate, String externalPublicationUser) {
-        super();
-        setId(id);
-        setCode(code);
-        setName(name);
-        setProcStatus(status);
-        setVersionLogic(versionLogic);
-        setUrn(urn);
-        setDescription(description);
-        setMaintainer(maintainer);
-        setInternalPublicationDate(internalPublicationDate);
-        setInternalPublicationUser(internalPublicationUser);
-        setExternalPublicationDate(externalPublicationDate);
-        setExternalPublicationUser(externalPublicationUser);
-    }
-
     public void setDescription(String desc) {
         setAttribute(CodelistDS.DESCRIPTION, desc);
+    }
+
+    public void setIsRecommended(String value) {
+        setAttribute(CodelistDS.IS_RECOMMENDED, value);
+    }
+
+    public void setVariable(String value) {
+        setAttribute(CodelistDS.VARIABLE, value);
     }
 
     public void setCodelistBasicDto(CodelistMetamacBasicDto codelistMetamacDto) {

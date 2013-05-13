@@ -9,7 +9,6 @@ import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
-import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
@@ -27,6 +26,7 @@ import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableFamilyRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
+import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -35,32 +35,22 @@ public class RecordUtils {
 
     // CODELISTS
 
-    public static CodelistRecord getCodelistRecord(CodelistMetamacDto codelistDto) {
+    public static CodelistRecord getCodelistRecord(CodelistMetamacBasicDto codelistDto) {
         CodelistRecord record = new CodelistRecord();
-        record.setId(codelistDto.getId());
         record.setCode(codelistDto.getCode());
-        record.setName(getLocalisedString(codelistDto.getName()));
-        record.setDescription(getLocalisedString(codelistDto.getDescription()));
-        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
-        record.setVersionLogic(codelistDto.getVersionLogic());
         record.setUrn(codelistDto.getUrn());
+        record.setName(getLocalisedString(codelistDto.getName()));
+        record.setIsRecommended(CommonWebUtils.getBooleanValueAsString(codelistDto.getIsRecommended()));
+        record.setVariable(RelatedResourceUtils.getRelatedResourceName(codelistDto.getVariable()));
         record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(codelistDto.getMaintainer()));
+        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
+        record.setCreationDate(DateUtils.getFormattedDate(codelistDto.getCreatedDate()));
+        record.setResourceCreationDate(DateUtils.getFormattedDate(codelistDto.getResourceCreatedDate()));
+        record.setVersionLogic(codelistDto.getVersionLogic());
         record.setInternalPublicationDate(DateUtils.getFormattedDate(codelistDto.getLifeCycle().getInternalPublicationDate()));
         record.setInternalPublicationUser(codelistDto.getLifeCycle().getInternalPublicationUser());
         record.setExternalPublicationDate(DateUtils.getFormattedDate(codelistDto.getLifeCycle().getExternalPublicationDate()));
         record.setExternalPublicationUser(codelistDto.getLifeCycle().getExternalPublicationUser());
-        return record;
-    }
-
-    public static CodelistRecord getCodelistRecord(CodelistMetamacBasicDto codelistDto) {
-        CodelistRecord record = new CodelistRecord();
-        record.setCode(codelistDto.getCode());
-        record.setName(getLocalisedString(codelistDto.getName()));
-        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
-        record.setVersionLogic(codelistDto.getVersionLogic());
-        record.setUrn(codelistDto.getUrn());
-        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(codelistDto.getMaintainer()));
-        record.setCodelistBasicDto(codelistDto);
         return record;
     }
 

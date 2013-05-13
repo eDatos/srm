@@ -78,4 +78,12 @@ public class ItemSchemeRecord extends ListGridRecord {
     public void setExternalPublicationUser(String value) {
         setAttribute(ItemSchemeDS.EXTERNAL_PUBLICATION_USER, value);
     }
+
+    public void setCreationDate(String value) {
+        setAttribute(ItemSchemeDS.CREATION_DATE, value);
+    }
+
+    public void setResourceCreationDate(String value) {
+        setAttribute(ItemSchemeDS.RESOURCE_CREATION_DATE, value);
+    }
 }

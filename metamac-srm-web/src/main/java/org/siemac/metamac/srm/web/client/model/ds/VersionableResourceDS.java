@@ -7,7 +7,7 @@ public class VersionableResourceDS extends DataSource {
     // IDENTIFIERS
     public static final String ID                         = "lc-id";
     public static final String CODE                       = "lc-code";
-    public static final String CODE_VIEW                  = "lc-code-view";    // Not mapped in DTO
+    public static final String CODE_VIEW                  = "lc-code-view";             // Not mapped in DTO
     public static final String URI                        = "lc-uri";
     public static final String URN                        = "lc-urn";
     public static final String URN_PROVIDER               = "lc-urn-provider";
@@ -22,6 +22,8 @@ public class VersionableResourceDS extends DataSource {
     public static final String MAINTAINER                 = "lc-maintainer";
     // PRODUCTION DESCRIPTORS
     public static final String PROC_STATUS                = "lc-status";
+    public static final String CREATION_DATE              = "lc-creation-date";
+    public static final String RESOURCE_CREATION_DATE     = "lc-resource-creation-date";
     public static final String PRODUCTION_VALIDATION_DATE = "lc-prod-date";
     public static final String PRODUCTION_VALIDATION_USER = "lc-prod-user";
     // DIFFUSION DESCRIPTORS
@@ -38,5 +40,5 @@ public class VersionableResourceDS extends DataSource {
     // COMMENTS
     public static final String COMMENTS                   = "lc-comments";
 
-    public static final String IS_LAST_VERSION            = "sch-last-version"; // For advanced search
+    public static final String IS_LAST_VERSION            = "sch-last-version";         // For advanced search
 }
