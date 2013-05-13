@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>org.siemac.metamac.metamac-srm</groupId>
 			<artifactId>metamac-srm-rest-internal-api</artifactId>
-			<version>${project.version}</version>
+			<version>${metamac-srm-rest-internal-api.version}</version>
 		</dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-srm</groupId>
