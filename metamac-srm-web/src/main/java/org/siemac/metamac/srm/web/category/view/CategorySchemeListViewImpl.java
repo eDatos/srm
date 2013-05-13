@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeListUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeSearchSectionStack;
 import org.siemac.metamac.srm.web.category.widgets.NewCategorySchemeWindow;
+import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -24,13 +25,11 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -151,12 +150,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
                 }
             }
         });
-
-        ListGridField fieldCode = new ListGridField(CategorySchemeDS.CODE, getConstants().identifiableArtefactCode());
-        fieldCode.setAlign(Alignment.LEFT);
-        ListGridField fieldName = new ListGridField(CategorySchemeDS.NAME, getConstants().nameableArtefactName());
-        ListGridField status = new ListGridField(CategorySchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        categorySchemesList.getListGrid().setFields(fieldCode, fieldName, status);
+        categorySchemesList.getListGrid().setFields(ResourceListFieldUtils.getCategorySchemeFields());
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().categorySchemeDeleteConfirmationTitle(), getConstants().categorySchemeDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
@@ -273,5 +267,4 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
             cancelCategorySchemeValidityButton.hide();
         }
     }
-
 }
