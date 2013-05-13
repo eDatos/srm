@@ -74,12 +74,14 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
     // View forms
     private GroupDynamicForm                      identifiersForm;
+    private GroupDynamicForm                      productionDescriptorsForm;
     private GroupDynamicForm                      contentDescriptorsForm;
     private GroupDynamicForm                      commentsForm;
     private AnnotationsPanel                      annotationsPanel;
 
     // Edition forms
     private GroupDynamicForm                      identifiersEditionForm;
+    private GroupDynamicForm                      productionDescriptorsEditionForm;
     private GroupDynamicForm                      contentDescriptorsEditionForm;
     private GroupDynamicForm                      commentsEditionForm;
     private AnnotationsPanel                      annotationsEditionPanel;
@@ -292,6 +294,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
                 identifiersForm.setTranslationsShowed(translationsShowed);
                 identifiersEditionForm.setTranslationsShowed(translationsShowed);
 
+                productionDescriptorsForm.setTranslationsShowed(translationsShowed);
+                productionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
+
                 contentDescriptorsForm.setTranslationsShowed(translationsShowed);
                 contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
@@ -324,6 +329,11 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         ViewTextItem urnProvider = new ViewTextItem(OrganisationDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         identifiersForm.setFields(code, name, uri, urn, urnProvider);
 
+        // Production descriptors
+        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(OrganisationDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
+        productionDescriptorsForm.setFields(creationDate);
+
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewTextItem type = new ViewTextItem(OrganisationDS.TYPE, getConstants().organisationType());
@@ -339,6 +349,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         annotationsPanel = new AnnotationsPanel(true);
 
         mainFormLayout.addViewCanvas(identifiersForm);
+        mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
         mainFormLayout.addViewCanvas(commentsForm);
         mainFormLayout.addViewCanvas(annotationsPanel);
@@ -362,6 +373,11 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         ViewTextItem urnProvider = new ViewTextItem(OrganisationDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         identifiersEditionForm.setFields(codeView, code, name, uri, urn, urnProvider);
 
+        // Production descriptors
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(OrganisationDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
+        productionDescriptorsEditionForm.setFields(creationDate);
+
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewTextItem type = new ViewTextItem(OrganisationDS.TYPE, getConstants().organisationType());
@@ -377,6 +393,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         annotationsEditionPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
+        mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
@@ -484,6 +501,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         identifiersForm.setValue(OrganisationDS.URN, organisationDto.getUrn());
         identifiersForm.setValue(OrganisationDS.URN_PROVIDER, organisationDto.getUrnProvider());
 
+        // Production descriptors form
+        productionDescriptorsForm.setValue(OrganisationDS.CREATION_DATE, organisationDto.getCreatedDate());
+
         // Content descriptors
         contentDescriptorsForm.setValue(OrganisationDS.TYPE, CommonUtils.getOrganisationTypeName(organisationDto.getType()));
         contentDescriptorsForm.setValue(OrganisationDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationDto.getDescription()));
@@ -504,6 +524,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         identifiersEditionForm.setValue(OrganisationDS.URN, organisationDto.getUrn());
         identifiersEditionForm.setValue(OrganisationDS.URN_PROVIDER, organisationDto.getUrnProvider());
         identifiersEditionForm.markForRedraw();
+
+        // Production descriptors form
+        productionDescriptorsEditionForm.setValue(OrganisationDS.CREATION_DATE, organisationDto.getCreatedDate());
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(OrganisationDS.TYPE, CommonUtils.getOrganisationTypeName(organisationDto.getType()));
