@@ -6,7 +6,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.utils.RecordUtils;
 
-public class CodelistListGrid extends ItemSchemeListGrid {
+public class CodelistListGrid extends VersionableResourceListGrid {
 
     public CodelistListGrid() {
     }

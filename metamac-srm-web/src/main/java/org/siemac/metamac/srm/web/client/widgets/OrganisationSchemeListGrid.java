@@ -11,7 +11,7 @@ import org.siemac.metamac.srm.web.organisation.utils.RecordUtils;
 
 import com.smartgwt.client.widgets.grid.ListGridField;
 
-public class OrganisationSchemeListGrid extends ItemSchemeListGrid {
+public class OrganisationSchemeListGrid extends VersionableResourceListGrid {
 
     public OrganisationSchemeListGrid() {
         super();

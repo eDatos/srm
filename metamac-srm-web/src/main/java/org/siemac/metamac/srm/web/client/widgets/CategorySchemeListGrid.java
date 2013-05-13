@@ -6,7 +6,7 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
 import org.siemac.metamac.srm.web.category.utils.RecordUtils;
 
-public class CategorySchemeListGrid extends ItemSchemeListGrid {
+public class CategorySchemeListGrid extends VersionableResourceListGrid {
 
     public CategorySchemeListGrid() {
     }

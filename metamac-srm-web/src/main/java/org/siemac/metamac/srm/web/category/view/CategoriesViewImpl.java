@@ -59,7 +59,7 @@ public class CategoriesViewImpl extends ViewWithUiHandlers<CategoriesUiHandlers>
 
             @Override
             public void onRecordClick(RecordClickEvent event) {
-                String categorySchemeUrn = ((CategoryRecord) event.getRecord()).getCategorySchemeUrn();
+                String categorySchemeUrn = ((CategoryRecord) event.getRecord()).getItemSchemeUrn();
                 String categoryUrn = ((CategoryRecord) event.getRecord()).getUrn();
                 getUiHandlers().goToCategory(categorySchemeUrn, categoryUrn);
             }

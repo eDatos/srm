@@ -6,7 +6,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 
-public class ConceptSchemeListGrid extends ItemSchemeListGrid {
+public class ConceptSchemeListGrid extends VersionableResourceListGrid {
 
     public ConceptSchemeListGrid() {
     }

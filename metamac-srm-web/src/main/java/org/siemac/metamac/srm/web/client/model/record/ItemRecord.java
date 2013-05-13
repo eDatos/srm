@@ -29,6 +29,10 @@ public class ItemRecord extends ListGridRecord {
         setAttribute(ItemDS.ITEM_SCHEME_URN, value);
     }
 
+    public String getItemSchemeUrn() {
+        return getAttributeAsString(ItemDS.ITEM_SCHEME_URN);
+    }
+
     public Long getId() {
         return getAttributeAsLong(ItemDS.ID);
     }

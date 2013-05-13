@@ -27,6 +27,7 @@ public class RecordUtils {
         record.setInternalPublicationUser(categorySchemeDto.getLifeCycle().getInternalPublicationUser());
         record.setExternalPublicationDate(DateUtils.getFormattedDate(categorySchemeDto.getLifeCycle().getExternalPublicationDate()));
         record.setExternalPublicationUser(categorySchemeDto.getLifeCycle().getExternalPublicationUser());
+        record.setCategorySchemeBasicDto(categorySchemeDto);
         return record;
     }
 
