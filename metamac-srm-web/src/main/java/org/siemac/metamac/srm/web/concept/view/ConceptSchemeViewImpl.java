@@ -391,7 +391,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
     @Override
     public void setConcepts(List<ConceptMetamacVisualisationResult> itemHierarchyDtos) {
-        // FIXME conceptsTreeGrid.setItems(conceptSchemeDto, itemHierarchyDtos);
+        conceptsTreeGrid.setConcepts(conceptSchemeDto, itemHierarchyDtos);
     }
 
     @Override

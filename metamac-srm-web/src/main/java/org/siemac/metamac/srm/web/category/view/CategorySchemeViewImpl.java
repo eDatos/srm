@@ -608,7 +608,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     public void setCategories(List<ItemVisualisationResult> categoryDtos) {
         // Category hierarchy
         categoriesTreeGrid.setUiHandlers(getUiHandlers()); // UiHandlers cannot be set in constructor because is still null
-        categoriesTreeGrid.setItems(categorySchemeDto, categoryDtos);
+        categoriesTreeGrid.setCategories(categorySchemeDto, categoryDtos);
     }
 
     public CategorySchemeMetamacDto getCategorySchemeDto() {

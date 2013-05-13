@@ -76,9 +76,8 @@ public class CategoriesTreeGrid extends ItemsTreeGrid {
         addItemsToContextMenu(createCategoryMenuItem, deleteCategoryMenuItem);
     }
 
-    @Override
-    public void setItems(ItemSchemeDto categorySchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults) {
-        this.categorySchemeMetamacDto = (CategorySchemeMetamacDto) categorySchemeMetamacDto;
+    public void setCategories(CategorySchemeMetamacDto categorySchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults) {
+        this.categorySchemeMetamacDto = categorySchemeMetamacDto;
         super.setItems(categorySchemeMetamacDto, itemVisualisationResults);
     }
 

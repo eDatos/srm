@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.concept.view.handlers.BaseConceptUiHandlers;
@@ -78,8 +80,8 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
     }
 
     @Override
-    public void setItems(ItemSchemeDto conceptSchemeMetamacDto, List<ItemVisualisationResult> itemHierarchyDtos) {
-        super.setItems(conceptSchemeMetamacDto, itemHierarchyDtos);
+    public void setConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ConceptMetamacVisualisationResult> itemHierarchyDtos) {
+        super.setConcepts(conceptSchemeMetamacDto, itemHierarchyDtos);
         updateDecimalsPrecision();
     }
 

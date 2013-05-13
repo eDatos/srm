@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.concept.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
@@ -66,8 +67,8 @@ public class ConceptsTreeWindow extends CustomWindow {
         show();
     }
 
-    public void setConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults) {
-        conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemVisualisationResults);
+    public void setConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ConceptMetamacVisualisationResult> itemVisualisationResults) {
+        conceptsTreeGrid.setConcepts(conceptSchemeMetamacDto, itemVisualisationResults);
     }
 
     public HasClickHandlers getSaveClickHandlers() {

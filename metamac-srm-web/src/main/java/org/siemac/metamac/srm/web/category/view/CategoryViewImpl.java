@@ -156,7 +156,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
     @Override
     public void setCategoryList(CategorySchemeMetamacDto categorySchemeDto, List<ItemVisualisationResult> itemVisualisationResults) {
-        categoriesTreeGrid.setItems(categorySchemeDto, itemVisualisationResults);
+        categoriesTreeGrid.setCategories(categorySchemeDto, itemVisualisationResults);
         categoriesTreeGrid.selectItem(categoryDto.getUrn());
     }
 

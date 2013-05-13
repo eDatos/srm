@@ -485,7 +485,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     @Override
     public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<OrganisationMetamacVisualisationResult> itemVisualisationResults) {
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeMetamacDto.getType())) {
-            // FIXME organisationsTreeGrid.setItems(organisationSchemeMetamacDto, itemVisualisationResults);
+            organisationsTreeGrid.setOrganisations(organisationSchemeMetamacDto, itemVisualisationResults);
             organisationsTreeGrid.selectItem(organisationDto.getUrn());
             organisationsTreeGridLayout.show();
         } else {

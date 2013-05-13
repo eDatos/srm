@@ -36,7 +36,8 @@ public abstract class ItemsTreeGrid extends BaseItemsTreeGrid {
         });
     }
 
-    public void setItems(ItemSchemeDto itemSchemeDto, List<ItemVisualisationResult> itemVisualisationResults) {
+    @SuppressWarnings("rawtypes")
+    public void setItems(ItemSchemeDto itemSchemeDto, List itemVisualisationResults) {
         // Clear filter editor
         setFilterEditorCriteria(null);
 
@@ -46,7 +47,7 @@ public abstract class ItemsTreeGrid extends BaseItemsTreeGrid {
         treeNodes[0] = createItemSchemeTreeNode(itemSchemeDto);
 
         for (int i = 0; i < itemVisualisationResults.size(); i++) {
-            treeNodes[i + 1] = createItemTreeNode(itemVisualisationResults.get(i));
+            treeNodes[i + 1] = createItemTreeNode((ItemVisualisationResult) itemVisualisationResults.get(i));
         }
 
         tree = new Tree();

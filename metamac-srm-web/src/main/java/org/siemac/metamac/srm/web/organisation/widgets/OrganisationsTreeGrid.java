@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.organisation.widgets;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -77,10 +78,9 @@ public class OrganisationsTreeGrid extends ItemsTreeGrid {
         addItemsToContextMenu(createOrganisationMenuItem, deleteOrganisationMenuItem);
     }
 
-    @Override
-    public void setItems(ItemSchemeDto organisationSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults) {
-        this.organisationSchemeMetamacDto = (OrganisationSchemeMetamacDto) organisationSchemeMetamacDto;
-        super.setItems(organisationSchemeMetamacDto, itemVisualisationResults);
+    public void setOrganisations(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<OrganisationMetamacVisualisationResult> organisations) {
+        this.organisationSchemeMetamacDto = organisationSchemeMetamacDto;
+        super.setItems(organisationSchemeMetamacDto, organisations);
     }
 
     @Override

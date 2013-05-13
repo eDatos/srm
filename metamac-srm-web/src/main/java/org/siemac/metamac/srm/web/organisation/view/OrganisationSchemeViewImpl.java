@@ -613,7 +613,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     public void setOrganisationList(List<OrganisationMetamacVisualisationResult> organisations) {
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
             // Organisation hierarchy
-            // FIXME organisationsTreeGrid.setItems(organisationSchemeDto, organisations);
+            organisationsTreeGrid.setOrganisations(organisationSchemeDto, organisations);
         } else {
             // Organisation list
             OrganisationTypeEnum organisationTypeEnum = CommonUtils.getOrganisationTypeEnum(organisationSchemeDto.getType());

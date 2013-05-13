@@ -4,12 +4,12 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCanvasItem;
 
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 
@@ -41,8 +41,8 @@ public class ShowDecimalsPrecisionItem extends CustomCanvasItem {
         measureDimensionConceptsTreeGrid.setMeasureDimensionPrecisions(measureDimensionPrecisionDtos);
     }
 
-    public void setConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemVisualisationResult> concepts) {
-        measureDimensionConceptsTreeGrid.setItems(conceptSchemeMetamacDto, concepts);
+    public void setConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ConceptMetamacVisualisationResult> concepts) {
+        measureDimensionConceptsTreeGrid.setConcepts(conceptSchemeMetamacDto, concepts);
     }
 
     public List<MeasureDimensionPrecisionDto> getMeasureDimensionPrecisionDtos() {

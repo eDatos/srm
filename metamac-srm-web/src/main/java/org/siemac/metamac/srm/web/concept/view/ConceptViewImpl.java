@@ -119,7 +119,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private List<ConceptTypeDto>                         conceptTypeDtos;
 
     private ConceptSchemeMetamacDto                      conceptSchemeMetamacDto;
-    private List<ItemVisualisationResult>                itemVisualisationResults;
+    private List<ConceptMetamacVisualisationResult>      itemVisualisationResults;
     private ConceptMetamacDto                            conceptDto;
 
     private SearchMultipleRelatedResourcePaginatedWindow searchRolesWindow;
@@ -461,8 +461,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
     @Override
     public void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ConceptMetamacVisualisationResult> itemVisualisationDtos) {
-        // FIXME this.itemVisualisationResults = itemVisualisationDtos;
-        // FIXME conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemVisualisationDtos);
+        this.itemVisualisationResults = itemVisualisationDtos;
+        conceptsTreeGrid.setConcepts(conceptSchemeMetamacDto, itemVisualisationDtos);
         conceptsTreeGrid.selectItem(conceptDto.getUrn());
     }
 
