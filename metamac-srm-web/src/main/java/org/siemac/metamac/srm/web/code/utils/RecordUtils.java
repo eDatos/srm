@@ -27,30 +27,18 @@ import org.siemac.metamac.srm.web.code.model.record.VariableFamilyRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
-import org.siemac.metamac.web.common.client.utils.DateUtils;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class RecordUtils {
+public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
 
     // CODELISTS
 
     public static CodelistRecord getCodelistRecord(CodelistMetamacBasicDto codelistDto) {
         CodelistRecord record = new CodelistRecord();
-        record.setCode(codelistDto.getCode());
-        record.setUrn(codelistDto.getUrn());
-        record.setName(getLocalisedString(codelistDto.getName()));
+        record = (CodelistRecord) getItemSchemeRecord(record, codelistDto, codelistDto.getLifeCycle());
         record.setIsRecommended(CommonWebUtils.getBooleanValueAsString(codelistDto.getIsRecommended()));
         record.setVariable(RelatedResourceUtils.getRelatedResourceName(codelistDto.getVariable()));
-        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(codelistDto.getMaintainer()));
-        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
-        record.setCreationDate(DateUtils.getFormattedDate(codelistDto.getCreatedDate()));
-        record.setResourceCreationDate(DateUtils.getFormattedDate(codelistDto.getResourceCreatedDate()));
-        record.setVersionLogic(codelistDto.getVersionLogic());
-        record.setInternalPublicationDate(DateUtils.getFormattedDate(codelistDto.getLifeCycle().getInternalPublicationDate()));
-        record.setInternalPublicationUser(codelistDto.getLifeCycle().getInternalPublicationUser());
-        record.setExternalPublicationDate(DateUtils.getFormattedDate(codelistDto.getLifeCycle().getExternalPublicationDate()));
-        record.setExternalPublicationUser(codelistDto.getLifeCycle().getExternalPublicationUser());
         record.setCodelistBasicDto(codelistDto);
         return record;
     }

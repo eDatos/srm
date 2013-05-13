@@ -10,10 +10,6 @@ public class CodelistRecord extends VersionableResourceRecord {
     public CodelistRecord() {
     }
 
-    public void setDescription(String desc) {
-        setAttribute(CodelistDS.DESCRIPTION, desc);
-    }
-
     public void setIsRecommended(String value) {
         setAttribute(CodelistDS.IS_RECOMMENDED, value);
     }
@@ -28,10 +24,6 @@ public class CodelistRecord extends VersionableResourceRecord {
 
     public ProcStatusEnum getProcStatus() {
         return ((CodelistMetamacBasicDto) getAttributeAsObject(CodelistDS.DTO)).getLifeCycle().getProcStatus();
-    }
-
-    public String getDescription() {
-        return getAttribute(CodelistDS.DESCRIPTION);
     }
 
     public CodelistMetamacBasicDto getCodelistMetamacBasicDto() {

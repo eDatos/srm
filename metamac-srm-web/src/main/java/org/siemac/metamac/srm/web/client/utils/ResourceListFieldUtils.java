@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.client.utils;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.srm.web.client.model.ds.VersionableResourceDS;
+import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
@@ -41,6 +42,19 @@ public class ResourceListFieldUtils {
         statisticalOperation.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
         return ListGridUtils.addFields(getVersionableResourceFields(), typeField, statisticalOperation);
+    }
+
+    //
+    // CODES
+    //
+
+    public static CustomListGridField[] getCodelistFields() {
+        CustomListGridField isRecommended = new CustomListGridField(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
+
+        CustomListGridField variable = new CustomListGridField(CodelistDS.VARIABLE, getConstants().variable());
+        variable.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+
+        return ListGridUtils.addFields(getVersionableResourceFields(), isRecommended, variable);
     }
 
     //

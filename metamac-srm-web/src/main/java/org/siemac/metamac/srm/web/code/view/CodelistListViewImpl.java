@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistListPresenter;
@@ -25,13 +26,11 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -153,11 +152,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
             }
         });
 
-        ListGridField fieldCode = new ListGridField(CodelistDS.CODE, getConstants().identifiableArtefactCode());
-        fieldCode.setAlign(Alignment.LEFT);
-        ListGridField fieldName = new ListGridField(CodelistDS.NAME, getConstants().nameableArtefactName());
-        ListGridField status = new ListGridField(CodelistDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        codelistsList.getListGrid().setFields(fieldCode, fieldName, status);
+        codelistsList.getListGrid().setFields(ResourceListFieldUtils.getCodelistFields());
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistDeleteConfirmationTitle(), getConstants().codelistDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
