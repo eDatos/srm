@@ -10,22 +10,6 @@ public class CategorySchemeRecord extends ItemSchemeRecord {
     public CategorySchemeRecord() {
     }
 
-    public CategorySchemeRecord(Long id, String code, String name, String status, String versionLogic, String urn, String maintainer, String internalPublicationDate, String internalPublicationUser,
-            String externalPublicationDate, String externalPublicationUser) {
-        super();
-        setId(id);
-        setCode(code);
-        setName(name);
-        setProcStatus(status);
-        setVersionLogic(versionLogic);
-        setUrn(urn);
-        setMaintainer(maintainer);
-        setInternalPublicationDate(internalPublicationDate);
-        setInternalPublicationUser(internalPublicationUser);
-        setExternalPublicationDate(externalPublicationDate);
-        setExternalPublicationUser(externalPublicationUser);
-    }
-
     public void setCategorySchemeBasicDto(CategorySchemeMetamacBasicDto categorySchemeMetamacDto) {
         setAttribute(CategorySchemeDS.DTO, categorySchemeMetamacDto);
     }
