@@ -40,6 +40,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
@@ -790,11 +791,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkExportCodesCsv(codelistUrn, null);
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
-        CodelistOrderVisualisation orderVisualisation = codelistVersion.getDefaultOrderVisualisation();
-        if (orderVisualisation == null) {
-            orderVisualisation = codelistVersion.getOrderVisualisations().get(0); // any order
+        CodelistOrderVisualisation orderVisualisationToRetrieveCodes = codelistVersion.getDefaultOrderVisualisation();
+        if (orderVisualisationToRetrieveCodes == null) {
+            orderVisualisationToRetrieveCodes = codelistVersion.getOrderVisualisations().get(0); // any order
         }
-        Integer orderColumnIndex = orderVisualisation.getColumnIndex();
+        Integer orderColumnIndex = orderVisualisationToRetrieveCodes.getColumnIndex();
 
         List<String> languages = srmConfiguration.retrieveLanguages();
 
@@ -823,24 +824,24 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
             // codes
             List<ItemResult> items = getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, CodeMetamacResultSelection.EXPORT);
-            for (ItemResult code : items) {
+            for (ItemResult itemResult : items) {
                 writer.write(SrmConstants.CSV_LINE_SEPARATOR);
                 // Code
-                writer.write(code.getCode());
+                writer.write(itemResult.getCode());
                 // Parent
                 writer.write(SrmConstants.CSV_SEPARATOR);
-                if (code.getParent() != null) {
-                    writer.write(code.getParent().getCode());
+                if (itemResult.getParent() != null) {
+                    writer.write(itemResult.getParent().getCode());
                 }
                 // Variable element
                 writer.write(SrmConstants.CSV_SEPARATOR);
-                String variableElement = SrmServiceUtils.getCodeItemResultVariableElement(code);
+                String variableElement = SrmServiceUtils.getCodeItemResultVariableElement(itemResult);
                 if (variableElement != null) {
                     writer.write(variableElement);
                 }
                 // Name
                 for (String language : languages) {
-                    String nameInLocale = code.getName().get(language);
+                    String nameInLocale = itemResult.getName().get(language);
                     writer.write(SrmConstants.CSV_SEPARATOR);
                     if (nameInLocale != null) {
                         writer.write(nameInLocale);
@@ -848,7 +849,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 }
                 // Description
                 for (String language : languages) {
-                    String descriptionInLocale = code.getDescription().get(language);
+                    String descriptionInLocale = itemResult.getDescription().get(language);
                     writer.write(SrmConstants.CSV_SEPARATOR);
                     if (descriptionInLocale != null) {
                         writer.write(descriptionInLocale);
@@ -867,8 +868,82 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public String exportCodeOrdersCsv(ServiceContext ctx, String codelistUrn) throws MetamacException {
-        // TODO exportCodeOrdersCsv
-        return null;
+
+        CodesMetamacInvocationValidator.checkExportCodesCsv(codelistUrn, null);
+
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+
+        List<CodelistOrderVisualisation> orderVisualisations = codelistVersion.getOrderVisualisations();
+        CodelistOrderVisualisation orderVisualisationToRetrieveCodes = codelistVersion.getDefaultOrderVisualisation();
+        if (orderVisualisationToRetrieveCodes == null) {
+            orderVisualisationToRetrieveCodes = codelistVersion.getOrderVisualisations().get(0); // any order
+        }
+        Integer orderColumnIndex = orderVisualisationToRetrieveCodes.getColumnIndex();
+
+        String defaultLanguage = srmConfiguration.retrieveLanguageDefault();
+
+        // Retrieve items in depth
+        List<ItemResult> itemsResult = getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, CodeMetamacResultSelection.EXPORT_ORDERS);
+        // Retrieve all items to retrieve all orders
+        List<Item> codes = codelistVersion.getItems();
+        Map<Long, CodeMetamac> codesById = new HashMap<Long, CodeMetamac>(codes.size());
+        for (Item code : codes) {
+            codesById.put(code.getId(), (CodeMetamac) code);
+        }
+
+        // Export
+        OutputStream outputStream = null;
+        OutputStreamWriter writer = null;
+        try {
+            File file = File.createTempFile("codes-orders", ".csv");
+            outputStream = new FileOutputStream(file);
+            writer = new OutputStreamWriter(outputStream, "UTF-8"); // TODO charset, pte web
+
+            // header
+            writer.write(SrmConstants.CSV_HEADER_CODE);
+            writer.write(SrmConstants.CSV_SEPARATOR);
+            writer.write(SrmConstants.CSV_HEADER_LABEL);
+            writer.write(SrmConstants.CSV_SEPARATOR);
+            writer.write(SrmConstants.CSV_HEADER_LEVEL);
+            writer.write(SrmConstants.CSV_SEPARATOR);
+            writer.write(SrmConstants.CSV_HEADER_PARENT);
+            for (CodelistOrderVisualisation orderVisualisation : orderVisualisations) {
+                writer.write(SrmConstants.CSV_SEPARATOR);
+                writer.write(orderVisualisation.getNameableArtefact().getCode());
+            }
+
+            // codes
+            for (ItemResult itemResult : itemsResult) {
+                CodeMetamac codeMetamac = codesById.get(itemResult.getItemIdDatabase());
+
+                writer.write(SrmConstants.CSV_LINE_SEPARATOR);
+                // Code
+                writer.write(itemResult.getCode());
+                // Label
+                writer.write(SrmConstants.CSV_SEPARATOR);
+                writer.write(itemResult.getName().get(defaultLanguage));
+                // Level
+                writer.write(SrmConstants.CSV_SEPARATOR);
+                writer.write(String.valueOf(((CodeMetamacResultExtensionPoint) itemResult.getExtensionPoint()).getLevel()));
+                // Parent
+                writer.write(SrmConstants.CSV_SEPARATOR);
+                if (itemResult.getParent() != null) {
+                    writer.write(itemResult.getParent().getCode());
+                }
+                // Order
+                for (CodelistOrderVisualisation orderVisualisation : orderVisualisations) {
+                    writer.write(SrmConstants.CSV_SEPARATOR);
+                    writer.write(String.valueOf(SrmServiceUtils.getCodeOrder(codeMetamac, orderVisualisation.getColumnIndex()) + 1)); // +1 to start in 1
+                }
+            }
+            writer.flush();
+            return file.getAbsolutePath();
+        } catch (Exception e) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.EXPORTATION_CSV_ERROR).withMessageParameters(e).build();
+        } finally {
+            IOUtils.closeQuietly(outputStream);
+            IOUtils.closeQuietly(writer);
+        }
     }
 
     @Override

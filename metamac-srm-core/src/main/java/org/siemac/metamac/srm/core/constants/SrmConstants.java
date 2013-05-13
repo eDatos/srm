@@ -33,4 +33,5 @@ public class SrmConstants {
 
     // Misc
     public static final int                METADATA_SHORT_NAME_MAXIMUM_LENGTH                        = 100;
+    public static final int                CODE_QUERY_COLUMN_ORDER_LENGTH                            = 6;
 }

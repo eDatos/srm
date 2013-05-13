@@ -5,6 +5,7 @@ import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 public class CodeMetamacResultSelection extends ItemMetamacResultSelection {
 
     public static final CodeMetamacResultSelection EXPORT          = new CodeMetamacResultSelection(true, true, true, true, true);
+    public static final CodeMetamacResultSelection EXPORT_ORDERS   = new CodeMetamacResultSelection(true, true, true, true, false);
 
     private boolean                                variableElement = false;
 

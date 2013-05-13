@@ -3494,7 +3494,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testImportCodesCsv() throws Exception {
 
         final String codelistUrn = CODELIST_1_V2;
-        final String fileName = "codes2412816223099749235.csv";
+        final String fileName = "importation-code-01.csv";
         final InputStream stream = this.getClass().getResourceAsStream("/csv/" + fileName);
         final StringBuilder jobKey = new StringBuilder();
         final boolean updateAlreadyExisting = true;
@@ -8389,8 +8389,25 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     @Test
     public void testExportCodeOrdersCsv() throws Exception {
-        // TODO testExportCodeOrdersCsv
+        String codelistUrn = CODELIST_1_V2;
+        String filename = codesService.exportCodeOrdersCsv(getServiceContextAdministrador(), codelistUrn);
+        assertNotNull(filename);
 
+        // Validate
+        File file = new File(filename);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        assertEquals("code\tlabel\tlevel\tparent\tVISUALISATION02\tVISUALISATION03\tALPHABETICAL", bufferedReader.readLine());
+        assertEquals("CODE01\tIsla de Tenerife\t1\t\t1\t2\t1", bufferedReader.readLine());
+        assertEquals("CODE02\tNombre codelist-1-v2-code-2 Canaria, Gran\t1\t\t2\t3\t2", bufferedReader.readLine());
+        assertEquals("CODE0201\tcodelist-1-v2-code-2- Isla de La Gomera\t2\tCODE02\t1\t2\t1", bufferedReader.readLine());
+        assertEquals("CODE020101\tSanta Cruz de La Palma codelist-1-v2-code-2-1-1\t3\tCODE0201\t1\t1\t1", bufferedReader.readLine());
+        assertEquals("CODE0202\tIsla de El Hierro\t2\tCODE02\t2\t1\t2", bufferedReader.readLine());
+        assertEquals("CODE03\tFuerteventura\t1\t\t3\t1\t3", bufferedReader.readLine());
+        assertEquals("CODE04\tLanzarote\t1\t\t4\t4\t4", bufferedReader.readLine());
+        assertEquals("CODE0401\tCanarias, Tenerife\t2\tCODE04\t1\t1\t1", bufferedReader.readLine());
+        assertEquals("CODE040101\tNombre codelist-1-v2-code-4-1-1\t3\tCODE0401\t1\t1\t1", bufferedReader.readLine());
     }
 
     private VariableElementOperation getVariableElementOperationByCode(List<VariableElementOperation> operations, String code) {

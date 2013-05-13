@@ -378,6 +378,14 @@ public class SrmServiceUtils {
         return extensionPoint.getVariableElementCode();
     }
 
+    public static String getCodeItemResultOrder(ItemResult itemResult) {
+        if (itemResult.getExtensionPoint() == null) {
+            return null;
+        }
+        CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        return extensionPoint.getOrder();
+    }
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static PagedResult pagedResultZeroResults(PagingParameter pagingParameter) {
         return new PagedResult(new ArrayList(), pagingParameter.getStartRow(), pagingParameter.getRowCount(), pagingParameter.getPageSize(), 0, 0);

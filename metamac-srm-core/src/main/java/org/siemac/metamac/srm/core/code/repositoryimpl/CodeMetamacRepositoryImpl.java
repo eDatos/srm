@@ -30,6 +30,7 @@ import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -471,7 +472,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         // Retrieve items id ordered
         if (srmConfiguration.isDatabaseOracle()) {
-            sb.append("SELECT ITEM_ID, SYS_CONNECT_BY_PATH(lpad(COD_ORDER, 6, '0'), '.') ORDER_PATH ");
+            sb.append("SELECT ITEM_ID, SYS_CONNECT_BY_PATH(lpad(COD_ORDER, " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + ", '0'), '.') ORDER_PATH ");
             sb.append("FROM ");
             sb.append("(");
             sb.append("SELECT c." + orderColumn + " AS COD_ORDER, i.ID AS ITEM_ID, i.PARENT_FK AS ITEM_PARENT_FK ");
@@ -485,12 +486,13 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             sb.append("WITH Parents(R_ID, R_SORT, R_ITEM_SCHEME_VERSION_FK, R_SORT_STRING) AS ");
             sb.append("( ");
             sb.append("SELECT i1.ID AS R_ID, c1." + orderColumn + " AS R_SORT, i1.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
-            sb.append("'/' + REPLICATE(0, 6 - LEN(c1." + orderColumn + ")) + CAST(c1." + orderColumn + " AS varchar(4000)) AS R_SORT_STRING ");
+            sb.append("'/' + REPLICATE(0, " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + " - LEN(c1." + orderColumn + ")) + CAST(c1." + orderColumn + " AS varchar(4000)) AS R_SORT_STRING ");
             sb.append("FROM TB_M_CODES AS c1 INNER JOIN TB_ITEMS_BASE AS i1 ON i1.ID = c1.TB_CODES ");
             sb.append("WHERE i1.PARENT_FK IS NULL and i1.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
             sb.append("UNION ALL ");
             sb.append("SELECT i2.ID, c2." + orderColumn + ", i2.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
-            sb.append("p.R_SORT_STRING + '/' + REPLICATE(0, 6 - LEN(c2." + orderColumn + ")) + CAST(c2." + orderColumn + " AS varchar(4000)) AS R_SORT_STRING ");
+            sb.append("p.R_SORT_STRING + '/' + REPLICATE(0, " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + " - LEN(c2." + orderColumn + ")) + CAST(c2." + orderColumn
+                    + " AS varchar(4000)) AS R_SORT_STRING ");
             sb.append("FROM TB_M_CODES AS c2 INNER JOIN TB_ITEMS_BASE AS i2 ON i2.ID = c2.TB_CODES INNER JOIN Parents AS p ON p.R_ID = i2.PARENT_FK ) ");
             sb.append("SELECT * FROM Parents ORDER BY R_SORT_STRING");
         } else {
@@ -503,8 +505,10 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         // Order previous result list thanks to ordered list of items id
         List<ItemResult> ordered = new ArrayList<ItemResult>(codes.size());
         for (Object resultOrder : resultsOrder) {
-            Long codeId = getLong(((Object[]) resultOrder)[0]);
+            Object[] resultOrderArray = (Object[]) resultOrder;
+            Long codeId = getLong(resultOrderArray[0]);
             ItemResult code = mapCodeByItemId.get(codeId);
+            ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).setOrder(getString(resultOrderArray[1]));
             ordered.add(code);
         }
         return ordered;
