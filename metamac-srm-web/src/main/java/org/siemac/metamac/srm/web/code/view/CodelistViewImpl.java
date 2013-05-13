@@ -608,7 +608,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         RelatedResourceLinkItem agency = new RelatedResourceLinkItem(CodelistDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(CodelistDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsForm.setFields(agency, procStatus);
+        ViewTextItem creationDate = new ViewTextItem(CodelistDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem resourceCreationDate = new ViewTextItem(CodelistDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
+        productionDescriptorsForm.setFields(agency, procStatus, creationDate, resourceCreationDate);
 
         // DIFFUSION DESCRIPTORS
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -691,7 +693,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         RelatedResourceLinkItem agency = new RelatedResourceLinkItem(CodelistDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(CodelistDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsEditionForm.setFields(agency, procStatus);
+        ViewTextItem creationDate = new ViewTextItem(CodelistDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem resourceCreationDate = new ViewTextItem(CodelistDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
+        productionDescriptorsEditionForm.setFields(agency, procStatus, creationDate, resourceCreationDate);
 
         // DIFFUSION DESCRIPTORS
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -769,6 +773,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         ((RelatedResourceLinkItem) productionDescriptorsForm.getItem(CodelistDS.MAINTAINER)).setRelatedResource(codelistDto.getMaintainer());
         productionDescriptorsForm.setValue(CodelistDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
+        productionDescriptorsForm.setValue(CodelistDS.VERSION_CREATION_DATE, codelistDto.getCreatedDate());
+        productionDescriptorsForm.setValue(CodelistDS.RESOURCE_CREATION_DATE, codelistDto.getResourceCreatedDate());
 
         // DIFFUSION DESCRIPTORS
 
@@ -830,6 +836,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // PRODUCTION DESCRIPTORS
         ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(CodelistDS.MAINTAINER)).setRelatedResource(codelistDto.getMaintainer());
         productionDescriptorsEditionForm.setValue(CodelistDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
+        productionDescriptorsEditionForm.setValue(CodelistDS.VERSION_CREATION_DATE, codelistDto.getCreatedDate());
+        productionDescriptorsEditionForm.setValue(CodelistDS.RESOURCE_CREATION_DATE, codelistDto.getResourceCreatedDate());
         productionDescriptorsEditionForm.markForRedraw();
 
         // DIFFUSION DESCRIPTORS

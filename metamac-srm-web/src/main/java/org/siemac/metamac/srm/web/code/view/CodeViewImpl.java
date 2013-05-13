@@ -63,12 +63,14 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
     // View forms
     private GroupDynamicForm                     identifiersForm;
+    private GroupDynamicForm                     productionDescriptorsForm;
     private GroupDynamicForm                     contentDescriptorsForm;
     private GroupDynamicForm                     commentsForm;
     private AnnotationsPanel                     annotationsPanel;
 
     // Edition forms
     private GroupDynamicForm                     identifiersEditionForm;
+    private GroupDynamicForm                     productionDescriptorsEditionForm;
     private GroupDynamicForm                     contentDescriptorsEditionForm;
     private GroupDynamicForm                     commentsEditionForm;
     private AnnotationsPanel                     annotationsEditionPanel;
@@ -112,6 +114,9 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
                 contentDescriptorsForm.setTranslationsShowed(translationsShowed);
                 contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
+
+                productionDescriptorsForm.setTranslationsShowed(translationsShowed);
+                productionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
                 commentsForm.setTranslationsShowed(translationsShowed);
                 commentsEditionForm.setTranslationsShowed(translationsShowed);
@@ -195,6 +200,11 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         ViewTextItem urnProvider = new ViewTextItem(CodeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         identifiersForm.setFields(code, name, shortName, uri, urn, urnProvider);
 
+        // Production descriptors
+        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(CodeDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
+        productionDescriptorsForm.setFields(creationDate);
+
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CodeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
@@ -210,6 +220,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         annotationsPanel = new AnnotationsPanel(true);
 
         mainFormLayout.addViewCanvas(identifiersForm);
+        mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
         mainFormLayout.addViewCanvas(commentsForm);
         mainFormLayout.addViewCanvas(annotationsPanel);
@@ -234,6 +245,11 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         ViewTextItem urnProvider = new ViewTextItem(CodeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         identifiersEditionForm.setFields(code, staticCode, name, shortName, uri, urn, urnProvider);
 
+        // PRODUCTION DESCRIPTORS
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(CodeDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
+        productionDescriptorsEditionForm.setFields(creationDate);
+
         // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CodeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
@@ -249,6 +265,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         annotationsEditionPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
+        mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
@@ -322,6 +339,9 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         identifiersForm.setValue(CodeDS.URN, codeDto.getUrn());
         identifiersForm.setValue(CodeDS.URN_PROVIDER, codeDto.getUrnProvider());
 
+        // Production descriptors form
+        productionDescriptorsForm.setValue(CodeDS.CREATION_DATE, codeDto.getCreatedDate());
+
         // Content descriptors
         contentDescriptorsForm.setValue(CodeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codeDto.getDescription()));
         ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(CodeDS.VARIABLE_ELEMENT)).setRelatedResource(codeDto.getVariableElement());
@@ -343,6 +363,9 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         identifiersEditionForm.setValue(CodeDS.URI, codeDto.getUriProvider());
         identifiersEditionForm.setValue(CodeDS.URN, codeDto.getUrn());
         identifiersEditionForm.setValue(CodeDS.URN_PROVIDER, codeDto.getUrnProvider());
+
+        // Production descriptors form
+        productionDescriptorsEditionForm.setValue(CodeDS.CREATION_DATE, codeDto.getCreatedDate());
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(CodeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codeDto.getDescription()));

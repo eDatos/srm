@@ -80,7 +80,7 @@ public class ItemSchemeRecord extends ListGridRecord {
     }
 
     public void setCreationDate(String value) {
-        setAttribute(ItemSchemeDS.CREATION_DATE, value);
+        setAttribute(ItemSchemeDS.VERSION_CREATION_DATE, value);
     }
 
     public void setResourceCreationDate(String value) {
