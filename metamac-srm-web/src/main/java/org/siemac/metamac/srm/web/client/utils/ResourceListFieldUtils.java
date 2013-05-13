@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
+import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
@@ -35,6 +36,13 @@ public class ResourceListFieldUtils {
         typeField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
         return ListGridUtils.addFields(getVersionableResourceFields(), typeField);
+    }
+
+    public static CustomListGridField[] getOrganisationFields() {
+        CustomListGridField typeField = new CustomListGridField(OrganisationDS.TYPE_NAME, getConstants().organisationType());
+        typeField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+
+        return ListGridUtils.addFields(getItemFields(), typeField);
     }
 
     //
@@ -75,6 +83,10 @@ public class ResourceListFieldUtils {
         variable.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
         return ListGridUtils.addFields(getVersionableResourceFields(), isRecommended, variable);
+    }
+
+    public static CustomListGridField[] getCodeFields() {
+        return getItemFields();
     }
 
     //

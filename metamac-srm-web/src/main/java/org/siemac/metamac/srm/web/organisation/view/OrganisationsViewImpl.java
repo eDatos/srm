@@ -1,10 +1,9 @@
 package org.siemac.metamac.srm.web.organisation.view;
 
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-
 import java.util.List;
 
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
+import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationsPresenter;
@@ -19,10 +18,8 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -60,18 +57,14 @@ public class OrganisationsViewImpl extends ViewWithUiHandlers<OrganisationsUiHan
 
             @Override
             public void onRecordClick(RecordClickEvent event) {
-                String organisationSchemeUrn = ((OrganisationRecord) event.getRecord()).getOrganisationSchemeUrn();
+                String organisationSchemeUrn = ((OrganisationRecord) event.getRecord()).getItemSchemeUrn();
                 String organisationUrn = ((OrganisationRecord) event.getRecord()).getUrn();
                 OrganisationTypeEnum organisationTypeEnum = ((OrganisationRecord) event.getRecord()).getOrganisationType();
                 getUiHandlers().goToOrganisation(organisationSchemeUrn, organisationUrn, organisationTypeEnum);
             }
         });
 
-        ListGridField fieldCode = new ListGridField(OrganisationDS.CODE, getConstants().identifiableArtefactCode());
-        fieldCode.setAlign(Alignment.LEFT);
-        ListGridField fieldName = new ListGridField(OrganisationDS.NAME, getConstants().nameableArtefactName());
-        ListGridField urn = new ListGridField(OrganisationDS.URN, getConstants().identifiableArtefactUrn());
-        organisationsListGrid.getListGrid().setFields(fieldCode, fieldName, urn);
+        organisationsListGrid.getListGrid().setFields(ResourceListFieldUtils.getOrganisationFields());
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);

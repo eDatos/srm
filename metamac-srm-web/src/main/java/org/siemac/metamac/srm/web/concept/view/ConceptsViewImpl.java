@@ -1,10 +1,9 @@
 package org.siemac.metamac.srm.web.concept.view;
 
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
+import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptsPresenter;
@@ -18,10 +17,8 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -65,11 +62,7 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
             }
         });
 
-        ListGridField fieldCode = new ListGridField(ConceptDS.CODE, getConstants().identifiableArtefactCode());
-        fieldCode.setAlign(Alignment.LEFT);
-        ListGridField fieldName = new ListGridField(ConceptDS.NAME, getConstants().nameableArtefactName());
-        ListGridField urn = new ListGridField(ConceptDS.URN, getConstants().identifiableArtefactUrn());
-        conceptsListGrid.getListGrid().setFields(fieldCode, fieldName, urn);
+        conceptsListGrid.getListGrid().setFields(ResourceListFieldUtils.getConceptFields());
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);

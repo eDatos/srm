@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.web.organisation.utils;
 
-import static org.siemac.metamac.web.common.client.utils.InternationalStringUtils.getLocalisedString;
-
 import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
@@ -29,10 +27,8 @@ public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordU
 
     public static OrganisationRecord getOrganisationRecord(OrganisationMetamacBasicDto organisationDto) {
         OrganisationRecord record = new OrganisationRecord();
-        record.setCode(organisationDto.getCode());
-        record.setName(getLocalisedString(organisationDto.getName()));
-        record.setUrn(organisationDto.getUrn());
-        record.setOrganisationSchemeUrn(organisationDto.getItemSchemeVersionUrn());
+        record = (OrganisationRecord) getItemRecord(record, organisationDto);
+        record.setOrganisationTypeName(CommonUtils.getOrganisationTypeName(organisationDto.getType()));
         record.setOrganisationType(organisationDto.getType());
         return record;
     }

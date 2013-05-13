@@ -1,10 +1,9 @@
 package org.siemac.metamac.srm.web.code.view;
 
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
+import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.model.record.CodeRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodesPresenter;
@@ -17,10 +16,8 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -58,17 +55,13 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
 
             @Override
             public void onRecordClick(RecordClickEvent event) {
-                String codelistUrn = ((CodeRecord) event.getRecord()).getCodelistUrn();
+                String codelistUrn = ((CodeRecord) event.getRecord()).getItemSchemeUrn();
                 String codeUrn = ((CodeRecord) event.getRecord()).getUrn();
                 getUiHandlers().goToCode(codelistUrn, codeUrn);
             }
         });
 
-        ListGridField fieldCode = new ListGridField(CodeDS.CODE, getConstants().identifiableArtefactCode());
-        fieldCode.setAlign(Alignment.LEFT);
-        ListGridField fieldName = new ListGridField(CodeDS.NAME, getConstants().nameableArtefactName());
-        ListGridField urn = new ListGridField(CodeDS.URN, getConstants().identifiableArtefactUrn());
-        codesListGrid.getListGrid().setFields(fieldCode, fieldName, urn);
+        codesListGrid.getListGrid().setFields(ResourceListFieldUtils.getCodeFields());
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);
