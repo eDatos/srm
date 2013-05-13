@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.client.utils;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.model.ds.VersionableResourceDS;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -18,6 +19,10 @@ public class ResourceListFieldUtils {
 
     public static CustomListGridField[] getCategorySchemeFields() {
         return getVersionableResourceFields();
+    }
+
+    public static CustomListGridField[] getCategoryFields() {
+        return getItemFields();
     }
 
     //
@@ -97,5 +102,24 @@ public class ResourceListFieldUtils {
         externalPublicationDate.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
         return new CustomListGridField[]{code, urn, version, name, maintainer, procStatus, creationDate, resourceCreationDate, externalPublicationDate};
+    }
+
+    //
+    // ITEM
+    //
+
+    public static CustomListGridField[] getItemFields() {
+
+        CustomListGridField code = new CustomListGridField(ItemDS.CODE, getConstants().identifiableArtefactCode());
+
+        CustomListGridField urn = new CustomListGridField(ItemDS.URN, getConstants().identifiableArtefactUrn());
+        urn.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+
+        CustomListGridField name = new CustomListGridField(ItemDS.NAME, getConstants().nameableArtefactName());
+
+        CustomListGridField creationDate = new CustomListGridField(ItemDS.CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        creationDate.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+
+        return new CustomListGridField[]{code, urn, name, creationDate};
     }
 }

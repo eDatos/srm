@@ -4,11 +4,13 @@ import static org.siemac.metamac.web.common.client.utils.InternationalStringUtil
 
 import java.util.List;
 
+import org.siemac.metamac.srm.core.base.dto.ItemMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.ItemSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.LifeCycleBasicDto;
 import org.siemac.metamac.srm.core.base.dto.MaintainableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.StructureMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
+import org.siemac.metamac.srm.web.client.model.record.ItemRecord;
 import org.siemac.metamac.srm.web.client.model.record.VersionableResourceRecord;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
@@ -57,6 +59,19 @@ public class RecordUtils {
         record = getVersionableResourceRecord(record, structureMetamacBasicDto, lifeCycleDto);
         record.setCreationDate(DateUtils.getFormattedDate(structureMetamacBasicDto.getCreatedDate()));
         record.setResourceCreationDate(DateUtils.getFormattedDate(structureMetamacBasicDto.getResourceCreatedDate()));
+        return record;
+    }
+
+    //
+    // ITEM
+    //
+
+    public static ItemRecord getItemRecord(ItemRecord record, ItemMetamacBasicDto itemMetamacBasicDto) {
+        record.setCode(itemMetamacBasicDto.getCode());
+        record.setUrn(itemMetamacBasicDto.getUrn());
+        record.setName(getLocalisedString(itemMetamacBasicDto.getName()));
+        record.setCreationDate(DateUtils.getFormattedDate(itemMetamacBasicDto.getCreatedDate()));
+        record.setItemSchemeUrn(itemMetamacBasicDto.getItemSchemeVersionUrn());
         return record;
     }
 

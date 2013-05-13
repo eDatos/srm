@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.web.category.view;
 
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-
 import java.util.List;
 
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
@@ -11,6 +9,7 @@ import org.siemac.metamac.srm.web.category.presenter.CategoriesPresenter;
 import org.siemac.metamac.srm.web.category.utils.RecordUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategoriesUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategorySearchSectionStack;
+import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.web.common.client.widgets.PaginatedListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -18,10 +17,8 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -65,11 +62,7 @@ public class CategoriesViewImpl extends ViewWithUiHandlers<CategoriesUiHandlers>
             }
         });
 
-        ListGridField fieldCode = new ListGridField(CategoryDS.CODE, getConstants().identifiableArtefactCode());
-        fieldCode.setAlign(Alignment.LEFT);
-        ListGridField fieldName = new ListGridField(CategoryDS.NAME, getConstants().nameableArtefactName());
-        ListGridField urn = new ListGridField(CategoryDS.URN, getConstants().identifiableArtefactUrn());
-        categoriesListGrid.getListGrid().setFields(fieldCode, fieldName, urn);
+        categoriesListGrid.getListGrid().setFields(ResourceListFieldUtils.getCategoryFields());
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);
