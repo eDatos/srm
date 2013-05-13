@@ -9,6 +9,7 @@ import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
+import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -120,7 +121,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
         void setConceptScheme(ConceptSchemeMetamacDto conceptSchemeDto);
         void startConceptSchemeEdition();
-        void setConcepts(List<ItemVisualisationResult> itemHierarchyDtos);
+        void setConcepts(List<ConceptMetamacVisualisationResult> itemHierarchyDtos);
         void setConceptSchemeVersions(List<ConceptSchemeMetamacBasicDto> conceptSchemeDtos);
         void setOperations(GetStatisticalOperationsResult result);
         void setLatestConceptSchemeForInternalPublication(GetConceptSchemesResult result);

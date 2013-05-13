@@ -7,6 +7,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
+import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -104,7 +105,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
         void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacBasicDto> relatedConcepts, ConceptSchemeMetamacDto conceptSchemeMetamacDto);
         void setConcept(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacBasicDto> relatedConcepts);
-        void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationResults);
+        void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ConceptMetamacVisualisationResult> itemVisualisationResults);
 
         void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos);
 
@@ -194,7 +195,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             }
             @Override
             public void onWaitSuccess(GetConceptsBySchemeResult result) {
-                final List<ItemVisualisationResult> itemVisualisationResults = result.getItemVisualisationResults();
+                final List<ConceptMetamacVisualisationResult> itemVisualisationResults = result.getItemVisualisationResults();
                 dispatcher.execute(new GetConceptSchemeAction(ConceptPresenter.this.conceptSchemeUrn), new WaitingAsyncCallback<GetConceptSchemeResult>() {
 
                     @Override

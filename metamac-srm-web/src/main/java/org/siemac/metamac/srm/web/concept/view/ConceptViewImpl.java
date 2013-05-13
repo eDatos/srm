@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -442,9 +443,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     @Override
-    public void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ItemVisualisationResult> itemVisualisationDtos) {
-        this.itemVisualisationResults = itemVisualisationDtos;
-        conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemVisualisationDtos);
+    public void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ConceptMetamacVisualisationResult> itemVisualisationDtos) {
+        // FIXME this.itemVisualisationResults = itemVisualisationDtos;
+        // FIXME conceptsTreeGrid.setItems(conceptSchemeMetamacDto, itemVisualisationDtos);
         conceptsTreeGrid.selectItem(conceptDto.getUrn());
     }
 

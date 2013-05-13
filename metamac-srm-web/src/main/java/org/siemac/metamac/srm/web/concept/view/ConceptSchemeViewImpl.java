@@ -8,6 +8,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
@@ -52,7 +53,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguag
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
 
-import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -389,8 +389,8 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     }
 
     @Override
-    public void setConcepts(List<ItemVisualisationResult> itemHierarchyDtos) {
-        conceptsTreeGrid.setItems(conceptSchemeDto, itemHierarchyDtos);
+    public void setConcepts(List<ConceptMetamacVisualisationResult> itemHierarchyDtos) {
+        // FIXME conceptsTreeGrid.setItems(conceptSchemeDto, itemHierarchyDtos);
     }
 
     @Override
