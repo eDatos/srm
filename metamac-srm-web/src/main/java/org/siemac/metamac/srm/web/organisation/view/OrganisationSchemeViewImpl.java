@@ -440,7 +440,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         RelatedResourceLinkItem agency = new RelatedResourceLinkItem(OrganisationSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsForm.setFields(agency, procStatus);
+        ViewTextItem creationDate = new ViewTextItem(OrganisationSchemeDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem resourceCreationDate = new ViewTextItem(OrganisationSchemeDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
+        productionDescriptorsForm.setFields(agency, procStatus, creationDate, resourceCreationDate);
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -512,7 +514,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         RelatedResourceLinkItem agency = new RelatedResourceLinkItem(OrganisationSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsEditionForm.setFields(agency, procStatus);
+        ViewTextItem creationDate = new ViewTextItem(OrganisationSchemeDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem resourceCreationDate = new ViewTextItem(OrganisationSchemeDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
+        productionDescriptorsEditionForm.setFields(agency, procStatus, creationDate, resourceCreationDate);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -665,6 +669,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         ((RelatedResourceLinkItem) productionDescriptorsForm.getItem(OrganisationSchemeDS.MAINTAINER)).setRelatedResource(organisationSchemeDto.getMaintainer());
         productionDescriptorsForm.setValue(OrganisationSchemeDS.PROC_STATUS,
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
+        productionDescriptorsForm.setValue(OrganisationSchemeDS.VERSION_CREATION_DATE, organisationSchemeDto.getCreatedDate());
+        productionDescriptorsForm.setValue(OrganisationSchemeDS.RESOURCE_CREATION_DATE, organisationSchemeDto.getResourceCreatedDate());
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(OrganisationSchemeDS.REPLACED_BY_VERSION, organisationSchemeDto.getReplacedByVersion());
@@ -715,6 +721,8 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(OrganisationSchemeDS.MAINTAINER)).setRelatedResource(organisationSchemeDto.getMaintainer());
         productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.PROC_STATUS,
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
+        productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VERSION_CREATION_DATE, organisationSchemeDto.getCreatedDate());
+        productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.RESOURCE_CREATION_DATE, organisationSchemeDto.getResourceCreatedDate());
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACED_BY_VERSION, organisationSchemeDto.getReplacedByVersion());

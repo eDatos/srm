@@ -281,7 +281,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewTextItem maintainer = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(DataStructureDefinitionDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsForm.setFields(maintainer, procStatus);
+        ViewTextItem creationDate = new ViewTextItem(DataStructureDefinitionDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem resourceCreationDate = new ViewTextItem(DataStructureDefinitionDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
+        productionDescriptorsForm.setFields(maintainer, procStatus, creationDate, resourceCreationDate);
 
         // Diffusion descriptors Form
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -374,7 +376,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         ViewTextItem maintainer = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         ViewTextItem procStatus = new ViewTextItem(DataStructureDefinitionDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsEditionForm.setFields(maintainer, procStatus);
+        ViewTextItem creationDate = new ViewTextItem(DataStructureDefinitionDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem resourceCreationDate = new ViewTextItem(DataStructureDefinitionDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
+        productionDescriptorsEditionForm.setFields(maintainer, procStatus, creationDate, resourceCreationDate);
 
         // Diffusion descriptors Form
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -484,6 +488,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // Production descriptors form
         productionDescriptorsForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
         productionDescriptorsForm.setValue(DataStructureDefinitionDS.PROC_STATUS, CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()));
+        productionDescriptorsForm.setValue(DataStructureDefinitionDS.VERSION_CREATION_DATE, dsd.getCreatedDate());
+        productionDescriptorsForm.setValue(DataStructureDefinitionDS.RESOURCE_CREATION_DATE, dsd.getResourceCreatedDate());
 
         // Status form
         diffusionDescriptorsForm.setValue(DataStructureDefinitionDS.REPLACED_BY_VERSION, dsd.getReplacedByVersion());
@@ -540,6 +546,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // Production descriptors form
         productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
         productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.PROC_STATUS, CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()));
+        productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.VERSION_CREATION_DATE, dsd.getCreatedDate());
+        productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.RESOURCE_CREATION_DATE, dsd.getResourceCreatedDate());
 
         // Status form
         diffusionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
