@@ -3662,7 +3662,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsInternationalString(code.getNameableArtefact().getDescription(), "en", "description new 2", "es", "descripción nueva 2");
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, code.getVariableElement().getIdentifiableArtefact().getUrn());
             assertEquals(null, code.getShortName());
-            BaseAsserts.assertEqualsDay(new DateTime(2012, 01, 01, 01, 02, 03, 0), code.getCreatedDate());
+            BaseAsserts.assertEqualsDay(new DateTime(2011, 03, 02, 04, 05, 06, 0), code.getCreatedDate());
             BaseAsserts.assertEqualsDay(new DateTime(), code.getLastUpdated()); // today
             assertEquals(Integer.valueOf(2), code.getOrder1());
             assertEquals(Integer.valueOf(1), code.getOrder2());
