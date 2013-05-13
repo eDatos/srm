@@ -327,7 +327,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         RelatedResourceLinkItem agency = new RelatedResourceLinkItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(CategorySchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsForm.setFields(agency, procStatus);
+        ViewTextItem creationDate = new ViewTextItem(CategorySchemeDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem resourceCreationDate = new ViewTextItem(CategorySchemeDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
+        productionDescriptorsForm.setFields(agency, procStatus, creationDate, resourceCreationDate);
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -398,7 +400,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
         RelatedResourceLinkItem agency = new RelatedResourceLinkItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(CategorySchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        productionDescriptorsEditionForm.setFields(agency, procStatus);
+        ViewTextItem creationDate = new ViewTextItem(CategorySchemeDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem resourceCreationDate = new ViewTextItem(CategorySchemeDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
+        productionDescriptorsEditionForm.setFields(agency, procStatus, creationDate, resourceCreationDate);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -516,6 +520,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         // Production descriptors
         ((RelatedResourceLinkItem) productionDescriptorsForm.getItem(CategorySchemeDS.MAINTAINER)).setRelatedResource(categorySchemeDto.getMaintainer());
         productionDescriptorsForm.setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
+        productionDescriptorsForm.setValue(CategorySchemeDS.VERSION_CREATION_DATE, categorySchemeDto.getCreatedDate());
+        productionDescriptorsForm.setValue(CategorySchemeDS.RESOURCE_CREATION_DATE, categorySchemeDto.getResourceCreatedDate());
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(CategorySchemeDS.REPLACED_BY_VERSION, categorySchemeDto.getReplacedByVersion());
@@ -566,6 +572,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(CategorySchemeDS.MAINTAINER)).setRelatedResource(categorySchemeDto.getMaintainer());
         productionDescriptorsEditionForm
                 .setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
+        productionDescriptorsEditionForm.setValue(CategorySchemeDS.VERSION_CREATION_DATE, categorySchemeDto.getCreatedDate());
+        productionDescriptorsEditionForm.setValue(CategorySchemeDS.RESOURCE_CREATION_DATE, categorySchemeDto.getResourceCreatedDate());
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm.setValue(CategorySchemeDS.REPLACED_BY_VERSION, categorySchemeDto.getReplacedByVersion());

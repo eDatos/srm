@@ -48,12 +48,14 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
     // View forms
     private GroupDynamicForm            identifiersForm;
+    private GroupDynamicForm            productionDescriptorsForm;
     private GroupDynamicForm            contentDescriptorsForm;
     private GroupDynamicForm            commentsForm;
     private AnnotationsPanel            annotationsPanel;
 
     // Edition forms
     private GroupDynamicForm            identifiersEditionForm;
+    private GroupDynamicForm            productionDescriptorsEditionForm;
     private GroupDynamicForm            contentDescriptorsEditionForm;
     private GroupDynamicForm            commentsEditionForm;
     private AnnotationsPanel            annotationsEditionPanel;
@@ -168,6 +170,11 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         ViewTextItem urnProvider = new ViewTextItem(CategoryDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         identifiersForm.setFields(code, name, uri, urn, urnProvider);
 
+        // Production descriptors
+        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(CategoryDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
+        productionDescriptorsForm.setFields(creationDate);
+
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewMultiLanguageTextItem description = new ViewMultiLanguageTextItem(CategoryDS.DESCRIPTION, getConstants().nameableArtefactDescription());
@@ -182,6 +189,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         annotationsPanel = new AnnotationsPanel(true);
 
         mainFormLayout.addViewCanvas(identifiersForm);
+        mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
         mainFormLayout.addViewCanvas(commentsForm);
         mainFormLayout.addViewCanvas(annotationsPanel);
@@ -205,6 +213,11 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         ViewTextItem urnProvider = new ViewTextItem(CategoryDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         identifiersEditionForm.setFields(code, staticCode, name, uri, urn, urnProvider);
 
+        // Production descriptors
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(CategoryDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
+        productionDescriptorsEditionForm.setFields(creationDate);
+
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CategoryDS.DESCRIPTION, getConstants().nameableArtefactDescription());
@@ -219,6 +232,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         annotationsEditionPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
+        mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
@@ -231,6 +245,9 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         identifiersForm.setValue(CategoryDS.URI, categoryDto.getUriProvider());
         identifiersForm.setValue(CategoryDS.URN, categoryDto.getUrn());
         identifiersForm.setValue(CategoryDS.URN_PROVIDER, categoryDto.getUrnProvider());
+
+        // Production descriptors form
+        productionDescriptorsForm.setValue(CategoryDS.CREATION_DATE, categoryDto.getCreatedDate());
 
         // Content descriptors
         contentDescriptorsForm.setValue(CategoryDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categoryDto.getDescription()));
@@ -251,6 +268,9 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         identifiersEditionForm.setValue(CategoryDS.URN, categoryDto.getUrn());
         identifiersEditionForm.setValue(CategoryDS.URN_PROVIDER, categoryDto.getUrnProvider());
 
+        // Production descriptors form
+        productionDescriptorsEditionForm.setValue(CategoryDS.CREATION_DATE, categoryDto.getCreatedDate());
+
         // Content descriptors
         contentDescriptorsEditionForm.setValue(CategoryDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categoryDto.getDescription()));
 
@@ -269,6 +289,9 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
                 boolean translationsShowed = mainFormLayout.getTranslateToolStripButton().isSelected();
                 identifiersForm.setTranslationsShowed(translationsShowed);
                 identifiersEditionForm.setTranslationsShowed(translationsShowed);
+
+                productionDescriptorsForm.setTranslationsShowed(translationsShowed);
+                productionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
                 contentDescriptorsForm.setTranslationsShowed(translationsShowed);
                 contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
