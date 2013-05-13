@@ -11,33 +11,16 @@ public class ConceptSchemeRecord extends VersionableResourceRecord {
 
     }
 
-    public ConceptSchemeRecord(Long id, String code, String name, String description, String status, String versionLogic, String urn, String maintainer, String internalPublicationDate,
-            String internalPublicationUser, String externalPublicationDate, String externalPublicationUser) {
-        super();
-        setId(id);
-        setCode(code);
-        setName(name);
-        setProcStatus(status);
-        setVersionLogic(versionLogic);
-        setUrn(urn);
-        setMaintainer(maintainer);
-        setInternalPublicationDate(internalPublicationDate);
-        setInternalPublicationUser(internalPublicationUser);
-        setExternalPublicationDate(externalPublicationDate);
-        setExternalPublicationUser(externalPublicationUser);
-        setDescription(description);
+    public void setType(String value) {
+        setAttribute(ConceptSchemeDS.TYPE, value);
     }
 
-    public void setDescription(String desc) {
-        setAttribute(ConceptSchemeDS.DESCRIPTION, desc);
+    public void setStatisticalOperation(String value) {
+        setAttribute(ConceptSchemeDS.RELATED_OPERATION, value);
     }
 
     public ProcStatusEnum getProcStatus() {
         return ((ConceptSchemeMetamacBasicDto) getAttributeAsObject(ConceptSchemeDS.DTO)).getLifeCycle().getProcStatus();
-    }
-
-    public String getDescription() {
-        return getAttribute(ConceptSchemeDS.DESCRIPTION);
     }
 
     public void setConceptSchemeBasicDto(ConceptSchemeMetamacBasicDto conceptSchemeDto) {

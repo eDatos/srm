@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
@@ -27,13 +28,11 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -156,11 +155,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
             }
         });
 
-        ListGridField fieldCode = new ListGridField(ConceptSchemeDS.CODE, getConstants().identifiableArtefactCode());
-        fieldCode.setAlign(Alignment.LEFT);
-        ListGridField fieldName = new ListGridField(ConceptSchemeDS.NAME, getConstants().nameableArtefactName());
-        ListGridField status = new ListGridField(ConceptSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
-        conceptSchemesList.getListGrid().setFields(fieldCode, fieldName, status);
+        conceptSchemesList.getListGrid().setFields(ResourceListFieldUtils.getConceptSchemeFields());
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().conceptSchemeDeleteConfirmationTitle(), getConstants().conceptSchemeDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);

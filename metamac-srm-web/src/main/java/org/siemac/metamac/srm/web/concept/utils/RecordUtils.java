@@ -5,44 +5,22 @@ import static org.siemac.metamac.web.common.client.utils.InternationalStringUtil
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
-import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptTreeNode;
-import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.DateUtils;
+import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 
-public class RecordUtils {
+public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
 
     // CONCEPT SCHEMES
 
-    public static ConceptSchemeRecord getConceptSchemeRecord(ConceptSchemeMetamacDto conceptSchemeDto) {
-        ConceptSchemeRecord record = new ConceptSchemeRecord();
-        record.setId(conceptSchemeDto.getId());
-        record.setCode(conceptSchemeDto.getCode());
-        record.setName(getLocalisedString(conceptSchemeDto.getName()));
-        record.setDescription(getLocalisedString(conceptSchemeDto.getDescription()));
-        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
-        record.setVersionLogic(conceptSchemeDto.getVersionLogic());
-        record.setUrn(conceptSchemeDto.getUrn());
-        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(conceptSchemeDto.getMaintainer()));
-        record.setInternalPublicationDate(DateUtils.getFormattedDate(conceptSchemeDto.getLifeCycle().getInternalPublicationDate()));
-        record.setInternalPublicationUser(conceptSchemeDto.getLifeCycle().getInternalPublicationUser());
-        record.setExternalPublicationDate(DateUtils.getFormattedDate(conceptSchemeDto.getLifeCycle().getExternalPublicationDate()));
-        record.setExternalPublicationUser(conceptSchemeDto.getLifeCycle().getExternalPublicationUser());
-        return record;
-    }
-
     public static ConceptSchemeRecord getConceptSchemeRecord(ConceptSchemeMetamacBasicDto conceptSchemeDto) {
         ConceptSchemeRecord record = new ConceptSchemeRecord();
-        record.setCode(conceptSchemeDto.getCode());
-        record.setName(getLocalisedString(conceptSchemeDto.getName()));
-        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
-        record.setVersionLogic(conceptSchemeDto.getVersionLogic());
-        record.setUrn(conceptSchemeDto.getUrn());
-        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(conceptSchemeDto.getMaintainer()));
+        record = (ConceptSchemeRecord) getItemSchemeRecord(record, conceptSchemeDto, conceptSchemeDto.getLifeCycle());
+        record.setType(CommonUtils.getConceptSchemeTypeName(conceptSchemeDto.getType()));
+        record.setStatisticalOperation(ExternalItemUtils.getExternalItemName(conceptSchemeDto.getRelatedOperation()));
         record.setConceptSchemeBasicDto(conceptSchemeDto);
         return record;
     }

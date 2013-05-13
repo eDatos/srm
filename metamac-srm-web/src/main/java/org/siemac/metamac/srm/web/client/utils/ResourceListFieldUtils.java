@@ -3,11 +3,49 @@ package org.siemac.metamac.srm.web.client.utils;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.srm.web.client.model.ds.VersionableResourceDS;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 
 public class ResourceListFieldUtils {
+
+    //
+    // CATEGORIES
+    //
+
+    public static CustomListGridField[] getCategorySchemeFields() {
+        return getVersionableResourceFields();
+    }
+
+    //
+    // ORGANSIATIONS
+    //
+
+    public static CustomListGridField[] getOrganisationSchemeFields() {
+        CustomListGridField typeField = new CustomListGridField(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
+        typeField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+
+        return ListGridUtils.addFields(getVersionableResourceFields(), typeField);
+    }
+
+    //
+    // CONCEPTS
+    //
+
+    public static CustomListGridField[] getConceptSchemeFields() {
+        CustomListGridField typeField = new CustomListGridField(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
+        typeField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+
+        CustomListGridField statisticalOperation = new CustomListGridField(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
+        statisticalOperation.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+
+        return ListGridUtils.addFields(getVersionableResourceFields(), typeField, statisticalOperation);
+    }
+
+    //
+    // VERSIONABLE RESOURCE
+    //
 
     public static CustomListGridField[] getVersionableResourceFields() {
 
@@ -35,16 +73,5 @@ public class ResourceListFieldUtils {
         externalPublicationDate.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
         return new CustomListGridField[]{code, urn, version, name, maintainer, procStatus, creationDate, resourceCreationDate, externalPublicationDate};
-    }
-
-    public static CustomListGridField[] getCategorySchemeFields() {
-        return getVersionableResourceFields();
-    }
-
-    public static CustomListGridField[] getOrganisationSchemeFields() {
-        CustomListGridField typeField = new CustomListGridField(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
-        typeField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
-
-        return ListGridUtils.addFields(getVersionableResourceFields(), typeField);
     }
 }
