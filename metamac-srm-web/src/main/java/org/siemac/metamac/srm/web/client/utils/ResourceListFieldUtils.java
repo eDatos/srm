@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.client.utils;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.srm.web.client.model.ds.VersionableResourceDS;
+import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 
@@ -38,5 +39,12 @@ public class ResourceListFieldUtils {
 
     public static CustomListGridField[] getCategorySchemeFields() {
         return getVersionableResourceFields();
+    }
+
+    public static CustomListGridField[] getOrganisationSchemeFields() {
+        CustomListGridField typeField = new CustomListGridField(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
+        typeField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+
+        return ListGridUtils.addFields(getVersionableResourceFields(), typeField);
     }
 }

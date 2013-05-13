@@ -4,60 +4,28 @@ import static org.siemac.metamac.web.common.client.utils.InternationalStringUtil
 
 import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.organisation.model.record.ContactRecord;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationRecord;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
-import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
-public class RecordUtils {
+public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
 
     // ORGANISATION SCHEMES
 
-    public static OrganisationSchemeRecord getOrganisationSchemeRecord(OrganisationSchemeMetamacDto organisationSchemeDto) {
-        OrganisationSchemeRecord record = new OrganisationSchemeRecord();
-        record.setId(organisationSchemeDto.getId());
-        record.setCode(organisationSchemeDto.getCode());
-        record.setName(getLocalisedString(organisationSchemeDto.getName()));
-        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
-        record.setType(CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
-        record.setVersionLogic(organisationSchemeDto.getVersionLogic());
-        record.setUrn(organisationSchemeDto.getUrn());
-        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(organisationSchemeDto.getMaintainer()));
-        record.setInternalPublicationDate(DateUtils.getFormattedDate(organisationSchemeDto.getLifeCycle().getInternalPublicationDate()));
-        record.setInternalPublicationUser(organisationSchemeDto.getLifeCycle().getInternalPublicationUser());
-        record.setExternalPublicationDate(DateUtils.getFormattedDate(organisationSchemeDto.getLifeCycle().getExternalPublicationDate()));
-        record.setExternalPublicationUser(organisationSchemeDto.getLifeCycle().getExternalPublicationUser());
-        return record;
-    }
-
     public static OrganisationSchemeRecord getOrganisationSchemeRecord(OrganisationSchemeMetamacBasicDto organisationSchemeDto) {
         OrganisationSchemeRecord record = new OrganisationSchemeRecord();
-        record.setCode(organisationSchemeDto.getCode());
-        record.setName(getLocalisedString(organisationSchemeDto.getName()));
-        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
+        record = (OrganisationSchemeRecord) getItemSchemeRecord(record, organisationSchemeDto, organisationSchemeDto.getLifeCycle());
         record.setType(CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
-        record.setVersionLogic(organisationSchemeDto.getVersionLogic());
-        record.setUrn(organisationSchemeDto.getUrn());
-        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(organisationSchemeDto.getMaintainer()));
         record.setOrganisationSchemeBasicDto(organisationSchemeDto);
         return record;
     }
 
     // ORGANISATIONS
-
-    public static OrganisationRecord getOrganisationRecord(OrganisationMetamacDto organisationDto) {
-        OrganisationRecord record = new OrganisationRecord(organisationDto.getId(), organisationDto.getCode(), getLocalisedString(organisationDto.getName()), organisationDto.getUrn(),
-                organisationDto.getItemSchemeVersionUrn(), organisationDto.getType());
-        return record;
-    }
 
     public static OrganisationRecord getOrganisationRecord(OrganisationMetamacBasicDto organisationDto) {
         OrganisationRecord record = new OrganisationRecord();

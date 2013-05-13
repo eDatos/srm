@@ -6,27 +6,15 @@ import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.category.model.record.CategoryRecord;
 import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
-import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 
-public class RecordUtils {
+public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
 
     // CATEGORY SCHEMES
 
     public static CategorySchemeRecord getCategorySchemeRecord(CategorySchemeMetamacBasicDto categorySchemeDto) {
         CategorySchemeRecord record = new CategorySchemeRecord();
-        record.setCode(categorySchemeDto.getCode());
-        record.setUrn(categorySchemeDto.getUrn());
-        record.setVersionLogic(categorySchemeDto.getVersionLogic());
-        record.setName(getLocalisedString(categorySchemeDto.getName()));
-        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(categorySchemeDto.getMaintainer()));
-        record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
-        record.setCreationDate(DateUtils.getFormattedDate(categorySchemeDto.getCreatedDate()));
-        record.setResourceCreationDate(DateUtils.getFormattedDate(categorySchemeDto.getResourceCreatedDate()));
-        record.setInternalPublicationDate(DateUtils.getFormattedDate(categorySchemeDto.getLifeCycle().getInternalPublicationDate()));
-        record.setInternalPublicationUser(categorySchemeDto.getLifeCycle().getInternalPublicationUser());
-        record.setExternalPublicationDate(DateUtils.getFormattedDate(categorySchemeDto.getLifeCycle().getExternalPublicationDate()));
-        record.setExternalPublicationUser(categorySchemeDto.getLifeCycle().getExternalPublicationUser());
+        record = (CategorySchemeRecord) getItemSchemeRecord(record, categorySchemeDto, categorySchemeDto.getLifeCycle());
         record.setCategorySchemeBasicDto(categorySchemeDto);
         return record;
     }

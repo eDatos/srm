@@ -10,7 +10,6 @@ public class DsdListGrid extends VersionableResourceListGrid {
 
     public DsdListGrid() {
         super();
-
     }
 
     public void setDsds(List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDtos) {

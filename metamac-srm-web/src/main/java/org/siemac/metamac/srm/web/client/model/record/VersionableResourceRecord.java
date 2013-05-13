@@ -4,19 +4,9 @@ import org.siemac.metamac.srm.web.client.model.ds.ItemSchemeDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class ItemSchemeRecord extends ListGridRecord {
+public class VersionableResourceRecord extends ListGridRecord {
 
-    public ItemSchemeRecord() {
-    }
-
-    public ItemSchemeRecord(Long id, String code, String name, String status, String versionLogic, String urn, String maintainer, String internalPublicationDate, String internalPublicationUser,
-            String externalPublicationDate, String externalPublicationUser) {
-        setId(id);
-        setCode(code);
-        setName(name);
-        setProcStatus(status);
-        setVersionLogic(versionLogic);
-        setUrn(urn);
+    public VersionableResourceRecord() {
     }
 
     public void setId(Long id) {

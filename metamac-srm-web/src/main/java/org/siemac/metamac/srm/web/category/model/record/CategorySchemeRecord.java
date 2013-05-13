@@ -3,9 +3,9 @@ package org.siemac.metamac.srm.web.category.model.record;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
-import org.siemac.metamac.srm.web.client.model.record.ItemSchemeRecord;
+import org.siemac.metamac.srm.web.client.model.record.VersionableResourceRecord;
 
-public class CategorySchemeRecord extends ItemSchemeRecord {
+public class CategorySchemeRecord extends VersionableResourceRecord {
 
     public CategorySchemeRecord() {
     }

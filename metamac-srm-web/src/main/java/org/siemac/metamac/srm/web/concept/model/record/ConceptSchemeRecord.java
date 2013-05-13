@@ -2,10 +2,10 @@ package org.siemac.metamac.srm.web.concept.model.record;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.web.client.model.record.ItemSchemeRecord;
+import org.siemac.metamac.srm.web.client.model.record.VersionableResourceRecord;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 
-public class ConceptSchemeRecord extends ItemSchemeRecord {
+public class ConceptSchemeRecord extends VersionableResourceRecord {
 
     public ConceptSchemeRecord() {
 

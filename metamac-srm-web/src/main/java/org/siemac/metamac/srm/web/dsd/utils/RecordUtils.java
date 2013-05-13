@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.dsd.utils;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
-import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
@@ -26,17 +25,6 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 public class RecordUtils {
 
     /**
-     * Returns {@link DsdRecord} from {@link DataStructureDefinitionMetamacDto}
-     * 
-     * @param dsd
-     * @return
-     */
-    public static DsdRecord getDsdRecord(DataStructureDefinitionMetamacDto dsd) {
-        return new DsdRecord(dsd.getId(), dsd.getCode(), InternationalStringUtils.getLocalisedString(dsd.getName()), dsd.getUrn(), InternationalStringUtils.getLocalisedString(dsd.getDescription()),
-                dsd.getFinalLogic(), CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()), dsd.getVersionLogic());
-    }
-
-    /**
      * Returns {@link DsdRecord} from {@link DataStructureDefinitionMetamacBasicDto}
      * 
      * @param dsd
@@ -47,7 +35,7 @@ public class RecordUtils {
         record.setCode(dsd.getCode());
         record.setName(InternationalStringUtils.getLocalisedString(dsd.getName()));
         record.setProcStatus(CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()));
-        record.setVersion(dsd.getVersionLogic());
+        record.setVersionLogic(dsd.getVersionLogic());
         record.setUrn(dsd.getUrn());
         record.setDsdBasicDto(dsd);
         return record;

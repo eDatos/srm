@@ -2,10 +2,10 @@ package org.siemac.metamac.srm.web.code.model.record;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.web.client.model.record.ItemSchemeRecord;
+import org.siemac.metamac.srm.web.client.model.record.VersionableResourceRecord;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 
-public class CodelistRecord extends ItemSchemeRecord {
+public class CodelistRecord extends VersionableResourceRecord {
 
     public CodelistRecord() {
     }
