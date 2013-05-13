@@ -345,7 +345,8 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         target.setParentIdDatabase(getLong(source[i++]));
         target.setName(getString(source[i++]));
         target.setAcronym(getString(source[i++]));
-        target.setSdmxRelatedArtefact(ConceptRoleEnum.valueOf(getString(source[i++])));
+        String sdmxRelatedArtefact = getString(source[i++]);
+        target.setSdmxRelatedArtefact(sdmxRelatedArtefact != null ? ConceptRoleEnum.valueOf(sdmxRelatedArtefact) : null);
         return target;
     }
 
