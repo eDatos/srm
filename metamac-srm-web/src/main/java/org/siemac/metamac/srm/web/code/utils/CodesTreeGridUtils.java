@@ -34,7 +34,7 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         node.setAttribute(ItemDS.CODE, code.getCode());
         node.setAttribute(ItemDS.NAME, code.getName() != null ? code.getName() : StringUtils.EMPTY);
         node.setAttribute(ItemDS.URN, code.getUrn());
-        // FIXME node.setAttribute(ItemDS.DESCRIPTION, );
+        node.setAttribute(ItemDS.DESCRIPTION, code.getDescription());
         node.setAttribute(ItemDS.CREATION_DATE, DateUtils.getFormattedDate(code.getCreatedDate()));
         node.setAttribute(ItemDS.ITEM_PARENT_URN, code.getParent() != null ? code.getParent().getUrn() : schemeNodeName);
         node.setAttribute(ItemDS.DTO, code);

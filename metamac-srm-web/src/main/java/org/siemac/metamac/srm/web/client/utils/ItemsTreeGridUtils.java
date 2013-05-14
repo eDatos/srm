@@ -31,7 +31,7 @@ public class ItemsTreeGridUtils {
         node.setAttribute(ItemDS.CODE, itemVisualisationResult.getCode());
         node.setAttribute(ItemDS.NAME, itemVisualisationResult.getName());
         node.setAttribute(ItemDS.URN, itemVisualisationResult.getUrn());
-        // FIXME node.setAttribute(ItemDS.DESCRIPTION, );
+        node.setAttribute(ItemDS.DESCRIPTION, itemVisualisationResult.getDescription());
         node.setAttribute(ItemDS.CREATION_DATE, DateUtils.getFormattedDate(itemVisualisationResult.getCreatedDate()));
         node.setAttribute(ItemDS.ITEM_PARENT_URN, parentUrn);
         node.setAttribute(ItemDS.DTO, itemVisualisationResult);
