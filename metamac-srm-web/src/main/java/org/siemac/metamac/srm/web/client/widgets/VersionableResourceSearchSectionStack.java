@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.shared.criteria.VersionableResourceWebCriteria
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomDateItem;
 
 import com.smartgwt.client.types.Visibility;
@@ -30,7 +31,7 @@ public abstract class VersionableResourceSearchSectionStack extends BaseAdvanced
     protected void clearAdvancedSearchSection() {
         super.clearAdvancedSearchSection();
         // Search last versions by default
-        ((BooleanSelectItem) advancedSearchForm.getItem(VersionableResourceDS.IS_LAST_VERSION)).setBooleanValue(true);
+        ((CustomCheckboxItem) advancedSearchForm.getItem(VersionableResourceDS.IS_LAST_VERSION)).setValue(true);
     }
 
     @Override
@@ -49,8 +50,8 @@ public abstract class VersionableResourceSearchSectionStack extends BaseAdvanced
         TextItem internalPublicationUser = new TextItem(VersionableResourceDS.INTERNAL_PUBLICATION_USER, getConstants().lifeCycleInternalPublicationUser());
         CustomDateItem externalPublicationDate = new CustomDateItem(VersionableResourceDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
         TextItem externalPublicationUser = new TextItem(VersionableResourceDS.EXTERNAL_PUBLICATION_USER, getConstants().lifeCycleExternalPublicationUser());
-        BooleanSelectItem isLastVersion = new BooleanSelectItem(VersionableResourceDS.IS_LAST_VERSION, getConstants().maintainableArtefactIsLastVersion());
-        isLastVersion.setBooleanValue(true);
+        CustomCheckboxItem isLastVersion = new CustomCheckboxItem(VersionableResourceDS.IS_LAST_VERSION, getConstants().maintainableArtefactIsLastVersion());
+        isLastVersion.setValue(true);
         CustomButtonItem searchItem = new CustomButtonItem(ADVANCED_SEARCH_ITEM_NAME, MetamacWebCommon.getConstants().search());
         searchItem.setColSpan(4);
         searchItem.addClickHandler(new ClickHandler() {
@@ -80,7 +81,7 @@ public abstract class VersionableResourceSearchSectionStack extends BaseAdvanced
         versionableResourceWebCriteria.setExternalPublicationDate(advancedSearchForm.getValue(VersionableResourceDS.EXTERNAL_PUBLICATION_DATE) != null ? (Date) advancedSearchForm
                 .getValue(VersionableResourceDS.EXTERNAL_PUBLICATION_DATE) : null);
         versionableResourceWebCriteria.setExternalPublicationUser(advancedSearchForm.getValueAsString(VersionableResourceDS.EXTERNAL_PUBLICATION_USER));
-        versionableResourceWebCriteria.setIsLastVersion(((BooleanSelectItem) advancedSearchForm.getItem(VersionableResourceDS.IS_LAST_VERSION)).getBooleanValue());
+        versionableResourceWebCriteria.setIsLastVersion(((CustomCheckboxItem) advancedSearchForm.getItem(VersionableResourceDS.IS_LAST_VERSION)).getValueAsBoolean());
         return versionableResourceWebCriteria;
     }
 }

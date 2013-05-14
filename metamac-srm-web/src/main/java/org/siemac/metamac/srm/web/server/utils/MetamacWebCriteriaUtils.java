@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.server.utils;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
@@ -108,9 +109,12 @@ public class MetamacWebCriteriaUtils {
                         new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.EXTERNAL_PUBLICATION_USER.name(), criteria.getExternalPublicationUser(),
                                 OperationType.ILIKE));
             }
-            if (criteria.getIsLastVersion() != null) {
-                conjunctionRestriction.getRestrictions().add(
-                        new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            if (BooleanUtils.isTrue(criteria.getIsLastVersion())) {
+                MetamacCriteriaDisjunctionRestriction lastVersionRestriction = new MetamacCriteriaDisjunctionRestriction();
+                lastVersionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), true, OperationType.EQ));
+                lastVersionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.LATEST_PUBLIC.name(), true, OperationType.EQ));
+                lastVersionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(ConceptSchemeVersionMetamacCriteriaPropertyEnum.LATEST_FINAL.name(), true, OperationType.EQ));
+                conjunctionRestriction.getRestrictions().add(lastVersionRestriction);
             }
             if (criteria.getIsLatestFinal() != null) {
                 conjunctionRestriction.getRestrictions().add(
@@ -254,9 +258,12 @@ public class MetamacWebCriteriaUtils {
                         .add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.EXTERNAL_PUBLICATION_USER.name(), criteria.getExternalPublicationUser(),
                                 OperationType.ILIKE));
             }
-            if (criteria.getIsLastVersion() != null) {
-                conjunctionRestriction.getRestrictions().add(
-                        new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            if (BooleanUtils.isTrue(criteria.getIsLastVersion())) {
+                MetamacCriteriaDisjunctionRestriction lastVersionRestriction = new MetamacCriteriaDisjunctionRestriction();
+                lastVersionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), true, OperationType.EQ));
+                lastVersionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.LATEST_PUBLIC.name(), true, OperationType.EQ));
+                lastVersionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.LATEST_FINAL.name(), true, OperationType.EQ));
+                conjunctionRestriction.getRestrictions().add(lastVersionRestriction);
             }
             if (criteria.getIsNotCodelistUrn() != null) {
                 conjunctionRestriction.getRestrictions().add(
@@ -426,9 +433,12 @@ public class MetamacWebCriteriaUtils {
                         new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.EXTERNAL_PUBLICATION_USER.name(), criteria.getExternalPublicationUser(),
                                 OperationType.ILIKE));
             }
-            if (criteria.getIsLastVersion() != null) {
-                conjunctionRestriction.getRestrictions().add(
-                        new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            if (BooleanUtils.isTrue(criteria.getIsLastVersion())) {
+                MetamacCriteriaDisjunctionRestriction lastVersionRestriction = new MetamacCriteriaDisjunctionRestriction();
+                lastVersionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), true, OperationType.EQ));
+                lastVersionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.LATEST_PUBLIC.name(), true, OperationType.EQ));
+                lastVersionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CategorySchemeVersionMetamacCriteriaPropertyEnum.LATEST_FINAL.name(), true, OperationType.EQ));
+                conjunctionRestriction.getRestrictions().add(lastVersionRestriction);
             }
             if (criteria.getIsLatestFinal() != null) {
                 conjunctionRestriction.getRestrictions().add(
@@ -579,9 +589,15 @@ public class MetamacWebCriteriaUtils {
                         new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.EXTERNAL_PUBLICATION_USER.name(), criteria.getExternalPublicationUser(),
                                 OperationType.ILIKE));
             }
-            if (criteria.getIsLastVersion() != null) {
-                conjunctionRestriction.getRestrictions().add(
-                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            if (BooleanUtils.isTrue(criteria.getIsLastVersion())) {
+                MetamacCriteriaDisjunctionRestriction lastVersionRestriction = new MetamacCriteriaDisjunctionRestriction();
+                lastVersionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), true, OperationType.EQ));
+                lastVersionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.LATEST_PUBLIC.name(), true, OperationType.EQ));
+                lastVersionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.LATEST_FINAL.name(), true, OperationType.EQ));
+                conjunctionRestriction.getRestrictions().add(lastVersionRestriction);
             }
             if (criteria.getIsLatestFinal() != null) {
                 conjunctionRestriction.getRestrictions().add(
@@ -668,9 +684,13 @@ public class MetamacWebCriteriaUtils {
                         new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.EXTERNAL_PUBLICATION_USER.name(), criteria.getExternalPublicationUser(),
                                 OperationType.ILIKE));
             }
-            if (criteria.getIsLastVersion() != null) {
-                conjunctionRestriction.getRestrictions().add(
-                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), criteria.getIsLastVersion(), OperationType.EQ));
+            if (BooleanUtils.isTrue(criteria.getIsLastVersion())) {
+                MetamacCriteriaDisjunctionRestriction lastVersionRestriction = new MetamacCriteriaDisjunctionRestriction();
+                lastVersionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.IS_LAST_VERSION.name(), true, OperationType.EQ));
+                lastVersionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.LATEST_PUBLIC.name(), true, OperationType.EQ));
+                lastVersionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(OrganisationSchemeVersionMetamacCriteriaPropertyEnum.LATEST_FINAL.name(), true, OperationType.EQ));
+                conjunctionRestriction.getRestrictions().add(lastVersionRestriction);
             }
             if (criteria.getIsLatestFinal() != null) {
                 conjunctionRestriction.getRestrictions().add(
