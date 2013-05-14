@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
@@ -155,7 +155,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
             }
         });
 
-        conceptSchemesList.getListGrid().setFields(ResourceListFieldUtils.getConceptSchemeFields());
+        conceptSchemesList.getListGrid().setFields(ResourceFieldUtils.getConceptSchemeListGridFields());
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().conceptSchemeDeleteConfirmationTitle(), getConstants().conceptSchemeDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);

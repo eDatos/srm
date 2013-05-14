@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 import java.util.List;
 
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
+import org.siemac.metamac.srm.web.client.utils.ItemsTreeGridUtils;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
@@ -58,17 +59,7 @@ public abstract class ItemsTreeGrid extends BaseItemsTreeGrid {
     }
 
     protected TreeNode createItemTreeNode(ItemVisualisationResult itemVisualisationResult) {
-        String parentUrn = itemVisualisationResult.getParent() != null ? itemVisualisationResult.getParent().getUrn() : SCHEME_NODE_NAME;
-
-        TreeNode node = new TreeNode(itemVisualisationResult.getItemIdDatabase().toString());
-        node.setID(itemVisualisationResult.getUrn());
-        node.setParentID(parentUrn);
-        node.setAttribute(ItemDS.CODE, itemVisualisationResult.getCode());
-        node.setAttribute(ItemDS.NAME, itemVisualisationResult.getName());
-        node.setAttribute(ItemDS.URN, itemVisualisationResult.getUrn());
-        node.setAttribute(ItemDS.ITEM_PARENT_URN, parentUrn);
-        node.setAttribute(ItemDS.DTO, itemVisualisationResult);
-        return node;
+        return ItemsTreeGridUtils.createItemTreeNode(SCHEME_NODE_NAME, itemVisualisationResult);
     }
 
     protected abstract void onNodeContextClick(String nodeName, ItemVisualisationResult itemVisualisationResult);

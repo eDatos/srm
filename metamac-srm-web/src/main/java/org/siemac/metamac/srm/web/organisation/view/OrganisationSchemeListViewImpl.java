@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
-import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListPresenter;
@@ -152,7 +152,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
                 }
             }
         });
-        organisationSchemeList.getListGrid().setFields(ResourceListFieldUtils.getOrganisationSchemeFields());
+        organisationSchemeList.getListGrid().setFields(ResourceFieldUtils.getOrganisationSchemeListGridFields());
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().organisationSchemeDeleteConfirmationTitle(), getConstants().organisationSchemeDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);

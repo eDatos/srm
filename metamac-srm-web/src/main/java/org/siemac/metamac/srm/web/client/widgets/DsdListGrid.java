@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
-import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
 
 public class DsdListGrid extends VersionableResourceListGrid {
 
     public DsdListGrid() {
         super();
-        setFields(ResourceListFieldUtils.getDsdFields());
+        setFields(ResourceFieldUtils.getDsdListGridFields());
     }
 
     public void setDsds(List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDtos) {

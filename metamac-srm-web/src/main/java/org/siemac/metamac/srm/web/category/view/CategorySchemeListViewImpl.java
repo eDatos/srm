@@ -15,7 +15,7 @@ import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeListUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeSearchSectionStack;
 import org.siemac.metamac.srm.web.category.widgets.NewCategorySchemeWindow;
-import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -150,7 +150,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
                 }
             }
         });
-        categorySchemesList.getListGrid().setFields(ResourceListFieldUtils.getCategorySchemeFields());
+        categorySchemesList.getListGrid().setFields(ResourceFieldUtils.getCategorySchemeListGridFields());
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().categorySchemeDeleteConfirmationTitle(), getConstants().categorySchemeDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);

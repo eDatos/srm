@@ -3,14 +3,14 @@ package org.siemac.metamac.srm.web.client.widgets;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
-import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.utils.RecordUtils;
 
 public class CodelistListGrid extends VersionableResourceListGrid {
 
     public CodelistListGrid() {
-        setFields(ResourceListFieldUtils.getCodelistFields());
+        setFields(ResourceFieldUtils.getCodelistListGridFields());
     }
 
     public void setCodelist(List<CodelistMetamacBasicDto> codelistDtos) {

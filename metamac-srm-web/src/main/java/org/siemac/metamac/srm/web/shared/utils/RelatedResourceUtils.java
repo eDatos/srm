@@ -25,8 +25,10 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.shared.RelatedResourceBaseUtils;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.RelatedResourceVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.IdentifiableArtefactDto;
@@ -374,5 +376,13 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
             hashMap.put(relatedResourceDto.getUrn(), RelatedResourceUtils.getRelatedResourceName(relatedResourceDto));
         }
         return hashMap;
+    }
+
+    //
+    // GENERIC UTILITIES
+    //
+
+    public static String getRelatedResourceName(RelatedResourceVisualisationResult relatedResource) {
+        return relatedResource != null ? CommonWebUtils.getElementName(relatedResource.getCode(), relatedResource.getTitle()) : StringUtils.EMPTY;
     }
 }

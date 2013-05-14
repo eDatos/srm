@@ -9,7 +9,7 @@ import org.siemac.metamac.srm.web.category.presenter.CategoriesPresenter;
 import org.siemac.metamac.srm.web.category.utils.RecordUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategoriesUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategorySearchSectionStack;
-import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.web.common.client.widgets.PaginatedListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -62,7 +62,7 @@ public class CategoriesViewImpl extends ViewWithUiHandlers<CategoriesUiHandlers>
             }
         });
 
-        categoriesListGrid.getListGrid().setFields(ResourceListFieldUtils.getCategoryFields());
+        categoriesListGrid.getListGrid().setFields(ResourceFieldUtils.getCategoryListGridFields());
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);

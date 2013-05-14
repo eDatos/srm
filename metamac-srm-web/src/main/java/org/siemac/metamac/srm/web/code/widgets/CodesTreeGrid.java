@@ -8,16 +8,20 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationRe
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.DragDataAction;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.events.ClickHandler;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 import com.smartgwt.client.widgets.tree.TreeNode;
+import com.smartgwt.client.widgets.viewer.DetailViewer;
 
 public class CodesTreeGrid extends BaseCodesTreeGrid {
 
@@ -127,5 +131,13 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
 
     private boolean canDeleteCode(String nodeName) {
         return !SCHEME_NODE_NAME.equals(nodeName) && CodesClientSecurityUtils.canDeleteCode(codelistMetamacDto);
+    }
+
+    @Override
+    protected Canvas getCellHoverComponent(Record record, Integer rowNum, Integer colNum) {
+        DetailViewer detailViewer = new DetailViewer();
+        detailViewer.setFields(ResourceFieldUtils.getCodeDetailViewerFields());
+        detailViewer.setData(new Record[]{record});
+        return detailViewer;
     }
 }

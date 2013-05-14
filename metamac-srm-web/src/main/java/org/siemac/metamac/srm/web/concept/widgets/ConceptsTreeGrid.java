@@ -6,17 +6,23 @@ import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisa
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.ItemsTreeGrid;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsTreeGridUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.BaseConceptUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
+import com.smartgwt.client.data.Record;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.events.ClickHandler;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
+import com.smartgwt.client.widgets.tree.TreeNode;
+import com.smartgwt.client.widgets.viewer.DetailViewer;
 
 public class ConceptsTreeGrid extends ItemsTreeGrid {
 
@@ -113,5 +119,18 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
 
     private boolean canDeleteConcept(String nodeName) {
         return !SCHEME_NODE_NAME.equals(nodeName) && ConceptsClientSecurityUtils.canDeleteConcept(conceptSchemeMetamacDto);
+    }
+
+    @Override
+    protected TreeNode createItemTreeNode(ItemVisualisationResult itemVisualisationResult) {
+        return ConceptsTreeGridUtils.createConceptTreeNode(SCHEME_NODE_NAME, (ConceptMetamacVisualisationResult) itemVisualisationResult);
+    }
+
+    @Override
+    protected Canvas getCellHoverComponent(Record record, Integer rowNum, Integer colNum) {
+        DetailViewer detailViewer = new DetailViewer();
+        detailViewer.setFields(ResourceFieldUtils.getConceptDetailViewerFields());
+        detailViewer.setData(new Record[]{record});
+        return detailViewer;
     }
 }

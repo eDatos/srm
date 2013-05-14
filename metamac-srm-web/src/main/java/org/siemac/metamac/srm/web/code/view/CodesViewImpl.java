@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.code.view;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
-import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.model.record.CodeRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodesPresenter;
@@ -61,7 +61,7 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
             }
         });
 
-        codesListGrid.getListGrid().setFields(ResourceListFieldUtils.getCodeFields());
+        codesListGrid.getListGrid().setFields(ResourceFieldUtils.getCodeListGridFields());
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);

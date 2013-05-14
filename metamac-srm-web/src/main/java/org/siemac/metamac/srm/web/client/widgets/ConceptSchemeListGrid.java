@@ -3,14 +3,14 @@ package org.siemac.metamac.srm.web.client.widgets;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
-import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 
 public class ConceptSchemeListGrid extends VersionableResourceListGrid {
 
     public ConceptSchemeListGrid() {
-        setFields(ResourceListFieldUtils.getConceptSchemeFields());
+        setFields(ResourceFieldUtils.getConceptSchemeListGridFields());
     }
 
     public void setConceptSchemes(List<ConceptSchemeMetamacBasicDto> conceptSchemeDtos) {

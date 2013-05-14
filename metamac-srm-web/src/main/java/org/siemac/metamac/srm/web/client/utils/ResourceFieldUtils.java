@@ -13,53 +13,64 @@ import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 
-public class ResourceListFieldUtils {
+import com.smartgwt.client.widgets.viewer.DetailViewerField;
+
+public class ResourceFieldUtils {
 
     //
     // CATEGORIES
     //
 
-    public static CustomListGridField[] getCategorySchemeFields() {
-        return getVersionableResourceFields();
+    public static CustomListGridField[] getCategorySchemeListGridFields() {
+        return getVersionableResourceListGridFields();
     }
 
-    public static CustomListGridField[] getCategoryFields() {
-        return getItemFields();
+    public static CustomListGridField[] getCategoryListGridFields() {
+        return getItemListGridFields();
+    }
+
+    public static DetailViewerField[] getCategoryDetailViewerFields() {
+        return getItemDetailViewerFields();
     }
 
     //
     // ORGANSIATIONS
     //
 
-    public static CustomListGridField[] getOrganisationSchemeFields() {
+    public static CustomListGridField[] getOrganisationSchemeListGridFields() {
         CustomListGridField typeField = new CustomListGridField(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
         typeField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
-        return ListGridUtils.addFields(getVersionableResourceFields(), typeField);
+        return ListGridUtils.addFields(getVersionableResourceListGridFields(), typeField);
     }
 
-    public static CustomListGridField[] getOrganisationFields() {
+    public static CustomListGridField[] getOrganisationListGridFields() {
         CustomListGridField typeField = new CustomListGridField(OrganisationDS.TYPE_NAME, getConstants().organisationType());
         typeField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
-        return ListGridUtils.addFields(getItemFields(), typeField);
+        return ListGridUtils.addFields(getItemListGridFields(), typeField);
+    }
+
+    public static DetailViewerField[] getOrganisationDetailViewerFields() {
+        DetailViewerField typeField = new DetailViewerField(OrganisationDS.TYPE_NAME, getConstants().organisationType());
+        return ListGridUtils.addFields(getItemDetailViewerFields(), typeField);
     }
 
     //
     // CONCEPTS
     //
 
-    public static CustomListGridField[] getConceptSchemeFields() {
+    public static CustomListGridField[] getConceptSchemeListGridFields() {
         CustomListGridField typeField = new CustomListGridField(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
         typeField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
         CustomListGridField statisticalOperation = new CustomListGridField(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
         statisticalOperation.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
-        return ListGridUtils.addFields(getVersionableResourceFields(), typeField, statisticalOperation);
+        return ListGridUtils.addFields(getVersionableResourceListGridFields(), typeField, statisticalOperation);
     }
 
-    public static CustomListGridField[] getConceptFields() {
+    public static CustomListGridField[] getConceptListGridFields() {
         CustomListGridField acronym = new CustomListGridField(ConceptDS.ACRONYM, getConstants().conceptAcronym());
         acronym.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
@@ -69,40 +80,54 @@ public class ResourceListFieldUtils {
         CustomListGridField sdmxRelatedArtefact = new CustomListGridField(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
-        return ListGridUtils.addFields(getItemFields(), acronym, variable, sdmxRelatedArtefact);
+        return ListGridUtils.addFields(getItemListGridFields(), acronym, variable, sdmxRelatedArtefact);
+    }
+
+    public static DetailViewerField[] getConceptDetailViewerFields() {
+        DetailViewerField acronym = new DetailViewerField(ConceptDS.ACRONYM, getConstants().conceptAcronym());
+
+        DetailViewerField variable = new DetailViewerField(ConceptDS.VARIABLE, getConstants().variable());
+
+        DetailViewerField sdmxRelatedArtefact = new DetailViewerField(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
+
+        return ListGridUtils.addFields(getItemDetailViewerFields(), acronym, variable, sdmxRelatedArtefact);
     }
 
     //
     // CODES
     //
 
-    public static CustomListGridField[] getCodelistFields() {
+    public static CustomListGridField[] getCodelistListGridFields() {
         CustomListGridField isRecommended = new CustomListGridField(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
 
         CustomListGridField variable = new CustomListGridField(CodelistDS.VARIABLE, getConstants().variable());
         variable.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
-        return ListGridUtils.addFields(getVersionableResourceFields(), isRecommended, variable);
+        return ListGridUtils.addFields(getVersionableResourceListGridFields(), isRecommended, variable);
     }
 
-    public static CustomListGridField[] getCodeFields() {
-        return getItemFields();
+    public static CustomListGridField[] getCodeListGridFields() {
+        return getItemListGridFields();
+    }
+
+    public static DetailViewerField[] getCodeDetailViewerFields() {
+        return getItemDetailViewerFields();
     }
 
     //
     // DSD
     //
 
-    public static CustomListGridField[] getDsdFields() {
+    public static CustomListGridField[] getDsdListGridFields() {
         CustomListGridField statisticalOperation = new CustomListGridField(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
-        return ListGridUtils.addFields(getVersionableResourceFields(), statisticalOperation);
+        return ListGridUtils.addFields(getVersionableResourceListGridFields(), statisticalOperation);
     }
 
     //
     // VERSIONABLE RESOURCE
     //
 
-    public static CustomListGridField[] getVersionableResourceFields() {
+    public static CustomListGridField[] getVersionableResourceListGridFields() {
 
         CustomListGridField code = new CustomListGridField(VersionableResourceDS.CODE, getConstants().identifiableArtefactCode());
 
@@ -134,7 +159,7 @@ public class ResourceListFieldUtils {
     // ITEM
     //
 
-    public static CustomListGridField[] getItemFields() {
+    public static CustomListGridField[] getItemListGridFields() {
 
         CustomListGridField code = new CustomListGridField(ItemDS.CODE, getConstants().identifiableArtefactCode());
 
@@ -147,5 +172,20 @@ public class ResourceListFieldUtils {
         creationDate.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
         return new CustomListGridField[]{code, urn, name, creationDate};
+    }
+
+    public static DetailViewerField[] getItemDetailViewerFields() {
+
+        DetailViewerField code = new DetailViewerField(ItemDS.CODE, getConstants().identifiableArtefactCode());
+
+        DetailViewerField urn = new DetailViewerField(ItemDS.URN, getConstants().identifiableArtefactUrn());
+
+        DetailViewerField name = new DetailViewerField(ItemDS.NAME, getConstants().nameableArtefactName());
+
+        DetailViewerField description = new DetailViewerField(ItemDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+
+        DetailViewerField creationDate = new DetailViewerField(ItemDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
+
+        return new DetailViewerField[]{code, urn, name, description, creationDate};
     }
 }

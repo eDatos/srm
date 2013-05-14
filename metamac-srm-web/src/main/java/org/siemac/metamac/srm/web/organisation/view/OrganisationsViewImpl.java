@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.organisation.view;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
-import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationsPresenter;
@@ -64,7 +64,7 @@ public class OrganisationsViewImpl extends ViewWithUiHandlers<OrganisationsUiHan
             }
         });
 
-        organisationsListGrid.getListGrid().setFields(ResourceListFieldUtils.getOrganisationFields());
+        organisationsListGrid.getListGrid().setFields(ResourceFieldUtils.getOrganisationListGridFields());
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);

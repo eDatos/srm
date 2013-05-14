@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.concept.view;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
-import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptsPresenter;
@@ -62,7 +62,7 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
             }
         });
 
-        conceptsListGrid.getListGrid().setFields(ResourceListFieldUtils.getConceptFields());
+        conceptsListGrid.getListGrid().setFields(ResourceFieldUtils.getConceptListGridFields());
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);

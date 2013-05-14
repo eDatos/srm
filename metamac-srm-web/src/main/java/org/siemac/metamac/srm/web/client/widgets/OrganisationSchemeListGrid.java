@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
-import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.utils.RecordUtils;
 
@@ -11,7 +11,7 @@ public class OrganisationSchemeListGrid extends VersionableResourceListGrid {
 
     public OrganisationSchemeListGrid() {
         super();
-        this.setFields(ResourceListFieldUtils.getOrganisationSchemeFields());
+        this.setFields(ResourceFieldUtils.getOrganisationSchemeListGridFields());
     }
 
     public void setOrganisationSchemes(List<OrganisationSchemeMetamacBasicDto> organisationSchemeDtos) {

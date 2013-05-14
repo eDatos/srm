@@ -63,6 +63,9 @@ public abstract class BaseItemsTreeGrid extends TreeGrid {
         setShowCellContextMenus(true);
         setLeaveScrollbarGap(Boolean.FALSE);
         setRollUnderCanvasProperties(StyleUtils.getRollUnderCanvasProperties());
+        setCanHover(true);
+        setShowHover(true);
+        setShowHoverComponents(true);
 
         TreeGridField codeField = new TreeGridField(ItemDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("30%");

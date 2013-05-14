@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.web.client.utils.ResourceListFieldUtils;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistListPresenter;
@@ -152,7 +152,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
             }
         });
 
-        codelistsList.getListGrid().setFields(ResourceListFieldUtils.getCodelistFields());
+        codelistsList.getListGrid().setFields(ResourceFieldUtils.getCodelistListGridFields());
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistDeleteConfirmationTitle(), getConstants().codelistDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
