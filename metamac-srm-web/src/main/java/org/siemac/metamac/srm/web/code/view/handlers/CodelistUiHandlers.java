@@ -26,6 +26,7 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     // Codes
 
     void retrieveCodes();
+    void exportCodes(String codelistUrn);
 
     void normaliseVariableElementsToCodes(String codelistUrn, String locale, boolean onlyNormaliseCodesWithoutVariableElement);
     void updateCodesVariableElements(String codelistUrn, Map<Long, Long> variableElementsIdByCodeId);
@@ -35,6 +36,7 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void retrieveCodelistOrders(String codelistUrn);
     void saveCodelistOrder(CodelistVisualisationDto codelistOrderVisualisationDto);
     void deleteCodelistOrders(List<String> orderIdentifiers);
+    void exportCodesOrder(String codelistUrn);
 
     void retrieveCodesWithOpennessLevel(String opennessLevelUrn);
     void retrieveCodelistOpennessLevels(String codelistUrn);

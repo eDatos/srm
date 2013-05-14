@@ -40,6 +40,8 @@ import org.siemac.metamac.srm.web.server.handlers.code.DeleteVariableElementOper
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteVariableElementsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteVariableFamiliesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteVariablesActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.ExportCodesActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.ExportCodesOrderActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistFamiliesActionHandler;
@@ -171,6 +173,8 @@ import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementOperationsAct
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariablesAction;
+import org.siemac.metamac.srm.web.shared.code.ExportCodesAction;
+import org.siemac.metamac.srm.web.shared.code.ExportCodesOrderAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodeAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesAction;
@@ -432,6 +436,8 @@ public class ServerModule extends HandlerModule {
         bindHandler(UpdateCodesVariableElementsAction.class, UpdateCodesVariableElementsActionHandler.class);
         bindHandler(UpdateCodesVariableElementsAction.class, UpdateCodesVariableElementsActionHandler.class);
         bindHandler(CopyCodelistAction.class, CopyCodelistActionHandler.class);
+        bindHandler(ExportCodesAction.class, ExportCodesActionHandler.class);
+        bindHandler(ExportCodesOrderAction.class, ExportCodesOrderActionHandler.class);
 
         // Common
         bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);

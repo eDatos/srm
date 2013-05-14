@@ -64,6 +64,10 @@ import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOpennessLevelsAction
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOpennessLevelsResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOrdersAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOrdersResult;
+import org.siemac.metamac.srm.web.shared.code.ExportCodesAction;
+import org.siemac.metamac.srm.web.shared.code.ExportCodesOrderAction;
+import org.siemac.metamac.srm.web.shared.code.ExportCodesOrderResult;
+import org.siemac.metamac.srm.web.shared.code.ExportCodesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesResult;
@@ -1093,6 +1097,40 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     @Override
     public void resourceImportationFailed(String fileName) {
         ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().resourceErrorImport()), MessageTypeEnum.ERROR);
+    }
+
+    //
+    // EXPORTATION
+    //
+
+    @Override
+    public void exportCodes(String codelistUrn) {
+        dispatcher.execute(new ExportCodesAction(codelistUrn), new WaitingAsyncCallback<ExportCodesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codesErrorExporting()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(ExportCodesResult result) {
+                CommonUtils.downloadFile(result.getFileName());
+            }
+        });
+    }
+
+    @Override
+    public void exportCodesOrder(String codelistUrn) {
+        dispatcher.execute(new ExportCodesOrderAction(codelistUrn), new WaitingAsyncCallback<ExportCodesOrderResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codesErrorExportingOrder()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(ExportCodesOrderResult result) {
+                CommonUtils.downloadFile(result.getFileName());
+            }
+        });
     }
 
     //
