@@ -202,6 +202,13 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canModifyCodeFromCodelist(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
     }
 
+    public static boolean canExportCodes(CodelistMetamacDto codelistMetamacDto) {
+        if (isTaskInBackground(codelistMetamacDto.getIsTaskInBackground())) {
+            return false;
+        }
+        return SharedCodesSecurityUtils.canExportCodesCsv(MetamacSrmWeb.getCurrentUser());
+    }
+
     // ORDERS
 
     public static boolean canCreateCodelistOrderVisualisation(CodelistMetamacDto codelistMetamacDto) {
@@ -230,6 +237,13 @@ public class CodesClientSecurityUtils {
             return false;
         }
         return SharedCodesSecurityUtils.canCrudCodelistOrderVisualisation(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
+    }
+
+    public static boolean canExportCodesOrder(CodelistMetamacDto codelistMetamacDto) {
+        if (isTaskInBackground(codelistMetamacDto.getIsTaskInBackground())) {
+            return false;
+        }
+        return SharedCodesSecurityUtils.canExportCodeOrdersCsv(MetamacSrmWeb.getCurrentUser());
     }
 
     // OPENNESS LEVELS

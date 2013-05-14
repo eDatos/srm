@@ -32,6 +32,7 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomSectio
     protected ToolStripButton          editCodelistVisualisationButton;
     protected ToolStripButton          deleteCodelistVisualisationButton;
     protected ToolStripButton          importCodelistVisualisationButton; // Only to import orders! Openness levels cannot be imported.
+    protected ToolStripButton          exportCodelistVisualisationButton; // Only to export orders! Openness levels cannot be imported.
 
     protected DeleteConfirmationWindow deleteConfirmationWindow;
 
@@ -90,10 +91,13 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomSectio
 
         importCodelistVisualisationButton = new ToolStripButton(getConstants().actionImportCodeOrders(), GlobalResources.RESOURCE.importResource().getURL());
 
+        exportCodelistVisualisationButton = new ToolStripButton(getConstants().codesOrderExport(), GlobalResources.RESOURCE.exportResource().getURL());
+
         toolStrip.addButton(newCodelistVisualisationButton);
         toolStrip.addButton(editCodelistVisualisationButton);
         toolStrip.addButton(deleteCodelistVisualisationButton);
         toolStrip.addButton(importCodelistVisualisationButton);
+        toolStrip.addButton(exportCodelistVisualisationButton);
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistVisualisationDeleteConfirmationTitle(), getConstants().codelistVisualisationDeleteConfirmation());
         deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
@@ -140,7 +144,7 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomSectio
 
     public void setCodelist(CodelistMetamacDto codelistMetamacDto) {
         this.codelistMetamacDto = codelistMetamacDto;
-        updateListGridNewButtonVisibility();
+        updateButtonsVisibility();
     }
 
     public void setUiHandlers(CodelistUiHandlers uiHandlers) {
@@ -151,8 +155,15 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomSectio
         listGrid.setData(org.siemac.metamac.srm.web.code.utils.RecordUtils.getCodelistVisualisationRecords(codelistVisualisationDtos));
     }
 
+    private void updateButtonsVisibility() {
+        updateListGridNewButtonVisibility();
+        updateListGridImportButtonVisibility();
+        updateListGridExportButtonVisibility();
+    }
+
     protected abstract void showListGridEditButton();
     protected abstract void showListGridDeleteButton();
     protected abstract void updateListGridNewButtonVisibility();
     protected abstract void updateListGridImportButtonVisibility();
+    protected abstract void updateListGridExportButtonVisibility();
 }

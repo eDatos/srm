@@ -116,6 +116,12 @@ public class CodelistOpennessLevelsSectionStack extends BaseCodelistVisualisatio
     }
 
     @Override
+    protected void updateListGridExportButtonVisibility() {
+        // Openness levels cannot be exported
+        exportCodelistVisualisationButton.hide();
+    }
+
+    @Override
     protected void showListGridEditButton() {
         if (CodesClientSecurityUtils.canUpdateCodelistOpennessVisualisation(codelistMetamacDto)) {
             editCodelistVisualisationButton.show();

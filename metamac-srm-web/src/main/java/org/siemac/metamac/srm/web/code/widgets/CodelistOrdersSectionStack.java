@@ -120,6 +120,16 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
             }
         });
 
+        // Export
+
+        exportCodelistVisualisationButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                uiHandlers.exportCodesOrder(codelistMetamacDto.getUrn());
+            }
+        });
+
         listGrid.addRecordClickHandler(new RecordClickHandler() {
 
             @Override
@@ -153,6 +163,15 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
             importCodelistVisualisationButton.show();
         } else {
             importCodelistVisualisationButton.hide();
+        }
+    }
+
+    @Override
+    protected void updateListGridExportButtonVisibility() {
+        if (CodesClientSecurityUtils.canExportCodesOrder(codelistMetamacDto)) {
+            exportCodelistVisualisationButton.show();
+        } else {
+            exportCodelistVisualisationButton.hide();
         }
     }
 

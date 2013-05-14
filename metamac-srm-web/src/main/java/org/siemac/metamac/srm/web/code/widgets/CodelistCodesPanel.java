@@ -23,12 +23,15 @@ public class CodelistCodesPanel extends VLayout {
 
     protected ToolStrip        toolStrip;
     protected ToolStripButton  importCodesButton;
+    protected ToolStripButton  exportCodesButton;
 
     private ImportCodesWindow  importCodesWindow;
 
     private CodesTreeGrid      codesTreeGrid;
 
     private CodelistUiHandlers uiHandlers;
+
+    private CodelistMetamacDto codelistMetamacDto;
 
     public CodelistCodesPanel() {
         setMargin(15);
@@ -48,6 +51,7 @@ public class CodelistCodesPanel extends VLayout {
         });
 
         toolStrip = new ToolStrip();
+
         importCodesButton = new CustomToolStripButton(getConstants().actionImportCodes(), GlobalResources.RESOURCE.importResource().getURL());
         importCodesButton.addClickHandler(new ClickHandler() {
 
@@ -57,6 +61,17 @@ public class CodelistCodesPanel extends VLayout {
             }
         });
         toolStrip.addButton(importCodesButton);
+
+        exportCodesButton = new CustomToolStripButton(getConstants().codesExport(), GlobalResources.RESOURCE.exportResource().getURL());
+        exportCodesButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                uiHandlers.exportCodes(codelistMetamacDto.getUrn());
+            }
+        });
+        toolStrip.addButton(exportCodesButton);
+
         addMember(toolStrip);
 
         codesTreeGrid = new CodesTreeGrid();
@@ -69,13 +84,16 @@ public class CodelistCodesPanel extends VLayout {
     }
 
     public void updateItemScheme(CodelistMetamacDto codelistMetamacDto) {
+        this.codelistMetamacDto = codelistMetamacDto;
+
         codesTreeGrid.updateItemScheme(codelistMetamacDto);
 
-        updateImportCodesButtonVisibility(codelistMetamacDto);
+        updateButtonsVisibility(codelistMetamacDto);
         importCodesWindow.setCodelist(codelistMetamacDto);
     }
 
     public void setCodes(CodelistMetamacDto codelist, List<CodeMetamacVisualisationResult> codes) {
+        this.codelistMetamacDto = codelist;
         codesTreeGrid.setItems(codelist, codes);
     }
 
@@ -87,11 +105,24 @@ public class CodelistCodesPanel extends VLayout {
         codesTreeGrid.setCodesToCreateComplexCodelist(codelistMetamacDto, codes);
     }
 
+    private void updateButtonsVisibility(CodelistMetamacDto codelistMetamacDto) {
+        updateImportCodesButtonVisibility(codelistMetamacDto);
+        updateExportCodesButtonVisibility(codelistMetamacDto);
+    }
+
     private void updateImportCodesButtonVisibility(CodelistMetamacDto codelistMetamacDto) {
         if (CodesClientSecurityUtils.canImportCodes(codelistMetamacDto)) {
             importCodesButton.show();
         } else {
             importCodesButton.hide();
+        }
+    }
+
+    private void updateExportCodesButtonVisibility(CodelistMetamacDto codelistMetamacDto) {
+        if (CodesClientSecurityUtils.canExportCodes(codelistMetamacDto)) {
+            exportCodesButton.show();
+        } else {
+            exportCodesButton.hide();
         }
     }
 }
