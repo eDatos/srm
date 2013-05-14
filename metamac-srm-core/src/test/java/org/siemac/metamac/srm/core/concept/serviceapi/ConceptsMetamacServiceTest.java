@@ -2556,6 +2556,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, concept.getUrn());
                 assertEquals("CONCEPT01", concept.getCode());
                 assertEquals("Nombre conceptScheme-1-v2-concept-1", concept.getName());
+                assertEquals("Descripción conceptScheme-1-v2-concept-1", concept.getDescription());
                 assertEquals(Long.valueOf(121), concept.getItemIdDatabase());
                 assertEquals(null, concept.getParent());
                 assertEquals(null, concept.getParentIdDatabase());
@@ -2573,6 +2574,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getUrn());
                 assertEquals("CONCEPT02", concept.getCode());
                 assertEquals("Nombre conceptScheme-1-v2-concept-2", concept.getName());
+                assertEquals(null, concept.getDescription());
                 assertEquals(null, concept.getAcronym());
                 assertEquals(ConceptRoleEnum.DIMENSION, concept.getSdmxRelatedArtefact());
                 assertEquals(null, concept.getVariable());
@@ -2584,6 +2586,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, concept.getUrn());
                 assertEquals("CONCEPT02", concept.getParent().getCode());
                 assertEquals("Nombre conceptScheme-1-v2-concept-2-1", concept.getName());
+                assertEquals("Descripción conceptScheme-1-v2-concept-2-1", concept.getDescription());
                 assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getParent().getUrn());
                 assertEquals(Long.valueOf("122"), concept.getParentIdDatabase());
                 assertEquals("Acrónimo conceptScheme-1-v2-concept-2-1", concept.getAcronym());
@@ -2642,16 +2645,19 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 // Concept 01
                 ConceptMetamacVisualisationResult concept = getConceptMetamacVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_1);
                 assertEquals("Name conceptScheme-1-v2-concept-1", concept.getName());
+                assertEquals(null, concept.getDescription());
             }
             {
                 // Concept 02
                 ConceptMetamacVisualisationResult concept = getConceptMetamacVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_2);
                 assertEquals(null, concept.getName());
+                assertEquals(null, concept.getDescription());
             }
             {
                 // Concept 02 01
                 ConceptMetamacVisualisationResult concept = getConceptMetamacVisualisationResult(concepts, CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
                 assertEquals("Name conceptScheme-1-v2-concept-2-1", concept.getName());
+                assertEquals("Description conceptScheme-1-v2-concept-2-1", concept.getDescription());
             }
             {
                 // Concept 02 01 01

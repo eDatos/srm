@@ -23,7 +23,9 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.RelatedResourceVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
@@ -33,6 +35,9 @@ import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
  */
 @Repository("conceptMetamacRepository")
 public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
+
+    @Autowired
+    private ItemRepository      itemRepository;
 
     @Autowired
     private ConceptRepository   conceptRepository;
@@ -78,13 +83,16 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
 
         // Transform object[] results
         List<ConceptMetamacVisualisationResult> targets = new ArrayList<ConceptMetamacVisualisationResult>(itemsResultSql.size());
-        Map<Long, ConceptMetamacVisualisationResult> mapItemByItemId = new HashMap<Long, ConceptMetamacVisualisationResult>(itemsResultSql.size());
+        Map<Long, ItemVisualisationResult> mapItemByItemId = new HashMap<Long, ItemVisualisationResult>(itemsResultSql.size());
         for (Object itemResultSql : itemsResultSql) {
             Object[] itemResultSqlArray = (Object[]) itemResultSql;
             ConceptMetamacVisualisationResult target = itemResultSqlToConceptVisualisationResult(itemResultSqlArray);
             targets.add(target);
             mapItemByItemId.put(target.getItemIdDatabase(), target);
         }
+
+        // Add description. Execute one independent query to retrieve it is more efficient than do a global query
+        itemRepository.executeQueryFillItemDescription(itemSchemeVersionId, locale, mapItemByItemId);
 
         // Variable . Execute one independent query to retrieve variable s is more efficient than do a global query
         StringBuilder sbVariables = new StringBuilder();
@@ -102,7 +110,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         for (Object variableResultSql : variablesResultSql) {
             Object[] variableResultSqlArray = (Object[]) variableResultSql;
             Long actualItemId = getLong(variableResultSqlArray[0]);
-            ConceptMetamacVisualisationResult target = mapItemByItemId.get(actualItemId);
+            ConceptMetamacVisualisationResult target = (ConceptMetamacVisualisationResult) mapItemByItemId.get(actualItemId);
             RelatedResourceVisualisationResult variable = variableResultSqlToRelatedResourceVisualisationResult(variableResultSqlArray);
             target.setVariable(variable);
         }
@@ -110,7 +118,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         // Parent: fill manually with java code
         for (ConceptMetamacVisualisationResult target : targets) {
             if (target.getParentIdDatabase() != null) {
-                ConceptMetamacVisualisationResult parent = mapItemByItemId.get(target.getParentIdDatabase());
+                ItemVisualisationResult parent = mapItemByItemId.get(target.getParentIdDatabase());
                 target.setParent(parent);
             }
         }

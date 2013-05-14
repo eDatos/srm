@@ -601,7 +601,7 @@
                 REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="14"
-                DESCRIPTION_FK="[null]"
+                DESCRIPTION_FK="62"
                 COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-112"
@@ -655,7 +655,7 @@
                     REPLACE_TO_VERSION="[null]"
                     
                     NAME_FK="15"
-                    DESCRIPTION_FK="[null]"
+                    DESCRIPTION_FK="61"
                     COMMENT_FK="[null]"
                     
                     UUID="annotableArtefact-1221"
@@ -4248,5 +4248,40 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="60"
-    />                                            
+    />   
+    
+   <TB_INTERNATIONAL_STRINGS
+        ID="61"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="611"
+        LABEL="Descripción organisationScheme-1-v2-organisation-2-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="61"
+    />   
+    
+    <TB_LOCALISED_STRINGS
+        ID="612"
+        LABEL="Description organisationScheme-1-v2-organisation-2-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="61"
+    />    
+    
+
+   <TB_INTERNATIONAL_STRINGS
+        ID="62"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="621"
+        LABEL="Description organisationScheme-1-v2-organisation-2"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="62"
+    />                                                    
 </dataset>

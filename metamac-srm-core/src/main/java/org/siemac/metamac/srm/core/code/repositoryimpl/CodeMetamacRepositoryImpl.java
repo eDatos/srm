@@ -35,8 +35,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 
 /**
@@ -44,6 +46,9 @@ import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
  */
 @Repository("codeMetamacRepository")
 public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
+
+    @Autowired
+    private ItemRepository                itemRepository;
 
     @Autowired
     private CodeRepository                codeRepository;
@@ -377,13 +382,16 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
         // Transform object[] results
         List<CodeMetamacVisualisationResult> targets = new ArrayList<CodeMetamacVisualisationResult>(codesResultSql.size());
-        Map<Long, CodeMetamacVisualisationResult> mapCodeByItemId = new HashMap<Long, CodeMetamacVisualisationResult>(codesResultSql.size());
+        Map<Long, ItemVisualisationResult> mapCodeByItemId = new HashMap<Long, ItemVisualisationResult>(codesResultSql.size());
         for (Object codeResultSql : codesResultSql) {
             Object[] codeResultSqlArray = (Object[]) codeResultSql;
             CodeMetamacVisualisationResult target = codeResultSqlToCodeResult(codeResultSqlArray, null, orderColumnIndex, opennessColumnIndex);
             targets.add(target);
             mapCodeByItemId.put(target.getItemIdDatabase(), target);
         }
+
+        // Add description. Execute one independent query to retrieve it is more efficient than do a global query
+        itemRepository.executeQueryFillItemDescription(idCodelist, locale, mapCodeByItemId);
 
         // Variable element. Execute one independent query to retrieve variable elements is more efficient than do a global query
         StringBuilder sbVariableElements = new StringBuilder();
@@ -401,15 +409,15 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         for (Object variableElementResultSql : variableElementsResultSql) {
             Object[] variableElementResultSqlArray = (Object[]) variableElementResultSql;
             Long actualItemId = getLong(variableElementResultSqlArray[0]);
-            CodeMetamacVisualisationResult target = mapCodeByItemId.get(actualItemId);
+            CodeMetamacVisualisationResult target = (CodeMetamacVisualisationResult) mapCodeByItemId.get(actualItemId);
             VariableElementResult variableElement = variableElementResultSqlToVariableElementResult(variableElementResultSqlArray);
             target.setVariableElement(variableElement);
         }
 
         // Parent: fill manually with java code
-        for (CodeMetamacVisualisationResult target : targets) {
+        for (ItemVisualisationResult target : targets) {
             if (target.getParentIdDatabase() != null) {
-                CodeMetamacVisualisationResult parent = mapCodeByItemId.get(target.getParentIdDatabase());
+                ItemVisualisationResult parent = mapCodeByItemId.get(target.getParentIdDatabase());
                 target.setParent(parent);
             }
         }

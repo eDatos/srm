@@ -7913,7 +7913,15 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="109"
     />    
-    
+
+    <TB_LOCALISED_STRINGS
+        ID="1092"
+        LABEL="description CODELIST_1_V2_CODE_2_1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="109"
+    />    
+        
     <TB_INTERNATIONAL_STRINGS
         ID="110"
         VERSION="1"

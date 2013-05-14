@@ -19,7 +19,9 @@ import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetama
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationRepository;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -28,6 +30,9 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
  */
 @Repository("organisationMetamacRepository")
 public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacRepositoryBase {
+
+    @Autowired
+    private ItemRepository         itemRepository;
 
     @Autowired
     private OrganisationRepository organisationRepository;
@@ -73,7 +78,7 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
 
         // Transform object[] results
         List<OrganisationMetamacVisualisationResult> targets = new ArrayList<OrganisationMetamacVisualisationResult>(itemsResultSql.size());
-        Map<Long, OrganisationMetamacVisualisationResult> mapItemByItemId = new HashMap<Long, OrganisationMetamacVisualisationResult>(itemsResultSql.size());
+        Map<Long, ItemVisualisationResult> mapItemByItemId = new HashMap<Long, ItemVisualisationResult>(itemsResultSql.size());
         for (Object itemResultSql : itemsResultSql) {
             Object[] itemResultSqlArray = (Object[]) itemResultSql;
             OrganisationMetamacVisualisationResult target = itemResultSqlToOrganisationVisualisationResult(itemResultSqlArray);
@@ -81,10 +86,13 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
             mapItemByItemId.put(target.getItemIdDatabase(), target);
         }
 
+        // Add description. Execute one independent query to retrieve it is more efficient than do a global query
+        itemRepository.executeQueryFillItemDescription(itemSchemeVersionId, locale, mapItemByItemId);
+
         // Parent: fill manually with java code
         for (OrganisationMetamacVisualisationResult target : targets) {
             if (target.getParentIdDatabase() != null) {
-                OrganisationMetamacVisualisationResult parent = mapItemByItemId.get(target.getParentIdDatabase());
+                ItemVisualisationResult parent = mapItemByItemId.get(target.getParentIdDatabase());
                 target.setParent(parent);
             }
         }

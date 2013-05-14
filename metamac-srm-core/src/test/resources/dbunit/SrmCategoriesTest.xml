@@ -649,7 +649,7 @@
                     REPLACE_TO_VERSION="[null]"
                     
                     NAME_FK="15"
-                    DESCRIPTION_FK="[null]"
+                    DESCRIPTION_FK="56"
                     COMMENT_FK="[null]"
                     
                     UUID="annotableArtefact-1221"
@@ -703,7 +703,7 @@
                         REPLACE_TO_VERSION="[null]"
                         
                         NAME_FK="16"
-                        DESCRIPTION_FK="[null]"
+                        DESCRIPTION_FK="55"
                         COMMENT_FK="[null]"
                         
                         UUID="annotableArtefact-12211"
@@ -3281,5 +3281,31 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="54"
-    />                                          
+    />  
+
+    <TB_INTERNATIONAL_STRINGS
+        ID="55"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="551"
+        LABEL="Descripción cat2-1-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="55"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="56"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="561"
+        LABEL="Description cat2-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="56"
+    />                                                   
 </dataset>

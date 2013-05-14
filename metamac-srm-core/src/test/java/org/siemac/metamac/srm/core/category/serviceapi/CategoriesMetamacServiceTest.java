@@ -1707,6 +1707,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
         }
     }
+
     @Override
     @Test
     public void testRetrieveCategoriesByCategorySchemeUrn() throws Exception {
@@ -1727,6 +1728,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, category.getUrn());
                 assertEquals("CATEGORY01", category.getCode());
                 assertEquals("Nombre categoryScheme-1-v2-category-1", category.getName());
+                assertEquals("Descripción categoryScheme-1-v2-category-1", category.getDescription());
                 assertEquals(Long.valueOf(121), category.getItemIdDatabase());
                 assertEquals(null, category.getParent());
                 assertEquals(null, category.getParentIdDatabase());
@@ -1738,6 +1740,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getUrn());
                 assertEquals("CATEGORY02", category.getCode());
                 assertEquals("Nombre categoryScheme-1-v2-category-2", category.getName());
+                assertEquals(null, category.getDescription());
                 MetamacAsserts.assertEqualsDate("2011-03-02 04:05:06", category.getCreatedDate());
             }
             {
@@ -1746,6 +1749,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, category.getUrn());
                 assertEquals("CATEGORY02", category.getParent().getCode());
                 assertEquals("Nombre categoryScheme-1-v2-category-2-1", category.getName());
+                assertEquals(null, category.getDescription());
                 assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getParent().getUrn());
                 assertEquals(Long.valueOf("122"), category.getParentIdDatabase());
             }
@@ -1755,6 +1759,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, category.getUrn());
                 assertEquals("CATEGORY0201", category.getParent().getCode());
                 assertEquals("Nombre categoryScheme-1-v2-category-2-1-1", category.getName());
+                assertEquals("Descripción cat2-1-1", category.getDescription());
                 assertEquals(Long.valueOf("1221"), category.getParentIdDatabase());
             }
             {
@@ -1796,21 +1801,25 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 // Category 01
                 ItemVisualisationResult category = getItemVisualisationResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_1);
                 assertEquals("Name categoryScheme-1-v2-category-1", category.getName());
+                assertEquals(null, category.getDescription());
             }
             {
                 // Category 02
                 ItemVisualisationResult category = getItemVisualisationResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_2);
                 assertEquals(null, category.getName());
+                assertEquals(null, category.getDescription());
             }
             {
                 // Category 02 01
                 ItemVisualisationResult category = getItemVisualisationResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_2_1);
                 assertEquals("Name categoryScheme-1-v2-category-2-1", category.getName());
+                assertEquals("Description cat2-1", category.getDescription());
             }
             {
                 // Category 02 01 01
                 ItemVisualisationResult category = getItemVisualisationResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1);
                 assertEquals(null, category.getName());
+                assertEquals(null, category.getDescription());
             }
             {
                 // Category 03

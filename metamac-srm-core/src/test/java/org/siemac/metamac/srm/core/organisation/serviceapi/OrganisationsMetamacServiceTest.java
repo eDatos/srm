@@ -2053,6 +2053,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 assertEquals("ORGANISATION01", organisation.getCode());
                 assertEquals(OrganisationTypeEnum.ORGANISATION_UNIT, organisation.getType());
                 assertEquals("Nombre organisationScheme-1-v2-organisation-1", organisation.getName());
+                assertEquals("Descripción organisationScheme-1-v2-organisation-1", organisation.getDescription());
                 assertEquals(Long.valueOf(121), organisation.getItemIdDatabase());
                 assertEquals(null, organisation.getParent());
                 assertEquals(null, organisation.getParentIdDatabase());
@@ -2064,6 +2065,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getUrn());
                 assertEquals("ORGANISATION02", organisation.getCode());
                 assertEquals("Nombre organisationScheme-1-v2-organisation-2", organisation.getName());
+                assertEquals(null, organisation.getDescription());
                 MetamacAsserts.assertEqualsDate("2011-03-02 04:05:06", organisation.getCreatedDate());
             }
             {
@@ -2072,6 +2074,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisation.getUrn());
                 assertEquals("ORGANISATION02", organisation.getParent().getCode());
                 assertEquals("Nombre organisationScheme-1-v2-organisation-2-1", organisation.getName());
+                assertEquals("Descripción organisationScheme-1-v2-organisation-2-1", organisation.getDescription());
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getParent().getUrn());
                 assertEquals(Long.valueOf("122"), organisation.getParentIdDatabase());
             }
@@ -2123,16 +2126,19 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 // Organisation 01
                 OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
                 assertEquals("Name organisationScheme-1-v2-organisation-1", organisation.getName());
+                assertEquals(null, organisation.getDescription());
             }
             {
                 // Organisation 02
                 OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
                 assertEquals(null, organisation.getName());
+                assertEquals("Description organisationScheme-1-v2-organisation-2", organisation.getDescription());
             }
             {
                 // Organisation 02 01
                 OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
                 assertEquals("Name organisationScheme-1-v2-organisation-2-1", organisation.getName());
+                assertEquals("Description organisationScheme-1-v2-organisation-2-1", organisation.getDescription());
             }
             {
                 // Organisation 02 01 01

@@ -723,7 +723,7 @@
                 REPLACE_TO_VERSION="[null]"
                 
                 NAME_FK="15"
-                DESCRIPTION_FK="[null]"
+                DESCRIPTION_FK="91"
                 COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-991221"
@@ -6157,6 +6157,27 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="90"
+    />       
+    
+   <TB_INTERNATIONAL_STRINGS
+        ID="91"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="911"
+        LABEL="Descripción conceptScheme-1-v2-concept-2-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="91"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="912"
+        LABEL="Description conceptScheme-1-v2-concept-2-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="91"
     />                        
                             
 </dataset>
