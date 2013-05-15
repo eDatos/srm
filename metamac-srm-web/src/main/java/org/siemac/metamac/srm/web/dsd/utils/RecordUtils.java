@@ -34,6 +34,7 @@ public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordU
         DsdRecord record = new DsdRecord();
         record = (DsdRecord) getStructureRecord(record, dsd, dsd.getLifeCycle());
         record.setStatisticalOperation(ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
+        record.setDsdBasicDto(dsd);
         return record;
     }
 

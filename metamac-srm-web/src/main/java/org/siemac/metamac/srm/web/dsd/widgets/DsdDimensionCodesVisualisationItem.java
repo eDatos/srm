@@ -49,9 +49,11 @@ public class DsdDimensionCodesVisualisationItem extends CustomCanvasItem {
     private static String                         ORDER                         = "order";
     private static String                         ORDER_DTO                     = "order-dto";
     private static String                         ORDER_EDITION_RECORD          = "order-edition-record";
+    private static String                         ORDER_CLEAR_RECORD            = "order-clear-record";
     private static String                         OPENNESS_LEVEL                = "open";
     private static String                         OPENNESS_LEVEL_DTO            = "open-dto";
     private static String                         OPENNESS_LEVEL_EDITION_RECORD = "open-edition-record";
+    private static String                         OPENNESS_LEVEL_CLEAR_RECORD   = "open-clear-record";
 
     protected BaseCustomListGrid                  listGrid;
 
@@ -85,7 +87,7 @@ public class DsdDimensionCodesVisualisationItem extends CustomCanvasItem {
         editOrderField.setCanFilter(false);
         editOrderField.setCanEdit(false);
         editOrderField.setWidth(30);
-        editOrderField.setAlign(Alignment.LEFT);
+        editOrderField.setAlign(Alignment.CENTER);
         editOrderField.setType(ListGridFieldType.IMAGE);
         editOrderField.setShowIfCondition(getEditionFieldIfFunction(editionMode));
         editOrderField.addRecordClickHandler(new RecordClickHandler() {
@@ -95,6 +97,24 @@ public class DsdDimensionCodesVisualisationItem extends CustomCanvasItem {
                 Record record = event.getRecord();
                 if (record != null) {
                     showOrderSelectionWindow(record);
+                }
+            }
+        });
+
+        ListGridField clearOrderField = new ListGridField(ORDER_CLEAR_RECORD, " "); // Do not show title in this column (an space is needed)
+        clearOrderField.setCanFilter(false);
+        clearOrderField.setCanEdit(false);
+        clearOrderField.setWidth(30);
+        clearOrderField.setAlign(Alignment.CENTER);
+        clearOrderField.setType(ListGridFieldType.IMAGE);
+        clearOrderField.setShowIfCondition(getEditionFieldIfFunction(editionMode));
+        clearOrderField.addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                Record record = event.getRecord();
+                if (record != null) {
+                    clearOrder(record);
                 }
             }
         });
@@ -110,7 +130,7 @@ public class DsdDimensionCodesVisualisationItem extends CustomCanvasItem {
         editOpennessLevelField.setCanFilter(false);
         editOpennessLevelField.setCanEdit(false);
         editOpennessLevelField.setWidth(30);
-        editOpennessLevelField.setAlign(Alignment.LEFT);
+        editOpennessLevelField.setAlign(Alignment.CENTER);
         editOpennessLevelField.setType(ListGridFieldType.IMAGE);
         editOpennessLevelField.setShowIfCondition(getEditionFieldIfFunction(editionMode));
         editOpennessLevelField.addRecordClickHandler(new RecordClickHandler() {
@@ -124,7 +144,25 @@ public class DsdDimensionCodesVisualisationItem extends CustomCanvasItem {
             }
         });
 
-        listGrid.setFields(dimensionField, orderField, editOrderField, opennessLevelField, editOpennessLevelField);
+        ListGridField clearOpennessLevelField = new ListGridField(OPENNESS_LEVEL_CLEAR_RECORD, " "); // Do not show title in this column (an space is needed)
+        clearOpennessLevelField.setCanFilter(false);
+        clearOpennessLevelField.setCanEdit(false);
+        clearOpennessLevelField.setWidth(30);
+        clearOpennessLevelField.setAlign(Alignment.CENTER);
+        clearOpennessLevelField.setType(ListGridFieldType.IMAGE);
+        clearOpennessLevelField.setShowIfCondition(getEditionFieldIfFunction(editionMode));
+        clearOpennessLevelField.addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                Record record = event.getRecord();
+                if (record != null) {
+                    clearOpennessLevel(record);
+                }
+            }
+        });
+
+        listGrid.setFields(dimensionField, orderField, editOrderField, clearOrderField, opennessLevelField, editOpennessLevelField, clearOpennessLevelField);
 
         HLayout hLayout = new HLayout();
         hLayout.addMember(listGrid);
@@ -162,14 +200,7 @@ public class DsdDimensionCodesVisualisationItem extends CustomCanvasItem {
                     @Override
                     public void onClick(ClickEvent event) {
                         RelatedResourceDto selectedVisualisation = searchVisualisationWindow.getSelectedVisualisation();
-                        if (selectedVisualisation != null) {
-                            record.setAttribute(visualisationField, RelatedResourceUtils.getRelatedResourceName(selectedVisualisation));
-                            record.setAttribute(visualisationDtoField, selectedVisualisation);
-                        } else {
-                            RelatedResourceDto nullRelatedResourceDto = null;
-                            record.setAttribute(visualisationField, StringUtils.EMPTY);
-                            record.setAttribute(visualisationDtoField, nullRelatedResourceDto);
-                        }
+                        setVisualisationInRecord(record, selectedVisualisation, visualisationField, visualisationDtoField);
                         listGrid.updateData(record);
                         listGrid.markForRedraw();
                         searchVisualisationWindow.markForDestroy();
@@ -177,6 +208,23 @@ public class DsdDimensionCodesVisualisationItem extends CustomCanvasItem {
                 });
             }
         }
+    }
+
+    private void setVisualisationInRecord(Record record, RelatedResourceDto visualisation, String visualisationField, String visualisationDtoField) {
+        record.setAttribute(visualisationField, RelatedResourceUtils.getRelatedResourceName(visualisation));
+        record.setAttribute(visualisationDtoField, visualisation);
+    }
+
+    private void clearOrder(Record record) {
+        setVisualisationInRecord(record, null, ORDER, ORDER_DTO);
+        listGrid.updateData(record);
+        listGrid.markForRedraw();
+    }
+
+    private void clearOpennessLevel(Record record) {
+        setVisualisationInRecord(record, null, OPENNESS_LEVEL, OPENNESS_LEVEL_DTO);
+        listGrid.updateData(record);
+        listGrid.markForRedraw();
     }
 
     public void setDimensionsAndCandidateVisualisations(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, List<DimensionComponentDto> dimensionComponentDtos,
@@ -211,9 +259,11 @@ public class DsdDimensionCodesVisualisationItem extends CustomCanvasItem {
             }
         }
 
-        // to show the search icon in the edition columns
+        // to show the search and clear icons in the edition columns
         record.setAttribute(ORDER_EDITION_RECORD, GlobalResources.RESOURCE.search().getURL());
+        record.setAttribute(ORDER_CLEAR_RECORD, GlobalResources.RESOURCE.deleteListGrid().getURL());
         record.setAttribute(OPENNESS_LEVEL_EDITION_RECORD, GlobalResources.RESOURCE.search().getURL());
+        record.setAttribute(OPENNESS_LEVEL_CLEAR_RECORD, GlobalResources.RESOURCE.deleteListGrid().getURL());
         return record;
     }
 
