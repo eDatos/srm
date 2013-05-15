@@ -116,9 +116,8 @@ public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceap
     public static void assertEqualsItemBasicDto(Item expected, ItemMetamacBasicDto actual) {
         assertNotNull(expected);
         assertNotNull(actual);
-        assertEqualsNotNull(expected.getItemSchemeVersion().getMaintainableArtefact().getUrn(), actual.getItemSchemeVersionUrn());
+        BaseAsserts.assertEqualsItemScheme(expected.getItemSchemeVersion(), actual.getItemSchemeVersion());
         assertEqualsNotNull(CoreCommonUtil.transformDateTimeToDate(expected.getCreatedDate()), actual.getCreatedDate());
-
         assertEqualsNameableArtefactBasicDto(expected.getNameableArtefact(), actual);
     }
 

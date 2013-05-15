@@ -674,7 +674,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             assertEquals(30, organisationsPagedResult.getResults().size());
 
             OrganisationMetamacBasicDto organisationMetamacBasicDto = getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_100_V1_ORGANISATION_1);
-            assertEquals(ORGANISATION_SCHEME_100_V1, organisationMetamacBasicDto.getItemSchemeVersionUrn());
+            assertEquals(ORGANISATION_SCHEME_100_V1, organisationMetamacBasicDto.getItemSchemeVersion().getUrn());
             assertEquals(OrganisationTypeEnum.AGENCY, organisationMetamacBasicDto.getType());
 
             assertNotNull(getOrganisationMetamacDto(organisationsPagedResult.getResults(), ORGANISATION_SCHEME_100_V1_ORGANISATION_1));

@@ -42,7 +42,7 @@ Application SrmDtosBaseCore {
 		}
 		
   		DataTransferObject ItemMetamacBasicDto extends @NameableArtefactMetamacBasicDto {
-            String itemSchemeVersionUrn required;
+            - @RelatedResourceDto itemSchemeVersion required;
             JAVADATE createdDate required;
 		} 
 		

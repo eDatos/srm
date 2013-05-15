@@ -1057,7 +1057,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
             int i = 0;
             assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
-            assertEquals(CONCEPT_SCHEME_1_V1, conceptsPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+            assertEquals(CONCEPT_SCHEME_1_V1, conceptsPagedResult.getResults().get(0).getItemSchemeVersion().getUrn());
             assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, conceptsPagedResult.getResults().get(i++).getUrn());

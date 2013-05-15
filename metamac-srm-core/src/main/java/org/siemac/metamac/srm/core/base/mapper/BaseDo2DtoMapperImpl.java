@@ -80,7 +80,7 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
 
     @Override
     public void itemDoToItemBasicDto(Item source, ItemMetamacBasicDto target) {
-        target.setItemSchemeVersionUrn(source.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        target.setItemSchemeVersion(do2DtoMapperSdmxSrm.itemSchemeDoToRelatedResourceDto(source.getItemSchemeVersion()));
         target.setCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getCreatedDate()));
         nameableArtefactDoToNameableArtefactBasicDto(source, target);
     }

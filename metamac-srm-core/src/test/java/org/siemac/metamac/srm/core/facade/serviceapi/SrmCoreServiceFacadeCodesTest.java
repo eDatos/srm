@@ -1043,7 +1043,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
 
             int i = 0;
             assertEquals(CODELIST_1_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
-            assertEquals(CODELIST_1_V1, codesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+            assertEquals(CODELIST_1_V1, codesPagedResult.getResults().get(0).getItemSchemeVersion().getUrn());
             assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getResults().get(i++).getUrn());

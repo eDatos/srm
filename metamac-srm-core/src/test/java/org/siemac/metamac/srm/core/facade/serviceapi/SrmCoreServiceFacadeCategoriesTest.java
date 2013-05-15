@@ -608,7 +608,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
 
             int i = 0;
             assertEquals(CATEGORY_SCHEME_1_V1_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
-            assertEquals(CATEGORY_SCHEME_1_V1, categoriesPagedResult.getResults().get(0).getItemSchemeVersionUrn());
+            assertEquals(CATEGORY_SCHEME_1_V1, categoriesPagedResult.getResults().get(0).getItemSchemeVersion().getUrn());
             assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, categoriesPagedResult.getResults().get(i++).getUrn());
