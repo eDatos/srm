@@ -414,6 +414,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                             ConceptSchemeVersionMetamacProperties.type().getName(), false, ConceptMetamac.class), propertyRestriction.getEnumValue());
                 case CONCEPT_SCHEME_IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                case CONCEPT_SCHEME_LATEST_FINAL:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                case CONCEPT_SCHEME_LATEST_PUBLIC:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -542,6 +546,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                             .organisationSchemeType().getName(), false, OrganisationMetamac.class), propertyRestriction.getEnumValue());
                 case ORGANISATION_SCHEME_IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                case ORGANISATION_SCHEME_LATEST_FINAL:
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                case ORGANISATION_SCHEME_LATEST_PUBLIC:
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -699,6 +707,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue());
                 case CATEGORY_SCHEME_IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                case CATEGORY_SCHEME_LATEST_FINAL:
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                case CATEGORY_SCHEME_LATEST_PUBLIC:
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
                 case CATEGORY_SCHEME_EXTERNALLY_PUBLISHED:
                     return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), propertyRestriction.getBooleanValue());
                 default:
@@ -833,6 +845,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue());
                 case CODELIST_IS_LAST_VERSION:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                case CODELIST_LATEST_FINAL:
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                case CODELIST_LATEST_PUBLIC:
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
