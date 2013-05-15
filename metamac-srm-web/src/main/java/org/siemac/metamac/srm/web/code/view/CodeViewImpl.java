@@ -32,8 +32,8 @@ import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
@@ -252,13 +252,13 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
         // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CodeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        MultilanguageRichTextEditorItem description = new MultilanguageRichTextEditorItem(CodeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         SearchRelatedResourceLinkItem variableElement = createVariableElementItem(CodeDS.VARIABLE_ELEMENT, getConstants().variableElement());
         contentDescriptorsEditionForm.setFields(description, variableElement);
 
         // COMMENTS
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
-        MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(CodeDS.COMMENTS, getConstants().nameableArtefactComments());
+        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(CodeDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
         // ANNOTATIONS

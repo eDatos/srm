@@ -22,8 +22,8 @@ import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
-import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
@@ -220,12 +220,12 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(CategoryDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        MultilanguageRichTextEditorItem description = new MultilanguageRichTextEditorItem(CategoryDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsEditionForm.setFields(description);
 
         // Comments
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
-        MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(CategoryDS.COMMENTS, getConstants().nameableArtefactComments());
+        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(CategoryDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
         // Annotations

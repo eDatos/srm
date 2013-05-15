@@ -30,8 +30,8 @@ import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
-import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
@@ -381,12 +381,12 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewTextItem type = new ViewTextItem(OrganisationDS.TYPE, getConstants().organisationType());
-        MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(OrganisationDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        MultilanguageRichTextEditorItem description = new MultilanguageRichTextEditorItem(OrganisationDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsEditionForm.setFields(type, description);
 
         // Comments
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
-        MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(OrganisationDS.COMMENTS, getConstants().nameableArtefactComments());
+        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(OrganisationDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
         // Annotations

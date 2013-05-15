@@ -53,7 +53,6 @@ import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedActio
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextAreaItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
@@ -336,9 +335,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        MultiLanguageTextAreaItem description = new MultiLanguageTextAreaItem(ConceptDS.DESCRIPTION, getConstants().nameableArtefactDescription());
-        MultiLanguageTextItem descriptionSource = new MultiLanguageTextItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
-        MultiLanguageTextItem context = new MultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
+        MultilanguageRichTextEditorItem description = new MultilanguageRichTextEditorItem(ConceptDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        MultilanguageRichTextEditorItem descriptionSource = new MultilanguageRichTextEditorItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
+        MultilanguageRichTextEditorItem context = new MultilanguageRichTextEditorItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         MultilanguageRichTextEditorItem docMethod = new MultilanguageRichTextEditorItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
         SearchRelatedResourceLinkItem variableView = createVariableItem(ConceptDS.VARIABLE, getConstants().variable());
         variableView.setShowIfCondition(getVariableFormItemIfFunction());
@@ -382,7 +381,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         // CLASS DESCRIPTORS
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
-        MultiLanguageTextItem derivation = new MultiLanguageTextItem(ConceptDS.DERIVATION, getConstants().conceptDerivation());
+        MultilanguageRichTextEditorItem derivation = new MultilanguageRichTextEditorItem(ConceptDS.DERIVATION, getConstants().conceptDerivation());
         RequiredSelectItem sdmxRelatedArtefact = new RequiredSelectItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setValueMap(CommonUtils.getConceptRoleHashMap());
         sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
@@ -401,7 +400,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         // COMMENTS
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
-        MultiLanguageTextAreaItem comments = new MultiLanguageTextAreaItem(ConceptDS.COMMENTS, getConstants().nameableArtefactComments());
+        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(ConceptDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
         // ANNOTATIONS
