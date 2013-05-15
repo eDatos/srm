@@ -20,6 +20,8 @@ import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
+import org.siemac.metamac.srm.web.client.widgets.ExternalItemLinkItem;
+import org.siemac.metamac.srm.web.client.widgets.SearchExternalItemLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
@@ -33,7 +35,6 @@ import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -42,7 +43,6 @@ import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
@@ -96,7 +96,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private SearchExternalItemWindow          searchOperationWindow;
 
     private DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
-    private ExternalItemDto                   statisticalOperation;
 
     @Inject
     public DsdGeneralTabViewImpl() {
@@ -274,7 +273,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Class Descriptors Form
         classDescriptorsForm = new GroupDynamicForm(getConstants().formClassDescriptors());
-        ViewTextItem relatedOperation = new ViewTextItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
+        ExternalItemLinkItem relatedOperation = new ExternalItemLinkItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
         classDescriptorsForm.setFields(relatedOperation);
 
         // Production descriptors form
@@ -369,7 +368,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Class descriptors form
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
-        SearchViewTextItem operationItem = createStatisticalOperationItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
+        SearchExternalItemLinkItem operationItem = createStatisticalOperationItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
         classDescriptorsEditionForm.setFields(operationItem);
 
         // Production descriptors form
@@ -441,7 +440,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     @Override
     public void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, List<DimensionComponentDto> dimensionComponentDtos) {
         this.dataStructureDefinitionMetamacDto = dataStructureDefinitionMetamacDto;
-        this.statisticalOperation = dataStructureDefinitionMetamacDto.getStatisticalOperation();
 
         // Security
         mainFormLayout.setDsd(dataStructureDefinitionMetamacDto);
@@ -483,7 +481,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                 .no()) : StringUtils.EMPTY);
 
         // Class descriptors form
-        classDescriptorsForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
+        ((ExternalItemLinkItem) classDescriptorsForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).setExternalItem(dsd.getStatisticalOperation());
 
         // Production descriptors form
         productionDescriptorsForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
@@ -541,7 +539,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                 .getConstants().no()) : StringUtils.EMPTY);
 
         // Class descriptors form
-        classDescriptorsEditionForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
+        ((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).setExternalItem(dsd.getStatisticalOperation());
 
         // Production descriptors form
         productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
@@ -600,7 +598,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         dataStructureDefinitionMetamacDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(DataStructureDefinitionDS.DESCRIPTION));
 
         // Class descriptors form
-        dataStructureDefinitionMetamacDto.setStatisticalOperation(ExternalItemUtils.removeTitle(statisticalOperation));
+        dataStructureDefinitionMetamacDto.setStatisticalOperation(((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION))
+                .getExternalItemDto());
 
         // Production descriptors form
 
@@ -706,8 +705,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         visualisationMetadataEditionForm.markForRedraw();
     }
 
-    private SearchViewTextItem createStatisticalOperationItem(String name, String title) {
-        SearchViewTextItem operationItem = new SearchViewTextItem(name, title);
+    private SearchExternalItemLinkItem createStatisticalOperationItem(String name, String title) {
+        SearchExternalItemLinkItem operationItem = new SearchExternalItemLinkItem(name, title);
         operationItem.setRequired(true);
         operationItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
@@ -735,9 +734,9 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        statisticalOperation = searchOperationWindow.getSelectedExternalItem();
+                        ExternalItemDto selectedOperation = searchOperationWindow.getSelectedExternalItem();
                         searchOperationWindow.destroy();
-                        classDescriptorsEditionForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(statisticalOperation));
+                        ((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).setExternalItem(selectedOperation);
                         classDescriptorsEditionForm.validate(false);
                     }
                 });
