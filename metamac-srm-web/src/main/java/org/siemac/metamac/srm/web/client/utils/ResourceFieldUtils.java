@@ -66,7 +66,6 @@ public class ResourceFieldUtils {
 
     public static CustomListGridField[] getConceptSchemeListGridFields() {
         CustomListGridField typeField = new CustomListGridField(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
-        typeField.setHidden(true);
 
         CustomListGridField statisticalOperation = new CustomListGridField(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
         statisticalOperation.setHidden(true);
