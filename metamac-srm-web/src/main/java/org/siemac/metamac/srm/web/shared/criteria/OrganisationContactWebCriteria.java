@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.shared.criteria;
 
+import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
+
 public class OrganisationContactWebCriteria extends MetamacWebCriteria {
 
     private static final long serialVersionUID = 1L;

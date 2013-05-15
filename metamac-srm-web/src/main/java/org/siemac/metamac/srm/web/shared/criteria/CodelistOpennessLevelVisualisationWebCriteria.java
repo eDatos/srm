@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.shared.criteria;
 
+import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
+
 public class CodelistOpennessLevelVisualisationWebCriteria extends MetamacWebCriteria {
 
     private String            dsdDimensionUrn;

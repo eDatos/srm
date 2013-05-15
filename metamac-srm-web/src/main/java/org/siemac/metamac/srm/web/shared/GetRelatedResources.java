@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.shared;
 
 import java.util.List;
 
-import org.siemac.metamac.srm.web.shared.criteria.MetamacWebCriteria;
+import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.dispatch.annotation.GenDispatch;
