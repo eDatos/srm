@@ -6,8 +6,9 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
-public class ConceptSchemeListGrid extends VersionableResourceListGrid {
+public class ConceptSchemeListGrid extends BaseCustomListGrid {
 
     public ConceptSchemeListGrid() {
         setFields(ResourceFieldUtils.getConceptSchemeListGridFields());

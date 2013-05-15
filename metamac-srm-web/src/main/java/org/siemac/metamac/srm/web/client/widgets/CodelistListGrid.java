@@ -6,8 +6,9 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
-public class CodelistListGrid extends VersionableResourceListGrid {
+public class CodelistListGrid extends BaseCustomListGrid {
 
     public CodelistListGrid() {
         setFields(ResourceFieldUtils.getCodelistListGridFields());

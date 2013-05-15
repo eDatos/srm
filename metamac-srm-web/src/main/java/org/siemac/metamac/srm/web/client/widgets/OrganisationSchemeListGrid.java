@@ -6,8 +6,9 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBas
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
-public class OrganisationSchemeListGrid extends VersionableResourceListGrid {
+public class OrganisationSchemeListGrid extends BaseCustomListGrid {
 
     public OrganisationSchemeListGrid() {
         super();
