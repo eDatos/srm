@@ -25,7 +25,7 @@ Application SrmDtosBaseCore {
 		}    
 		
    		DataTransferObject StructureMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
-   			String structureUuid required;
+   			Long structureId required;
             JAVADATE createdDate required;
             - @LifeCycleBasicDto lifeCycle required;
             JAVADATE resourceCreatedDate required;
@@ -33,7 +33,7 @@ Application SrmDtosBaseCore {
 		}		
  
    		DataTransferObject ItemSchemeMetamacBasicDto extends @MaintainableArtefactMetamacBasicDto {
-   			String itemSchemeUuid required;
+   			Long itemSchemeId required;
             JAVADATE createdDate required;
             - @LifeCycleBasicDto lifeCycle required;
 			Boolean isTaskInBackground nullable;

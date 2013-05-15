@@ -60,7 +60,7 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
         target.setIsTaskInBackground(source.getItemScheme().getIsTaskInBackground());
         target.setResourceCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getItemScheme().getResourceCreatedDate()));
         target.setResourceLastUpdated(CoreCommonUtil.transformDateTimeToDate(source.getItemScheme().getResourceLastUpdated()));
-        target.setItemSchemeUuid(source.getItemScheme().getUuid());
+        target.setItemSchemeId(source.getItemScheme().getId());
         target.setCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getCreatedDate()));
 
         target.setLifeCycle(lifeCycleDoToBasicDto(lifeCycleSource));
@@ -71,7 +71,7 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
     public void structureVersionDoToStructureBasicDto(StructureVersion source, SrmLifeCycleMetadata lifeCycleSource, StructureMetamacBasicDto target) {
         target.setResourceCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getStructure().getResourceCreatedDate()));
         target.setResourceLastUpdated(CoreCommonUtil.transformDateTimeToDate(source.getStructure().getResourceLastUpdated()));
-        target.setStructureUuid(source.getStructure().getUuid());
+        target.setStructureId(source.getStructure().getId());
         target.setCreatedDate(CoreCommonUtil.transformDateTimeToDate(source.getCreatedDate()));
 
         target.setLifeCycle(lifeCycleDoToBasicDto(lifeCycleSource));
