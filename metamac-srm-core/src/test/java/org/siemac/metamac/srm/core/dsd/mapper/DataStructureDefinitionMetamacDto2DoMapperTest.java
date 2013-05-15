@@ -16,6 +16,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts.MapperEnum;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
@@ -37,7 +39,7 @@ public class DataStructureDefinitionMetamacDto2DoMapperTest extends SrmBaseTest 
 
         DataStructureDefinitionVersionMetamac entity = dataStructureDefinitionDto2DoMapper.dataStructureDefinitionDtoToDataStructureDefinition(dto);
 
-        DataStructureDefinitionsMetamacAsserts.assertEqualsDataStructureDefinition(dto, entity);
+        DataStructureDefinitionsMetamacAsserts.assertEqualsDataStructureDefinition(dto, entity, MapperEnum.DTO2DO);
     }
 
     @Override

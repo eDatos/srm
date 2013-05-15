@@ -5,6 +5,7 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
+import org.siemac.metamac.srm.core.base.mapper.BaseDto2DoMapperImpl;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableRepository;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -21,7 +22,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @org.springframework.stereotype.Component("conceptsDto2DoMapper")
-public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
+public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements ConceptsDto2DoMapper {
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDto2DoMapper dto2DoMapperSdmxSrm;
@@ -60,7 +61,7 @@ public class ConceptsDto2DoMapperImpl implements ConceptsDto2DoMapper {
         // Modifiable attributes
         target.setIsTypeUpdated(!ObjectUtils.equals(source.getType(), target.getType()));
         target.setType(source.getType());
-        target.setRelatedOperation(dto2DoMapperSdmxSrm.externalItemDtoToExternalItem(source.getRelatedOperation(), target.getRelatedOperation(),
+        target.setRelatedOperation(externalItemDtoStatisticalOperationsToExternalItemDo(source.getRelatedOperation(), target.getRelatedOperation(),
                 ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
 
         dto2DoMapperSdmxSrm.conceptSchemeDtoToDo(source, target);

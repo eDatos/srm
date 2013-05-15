@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.core.dsd.serviceapi.utils;
 
-import org.siemac.metamac.common.test.utils.MetamacMocks;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
+import org.siemac.metamac.srm.core.base.utils.BaseDtoMocks;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
 
@@ -19,8 +18,7 @@ public class DataStructureDefinitionMetamacDtoMocks extends DataStructureDefinit
         // ADD Metamac metadata
         dataStructureDefinitionMetamacDto.setAutoOpen(true);
         dataStructureDefinitionMetamacDto.setShowDecimals(6);
-        dataStructureDefinitionMetamacDto.setStatisticalOperation(MetamacMocks.mockExternalItemDto("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation",
-                TypeExternalArtefactsEnum.STATISTICAL_OPERATION));
+        dataStructureDefinitionMetamacDto.setStatisticalOperation(BaseDtoMocks.mockExternalItemStatisticalOperationDto("operation1"));
 
         return dataStructureDefinitionMetamacDto;
     }

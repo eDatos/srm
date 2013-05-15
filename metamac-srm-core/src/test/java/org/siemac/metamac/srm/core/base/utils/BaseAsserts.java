@@ -2,9 +2,13 @@ package org.siemac.metamac.srm.core.base.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.dto.IdentifiableArtefactMetamacBasicDto;
@@ -15,6 +19,7 @@ import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
 import org.siemac.metamac.srm.core.base.dto.MaintainableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.NameableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.StructureMetamacBasicDto;
+import org.siemac.metamac.srm.core.common.SrmConstantsTest;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
@@ -157,4 +162,35 @@ public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceap
         assertNotNull(actual);
         assertEquals(expected, actual);
     }
+
+    public static void assertEqualsExternalItemStatisticalOperations(ExternalItem entity, ExternalItemDto dto, MapperEnum mapperEnum) {
+        assertEqualsExternalItem(entity, dto, SrmConstantsTest.ENDPOINT_INTERNAL_API_STATISTICAL_OPERATIONS, SrmConstantsTest.INTERNAL_WEB_APPLICATION_STATISTICAL_OPERATIONS, mapperEnum);
+    }
+
+    private static void assertEqualsExternalItem(ExternalItem entity, ExternalItemDto dto, String baseApi, String baseWebApplication, MapperEnum mapperEnum) {
+        assertEqualsExternalItem(entity, dto, mapperEnum);
+
+        assertEqualsNullability(entity.getUri(), dto.getUri());
+        if (entity.getUri() != null) {
+            if (MapperEnum.DO2DTO.equals(mapperEnum)) {
+                assertEquals(baseApi + entity.getUri(), dto.getUri());
+            } else if (MapperEnum.DTO2DO.equals(mapperEnum)) {
+                assertEquals(dto.getUri().replaceFirst(baseApi, StringUtils.EMPTY), entity.getUri());
+            } else {
+                fail("Mapper unexpected: " + mapperEnum);
+            }
+        }
+
+        assertEqualsNullability(entity.getManagementAppUrl(), dto.getManagementAppUrl());
+        if (entity.getManagementAppUrl() != null) {
+            if (MapperEnum.DO2DTO.equals(mapperEnum)) {
+                assertEquals(baseWebApplication + entity.getManagementAppUrl(), dto.getManagementAppUrl());
+            } else if (MapperEnum.DTO2DO.equals(mapperEnum)) {
+                assertEquals(dto.getManagementAppUrl().replaceFirst(baseWebApplication, StringUtils.EMPTY), entity.getManagementAppUrl());
+            } else {
+                fail("Mapper unexpected: " + mapperEnum);
+            }
+        }
+    }
+
 }

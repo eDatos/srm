@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.concept.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -28,14 +29,14 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
     private CodesDo2DtoMapper                                                    codesDo2DtoMapper;
 
     @Override
-    public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac source) {
+    public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac source) throws MetamacException {
         if (source == null) {
             return null;
         }
         ConceptSchemeMetamacDto target = new ConceptSchemeMetamacDto();
 
         target.setType(source.getType());
-        target.setRelatedOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getRelatedOperation()));
+        target.setRelatedOperation(externalItemStatisticalOperationsToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getRelatedOperation()));
         target.setLifeCycle(lifeCycleDoToDto(source.getLifeCycleMetadata()));
 
         do2DtoMapperSdmxSrm.conceptSchemeDoToDto(source, target);
@@ -43,14 +44,14 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
     }
 
     @Override
-    public ConceptSchemeMetamacBasicDto conceptSchemeMetamacDoToBasicDto(ConceptSchemeVersionMetamac source) {
+    public ConceptSchemeMetamacBasicDto conceptSchemeMetamacDoToBasicDto(ConceptSchemeVersionMetamac source) throws MetamacException {
         if (source == null) {
             return null;
         }
         ConceptSchemeMetamacBasicDto target = new ConceptSchemeMetamacBasicDto();
         itemSchemeVersionDoToItemSchemeBasicDto(source, source.getLifeCycleMetadata(), target);
         target.setType(source.getType());
-        target.setRelatedOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getRelatedOperation()));
+        target.setRelatedOperation(externalItemStatisticalOperationsToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getRelatedOperation()));
         return target;
     }
 
@@ -64,7 +65,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
     }
 
     @Override
-    public List<ConceptSchemeMetamacBasicDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> conceptSchemeVersions) {
+    public List<ConceptSchemeMetamacBasicDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> conceptSchemeVersions) throws MetamacException {
         List<ConceptSchemeMetamacBasicDto> conceptSchemeMetamacDtos = new ArrayList<ConceptSchemeMetamacBasicDto>(conceptSchemeVersions.size());
         for (ConceptSchemeVersionMetamac conceptSchemeVersion : conceptSchemeVersions) {
             conceptSchemeMetamacDtos.add(conceptSchemeMetamacDoToBasicDto(conceptSchemeVersion));

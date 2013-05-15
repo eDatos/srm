@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -25,6 +26,8 @@ public class SrmConfigurationImpl implements SrmConfiguration {
     private Boolean              isDatabaseSqlServer;
     private List<String>         languages;
     private String               languageDefault;
+    private String               statisticalOperationsInternalApiUrlBase;
+    private String               statisticalOperationsInternalWebApplicationUrlBase;
 
     @Override
     public String retrieveMaintainerUrnDefault() throws MetamacException {
@@ -85,14 +88,33 @@ public class SrmConfigurationImpl implements SrmConfiguration {
         return languageDefault;
     }
 
+    @Override
+    public String retrieveStatisticalOperationsInternalApiUrlBase() throws MetamacException {
+        if (statisticalOperationsInternalApiUrlBase == null) {
+            statisticalOperationsInternalApiUrlBase = retrieveProperty(SrmConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_INTERNAL_API, Boolean.TRUE);
+        }
+        return statisticalOperationsInternalApiUrlBase;
+    }
+
+    @Override
+    public String retrieveStatisticalOperationsInternalWebApplicationUrlBase() throws MetamacException {
+        if (statisticalOperationsInternalWebApplicationUrlBase == null) {
+            statisticalOperationsInternalWebApplicationUrlBase = retrieveProperty(SrmConfigurationConstants.WEB_APPLICATION_STATISTICAL_OPERATIONS_INTERNAL_WEB, Boolean.TRUE);
+        }
+        return statisticalOperationsInternalWebApplicationUrlBase;
+    }
+
     private String retrieveProperty(String propertyName, Boolean required) throws MetamacException {
         String propertyValue = configurationService.getProperty(propertyName);
+        if (required && StringUtils.isEmpty(propertyValue)) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONFIGURATION_PROPERTY_NOT_FOUND).withMessageParameters(propertyName).build();
+        }
         return propertyValue;
     }
 
     private List<Object> retrievePropertyList(String propertyName, Boolean required) throws MetamacException {
         List<Object> propertyValue = configurationService.getConfig().getList(propertyName);
-        if (CollectionUtils.isEmpty(propertyValue)) {
+        if (required && CollectionUtils.isEmpty(propertyValue)) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONFIGURATION_PROPERTY_NOT_FOUND).withMessageParameters(propertyName).build();
         }
         return propertyValue;

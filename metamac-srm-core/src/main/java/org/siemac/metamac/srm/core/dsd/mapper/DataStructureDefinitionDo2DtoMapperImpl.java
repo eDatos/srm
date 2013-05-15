@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.dsd.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.mapper.BaseDo2DtoMapperImpl;
 import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
@@ -49,7 +50,7 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDoToDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersionMetamac source) {
+    public DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDoToDto(TypeDozerCopyMode typeDozerCopyMode, DataStructureDefinitionVersionMetamac source) throws MetamacException {
         if (source == null) {
             return null;
         }
@@ -60,7 +61,7 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDoToDto(DataStructureDefinitionVersionMetamac source) {
+    public DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDoToDto(DataStructureDefinitionVersionMetamac source) throws MetamacException {
         if (source == null) {
             return null;
         }
@@ -71,19 +72,20 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
     }
 
     @Override
-    public DataStructureDefinitionMetamacBasicDto dataStructureDefinitionMetamacDoToBasicDto(DataStructureDefinitionVersionMetamac source) {
+    public DataStructureDefinitionMetamacBasicDto dataStructureDefinitionMetamacDoToBasicDto(DataStructureDefinitionVersionMetamac source) throws MetamacException {
         if (source == null) {
             return null;
         }
 
         DataStructureDefinitionMetamacBasicDto target = new DataStructureDefinitionMetamacBasicDto();
-        target.setStatisticalOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getStatisticalOperation()));
+        target.setStatisticalOperation(externalItemStatisticalOperationsToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getStatisticalOperation()));
         structureVersionDoToStructureBasicDto(source, source.getLifeCycleMetadata(), target);
         return target;
     }
 
     @Override
-    public List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDoListToDtoList(List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamacs) {
+    public List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDoListToDtoList(List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamacs)
+            throws MetamacException {
         List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDtos = new ArrayList<DataStructureDefinitionMetamacBasicDto>(dataStructureDefinitionVersionMetamacs.size());
         for (DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac : dataStructureDefinitionVersionMetamacs) {
             dataStructureDefinitionMetamacDtos.add(dataStructureDefinitionMetamacDoToBasicDto(dataStructureDefinitionVersionMetamac));
@@ -91,7 +93,7 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
         return dataStructureDefinitionMetamacDtos;
     }
 
-    private DataStructureDefinitionMetamacDto dataStructureDefinitionVersionMetamacDoToDto(DataStructureDefinitionVersionMetamac source, TypeDozerCopyMode typeDozerCopyMode) {
+    private DataStructureDefinitionMetamacDto dataStructureDefinitionVersionMetamacDoToDto(DataStructureDefinitionVersionMetamac source, TypeDozerCopyMode typeDozerCopyMode) throws MetamacException {
         DataStructureDefinitionMetamacDto target = new DataStructureDefinitionMetamacDto();
         target.setLifeCycle(lifeCycleDoToDto(source.getLifeCycleMetadata()));
         do2DtoMapperSdmxSrm.dataStructureDefinitionDoToDto(typeDozerCopyMode, source, target);
@@ -99,7 +101,7 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
         // Metamac
         target.setAutoOpen(source.getAutoOpen());
         target.setShowDecimals(source.getShowDecimals());
-        target.setStatisticalOperation(do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getStatisticalOperation()));
+        target.setStatisticalOperation(externalItemStatisticalOperationsToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getStatisticalOperation()));
 
         // Heading
         for (DimensionOrder dimensionOrderSource : source.getHeadingDimensions()) {

@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.concept.mapper;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -16,10 +17,10 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 public interface ConceptsDo2DtoMapper {
 
     // Concept schemes
-    public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac source);
-    public ConceptSchemeMetamacBasicDto conceptSchemeMetamacDoToBasicDto(ConceptSchemeVersionMetamac source);
+    public ConceptSchemeMetamacDto conceptSchemeMetamacDoToDto(ConceptSchemeVersionMetamac source) throws MetamacException;
+    public ConceptSchemeMetamacBasicDto conceptSchemeMetamacDoToBasicDto(ConceptSchemeVersionMetamac source) throws MetamacException;
     public RelatedResourceDto conceptSchemeMetamacDoToRelatedResourceDto(ConceptSchemeVersionMetamac source);
-    public List<ConceptSchemeMetamacBasicDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> sources);
+    public List<ConceptSchemeMetamacBasicDto> conceptSchemeMetamacDoListToDtoList(List<ConceptSchemeVersionMetamac> sources) throws MetamacException;
 
     // Concepts
     public ConceptMetamacDto conceptMetamacDoToDto(ConceptMetamac source);

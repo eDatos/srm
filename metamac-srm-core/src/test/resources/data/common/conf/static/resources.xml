@@ -2,8 +2,10 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>Configurations</comment>
-    <!-- The following URN must be the same in the SQL script provided -->
     <entry key="metamac.organisation.urn">urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX01</entry>
+    <entry key="metamac.edition.languages">es,pt,en,ca</entry>
     
-    <entry key="metamac.edition.languages">es,pt,en,ca</entry>    
+    <!-- Note: following properties are also written explicitly in SrmConstantsTest. If they are changed, remember to change also in this class -->
+    <entry key="metamac.endpoints.statistical.operations.rest.internal">apis.metamac.org/statistical-operations-internal</entry>
+    <entry key="metamac.web.statistical.operations.internal">http://localhost:8080/metamac-statistical-operations-web</entry>
 </properties>

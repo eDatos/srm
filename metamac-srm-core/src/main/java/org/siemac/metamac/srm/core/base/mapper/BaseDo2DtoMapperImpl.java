@@ -1,5 +1,8 @@
 package org.siemac.metamac.srm.core.base.mapper;
 
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.dto.IdentifiableArtefactMetamacBasicDto;
@@ -10,6 +13,7 @@ import org.siemac.metamac.srm.core.base.dto.LifeCycleDto;
 import org.siemac.metamac.srm.core.base.dto.MaintainableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.NameableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.StructureMetamacBasicDto;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -29,6 +33,9 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
     @Autowired
     @Qualifier("baseDo2DtoMapperSdmxSrm")
     private com.arte.statistic.sdmx.srm.core.base.mapper.BaseDo2DtoMapper do2DtoMapperSdmxSrm;
+
+    @Autowired
+    private SrmConfiguration                                              srmConfiguration;
 
     @Override
     public LifeCycleDto lifeCycleDoToDto(SrmLifeCycleMetadata source) {
@@ -91,6 +98,16 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
         identifiableArtefactDoToIdentifiableArtefactBasicDto(source, target);
     }
 
+    @Override
+    public ExternalItemDto externalItemStatisticalOperationsToExternalItemDto(TypeDozerCopyMode typeDozerCopyMode, ExternalItem source) throws MetamacException {
+        ExternalItemDto target = do2DtoMapperSdmxSrm.externalItemToExternalItemDto(TypeDozerCopyMode.COPY_ALL_METADATA, source);
+        if (target != null) {
+            target.setUri(CoreCommonUtil.externalItemUrlDoToUrlDto(getStatisticalOperationsInternalApiUrlBase(), target.getUri()));
+            target.setManagementAppUrl(CoreCommonUtil.externalItemUrlDoToUrlDto(getStatisticalOperationsInternalWebApplicationUrlBase(), target.getManagementAppUrl()));
+        }
+        return target;
+    }
+
     private void nameableArtefactDoToNameableArtefactBasicDto(Item source, NameableArtefactMetamacBasicDto target) {
         nameableArtefactDoToNameableArtefactBasicDto(source.getNameableArtefact(), target);
     }
@@ -118,5 +135,13 @@ public class BaseDo2DtoMapperImpl implements org.siemac.metamac.srm.core.base.ma
         target.setExternalPublicationDate(CoreCommonUtil.transformDateTimeToDate(source.getExternalPublicationDate()));
         target.setExternalPublicationUser(source.getExternalPublicationUser());
         return target;
+    }
+
+    private String getStatisticalOperationsInternalWebApplicationUrlBase() throws MetamacException {
+        return srmConfiguration.retrieveStatisticalOperationsInternalWebApplicationUrlBase();
+    }
+
+    private String getStatisticalOperationsInternalApiUrlBase() throws MetamacException {
+        return srmConfiguration.retrieveStatisticalOperationsInternalApiUrlBase();
     }
 }

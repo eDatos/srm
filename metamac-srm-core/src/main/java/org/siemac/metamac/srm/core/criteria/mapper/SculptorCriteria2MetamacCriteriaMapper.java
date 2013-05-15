@@ -41,10 +41,11 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.task.TaskDto;
 public interface SculptorCriteria2MetamacCriteriaMapper {
 
     public MetamacCriteriaResult<DataStructureDefinitionMetamacBasicDto> pageResultToMetamacCriteriaResultDataStructureDefinition(PagedResult<DataStructureDefinitionVersionMetamac> source,
-            Integer pageSize);
+            Integer pageSize) throws MetamacException;
     public MetamacCriteriaResult<TaskDto> pageResultToMetamacCriteriaResultTask(PagedResult<Task> source, Integer pageSize);
 
-    public MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> pageResultToMetamacCriteriaResultConceptSchemeVersion(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize);
+    public MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> pageResultToMetamacCriteriaResultConceptSchemeVersion(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize)
+            throws MetamacException;
     public MetamacCriteriaResult<RelatedResourceDto> pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize);
     public MetamacCriteriaResult<ConceptMetamacBasicDto> pageResultToMetamacCriteriaResultConcept(PagedResult<ConceptMetamac> source, Integer pageSize);
     public MetamacCriteriaResult<RelatedResourceDto> pageResultConceptToMetamacCriteriaResultRelatedResource(PagedResult<ConceptMetamac> source, Integer pageSize) throws MetamacException;

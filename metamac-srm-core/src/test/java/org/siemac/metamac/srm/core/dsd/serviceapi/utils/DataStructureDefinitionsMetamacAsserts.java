@@ -41,19 +41,19 @@ public class DataStructureDefinitionsMetamacAsserts extends DataStructureDefinit
         BaseAsserts.assertEqualsStructureBasicDto(expected, expected.getLifeCycleMetadata(), actual);
     }
 
-    public static void assertEqualsDataStructureDefinition(DataStructureDefinitionMetamacDto expected, DataStructureDefinitionVersionMetamac actual) {
+    public static void assertEqualsDataStructureDefinition(DataStructureDefinitionMetamacDto dto, DataStructureDefinitionVersionMetamac entity, MapperEnum mapperEnum) {
 
         // Metamac
-        assertEquals(expected.getAutoOpen(), actual.getAutoOpen());
-        assertEquals(expected.getShowDecimals(), actual.getShowDecimals());
-        assertEqualsExternalItem(expected.getStatisticalOperation(), actual.getStatisticalOperation());
+        assertEquals(dto.getAutoOpen(), entity.getAutoOpen());
+        assertEquals(dto.getShowDecimals(), entity.getShowDecimals());
+        BaseAsserts.assertEqualsExternalItemStatisticalOperations(entity.getStatisticalOperation(), dto.getStatisticalOperation(), mapperEnum);
 
-        assertDimensionOrders(expected.getHeadingDimensions(), actual.getHeadingDimensions());
-        assertDimensionOrders(expected.getStubDimensions(), actual.getStubDimensions());
+        assertDimensionOrders(dto.getHeadingDimensions(), entity.getHeadingDimensions());
+        assertDimensionOrders(dto.getStubDimensions(), entity.getStubDimensions());
 
-        assertDecimalPrecisions(expected.getShowDecimalsPrecisions(), actual.getShowDecimalsPrecisions());
+        assertDecimalPrecisions(dto.getShowDecimalsPrecisions(), entity.getShowDecimalsPrecisions());
 
-        assertDimensionVisualizationInfo(expected.getDimensionVisualisationInfos(), actual.getDimensionVisualisationInfos());
+        assertDimensionVisualizationInfo(dto.getDimensionVisualisationInfos(), entity.getDimensionVisualisationInfos());
 
         // Sdmx
         // DataStructureDefinitionAsserts.assertEqualsDataStructureDefinition(expected, actual);

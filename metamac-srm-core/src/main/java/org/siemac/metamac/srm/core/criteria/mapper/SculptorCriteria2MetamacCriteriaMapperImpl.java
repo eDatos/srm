@@ -76,7 +76,7 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
 
     @Override
     public MetamacCriteriaResult<DataStructureDefinitionMetamacBasicDto> pageResultToMetamacCriteriaResultDataStructureDefinition(PagedResult<DataStructureDefinitionVersionMetamac> source,
-            Integer pageSize) {
+            Integer pageSize) throws MetamacException {
         MetamacCriteriaResult<DataStructureDefinitionMetamacBasicDto> target = new MetamacCriteriaResult<DataStructureDefinitionMetamacBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {
@@ -93,7 +93,8 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     //
 
     @Override
-    public MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> pageResultToMetamacCriteriaResultConceptSchemeVersion(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize) {
+    public MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> pageResultToMetamacCriteriaResultConceptSchemeVersion(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize)
+            throws MetamacException {
         MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> target = new MetamacCriteriaResult<ConceptSchemeMetamacBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
         if (source.getValues() != null) {

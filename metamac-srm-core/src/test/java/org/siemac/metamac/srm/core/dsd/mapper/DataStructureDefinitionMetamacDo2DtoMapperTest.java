@@ -28,6 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts.MapperEnum;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
@@ -90,7 +91,7 @@ public class DataStructureDefinitionMetamacDo2DtoMapperTest extends SrmBaseTest 
                 .getStubDimensions().iterator().next().getDimension()));
 
         DataStructureDefinitionMetamacDto dto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
-        DataStructureDefinitionsMetamacAsserts.assertEqualsDataStructureDefinition(dto, dataStructureDefinitionVersionMetamac);
+        DataStructureDefinitionsMetamacAsserts.assertEqualsDataStructureDefinition(dto, dataStructureDefinitionVersionMetamac, MapperEnum.DO2DTO);
     }
 
     @Test

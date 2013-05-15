@@ -36,4 +36,14 @@ public interface SrmConfiguration {
      */
     public String retrieveLanguageDefault() throws MetamacException;
 
+    /**
+     * Retrieves url base of Statistical Operation Internal API
+     */
+    public String retrieveStatisticalOperationsInternalApiUrlBase() throws MetamacException;
+
+    /**
+     * Retrieves url base of Statistical Operation Internal Web
+     */
+    public String retrieveStatisticalOperationsInternalWebApplicationUrlBase() throws MetamacException;
+
 }

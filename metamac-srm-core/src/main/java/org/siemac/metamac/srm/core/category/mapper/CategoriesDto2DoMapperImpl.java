@@ -4,6 +4,7 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
+import org.siemac.metamac.srm.core.base.mapper.BaseDto2DoMapperImpl;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamacRepository;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
@@ -14,7 +15,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @org.springframework.stereotype.Component("categoriesDto2DoMapper")
-public class CategoriesDto2DoMapperImpl implements CategoriesDto2DoMapper {
+public class CategoriesDto2DoMapperImpl extends BaseDto2DoMapperImpl implements CategoriesDto2DoMapper {
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDto2DoMapper dto2DoMapperSdmxSrm;

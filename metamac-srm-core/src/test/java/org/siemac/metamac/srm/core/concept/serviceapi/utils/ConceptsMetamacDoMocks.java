@@ -22,7 +22,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
     public static ConceptSchemeVersionMetamac mockConceptScheme(OrganisationMetamac maintainer) {
         ConceptSchemeVersionMetamac target = new ConceptSchemeVersionMetamac();
         target.setType(ConceptSchemeTypeEnum.OPERATION);
-        target.setRelatedOperation(mockOperationExternalItem(UUID.randomUUID().toString()));
+        target.setRelatedOperation(mockExternalItemOperation(UUID.randomUUID().toString()));
         mockConceptScheme(target, maintainer);
         return target;
     }
@@ -30,7 +30,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
     public static ConceptSchemeVersionMetamac mockConceptSchemeFixedValues(String agencyID, String resourceID, String version) {
         ConceptSchemeVersionMetamac target = new ConceptSchemeVersionMetamac();
         target.setType(ConceptSchemeTypeEnum.OPERATION);
-        target.setRelatedOperation(mockOperationExternalItem("operation-" + resourceID));
+        target.setRelatedOperation(mockExternalItemOperation("operation-" + resourceID));
         target.setLifeCycleMetadata(BaseDoMocks.mockLifeCycleExternallyPublished());
         mockConceptSchemeFixedValues(target, agencyID, resourceID, version);
         return target;
@@ -67,13 +67,13 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         return target;
     }
 
-    public static ExternalItem mockOperationExternalItem(String code) {
+    public static ExternalItem mockExternalItemOperation(String code) {
         ExternalItem target = new ExternalItem();
         target.setCode(code);
         target.setUri("/operations/" + code);
         target.setUrn("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=" + code);
         target.setType(TypeExternalArtefactsEnum.STATISTICAL_OPERATION);
-        target.setManagementAppUrl("managementAppUrl" + code);
+        target.setManagementAppUrl("/#operations;id=" + code);
         target.setTitle(null);
         return target;
     }

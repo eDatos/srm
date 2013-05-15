@@ -1,5 +1,8 @@
 package org.siemac.metamac.srm.core.base.mapper;
 
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.dto.IdentifiableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.base.dto.ItemMetamacBasicDto;
@@ -13,6 +16,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
 public interface BaseDo2DtoMapper {
 
@@ -23,5 +27,7 @@ public interface BaseDo2DtoMapper {
     public void itemSchemeVersionDoToItemSchemeBasicDto(ItemSchemeVersion source, SrmLifeCycleMetadata lifeCycleSource, ItemSchemeMetamacBasicDto target);
     public void structureVersionDoToStructureBasicDto(StructureVersion source, SrmLifeCycleMetadata lifeCycleSource, StructureMetamacBasicDto target);
     public void itemDoToItemBasicDto(Item source, ItemMetamacBasicDto target);
+
+    public ExternalItemDto externalItemStatisticalOperationsToExternalItemDto(TypeDozerCopyMode typeDozerCopyMode, ExternalItem source) throws MetamacException;
 
 }

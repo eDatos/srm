@@ -20,7 +20,7 @@ public class DataStructureDefinitionMetamacDoMocks extends DataStructureDefiniti
 
     public static DataStructureDefinitionVersionMetamac mockDataStructureDefinitionVersionMetamac(OrganisationMetamac maintainer, String operationID) {
         DataStructureDefinitionVersionMetamac target = new DataStructureDefinitionVersionMetamac();
-        target.setStatisticalOperation(mockOperationExternalItem(operationID));
+        target.setStatisticalOperation(mockExternalItemTypeOperation(operationID));
         mockDataStructureDefinition(target, maintainer);
         return target;
     }
@@ -28,7 +28,7 @@ public class DataStructureDefinitionMetamacDoMocks extends DataStructureDefiniti
     public static DataStructureDefinitionVersionMetamac mockDataStructureDefinitionVersionMetamacFixedValues(String agencyID, String resourceID, String version) {
         DataStructureDefinitionVersionMetamac target = new DataStructureDefinitionVersionMetamac();
         target.setLifeCycleMetadata(BaseDoMocks.mockLifeCycleExternallyPublished());
-        target.setStatisticalOperation(mockOperationExternalItem("operation-" + resourceID));
+        target.setStatisticalOperation(mockExternalItemTypeOperation("operation-" + resourceID));
         target.setAutoOpen(Boolean.TRUE);
         target.setShowDecimals(Integer.valueOf(3));
         // Sdmx metadata
@@ -67,13 +67,13 @@ public class DataStructureDefinitionMetamacDoMocks extends DataStructureDefiniti
         return target;
     }
 
-    public static ExternalItem mockOperationExternalItem(String code) {
+    public static ExternalItem mockExternalItemTypeOperation(String code) {
         ExternalItem target = new ExternalItem();
         target.setCode(code);
         target.setUri("/operations/" + code);
         target.setUrn("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=" + code);
         target.setType(TypeExternalArtefactsEnum.STATISTICAL_OPERATION);
-        target.setManagementAppUrl("managementAppUrl" + code);
+        target.setManagementAppUrl("/#operations;id=" + code);
         target.setTitle(null);
         return target;
     }

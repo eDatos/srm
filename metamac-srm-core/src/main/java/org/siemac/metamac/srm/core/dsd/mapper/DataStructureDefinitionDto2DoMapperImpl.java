@@ -8,6 +8,7 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
+import org.siemac.metamac.srm.core.base.mapper.BaseDto2DoMapperImpl;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisationRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -33,7 +34,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
 
 @org.springframework.stereotype.Component("dataStructureDefinitionDto2DoMapper")
-public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDefinitionDto2DoMapper {
+public class DataStructureDefinitionDto2DoMapperImpl extends BaseDto2DoMapperImpl implements DataStructureDefinitionDto2DoMapper {
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.structure.mapper.DataStructureDefinitionDto2DoMapper dto2DoMapperSdmxSrm;
@@ -87,7 +88,7 @@ public class DataStructureDefinitionDto2DoMapperImpl implements DataStructureDef
         // Modifiable attributes
         target.setAutoOpen(source.getAutoOpen());
         target.setShowDecimals(source.getShowDecimals());
-        target.setStatisticalOperation(dto2DoMapperSdmxSrm.externalItemDtoToExternalItem(source.getStatisticalOperation(), target.getStatisticalOperation(),
+        target.setStatisticalOperation(externalItemDtoStatisticalOperationsToExternalItemDo(source.getStatisticalOperation(), target.getStatisticalOperation(),
                 ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
         headingDto2Do(source.getHeadingDimensions(), target);
         stubDto2Do(source.getStubDimensions(), target);

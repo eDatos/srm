@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.core.concept.mapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacMocks;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -34,7 +35,7 @@ public class ConceptsDo2DtoMapperTest extends SrmBaseTest {
     private ConceptsDo2DtoMapper conceptsDo2DtoMapper;
 
     @Test
-    public void testConceptSchemeMetamacDoToDto() {
+    public void testConceptSchemeMetamacDoToDto() throws MetamacException {
         ConceptSchemeVersionMetamac entity = ConceptsMetamacDoMocks.mockConceptSchemeFixedValues("agency01", "conceptScheme01", "01.000");
 
         ConceptSchemeMetamacDto dto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToDto(entity);
@@ -42,7 +43,7 @@ public class ConceptsDo2DtoMapperTest extends SrmBaseTest {
     }
 
     @Test
-    public void testConceptSchemeMetamacDoToBasicDto() {
+    public void testConceptSchemeMetamacDoToBasicDto() throws MetamacException {
         ConceptSchemeVersionMetamac entity = ConceptsMetamacDoMocks.mockConceptSchemeFixedValues("agency01", "conceptScheme01", "01.000");
         ConceptSchemeMetamacBasicDto dto = conceptsDo2DtoMapper.conceptSchemeMetamacDoToBasicDto(entity);
         ConceptsMetamacAsserts.assertEqualsConceptScheme(entity, dto);
