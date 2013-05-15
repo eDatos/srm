@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
+import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.BaseItemsTreeGrid;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
@@ -20,7 +21,9 @@ import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.TreeModelType;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGridField;
@@ -31,6 +34,7 @@ import com.smartgwt.client.widgets.tree.events.FolderDropEvent;
 import com.smartgwt.client.widgets.tree.events.FolderDropHandler;
 import com.smartgwt.client.widgets.tree.events.LeafContextClickEvent;
 import com.smartgwt.client.widgets.tree.events.LeafContextClickHandler;
+import com.smartgwt.client.widgets.viewer.DetailViewer;
 
 public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
@@ -221,4 +225,12 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
     }
 
     protected abstract void onNodeContextClick(String nodeName, CodeMetamacVisualisationResult itemMetamacResult);
+
+    @Override
+    protected Canvas getCellHoverComponent(Record record, Integer rowNum, Integer colNum) {
+        DetailViewer detailViewer = new DetailViewer();
+        detailViewer.setFields(ResourceFieldUtils.getCodeDetailViewerFields());
+        detailViewer.setData(new Record[]{record});
+        return detailViewer;
+    }
 }
