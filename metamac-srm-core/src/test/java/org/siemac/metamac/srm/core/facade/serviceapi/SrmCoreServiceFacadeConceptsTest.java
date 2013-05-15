@@ -122,9 +122,9 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeMetamacDto.getType());
         assertEquals("op1", conceptSchemeMetamacDto.getRelatedOperation().getCode());
-        assertEquals("/operations/op1", conceptSchemeMetamacDto.getRelatedOperation().getUri());
+        assertEquals("apis.metamac.org/statistical-operations-internal/operations/op1", conceptSchemeMetamacDto.getRelatedOperation().getUri());
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=op1", conceptSchemeMetamacDto.getRelatedOperation().getUrn());
-        assertEquals("http://app/operations", conceptSchemeMetamacDto.getRelatedOperation().getManagementAppUrl());
+        assertEquals("http://localhost:8080/metamac-statistical-operations-web/#operations;id=op1", conceptSchemeMetamacDto.getRelatedOperation().getManagementAppUrl());
         assertEquals(1, conceptSchemeMetamacDto.getRelatedOperation().getVersion().longValue());
     }
 

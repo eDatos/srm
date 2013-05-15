@@ -387,7 +387,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=op1", conceptSchemeVersion.getRelatedOperation().getUrn());
         assertEquals("/operations/op1", conceptSchemeVersion.getRelatedOperation().getUri());
         assertEquals(TypeExternalArtefactsEnum.STATISTICAL_OPERATION, conceptSchemeVersion.getRelatedOperation().getType());
-        assertEquals("http://app/operations", conceptSchemeVersion.getRelatedOperation().getManagementAppUrl());
+        assertEquals("/#operations;id=op1", conceptSchemeVersion.getRelatedOperation().getManagementAppUrl());
     }
 
     @Test
