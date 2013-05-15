@@ -15,7 +15,7 @@ import com.smartgwt.client.types.Autofit;
 public class DsdPaginatedListGrid extends PaginatedCheckListGrid {
 
     public DsdPaginatedListGrid(int maxResults, PaginatedAction action) {
-        super(maxResults, action);
+        super(maxResults, new VersionableResourceCustomListGrid(), action);
 
         getListGrid().setAutoFitMaxRecords(DsdListPresenter.DSD_LIST_MAX_RESULTS);
         getListGrid().setAutoFitData(Autofit.VERTICAL);

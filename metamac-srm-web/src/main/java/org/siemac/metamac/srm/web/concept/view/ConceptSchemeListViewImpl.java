@@ -9,6 +9,7 @@ import java.util.List;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
+import org.siemac.metamac.srm.web.client.widgets.VersionableResourceCustomListGrid;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
@@ -117,7 +118,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
 
         // Concepts scheme list
 
-        conceptSchemesList = new PaginatedCheckListGrid(ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
+        conceptSchemesList = new PaginatedCheckListGrid(ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new VersionableResourceCustomListGrid(), new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {

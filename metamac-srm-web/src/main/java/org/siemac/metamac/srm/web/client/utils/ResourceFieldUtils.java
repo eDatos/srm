@@ -13,6 +13,10 @@ import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 
+import com.smartgwt.client.widgets.grid.GroupNode;
+import com.smartgwt.client.widgets.grid.GroupTitleRenderer;
+import com.smartgwt.client.widgets.grid.ListGrid;
+import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
 public class ResourceFieldUtils {
@@ -39,14 +43,14 @@ public class ResourceFieldUtils {
 
     public static CustomListGridField[] getOrganisationSchemeListGridFields() {
         CustomListGridField typeField = new CustomListGridField(OrganisationSchemeDS.TYPE, getConstants().organisationSchemeType());
-        typeField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        typeField.setHidden(true);
 
         return ListGridUtils.addFields(getVersionableResourceListGridFields(), typeField);
     }
 
     public static CustomListGridField[] getOrganisationListGridFields() {
         CustomListGridField typeField = new CustomListGridField(OrganisationDS.TYPE_NAME, getConstants().organisationType());
-        typeField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        typeField.setHidden(true);
 
         return ListGridUtils.addFields(getItemListGridFields(), typeField);
     }
@@ -62,23 +66,23 @@ public class ResourceFieldUtils {
 
     public static CustomListGridField[] getConceptSchemeListGridFields() {
         CustomListGridField typeField = new CustomListGridField(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
-        typeField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        typeField.setHidden(true);
 
         CustomListGridField statisticalOperation = new CustomListGridField(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
-        statisticalOperation.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        statisticalOperation.setHidden(true);
 
         return ListGridUtils.addFields(getVersionableResourceListGridFields(), typeField, statisticalOperation);
     }
 
     public static CustomListGridField[] getConceptListGridFields() {
         CustomListGridField acronym = new CustomListGridField(ConceptDS.ACRONYM, getConstants().conceptAcronym());
-        acronym.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        acronym.setHidden(true);
 
         CustomListGridField variable = new CustomListGridField(ConceptDS.VARIABLE, getConstants().variable());
-        variable.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        variable.setHidden(true);
 
         CustomListGridField sdmxRelatedArtefact = new CustomListGridField(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
-        sdmxRelatedArtefact.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        sdmxRelatedArtefact.setHidden(true);
 
         return ListGridUtils.addFields(getItemListGridFields(), acronym, variable, sdmxRelatedArtefact);
     }
@@ -101,7 +105,7 @@ public class ResourceFieldUtils {
         CustomListGridField isRecommended = new CustomListGridField(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
 
         CustomListGridField variable = new CustomListGridField(CodelistDS.VARIABLE, getConstants().variable());
-        variable.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        variable.setHidden(true);
 
         return ListGridUtils.addFields(getVersionableResourceListGridFields(), isRecommended, variable);
     }
@@ -132,27 +136,37 @@ public class ResourceFieldUtils {
         CustomListGridField code = new CustomListGridField(VersionableResourceDS.CODE, getConstants().identifiableArtefactCode());
 
         CustomListGridField urn = new CustomListGridField(VersionableResourceDS.URN, getConstants().identifiableArtefactUrn());
-        urn.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        urn.setHidden(true);
 
         CustomListGridField version = new CustomListGridField(VersionableResourceDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
 
         CustomListGridField name = new CustomListGridField(VersionableResourceDS.NAME, getConstants().nameableArtefactName());
 
         CustomListGridField maintainer = new CustomListGridField(VersionableResourceDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
-        maintainer.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        maintainer.setHidden(true);
 
         CustomListGridField procStatus = new CustomListGridField(VersionableResourceDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
 
         CustomListGridField creationDate = new CustomListGridField(VersionableResourceDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
-        creationDate.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        creationDate.setHidden(true);
 
         CustomListGridField resourceCreationDate = new CustomListGridField(VersionableResourceDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
-        resourceCreationDate.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        resourceCreationDate.setHidden(true);
 
         CustomListGridField externalPublicationDate = new CustomListGridField(VersionableResourceDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
-        externalPublicationDate.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        externalPublicationDate.setHidden(true);
 
-        return new CustomListGridField[]{code, urn, version, name, maintainer, procStatus, creationDate, resourceCreationDate, externalPublicationDate};
+        CustomListGridField resourceUuid = new CustomListGridField(VersionableResourceDS.RESOURCE_UUID, getConstants().uuid());
+        resourceUuid.setHidden(true);
+        resourceUuid.setGroupTitleRenderer(new GroupTitleRenderer() {
+
+            @Override
+            public String getGroupTitle(Object groupValue, GroupNode groupNode, ListGridField field, String fieldName, ListGrid grid) {
+                return groupNode.getGroupMembers()[0].getAttribute(VersionableResourceDS.CODE);
+            }
+        });
+
+        return new CustomListGridField[]{code, urn, version, name, maintainer, procStatus, creationDate, resourceCreationDate, externalPublicationDate, resourceUuid};
     }
 
     //
@@ -164,12 +178,12 @@ public class ResourceFieldUtils {
         CustomListGridField code = new CustomListGridField(ItemDS.CODE, getConstants().identifiableArtefactCode());
 
         CustomListGridField urn = new CustomListGridField(ItemDS.URN, getConstants().identifiableArtefactUrn());
-        urn.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        urn.setHidden(true);
 
         CustomListGridField name = new CustomListGridField(ItemDS.NAME, getConstants().nameableArtefactName());
 
         CustomListGridField creationDate = new CustomListGridField(ItemDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
-        creationDate.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        creationDate.setHidden(true);
 
         return new CustomListGridField[]{code, urn, name, creationDate};
     }

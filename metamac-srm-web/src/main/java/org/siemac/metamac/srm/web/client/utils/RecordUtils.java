@@ -48,6 +48,7 @@ public class RecordUtils {
         record = getVersionableResourceRecord(record, itemSchemeMetamacBasicDto, lifeCycleDto);
         record.setCreationDate(DateUtils.getFormattedDate(itemSchemeMetamacBasicDto.getCreatedDate()));
         record.setResourceCreationDate(DateUtils.getFormattedDate(itemSchemeMetamacBasicDto.getResourceCreatedDate()));
+        record.setResourceUuid(itemSchemeMetamacBasicDto.getItemSchemeUuid());
         return record;
     }
 
@@ -59,6 +60,7 @@ public class RecordUtils {
         record = getVersionableResourceRecord(record, structureMetamacBasicDto, lifeCycleDto);
         record.setCreationDate(DateUtils.getFormattedDate(structureMetamacBasicDto.getCreatedDate()));
         record.setResourceCreationDate(DateUtils.getFormattedDate(structureMetamacBasicDto.getResourceCreatedDate()));
+        record.setResourceUuid(structureMetamacBasicDto.getStructureUuid());
         return record;
     }
 

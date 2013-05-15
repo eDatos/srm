@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeListUiHan
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeSearchSectionStack;
 import org.siemac.metamac.srm.web.category.widgets.NewCategorySchemeWindow;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
+import org.siemac.metamac.srm.web.client.widgets.VersionableResourceCustomListGrid;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -113,7 +114,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
 
         // Categories scheme list
 
-        categorySchemesList = new PaginatedCheckListGrid(CategorySchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
+        categorySchemesList = new PaginatedCheckListGrid(CategorySchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new VersionableResourceCustomListGrid(), new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {

@@ -8,6 +8,7 @@ import java.util.List;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
+import org.siemac.metamac.srm.web.client.widgets.VersionableResourceCustomListGrid;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistListPresenter;
@@ -114,7 +115,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
 
         // Codelist list
 
-        codelistsList = new PaginatedCheckListGrid(CodelistListPresenter.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
+        codelistsList = new PaginatedCheckListGrid(CodelistListPresenter.SCHEME_LIST_MAX_RESULTS, new VersionableResourceCustomListGrid(), new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {

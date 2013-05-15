@@ -9,6 +9,7 @@ import java.util.List;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
+import org.siemac.metamac.srm.web.client.widgets.VersionableResourceCustomListGrid;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListPresenter;
@@ -114,7 +115,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
 
         // Organisations scheme list
 
-        organisationSchemeList = new PaginatedCheckListGrid(OrganisationSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
+        organisationSchemeList = new PaginatedCheckListGrid(OrganisationSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new VersionableResourceCustomListGrid(), new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {

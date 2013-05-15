@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.client.model.record;
 
 import org.siemac.metamac.srm.web.client.model.ds.ItemSchemeDS;
+import org.siemac.metamac.srm.web.client.model.ds.VersionableResourceDS;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
@@ -75,5 +76,9 @@ public class VersionableResourceRecord extends ListGridRecord {
 
     public void setResourceCreationDate(String value) {
         setAttribute(ItemSchemeDS.RESOURCE_CREATION_DATE, value);
+    }
+
+    public void setResourceUuid(String value) {
+        setAttribute(VersionableResourceDS.RESOURCE_UUID, value);
     }
 }
