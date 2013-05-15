@@ -227,11 +227,16 @@ public class DataStructureDefinitionDto2DoMapperImpl extends BaseDto2DoMapperImp
 
         if (source.getDisplayOrder() != null) {
             target.setDisplayOrder(retrieveCodelistOrderVisualisation(source.getDisplayOrder().getUrn()));
+        } else {
+            target.setDisplayOrder(null);
         }
 
         if (source.getHierarchyLevelsOpen() != null) {
             target.setHierarchyLevelsOpen(retrieveCodelistOpennessVisualisation(source.getHierarchyLevelsOpen().getUrn()));
+        } else {
+            target.setHierarchyLevelsOpen(null);
         }
+
         target.setDsdVersion(dataStructureDefinitionVersionMetamac);
 
         return target;
