@@ -40,7 +40,7 @@ public class SrmConfigurationImpl implements SrmConfiguration {
     @Override
     public String retrievePrimaryMeasureConceptIdUrnDefault() throws MetamacException {
         if (primaryMeasureConceptIdUrnDefault == null) {
-            primaryMeasureConceptIdUrnDefault = retrieveProperty(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN, Boolean.TRUE);
+            primaryMeasureConceptIdUrnDefault = retrieveProperty(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN, Boolean.FALSE);
         }
         return primaryMeasureConceptIdUrnDefault;
     }
