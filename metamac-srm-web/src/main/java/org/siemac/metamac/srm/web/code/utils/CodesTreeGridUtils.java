@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.ItemsTreeGridUtils;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.widgets.CodeTreeNode;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 
@@ -52,8 +53,9 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         node.setAttribute(CodeDS.VARIABLE_ELEMENT, code.getVariableElement() != null
                 ? CommonWebUtils.getElementName(code.getVariableElement().getCode(), code.getVariableElement().getShortName())
                 : null);
-        // Icon
+        // Icons (only to the variable elements assignment tree)
         node.setAttribute(CodeDS.VARIABLE_ELEMENT_EDITION, org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.search().getURL());
+        node.setAttribute(CodeDS.VARIABLE_ELEMENT_CLEAR, org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
         return node;
     }
 
@@ -68,7 +70,13 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
     }
 
     public static void setVariableElementInRecord(Record record, RelatedResourceDto variableElement) {
-        record.setAttribute(CodeDS.VARIABLE_ELEMENT_ID_DATABASE, variableElement.getId()); // The related resource of this element contains the database id of the variable element
-        record.setAttribute(CodeDS.VARIABLE_ELEMENT, CommonWebUtils.getElementName(variableElement.getCode(), variableElement.getTitle()));
+        Long variableElementId = variableElement != null ? variableElement.getId() : null;
+        String variableElementTitle = variableElement != null ? RelatedResourceUtils.getRelatedResourceName(variableElement) : null;
+        record.setAttribute(CodeDS.VARIABLE_ELEMENT_ID_DATABASE, variableElementId); // The related resource of this element contains the database id of the variable element
+        record.setAttribute(CodeDS.VARIABLE_ELEMENT, variableElementTitle);
+    }
+
+    public static void clearVariableElementFromRecord(Record record) {
+        setVariableElementInRecord(record, null);
     }
 }

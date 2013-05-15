@@ -67,11 +67,13 @@ public class CodesVariableElementsAssignmentTreeGrid extends BaseCodesTreeGrid {
         // }
         // });
 
+        // Field to edit the variable element
+
         TreeGridField editField = new TreeGridField(CodeDS.VARIABLE_ELEMENT_EDITION, " "); // Do not show title in this column (an space is needed)
         editField.setCanFilter(false);
         editField.setCanEdit(false);
         editField.setWidth(30);
-        editField.setAlign(Alignment.LEFT);
+        editField.setAlign(Alignment.CENTER);
         editField.setType(ListGridFieldType.IMAGE);
         editField.addRecordClickHandler(new RecordClickHandler() {
 
@@ -83,6 +85,27 @@ public class CodesVariableElementsAssignmentTreeGrid extends BaseCodesTreeGrid {
             }
         });
 
+        // Field to clear the variable element
+
+        TreeGridField clearField = new TreeGridField(CodeDS.VARIABLE_ELEMENT_CLEAR, " "); // Do not show title in this column (an space is needed)
+        clearField.setCanFilter(false);
+        clearField.setCanEdit(false);
+        clearField.setWidth(30);
+        clearField.setAlign(Alignment.CENTER);
+        clearField.setType(ListGridFieldType.IMAGE);
+        clearField.addRecordClickHandler(new RecordClickHandler() {
+
+            @Override
+            public void onRecordClick(RecordClickEvent event) {
+                if (event.getRecordNum() != 0) { // Skip the root node (codelist node)
+                    Record record = event.getRecord();
+                    CodesTreeGridUtils.clearVariableElementFromRecord(record);
+                    updateData(record);
+                    markForRedraw();
+                }
+            }
+        });
+
         ListGridField[] itemFields = getAllFields();
 
         // Set all fields non editable
@@ -90,10 +113,11 @@ public class CodesVariableElementsAssignmentTreeGrid extends BaseCodesTreeGrid {
             field.setCanEdit(false);
         }
 
-        ListGridField[] codeFields = new ListGridField[itemFields.length + 2];
+        ListGridField[] codeFields = new ListGridField[itemFields.length + 3];
         System.arraycopy(itemFields, 0, codeFields, 0, itemFields.length);
-        codeFields[codeFields.length - 2] = variableElementField;
-        codeFields[codeFields.length - 1] = editField;
+        codeFields[codeFields.length - 3] = variableElementField;
+        codeFields[codeFields.length - 2] = editField;
+        codeFields[codeFields.length - 1] = clearField;
 
         setFields(codeFields);
 
@@ -132,10 +156,12 @@ public class CodesVariableElementsAssignmentTreeGrid extends BaseCodesTreeGrid {
 
     public void setViewMode() {
         hideField(CodeDS.VARIABLE_ELEMENT_EDITION);
+        hideField(CodeDS.VARIABLE_ELEMENT_CLEAR);
     }
 
     public void setEditionMode() {
         showField(CodeDS.VARIABLE_ELEMENT_EDITION);
+        showField(CodeDS.VARIABLE_ELEMENT_CLEAR);
     }
 
     public CodelistUiHandlers getUiHandlers() {
