@@ -78,7 +78,6 @@ import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodelistProcStatusA
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodesInOpennessVisualisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.UpdateCodesVariableElementsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.VersionCodelistActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.concept.AnnounceConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.CancelConceptSchemeValidityActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.CopyConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.CreateConceptSchemeTemporalVersionActionHandler;
@@ -210,7 +209,6 @@ import org.siemac.metamac.srm.web.shared.code.UpdateCodelistProcStatusAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodesInOpennessVisualisationAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodesVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.VersionCodelistAction;
-import org.siemac.metamac.srm.web.shared.concept.AnnounceConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CancelConceptSchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.concept.CopyCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CopyConceptSchemeAction;
@@ -331,7 +329,6 @@ public class ServerModule extends HandlerModule {
         bindHandler(SaveConceptAction.class, SaveConceptActionHandler.class);
         bindHandler(DeleteConceptAction.class, DeleteConceptActionHandler.class);
         bindHandler(UpdateConceptSchemeProcStatusAction.class, UpdateConceptSchemeProcStatusActionHandler.class);
-        bindHandler(AnnounceConceptSchemeAction.class, AnnounceConceptSchemeActionHandler.class);
         bindHandler(CancelConceptSchemeValidityAction.class, CancelConceptSchemeValidityActionHandler.class);
         bindHandler(FindAllConceptTypesAction.class, FindAllConceptTypesActionHandler.class);
         bindHandler(GetConceptSchemesWithConceptsCanBeRoleAction.class, GetConceptSchemesWithConceptsCanBeRoleActionHandler.class);
