@@ -206,7 +206,7 @@
         <cdomain:id>operation-artefact1</cdomain:id>
         <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-artefact1</cdomain:urn>
         <cdomain:selfLink kind="statisticalOperations#operation" href="http://data.istac.es/apis/operations-internal/operations/operation-artefact1"/>
-        <sr:managementAppLink>http://localhost:8080/metamac-statistical-operations-web/managementAppUrloperation-artefact1</sr:managementAppLink>
+        <sr:managementAppLink>http://localhost:8080/metamac-statistical-operations-web/#operations;id=operation-artefact1</sr:managementAppLink>
     </sr:statisticalOperation>
     <sr:autoOpen>true</sr:autoOpen>
     <sr:heading total="2">
