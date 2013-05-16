@@ -29,6 +29,9 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
     public MeasureDimensionConceptsTreeGrid(boolean editionMode) {
         super();
 
+        // Do not show info field
+        infoField.setHidden(true);
+
         setShowFilterEditor(false);
 
         TreeGridField showDecimalsPrecision = new TreeGridField(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getConstants().dsdDecimals());
@@ -37,6 +40,7 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
         showDecimalsPrecision.setCanFilter(false);
         showDecimalsPrecision.setEditorType(new SelectItem(DataStructureDefinitionDS.SHOW_DECIMALS, getConstants().dsdShowDecimals()));
         showDecimalsPrecision.setValueMap(org.siemac.metamac.srm.web.dsd.utils.CommonUtils.getDsdShowDecimalsHashMap());
+        showDecimalsPrecision.setShowHover(false);
 
         ListGridField[] fields = new ListGridField[3];
         System.arraycopy(getAllFields(), 0, fields, 0, 2);
