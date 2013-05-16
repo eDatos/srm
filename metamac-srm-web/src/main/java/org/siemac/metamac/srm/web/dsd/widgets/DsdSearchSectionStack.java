@@ -14,11 +14,11 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.form.fields.SearchExternalItemLinkItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
@@ -43,9 +43,7 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
     protected void setFormItemsInAdvancedSearchForm(FormItem[] advancedSearchFormItems) {
 
         // Statistical operation item
-        ViewTextItem statisticalOperationUrn = new ViewTextItem(DataStructureDefinitionDS.STATISTICAL_OPERATION_URN, getConstants().dsdOperation());
-        statisticalOperationUrn.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem statisticalOperation = createStatisticalOperationItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
+        SearchExternalItemLinkItem statisticalOperation = createStatisticalOperationItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
 
         // Dimension concept item
         ViewTextItem dimensionConceptUrn = new ViewTextItem(DataStructureDefinitionDS.DIMENSION_CONCEPT_URN, getConstants().dsdDimensionConcept());
@@ -58,10 +56,9 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
         SearchViewTextItem attributeConcept = createAttributeConceptItem(DataStructureDefinitionDS.ATTRIBUTE_CONCEPT, getConstants().dsdAttributeConcept());
 
         // Add items to advanvedSearchForm (before the save button in the advancedSearchFormItems)
-        FormItem[] dsdFields = new FormItem[advancedSearchFormItems.length + 6];
+        FormItem[] dsdFields = new FormItem[advancedSearchFormItems.length + 5];
         System.arraycopy(advancedSearchFormItems, 0, dsdFields, 0, advancedSearchFormItems.length - 1);
         System.arraycopy(advancedSearchFormItems, advancedSearchFormItems.length - 1, dsdFields, dsdFields.length - 1, 1);
-        dsdFields[dsdFields.length - 7] = statisticalOperationUrn;
         dsdFields[dsdFields.length - 6] = statisticalOperation;
         dsdFields[dsdFields.length - 5] = dimensionConceptUrn;
         dsdFields[dsdFields.length - 4] = dimensionConcept;
@@ -72,7 +69,8 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
 
     public DataStructureDefinitionWebCriteria getDataStructureDefinitionWebCriteria() {
         DataStructureDefinitionWebCriteria dataStructureDefinitionWebCriteria = (DataStructureDefinitionWebCriteria) getVersionableResourceWebCriteria(new DataStructureDefinitionWebCriteria());
-        dataStructureDefinitionWebCriteria.setStatisticalOperationUrn(advancedSearchForm.getValueAsString(DataStructureDefinitionDS.STATISTICAL_OPERATION_URN));
+        ExternalItemDto statisticalOperation = ((SearchExternalItemLinkItem) advancedSearchForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).getExternalItemDto();
+        dataStructureDefinitionWebCriteria.setStatisticalOperationUrn(statisticalOperation != null ? statisticalOperation.getUrn() : null);
         dataStructureDefinitionWebCriteria.setDimensionConceptUrn(advancedSearchForm.getValueAsString(DataStructureDefinitionDS.DIMENSION_CONCEPT_URN));
         dataStructureDefinitionWebCriteria.setAttributeConceptUrn(advancedSearchForm.getValueAsString(DataStructureDefinitionDS.ATTRIBUTE_CONCEPT_URN));
         return dataStructureDefinitionWebCriteria;
@@ -114,9 +112,8 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
         return uiHandlers;
     }
 
-    private SearchViewTextItem createStatisticalOperationItem(String name, String title) {
-        SearchViewTextItem operationItem = new SearchViewTextItem(name, title);
-        operationItem.setTitleStyle("formTitle");
+    private SearchExternalItemLinkItem createStatisticalOperationItem(String name, String title) {
+        SearchExternalItemLinkItem operationItem = new SearchExternalItemLinkItem(name, title);
         operationItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -145,8 +142,7 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                         ExternalItemDto statisticalOperation = searchOperationWindow.getSelectedExternalItem();
                         searchOperationWindow.destroy();
-                        advancedSearchForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION_URN, statisticalOperation != null ? statisticalOperation.getUrn() : null);
-                        advancedSearchForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, ExternalItemUtils.getExternalItemName(statisticalOperation));
+                        ((SearchExternalItemLinkItem) advancedSearchForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).setExternalItem(statisticalOperation);
                     }
                 });
             }
@@ -244,5 +240,11 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
             }
         });
         return attributeConceptItem;
+    }
+
+    @Override
+    protected void clearAdvancedSearchSection() {
+        super.clearAdvancedSearchSection();
+        ((SearchExternalItemLinkItem) advancedSearchForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).clearExternalItem();
     }
 }
