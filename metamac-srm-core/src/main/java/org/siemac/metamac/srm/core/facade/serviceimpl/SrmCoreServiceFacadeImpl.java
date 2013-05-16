@@ -1182,41 +1182,41 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void importCodesCsvInBackground(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+    public void importCodesTsvInBackground(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistUrn);
         CodesSecurityUtils.canImportCodes(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Import in background
-        getTasksMetamacService().importCodesCsvInBackground(ctx, codelistUrn, csvStream, fileName, updateAlreadyExisting);
+        getTasksMetamacService().importCodesTsvInBackground(ctx, codelistUrn, tsvStream, fileName, updateAlreadyExisting);
     }
 
     @Override
-    public void importCodeOrdersCsvInBackground(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName) throws MetamacException {
+    public void importCodeOrdersTsvInBackground(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String fileName) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistUrn);
         CodesSecurityUtils.canImportCodelistOrderVisualisations(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Import in background
-        getTasksMetamacService().importCodeOrdersCsvInBackground(ctx, codelistUrn, csvStream, fileName);
+        getTasksMetamacService().importCodeOrdersTsvInBackground(ctx, codelistUrn, tsvStream, fileName);
     }
 
     @Override
-    public String exportCodesCsv(ServiceContext ctx, String codelistUrn) throws MetamacException {
+    public String exportCodesTsv(ServiceContext ctx, String codelistUrn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canExportCodesCsv(ctx);
+        CodesSecurityUtils.canExportCodesTsv(ctx);
 
         // Export
-        return getCodesMetamacService().exportCodesCsv(ctx, codelistUrn);
+        return getCodesMetamacService().exportCodesTsv(ctx, codelistUrn);
     }
 
     @Override
-    public String exportCodeOrdersCsv(ServiceContext ctx, String codelistUrn) throws MetamacException {
+    public String exportCodeOrdersTsv(ServiceContext ctx, String codelistUrn) throws MetamacException {
         // Security
-        CodesSecurityUtils.canExportCodeOrdersCsv(ctx);
+        CodesSecurityUtils.canExportCodeOrdersTsv(ctx);
 
         // Export
-        return getCodesMetamacService().exportCodeOrdersCsv(ctx, codelistUrn);
+        return getCodesMetamacService().exportCodeOrdersTsv(ctx, codelistUrn);
     }
 
     @Override
@@ -1798,12 +1798,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void importVariableElementsCsvInBackground(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+    public void importVariableElementsTsvInBackground(ServiceContext ctx, String variableUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
         // Security
         CodesSecurityUtils.canImportVariableElements(ctx);
 
         // Import in background
-        getTasksMetamacService().importVariableElementsCsvInBackground(ctx, variableUrn, csvStream, fileName, updateAlreadyExisting);
+        getTasksMetamacService().importVariableElementsTsvInBackground(ctx, variableUrn, tsvStream, fileName, updateAlreadyExisting);
     }
 
     @Override

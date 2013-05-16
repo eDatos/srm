@@ -106,14 +106,14 @@ Application CodesMetamac {
     		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String codelistOrderVisualisationUrn, String codelistOpennessVisualisationUrn) throws MetamacException;
 			"Copy codes to another codelist"
 	   		copyCodesInCodelist(String codelistSourceUrn, String codelistTargetUrn, List<CodeToCopy> codesToCopy) throws MetamacException;
-			"Imports codes in csv format"
-    		importCodesCsv(String codelistUrn, InputStream csvStream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
-			"Imports code orders in csv format"
-    		importCodeOrdersCsv(String codelistUrn, InputStream csvStream, String charset, String fileName) throws MetamacException;
-			"Exports codes in csv format"
-    		String exportCodesCsv(String codelistUrn) throws MetamacException;
-			"Exports code orders in csv format"
-    		String exportCodeOrdersCsv(String codelistUrn) throws MetamacException;
+			"Imports codes in tsv format"
+    		importCodesTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
+			"Imports code orders in tsv format"
+    		importCodeOrdersTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName) throws MetamacException;
+			"Exports codes in tsv format"
+    		String exportCodesTsv(String codelistUrn) throws MetamacException;
+			"Exports code orders in tsv format"
+    		String exportCodeOrdersTsv(String codelistUrn) throws MetamacException;
 	   		"Proposes a normalisation of variable elements to codes. If boolean is true, only normalise codes without variable element. To codes with variable element returns actual variable element"
 	   		List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(String codelistUrn, String locale, boolean proposeOverridingOnlyWithoutVariableElement) throws MetamacException;
 	   		    		
@@ -227,8 +227,8 @@ Application CodesMetamac {
  			List<@VariableElementOperation> retrieveVariableElementsOperationsByVariable(String variableUrn) throws MetamacException;
  			"Retrieves all variable elements operations of one variable element"
  			List<@VariableElementOperation> retrieveVariableElementsOperationsByVariableElement(String variableElementUrn) throws MetamacException;
-			"Imports variable elements in csv format"
-    		importVariableElementsCsv(String variableUrn, InputStream csvStream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
+			"Imports variable elements in tsv format"
+    		importVariableElementsTsv(String variableUrn, InputStream tsvStream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

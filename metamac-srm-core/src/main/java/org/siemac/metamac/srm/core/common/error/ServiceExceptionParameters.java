@@ -89,15 +89,15 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String PROC_STATUS_EXTERNALLY_PUBLISHED                           = ProcStatusEnum.EXTERNALLY_PUBLISHED.name();
 
     // IMPORTATION
-    public static final String IMPORTATION_CSV_UPDATE_ALREADY_EXISTING                    = "updateAlreadyExisting";
-    // Following constants must be identical to constants defined in SrmConstants as CSV_HEADER_*
-    public static final String IMPORTATION_CSV_COLUMN_CODE                                = "code";
-    public static final String IMPORTATION_CSV_COLUMN_PARENT                              = "parent";
-    public static final String IMPORTATION_CSV_COLUMN_VARIABLE_ELEMENT                    = "variableElement";
-    public static final String IMPORTATION_CSV_COLUMN_SHORT_NAME                          = "shortName";
-    public static final String IMPORTATION_CSV_COLUMN_NAME                                = "name";
-    public static final String IMPORTATION_CSV_COLUMN_DESCRIPTION                         = "description";
-    public static final String IMPORTATION_CSV_COLUMN_ORDER                               = "order";
+    public static final String IMPORTATION_TSV_UPDATE_ALREADY_EXISTING                    = "updateAlreadyExisting";
+    // Following constants must be identical to constants defined in SrmConstants as TSV_HEADER_*
+    public static final String IMPORTATION_TSV_COLUMN_CODE                                = "code";
+    public static final String IMPORTATION_TSV_COLUMN_PARENT                              = "parent";
+    public static final String IMPORTATION_TSV_COLUMN_VARIABLE_ELEMENT                    = "variableElement";
+    public static final String IMPORTATION_TSV_COLUMN_SHORT_NAME                          = "shortName";
+    public static final String IMPORTATION_TSV_COLUMN_NAME                                = "name";
+    public static final String IMPORTATION_TSV_COLUMN_DESCRIPTION                         = "description";
+    public static final String IMPORTATION_TSV_COLUMN_ORDER                               = "order";
 
     // MISC
     public static final String STREAM                                                     = "stream";

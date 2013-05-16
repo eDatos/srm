@@ -14,38 +14,38 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 
 public class TasksMetamacInvocationValidator extends BaseInvocationValidator {
 
-    public static void checkImportCodesCsvInBackground(String codelistUrn, InputStream csvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkImportCodesTsvInBackground(String codelistUrn, InputStream tsvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
-        ValidationUtils.checkParameterRequired(csvStream, ServiceExceptionParameters.STREAM, exceptions);
-        ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_CSV_UPDATE_ALREADY_EXISTING, exceptions);
+        ValidationUtils.checkParameterRequired(tsvStream, ServiceExceptionParameters.STREAM, exceptions);
+        ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_TSV_UPDATE_ALREADY_EXISTING, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkImportCodeOrdersCsvInBackground(String codelistUrn, InputStream csvStream, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkImportCodeOrdersTsvInBackground(String codelistUrn, InputStream tsvStream, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
-        ValidationUtils.checkParameterRequired(csvStream, ServiceExceptionParameters.STREAM, exceptions);
+        ValidationUtils.checkParameterRequired(tsvStream, ServiceExceptionParameters.STREAM, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkImportVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions)
+    public static void checkImportVariableElementsTsvInBackground(String variableUrn, InputStream tsvStream, boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions)
             throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
-        ValidationUtils.checkParameterRequired(csvStream, ServiceExceptionParameters.STREAM, exceptions);
-        ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_CSV_UPDATE_ALREADY_EXISTING, exceptions);
+        ValidationUtils.checkParameterRequired(tsvStream, ServiceExceptionParameters.STREAM, exceptions);
+        ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_TSV_UPDATE_ALREADY_EXISTING, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

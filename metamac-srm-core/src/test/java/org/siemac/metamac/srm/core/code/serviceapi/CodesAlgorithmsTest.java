@@ -71,7 +71,7 @@ public class CodesAlgorithmsTest {
 
     @Test
     public void testCountries() throws Exception {
-        Map<String, String> dictionary = loadDictionary("/dictionaries/countries.csv");
+        Map<String, String> dictionary = loadDictionary("/dictionaries/countries.txt");
         DiceAproxStringMatch diceAproxStringMatch = new DiceAproxStringMatch(dictionary);
         {
             List<MatchResult> result = diceAproxStringMatch.getSuggestedWords("España", 1);
@@ -94,7 +94,7 @@ public class CodesAlgorithmsTest {
     // it takes 3mins
     @Test
     public void testMunicipalities() throws Exception {
-        Map<String, String> dictionary = loadDictionary("/dictionaries/municipalities.csv");
+        Map<String, String> dictionary = loadDictionary("/dictionaries/municipalities.txt");
 
         DiceAproxStringMatch diceAproxStringMatch = new DiceAproxStringMatch(dictionary);
         {
@@ -111,7 +111,7 @@ public class CodesAlgorithmsTest {
 
     @Test
     public void testMunicipalitiesWithLucene() throws Exception {
-        Map<String, String> dictionary = loadDictionary("/dictionaries/municipalities.csv");
+        Map<String, String> dictionary = loadDictionary("/dictionaries/municipalities.txt");
 
         System.out.println("Init lucene: " + new Date());
         DiceLuceneRamAproxStringMatch luceneStringMatch = new DiceLuceneRamAproxStringMatch(dictionary);
@@ -149,7 +149,7 @@ public class CodesAlgorithmsTest {
 
     @Test
     public void testBigDictionaryWithLucene() throws Exception {
-        Map<String, String> dictionary = loadDictionary("/dictionaries/big-dictionary.csv");
+        Map<String, String> dictionary = loadDictionary("/dictionaries/big-dictionary.txt");
         assertEquals(18765, dictionary.keySet().size());
         System.out.println("Init lucene: " + new Date());
 
@@ -179,7 +179,7 @@ public class CodesAlgorithmsTest {
 
     @Test
     public void testBigDictionaryWithLuceneSearchAllDictionary() throws Exception {
-        Map<String, String> dictionary = loadDictionary("/dictionaries/big-dictionary.csv");
+        Map<String, String> dictionary = loadDictionary("/dictionaries/big-dictionary.txt");
         assertEquals(18765, dictionary.keySet().size());
         System.out.println("Init lucene: " + new Date());
 

@@ -1,10 +1,10 @@
 package org.siemac.metamac.srm.core.task.domain;
 
-public class ImportationVariableElementsCsvHeader {
+public class ImportationVariableElementsTsvHeader {
 
     private int                    columnsSize;
     private int                    codePosition;
-    private InternationalStringCsv shortName;
+    private InternationalStringTsv shortName;
 
     public int getColumnsSize() {
         return columnsSize;
@@ -22,11 +22,11 @@ public class ImportationVariableElementsCsvHeader {
         this.codePosition = codePosition;
     }
 
-    public InternationalStringCsv getShortName() {
+    public InternationalStringTsv getShortName() {
         return shortName;
     }
 
-    public void setShortName(InternationalStringCsv shortName) {
+    public void setShortName(InternationalStringTsv shortName) {
         this.shortName = shortName;
     }
 }

@@ -23,9 +23,9 @@ import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
 
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
-public class ImportationCsvJob implements Job {
+public class ImportationTsvJob implements Job {
 
-    private static Logger             logger                             = LoggerFactory.getLogger(ImportationCsvJob.class);
+    private static Logger             logger                             = LoggerFactory.getLogger(ImportationTsvJob.class);
 
     // Job Context Param
     public static final String        USER                               = "user";
@@ -41,7 +41,7 @@ public class ImportationCsvJob implements Job {
 
     private TasksMetamacServiceFacade tasksMetamacServiceFacade          = null;
 
-    private final ServiceContext      serviceContextDefault              = new ServiceContext("importationCsvJob", "importationCsvJob", "metamac-srm");
+    private final ServiceContext      serviceContextDefault              = new ServiceContext("importationTsvJob", "importationTsvJob", "metamac-srm");
 
     public TasksMetamacServiceFacade getImportationMetamacServiceFacade() {
         if (tasksMetamacServiceFacade == null) {
@@ -96,11 +96,11 @@ public class ImportationCsvJob implements Job {
 
         File file = new File(filePath);
         InputStream stream = new FileInputStream(file);
-        String charset = guessCsvCharset(file);
+        String charset = guessTsvCharset(file);
 
         // Execution
         logger.info("ImportationJob [importVariableElements]: " + jobKey + " starting at " + new Date());
-        getImportationMetamacServiceFacade().importVariableElementsCsv(serviceContext, variableUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
+        getImportationMetamacServiceFacade().importVariableElementsTsv(serviceContext, variableUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
         logger.info("ImportationJob [importVariableElements]: " + jobKey + " finished at " + new Date());
     }
     private void importCodes(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws Exception {
@@ -113,11 +113,11 @@ public class ImportationCsvJob implements Job {
 
         File file = new File(filePath);
         InputStream stream = new FileInputStream(file);
-        String charset = guessCsvCharset(file);
+        String charset = guessTsvCharset(file);
 
         // Execution
         logger.info("ImportationJob [importCodes]: " + jobKey + " starting at " + new Date());
-        getImportationMetamacServiceFacade().importCodesCsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
+        getImportationMetamacServiceFacade().importCodesTsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
         logger.info("ImportationJob [importCodes]: " + jobKey + " finished at " + new Date());
     }
 
@@ -130,18 +130,18 @@ public class ImportationCsvJob implements Job {
 
         File file = new File(filePath);
         InputStream stream = new FileInputStream(file);
-        String charset = guessCsvCharset(file);
+        String charset = guessTsvCharset(file);
 
         // Execution
         logger.info("ImportationJob [importCodeOrders]: " + jobKey + " starting at " + new Date());
-        getImportationMetamacServiceFacade().importCodeOrdersCsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName());
+        getImportationMetamacServiceFacade().importCodeOrdersTsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName());
         logger.info("ImportationJob [importCodeOrders]: " + jobKey + " finished at " + new Date());
     }
 
     /**
      * Guess charset of file
      */
-    private String guessCsvCharset(File file) throws Exception {
+    private String guessTsvCharset(File file) throws Exception {
         return FileUtils.guessCharset(file);
     }
 }

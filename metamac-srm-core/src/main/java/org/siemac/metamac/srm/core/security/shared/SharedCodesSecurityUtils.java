@@ -109,11 +109,11 @@ public class SharedCodesSecurityUtils extends SharedItemsSecurityUtils {
         return canCrudVariableElement(metamacPrincipal);
     }
 
-    public static boolean canExportCodesCsv(MetamacPrincipal metamacPrincipal) {
+    public static boolean canExportCodesTsv(MetamacPrincipal metamacPrincipal) {
         return canRetrieveOrFindResource(metamacPrincipal);
     }
 
-    public static boolean canExportCodeOrdersCsv(MetamacPrincipal metamacPrincipal) {
+    public static boolean canExportCodeOrdersTsv(MetamacPrincipal metamacPrincipal) {
         return canRetrieveOrFindResource(metamacPrincipal);
     }
 

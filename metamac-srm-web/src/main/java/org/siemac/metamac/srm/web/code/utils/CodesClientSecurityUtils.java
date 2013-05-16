@@ -206,7 +206,7 @@ public class CodesClientSecurityUtils {
         if (isTaskInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
-        return SharedCodesSecurityUtils.canExportCodesCsv(MetamacSrmWeb.getCurrentUser());
+        return SharedCodesSecurityUtils.canExportCodesTsv(MetamacSrmWeb.getCurrentUser());
     }
 
     // ORDERS
@@ -243,7 +243,7 @@ public class CodesClientSecurityUtils {
         if (isTaskInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
-        return SharedCodesSecurityUtils.canExportCodeOrdersCsv(MetamacSrmWeb.getCurrentUser());
+        return SharedCodesSecurityUtils.canExportCodeOrdersTsv(MetamacSrmWeb.getCurrentUser());
     }
 
     // OPENNESS LEVELS

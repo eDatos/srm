@@ -535,14 +535,14 @@ Application SrmFacadeCore {
             deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by code scheme in locale and visualisation requested. If visualisation is not provided, tries retrieve codes in default visualisations"
     		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String orderVisualisationUrn, String opennessVisualisationUrn) throws MetamacException;
-    		"Imports codes in csv format"
-    		importCodesCsvInBackground(String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
-			"Imports code orders in csv format"
-    		importCodeOrdersCsvInBackground(String codelistUrn, InputStream csvStream, String fileName) throws MetamacException;
-			"Exports codes in csv format"
-    		String exportCodesCsv(String codelistUrn) throws MetamacException;
-			"Exports code orders in csv format"
-    		String exportCodeOrdersCsv(String codelistUrn) throws MetamacException;
+    		"Imports codes in tsv format"
+    		importCodesTsvInBackground(String codelistUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
+			"Imports code orders in tsv format"
+    		importCodeOrdersTsvInBackground(String codelistUrn, InputStream tsvStream, String fileName) throws MetamacException;
+			"Exports codes in tsv format"
+    		String exportCodesTsv(String codelistUrn) throws MetamacException;
+			"Exports code orders in tsv format"
+    		String exportCodeOrdersTsv(String codelistUrn) throws MetamacException;
     		
 	   		"Proposes a normalisation of variable elements to codes. If boolean is true, only normalise codes without variable element. To codes with variable element returns actual variable element"
 	   		List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(String codelistUrn, String locale, boolean proposeOnlyWithoutVariableElement) throws MetamacException;
@@ -638,8 +638,8 @@ Application SrmFacadeCore {
  			List<@VariableElementOperationDto> retrieveVariableElementsOperationsByVariable(String variableUrn) throws MetamacException;
  			"Retrieves all variable elements operations of one variable element"
  			List<@VariableElementOperationDto> retrieveVariableElementsOperationsByVariableElement(String variableElementUrn) throws MetamacException;
-    		"Imports variable elements in csv format"
-    		importVariableElementsCsvInBackground(String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
+    		"Imports variable elements in tsv format"
+    		importVariableElementsTsvInBackground(String variableUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
     		    		
     		/**************************************************************************
 		     * COMMON
@@ -667,12 +667,12 @@ Application SrmFacadeCore {
        		> @CodesMetamacService
        		> @TasksMetamacService
 
-    		"Imports codes in csv format"
-    		importCodesCsv(String codelistUrn, InputStream csvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
-			"Imports code orders in csv format"
-    		importCodeOrdersCsv(String codelistUrn, InputStream csvStream, String charset, String fileName, String jobKey) throws MetamacException;
-    		"Imports variable elements in csv format"
-    		importVariableElementsCsv(String variableUrn, InputStream csvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+    		"Imports codes in tsv format"
+    		importCodesTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+			"Imports code orders in tsv format"
+    		importCodeOrdersTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey) throws MetamacException;
+    		"Imports variable elements in tsv format"
+    		importVariableElementsTsv(String variableUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
     		"Perform a merge with temporal codelist"
 			processPublishInternallyCodelist(String urnToCopy, boolean forceLatestFinal, String jobKey) throws MetamacException;
     		

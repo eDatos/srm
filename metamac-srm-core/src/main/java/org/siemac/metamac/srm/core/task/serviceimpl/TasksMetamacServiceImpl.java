@@ -63,50 +63,50 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
     }
 
     @Override
-    public String importCodesCsvInBackground(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+    public String importCodesTsvInBackground(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
         // Validation
-        TasksMetamacInvocationValidator.checkImportCodesCsvInBackground(codelistUrn, csvStream, updateAlreadyExisting, null);
+        TasksMetamacInvocationValidator.checkImportCodesTsvInBackground(codelistUrn, tsvStream, updateAlreadyExisting, null);
 
         // Plan job
         JobDataMap jobDataAdditional = new JobDataMap();
-        jobDataAdditional.put(ImportationCsvJob.CODELIST_URN, codelistUrn);
-        jobDataAdditional.put(ImportationCsvJob.UPDATE_ALREADY_EXISTING, updateAlreadyExisting);
-        jobDataAdditional.put(ImportationCsvJob.OPERATION, ImportationCsvJob.OPERATION_IMPORT_CODES);
-        return importCsvInBackground(ctx, csvStream, fileName, jobDataAdditional);
+        jobDataAdditional.put(ImportationTsvJob.CODELIST_URN, codelistUrn);
+        jobDataAdditional.put(ImportationTsvJob.UPDATE_ALREADY_EXISTING, updateAlreadyExisting);
+        jobDataAdditional.put(ImportationTsvJob.OPERATION, ImportationTsvJob.OPERATION_IMPORT_CODES);
+        return importTsvInBackground(ctx, tsvStream, fileName, jobDataAdditional);
     }
 
     @Override
-    public String importCodeOrdersCsvInBackground(ServiceContext ctx, String codelistUrn, InputStream csvStream, String fileName) throws MetamacException {
+    public String importCodeOrdersTsvInBackground(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String fileName) throws MetamacException {
         // Validation
-        TasksMetamacInvocationValidator.checkImportCodeOrdersCsvInBackground(codelistUrn, csvStream, null);
+        TasksMetamacInvocationValidator.checkImportCodeOrdersTsvInBackground(codelistUrn, tsvStream, null);
 
         // Plan job
         JobDataMap jobDataAdditional = new JobDataMap();
-        jobDataAdditional.put(ImportationCsvJob.CODELIST_URN, codelistUrn);
-        jobDataAdditional.put(ImportationCsvJob.OPERATION, ImportationCsvJob.OPERATION_IMPORT_CODE_ORDERS);
-        return importCsvInBackground(ctx, csvStream, fileName, jobDataAdditional);
+        jobDataAdditional.put(ImportationTsvJob.CODELIST_URN, codelistUrn);
+        jobDataAdditional.put(ImportationTsvJob.OPERATION, ImportationTsvJob.OPERATION_IMPORT_CODE_ORDERS);
+        return importTsvInBackground(ctx, tsvStream, fileName, jobDataAdditional);
     }
 
     @Override
-    public String importVariableElementsCsvInBackground(ServiceContext ctx, String variableUrn, InputStream csvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+    public String importVariableElementsTsvInBackground(ServiceContext ctx, String variableUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
 
         // Validation
-        TasksMetamacInvocationValidator.checkImportVariableElementsCsvInBackground(variableUrn, csvStream, updateAlreadyExisting, null);
+        TasksMetamacInvocationValidator.checkImportVariableElementsTsvInBackground(variableUrn, tsvStream, updateAlreadyExisting, null);
 
         // Plan job
         JobDataMap jobDataAdditional = new JobDataMap();
-        jobDataAdditional.put(ImportationCsvJob.VARIABLE_URN, variableUrn);
-        jobDataAdditional.put(ImportationCsvJob.UPDATE_ALREADY_EXISTING, updateAlreadyExisting);
-        jobDataAdditional.put(ImportationCsvJob.OPERATION, ImportationCsvJob.OPERATION_IMPORT_VARIABLE_ELEMENTS);
-        return importCsvInBackground(ctx, csvStream, fileName, jobDataAdditional);
+        jobDataAdditional.put(ImportationTsvJob.VARIABLE_URN, variableUrn);
+        jobDataAdditional.put(ImportationTsvJob.UPDATE_ALREADY_EXISTING, updateAlreadyExisting);
+        jobDataAdditional.put(ImportationTsvJob.OPERATION, ImportationTsvJob.OPERATION_IMPORT_VARIABLE_ELEMENTS);
+        return importTsvInBackground(ctx, tsvStream, fileName, jobDataAdditional);
     }
 
-    private synchronized String importCsvInBackground(ServiceContext ctx, InputStream csvStream, String fileName, JobDataMap jobDataAdditional) throws MetamacException {
+    private synchronized String importTsvInBackground(ServiceContext ctx, InputStream tsvStream, String fileName, JobDataMap jobDataAdditional) throws MetamacException {
 
         // Plan job
         OutputStream os = null;
         try {
-            String jobKey = "job_import_csv_" + java.util.UUID.randomUUID().toString();
+            String jobKey = "job_import_TSV_" + java.util.UUID.randomUUID().toString();
 
             // Mark importation in progress
             createTaskInProgress(ctx, jobKey, fileName);
@@ -120,14 +120,14 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
             }
 
             // Save InputStream (TempFile)
-            File file = File.createTempFile("srm_csv_", ".import");
+            File file = File.createTempFile("srm_TSV_", ".import");
             file.deleteOnExit();
             os = new FileOutputStream(file);
-            IOUtils.copy(csvStream, os);
+            IOUtils.copy(tsvStream, os);
 
             // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
-            JobDetail job = newJob(ImportationCsvJob.class).withIdentity(jobKey, "importation").usingJobData(ImportationCsvJob.FILE_PATH, file.getAbsolutePath())
-                    .usingJobData(ImportationCsvJob.FILE_IMPORTED_NAME, fileName).usingJobData(ImportationCsvJob.USER, ctx.getUserId()).usingJobData(jobDataAdditional).requestRecovery().build();
+            JobDetail job = newJob(ImportationTsvJob.class).withIdentity(jobKey, "importation").usingJobData(ImportationTsvJob.FILE_PATH, file.getAbsolutePath())
+                    .usingJobData(ImportationTsvJob.FILE_IMPORTED_NAME, fileName).usingJobData(ImportationTsvJob.USER, ctx.getUserId()).usingJobData(jobDataAdditional).requestRecovery().build();
             SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "importation").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
             sched.scheduleJob(job, trigger);
 
@@ -136,7 +136,7 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
                     .build(); // Error
         } finally {
-            IOUtils.closeQuietly(csvStream);
+            IOUtils.closeQuietly(tsvStream);
             IOUtils.closeQuietly(os);
         }
     }

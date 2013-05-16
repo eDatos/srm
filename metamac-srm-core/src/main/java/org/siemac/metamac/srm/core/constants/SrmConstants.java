@@ -18,19 +18,19 @@ public class SrmConstants {
     public static final Boolean            CODELIST_OPENNESS_VISUALISATION_DEFAULT_VALUE             = Boolean.TRUE;
 
     // Tsv importation and exportation
-    public static final String             CSV_SEPARATOR                                             = "\t";
-    public static final String             CSV_LINE_SEPARATOR                                        = "\n";
-    public static final String             CSV_HEADER_INTERNATIONAL_STRING_SEPARATOR                 = "#";
-    public static final String             CSV_HEADER_CODE                                           = "code";
-    public static final String             CSV_HEADER_PARENT                                         = "parent";
-    public static final String             CSV_HEADER_NAME                                           = "name";
-    public static final String             CSV_HEADER_DESCRIPTION                                    = "description";
-    public static final String             CSV_HEADER_SHORT_NAME                                     = "shortName";
-    public static final String             CSV_HEADER_VARIABLE_ELEMENT                               = "variableElement";
-    public static final String             CSV_HEADER_LABEL                                          = "label";
-    public static final String             CSV_HEADER_LEVEL                                          = "level";
-    public static final String             CSV_HEADER_ORDER                                          = "order";
-    public static final String             CSV_EXPORTATION_ENCODING                                  = "UTF-8";
+    public static final String             TSV_SEPARATOR                                             = "\t";
+    public static final String             TSV_LINE_SEPARATOR                                        = "\n";
+    public static final String             TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR                 = "#";
+    public static final String             TSV_HEADER_CODE                                           = "code";
+    public static final String             TSV_HEADER_PARENT                                         = "parent";
+    public static final String             TSV_HEADER_NAME                                           = "name";
+    public static final String             TSV_HEADER_DESCRIPTION                                    = "description";
+    public static final String             TSV_HEADER_SHORT_NAME                                     = "shortName";
+    public static final String             TSV_HEADER_VARIABLE_ELEMENT                               = "variableElement";
+    public static final String             TSV_HEADER_LABEL                                          = "label";
+    public static final String             TSV_HEADER_LEVEL                                          = "level";
+    public static final String             TSV_HEADER_ORDER                                          = "order";
+    public static final String             TSV_EXPORTATION_ENCODING                                  = "UTF-8";
 
     // Misc
     public static final int                METADATA_SHORT_NAME_MAXIMUM_LENGTH                        = 100;

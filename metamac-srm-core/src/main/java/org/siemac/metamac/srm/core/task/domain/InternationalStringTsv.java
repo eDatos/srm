@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.core.task.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InternationalStringCsv {
+public class InternationalStringTsv {
 
     private int                startPosition = -1;
     private int                endPosition   = -1;

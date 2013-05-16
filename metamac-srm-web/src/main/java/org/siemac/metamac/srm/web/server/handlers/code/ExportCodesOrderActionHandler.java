@@ -25,7 +25,7 @@ public class ExportCodesOrderActionHandler extends SecurityActionHandler<ExportC
     @Override
     public ExportCodesOrderResult executeSecurityAction(ExportCodesOrderAction action) throws ActionException {
         try {
-            String fileName = srmCoreServiceFacade.exportCodeOrdersCsv(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn());
+            String fileName = srmCoreServiceFacade.exportCodeOrdersTsv(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn());
             return new ExportCodesOrderResult(fileName);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

@@ -25,29 +25,29 @@ public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImpl
     }
 
     @Override
-    public void importCodesCsv(ServiceContext ctx, String codelistUrn, InputStream csvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException {
+    public void importCodesTsv(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException {
         // Import
         List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
-        getCodesMetamacService().importCodesCsv(ctx, codelistUrn, csvStream, charset, fileName, updateAlreadyExisting, informationItems);
+        getCodesMetamacService().importCodesTsv(ctx, codelistUrn, tsvStream, charset, fileName, updateAlreadyExisting, informationItems);
         // Mark job as completed
         // TODO sistema de avisos
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
     }
 
     @Override
-    public void importCodeOrdersCsv(ServiceContext ctx, String codelistUrn, InputStream csvStream, String charset, String fileName, String jobKey) throws MetamacException {
-        getCodesMetamacService().importCodeOrdersCsv(ctx, codelistUrn, csvStream, charset, fileName);
+    public void importCodeOrdersTsv(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey) throws MetamacException {
+        getCodesMetamacService().importCodeOrdersTsv(ctx, codelistUrn, tsvStream, charset, fileName);
         // Mark job as completed
         // TODO sistema de avisos
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, null);
     }
 
     @Override
-    public void importVariableElementsCsv(ServiceContext ctx, String variableUrn, InputStream csvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting)
+    public void importVariableElementsTsv(ServiceContext ctx, String variableUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting)
             throws MetamacException {
         // Import
         List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
-        getCodesMetamacService().importVariableElementsCsv(ctx, variableUrn, csvStream, charset, fileName, updateAlreadyExisting, informationItems);
+        getCodesMetamacService().importVariableElementsTsv(ctx, variableUrn, tsvStream, charset, fileName, updateAlreadyExisting, informationItems);
         // Mark job as completed
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
     }
