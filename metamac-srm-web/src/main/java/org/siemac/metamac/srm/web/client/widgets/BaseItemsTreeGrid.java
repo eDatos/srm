@@ -15,8 +15,11 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Autofit;
+import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.SelectionStyle;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.grid.events.FilterEditorSubmitEvent;
 import com.smartgwt.client.widgets.grid.events.FilterEditorSubmitHandler;
 import com.smartgwt.client.widgets.menu.Menu;
@@ -29,6 +32,8 @@ import com.smartgwt.client.widgets.tree.events.FolderClickEvent;
 import com.smartgwt.client.widgets.tree.events.FolderClickHandler;
 import com.smartgwt.client.widgets.tree.events.LeafClickEvent;
 import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
+import com.smartgwt.client.widgets.viewer.DetailViewer;
+import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
 public abstract class BaseItemsTreeGrid extends TreeGrid {
 
@@ -70,9 +75,19 @@ public abstract class BaseItemsTreeGrid extends TreeGrid {
         TreeGridField codeField = new TreeGridField(ItemDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("30%");
         codeField.setCanFilter(true);
-        TreeGridField nameField = new TreeGridField(ItemDS.NAME, getConstants().nameableArtefactName());
+        codeField.setShowHover(false);
 
-        setFields(codeField, nameField);
+        TreeGridField nameField = new TreeGridField(ItemDS.NAME, getConstants().nameableArtefactName());
+        nameField.setShowHover(false);
+
+        TreeGridField infoField = new TreeGridField(ItemDS.INFO, " ");
+        infoField.setType(ListGridFieldType.IMAGE);
+        infoField.setWidth(50);
+        infoField.setAlign(Alignment.CENTER);
+        infoField.setCanFilter(false);
+        infoField.setShowHover(true);
+
+        setFields(codeField, nameField, infoField);
 
         setShowFilterEditor(true);
 
@@ -193,5 +208,17 @@ public abstract class BaseItemsTreeGrid extends TreeGrid {
         }
     }
 
+    @Override
+    protected Canvas getCellHoverComponent(Record record, Integer rowNum, Integer colNum) {
+        if (rowNum != 0) { // do not show details if it is the root node (item scheme node)
+            DetailViewer detailViewer = new DetailViewer();
+            detailViewer.setFields(getDetailViewerFields());
+            detailViewer.setData(new Record[]{record});
+            return detailViewer;
+        }
+        return super.getCellHoverComponent(record, rowNum, colNum);
+    }
+
     protected abstract void onNodeClick(String nodeName, String itemUrn);
+    protected abstract DetailViewerField[] getDetailViewerFields();
 }

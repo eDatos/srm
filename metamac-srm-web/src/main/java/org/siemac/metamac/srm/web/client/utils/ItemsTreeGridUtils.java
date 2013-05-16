@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.client.utils;
 import static org.siemac.metamac.web.common.client.utils.InternationalStringUtils.getLocalisedString;
 
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
+import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
@@ -35,6 +36,7 @@ public class ItemsTreeGridUtils {
         node.setAttribute(ItemDS.CREATION_DATE, DateUtils.getFormattedDate(itemVisualisationResult.getCreatedDate()));
         node.setAttribute(ItemDS.ITEM_PARENT_URN, parentUrn);
         node.setAttribute(ItemDS.DTO, itemVisualisationResult);
+        node.setAttribute(ItemDS.INFO, GlobalResources.RESOURCE.info().getURL());
         return node;
     }
 }

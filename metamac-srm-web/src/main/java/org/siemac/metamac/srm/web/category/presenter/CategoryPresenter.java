@@ -253,7 +253,8 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
         placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategoryPlaceRequest(urn), -1);
     }
 
-    private void goToCategoryScheme(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(urn), -2);
+    @Override
+    public void goToCategoryScheme(String urn) {
+        goTo(PlaceRequestUtils.buildAbsoluteCategorySchemePlaceRequest(urn));
     }
 }

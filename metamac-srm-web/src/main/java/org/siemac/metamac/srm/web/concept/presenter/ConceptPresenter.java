@@ -431,7 +431,9 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptPlaceRequest(urn), -1);
     }
 
-    private void goToConceptScheme(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(urn), -2);
+    @Override
+    public void goToConceptScheme(String urn) {
+        goTo(PlaceRequestUtils.buildAbsoluteConceptSchemePlaceRequest(urn));
     }
+
 }

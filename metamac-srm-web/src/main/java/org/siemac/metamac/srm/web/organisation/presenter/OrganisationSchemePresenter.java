@@ -650,6 +650,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
+    public void goToOrganisationScheme(String urn) {
+        goTo(PlaceRequestUtils.buildAbsoluteOrganisationSchemePlaceRequest(urn, organisationSchemeMetamacDto.getType()));
+    }
+
+    @Override
     public void goToOrganisation(String urn) {
         if (!StringUtils.isBlank(urn)) {
             placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeOrganisationPlaceRequest(urn));

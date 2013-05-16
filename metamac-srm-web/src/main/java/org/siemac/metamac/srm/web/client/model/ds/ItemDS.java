@@ -27,6 +27,8 @@ public class ItemDS extends DataSource {
 
     public static final String IS_LAST_VERSION = "item-last-version"; // For advanced search
 
+    public static final String INFO            = "item-info";         // For detailed information in trees
+
     public static String       DTO             = "item-dto";
 
     public ItemDS() {

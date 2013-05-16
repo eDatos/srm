@@ -382,7 +382,8 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
         placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodePlaceRequest(urn), -1);
     }
 
-    private void goToCodelist(String urn) {
-        placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn), -2);
+    @Override
+    public void goToCodelist(String urn) {
+        goTo(PlaceRequestUtils.buildAbsoluteCodelistPlaceRequest(urn));
     }
 }

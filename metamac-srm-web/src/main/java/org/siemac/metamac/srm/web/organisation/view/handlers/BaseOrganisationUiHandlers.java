@@ -9,5 +9,6 @@ public interface BaseOrganisationUiHandlers extends CategorisationUiHandlers {
 
     void createOrganisation(OrganisationMetamacDto organisationDto);
     void deleteOrganisation(ItemVisualisationResult itemVisualisationResult);
+    void goToOrganisationScheme(String urn);
     void goToOrganisation(String urn);
 }

@@ -9,5 +9,6 @@ public interface BaseCategoryUiHandlers extends CategorisationUiHandlers {
 
     void saveCategory(CategoryMetamacDto categoryDto);
     void deleteCategory(ItemVisualisationResult itemVisualisationResult);
+    void goToCategoryScheme(String urn);
     void goToCategory(String urn);
 }

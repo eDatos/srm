@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
-import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
@@ -635,9 +634,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void goToConceptScheme(String urn) {
-        if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(urn), -1);
-        }
+        goTo(PlaceRequestUtils.buildAbsoluteConceptSchemePlaceRequest(urn));
     }
 
     private void updateUrl() {

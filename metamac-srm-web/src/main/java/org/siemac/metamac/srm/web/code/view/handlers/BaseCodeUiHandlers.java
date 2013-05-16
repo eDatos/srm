@@ -13,6 +13,7 @@ public interface BaseCodeUiHandlers extends CategorisationUiHandlers {
     void saveCode(CodeMetamacDto codeDto);
     void deleteCode(String codelistUrn, CodeMetamacVisualisationResult code);
     void copyCodesInCodelist(String codelistSourceUrn, String codelistTargetUrn, List<CodeToCopy> codesToCopy);
+    void goToCodelist(String urn);
     void goToCode(String urn);
 
     void retrieveCodelistsForCreateComplexCodelists(int firstResult, int maxResults, CodelistWebCriteria criteria);

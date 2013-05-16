@@ -12,5 +12,6 @@ public interface BaseConceptUiHandlers extends CategorisationUiHandlers {
     void saveConcept(ConceptMetamacDto conceptDto);
     void saveConcept(ConceptMetamacDto conceptDto, List<String> roles, List<String> relatedConcepts);
     void deleteConcept(ItemVisualisationResult itemVisualisationResult);
+    void goToConceptScheme(String urn);
     void goToConcept(String urn);
 }

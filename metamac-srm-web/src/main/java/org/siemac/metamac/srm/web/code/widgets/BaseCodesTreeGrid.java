@@ -21,9 +21,7 @@ import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.TreeModelType;
-import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGridField;
@@ -34,7 +32,6 @@ import com.smartgwt.client.widgets.tree.events.FolderDropEvent;
 import com.smartgwt.client.widgets.tree.events.FolderDropHandler;
 import com.smartgwt.client.widgets.tree.events.LeafContextClickEvent;
 import com.smartgwt.client.widgets.tree.events.LeafContextClickHandler;
-import com.smartgwt.client.widgets.viewer.DetailViewer;
 
 public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
@@ -218,19 +215,18 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
     }
 
     @Override
-    protected void onNodeClick(String nodeName, String codeUrn) {
-        if (!SCHEME_NODE_NAME.equals(nodeName)) {
-            uiHandlers.goToCode(codeUrn);
+    protected void onNodeClick(String nodeName, String urn) {
+        if (SCHEME_NODE_NAME.equals(nodeName)) {
+            uiHandlers.goToCodelist(urn);
+        } else {
+            uiHandlers.goToCode(urn);
         }
     }
 
     protected abstract void onNodeContextClick(String nodeName, CodeMetamacVisualisationResult itemMetamacResult);
 
     @Override
-    protected Canvas getCellHoverComponent(Record record, Integer rowNum, Integer colNum) {
-        DetailViewer detailViewer = new DetailViewer();
-        detailViewer.setFields(ResourceFieldUtils.getCodeDetailViewerFields());
-        detailViewer.setData(new Record[]{record});
-        return detailViewer;
+    protected com.smartgwt.client.widgets.viewer.DetailViewerField[] getDetailViewerFields() {
+        return ResourceFieldUtils.getCodeDetailViewerFields();
     }
 }

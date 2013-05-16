@@ -313,8 +313,8 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
         }
     }
 
-    private void goToOrganisationScheme(String urn) {
+    @Override
+    public void goToOrganisationScheme(String urn) {
         placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeOrganisationSchemePlaceRequest(urn, CommonUtils.getOrganisationSchemeTypeEnum(organisationMetamacDto.getType())), -2);
-
     }
 }

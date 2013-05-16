@@ -53,9 +53,12 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         node.setAttribute(CodeDS.VARIABLE_ELEMENT, code.getVariableElement() != null
                 ? CommonWebUtils.getElementName(code.getVariableElement().getCode(), code.getVariableElement().getShortName())
                 : null);
-        // Icons (only to the variable elements assignment tree)
+        // Info icon
+        node.setAttribute(CodeDS.INFO, org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.info().getURL());
+        // Icons for the variable elements assignment tree)
         node.setAttribute(CodeDS.VARIABLE_ELEMENT_EDITION, org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.search().getURL());
         node.setAttribute(CodeDS.VARIABLE_ELEMENT_CLEAR, org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
+
         return node;
     }
 

@@ -603,9 +603,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void goToCategoryScheme(String urn) {
-        if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCategorySchemePlaceRequest(urn), -1);
-        }
+        goTo(PlaceRequestUtils.buildAbsoluteCategorySchemePlaceRequest(urn));
     }
 
     @Override

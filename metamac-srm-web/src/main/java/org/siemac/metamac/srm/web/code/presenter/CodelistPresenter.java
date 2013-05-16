@@ -1151,9 +1151,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
     @Override
     public void goToCodelist(String urn) {
-        if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn), -1);
-        }
+        goTo(PlaceRequestUtils.buildAbsoluteCodelistPlaceRequest(urn));
     }
 
     @Override

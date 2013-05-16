@@ -15,14 +15,11 @@ import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
-import com.smartgwt.client.data.Record;
-import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.events.ClickHandler;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 import com.smartgwt.client.widgets.tree.TreeNode;
-import com.smartgwt.client.widgets.viewer.DetailViewer;
 
 public class ConceptsTreeGrid extends ItemsTreeGrid {
 
@@ -99,9 +96,11 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     }
 
     @Override
-    protected void onNodeClick(String nodeName, String conceptUrn) {
-        if (!SCHEME_NODE_NAME.equals(nodeName)) {
-            uiHandlers.goToConcept(conceptUrn);
+    protected void onNodeClick(String nodeName, String urn) {
+        if (SCHEME_NODE_NAME.equals(nodeName)) {
+            uiHandlers.goToConceptScheme(urn);
+        } else {
+            uiHandlers.goToConcept(urn);
         }
     }
 
@@ -127,10 +126,7 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     }
 
     @Override
-    protected Canvas getCellHoverComponent(Record record, Integer rowNum, Integer colNum) {
-        DetailViewer detailViewer = new DetailViewer();
-        detailViewer.setFields(ResourceFieldUtils.getConceptDetailViewerFields());
-        detailViewer.setData(new Record[]{record});
-        return detailViewer;
+    protected com.smartgwt.client.widgets.viewer.DetailViewerField[] getDetailViewerFields() {
+        return ResourceFieldUtils.getConceptDetailViewerFields();
     }
 }
