@@ -17,7 +17,7 @@ public class SrmConstants {
     public static final Integer            CODELIST_OPENNESS_VISUALISATION_ALL_EXPANDED_COLUMN_INDEX = Integer.valueOf(1);
     public static final Boolean            CODELIST_OPENNESS_VISUALISATION_DEFAULT_VALUE             = Boolean.TRUE;
 
-    // Csv importations
+    // Tsv importation and exportation
     public static final String             CSV_SEPARATOR                                             = "\t";
     public static final String             CSV_LINE_SEPARATOR                                        = "\n";
     public static final String             CSV_HEADER_INTERNATIONAL_STRING_SEPARATOR                 = "#";
@@ -30,6 +30,7 @@ public class SrmConstants {
     public static final String             CSV_HEADER_LABEL                                          = "label";
     public static final String             CSV_HEADER_LEVEL                                          = "level";
     public static final String             CSV_HEADER_ORDER                                          = "order";
+    public static final String             CSV_EXPORTATION_ENCODING                                  = "UTF-8";
 
     // Misc
     public static final int                METADATA_SHORT_NAME_MAXIMUM_LENGTH                        = 100;

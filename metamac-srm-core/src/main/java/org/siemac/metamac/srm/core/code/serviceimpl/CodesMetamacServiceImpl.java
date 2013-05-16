@@ -805,7 +805,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         try {
             File file = File.createTempFile("codes", ".csv");
             outputStream = new FileOutputStream(file);
-            writer = new OutputStreamWriter(outputStream, "UTF-8"); // TODO charset, pte web
+            writer = new OutputStreamWriter(outputStream, SrmConstants.CSV_EXPORTATION_ENCODING);
 
             // header
             writer.write(SrmConstants.CSV_HEADER_CODE);
@@ -897,7 +897,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         try {
             File file = File.createTempFile("codes-orders", ".csv");
             outputStream = new FileOutputStream(file);
-            writer = new OutputStreamWriter(outputStream, "UTF-8"); // TODO charset, pte web
+            writer = new OutputStreamWriter(outputStream, SrmConstants.CSV_EXPORTATION_ENCODING);
 
             // header
             writer.write(SrmConstants.CSV_HEADER_CODE);
