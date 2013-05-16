@@ -12,13 +12,10 @@ import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
-import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
-import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchViewTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.SearchExternalItemLinkItem;
 
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -39,19 +36,16 @@ public class ConceptSchemeSearchSectionStack extends VersionableResourceSearchSe
     protected void setFormItemsInAdvancedSearchForm(FormItem[] advancedSearchFormItems) {
 
         // Statistical operation
-        ViewTextItem statisticalOperationUrn = new ViewTextItem(ConceptSchemeDS.RELATED_OPERATION_URN, getConstants().conceptSchemeOperation());
-        statisticalOperationUrn.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        SearchViewTextItem statisticalOperation = createStatisticalOperationItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
+        SearchExternalItemLinkItem statisticalOperation = createStatisticalOperationItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
 
         // Type
         SelectItem conceptSchemeType = new SelectItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
         conceptSchemeType.setValueMap(CommonUtils.getConceptSchemeTypeHashMap());
 
         // Add replaceTo and accessType items to advanvedSearchForm (before the save button in the advancedSearchFormItems)
-        FormItem[] conceptFields = new FormItem[advancedSearchFormItems.length + 3];
+        FormItem[] conceptFields = new FormItem[advancedSearchFormItems.length + 2];
         System.arraycopy(advancedSearchFormItems, 0, conceptFields, 0, advancedSearchFormItems.length - 1);
         System.arraycopy(advancedSearchFormItems, advancedSearchFormItems.length - 1, conceptFields, conceptFields.length - 1, 1);
-        conceptFields[conceptFields.length - 4] = statisticalOperationUrn;
         conceptFields[conceptFields.length - 3] = statisticalOperation;
         conceptFields[conceptFields.length - 2] = conceptSchemeType;
         advancedSearchForm.setFields(conceptFields);
@@ -59,7 +53,8 @@ public class ConceptSchemeSearchSectionStack extends VersionableResourceSearchSe
 
     public ConceptSchemeWebCriteria getConceptSchemeWebCriteria() {
         ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) getVersionableResourceWebCriteria(new ConceptSchemeWebCriteria());
-        conceptSchemeWebCriteria.setStatisticalOperationUrn(advancedSearchForm.getValueAsString(ConceptSchemeDS.RELATED_OPERATION_URN));
+        ExternalItemDto statisticalOperation = ((SearchExternalItemLinkItem) advancedSearchForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).getExternalItemDto();
+        conceptSchemeWebCriteria.setStatisticalOperationUrn(statisticalOperation != null ? statisticalOperation.getUrn() : null);
         conceptSchemeWebCriteria.setConceptSchemeTypeEnum(!StringUtils.isBlank(advancedSearchForm.getValueAsString(ConceptSchemeDS.TYPE)) ? ConceptSchemeTypeEnum.valueOf(advancedSearchForm
                 .getValueAsString(ConceptSchemeDS.TYPE)) : null);
         return conceptSchemeWebCriteria;
@@ -85,9 +80,8 @@ public class ConceptSchemeSearchSectionStack extends VersionableResourceSearchSe
         return uiHandlers;
     }
 
-    private SearchViewTextItem createStatisticalOperationItem(String name, String title) {
-        SearchViewTextItem operationItem = new SearchViewTextItem(name, title);
-        operationItem.setTitleStyle("formTitle");
+    private SearchExternalItemLinkItem createStatisticalOperationItem(String name, String title) {
+        SearchExternalItemLinkItem operationItem = new SearchExternalItemLinkItem(name, title);
         operationItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
@@ -116,12 +110,17 @@ public class ConceptSchemeSearchSectionStack extends VersionableResourceSearchSe
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                         ExternalItemDto statisticalOperation = searchOperationWindow.getSelectedExternalItem();
                         searchOperationWindow.destroy();
-                        advancedSearchForm.setValue(ConceptSchemeDS.RELATED_OPERATION_URN, statisticalOperation != null ? statisticalOperation.getUrn() : null);
-                        advancedSearchForm.setValue(ConceptSchemeDS.RELATED_OPERATION, ExternalItemUtils.getExternalItemName(statisticalOperation));
+                        ((SearchExternalItemLinkItem) advancedSearchForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).setExternalItem(statisticalOperation);
                     }
                 });
             }
         });
         return operationItem;
+    }
+
+    @Override
+    protected void clearAdvancedSearchSection() {
+        super.clearAdvancedSearchSection();
+        ((SearchExternalItemLinkItem) advancedSearchForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).clearExternalItem();
     }
 }
