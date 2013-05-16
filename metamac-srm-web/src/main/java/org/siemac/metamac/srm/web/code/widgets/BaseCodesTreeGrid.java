@@ -58,6 +58,7 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
         TreeGridField orderField = new TreeGridField(CodeDS.ORDER, getConstants().codeOrder());
         orderField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
         orderField.setCanSort(true);
+        orderField.setShowHover(false);
 
         ListGridField[] codeFields = new ListGridField[itemFields.length + 1];
         System.arraycopy(itemFields, 0, codeFields, 0, itemFields.length);

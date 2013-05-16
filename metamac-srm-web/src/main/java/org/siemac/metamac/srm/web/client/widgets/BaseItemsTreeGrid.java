@@ -49,6 +49,9 @@ public abstract class BaseItemsTreeGrid extends TreeGrid {
     protected ItemSchemeDto       itemSchemeDto;
 
     protected Tree                tree;
+    protected TreeGridField       codeField;
+    protected TreeGridField       nameField;
+    protected TreeGridField       infoField;
 
     protected HandlerRegistration filterEditionHandler;
 
@@ -73,15 +76,15 @@ public abstract class BaseItemsTreeGrid extends TreeGrid {
         setShowHoverComponents(true);
         setShowHeaderContextMenu(false); // do not show context menu in trees (avoid to show columns that should not be shown)
 
-        TreeGridField codeField = new TreeGridField(ItemDS.CODE, getConstants().identifiableArtefactCode());
+        codeField = new TreeGridField(ItemDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("30%");
         codeField.setCanFilter(true);
         codeField.setShowHover(false); // only show hover in info field
 
-        TreeGridField nameField = new TreeGridField(ItemDS.NAME, getConstants().nameableArtefactName());
+        nameField = new TreeGridField(ItemDS.NAME, getConstants().nameableArtefactName());
         nameField.setShowHover(false); // only show hover in info field
 
-        TreeGridField infoField = new TreeGridField(ItemDS.INFO, " ");
+        infoField = new TreeGridField(ItemDS.INFO, " ");
         infoField.setType(ListGridFieldType.IMAGE);
         infoField.setWidth(50);
         infoField.setAlign(Alignment.CENTER);

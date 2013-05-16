@@ -48,30 +48,22 @@ public class CodesVariableElementsAssignmentTreeGrid extends BaseCodesTreeGrid {
         setShowDropIcons(false);
         setCanSort(false);
 
+        // Do not show info field
+        infoField.setHidden(true);
+
         // Add a field with the variable element
 
         TreeGridField variableElementField = new TreeGridField(CodeDS.VARIABLE_ELEMENT, getConstants().variableElement());
         variableElementField.setCanFilter(false);
         variableElementField.setAlign(Alignment.RIGHT);
-        // final String searchIconHTML = Canvas.imgHTML(GlobalResources.RESOURCE.search().getURL(), 16, 16);
-        // variableElementField.setCellFormatter(new CellFormatter() {
-        //
-        // @Override
-        // public String format(Object value, ListGridRecord record, int rowNum, int colNum) {
-        // StringBuilder builder = new StringBuilder();
-        // if (value != null) {
-        // builder.append(value.toString()).append(" ");
-        // }
-        // builder.append(searchIconHTML);
-        // return builder.toString();
-        // }
-        // });
+        variableElementField.setShowHover(false);
 
         // Field to edit the variable element
 
         TreeGridField editField = new TreeGridField(CodeDS.VARIABLE_ELEMENT_EDITION, " "); // Do not show title in this column (an space is needed)
         editField.setCanFilter(false);
         editField.setCanEdit(false);
+        editField.setShowHover(false);
         editField.setWidth(30);
         editField.setAlign(Alignment.CENTER);
         editField.setType(ListGridFieldType.IMAGE);
@@ -90,6 +82,7 @@ public class CodesVariableElementsAssignmentTreeGrid extends BaseCodesTreeGrid {
         TreeGridField clearField = new TreeGridField(CodeDS.VARIABLE_ELEMENT_CLEAR, " "); // Do not show title in this column (an space is needed)
         clearField.setCanFilter(false);
         clearField.setCanEdit(false);
+        clearField.setShowHover(false);
         clearField.setWidth(30);
         clearField.setAlign(Alignment.CENTER);
         clearField.setType(ListGridFieldType.IMAGE);

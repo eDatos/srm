@@ -31,12 +31,16 @@ public class CodesOpennessLevelEditableTreeGrid extends BaseCodesTreeGrid {
         setCustomIconProperty(CodeDS.OPENNESS_LEVEL_ICON);
         setAutoFitMaxRecords(10);
 
+        // Do not show info field
+        infoField.setHidden(true);
+
         // Add a field with the node openness state
 
         TreeGridField opennessLevelField = new TreeGridField(CodeDS.OPENNESS_LEVEL, getConstants().codelistOpennessLevelOpened());
         opennessLevelField.setType(ListGridFieldType.BOOLEAN);
         opennessLevelField.setCanEdit(true);
         opennessLevelField.setCanFilter(false);
+        opennessLevelField.setShowHover(false);
 
         ListGridField[] itemFields = getAllFields();
 
