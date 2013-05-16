@@ -2036,6 +2036,28 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
+    public void testCreateConceptEnumeratedRepresentationAssignAutomaticallyVariable() throws Exception {
+
+        ServiceContext ctx = getServiceContextAdministrador();
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1));
+        concept.setParent(null);
+
+        // Concept has not variable
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1);
+        Representation enumeratedRepresentation = new Representation();
+        enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+        enumeratedRepresentation.setEnumerationCodelist(codelistVersion);
+        concept.setCoreRepresentation(enumeratedRepresentation);
+        concept.setVariable(null);
+
+        concept = conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+        assertEquals(codelistVersion.getVariable().getNameableArtefact().getUrn(), concept.getVariable().getNameableArtefact().getUrn());
+    }
+
+    @Test
     public void testCreateConceptErrorEnumeratedRepresentation() throws Exception {
 
         ServiceContext ctx = getServiceContextAdministrador();
@@ -2055,26 +2077,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
                 enumeratedRepresentation.setEnumerationCodelist(codelistVersion);
                 concept.setCoreRepresentation(enumeratedRepresentation);
-
-                conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
-                fail("wrong enumerated representation");
-            } catch (MetamacException e) {
-                assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-                assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-                assertEquals(codelistVersion.getMaintainableArtefact().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[0]);
-            }
-        }
-
-        // Concept has not variable
-        {
-            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1);
-            try {
-                Representation enumeratedRepresentation = new Representation();
-                enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
-                enumeratedRepresentation.setEnumerationCodelist(codelistVersion);
-                concept.setCoreRepresentation(enumeratedRepresentation);
-                concept.setVariable(null);
 
                 conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
                 fail("wrong enumerated representation");

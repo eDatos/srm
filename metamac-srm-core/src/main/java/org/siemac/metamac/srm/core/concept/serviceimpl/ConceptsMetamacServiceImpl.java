@@ -442,9 +442,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public ConceptMetamac preCreateConcept(ServiceContext ctx, String conceptSchemeUrn, ConceptMetamac concept) throws MetamacException {
-        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
+
+        // Automatically updates pre-validation
+        assignToConceptSameVariableOfCodelist(concept);
 
         // Validation
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
         ConceptsMetamacInvocationValidator.checkCreateConcept(conceptSchemeVersion, concept, null);
         checkConceptToCreateOrUpdate(ctx, conceptSchemeVersion, concept);
 
@@ -454,9 +457,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public ConceptMetamac updateConcept(ServiceContext ctx, ConceptMetamac concept) throws MetamacException {
 
-        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByConceptUrn(ctx, concept.getNameableArtefact().getUrn());
+        // Automatically updates pre-validation
+        assignToConceptSameVariableOfCodelist(concept);
 
         // Validation
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByConceptUrn(ctx, concept.getNameableArtefact().getUrn());
         ConceptsMetamacInvocationValidator.checkUpdateConcept(conceptSchemeVersion, concept, null);
         checkConceptToCreateOrUpdate(ctx, conceptSchemeVersion, concept);
 
@@ -1008,6 +1013,25 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private void checkConceptSchemeCanBeModified(ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(conceptSchemeVersion.getLifeCycleMetadata(), conceptSchemeVersion.getMaintainableArtefact().getUrn());
         SrmValidationUtils.checkArtefactWithoutTaskInBackground(conceptSchemeVersion);
+    }
+
+    /**
+     * If variable is empty in concept, assigns automatically variable of codelist to concept
+     * 
+     * @param concept
+     */
+    private void assignToConceptSameVariableOfCodelist(ConceptMetamac concept) {
+        if (concept.getVariable() != null) {
+            // do not override
+            return;
+        }
+        if (concept.getCoreRepresentation() == null) {
+            return;
+        }
+        if (!RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType()) || concept.getCoreRepresentation().getEnumerationCodelist() == null) {
+            return;
+        }
+        concept.setVariable(((CodelistVersionMetamac) concept.getCoreRepresentation().getEnumerationCodelist()).getVariable());
     }
 
 }
