@@ -155,9 +155,9 @@ public class ResourceFieldUtils {
         CustomListGridField externalPublicationDate = new CustomListGridField(VersionableResourceDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
         externalPublicationDate.setHidden(true);
 
-        CustomListGridField resourceUuid = new CustomListGridField(VersionableResourceDS.RESOURCE_UUID, getConstants().uuid());
-        resourceUuid.setHidden(true);
-        resourceUuid.setGroupTitleRenderer(new GroupTitleRenderer() {
+        CustomListGridField resourceId = new CustomListGridField(VersionableResourceDS.RESOURCE_ID, getConstants().uuid());
+        resourceId.setHidden(true);
+        resourceId.setGroupTitleRenderer(new GroupTitleRenderer() {
 
             @Override
             public String getGroupTitle(Object groupValue, GroupNode groupNode, ListGridField field, String fieldName, ListGrid grid) {
@@ -165,7 +165,7 @@ public class ResourceFieldUtils {
             }
         });
 
-        return new CustomListGridField[]{code, urn, version, name, maintainer, procStatus, creationDate, resourceCreationDate, externalPublicationDate, resourceUuid};
+        return new CustomListGridField[]{code, urn, version, name, maintainer, procStatus, creationDate, resourceCreationDate, externalPublicationDate, resourceId};
     }
 
     //

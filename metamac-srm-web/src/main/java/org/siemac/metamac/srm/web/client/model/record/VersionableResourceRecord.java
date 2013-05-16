@@ -78,7 +78,7 @@ public class VersionableResourceRecord extends ListGridRecord {
         setAttribute(ItemSchemeDS.RESOURCE_CREATION_DATE, value);
     }
 
-    public void setResourceUuid(String value) {
-        setAttribute(VersionableResourceDS.RESOURCE_UUID, value);
+    public void setResourceId(Long value) {
+        setAttribute(VersionableResourceDS.RESOURCE_ID, value);
     }
 }

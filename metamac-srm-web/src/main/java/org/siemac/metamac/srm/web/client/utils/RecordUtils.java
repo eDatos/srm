@@ -48,7 +48,7 @@ public class RecordUtils {
         record = getVersionableResourceRecord(record, itemSchemeMetamacBasicDto, lifeCycleDto);
         record.setCreationDate(DateUtils.getFormattedDate(itemSchemeMetamacBasicDto.getCreatedDate()));
         record.setResourceCreationDate(DateUtils.getFormattedDate(itemSchemeMetamacBasicDto.getResourceCreatedDate()));
-        record.setResourceUuid(itemSchemeMetamacBasicDto.getItemSchemeUuid());
+        record.setResourceId(itemSchemeMetamacBasicDto.getItemSchemeId());
         return record;
     }
 
@@ -60,7 +60,7 @@ public class RecordUtils {
         record = getVersionableResourceRecord(record, structureMetamacBasicDto, lifeCycleDto);
         record.setCreationDate(DateUtils.getFormattedDate(structureMetamacBasicDto.getCreatedDate()));
         record.setResourceCreationDate(DateUtils.getFormattedDate(structureMetamacBasicDto.getResourceCreatedDate()));
-        record.setResourceUuid(structureMetamacBasicDto.getStructureUuid());
+        record.setResourceId(structureMetamacBasicDto.getStructureId());
         return record;
     }
 
@@ -73,7 +73,7 @@ public class RecordUtils {
         record.setUrn(itemMetamacBasicDto.getUrn());
         record.setName(getLocalisedString(itemMetamacBasicDto.getName()));
         record.setCreationDate(DateUtils.getFormattedDate(itemMetamacBasicDto.getCreatedDate()));
-        record.setItemSchemeUrn(itemMetamacBasicDto.getItemSchemeVersionUrn());
+        record.setItemSchemeUrn(itemMetamacBasicDto.getItemSchemeVersion().getUrn());
         return record;
     }
 
