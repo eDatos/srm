@@ -155,7 +155,7 @@ public class ResourceFieldUtils {
         CustomListGridField externalPublicationDate = new CustomListGridField(VersionableResourceDS.EXTERNAL_PUBLICATION_DATE, getConstants().lifeCycleExternalPublicationDate());
         externalPublicationDate.setHidden(true);
 
-        CustomListGridField resourceId = new CustomListGridField(VersionableResourceDS.RESOURCE_ID, getConstants().uuid());
+        CustomListGridField resourceId = new CustomListGridField(VersionableResourceDS.RESOURCE_ID, getConstants().versionableResourceId());
         resourceId.setHidden(true);
         resourceId.setGroupTitleRenderer(new GroupTitleRenderer() {
 
