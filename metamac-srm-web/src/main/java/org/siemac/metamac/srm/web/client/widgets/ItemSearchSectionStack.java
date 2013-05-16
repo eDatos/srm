@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.web.shared.criteria.ItemWebCriteria;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
 
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -24,7 +25,7 @@ public abstract class ItemSearchSectionStack extends BaseAdvancedSearchSectionSt
     protected void clearAdvancedSearchSection() {
         super.clearAdvancedSearchSection();
         // Search last versions by default
-        ((BooleanSelectItem) advancedSearchForm.getItem(ItemDS.IS_LAST_VERSION)).setBooleanValue(true);
+        ((CustomCheckboxItem) advancedSearchForm.getItem(ItemDS.IS_LAST_VERSION)).setValue(true);
     }
 
     @Override
@@ -37,8 +38,8 @@ public abstract class ItemSearchSectionStack extends BaseAdvancedSearchSectionSt
         TextItem name = new TextItem(ItemDS.NAME, getConstants().nameableArtefactName());
         TextItem urn = new TextItem(ItemDS.URN, getConstants().identifiableArtefactUrn());
         TextItem description = new TextItem(ItemDS.DESCRIPTION, getConstants().nameableArtefactDescription());
-        BooleanSelectItem isLastVersion = new BooleanSelectItem(ItemDS.IS_LAST_VERSION, getConstants().maintainableArtefactIsLastVersion());
-        isLastVersion.setBooleanValue(true);
+        CustomCheckboxItem isLastVersion = new CustomCheckboxItem(ItemDS.IS_LAST_VERSION, getConstants().maintainableArtefactIsLastVersion());
+        isLastVersion.setValue(true);
         CustomButtonItem searchItem = new CustomButtonItem(ADVANCED_SEARCH_ITEM_NAME, MetamacWebCommon.getConstants().search());
         searchItem.setColSpan(4);
         searchItem.addClickHandler(new ClickHandler() {
@@ -59,7 +60,7 @@ public abstract class ItemSearchSectionStack extends BaseAdvancedSearchSectionSt
         itemWebCriteria.setName(advancedSearchForm.getValueAsString(ItemDS.NAME));
         itemWebCriteria.setUrn(advancedSearchForm.getValueAsString(ItemDS.URN));
         itemWebCriteria.setDescription(advancedSearchForm.getValueAsString(ItemDS.DESCRIPTION));
-        itemWebCriteria.setIsLastVersion(((BooleanSelectItem) advancedSearchForm.getItem(ItemDS.IS_LAST_VERSION)).getBooleanValue());
+        itemWebCriteria.setIsLastVersion(((CustomCheckboxItem) advancedSearchForm.getItem(ItemDS.IS_LAST_VERSION)).getValueAsBoolean());
         return itemWebCriteria;
     }
 }
