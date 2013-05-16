@@ -6,10 +6,8 @@ public class DataStructureDefinitionDS extends VersionableResourceDS {
 
     public static final String STATISTICAL_OPERATION         = "dsd-op";
 
-    public static final String DIMENSION_CONCEPT             = "dsd-dim-con";      // Not mappped in DTO
-    public static final String DIMENSION_CONCEPT_URN         = "dsd-dim-con-urn";  // Not mappped in DTO
-    public static final String ATTRIBUTE_CONCEPT             = "dsd-att-con";      // Not mappped in DTO
-    public static final String ATTRIBUTE_CONCEPT_URN         = "dsd-att-con-urn";  // Not mappped in DTO
+    public static final String DIMENSION_CONCEPT             = "dsd-dim-con";      // for DSD advanced search
+    public static final String ATTRIBUTE_CONCEPT             = "dsd-att-con";      // for DSD advanced search
 
     // VISUALISATION METADATA
     public static final String AUTO_OPEN                     = "dsd-auto-open";

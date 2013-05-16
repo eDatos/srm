@@ -4,10 +4,9 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 
-import com.gwtplatform.mvp.client.UiHandlers;
-
-public interface DsdListUiHandlers extends UiHandlers {
+public interface DsdListUiHandlers extends BaseUiHandlers {
 
     void retrieveDsdList(int firstResult, int maxResults, DataStructureDefinitionWebCriteria criteria);
     void goToDsd(String urn);

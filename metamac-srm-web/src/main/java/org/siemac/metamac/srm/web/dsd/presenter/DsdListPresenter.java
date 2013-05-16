@@ -171,13 +171,6 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     }
 
     @Override
-    public void goToDsd(String urn) {
-        if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeDsdPlaceRequest(urn));
-        }
-    }
-
-    @Override
     public void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
         dispatcher.execute(new SaveDsdAction(dataStructureDefinitionMetamacDto), new WaitingAsyncCallback<SaveDsdResult>() {
 
@@ -334,5 +327,23 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
                 getView().setAttributeConceptsForSearchSection(result);
             }
         });
+    }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
+
+    @Override
+    public void goToDsd(String urn) {
+        if (!StringUtils.isBlank(urn)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeDsdPlaceRequest(urn));
+        }
     }
 }
