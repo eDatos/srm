@@ -40,6 +40,9 @@ import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbCallback;
 @Component
 public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
 
+    private final boolean                                                         AS_STUB               = false;
+    private final boolean                                                         WITH_LOCAL_REFERENCES = false;
+
     @Autowired
     private com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbMapper conceptsDo2JaxbSdmxMapper;
 
@@ -74,9 +77,8 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             return null;
         }
         // following method will call toConceptScheme(ConceptSchemeVersionMetamac source, ConceptScheme target) method, thank to callback
-        return (ConceptScheme) conceptsDo2JaxbSdmxMapper.conceptSchemeDoToJaxb(source, conceptsDo2JaxbCallback, false, false, null);
+        return (ConceptScheme) conceptsDo2JaxbSdmxMapper.conceptSchemeDoToJaxb(source, conceptsDo2JaxbCallback, AS_STUB, WITH_LOCAL_REFERENCES, null);
     }
-
     @Override
     public void toConceptScheme(ConceptSchemeVersionMetamac source, ConceptScheme target) {
         if (source == null) {
