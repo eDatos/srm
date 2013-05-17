@@ -200,6 +200,7 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
     }
 
     public void setUiHandlers(BaseCodeUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
         this.uiHandlers = uiHandlers;
     }
 

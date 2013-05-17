@@ -2,16 +2,16 @@ package org.siemac.metamac.srm.web.code.widgets;
 
 import java.util.Comparator;
 
+import org.siemac.metamac.srm.web.client.widgets.CodeNavigableTreeNode;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 
-import com.smartgwt.client.widgets.tree.TreeNode;
-
-public class CodeTreeNode extends TreeNode implements Comparable<CodeTreeNode> {
+public class CodeTreeNode extends CodeNavigableTreeNode implements Comparable<CodeTreeNode> {
 
     private Integer order;
 
     public CodeTreeNode(String name) {
-        super(name);
+        super();
+        setName(name);
     }
 
     public Integer getOrder() {

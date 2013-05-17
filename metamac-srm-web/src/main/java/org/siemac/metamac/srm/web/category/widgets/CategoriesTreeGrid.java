@@ -89,6 +89,7 @@ public class CategoriesTreeGrid extends ItemsTreeGrid {
     }
 
     public void setUiHandlers(BaseCategoryUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
         this.uiHandlers = uiHandlers;
     }
 

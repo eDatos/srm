@@ -93,6 +93,7 @@ public class OrganisationsTreeGrid extends ItemsTreeGrid {
     }
 
     public void setUiHandlers(BaseOrganisationUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
         this.uiHandlers = uiHandlers;
     }
 

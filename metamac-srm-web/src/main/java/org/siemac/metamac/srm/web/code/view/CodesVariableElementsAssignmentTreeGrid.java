@@ -9,12 +9,15 @@ import java.util.Map;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.utils.CodesTreeGridUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.BaseCodesTreeGrid;
+import org.siemac.metamac.srm.web.code.widgets.CodeTreeNode;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.web.common.client.widgets.CustomLinkTreeGridField;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 
@@ -26,6 +29,8 @@ import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.form.fields.events.ClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.CellClickEvent;
+import com.smartgwt.client.widgets.grid.events.CellClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.tree.TreeGridField;
@@ -53,7 +58,7 @@ public class CodesVariableElementsAssignmentTreeGrid extends BaseCodesTreeGrid {
 
         // Add a field with the variable element
 
-        TreeGridField variableElementField = new TreeGridField(CodeDS.VARIABLE_ELEMENT, getConstants().variableElement());
+        CustomLinkTreeGridField variableElementField = new CustomLinkTreeGridField(CodeDS.VARIABLE_ELEMENT, getConstants().variableElement());
         variableElementField.setCanFilter(false);
         variableElementField.setAlign(Alignment.RIGHT);
         variableElementField.setShowHover(false);
@@ -72,7 +77,10 @@ public class CodesVariableElementsAssignmentTreeGrid extends BaseCodesTreeGrid {
             @Override
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getRecordNum() != 0) { // Skip the root node (codelist node)
-                    showSearchVariableElementWindow(event.getRecord());
+                    Record record = event.getRecord();
+                    if (record instanceof CodeTreeNode) {
+                        showSearchVariableElementWindow((CodeTreeNode) record);
+                    }
                 }
             }
         });
@@ -92,9 +100,11 @@ public class CodesVariableElementsAssignmentTreeGrid extends BaseCodesTreeGrid {
             public void onRecordClick(RecordClickEvent event) {
                 if (event.getRecordNum() != 0) { // Skip the root node (codelist node)
                     Record record = event.getRecord();
-                    CodesTreeGridUtils.clearVariableElementFromRecord(record);
-                    updateData(record);
-                    markForRedraw();
+                    if (record instanceof CodeTreeNode) {
+                        CodesTreeGridUtils.clearVariableElementFromRecord((CodeTreeNode) record);
+                        updateData(record);
+                        markForRedraw();
+                    }
                 }
             }
         });
@@ -116,6 +126,21 @@ public class CodesVariableElementsAssignmentTreeGrid extends BaseCodesTreeGrid {
 
         // Do not show context menu
         super.removeHandlerRegistrations();
+        cellClickHandlerRegistration.removeHandler();
+        addCellClickHandler(new CellClickHandler() {
+
+            @Override
+            public void onCellClick(CellClickEvent event) {
+                ListGridField field = getField(event.getColNum());
+                if (ListGridFieldType.LINK.equals(field.getType()) && CodeDS.VARIABLE_ELEMENT.equals(field.getName())) {
+                    Record record = event.getRecord();
+                    if (record instanceof CodeTreeNode) {
+                        String variableElementUrn = ((CodeTreeNode) record).getVariableElementUrn();
+                        uiHandlers.goTo(PlaceRequestUtils.buildAbsoluteVariableElementPlaceRequest(variableElementUrn));
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -165,7 +190,7 @@ public class CodesVariableElementsAssignmentTreeGrid extends BaseCodesTreeGrid {
         this.uiHandlers = uiHandlers;
     }
 
-    private void showSearchVariableElementWindow(final Record record) {
+    private void showSearchVariableElementWindow(final CodeTreeNode treeNode) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
 
@@ -196,9 +221,9 @@ public class CodesVariableElementsAssignmentTreeGrid extends BaseCodesTreeGrid {
             public void onClick(ClickEvent event) {
                 RelatedResourceDto selectedVariableElement = searchVariableElementWindow.getSelectedRelatedResource();
 
-                CodesTreeGridUtils.setVariableElementInRecord(record, selectedVariableElement);
+                CodesTreeGridUtils.setVariableElementInRecord(treeNode, selectedVariableElement);
 
-                updateData(record);
+                updateData(treeNode);
 
                 markForRedraw();
                 searchVariableElementWindow.markForDestroy();

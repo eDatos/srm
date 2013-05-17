@@ -92,6 +92,7 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     }
 
     public void setUiHandlers(BaseConceptUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
         this.uiHandlers = uiHandlers;
     }
 

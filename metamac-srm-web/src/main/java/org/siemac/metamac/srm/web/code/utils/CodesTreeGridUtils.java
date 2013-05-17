@@ -10,13 +10,10 @@ import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.ItemsTreeGridUtils;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.widgets.CodeTreeNode;
-import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
-import com.smartgwt.client.data.Record;
 import com.smartgwt.client.widgets.tree.TreeNode;
 
 public class CodesTreeGridUtils extends ItemsTreeGridUtils {
@@ -49,10 +46,8 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
         node.setAttribute(CodeDS.OPENNESS_LEVEL_ICON, iconUrl);
 
         // Only for variable elements tree grid
-        node.setAttribute(CodeDS.VARIABLE_ELEMENT_ID_DATABASE, code.getVariableElement() != null ? code.getVariableElement().getIdDatabase() : null);
-        node.setAttribute(CodeDS.VARIABLE_ELEMENT, code.getVariableElement() != null
-                ? CommonWebUtils.getElementName(code.getVariableElement().getCode(), code.getVariableElement().getShortName())
-                : null);
+        node.setVariableElement(code.getVariableElement());
+
         // Info icon
         node.setAttribute(CodeDS.INFO, org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.info().getURL());
         // Icons for the variable elements assignment tree)
@@ -65,21 +60,16 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
     public static CodeTreeNode createCodeTreeNode(String schemeNodeName, CodeVariableElementNormalisationResult result) {
         CodeMetamacVisualisationResult code = result.getCode();
         VariableElementResult variableElement = result.getVariableElementProposed();
-
         CodeTreeNode node = createCodeTreeNode(schemeNodeName, code);
-        node.setAttribute(CodeDS.VARIABLE_ELEMENT_ID_DATABASE, variableElement != null ? variableElement.getIdDatabase() : null);
-        node.setAttribute(CodeDS.VARIABLE_ELEMENT, variableElement != null ? CommonWebUtils.getElementName(variableElement.getCode(), variableElement.getShortName()) : null);
+        node.setVariableElement(variableElement);
         return node;
     }
 
-    public static void setVariableElementInRecord(Record record, RelatedResourceDto variableElement) {
-        Long variableElementId = variableElement != null ? variableElement.getId() : null;
-        String variableElementTitle = variableElement != null ? RelatedResourceUtils.getRelatedResourceName(variableElement) : null;
-        record.setAttribute(CodeDS.VARIABLE_ELEMENT_ID_DATABASE, variableElementId); // The related resource of this element contains the database id of the variable element
-        record.setAttribute(CodeDS.VARIABLE_ELEMENT, variableElementTitle);
+    public static void setVariableElementInRecord(CodeTreeNode record, RelatedResourceDto variableElement) {
+        record.setVariableElement(variableElement);
     }
 
-    public static void clearVariableElementFromRecord(Record record) {
+    public static void clearVariableElementFromRecord(CodeTreeNode record) {
         setVariableElementInRecord(record, null);
     }
 }
