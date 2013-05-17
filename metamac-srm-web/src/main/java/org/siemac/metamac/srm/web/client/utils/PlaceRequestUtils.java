@@ -136,6 +136,11 @@ public class PlaceRequestUtils {
         return placeRequests;
     }
 
+    public static List<PlaceRequest> buildAbsoluteConceptPlaceRequest(String conceptUrn) {
+        String conceptSchemeUrn = SrmUrnParserUtils.getConceptSchemeUrnFromConceptUrn(conceptUrn);
+        return buildAbsoluteConceptPlaceRequest(conceptSchemeUrn, conceptUrn);
+    }
+
     public static PlaceRequest buildRelativeConceptPlaceRequest(String conceptUrn) {
         String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(conceptUrn));
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParamId, splitUrn[splitUrn.length - 1]);
