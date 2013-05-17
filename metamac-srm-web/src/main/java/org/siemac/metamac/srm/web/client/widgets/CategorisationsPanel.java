@@ -100,8 +100,7 @@ public abstract class CategorisationsPanel extends VLayout {
 
         ListGridField codeField = new ListGridField(CategorisationDS.CODE, getConstants().identifiableArtefactCode());
         ListGridField categoryField = new ListGridField(CategorisationDS.CATEGORY, getConstants().category());
-        ListGridField urnField = new ListGridField(CategorisationDS.URN, getConstants().identifiableArtefactUrn());
-        categorisationListGrid.setFields(codeField, categoryField, urnField);
+        categorisationListGrid.setFields(codeField, categoryField);
 
         categorisationListGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
 
