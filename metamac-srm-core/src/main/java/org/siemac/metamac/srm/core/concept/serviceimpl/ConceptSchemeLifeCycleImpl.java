@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
@@ -86,6 +87,20 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
+        public Object executeBeforeSendProductionValidation(ServiceContext ctx, Object srmResourceVersion) {
+            ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(srmResourceVersion);
+            // Assign variable automatically
+            for (Item item : conceptSchemeVersion.getItems()) {
+                ConceptMetamac concept = (ConceptMetamac) item;
+                boolean assigned = SrmServiceUtils.assignToConceptSameVariableOfCodelist(concept);
+                if (assigned) {
+                    itemRepository.save(concept);
+                }
+            }
+            return srmResourceVersion;
+        }
+
+        @Override
         public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
                 throws MetamacException {
 
@@ -100,8 +115,9 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, conceptSchemeVersion.getMaintainableArtefact().getUrn()));
             }
 
-            // Required metadata can be empty when importing.
-            // Note: this is a unefficient operation, so only check when send to production and not in next status. This metadata can not be changed in another status
+            // Check some metadata that can be empty or incorrect when importing
+            // Note: this is a unefficient operation, so only check when send to production and not in next status.
+            // In another status, if metadata is already changed to wrong value, they will be checked in create/update concept operations
             if (conceptSchemeVersion.getMaintainableArtefact().getIsImported() && ProcStatusEnum.PRODUCTION_VALIDATION.equals(targetStatus)) {
                 List<MetamacExceptionItem> exceptionsConceptScheme = new ArrayList<MetamacExceptionItem>();
                 conceptSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
@@ -111,9 +127,17 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                 } else {
                     // only check concept if concept scheme is complete
                     for (Item item : conceptSchemeVersion.getItems()) {
-                        // Create specific exception to identify the wrong concept
+                        ConceptMetamac concept = (ConceptMetamac) item;
                         List<MetamacExceptionItem> exceptionsConcepts = new ArrayList<MetamacExceptionItem>();
-                        ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, (ConceptMetamac) item, false, false, exceptionsConcepts);
+
+                        // Check core representation
+                        MetamacExceptionItem exceptionItem = conceptsMetamacService.checkConceptEnumeratedRepresentation(ctx, concept, false);
+                        if (exceptionItem != null) {
+                            exceptionsConcepts.add(exceptionItem);
+                        } else {
+                            // Check another metadata
+                            ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, concept, false, false, exceptionsConcepts);
+                        }
                         if (exceptionsConcepts.size() != 0) {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, item.getNameableArtefact().getUrn()));
                         }

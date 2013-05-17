@@ -88,6 +88,12 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
+        public Object executeBeforeSendProductionValidation(ServiceContext ctx, Object srmResourceVersion) {
+            // nothing
+            return srmResourceVersion;
+        }
+
+        @Override
         public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
 
             CodelistVersionMetamac codelistVersion = getCodelistVersionMetamac(srmResourceVersion);

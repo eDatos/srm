@@ -599,6 +599,32 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
+    public void testSendConceptSchemeToProductionValidationCheckAssignVariableConcepts() throws Exception {
+
+        String urn = CONCEPT_SCHEME_1_V2;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        ConceptMetamac concept1 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        concept1.setVariable(null);
+        concept1.getNameableArtefact().setIsCodeUpdated(false);
+        concept1 = (ConceptMetamac) itemRepository.save(concept1); // update in repository, because service will assign it automatically in update
+        assertEquals(null, concept1.getVariable());
+
+        ConceptMetamac concept2 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_2);
+        assertEquals(null, concept2.getVariable());
+
+        // Send to production validation
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.sendConceptSchemeToProductionValidation(ctx, urn);
+        assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, conceptSchemeVersion.getLifeCycleMetadata().getProcStatus());
+
+        // Validate concepts
+        concept1 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        assertEquals(VARIABLE_1, concept1.getVariable().getNameableArtefact().getUrn());
+        concept2 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_2);
+        assertEquals(null, concept2.getVariable());
+    }
+
+    @Test
     public void testSendConceptSchemeToProductionValidationErrorNotExists() throws Exception {
 
         String urn = NOT_EXISTS;
@@ -2083,8 +2109,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
                 assertEquals(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-                assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-                assertEquals(codelistVersion.getMaintainableArtefact().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(concept.getNameableArtefact().getCode(), e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(codelistVersion.getMaintainableArtefact().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[1]);
             }
         }
     }
@@ -2248,6 +2275,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Override
+    public void testCheckConceptEnumeratedRepresentation() throws Exception {
+        // already tested in testCreateConcept*
+    }
+
+    @Override
     @Test
     public void testUpdateConcept() throws Exception {
 
@@ -2267,8 +2299,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
             assertEquals(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(codelistVersion.getMaintainableArtefact().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(concept.getNameableArtefact().getCode(), e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(codelistVersion.getMaintainableArtefact().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[1]);
         }
     }
 

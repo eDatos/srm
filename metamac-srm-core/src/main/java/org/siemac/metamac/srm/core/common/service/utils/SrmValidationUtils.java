@@ -4,6 +4,8 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -43,6 +45,15 @@ public class SrmValidationUtils extends SdmxSrmValidationUtils {
             String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatus);
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
         }
+    }
+
+    public static MetamacExceptionItem checkArtefactProcStatusReturningExceptionItem(SrmLifeCycleMetadata lifeCycle, String urn, ProcStatusEnum... procStatus) throws MetamacException {
+        if (!ArrayUtils.contains(procStatus, lifeCycle.getProcStatus())) {
+            String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatus);
+            return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString)
+                    .build();
+        }
+        return null;
     }
 
     /**

@@ -19,6 +19,7 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
@@ -29,6 +30,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.CopyOperationTypeEnum;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 public class SrmServiceUtils {
 
@@ -432,5 +434,23 @@ public class SrmServiceUtils {
                 break;
         }
         return resultSelection;
+    }
+
+    /**
+     * If variable is empty in concept, assigns automatically variable of codelist to concept
+     * 
+     * @return true if variable was assigned
+     */
+    public static boolean assignToConceptSameVariableOfCodelist(ConceptMetamac concept) {
+        if (concept.getVariable() != null) {
+            // do not override
+            return false;
+        }
+        if (concept.getCoreRepresentation() == null || !RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())
+                || concept.getCoreRepresentation().getEnumerationCodelist() == null) {
+            return false;
+        }
+        concept.setVariable(((CodelistVersionMetamac) concept.getCoreRepresentation().getEnumerationCodelist()).getVariable());
+        return true;
     }
 }

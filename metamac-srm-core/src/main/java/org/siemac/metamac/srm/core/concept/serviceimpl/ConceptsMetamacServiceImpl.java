@@ -1,10 +1,10 @@
 package org.siemac.metamac.srm.core.concept.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
@@ -18,6 +18,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -444,7 +445,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     public ConceptMetamac preCreateConcept(ServiceContext ctx, String conceptSchemeUrn, ConceptMetamac concept) throws MetamacException {
 
         // Automatically updates pre-validation
-        assignToConceptSameVariableOfCodelist(concept);
+        SrmServiceUtils.assignToConceptSameVariableOfCodelist(concept);
 
         // Validation
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
@@ -458,7 +459,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     public ConceptMetamac updateConcept(ServiceContext ctx, ConceptMetamac concept) throws MetamacException {
 
         // Automatically updates pre-validation
-        assignToConceptSameVariableOfCodelist(concept);
+        SrmServiceUtils.assignToConceptSameVariableOfCodelist(concept);
 
         // Validation
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByConceptUrn(ctx, concept.getNameableArtefact().getUrn());
@@ -466,6 +467,39 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         checkConceptToCreateOrUpdate(ctx, conceptSchemeVersion, concept);
 
         return (ConceptMetamac) conceptsService.updateConcept(ctx, concept);
+    }
+
+    /**
+     * Checks representation, to imported and not imported artefact
+     * If it is an enumerated representation must be a codelist of same variable of concept and must be published
+     */
+    @Override
+    public MetamacExceptionItem checkConceptEnumeratedRepresentation(ServiceContext ctx, ConceptMetamac concept, boolean throwException) throws MetamacException {
+
+        // NOTE: do not call 'findCodelistsCanBeEnumeratedRepresentationForConceptByCondition' to throw specific exception
+
+        if (concept.getCoreRepresentation() == null || !RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())
+                || concept.getCoreRepresentation().getEnumerationCodelist() == null) {
+            return null;
+        }
+        CodelistVersionMetamac codelistVersion = (CodelistVersionMetamac) concept.getCoreRepresentation().getEnumerationCodelist();
+        String codelistUrn = codelistVersion.getMaintainableArtefact().getUrn();
+
+        // 1) Check codelist published
+        MetamacExceptionItem exceptionItem = SrmValidationUtils.checkArtefactProcStatusReturningExceptionItem(codelistVersion.getLifeCycleMetadata(), codelistUrn, ProcStatusEnum.INTERNALLY_PUBLISHED,
+                ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        if (exceptionItem == null) {
+            // 2) Check variable
+            if (concept.getVariable() == null || !concept.getVariable().getId().equals(codelistVersion.getVariable().getId())) {
+                exceptionItem = MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE)
+                        .withMessageParameters(concept.getNameableArtefact().getCode(), codelistUrn).build();
+            }
+
+        }
+        if (exceptionItem != null && throwException) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(Arrays.asList(exceptionItem)).build();
+        }
+        return exceptionItem;
     }
 
     @Override
@@ -744,22 +778,17 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter, String conceptUrn) throws MetamacException {
+
+        // IMPORTANT: If any condition change, review 'checkConceptEnumeratedRepresentation' method
 
         // Validation
         ConceptsMetamacInvocationValidator.checkFindCodelistsCanBeEnumeratedRepresentationForConceptByCondition(conditions, pagingParameter, conceptUrn, null);
 
         // Find
         ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
-        return findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(conditions, pagingParameter, concept);
-    }
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
-            ConceptMetamac concept) throws MetamacException {
-
-        // Validation
         Variable variable = concept.getVariable();
         if (variable == null) {
             return SrmServiceUtils.pagedResultZeroResults(pagingParameter);
@@ -775,10 +804,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Same variable
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.variable().nameableArtefact().urn())
                 .eq(variable.getNameableArtefact().getUrn()).buildSingle());
-        // Do not repeat results
-        conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build());
 
         // Find
+        conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build());
         return codelistVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
     }
 
@@ -954,31 +982,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private void checkConceptToCreateOrUpdate(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) throws MetamacException {
         checkConceptSchemeCanBeModified(conceptSchemeVersion);
         checkConceptMetadataExtends(ctx, concept, conceptSchemeVersion.getMaintainableArtefact().getUrn());
-        checkConceptEnumeratedRepresentation(conceptSchemeVersion, concept);
-    }
-
-    /**
-     * If concept scheme is not imported, checks representation. // TODO x q?
-     * If it is an enumerated representation must be a codelist of same variable of concept and must be published
-     */
-    private void checkConceptEnumeratedRepresentation(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) throws MetamacException {
-        if (BooleanUtils.isFalse(conceptSchemeVersion.getMaintainableArtefact().getIsImported())) {
-            if (concept.getCoreRepresentation() != null && RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())) {
-                String codelistUrn = concept.getCoreRepresentation().getEnumerationCodelist().getMaintainableArtefact().getUrn();
-                // check codelist belongs to same variable of concept
-                if (concept.getVariable() == null) {
-                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE).withMessageParameters(codelistUrn)
-                            .build();
-                }
-                List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().urn())
-                        .eq(codelistUrn).build();
-                PagedResult<CodelistVersionMetamac> codelists = findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(conditions, PagingParameter.rowAccess(0, 1), concept);
-                if (codelists.getValues().size() != 1) {
-                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE).withMessageParameters(codelistUrn)
-                            .build();
-                }
-            }
-        }
+        checkConceptEnumeratedRepresentation(ctx, concept, true);
     }
 
     private void checkConceptMetadataExtends(ServiceContext ctx, ConceptMetamac concept, String conceptSchemeUrn) throws MetamacException {
@@ -1013,25 +1017,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private void checkConceptSchemeCanBeModified(ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(conceptSchemeVersion.getLifeCycleMetadata(), conceptSchemeVersion.getMaintainableArtefact().getUrn());
         SrmValidationUtils.checkArtefactWithoutTaskInBackground(conceptSchemeVersion);
-    }
-
-    /**
-     * If variable is empty in concept, assigns automatically variable of codelist to concept
-     * 
-     * @param concept
-     */
-    private void assignToConceptSameVariableOfCodelist(ConceptMetamac concept) {
-        if (concept.getVariable() != null) {
-            // do not override
-            return;
-        }
-        if (concept.getCoreRepresentation() == null) {
-            return;
-        }
-        if (!RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType()) || concept.getCoreRepresentation().getEnumerationCodelist() == null) {
-            return;
-        }
-        concept.setVariable(((CodelistVersionMetamac) concept.getCoreRepresentation().getEnumerationCodelist()).getVariable());
     }
 
 }

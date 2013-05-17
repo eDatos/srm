@@ -62,8 +62,10 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Retrieve version in specific proc status
         Object srmResourceVersion = callback.retrieveSrmResourceByProcStatus(urn, procStatusToSendToProductionValidation);
-
         ProcStatusEnum targetStatus = ProcStatusEnum.PRODUCTION_VALIDATION;
+
+        // Previous update actions
+        callback.executeBeforeSendProductionValidation(ctx, srmResourceVersion);
 
         // Validate to send to production
         checkResourceInProductionValidation(ctx, urn, srmResourceVersion, targetStatus);
@@ -431,6 +433,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale);
 
         // Validity, final, public, additional actions
+        public Object executeBeforeSendProductionValidation(ServiceContext ctx, Object srmResourceVersion);
         public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion);
         public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion, Boolean forceLastestFinal) throws MetamacException;
         public Object markSrmResourceAsPublic(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;

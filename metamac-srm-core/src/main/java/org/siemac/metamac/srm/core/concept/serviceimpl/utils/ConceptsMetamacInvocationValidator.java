@@ -222,7 +222,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
             ValidationUtils.checkMetadataOptionalIsValid(concept.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, exceptions);
         }
 
-        // note: variable is optional
+        // note: variable is optional. If enumerated representation is codelist, Service will assign automatically to concept the variable of codelist
 
         if (conceptSchemeVersion != null) {
             if (SrmValidationUtils.mustValidateMetadataRequired(conceptSchemeVersion, creating)) {
