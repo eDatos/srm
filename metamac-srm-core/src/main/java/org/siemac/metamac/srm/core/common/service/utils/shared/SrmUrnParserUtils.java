@@ -34,4 +34,8 @@ public class SrmUrnParserUtils extends SdmxSrmUrnParserUtils {
         String variableIdentifier = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(variableElementUrn))[0];
         return URN_SIEMAC_CLASS_CODELIST_VARIABLE_PREFIX + EQUAL + variableIdentifier;
     }
+
+    public static String getVariableElementCodeFromVariableElementUrn(String variableElementUrn) {
+        return UrnUtils.splitUrnByDots(UrnUtils.removePrefix(variableElementUrn))[1];
+    }
 }
