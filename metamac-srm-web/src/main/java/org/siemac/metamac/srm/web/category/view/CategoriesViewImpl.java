@@ -10,8 +10,7 @@ import org.siemac.metamac.srm.web.category.utils.RecordUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategoriesUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategorySearchSectionStack;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
-import org.siemac.metamac.srm.web.client.widgets.NavigableListGrid;
-import org.siemac.metamac.srm.web.client.widgets.NavigablePaginatedListGrid;
+import org.siemac.metamac.srm.web.client.widgets.ItemsPaginatedListGrid;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
@@ -30,7 +29,7 @@ public class CategoriesViewImpl extends ViewWithUiHandlers<CategoriesUiHandlers>
 
     private CategorySearchSectionStack searchSectionStack;
 
-    private NavigablePaginatedListGrid categoriesListGrid;
+    private ItemsPaginatedListGrid     categoriesListGrid;
 
     @Inject
     public CategoriesViewImpl() {
@@ -41,7 +40,7 @@ public class CategoriesViewImpl extends ViewWithUiHandlers<CategoriesUiHandlers>
 
         // Categories
 
-        categoriesListGrid = new NavigablePaginatedListGrid(CategoriesPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
+        categoriesListGrid = new ItemsPaginatedListGrid(CategoriesPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
@@ -83,7 +82,7 @@ public class CategoriesViewImpl extends ViewWithUiHandlers<CategoriesUiHandlers>
     @Override
     public void setUiHandlers(CategoriesUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
-        ((NavigableListGrid) categoriesListGrid.getListGrid()).setUiHandlers(uiHandlers);
+        categoriesListGrid.setUiHandlers(uiHandlers);
         searchSectionStack.setUiHandlers(uiHandlers);
     }
 

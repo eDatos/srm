@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
-import org.siemac.metamac.srm.web.client.widgets.NavigableListGrid;
-import org.siemac.metamac.srm.web.client.widgets.NavigablePaginatedListGrid;
+import org.siemac.metamac.srm.web.client.widgets.ItemsPaginatedListGrid;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationsPresenter;
@@ -31,7 +30,7 @@ public class OrganisationsViewImpl extends ViewWithUiHandlers<OrganisationsUiHan
 
     private OrganisationSearchSectionStack searchSectionStack;
 
-    private NavigablePaginatedListGrid     organisationsListGrid;
+    private ItemsPaginatedListGrid         organisationsListGrid;
 
     @Inject
     public OrganisationsViewImpl() {
@@ -42,7 +41,7 @@ public class OrganisationsViewImpl extends ViewWithUiHandlers<OrganisationsUiHan
 
         // Organisations
 
-        organisationsListGrid = new NavigablePaginatedListGrid(OrganisationsPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
+        organisationsListGrid = new ItemsPaginatedListGrid(OrganisationsPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
@@ -85,7 +84,7 @@ public class OrganisationsViewImpl extends ViewWithUiHandlers<OrganisationsUiHan
     @Override
     public void setUiHandlers(OrganisationsUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
-        ((NavigableListGrid) organisationsListGrid.getListGrid()).setUiHandlers(uiHandlers);
+        organisationsListGrid.setUiHandlers(uiHandlers);
         searchSectionStack.setUiHandlers(uiHandlers);
     }
 

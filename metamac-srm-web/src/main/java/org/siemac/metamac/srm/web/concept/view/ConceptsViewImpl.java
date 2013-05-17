@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
-import org.siemac.metamac.srm.web.client.widgets.NavigablePaginatedListGrid;
-import org.siemac.metamac.srm.web.client.widgets.NavigableListGrid;
+import org.siemac.metamac.srm.web.client.widgets.ItemsPaginatedListGrid;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptsPresenter;
@@ -30,7 +29,7 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
 
     private ConceptSearchSectionStack searchSectionStack;
 
-    private NavigablePaginatedListGrid     conceptsListGrid;
+    private ItemsPaginatedListGrid    conceptsListGrid;
 
     @Inject
     public ConceptsViewImpl() {
@@ -41,7 +40,7 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
 
         // Concepts
 
-        conceptsListGrid = new NavigablePaginatedListGrid(ConceptsPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
+        conceptsListGrid = new ItemsPaginatedListGrid(ConceptsPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
@@ -84,7 +83,7 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
     public void setUiHandlers(ConceptsUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         searchSectionStack.setUiHandlers(uiHandlers);
-        ((NavigableListGrid) conceptsListGrid.getListGrid()).setUiHandlers(uiHandlers);
+        conceptsListGrid.setUiHandlers(uiHandlers);
     }
 
     @Override

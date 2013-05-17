@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
-import org.siemac.metamac.srm.web.client.widgets.NavigableListGrid;
-import org.siemac.metamac.srm.web.client.widgets.NavigablePaginatedListGrid;
+import org.siemac.metamac.srm.web.client.widgets.ItemsPaginatedListGrid;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.model.record.CodeRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodesPresenter;
@@ -25,11 +24,11 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implements CodesPresenter.CodesView {
 
-    private VLayout                    panel;
+    private VLayout                panel;
 
-    private CodeSearchSectionStack     searchSectionStack;
+    private CodeSearchSectionStack searchSectionStack;
 
-    private NavigablePaginatedListGrid codesListGrid;
+    private ItemsPaginatedListGrid codesListGrid;
 
     @Inject
     public CodesViewImpl() {
@@ -40,7 +39,7 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
 
         // Codes
 
-        codesListGrid = new NavigablePaginatedListGrid(CodesPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
+        codesListGrid = new ItemsPaginatedListGrid(CodesPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
@@ -82,7 +81,7 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
     @Override
     public void setUiHandlers(CodesUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
-        ((NavigableListGrid) codesListGrid.getListGrid()).setUiHandlers(uiHandlers);
+        codesListGrid.setUiHandlers(uiHandlers);
         searchSectionStack.setUiHandlers(uiHandlers);
     }
 
