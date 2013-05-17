@@ -74,7 +74,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
             return null;
         }
         // following method will call toDataStructure(DataStructureDefinitionVersionMetamac source, DataStructure target) method, thank to callback
-        return (DataStructure) dataStructuresDo2JaxbSdmxMapper.dataStructureDefinitionDoToJaxb(source, dataStructuresDo2JaxbCallback);
+        return (DataStructure) dataStructuresDo2JaxbSdmxMapper.dataStructureDefinitionDoToJaxb(source, dataStructuresDo2JaxbCallback, null);
     }
 
     @Override

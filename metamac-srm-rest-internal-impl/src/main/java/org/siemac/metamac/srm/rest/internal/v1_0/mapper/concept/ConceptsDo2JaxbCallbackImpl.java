@@ -5,9 +5,11 @@ import java.util.List;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptSchemeType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptsType;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbCallback;
@@ -43,5 +45,11 @@ public class ConceptsDo2JaxbCallbackImpl implements ConceptsDo2JaxbCallback {
     @Override
     public ConceptsType createConceptSchemesJaxb(List<ConceptSchemeVersion> sourceList) {
         throw new IllegalArgumentException("createConceptSchemesDoToJaxb not supported");
+    }
+
+    @Override
+    public List<ItemResult> findConceptsByConceptSchemeEfficiently(ConceptSchemeVersion conceptSchemeVersion) throws MetamacException {
+        // TODO findConceptsByConceptSchemeEfficiently
+        throw new UnsupportedOperationException();
     }
 }
