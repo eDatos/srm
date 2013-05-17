@@ -190,6 +190,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     @Override
     public void setUiHandlers(DsdListUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
+        dsdListGrid.setUiHandlers(uiHandlers);
         searchSectionStack.setUiHandlers(uiHandlers);
     }
 

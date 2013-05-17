@@ -4,10 +4,9 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 
-import com.gwtplatform.mvp.client.UiHandlers;
-
-public interface ConceptSchemeListUiHandlers extends UiHandlers {
+public interface ConceptSchemeListUiHandlers extends BaseUiHandlers {
 
     void goToConceptScheme(String urn);
     void createConceptScheme(ConceptSchemeMetamacDto conceptSchemeDto);

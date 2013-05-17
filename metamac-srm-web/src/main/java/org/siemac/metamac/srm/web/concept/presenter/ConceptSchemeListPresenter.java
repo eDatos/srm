@@ -198,13 +198,6 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     }
 
     @Override
-    public void goToConceptScheme(String urn) {
-        if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(urn));
-        }
-    }
-
-    @Override
     public void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria) {
         StatisticalOperationWebCriteria statisticalOperationWebCriteria = new StatisticalOperationWebCriteria(criteria);
         dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
@@ -241,5 +234,23 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
                 getView().setOperationsForSearchSection(result);
             }
         });
+    }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
+
+    @Override
+    public void goToConceptScheme(String urn) {
+        if (!StringUtils.isBlank(urn)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(urn));
+        }
     }
 }

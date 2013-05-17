@@ -125,13 +125,6 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
     }
 
     @Override
-    public void goToCodelist(String urn) {
-        if (!StringUtils.isBlank(urn)) {
-            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn));
-        }
-    }
-
-    @Override
     public void createCodelist(CodelistMetamacDto codelistMetamacDto) {
         dispatcher.execute(new SaveCodelistAction(codelistMetamacDto), new WaitingAsyncCallback<SaveCodelistResult>() {
 
@@ -209,5 +202,23 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
                 getView().setVariables(result);
             }
         });
+    }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
+
+    @Override
+    public void goToCodelist(String urn) {
+        if (!StringUtils.isBlank(urn)) {
+            placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn));
+        }
     }
 }

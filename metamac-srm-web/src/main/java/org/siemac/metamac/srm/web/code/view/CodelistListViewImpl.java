@@ -8,7 +8,7 @@ import java.util.List;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
-import org.siemac.metamac.srm.web.client.widgets.VersionableResourceCustomListGrid;
+import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistListPresenter;
@@ -21,7 +21,6 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
-import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -43,18 +42,18 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandlers> implements CodelistListPresenter.CodelistListView {
 
-    private VLayout                    panel;
+    private VLayout                                   panel;
 
-    private ToolStripButton            newCodelistButton;
-    private ToolStripButton            deleteCodelistButton;
-    private ToolStripButton            cancelCodelistValidityButton;
+    private ToolStripButton                           newCodelistButton;
+    private ToolStripButton                           deleteCodelistButton;
+    private ToolStripButton                           cancelCodelistValidityButton;
 
-    private CodelistSearchSectionStack searchSectionStack;
+    private CodelistSearchSectionStack                searchSectionStack;
 
-    private PaginatedCheckListGrid     codelistsList;
+    private VersionableResourcePaginatedCheckListGrid codelistsList;
 
-    private NewCodelistWindow          newCodelistWindow;
-    private DeleteConfirmationWindow   deleteConfirmationWindow;
+    private NewCodelistWindow                         newCodelistWindow;
+    private DeleteConfirmationWindow                  deleteConfirmationWindow;
 
     @Inject
     public CodelistListViewImpl() {
@@ -115,7 +114,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
 
         // Codelist list
 
-        codelistsList = new PaginatedCheckListGrid(CodelistListPresenter.SCHEME_LIST_MAX_RESULTS, new VersionableResourceCustomListGrid(), new PaginatedAction() {
+        codelistsList = new VersionableResourcePaginatedCheckListGrid(CodelistListPresenter.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
@@ -186,6 +185,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     @Override
     public void setUiHandlers(CodelistListUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
+        codelistsList.setUiHandlers(uiHandlers);
         searchSectionStack.setUiHandlers(uiHandlers);
     }
 

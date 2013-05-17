@@ -16,11 +16,10 @@ import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeListUiHan
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeSearchSectionStack;
 import org.siemac.metamac.srm.web.category.widgets.NewCategorySchemeWindow;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
-import org.siemac.metamac.srm.web.client.widgets.VersionableResourceCustomListGrid;
+import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
-import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -42,18 +41,18 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchemeListUiHandlers> implements CategorySchemeListPresenter.CategorySchemeListView {
 
-    private VLayout                          panel;
+    private VLayout                                   panel;
 
-    private ToolStripButton                  newCategorySchemeButton;
-    private ToolStripButton                  deleteCategorySchemeButton;
-    private ToolStripButton                  cancelCategorySchemeValidityButton;
+    private ToolStripButton                           newCategorySchemeButton;
+    private ToolStripButton                           deleteCategorySchemeButton;
+    private ToolStripButton                           cancelCategorySchemeValidityButton;
 
-    private CategorySchemeSearchSectionStack searchSectionStack;
+    private CategorySchemeSearchSectionStack          searchSectionStack;
 
-    private PaginatedCheckListGrid           categorySchemesList;
+    private VersionableResourcePaginatedCheckListGrid categorySchemesList;
 
-    private NewCategorySchemeWindow          newCategorySchemeWindow;
-    private DeleteConfirmationWindow         deleteConfirmationWindow;
+    private NewCategorySchemeWindow                   newCategorySchemeWindow;
+    private DeleteConfirmationWindow                  deleteConfirmationWindow;
 
     @Inject
     public CategorySchemeListViewImpl() {
@@ -114,7 +113,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
 
         // Categories scheme list
 
-        categorySchemesList = new PaginatedCheckListGrid(CategorySchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new VersionableResourceCustomListGrid(), new PaginatedAction() {
+        categorySchemesList = new VersionableResourcePaginatedCheckListGrid(CategorySchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
@@ -197,6 +196,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
     @Override
     public void setUiHandlers(CategorySchemeListUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
+        categorySchemesList.setUiHandlers(uiHandlers);
         searchSectionStack.setUiHandlers(uiHandlers);
     }
 

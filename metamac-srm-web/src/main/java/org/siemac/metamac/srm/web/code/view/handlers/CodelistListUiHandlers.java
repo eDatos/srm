@@ -4,10 +4,9 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 
-import com.gwtplatform.mvp.client.UiHandlers;
-
-public interface CodelistListUiHandlers extends UiHandlers {
+public interface CodelistListUiHandlers extends BaseUiHandlers {
 
     void goToCodelist(String urn);
     void createCodelist(CodelistMetamacDto codelistMetamacDto);

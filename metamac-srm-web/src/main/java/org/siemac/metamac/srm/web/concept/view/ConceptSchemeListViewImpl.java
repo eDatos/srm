@@ -9,7 +9,7 @@ import java.util.List;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
-import org.siemac.metamac.srm.web.client.widgets.VersionableResourceCustomListGrid;
+import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
@@ -23,7 +23,6 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
-import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -45,18 +44,18 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeListUiHandlers> implements ConceptSchemeListPresenter.ConceptSchemeListView {
 
-    private VLayout                         panel;
+    private VLayout                                   panel;
 
-    private ToolStripButton                 newConceptSchemeButton;
-    private ToolStripButton                 deleteConceptSchemeButton;
-    private ToolStripButton                 cancelConceptSchemeValidityButton;
+    private ToolStripButton                           newConceptSchemeButton;
+    private ToolStripButton                           deleteConceptSchemeButton;
+    private ToolStripButton                           cancelConceptSchemeValidityButton;
 
-    private ConceptSchemeSearchSectionStack searchSectionStack;
+    private ConceptSchemeSearchSectionStack           searchSectionStack;
 
-    private PaginatedCheckListGrid          conceptSchemesList;
+    private VersionableResourcePaginatedCheckListGrid conceptSchemesList;
 
-    private NewConceptSchemeWindow          newConceptSchemeWindow;
-    private DeleteConfirmationWindow        deleteConfirmationWindow;
+    private NewConceptSchemeWindow                    newConceptSchemeWindow;
+    private DeleteConfirmationWindow                  deleteConfirmationWindow;
 
     @Inject
     public ConceptSchemeListViewImpl() {
@@ -118,7 +117,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
 
         // Concepts scheme list
 
-        conceptSchemesList = new PaginatedCheckListGrid(ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new VersionableResourceCustomListGrid(), new PaginatedAction() {
+        conceptSchemesList = new VersionableResourcePaginatedCheckListGrid(ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
@@ -232,6 +231,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
     @Override
     public void setUiHandlers(ConceptSchemeListUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
+        conceptSchemesList.setUiHandlers(uiHandlers);
         searchSectionStack.setUiHandlers(uiHandlers);
     }
 

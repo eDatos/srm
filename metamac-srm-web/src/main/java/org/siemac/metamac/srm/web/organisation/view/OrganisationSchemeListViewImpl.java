@@ -9,7 +9,7 @@ import java.util.List;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
-import org.siemac.metamac.srm.web.client.widgets.VersionableResourceCustomListGrid;
+import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListPresenter;
@@ -20,7 +20,6 @@ import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeSearchS
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
-import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -43,18 +42,18 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<OrganisationSchemeListUiHandlers> implements OrganisationSchemeListPresenter.OrganisationSchemeListView {
 
-    private VLayout                              panel;
+    private VLayout                                   panel;
 
-    private ToolStripButton                      newButton;
-    private ToolStripButton                      deleteButton;
-    private ToolStripButton                      cancelValidityButton;
+    private ToolStripButton                           newButton;
+    private ToolStripButton                           deleteButton;
+    private ToolStripButton                           cancelValidityButton;
 
-    private OrganisationSchemeSearchSectionStack searchSectionStack;
+    private OrganisationSchemeSearchSectionStack      searchSectionStack;
 
-    private PaginatedCheckListGrid               organisationSchemeList;
+    private VersionableResourcePaginatedCheckListGrid organisationSchemeList;
 
-    private NewOrganisationSchemeWindow          newOrganisationSchemeWindow;
-    private DeleteConfirmationWindow             deleteConfirmationWindow;
+    private NewOrganisationSchemeWindow               newOrganisationSchemeWindow;
+    private DeleteConfirmationWindow                  deleteConfirmationWindow;
 
     @Inject
     public OrganisationSchemeListViewImpl() {
@@ -115,7 +114,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
 
         // Organisations scheme list
 
-        organisationSchemeList = new PaginatedCheckListGrid(OrganisationSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new VersionableResourceCustomListGrid(), new PaginatedAction() {
+        organisationSchemeList = new VersionableResourcePaginatedCheckListGrid(OrganisationSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
@@ -199,6 +198,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
     @Override
     public void setUiHandlers(OrganisationSchemeListUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
+        organisationSchemeList.setUiHandlers(uiHandlers);
         searchSectionStack.setUiHandlers(uiHandlers);
     }
 

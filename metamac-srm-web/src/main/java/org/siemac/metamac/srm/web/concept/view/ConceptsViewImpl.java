@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
-import org.siemac.metamac.srm.web.client.widgets.ItemsPaginatedListGrid;
+import org.siemac.metamac.srm.web.client.widgets.NavigablePaginatedListGrid;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptsPresenter;
@@ -25,11 +25,11 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> implements ConceptsPresenter.ConceptsView {
 
-    private VLayout                   panel;
+    private VLayout                    panel;
 
-    private ConceptSearchSectionStack searchSectionStack;
+    private ConceptSearchSectionStack  searchSectionStack;
 
-    private ItemsPaginatedListGrid    conceptsListGrid;
+    private NavigablePaginatedListGrid conceptsListGrid;
 
     @Inject
     public ConceptsViewImpl() {
@@ -40,7 +40,7 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
 
         // Concepts
 
-        conceptsListGrid = new ItemsPaginatedListGrid(ConceptsPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
+        conceptsListGrid = new NavigablePaginatedListGrid(ConceptsPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {

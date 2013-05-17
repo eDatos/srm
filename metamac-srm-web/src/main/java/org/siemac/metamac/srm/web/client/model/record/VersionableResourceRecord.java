@@ -2,10 +2,11 @@ package org.siemac.metamac.srm.web.client.model.record;
 
 import org.siemac.metamac.srm.web.client.model.ds.ItemSchemeDS;
 import org.siemac.metamac.srm.web.client.model.ds.VersionableResourceDS;
+import org.siemac.metamac.web.common.client.widgets.NavigableListGridRecord;
 
-import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
-public class VersionableResourceRecord extends ListGridRecord {
+public class VersionableResourceRecord extends NavigableListGridRecord {
 
     public VersionableResourceRecord() {
     }
@@ -50,8 +51,8 @@ public class VersionableResourceRecord extends ListGridRecord {
         return getAttributeAsString(ItemSchemeDS.URN);
     }
 
-    public void setMaintainer(String value) {
-        setAttribute(ItemSchemeDS.MAINTAINER, value);
+    public void setMaintainer(RelatedResourceDto value) {
+        setRelatedResource(ItemSchemeDS.MAINTAINER, value);
     }
 
     public void setInternalPublicationDate(String value) {

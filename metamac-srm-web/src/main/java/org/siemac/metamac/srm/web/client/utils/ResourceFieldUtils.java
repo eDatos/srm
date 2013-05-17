@@ -142,7 +142,7 @@ public class ResourceFieldUtils {
 
         CustomListGridField name = new CustomListGridField(VersionableResourceDS.NAME, getConstants().nameableArtefactName());
 
-        CustomListGridField maintainer = new CustomListGridField(VersionableResourceDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
+        CustomLinkListGridField maintainer = new CustomLinkListGridField(VersionableResourceDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
         maintainer.setHidden(true);
 
         CustomListGridField procStatus = new CustomListGridField(VersionableResourceDS.PROC_STATUS, getConstants().lifeCycleProcStatus());

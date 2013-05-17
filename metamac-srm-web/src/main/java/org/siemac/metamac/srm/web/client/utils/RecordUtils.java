@@ -32,7 +32,7 @@ public class RecordUtils {
         record.setVersionLogic(maintainableArtefactDto.getVersionLogic());
         record.setName(getLocalisedString(maintainableArtefactDto.getName()));
         record.setProcStatus(org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(lifeCycleDto.getProcStatus()));
-        record.setMaintainer(RelatedResourceUtils.getRelatedResourceName(maintainableArtefactDto.getMaintainer()));
+        record.setMaintainer(maintainableArtefactDto.getMaintainer());
         record.setInternalPublicationDate(DateUtils.getFormattedDate(lifeCycleDto.getInternalPublicationDate()));
         record.setInternalPublicationUser(lifeCycleDto.getInternalPublicationUser());
         record.setExternalPublicationDate(DateUtils.getFormattedDate(lifeCycleDto.getExternalPublicationDate()));
