@@ -9,12 +9,12 @@ import java.util.List;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.model.ds.CategorisationDS;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
-import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.utils.RecordUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.CategorisationUiHandlers;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
+import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomLinkListGridField;
 import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -97,6 +97,7 @@ public abstract class CategorisationsPanel extends VLayout {
         // ListGrid
 
         categorisationListGrid = new NavigableListGrid();
+        ListGridUtils.setCheckBoxSelectionType(categorisationListGrid);
         CustomListGridField codeField = new CustomListGridField(CategorisationDS.CODE, getConstants().identifiableArtefactCode());
         CustomLinkListGridField categoryField = new CustomLinkListGridField(CategorisationDS.CATEGORY, getConstants().category());
         categorisationListGrid.setFields(codeField, categoryField);
@@ -110,15 +111,6 @@ public abstract class CategorisationsPanel extends VLayout {
                 } else {
                     deleteCategorisationButton.hide();
                 }
-            }
-        });
-        categorisationListGrid.addRecordClickHandler(new RecordClickHandler() {
-
-            @Override
-            public void onRecordClick(RecordClickEvent event) {
-                CategorisationRecord categorisationRecord = (CategorisationRecord) event.getRecord();
-                RelatedResourceDto category = categorisationRecord.getCategorisationDto().getCategory();
-                getUiHandlers().goTo(PlaceRequestUtils.buildAbsoluteResourcePlaceRequest(category));
             }
         });
 
