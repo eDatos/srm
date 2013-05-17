@@ -1,14 +1,14 @@
 package org.siemac.metamac.srm.web.client.model.record;
 
 import org.siemac.metamac.srm.web.client.model.ds.CategorisationDS;
+import org.siemac.metamac.web.common.client.widgets.NavigableListGridRecord;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class CategorisationRecord extends ListGridRecord {
+public class CategorisationRecord extends NavigableListGridRecord {
 
-    public CategorisationRecord(Long id, String code, String name, String category, String urn, RelatedResourceDto maintainer, CategorisationDto categorisationDto) {
+    public CategorisationRecord(Long id, String code, String name, RelatedResourceDto category, String urn, RelatedResourceDto maintainer, CategorisationDto categorisationDto) {
         setId(id);
         setCode(code);
         setName(name);
@@ -34,8 +34,8 @@ public class CategorisationRecord extends ListGridRecord {
         setAttribute(CategorisationDS.URN, value);
     }
 
-    public void setCategory(String value) {
-        setAttribute(CategorisationDS.CATEGORY, value);
+    public void setCategory(RelatedResourceDto value) {
+        setRelatedResource(CategorisationDS.CATEGORY, value);
     }
 
     public Long getId() {

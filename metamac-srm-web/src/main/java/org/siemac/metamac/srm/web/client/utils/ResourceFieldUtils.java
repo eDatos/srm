@@ -123,7 +123,7 @@ public class ResourceFieldUtils {
     //
 
     public static CustomListGridField[] getDsdListGridFields() {
-        CustomListGridField statisticalOperation = new CustomListGridField(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
+        CustomLinkListGridField statisticalOperation = new CustomLinkListGridField(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
         return ListGridUtils.addFields(getVersionableResourceListGridFields(), statisticalOperation);
     }
 

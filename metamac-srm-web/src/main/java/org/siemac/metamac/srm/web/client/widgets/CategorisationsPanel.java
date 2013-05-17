@@ -15,7 +15,8 @@ import org.siemac.metamac.srm.web.client.view.handlers.CategorisationUiHandlers;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
+import org.siemac.metamac.web.common.client.widgets.CustomLinkListGridField;
+import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
@@ -25,7 +26,6 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -42,7 +42,7 @@ public abstract class CategorisationsPanel extends VLayout {
 
     protected ToolStripButton                 newCategorisationButton;
     protected ToolStripButton                 deleteCategorisationButton;
-    protected CustomListGrid                  categorisationListGrid;
+    protected NavigableListGrid               categorisationListGrid;
 
     private SearchCategoriesForCategorisation searchCategoriesWindow;
     private DeleteConfirmationWindow          deleteConfirmationWindow;
@@ -96,10 +96,9 @@ public abstract class CategorisationsPanel extends VLayout {
 
         // ListGrid
 
-        categorisationListGrid = new CustomListGrid();
-
-        ListGridField codeField = new ListGridField(CategorisationDS.CODE, getConstants().identifiableArtefactCode());
-        ListGridField categoryField = new ListGridField(CategorisationDS.CATEGORY, getConstants().category());
+        categorisationListGrid = new NavigableListGrid();
+        CustomListGridField codeField = new CustomListGridField(CategorisationDS.CODE, getConstants().identifiableArtefactCode());
+        CustomLinkListGridField categoryField = new CustomLinkListGridField(CategorisationDS.CATEGORY, getConstants().category());
         categorisationListGrid.setFields(codeField, categoryField);
 
         categorisationListGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
@@ -149,6 +148,7 @@ public abstract class CategorisationsPanel extends VLayout {
 
     public void setUiHandlers(CategorisationUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
+        categorisationListGrid.setUiHandlers(uiHandlers);
     }
 
     public CategorisationUiHandlers getUiHandlers() {

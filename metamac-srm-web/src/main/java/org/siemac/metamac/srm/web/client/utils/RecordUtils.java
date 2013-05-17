@@ -12,7 +12,6 @@ import org.siemac.metamac.srm.core.base.dto.StructureMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.model.record.ItemRecord;
 import org.siemac.metamac.srm.web.client.model.record.VersionableResourceRecord;
-import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
@@ -84,7 +83,7 @@ public class RecordUtils {
 
     public static CategorisationRecord getCategorisationRecord(CategorisationDto categorisationDto) {
         CategorisationRecord record = new CategorisationRecord(categorisationDto.getId(), categorisationDto.getCode(), InternationalStringUtils.getLocalisedString(categorisationDto.getName()),
-                RelatedResourceUtils.getRelatedResourceName(categorisationDto.getCategory()), categorisationDto.getUrn(), categorisationDto.getMaintainer(), categorisationDto);
+                categorisationDto.getCategory(), categorisationDto.getUrn(), categorisationDto.getMaintainer(), categorisationDto);
         return record;
     }
 

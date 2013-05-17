@@ -12,7 +12,6 @@ import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
-import org.siemac.metamac.web.common.client.utils.ExternalItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
@@ -33,7 +32,7 @@ public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordU
     public static DsdRecord getDsdRecord(DataStructureDefinitionMetamacBasicDto dsd) {
         DsdRecord record = new DsdRecord();
         record = (DsdRecord) getStructureRecord(record, dsd, dsd.getLifeCycle());
-        record.setStatisticalOperation(ExternalItemUtils.getExternalItemName(dsd.getStatisticalOperation()));
+        record.setStatisticalOperation(dsd.getStatisticalOperation());
         record.setDsdBasicDto(dsd);
         return record;
     }
