@@ -426,6 +426,13 @@ public class PlaceRequestUtils {
         return placeRequestHierarchy;
     }
 
+    public static List<PlaceRequest> buildAbsoluteVariableElementPlaceRequest(String variableElementUrn) {
+        String variableUrn = SrmUrnParserUtils.getVariableUrnFromVariableElementUrn(variableElementUrn);
+        String variableCode = SrmUrnParserUtils.getVariableCodeFromVariableUrn(variableUrn);
+        String variableElementCode = SrmUrnParserUtils.getVariableElementCodeFromVariableElementUrn(variableElementUrn);
+        return buildAbsoluteVariableElementPlaceRequest(variableCode, variableElementCode);
+    }
+
     // ---------------------------------------------------------------------------
     // GENERIC METHODS
     // ---------------------------------------------------------------------------
