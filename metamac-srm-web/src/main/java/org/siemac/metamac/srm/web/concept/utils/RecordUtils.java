@@ -3,11 +3,9 @@ package org.siemac.metamac.srm.web.concept.utils;
 import static org.siemac.metamac.web.common.client.utils.InternationalStringUtils.getLocalisedString;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
-import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
-import org.siemac.metamac.srm.web.concept.model.record.ConceptTreeNode;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 
@@ -42,10 +40,5 @@ public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordU
         record.setName(concept.getName());
         record.setUrn(concept.getUrn());
         return record;
-    }
-
-    public static ConceptTreeNode getConceptTreeNode(ConceptMetamacDto conceptDto) {
-        ConceptTreeNode treeNode = new ConceptTreeNode(conceptDto.getId(), conceptDto.getCode(), getLocalisedString(conceptDto.getName()), conceptDto.getUrn(), conceptDto);
-        return treeNode;
     }
 }
