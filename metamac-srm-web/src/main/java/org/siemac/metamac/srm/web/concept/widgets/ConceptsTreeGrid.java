@@ -32,8 +32,6 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     private ConceptSchemeMetamacDto  conceptSchemeMetamacDto;
     private ItemVisualisationResult  selectedConcept;
 
-    private BaseConceptUiHandlers    uiHandlers;
-
     public ConceptsTreeGrid() {
 
         // Context menu
@@ -52,7 +50,7 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
                             ConceptMetamacDto conceptMetamacDto = newConceptWindow.getNewConceptDto();
                             conceptMetamacDto.setItemSchemeVersionUrn(conceptSchemeMetamacDto.getUrn()); // Set concept scheme URN
                             conceptMetamacDto.setItemParentUrn(selectedConcept != null ? selectedConcept.getUrn() : null); // Set concept parent URN
-                            ConceptsTreeGrid.this.uiHandlers.saveConcept(conceptMetamacDto);
+                            getBaseConceptUiHandlers().saveConcept(conceptMetamacDto);
                             newConceptWindow.destroy();
                         }
                     }
@@ -66,7 +64,7 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
 
             @Override
             public void onClick(ClickEvent event) {
-                ConceptsTreeGrid.this.uiHandlers.deleteConcept(selectedConcept);
+                getBaseConceptUiHandlers().deleteConcept(selectedConcept);
             }
         });
         deleteConceptMenuItem.addClickHandler(new ClickHandler() {
@@ -93,15 +91,14 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
 
     public void setUiHandlers(BaseConceptUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
-        this.uiHandlers = uiHandlers;
     }
 
     @Override
     protected void onNodeClick(String nodeName, String urn) {
         if (SCHEME_NODE_NAME.equals(nodeName)) {
-            uiHandlers.goToConceptScheme(urn);
+            getBaseConceptUiHandlers().goToConceptScheme(urn);
         } else {
-            uiHandlers.goToConcept(urn);
+            getBaseConceptUiHandlers().goToConcept(urn);
         }
     }
 
@@ -129,5 +126,9 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     @Override
     protected com.smartgwt.client.widgets.viewer.DetailViewerField[] getDetailViewerFields() {
         return ResourceFieldUtils.getConceptDetailViewerFields();
+    }
+
+    private BaseConceptUiHandlers getBaseConceptUiHandlers() {
+        return (BaseConceptUiHandlers) uiHandlers;
     }
 }

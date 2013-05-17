@@ -39,8 +39,6 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
     protected HandlerRegistration      folderDropHandlerRegistration;
 
-    protected BaseCodeUiHandlers       uiHandlers;
-
     protected CodelistVisualisationDto codelistVisualisationDto;     // This field is only filled by the CodesOrderTreeGrid and CodesOpennessLevel classes
 
     /**
@@ -123,7 +121,7 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
                                 // The code will be moved to the first level. The parent is null.
                                 newItemParent = null;
                             }
-                            uiHandlers.updateCodeParent(droppedNode.getAttribute(CodeDS.URN), newItemParent);
+                            getBaseCodeUiHandlers().updateCodeParent(droppedNode.getAttribute(CodeDS.URN), newItemParent);
                         }
                     } else {
 
@@ -133,7 +131,7 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
                             // Only update order if there is an order selected and it is not the alphabetical one
                             if (codelistVisualisationDto != null && !SrmConstants.CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE.equals(codelistVisualisationDto.getCode())) {
-                                uiHandlers.updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistVisualisationDto.getUrn(), relativePosition);
+                                getBaseCodeUiHandlers().updateCodeInOrder(droppedNode.getAttribute(CodeDS.URN), codelistVisualisationDto.getUrn(), relativePosition);
                             }
                         }
                     }
@@ -201,7 +199,6 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
 
     public void setUiHandlers(BaseCodeUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
-        this.uiHandlers = uiHandlers;
     }
 
     protected CodeTreeNode createItemTreeNode(CodeMetamacVisualisationResult item) {
@@ -219,9 +216,9 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
     @Override
     protected void onNodeClick(String nodeName, String urn) {
         if (SCHEME_NODE_NAME.equals(nodeName)) {
-            uiHandlers.goToCodelist(urn);
+            getBaseCodeUiHandlers().goToCodelist(urn);
         } else {
-            uiHandlers.goToCode(urn);
+            getBaseCodeUiHandlers().goToCode(urn);
         }
     }
 
@@ -230,5 +227,9 @@ public abstract class BaseCodesTreeGrid extends BaseItemsTreeGrid {
     @Override
     protected com.smartgwt.client.widgets.viewer.DetailViewerField[] getDetailViewerFields() {
         return ResourceFieldUtils.getCodeDetailViewerFields();
+    }
+
+    protected BaseCodeUiHandlers getBaseCodeUiHandlers() {
+        return (BaseCodeUiHandlers) uiHandlers;
     }
 }

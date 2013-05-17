@@ -33,8 +33,6 @@ public class OrganisationsTreeGrid extends ItemsTreeGrid {
     private OrganisationSchemeMetamacDto organisationSchemeMetamacDto;
     private ItemVisualisationResult      selectedOrganisation;
 
-    private BaseOrganisationUiHandlers   uiHandlers;
-
     public OrganisationsTreeGrid() {
 
         // Context menu
@@ -53,7 +51,7 @@ public class OrganisationsTreeGrid extends ItemsTreeGrid {
                             OrganisationMetamacDto organisationMetamacDto = newOrganisationWindow.getNewOrganisationDto(CommonUtils.getOrganisationTypeEnum(organisationSchemeMetamacDto.getType()));
                             organisationMetamacDto.setItemSchemeVersionUrn(organisationSchemeMetamacDto.getUrn()); // Set organisation scheme URN
                             organisationMetamacDto.setItemParentUrn(selectedOrganisation != null ? selectedOrganisation.getUrn() : null); // Set organisation parent URN
-                            OrganisationsTreeGrid.this.uiHandlers.createOrganisation(organisationMetamacDto);
+                            getBaseOrganisationUiHandlers().createOrganisation(organisationMetamacDto);
                             newOrganisationWindow.destroy();
                         }
                     }
@@ -67,7 +65,7 @@ public class OrganisationsTreeGrid extends ItemsTreeGrid {
 
             @Override
             public void onClick(ClickEvent event) {
-                OrganisationsTreeGrid.this.uiHandlers.deleteOrganisation(selectedOrganisation);
+                getBaseOrganisationUiHandlers().deleteOrganisation(selectedOrganisation);
             }
         });
         deleteOrganisationMenuItem.addClickHandler(new ClickHandler() {
@@ -94,15 +92,14 @@ public class OrganisationsTreeGrid extends ItemsTreeGrid {
 
     public void setUiHandlers(BaseOrganisationUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
-        this.uiHandlers = uiHandlers;
     }
 
     @Override
     protected void onNodeClick(String nodeName, String urn) {
         if (SCHEME_NODE_NAME.equals(nodeName)) {
-            uiHandlers.goToOrganisationScheme(urn);
+            getBaseOrganisationUiHandlers().goToOrganisationScheme(urn);
         } else {
-            uiHandlers.goToOrganisation(urn);
+            getBaseOrganisationUiHandlers().goToOrganisation(urn);
         }
     }
 
@@ -122,5 +119,9 @@ public class OrganisationsTreeGrid extends ItemsTreeGrid {
     @Override
     protected com.smartgwt.client.widgets.viewer.DetailViewerField[] getDetailViewerFields() {
         return ResourceFieldUtils.getOrganisationDetailViewerFields();
+    }
+
+    private BaseOrganisationUiHandlers getBaseOrganisationUiHandlers() {
+        return (BaseOrganisationUiHandlers) uiHandlers;
     }
 }

@@ -438,6 +438,13 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     @Override
+    public void setUiHandlers(DsdGeneralTabUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        ((ShowDecimalsPrecisionItem) visualisationMetadataForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).setUiHandlers(uiHandlers);
+        ((ShowDecimalsPrecisionItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).setUiHandlers(uiHandlers);
+    }
+
+    @Override
     public void setDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, List<DimensionComponentDto> dimensionComponentDtos) {
         this.dataStructureDefinitionMetamacDto = dataStructureDefinitionMetamacDto;
 

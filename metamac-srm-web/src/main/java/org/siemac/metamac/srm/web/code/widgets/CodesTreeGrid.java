@@ -59,7 +59,7 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
                             CodeMetamacDto codeMetamacDto = newCodeWindow.getNewCodeDto();
                             codeMetamacDto.setItemSchemeVersionUrn(codelistMetamacDto.getUrn()); // Set codelist URN
                             codeMetamacDto.setItemParentUrn(selectedCode != null ? selectedCode.getUrn() : null); // Set code parent URN
-                            CodesTreeGrid.this.uiHandlers.saveCode(codeMetamacDto);
+                            getBaseCodeUiHandlers().saveCode(codeMetamacDto);
                             newCodeWindow.destroy();
                         }
                     }
@@ -73,7 +73,7 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
             @Override
             public void onClick(MenuItemClickEvent event) {
                 if (getSelectedRecord() instanceof TreeNode) {
-                    searchMultipleCodeHierarchyWindow = new SearchMultipleCodeHierarchyWindow(codelistMetamacDto, (TreeNode) getSelectedRecord(), uiHandlers);
+                    searchMultipleCodeHierarchyWindow = new SearchMultipleCodeHierarchyWindow(codelistMetamacDto, (TreeNode) getSelectedRecord(), getBaseCodeUiHandlers());
                 }
             }
         });
@@ -84,7 +84,7 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
 
             @Override
             public void onClick(ClickEvent event) {
-                CodesTreeGrid.this.uiHandlers.deleteCode(codelistMetamacDto.getUrn(), selectedCode);
+                getBaseCodeUiHandlers().deleteCode(codelistMetamacDto.getUrn(), selectedCode);
             }
         });
         deleteCodeMenuItem.addClickHandler(new ClickHandler() {

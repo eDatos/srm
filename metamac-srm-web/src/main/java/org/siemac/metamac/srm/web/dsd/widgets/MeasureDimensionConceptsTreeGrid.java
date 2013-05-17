@@ -6,52 +6,77 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.core.common.service.utils.shared.SrmUrnParserUtils;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
+import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
+import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.view.handlers.BaseConceptUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
+import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+import org.siemac.metamac.web.common.client.widgets.CustomLinkTreeGridField;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
+import com.smartgwt.client.data.Record;
+import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.grid.events.CellClickEvent;
+import com.smartgwt.client.widgets.grid.events.CellClickHandler;
 import com.smartgwt.client.widgets.tree.TreeGridField;
 
 public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
+
+    private final static String                CONCEPT_FIELD = "concept-field";
 
     private List<MeasureDimensionPrecisionDto> measureDimensionPrecisionDtos;
 
     public MeasureDimensionConceptsTreeGrid(boolean editionMode) {
         super();
 
-        // Do not show info field
-        infoField.setHidden(true);
-
         setShowFilterEditor(false);
+        setCanCollapseGroup(false);
 
-        TreeGridField showDecimalsPrecision = new TreeGridField(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getConstants().dsdDecimals());
-        showDecimalsPrecision.setWidth("20%");
-        showDecimalsPrecision.setCanEdit(editionMode);
-        showDecimalsPrecision.setCanFilter(false);
-        showDecimalsPrecision.setEditorType(new SelectItem(DataStructureDefinitionDS.SHOW_DECIMALS, getConstants().dsdShowDecimals()));
-        showDecimalsPrecision.setValueMap(org.siemac.metamac.srm.web.dsd.utils.CommonUtils.getDsdShowDecimalsHashMap());
-        showDecimalsPrecision.setShowHover(false);
+        // This field will show the code and the name of the concept
+        codeField = new CustomLinkTreeGridField(CONCEPT_FIELD, getConstants().identifiableArtefactCode());
+        codeField.setWidth("30%");
 
-        ListGridField[] fields = new ListGridField[3];
-        System.arraycopy(getAllFields(), 0, fields, 0, 2);
-        fields[fields.length - 1] = showDecimalsPrecision;
+        TreeGridField showDecimalsPrecisionField = new TreeGridField(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getConstants().dsdDecimals());
+        showDecimalsPrecisionField.setWidth("20%");
+        showDecimalsPrecisionField.setCanEdit(editionMode);
+        showDecimalsPrecisionField.setCanFilter(false);
+        showDecimalsPrecisionField.setEditorType(new SelectItem(DataStructureDefinitionDS.SHOW_DECIMALS, getConstants().dsdShowDecimals()));
+        showDecimalsPrecisionField.setValueMap(org.siemac.metamac.srm.web.dsd.utils.CommonUtils.getDsdShowDecimalsHashMap());
+        showDecimalsPrecisionField.setShowHover(false);
 
-        fields[0].setCanEdit(false);
-        fields[0].setCanFilter(false);
-        fields[1].setCanEdit(false);
-        fields[1].setCanFilter(false);
+        setFields(codeField, showDecimalsPrecisionField);
 
-        setFields(fields);
+        // Add handler to enable the navigation
+
+        cellClickHandlerRegistration.removeHandler();
+        addCellClickHandler(new CellClickHandler() {
+
+            @Override
+            public void onCellClick(CellClickEvent event) {
+                Record record = event.getRecord();
+                ListGridField field = getField(event.getColNum());
+                if (ListGridFieldType.LINK.equals(field.getType()) && CONCEPT_FIELD.equals(field.getName())) {
+                    String urn = record.getAttribute(ConceptDS.URN);
+                    if (SrmUrnParserUtils.isConceptSchemeUrn(urn)) {
+                        MeasureDimensionConceptsTreeGrid.this.uiHandlers.goTo(PlaceRequestUtils.buildAbsoluteConceptSchemePlaceRequest(urn));
+                    } else if (SrmUrnParserUtils.isConceptUrn(urn)) {
+                        MeasureDimensionConceptsTreeGrid.this.uiHandlers.goTo(PlaceRequestUtils.buildAbsoluteConceptPlaceRequest(urn));
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -62,7 +87,7 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
 
     public void setMeasureDimensionPrecisions(List<MeasureDimensionPrecisionDto> measureDimensionPrecisionDtos) {
         this.measureDimensionPrecisionDtos = measureDimensionPrecisionDtos;
-        updateDecimalsPrecision();
+        updateRecords();
     }
 
     public List<MeasureDimensionPrecisionDto> getMeasureDimensionPrecisionDtos() {
@@ -83,10 +108,30 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
         return measureDimensionPrecisionDtos;
     }
 
+    private void updateRecords() {
+        ListGridRecord[] records = getRecords();
+        for (ListGridRecord record : records) {
+            // update concept
+            record.setAttribute(CONCEPT_FIELD, CommonWebUtils.getElementName(record.getAttribute(CodeDS.CODE), CodeDS.NAME));
+            // update decimals
+            record.setAttribute(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getDecimalsByConcept(record.getAttribute(ItemDS.URN)));
+        }
+        markForRedraw();
+    }
+
+    public Integer getDecimalsByConcept(String conceptUrn) {
+        for (MeasureDimensionPrecisionDto measureDimensionPrecisionDto : measureDimensionPrecisionDtos) {
+            if (StringUtils.equals(measureDimensionPrecisionDto.getUrn(), conceptUrn)) {
+                return measureDimensionPrecisionDto.getShowDecimalPrecision();
+            }
+        }
+        return null;
+    }
+
     @Override
     public void setConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ConceptMetamacVisualisationResult> itemHierarchyDtos) {
         super.setConcepts(conceptSchemeMetamacDto, itemHierarchyDtos);
-        updateDecimalsPrecision();
+        updateRecords();
     }
 
     @Override
@@ -107,22 +152,5 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
     @Override
     protected void onNodeContextClick(String nodeName, ItemVisualisationResult concept) {
         // Overwrite this method to do nothing
-    }
-
-    private void updateDecimalsPrecision() {
-        ListGridRecord[] records = getRecords();
-        for (ListGridRecord record : records) {
-            record.setAttribute(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getDecimalsByConcept(record.getAttribute(ItemDS.URN)));
-        }
-        markForRedraw();
-    }
-
-    public Integer getDecimalsByConcept(String conceptUrn) {
-        for (MeasureDimensionPrecisionDto measureDimensionPrecisionDto : measureDimensionPrecisionDtos) {
-            if (StringUtils.equals(measureDimensionPrecisionDto.getUrn(), conceptUrn)) {
-                return measureDimensionPrecisionDto.getShowDecimalPrecision();
-            }
-        }
-        return null;
     }
 }

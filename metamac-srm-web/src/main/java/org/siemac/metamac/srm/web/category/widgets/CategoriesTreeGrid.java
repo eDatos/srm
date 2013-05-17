@@ -29,8 +29,6 @@ public class CategoriesTreeGrid extends ItemsTreeGrid {
     private CategorySchemeMetamacDto categorySchemeMetamacDto;
     private ItemVisualisationResult  selectedCategory;
 
-    private BaseCategoryUiHandlers   uiHandlers;
-
     public CategoriesTreeGrid() {
 
         // Context menu
@@ -49,7 +47,7 @@ public class CategoriesTreeGrid extends ItemsTreeGrid {
                             CategoryMetamacDto categoryMetamacDto = newCategoryWindow.getNewCategoryDto();
                             categoryMetamacDto.setItemSchemeVersionUrn(categorySchemeMetamacDto.getUrn()); // Set category scheme URN
                             categoryMetamacDto.setItemParentUrn(selectedCategory != null ? selectedCategory.getUrn() : null); // Set category parent URN
-                            CategoriesTreeGrid.this.uiHandlers.saveCategory(categoryMetamacDto);
+                            getBaseCategoryUiHandlers().saveCategory(categoryMetamacDto);
                             newCategoryWindow.destroy();
                         }
                     }
@@ -63,7 +61,7 @@ public class CategoriesTreeGrid extends ItemsTreeGrid {
 
             @Override
             public void onClick(ClickEvent event) {
-                CategoriesTreeGrid.this.uiHandlers.deleteCategory(selectedCategory);
+                getBaseCategoryUiHandlers().deleteCategory(selectedCategory);
             }
         });
         deleteCategoryMenuItem.addClickHandler(new ClickHandler() {
@@ -90,15 +88,14 @@ public class CategoriesTreeGrid extends ItemsTreeGrid {
 
     public void setUiHandlers(BaseCategoryUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
-        this.uiHandlers = uiHandlers;
     }
 
     @Override
     protected void onNodeClick(String nodeName, String urn) {
         if (SCHEME_NODE_NAME.equals(nodeName)) {
-            uiHandlers.goToCategoryScheme(urn);
+            getBaseCategoryUiHandlers().goToCategoryScheme(urn);
         } else {
-            uiHandlers.goToCategory(urn);
+            getBaseCategoryUiHandlers().goToCategory(urn);
         }
     }
 
@@ -121,5 +118,9 @@ public class CategoriesTreeGrid extends ItemsTreeGrid {
     @Override
     protected com.smartgwt.client.widgets.viewer.DetailViewerField[] getDetailViewerFields() {
         return ResourceFieldUtils.getCategoryDetailViewerFields();
+    }
+
+    private BaseCategoryUiHandlers getBaseCategoryUiHandlers() {
+        return (BaseCategoryUiHandlers) uiHandlers;
     }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.MeasureDimensionPrecisionDto;
+import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCanvasItem;
 
@@ -47,5 +48,9 @@ public class ShowDecimalsPrecisionItem extends CustomCanvasItem {
 
     public List<MeasureDimensionPrecisionDto> getMeasureDimensionPrecisionDtos() {
         return measureDimensionConceptsTreeGrid.getMeasureDimensionPrecisionDtos();
+    }
+
+    public void setUiHandlers(DsdGeneralTabUiHandlers uiHandlers) {
+        measureDimensionConceptsTreeGrid.setUiHandlers(uiHandlers);
     }
 }
