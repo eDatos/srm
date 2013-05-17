@@ -104,7 +104,7 @@ public class ResourceFieldUtils {
     public static CustomListGridField[] getCodelistListGridFields() {
         CustomListGridField isRecommended = new CustomListGridField(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
 
-        CustomListGridField variable = new CustomListGridField(CodelistDS.VARIABLE, getConstants().variable());
+        CustomLinkListGridField variable = new CustomLinkListGridField(CodelistDS.VARIABLE, getConstants().variable());
         variable.setHidden(true);
 
         return ListGridUtils.addFields(getVersionableResourceListGridFields(), isRecommended, variable);
