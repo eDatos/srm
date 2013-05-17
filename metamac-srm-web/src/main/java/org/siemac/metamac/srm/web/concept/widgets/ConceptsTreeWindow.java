@@ -7,7 +7,6 @@ import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisa
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
@@ -43,10 +42,6 @@ public class ConceptsTreeWindow extends CustomWindow {
 
         // Do not filter concepts
         conceptsTreeGrid.setShowFilterEditor(false);
-
-        // Do not show TYPE and SDMX_RELATED_ARTEFACT fields
-        conceptsTreeGrid.getField(ConceptDS.TYPE).setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
-        conceptsTreeGrid.getField(ConceptDS.SDMX_RELATED_ARTEFACT).setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
 
         // Change selection type (checkBox)
         conceptsTreeGrid.setSelectionType(SelectionStyle.SIMPLE);

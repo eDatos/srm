@@ -43,7 +43,6 @@ public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordU
         record.setCode(concept.getCode());
         record.setName(concept.getName());
         record.setUrn(concept.getUrn());
-        // TODO ConceptSchemeUrn
         return record;
     }
 
