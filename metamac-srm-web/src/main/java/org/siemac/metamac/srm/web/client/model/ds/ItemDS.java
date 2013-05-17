@@ -24,6 +24,7 @@ public class ItemDS extends DataSource {
 
     public static String       ITEM_PARENT_URN = "item-parent-urn";
     public static String       ITEM_SCHEME_URN = "item-scheme-urn";
+    public static String       ITEM_SCHEME     = "item-scheme";       // For lists
 
     public static final String IS_LAST_VERSION = "item-last-version"; // For advanced search
 

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
+import org.siemac.metamac.srm.web.client.widgets.NavigablePaginatedListGrid;
+import org.siemac.metamac.srm.web.client.widgets.NavigableListGrid;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptsPresenter;
@@ -11,7 +13,6 @@ import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptsUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSearchSectionStack;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsResult;
-import org.siemac.metamac.web.common.client.widgets.PaginatedListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -29,7 +30,7 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
 
     private ConceptSearchSectionStack searchSectionStack;
 
-    private PaginatedListGrid         conceptsListGrid;
+    private NavigablePaginatedListGrid     conceptsListGrid;
 
     @Inject
     public ConceptsViewImpl() {
@@ -40,7 +41,7 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
 
         // Concepts
 
-        conceptsListGrid = new PaginatedListGrid(ConceptsPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
+        conceptsListGrid = new NavigablePaginatedListGrid(ConceptsPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
@@ -83,6 +84,7 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
     public void setUiHandlers(ConceptsUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         searchSectionStack.setUiHandlers(uiHandlers);
+        ((NavigableListGrid) conceptsListGrid.getListGrid()).setUiHandlers(uiHandlers);
     }
 
     @Override

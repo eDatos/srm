@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
+import org.siemac.metamac.web.common.client.widgets.CustomLinkListGridField;
 import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 
 import com.smartgwt.client.widgets.grid.GroupNode;
@@ -181,10 +182,12 @@ public class ResourceFieldUtils {
 
         CustomListGridField name = new CustomListGridField(ItemDS.NAME, getConstants().nameableArtefactName());
 
+        CustomLinkListGridField itemScheme = new CustomLinkListGridField(ItemDS.ITEM_SCHEME, getConstants().itemScheme());
+
         CustomListGridField creationDate = new CustomListGridField(ItemDS.CREATION_DATE, getConstants().identifiableArtefactCreationDate());
         creationDate.setHidden(true);
 
-        return new CustomListGridField[]{code, urn, name, creationDate};
+        return new CustomListGridField[]{code, urn, name, itemScheme, creationDate};
     }
 
     public static DetailViewerField[] getItemDetailViewerFields() {

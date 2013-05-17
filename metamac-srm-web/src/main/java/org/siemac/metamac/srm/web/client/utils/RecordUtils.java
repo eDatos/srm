@@ -74,6 +74,7 @@ public class RecordUtils {
         record.setName(getLocalisedString(itemMetamacBasicDto.getName()));
         record.setCreationDate(DateUtils.getFormattedDate(itemMetamacBasicDto.getCreatedDate()));
         record.setItemSchemeUrn(itemMetamacBasicDto.getItemSchemeVersion().getUrn());
+        record.setItemScheme(itemMetamacBasicDto.getItemSchemeVersion());
         return record;
     }
 

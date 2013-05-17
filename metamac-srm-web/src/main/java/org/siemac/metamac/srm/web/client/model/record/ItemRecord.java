@@ -3,6 +3,8 @@ package org.siemac.metamac.srm.web.client.model.record;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.web.common.client.widgets.NavigableListGridRecord;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+
 public class ItemRecord extends NavigableListGridRecord {
 
     public ItemRecord() {
@@ -26,6 +28,10 @@ public class ItemRecord extends NavigableListGridRecord {
 
     public void setItemSchemeUrn(String value) {
         setAttribute(ItemDS.ITEM_SCHEME_URN, value);
+    }
+
+    public void setItemScheme(RelatedResourceDto relatedResourceDto) {
+        setRelatedResource(ItemDS.ITEM_SCHEME, relatedResourceDto);
     }
 
     public String getItemSchemeUrn() {

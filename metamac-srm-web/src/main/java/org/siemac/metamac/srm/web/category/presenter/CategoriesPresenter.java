@@ -3,6 +3,8 @@ package org.siemac.metamac.srm.web.category.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.category.enums.CategoriesToolStripButtonEnum;
@@ -123,6 +125,17 @@ public class CategoriesPresenter extends Presenter<CategoriesPresenter.Categorie
                 getView().setCategories(result);
             }
         });
+    }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
     }
 
     @Override
