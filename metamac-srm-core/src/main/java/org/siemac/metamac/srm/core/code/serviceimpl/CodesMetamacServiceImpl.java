@@ -224,7 +224,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return codelistVersion;
     }
 
-    // Note: variable can not be changed after codelist is published, because other restrictions could be violated (see ConceptsMetamacService.checkConceptEnumeratedRepresentation)
     @Override
     public CodelistVersionMetamac updateCodelist(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
         // Validation
@@ -238,6 +237,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // if variable is changed, remove variable elements of codes
         if (codelistVersion.getIsVariableUpdated()) {
+            // codelist can not be temporal, because it can merge in original version, and in this case variable must be inmutable
+            SrmValidationUtils.checkArtefactIsNotTemporal(codelistVersion.getMaintainableArtefact());
+            // actions in codes
             getCodeMetamacRepository().clearCodesVariableElementByCodelist(codelistVersion);
         }
 
