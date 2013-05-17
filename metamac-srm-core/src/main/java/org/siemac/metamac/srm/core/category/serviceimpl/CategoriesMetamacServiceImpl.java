@@ -384,6 +384,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     public Categorisation createCategorisation(ServiceContext ctx, String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException {
 
         preCreateCategorisation(ctx, categoryUrn, artefactCategorisedUrn, maintainerUrn);
+        srmValidation.checkMaintainerIsDefault(ctx, maintainerUrn);
 
         // Create
         Categorisation categorisation = categoriesService.createCategorisation(ctx, categoryUrn, artefactCategorisedUrn, maintainerUrn, SrmConstants.VERSION_PATTERN_METAMAC);
@@ -424,6 +425,12 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Override
     public void deleteCategorisation(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        Categorisation categorisation = retrieveCategorisationByUrn(ctx, urn);
+        srmValidation.checkMaintainerIsDefault(ctx, categorisation.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn());
+
+        // Delete
         categoriesService.deleteCategorisation(ctx, urn);
     }
 

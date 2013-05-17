@@ -28,6 +28,14 @@ public class SrmValidationImpl implements SrmValidation {
     private SrmConfiguration            srmConfiguration;
 
     @Override
+    public void checkMaintainerIsDefault(ServiceContext ctx, String maintainerUrn) throws MetamacException {
+        String maintainerUrnDefault = srmConfiguration.retrieveMaintainerUrnDefault(); // can not be empty
+        if (!maintainerUrnDefault.equals(maintainerUrn)) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINER_MUST_BE_DEFAULT).withMessageParameters(maintainerUrn, maintainerUrnDefault).build();
+        }
+    }
+
+    @Override
     public void checkMaintainer(ServiceContext ctx, MaintainableArtefact maintainableArtefact, Boolean artefactImported) throws MetamacException {
         if (SdmxSrmUtils.isAgencySchemeSdmx(maintainableArtefact.getUrn())) {
             // AgencyScheme root has not maintainer
@@ -46,10 +54,7 @@ public class SrmValidationImpl implements SrmValidation {
 
         // If artefact is not imported, maintainer must be the default one
         if (!BooleanUtils.isTrue(artefactImported)) {
-            String maintainerUrnDefault = srmConfiguration.retrieveMaintainerUrnDefault(); // can not be empty
-            if (!maintainerUrnDefault.equals(maintainerUrn)) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINER_MUST_BE_DEFAULT).withMessageParameters(maintainerUrn, maintainerUrnDefault).build();
-            }
+            checkMaintainerIsDefault(ctx, maintainerUrn);
         }
     }
 
