@@ -68,7 +68,7 @@ public class ResourceFieldUtils {
     public static CustomListGridField[] getConceptSchemeListGridFields() {
         CustomListGridField typeField = new CustomListGridField(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
 
-        CustomListGridField statisticalOperation = new CustomListGridField(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
+        CustomLinkListGridField statisticalOperation = new CustomLinkListGridField(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
         statisticalOperation.setHidden(true);
 
         return ListGridUtils.addFields(getVersionableResourceListGridFields(), typeField, statisticalOperation);
@@ -78,7 +78,7 @@ public class ResourceFieldUtils {
         CustomListGridField acronym = new CustomListGridField(ConceptDS.ACRONYM, getConstants().conceptAcronym());
         acronym.setHidden(true);
 
-        CustomListGridField variable = new CustomListGridField(ConceptDS.VARIABLE, getConstants().variable());
+        CustomLinkListGridField variable = new CustomLinkListGridField(ConceptDS.VARIABLE, getConstants().variable());
         variable.setHidden(true);
 
         CustomListGridField sdmxRelatedArtefact = new CustomListGridField(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());

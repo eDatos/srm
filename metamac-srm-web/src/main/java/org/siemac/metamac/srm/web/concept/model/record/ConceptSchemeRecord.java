@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.concept.model.record;
 
+import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.model.record.VersionableResourceRecord;
@@ -15,8 +16,8 @@ public class ConceptSchemeRecord extends VersionableResourceRecord {
         setAttribute(ConceptSchemeDS.TYPE, value);
     }
 
-    public void setStatisticalOperation(String value) {
-        setAttribute(ConceptSchemeDS.RELATED_OPERATION, value);
+    public void setStatisticalOperation(ExternalItemDto value) {
+        setExternalItem(ConceptSchemeDS.RELATED_OPERATION, value);
     }
 
     public ProcStatusEnum getProcStatus() {

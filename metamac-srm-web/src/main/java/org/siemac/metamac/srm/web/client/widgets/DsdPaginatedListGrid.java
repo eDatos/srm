@@ -7,15 +7,14 @@ import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
-import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.smartgwt.client.types.Autofit;
 
-public class DsdPaginatedListGrid extends PaginatedCheckListGrid {
+public class DsdPaginatedListGrid extends VersionableResourcePaginatedCheckListGrid {
 
     public DsdPaginatedListGrid(int maxResults, PaginatedAction action) {
-        super(maxResults, new VersionableResourceCustomListGrid(), action);
+        super(maxResults, action);
 
         getListGrid().setAutoFitMaxRecords(DsdListPresenter.DSD_LIST_MAX_RESULTS);
         getListGrid().setAutoFitData(Autofit.VERTICAL);

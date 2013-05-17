@@ -4,6 +4,8 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.model.record.ItemRecord;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+
 public class ConceptRecord extends ItemRecord {
 
     public ConceptRecord() {
@@ -13,8 +15,8 @@ public class ConceptRecord extends ItemRecord {
         setAttribute(ConceptDS.ACRONYM, value);
     }
 
-    public void setVariable(String value) {
-        setAttribute(ConceptDS.VARIABLE, value);
+    public void setVariable(RelatedResourceDto value) {
+        setRelatedResource(ConceptDS.VARIABLE, value);
     }
 
     public void setSdmxRelatedArtefact(String value) {
