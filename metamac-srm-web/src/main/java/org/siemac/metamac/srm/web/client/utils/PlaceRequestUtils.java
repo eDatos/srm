@@ -448,15 +448,36 @@ public class PlaceRequestUtils {
                 String variableUrn = SrmUrnParserUtils.getVariableUrnFromVariableElementUrn(urn);
                 String variableCode = UrnUtils.removePrefix(variableUrn);
                 return buildAbsoluteVariableElementPlaceRequest(variableCode, relatedResourceDto.getCode());
-            } else if (SrmUrnParserUtils.isAgencyUrn(urn)) {
-                String agencySchemeUrn = SrmUrnParserUtils.getAgencySchemeUrnFromAgencyUrn(urn);
-                return buildAbsoluteOrganisationPlaceRequest(agencySchemeUrn, urn, OrganisationSchemeTypeEnum.AGENCY_SCHEME);
+            } else if (SrmUrnParserUtils.isCategorySchemeUrn(urn)) {
+                return buildAbsoluteCategorySchemePlaceRequest(urn);
             } else if (SrmUrnParserUtils.isCategoryUrn(urn)) {
                 String categorySchemeUrn = SrmUrnParserUtils.getCategorySchemeUrnFromCategoryUrn(urn);
                 return buildAbsoluteCategoryPlaceRequest(categorySchemeUrn, urn);
+            } else if (SrmUrnParserUtils.isConceptSchemeUrn(urn)) {
+                return buildAbsoluteConceptSchemePlaceRequest(urn);
             } else if (SrmUrnParserUtils.isConceptUrn(urn)) {
                 String conceptSchemeUrn = SrmUrnParserUtils.getConceptSchemeUrnFromConceptUrn(urn);
                 return buildAbsoluteConceptPlaceRequest(conceptSchemeUrn, urn);
+            } else if (SrmUrnParserUtils.isAgencySchemeUrn(urn)) {
+                return buildAbsoluteOrganisationSchemePlaceRequest(urn, OrganisationSchemeTypeEnum.AGENCY_SCHEME);
+            } else if (SrmUrnParserUtils.isAgencyUrn(urn)) {
+                String agencySchemeUrn = SrmUrnParserUtils.getAgencySchemeUrnFromAgencyUrn(urn);
+                return buildAbsoluteOrganisationPlaceRequest(agencySchemeUrn, urn, OrganisationSchemeTypeEnum.AGENCY_SCHEME);
+            } else if (SrmUrnParserUtils.isDataConsumerSchemeUrn(urn)) {
+                return buildAbsoluteOrganisationSchemePlaceRequest(urn, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
+            } else if (SrmUrnParserUtils.isDataConsumerUrn(urn)) {
+                String dataConsumerSchemeUrn = SrmUrnParserUtils.getDataConsumerSchemeUrnFromDataConsumerUrn(urn);
+                return buildAbsoluteOrganisationPlaceRequest(dataConsumerSchemeUrn, urn, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
+            } else if (SrmUrnParserUtils.isDataProviderSchemeUrn(urn)) {
+                return buildAbsoluteOrganisationSchemePlaceRequest(urn, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
+            } else if (SrmUrnParserUtils.isDataProviderUrn(urn)) {
+                String dataProviderSchemeUrn = SrmUrnParserUtils.getDataProviderSchemeUrnFromDataProviderUrn(urn);
+                return buildAbsoluteOrganisationPlaceRequest(dataProviderSchemeUrn, urn, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
+            } else if (SrmUrnParserUtils.isOrganisationUnitSchemeUrn(urn)) {
+                return buildAbsoluteOrganisationSchemePlaceRequest(urn, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
+            } else if (SrmUrnParserUtils.isOrganisationUnitUrn(urn)) {
+                String organisationUnitSchemeUrn = SrmUrnParserUtils.getOrganisationUnitSchemeUrnFromOrganisationUnitUrn(urn);
+                return buildAbsoluteOrganisationPlaceRequest(organisationUnitSchemeUrn, urn, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
             }
         }
         return null;
