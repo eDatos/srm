@@ -686,7 +686,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         BooleanSelectItem isRecommended = new BooleanSelectItem(CodelistDS.IS_RECOMMENDED, getConstants().codelistIsRecommended());
         SearchRelatedResourceLinkItem family = createFamilyItem(CodelistDS.FAMILY, getConstants().codelistFamily());
         SearchRelatedResourceLinkItem variable = createVariableItem(CodelistDS.VARIABLE, getConstants().variable());
-        contentDescriptorsEditionForm.setFields(description, descriptionSource, partial, isExternalReference, isFinal, isRecommended, family, variable);
+        variable.setShowIfCondition(getVariableFormItemIfFunction());
+        RelatedResourceLinkItem staticVariable = new RelatedResourceLinkItem(CodelistDS.VARIABLE_VIEW, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
+        staticVariable.setShowIfCondition(getStaticVariableFormItemIfFunction());
+        contentDescriptorsEditionForm.setFields(description, descriptionSource, partial, isExternalReference, isFinal, isRecommended, family, variable, staticVariable);
 
         // PRODUCTION DESCRIPTORS
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -831,6 +834,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ((BooleanSelectItem) contentDescriptorsEditionForm.getItem(CodelistDS.IS_RECOMMENDED)).setBooleanValue(codelistDto.getIsRecommended());
         ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.FAMILY)).setRelatedResource(codelistDto.getFamily());
         ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.VARIABLE)).setRelatedResource(codelistDto.getVariable());
+        ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.VARIABLE_VIEW)).setRelatedResource(codelistDto.getVariable());
+        contentDescriptorsEditionForm.markForRedraw();
 
         // PRODUCTION DESCRIPTORS
         ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(CodelistDS.MAINTAINER)).setRelatedResource(codelistDto.getMaintainer());
@@ -1144,6 +1149,28 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !CodesFormUtils.canCodelistCodeBeEdited(codelistDto);
+            }
+        };
+    }
+
+    // VARIABLE
+
+    private FormItemIfFunction getVariableFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CodesFormUtils.canCodelistVariableBeEdited(codelistDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticVariableFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !CodesFormUtils.canCodelistVariableBeEdited(codelistDto);
             }
         };
     }

@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.code.utils;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
@@ -23,6 +24,15 @@ public class CodesFormUtils {
         }
         return org.siemac.metamac.srm.web.client.utils.CommonUtils.canCodeBeEdited(codelistDto.getLifeCycle().getProcStatus(), codelistDto.getVersionLogic())
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(codelistDto);
+    }
+
+    // VARIABLE
+
+    public static boolean canCodelistVariableBeEdited(CodelistMetamacDto codelistDto) {
+        if (codelistDto == null) {
+            return false;
+        }
+        return !VersionUtil.isTemporalVersion(codelistDto.getVersionLogic());
     }
 
     // ---------------------------------------------------------------------------------------------
