@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
@@ -474,7 +475,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
      * If it is an enumerated representation must be a codelist of same variable of concept and must be published
      */
     @Override
-    public MetamacExceptionItem checkConceptEnumeratedRepresentation(ServiceContext ctx, ConceptMetamac concept, boolean throwException) throws MetamacException {
+    public MetamacExceptionItem checkConceptEnumeratedRepresentation(ServiceContext ctx, ConceptMetamac concept, boolean throwException, Boolean isImported) throws MetamacException {
 
         // NOTE: do not call 'findCodelistsCanBeEnumeratedRepresentationForConceptByCondition' to throw specific exception
 
@@ -485,17 +486,22 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         CodelistVersionMetamac codelistVersion = (CodelistVersionMetamac) concept.getCoreRepresentation().getEnumerationCodelist();
         String codelistUrn = codelistVersion.getMaintainableArtefact().getUrn();
 
-        // 1) Check codelist published
-        MetamacExceptionItem exceptionItem = SrmValidationUtils.checkArtefactProcStatusReturningExceptionItem(codelistVersion.getLifeCycleMetadata(), codelistUrn, ProcStatusEnum.INTERNALLY_PUBLISHED,
-                ProcStatusEnum.EXTERNALLY_PUBLISHED);
-        if (exceptionItem == null) {
-            // 2) Check variable
-            if (concept.getVariable() == null || !concept.getVariable().getId().equals(codelistVersion.getVariable().getId())) {
-                exceptionItem = MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE)
-                        .withMessageParameters(concept.getNameableArtefact().getCode(), codelistUrn).build();
-            }
+        MetamacExceptionItem exceptionItem = null;
+        if (!BooleanUtils.isTrue(isImported)) {
+            // 1) Check codelist published
+            exceptionItem = SrmValidationUtils.checkArtefactProcStatusReturningExceptionItem(codelistVersion.getLifeCycleMetadata(), codelistUrn, ProcStatusEnum.INTERNALLY_PUBLISHED,
+                    ProcStatusEnum.EXTERNALLY_PUBLISHED);
+            if (exceptionItem == null) {
+                // 2) Check variable
+                if (concept.getVariable() == null || !concept.getVariable().getId().equals(codelistVersion.getVariable().getId())) {
+                    exceptionItem = MetamacExceptionItemBuilder.metamacExceptionItem()
+                            .withCommonServiceExceptionType(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE)
+                            .withMessageParameters(concept.getNameableArtefact().getCode(), codelistUrn).build();
+                }
 
+            }
         }
+
         if (exceptionItem != null && throwException) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(Arrays.asList(exceptionItem)).build();
         }
@@ -982,7 +988,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private void checkConceptToCreateOrUpdate(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) throws MetamacException {
         checkConceptSchemeCanBeModified(conceptSchemeVersion);
         checkConceptMetadataExtends(ctx, concept, conceptSchemeVersion.getMaintainableArtefact().getUrn());
-        checkConceptEnumeratedRepresentation(ctx, concept, true);
+        checkConceptEnumeratedRepresentation(ctx, concept, true, conceptSchemeVersion.getMaintainableArtefact().getIsImported());
     }
 
     private void checkConceptMetadataExtends(ServiceContext ctx, ConceptMetamac concept, String conceptSchemeUrn) throws MetamacException {

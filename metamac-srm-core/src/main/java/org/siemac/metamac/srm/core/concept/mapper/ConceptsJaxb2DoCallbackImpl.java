@@ -130,6 +130,10 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
             targetMetamac.setConceptExtends(previousMetamac.getConceptExtends());
             targetMetamac.setLegalActs(BaseCopyAllMetadataUtils.copy(previousMetamac.getLegalActs()));
 
+        } else {
+            if (targetMetamac.getCoreRepresentation() != null && RepresentationTypeEnum.ENUMERATION.equals(targetMetamac.getCoreRepresentation().getRepresentationType())) {
+                targetMetamac.setVariable(((CodelistVersionMetamac) targetMetamac.getCoreRepresentation().getEnumerationCodelist()).getVariable());
+            }
         }
 
         // Fill metadata
