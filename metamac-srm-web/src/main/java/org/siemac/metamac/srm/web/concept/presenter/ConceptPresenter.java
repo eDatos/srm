@@ -261,6 +261,26 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
+    public void deleteConcept(final ConceptMetamacDto conceptMetamacDto) {
+        dispatcher.execute(new DeleteConceptAction(conceptMetamacDto.getUrn()), new WaitingAsyncCallback<DeleteConceptResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteConceptResult result) {
+                // If deleted concept had a concept parent, go to this concept parent. If not, go to the concept scheme.
+                if (conceptMetamacDto.getItemParentUrn() != null) {
+                    goToConcept(conceptMetamacDto.getItemParentUrn());
+                } else {
+                    goToConceptScheme(conceptSchemeUrn);
+                }
+            }
+        });
+    }
+
+    @Override
     public void retrieveConceptTypes() {
         if (conceptTypeDtos == null) {
             dispatcher.execute(new FindAllConceptTypesAction(), new WaitingAsyncCallback<FindAllConceptTypesResult>() {

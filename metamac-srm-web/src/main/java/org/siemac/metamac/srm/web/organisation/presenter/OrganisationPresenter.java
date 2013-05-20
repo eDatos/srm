@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
@@ -237,6 +238,27 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
                 // If deleted organisation had a organisation parent, go to this organisation parent. If not, go to the organisation scheme.
                 if (itemVisualisationResult.getParent() != null && itemVisualisationResult.getParent().getUrn() != null) {
                     goToOrganisation(itemVisualisationResult.getParent().getUrn());
+                } else {
+                    goToOrganisationScheme(organisationSchemeUrn);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void deleteOrganisation(final OrganisationMetamacDto organisationMetamacDto) {
+        dispatcher.execute(new DeleteOrganisationsAction(Arrays.asList(organisationMetamacDto.getUrn())), new WaitingAsyncCallback<DeleteOrganisationsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteOrganisationsResult result) {
+                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationDeleted()), MessageTypeEnum.SUCCESS);
+                // If deleted organisation had a organisation parent, go to this organisation parent. If not, go to the organisation scheme.
+                if (organisationMetamacDto.getItemParentUrn() != null) {
+                    goToOrganisation(organisationMetamacDto.getItemParentUrn());
                 } else {
                     goToOrganisationScheme(organisationSchemeUrn);
                 }

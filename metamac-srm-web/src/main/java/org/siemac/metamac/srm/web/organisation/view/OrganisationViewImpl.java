@@ -23,13 +23,13 @@ import org.siemac.metamac.srm.web.organisation.utils.OrganisationsFormUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.ContactMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationContactSearchSectionStack;
+import org.siemac.metamac.srm.web.organisation.widgets.OrganisationMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
@@ -67,7 +67,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
     private TitleLabel                            titleLabel;
     private VLayout                               panel;
-    private InternationalMainFormLayout           mainFormLayout;
+    private OrganisationMainFormLayout            mainFormLayout;
 
     private CustomVLayout                         organisationsTreeGridLayout;
     private OrganisationsTreeGrid                 organisationsTreeGrid;
@@ -120,7 +120,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         // ORGANISATION
         //
 
-        mainFormLayout = new InternationalMainFormLayout();
+        mainFormLayout = new OrganisationMainFormLayout();
         bindMainFormLayoutEvents();
 
         createViewForm();
@@ -308,6 +308,14 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             }
         });
 
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteOrganisation(organisationDto);
+            }
+        });
+
         mainFormLayout.getSave().addClickHandler(new ClickHandler() {
 
             @Override
@@ -475,7 +483,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         this.organisationSchemeMetamacDto = organisationSchemeMetamacDto;
 
         // Security
-        mainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType()));
+        mainFormLayout.setOrganisationScheme(organisationSchemeMetamacDto);
         contactMainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateContact(organisationSchemeMetamacDto));
         contactNewButton.setVisibility(OrganisationsClientSecurityUtils.canCreateContact(organisationSchemeMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
 

@@ -11,6 +11,7 @@ public interface OrganisationUiHandlers extends BaseOrganisationUiHandlers {
 
     void retrieveOrganisation(String organisationUrn);
     void updateOrganisation(OrganisationMetamacDto organisationDto);
+    void deleteOrganisation(OrganisationMetamacDto organisationMetamacDto);
     void retrieveOrganisationListByScheme(String organisationSchemeUrn);
     void retrieveContacts(OrganisationContactWebCriteria criteria);
     void updateContacts(List<ContactDto> contacts, Long contactToUpdateId);

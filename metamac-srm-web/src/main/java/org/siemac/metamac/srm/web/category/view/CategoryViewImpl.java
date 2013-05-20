@@ -10,10 +10,10 @@ import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.category.model.ds.CategoryDS;
 import org.siemac.metamac.srm.web.category.presenter.CategoryPresenter;
-import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.category.utils.CategoriesFormUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategoryUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategoriesTreeGrid;
+import org.siemac.metamac.srm.web.category.widgets.CategoryMainFormLayout;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
@@ -21,7 +21,6 @@ import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
@@ -41,27 +40,27 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> implements CategoryPresenter.CategoryView {
 
-    private VLayout                     panel;
-    private InternationalMainFormLayout mainFormLayout;
+    private VLayout                  panel;
+    private CategoryMainFormLayout   mainFormLayout;
 
-    private CategoriesTreeGrid          categoriesTreeGrid;
+    private CategoriesTreeGrid       categoriesTreeGrid;
 
     // View forms
-    private GroupDynamicForm            identifiersForm;
-    private GroupDynamicForm            productionDescriptorsForm;
-    private GroupDynamicForm            contentDescriptorsForm;
-    private GroupDynamicForm            commentsForm;
-    private AnnotationsPanel            annotationsPanel;
+    private GroupDynamicForm         identifiersForm;
+    private GroupDynamicForm         productionDescriptorsForm;
+    private GroupDynamicForm         contentDescriptorsForm;
+    private GroupDynamicForm         commentsForm;
+    private AnnotationsPanel         annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm            identifiersEditionForm;
-    private GroupDynamicForm            productionDescriptorsEditionForm;
-    private GroupDynamicForm            contentDescriptorsEditionForm;
-    private GroupDynamicForm            commentsEditionForm;
-    private AnnotationsPanel            annotationsEditionPanel;
+    private GroupDynamicForm         identifiersEditionForm;
+    private GroupDynamicForm         productionDescriptorsEditionForm;
+    private GroupDynamicForm         contentDescriptorsEditionForm;
+    private GroupDynamicForm         commentsEditionForm;
+    private AnnotationsPanel         annotationsEditionPanel;
 
-    private CategorySchemeMetamacDto    categorySchemeDto;
-    private CategoryMetamacDto          categoryDto;
+    private CategorySchemeMetamacDto categorySchemeDto;
+    private CategoryMetamacDto       categoryDto;
 
     public CategoryViewImpl() {
         super();
@@ -83,7 +82,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         // CATEGORY
         //
 
-        mainFormLayout = new InternationalMainFormLayout();
+        mainFormLayout = new CategoryMainFormLayout();
         bindMainFormLayoutEvents();
 
         createViewForm();
@@ -149,7 +148,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         this.categorySchemeDto = categorySchemeMetamacDto;
 
         // Security
-        mainFormLayout.setCanEdit(CategoriesClientSecurityUtils.canUpdateCategory(categorySchemeDto.getLifeCycle().getProcStatus()));
+        mainFormLayout.setCategoryScheme(categorySchemeDto);
 
         markFormsForRedraw();
     }
@@ -301,6 +300,14 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
                 annotationsPanel.setTranslationsShowed(translationsShowed);
                 annotationsEditionPanel.setTranslationsShowed(translationsShowed);
+            }
+        });
+
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteCategory(categoryDto);
             }
         });
 

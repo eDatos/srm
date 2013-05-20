@@ -256,9 +256,8 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         boolean allSelectedSchemesCanBeDeleted = true;
         for (ListGridRecord record : records) {
             ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto = ((ConceptSchemeRecord) record).getConceptSchemeBasicDto();
-            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getLifeCycle().getProcStatus())
-                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getLifeCycle().getProcStatus())
-                    || !ConceptsClientSecurityUtils.canDeleteConceptScheme(conceptSchemeMetamacDto.getType(), CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
+            if (!ConceptsClientSecurityUtils.canDeleteConceptScheme(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
+                    CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;
             }

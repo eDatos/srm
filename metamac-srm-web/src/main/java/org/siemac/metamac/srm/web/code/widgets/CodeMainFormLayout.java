@@ -18,9 +18,10 @@ public class CodeMainFormLayout extends InternationalMainFormLayout {
         common();
     }
 
-    public CodeMainFormLayout(boolean canEdit) {
-        super(canEdit);
-        common();
+    public void setCodelist(CodelistMetamacDto codelistMetamacDto) {
+        setCanEdit(CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto));
+        setCanDelete(CodesClientSecurityUtils.canDeleteCode(codelistMetamacDto));
+        updateButtonsVisibility(codelistMetamacDto);
     }
 
     private void common() {
@@ -35,7 +36,7 @@ public class CodeMainFormLayout extends InternationalMainFormLayout {
     }
 
     public void updateButtonsVisibility(CodelistMetamacDto codelistMetamacDto) {
-        if (CommonUtils.isItemSchemePublished(codelistMetamacDto.getLifeCycle().getProcStatus())) {
+        if (CommonUtils.isMaintainableArtefactPublished(codelistMetamacDto.getLifeCycle().getProcStatus())) {
             showUpdateVariableElementButton(codelistMetamacDto);
         } else {
             updateVariableElementButton.hide();

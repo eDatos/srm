@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +65,8 @@ import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOpennessLevelsAction
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOpennessLevelsResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOrdersAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistOrdersResult;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistsAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.ExportCodesAction;
 import org.siemac.metamac.srm.web.shared.code.ExportCodesOrderAction;
 import org.siemac.metamac.srm.web.shared.code.ExportCodesOrderResult;
@@ -324,6 +327,22 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 getView().setCodelist(codelistMetamacDto);
 
                 updateUrl();
+            }
+        });
+    }
+
+    @Override
+    public void deleteCodelist(String urn) {
+        dispatcher.execute(new DeleteCodelistsAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteCodelistsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteCodelistsResult result) {
+                ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistDeleted()), MessageTypeEnum.SUCCESS);
+                goTo(PlaceRequestUtils.buildAbsoluteCodelistsPlaceRequest());
             }
         });
     }

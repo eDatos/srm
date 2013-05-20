@@ -12,8 +12,8 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
 
     void retrieveCodelistVersions(String codelistUrn);
     void saveCodelist(CodelistMetamacDto codelist);
+    void deleteCodelist(String urn);
     void cancelValidity(String urn);
-    void goToCodelist(String urn);
     void addCodelistToFamily(String codelistUrn, String familyUrn);
     void retrieveLatestCodelist(CodelistMetamacDto codelistMetamacDto);
     void exportCodelist(String urn);

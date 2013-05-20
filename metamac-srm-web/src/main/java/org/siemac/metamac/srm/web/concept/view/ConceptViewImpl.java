@@ -30,10 +30,10 @@ import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
-import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsFormUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptFacetForm;
+import org.siemac.metamac.srm.web.concept.widgets.ConceptMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsListItem;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeWindow;
@@ -51,7 +51,6 @@ import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
@@ -88,7 +87,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> implements ConceptPresenter.ConceptView {
 
     private VLayout                                      panel;
-    private InternationalMainFormLayout                  mainFormLayout;
+    private ConceptMainFormLayout                        mainFormLayout;
 
     private ConceptsTreeGrid                             conceptsTreeGrid;
 
@@ -147,8 +146,22 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // CONCEPT
         //
 
-        mainFormLayout = new InternationalMainFormLayout();
+        mainFormLayout = new ConceptMainFormLayout();
 
+        bindMainFormLayoutEvents();
+
+        createViewForm();
+        createEditionForm();
+
+        VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
+        subPanel.addMember(conceptsListGridLayout);
+        subPanel.addMember(mainFormLayout);
+
+        panel.addMember(subPanel);
+    }
+
+    private void bindMainFormLayoutEvents() {
         // Translations
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
 
@@ -181,6 +194,14 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             }
         });
 
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteConcept(conceptDto);
+            }
+        });
+
         // Save
         mainFormLayout.getSave().addClickHandler(new ClickHandler() {
 
@@ -191,16 +212,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 }
             }
         });
-
-        createViewForm();
-        createEditionForm();
-
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(conceptsListGridLayout);
-        subPanel.addMember(mainFormLayout);
-
-        panel.addMember(subPanel);
     }
 
     @Override
@@ -450,11 +461,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         this.conceptSchemeMetamacDto = conceptSchemeMetamacDto;
 
         // Security
-        mainFormLayout.setCanEdit(ConceptsClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
-                CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto)));
+        mainFormLayout.setConceptScheme(conceptSchemeMetamacDto);
 
         markFormsForRedraw();
-
     }
 
     @Override

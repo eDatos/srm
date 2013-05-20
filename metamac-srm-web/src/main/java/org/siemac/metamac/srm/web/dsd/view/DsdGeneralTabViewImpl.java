@@ -157,13 +157,22 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             @Override
             public void onClick(ClickEvent event) {
                 ProcStatusEnum status = dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus();
-                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(status)) {
                     // If the scheme is published, create a temporal version
                     getUiHandlers().createTemporalVersion(dataStructureDefinitionMetamacDto.getUrn());
                 } else {
                     // Default behavior
                     startDsdEdition();
                 }
+            }
+        });
+
+        // Delete
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteDsd(dataStructureDefinitionMetamacDto.getUrn());
             }
         });
 

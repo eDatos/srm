@@ -229,13 +229,22 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             @Override
             public void onClick(ClickEvent event) {
                 ProcStatusEnum status = conceptSchemeDto.getLifeCycle().getProcStatus();
-                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(status)) {
                     // If the scheme is published, create a temporal version
                     getUiHandlers().createTemporalVersion(conceptSchemeDto.getUrn());
                 } else {
                     // Default behavior
                     startConceptSchemeEdition();
                 }
+            }
+        });
+
+        // Delete
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteConceptScheme(conceptSchemeDto.getUrn());
             }
         });
 

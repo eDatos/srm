@@ -123,7 +123,7 @@ public class CommonUtils {
 
     // VALIDATION UTILS
 
-    public static boolean isItemSchemePublished(ProcStatusEnum procStatus) {
+    public static boolean isMaintainableArtefactPublished(ProcStatusEnum procStatus) {
         return ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus);
     }
 
@@ -132,7 +132,7 @@ public class CommonUtils {
     }
 
     public static boolean canCodeBeEdited(ProcStatusEnum procStatus, String versionLogic) {
-        return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isInitialVersion(versionLogic);
+        return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(procStatus) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isInitialVersion(versionLogic);
     }
 
     // FORMAT UTILS

@@ -25,7 +25,10 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canUpdateConceptScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode, type, operationCode);
     }
 
-    public static boolean canDeleteConceptScheme(ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canDeleteConceptScheme(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        if (CommonUtils.isMaintainableArtefactPublished(procStatus)) {
+            return false;
+        }
         return SharedConceptsSecurityUtils.canDeleteConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 

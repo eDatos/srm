@@ -7,6 +7,7 @@ import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 public interface DsdGeneralTabUiHandlers extends BaseUiHandlers {
 
     void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto);
+    void deleteDsd(String urn);
     void goToDsd(String urn);
     void retrieveLatestDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
     void exportDsd(String urn);

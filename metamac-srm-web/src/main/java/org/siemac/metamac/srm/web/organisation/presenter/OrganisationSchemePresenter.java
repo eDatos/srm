@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
@@ -48,6 +49,8 @@ import org.siemac.metamac.srm.web.shared.organisation.CopyOrganisationSchemeActi
 import org.siemac.metamac.srm.web.shared.organisation.CopyOrganisationSchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.CreateOrganisationSchemeTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.organisation.CreateOrganisationSchemeTemporalVersionResult;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListAction;
+import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListResult;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
@@ -294,6 +297,22 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                 getView().setOrganisationScheme(organisationSchemeMetamacDto);
 
                 updateUrl();
+            }
+        });
+    }
+
+    @Override
+    public void deleteOrganisationScheme(String urn) {
+        dispatcher.execute(new DeleteOrganisationSchemeListAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteOrganisationSchemeListResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteOrganisationSchemeListResult result) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeDeleted()), MessageTypeEnum.SUCCESS);
+                goTo(PlaceRequestUtils.buildAbsoluteOrganisationSchemesPlaceRequest());
             }
         });
     }

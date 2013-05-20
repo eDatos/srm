@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -39,6 +40,8 @@ import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryResult;
+import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemesAction;
+import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeResult;
@@ -264,6 +267,22 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                 getView().setCategoryScheme(categorySchemeMetamacDto);
 
                 updateUrl();
+            }
+        });
+    }
+
+    @Override
+    public void deleteCategoryScheme(String urn) {
+        dispatcher.execute(new DeleteCategorySchemesAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteCategorySchemesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteCategorySchemesResult result) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeDeleted()), MessageTypeEnum.SUCCESS);
+                goTo(PlaceRequestUtils.buildAbsoluteCategorySchemesPlaceRequest());
             }
         });
     }

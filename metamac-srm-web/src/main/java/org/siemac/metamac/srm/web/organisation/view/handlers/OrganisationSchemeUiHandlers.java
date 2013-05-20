@@ -13,6 +13,7 @@ public interface OrganisationSchemeUiHandlers extends BaseOrganisationUiHandlers
     void retrieveOrganisationScheme(String identifier, OrganisationSchemeTypeEnum type);
     void retrieveOrganisationSchemeVersions(String organisationSchemeUrn);
     void saveOrganisationScheme(OrganisationSchemeMetamacDto organisationScheme);
+    void deleteOrganisationScheme(String urn);
     void cancelValidity(String urn);
     void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type);
     void deleteOrganisations(List<String> urns);

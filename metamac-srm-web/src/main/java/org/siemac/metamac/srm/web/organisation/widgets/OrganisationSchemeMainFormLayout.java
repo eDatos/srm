@@ -23,16 +23,23 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
         super.updatePublishSection(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto);
         this.organisationSchemeType = organisationSchemeMetamacDto.getType();
         setCanEdit();
+        setCanDelete();
     }
 
     private void setCanEdit() {
         boolean canEdit = false;
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus)) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(procStatus)) {
             canEdit = OrganisationsClientSecurityUtils.canCreateOrganisationSchemeTemporalVersion();
         } else {
             canEdit = OrganisationsClientSecurityUtils.canUpdateOrganisationScheme(procStatus, organisationSchemeType);
         }
         super.setCanEdit(canEdit);
+    }
+
+    private void setCanDelete() {
+        boolean canDelete = false;
+        canDelete = OrganisationsClientSecurityUtils.canDeleteOrganisationScheme(procStatus);
+        super.setCanDelete(canDelete);
     }
 
     @Override

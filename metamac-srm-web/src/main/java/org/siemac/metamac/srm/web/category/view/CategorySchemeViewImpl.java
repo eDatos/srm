@@ -209,13 +209,22 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
             @Override
             public void onClick(ClickEvent event) {
                 ProcStatusEnum status = categorySchemeDto.getLifeCycle().getProcStatus();
-                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(status)) {
                     // If the scheme is published, create a temporal version
                     getUiHandlers().createTemporalVersion(categorySchemeDto.getUrn());
                 } else {
                     // Default behavior
                     startCategorySchemeEdition();
                 }
+            }
+        });
+
+        // Delete
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteCategoryScheme(categorySchemeDto.getUrn());
             }
         });
 

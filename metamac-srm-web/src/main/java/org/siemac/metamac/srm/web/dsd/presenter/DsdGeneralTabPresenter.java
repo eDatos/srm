@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,8 @@ import org.siemac.metamac.srm.web.shared.dsd.CopyDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.CopyDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.dsd.CreateDsdTemporalVersionResult;
+import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsAction;
+import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdDimensionsAndCandidateVisualisationsAction;
@@ -158,6 +161,22 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
                 // Redirect to the DSD page to update the URL
                 goToDsd(result.getDsdSaved().getUrn()); // To update the URL (the method placeManager.updateHistory only allow to update the last placeRequest)
+            }
+        });
+    }
+
+    @Override
+    public void deleteDsd(String urn) {
+        dispatcher.execute(new DeleteDsdsAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteDsdsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteDsdsResult result) {
+                ShowMessageEvent.fire(DsdGeneralTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDeleted()), MessageTypeEnum.SUCCESS);
+                goTo(PlaceRequestUtils.buildAbsoluteDsdsPlaceRequest());
             }
         });
     }

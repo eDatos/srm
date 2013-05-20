@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.concept.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -46,6 +47,8 @@ import org.siemac.metamac.srm.web.shared.concept.CreateConceptSchemeTemporalVers
 import org.siemac.metamac.srm.web.shared.concept.CreateConceptSchemeTemporalVersionResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptResult;
+import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemesAction;
+import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsAction;
@@ -252,6 +255,22 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
                 // Update URL
                 updateUrl();
+            }
+        });
+    }
+
+    @Override
+    public void deleteConceptScheme(String urn) {
+        dispatcher.execute(new DeleteConceptSchemesAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteConceptSchemesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteConceptSchemesResult result) {
+                ShowMessageEvent.fire(ConceptSchemePresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);
+                goTo(PlaceRequestUtils.buildAbsoluteConceptSchemesPlaceRequest());
             }
         });
     }

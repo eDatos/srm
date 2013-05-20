@@ -239,8 +239,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
         boolean allSelectedSchemesCanBeDeleted = true;
         for (ListGridRecord record : records) {
             CategorySchemeMetamacBasicDto categorySchemeMetamacDto = ((CategorySchemeRecord) record).getCategorySchemeBasicDto();
-            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getLifeCycle().getProcStatus())
-                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getLifeCycle().getProcStatus()) || !CategoriesClientSecurityUtils.canDeleteCategoryScheme()) {
+            if (!CategoriesClientSecurityUtils.canDeleteCategoryScheme(categorySchemeMetamacDto.getLifeCycle().getProcStatus())) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;
             }

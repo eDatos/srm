@@ -187,6 +187,27 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
     }
 
     @Override
+    public void deleteCategory(final CategoryMetamacDto categoryMetamacDto) {
+        dispatcher.execute(new DeleteCategoryAction(categoryMetamacDto.getUrn()), new WaitingAsyncCallback<DeleteCategoryResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteCategoryResult result) {
+                ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getMessageList(getMessages().categoryDeleted()), MessageTypeEnum.SUCCESS);
+                // If deleted category had a category parent, go to this category parent. If not, go to the category scheme.
+                if (categoryMetamacDto.getItemParentUrn() != null) {
+                    goToCategory(categoryMetamacDto.getItemParentUrn());
+                } else {
+                    goToCategoryScheme(categorySchemeUrn);
+                }
+            }
+        });
+    }
+
+    @Override
     public void retrieveCategoryListByScheme(String categorySchemeUrn) {
         dispatcher.execute(new GetCategoriesBySchemeAction(categorySchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
 

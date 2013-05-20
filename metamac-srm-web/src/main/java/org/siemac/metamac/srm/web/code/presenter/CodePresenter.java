@@ -244,6 +244,26 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     }
 
     @Override
+    public void deleteCode(final CodeMetamacDto codeMetamacDto) {
+        dispatcher.execute(new DeleteCodeAction(codeMetamacDto.getUrn()), new WaitingAsyncCallback<DeleteCodeResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorDelete()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(DeleteCodeResult result) {
+                // If deleted code had a code parent, go to this code parent. If not, go to the codelist.
+                if (codeMetamacDto.getItemParentUrn() != null) {
+                    goToCode(codeMetamacDto.getItemParentUrn());
+                } else {
+                    goToCodelist(codeMetamacDto.getItemSchemeVersionUrn());
+                }
+            }
+        });
+    }
+
+    @Override
     public void retrieveVariableElements(int firstResult, int maxResults, String criteria, String codelistUrn) {
         VariableElementWebCriteria variableElementWebCriteria = new VariableElementWebCriteria(criteria);
         variableElementWebCriteria.setCodelistUrn(codelistUrn);

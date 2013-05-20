@@ -321,13 +321,22 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             @Override
             public void onClick(ClickEvent event) {
                 ProcStatusEnum status = organisationSchemeDto.getLifeCycle().getProcStatus();
-                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(status)) {
                     // If the scheme is published, create a temporal version
                     getUiHandlers().createTemporalVersion(organisationSchemeDto.getUrn());
                 } else {
                     // Default behavior
                     startOrganisationSchemeEdition();
                 }
+            }
+        });
+
+        // Delete
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteOrganisationScheme(organisationSchemeDto.getUrn());
             }
         });
 
@@ -789,8 +798,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
     private void showListGridDeleteButton() {
         // Agencies can never be deleted!
-        if (!CommonUtils.isAgencyScheme(organisationSchemeDto.getType()) && !ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus())
-                && !ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeDto.getLifeCycle().getProcStatus()) && OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeDto)) {
+        if (OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeDto)) {
             deleteButton.show();
         } else {
             deleteButton.hide();

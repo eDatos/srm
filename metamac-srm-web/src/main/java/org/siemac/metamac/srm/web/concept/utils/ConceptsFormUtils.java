@@ -33,10 +33,10 @@ public class ConceptsFormUtils {
         }
         if (CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer())) {
             // TYPE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-            return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(conceptSchemeDto.getLifeCycle().getProcStatus())
+            return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(conceptSchemeDto.getLifeCycle().getProcStatus())
                     && org.siemac.metamac.srm.web.client.utils.CommonUtils.isInitialVersion(conceptSchemeDto.getVersionLogic());
         } else {
-            return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(conceptSchemeDto.getLifeCycle().getProcStatus());
+            return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(conceptSchemeDto.getLifeCycle().getProcStatus());
         }
     }
 

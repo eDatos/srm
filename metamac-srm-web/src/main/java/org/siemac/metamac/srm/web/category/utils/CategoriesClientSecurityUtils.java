@@ -21,7 +21,10 @@ public class CategoriesClientSecurityUtils {
         return SharedCategoriesSecurityUtils.canUpdateCategoryScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canDeleteCategoryScheme() {
+    public static boolean canDeleteCategoryScheme(ProcStatusEnum procStatus) {
+        if (CommonUtils.isMaintainableArtefactPublished(procStatus)) {
+            return false;
+        }
         return SharedCategoriesSecurityUtils.canDeleteCategoryScheme(MetamacSrmWeb.getCurrentUser());
     }
 

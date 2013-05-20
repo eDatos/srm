@@ -8,6 +8,7 @@ public interface CategorySchemeUiHandlers extends BaseCategoryUiHandlers {
 
     void retrieveCategorySchemeVersions(String categorySchemeUrn);
     void saveCategoryScheme(CategorySchemeMetamacDto categoryScheme);
+    void deleteCategoryScheme(String urn);
     void cancelValidity(String urn);
     void retrieveLatestCategoryScheme(CategorySchemeMetamacDto conceptSchemeMetamacDto);
     void exportCategoryScheme(String urn);

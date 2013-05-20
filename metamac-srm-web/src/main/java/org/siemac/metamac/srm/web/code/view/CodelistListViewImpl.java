@@ -233,8 +233,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         boolean allSelectedSchemesCanBeDeleted = true;
         for (ListGridRecord record : records) {
             CodelistMetamacBasicDto codelistMetamacDto = ((CodelistRecord) record).getCodelistMetamacBasicDto();
-            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(codelistMetamacDto.getLifeCycle().getProcStatus())
-                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(codelistMetamacDto.getLifeCycle().getProcStatus()) || !CodesClientSecurityUtils.canDeleteCodelist(codelistMetamacDto)) {
+            if (!CodesClientSecurityUtils.canDeleteCodelist(codelistMetamacDto.getLifeCycle().getProcStatus(), codelistMetamacDto.getIsTaskInBackground())) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;
             }

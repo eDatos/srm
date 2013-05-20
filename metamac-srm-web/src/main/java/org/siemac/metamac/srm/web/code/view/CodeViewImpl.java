@@ -18,7 +18,6 @@ import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
 import org.siemac.metamac.srm.web.code.presenter.CodePresenter;
-import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CodesFormUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodeUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodeMainFormLayout;
@@ -103,6 +102,20 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
         mainFormLayout = new CodeMainFormLayout();
 
+        bindMainFormLayoutEvents();
+
+        createViewForm();
+        createEditionForm();
+
+        VLayout subpanel = new VLayout();
+        subpanel.setOverflow(Overflow.SCROLL);
+        subpanel.addMember(codesListGridLayout);
+        subpanel.addMember(mainFormLayout);
+
+        panel.addMember(subpanel);
+    }
+
+    private void bindMainFormLayoutEvents() {
         // Translations
         mainFormLayout.getTranslateToolStripButton().addClickHandler(new ClickHandler() {
 
@@ -123,6 +136,15 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
                 annotationsPanel.setTranslationsShowed(translationsShowed);
                 annotationsEditionPanel.setTranslationsShowed(translationsShowed);
+            }
+        });
+
+        // Delete
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteCode(codeDto);
             }
         });
 
@@ -153,16 +175,6 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
                 });
             }
         });
-
-        createViewForm();
-        createEditionForm();
-
-        VLayout subpanel = new VLayout();
-        subpanel.setOverflow(Overflow.SCROLL);
-        subpanel.addMember(codesListGridLayout);
-        subpanel.addMember(mainFormLayout);
-
-        panel.addMember(subpanel);
     }
 
     @Override
@@ -314,8 +326,7 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         this.codelistMetamacDto = codelistMetamacDto;
 
         // Security
-        mainFormLayout.setCanEdit(CodesClientSecurityUtils.canUpdateCode(codelistMetamacDto));
-        mainFormLayout.updateButtonsVisibility(codelistMetamacDto);
+        mainFormLayout.setCodelist(codelistMetamacDto);
 
         markFormsForRedraw();
     }

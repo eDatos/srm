@@ -29,16 +29,23 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
         super.updatePublishSection(codelistMetamacDto.getLifeCycle().getProcStatus(), codelistMetamacDto);
         this.isTaskInBackground = codelistMetamacDto.getIsTaskInBackground();
         setCanEdit();
+        setCanDelete();
     }
 
     private void setCanEdit() {
         boolean canEdit = false;
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(procStatus)) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(procStatus)) {
             canEdit = CodesClientSecurityUtils.canCreateCodelistTemporalVersion(isTaskInBackground);
         } else {
             canEdit = CodesClientSecurityUtils.canUpdateCodelist(procStatus, isTaskInBackground);
         }
         super.setCanEdit(canEdit);
+    }
+
+    private void setCanDelete() {
+        boolean canDelete = false;
+        canDelete = CodesClientSecurityUtils.canDeleteCodelist(procStatus, isTaskInBackground);
+        super.setCanDelete(canDelete);
     }
 
     @Override
@@ -50,7 +57,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     @Override
     protected void updateVisibility() {
         super.updateVisibility();
-        if (CommonUtils.isItemSchemePublished(procStatus)) {
+        if (CommonUtils.isMaintainableArtefactPublished(procStatus)) {
             showAddCodelistToFamilyButton();
         }
     }

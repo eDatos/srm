@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.code.utils;
 
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
-import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedCodesSecurityUtils;
@@ -33,8 +32,11 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canUpdateCodelist(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
-    public static boolean canDeleteCodelist(CodelistMetamacBasicDto codelistMetamacDto) {
-        if (isTaskInBackground(codelistMetamacDto.getIsTaskInBackground())) {
+    public static boolean canDeleteCodelist(ProcStatusEnum procStatus, Boolean isTaskInBackground) {
+        if (isTaskInBackground(isTaskInBackground)) {
+            return false;
+        }
+        if (CommonUtils.isMaintainableArtefactPublished(procStatus)) {
             return false;
         }
         return SharedCodesSecurityUtils.canDeleteCodelist(MetamacSrmWeb.getCurrentUser());

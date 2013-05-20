@@ -22,7 +22,10 @@ public class OrganisationsClientSecurityUtils {
         return SharedOrganisationsSecurityUtils.canUpdateOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type);
     }
 
-    public static boolean canDeleteOrganisationScheme() {
+    public static boolean canDeleteOrganisationScheme(ProcStatusEnum procStatus) {
+        if (CommonUtils.isMaintainableArtefactPublished(procStatus)) {
+            return false;
+        }
         return SharedOrganisationsSecurityUtils.canDeleteOrganisationScheme(MetamacSrmWeb.getCurrentUser());
     }
 
@@ -96,6 +99,13 @@ public class OrganisationsClientSecurityUtils {
     }
 
     public static boolean canDeleteOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        // Agencies can never be deleted!
+        if (org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isAgencyScheme(organisationSchemeMetamacDto.getType())) {
+            return false;
+        }
+        if (CommonUtils.isMaintainableArtefactPublished(organisationSchemeMetamacDto.getLifeCycle().getProcStatus())) {
+            return false;
+        }
         // Maintainer is checked because the structure of an imported resource can not be modified
         return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
                 organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto);

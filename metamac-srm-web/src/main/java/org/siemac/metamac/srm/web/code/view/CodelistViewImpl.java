@@ -275,13 +275,22 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             @Override
             public void onClick(ClickEvent event) {
                 ProcStatusEnum status = codelistDto.getLifeCycle().getProcStatus();
-                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isItemSchemePublished(status)) {
+                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(status)) {
                     // If the scheme is published, create a temporal version
                     getUiHandlers().createTemporalVersion(codelistDto.getUrn());
                 } else {
                     // Default behavior
                     startCodelistEdition();
                 }
+            }
+        });
+
+        // Delete
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteCodelist(codelistDto.getUrn());
             }
         });
 

@@ -225,13 +225,12 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         boolean allSelectedSchemesCanBeDeleted = true;
         for (ListGridRecord record : records) {
             OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDto = ((OrganisationSchemeRecord) record).getOrganisationSchemeBasicDto();
-            if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getLifeCycle().getProcStatus())
-                    || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getLifeCycle().getProcStatus())) {
+            if (!OrganisationsClientSecurityUtils.canDeleteOrganisationScheme(organisationSchemeMetamacDto.getLifeCycle().getProcStatus())) {
                 allSelectedSchemesCanBeDeleted = false;
                 break;
             }
         }
-        if (allSelectedSchemesCanBeDeleted && OrganisationsClientSecurityUtils.canDeleteOrganisationScheme()) {
+        if (allSelectedSchemesCanBeDeleted) {
             deleteButton.show();
         } else {
             deleteButton.hide();
