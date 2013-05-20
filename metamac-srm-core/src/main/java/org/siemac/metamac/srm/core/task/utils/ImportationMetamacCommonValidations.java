@@ -35,7 +35,7 @@ public abstract class ImportationMetamacCommonValidations {
 
         validateRestrictionsMaintainableArtefact(ctx, source.getMaintainableArtefact(), canBeNotFinal);
 
-        if (!canBeNotFinal) {
+        if (!canBeNotFinal && !BooleanUtils.isTrue(source.getMaintainableArtefact().getIsImported())) {
             // Check does not exist any version 'no final'
             ItemSchemeVersion itemSchemeVersionNoFinal = itemSchemeVersionRepository.findItemSchemeVersionNoFinalClient(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source
                     .getMaintainableArtefact().getCode());
@@ -67,12 +67,11 @@ public abstract class ImportationMetamacCommonValidations {
         // Check does not exist any version 'no final'
         StructureVersion structureVersionNoFinal = structureVersionRepository.findStructureVersionNoFinalClient(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer(), source
                 .getMaintainableArtefact().getCode());
-        if (structureVersionNoFinal != null) {
+        if (structureVersionNoFinal != null && !BooleanUtils.isTrue(source.getMaintainableArtefact().getIsImported())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_EXIST_NOT_FINAL_VERSION)
                     .withMessageParameters(structureVersionNoFinal.getMaintainableArtefact().getUrn()).build();
         }
     }
-
     /**
      * Besides this, other validations are performed in the methods preCreate of services.
      * 
@@ -97,7 +96,7 @@ public abstract class ImportationMetamacCommonValidations {
      */
     private <T extends MaintainableArtefact> void validateRestrictionsMaintainableArtefact(ServiceContext ctx, T source, boolean canBeNotFinal) throws MetamacException {
         // Check: All artifacts imported in METAMAC must be FINAL unless AgencySchemes, DataProviderSchemes and DataConsumerSchemes.
-        if (!source.getFinalLogic() && !canBeNotFinal) {
+        if (!source.getFinalLogic() && !canBeNotFinal && !BooleanUtils.isTrue(source.getIsImported())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.MAINTAINABLE_ARTEFACT_FINAL_LOGIC)
                     .build();
         }
