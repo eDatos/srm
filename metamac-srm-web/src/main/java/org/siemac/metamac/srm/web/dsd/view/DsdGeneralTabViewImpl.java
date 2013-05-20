@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
+import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
@@ -34,6 +35,7 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
@@ -45,6 +47,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.SearchExternalItemLinkItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
+import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
@@ -278,7 +281,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Production descriptors form
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
-        ViewTextItem maintainer = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
+        RelatedResourceLinkItem maintainer = new RelatedResourceLinkItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(),
+                getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(DataStructureDefinitionDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         ViewTextItem creationDate = new ViewTextItem(DataStructureDefinitionDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
         ViewTextItem resourceCreationDate = new ViewTextItem(DataStructureDefinitionDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
@@ -373,7 +377,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Production descriptors form
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
-        ViewTextItem maintainer = new ViewTextItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer());
+        RelatedResourceLinkItem maintainer = new RelatedResourceLinkItem(DataStructureDefinitionDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(),
+                getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(DataStructureDefinitionDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         ViewTextItem creationDate = new ViewTextItem(DataStructureDefinitionDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
         ViewTextItem resourceCreationDate = new ViewTextItem(DataStructureDefinitionDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
@@ -491,7 +496,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ((ExternalItemLinkItem) classDescriptorsForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).setExternalItem(dsd.getStatisticalOperation());
 
         // Production descriptors form
-        productionDescriptorsForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
+        ((RelatedResourceLinkItem) productionDescriptorsForm.getItem(DataStructureDefinitionDS.MAINTAINER)).setRelatedResource(dsd.getMaintainer());
         productionDescriptorsForm.setValue(DataStructureDefinitionDS.PROC_STATUS, CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()));
         productionDescriptorsForm.setValue(DataStructureDefinitionDS.VERSION_CREATION_DATE, dsd.getCreatedDate());
         productionDescriptorsForm.setValue(DataStructureDefinitionDS.RESOURCE_CREATION_DATE, dsd.getResourceCreatedDate());
@@ -549,7 +554,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).setExternalItem(dsd.getStatisticalOperation());
 
         // Production descriptors form
-        productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.MAINTAINER, RelatedResourceUtils.getRelatedResourceName(dsd.getMaintainer()));
+        ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(DataStructureDefinitionDS.MAINTAINER)).setRelatedResource(dsd.getMaintainer());
         productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.PROC_STATUS, CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()));
         productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.VERSION_CREATION_DATE, dsd.getCreatedDate());
         productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.RESOURCE_CREATION_DATE, dsd.getResourceCreatedDate());
@@ -774,6 +779,20 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 return !DsdsFormUtils.canDsdCodeBeEdited(dataStructureDefinitionMetamacDto);
+            }
+        };
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // CLICK HANDLERS
+    // ------------------------------------------------------------------------------------------------------------
+
+    private CustomLinkItemNavigationClickHandler getCustomLinkItemNavigationClickHandler() {
+        return new CustomLinkItemNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
             }
         };
     }
