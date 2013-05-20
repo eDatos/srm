@@ -159,9 +159,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
                     // Show export button
                     showExportToolStripButton(dsdListGrid.getListGrid().getSelectedRecords());
                 } else {
-                    deleteToolStripButton.hide();
-                    cancelValidityButton.hide();
-                    exportToolStripButton.hide();
+                    hideSelectionDependentButtons();
                 }
 
             }
@@ -197,6 +195,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     @Override
     public void setDsds(List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionDtos, int firstResult, int totalResults) {
         dsdListGrid.setDsds(dataStructureDefinitionDtos, firstResult, totalResults);
+        hideSelectionDependentButtons();
     }
 
     @Override
@@ -309,5 +308,11 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         } else {
             cancelValidityButton.hide();
         }
+    }
+
+    private void hideSelectionDependentButtons() {
+        deleteToolStripButton.hide();
+        cancelValidityButton.hide();
+        exportToolStripButton.hide();
     }
 }

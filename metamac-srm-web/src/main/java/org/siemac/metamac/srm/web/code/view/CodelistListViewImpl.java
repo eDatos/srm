@@ -135,8 +135,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
                     // Show cancel validity button
                     showListGridCancelValidityButton(codelistsList.getListGrid().getSelectedRecords());
                 } else {
-                    deleteCodelistButton.hide();
-                    cancelCodelistValidityButton.hide();
+                    hideSelectionDependentButtons();
                 }
             }
         });
@@ -206,6 +205,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     public void setCodelists(GetCodelistsResult codelistsPaginatedList) {
         setCodelistList(codelistsPaginatedList.getCodelists());
         codelistsList.refreshPaginationInfo(codelistsPaginatedList.getFirstResultOut(), codelistsPaginatedList.getCodelists().size(), codelistsPaginatedList.getTotalResults());
+        hideSelectionDependentButtons();
     }
 
     @Override
@@ -261,5 +261,10 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         } else {
             cancelCodelistValidityButton.hide();
         }
+    }
+
+    private void hideSelectionDependentButtons() {
+        deleteCodelistButton.hide();
+        cancelCodelistValidityButton.hide();
     }
 }

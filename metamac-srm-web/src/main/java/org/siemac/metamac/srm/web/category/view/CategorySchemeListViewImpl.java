@@ -134,8 +134,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
                     // Show cancel validity button
                     showListGridCancelValidityDeleteButton(categorySchemesList.getListGrid().getSelectedRecords());
                 } else {
-                    deleteCategorySchemeButton.hide();
-                    cancelCategorySchemeValidityButton.hide();
+                    hideSelectionDependentButtons();
                 }
             }
         });
@@ -205,6 +204,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
         setCategorySchemeList(categorySchemesPaginatedList.getCategorySchemeList());
         categorySchemesList.refreshPaginationInfo(categorySchemesPaginatedList.getFirstResultOut(), categorySchemesPaginatedList.getCategorySchemeList().size(),
                 categorySchemesPaginatedList.getTotalResults());
+        hideSelectionDependentButtons();
     }
 
     private void setCategorySchemeList(List<CategorySchemeMetamacBasicDto> categorySchemesDtos) {
@@ -267,5 +267,10 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
         } else {
             cancelCategorySchemeValidityButton.hide();
         }
+    }
+
+    private void hideSelectionDependentButtons() {
+        deleteCategorySchemeButton.hide();
+        cancelCategorySchemeValidityButton.hide();
     }
 }

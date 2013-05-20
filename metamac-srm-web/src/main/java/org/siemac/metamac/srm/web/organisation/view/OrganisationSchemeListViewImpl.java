@@ -135,8 +135,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
                     // Show cancel validity button
                     showListGridCancelValidityDeleteButton(organisationSchemeList.getListGrid().getSelectedRecords());
                 } else {
-                    deleteButton.hide();
-                    cancelValidityButton.hide();
+                    hideSelectionDependentButtons();
                 }
             }
         });
@@ -211,6 +210,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
     public void setOrganisationSchemesPaginatedList(GetOrganisationSchemesResult result) {
         setOrganisationSchemeList(result.getOrganisationSchemeMetamacDtos());
         organisationSchemeList.refreshPaginationInfo(result.getFirstResultOut(), result.getOrganisationSchemeMetamacDtos().size(), result.getTotalResults());
+        hideSelectionDependentButtons();
     }
 
     private void setOrganisationSchemeList(List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDtos) {
@@ -261,5 +261,10 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
             urns.add(schemeRecord.getUrn());
         }
         return urns;
+    }
+
+    private void hideSelectionDependentButtons() {
+        deleteButton.hide();
+        cancelValidityButton.hide();
     }
 }

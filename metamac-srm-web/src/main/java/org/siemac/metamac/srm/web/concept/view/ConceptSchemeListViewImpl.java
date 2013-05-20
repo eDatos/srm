@@ -138,8 +138,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
                     // Show cancel validity button
                     showListGridCancelValidityDeleteButton(conceptSchemesList.getListGrid().getSelectedRecords());
                 } else {
-                    deleteConceptSchemeButton.hide();
-                    cancelConceptSchemeValidityButton.hide();
+                    hideSelectionDependentButtons();
                 }
             }
         });
@@ -185,6 +184,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         setConceptSchemeList(conceptSchemesPaginatedList.getConceptSchemeList());
         conceptSchemesList.refreshPaginationInfo(conceptSchemesPaginatedList.getFirstResultOut(), conceptSchemesPaginatedList.getConceptSchemeList().size(),
                 conceptSchemesPaginatedList.getTotalResults());
+        hideSelectionDependentButtons();
     }
 
     @Override
@@ -285,5 +285,10 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         } else {
             cancelConceptSchemeValidityButton.hide();
         }
+    }
+
+    private void hideSelectionDependentButtons() {
+        deleteConceptSchemeButton.hide();
+        cancelConceptSchemeValidityButton.hide();
     }
 }
