@@ -79,7 +79,7 @@ Application ConceptsMetamac {
 			"Updates concept"
 			@ConceptMetamac updateConcept(@ConceptMetamac concept) throws MetamacException;
 			"Checks concept enumerated representation is valid"
-			MetamacExceptionItem checkConceptEnumeratedRepresentation(@ConceptMetamac concept, boolean throwException) throws MetamacException;
+			MetamacExceptionItem checkConceptEnumeratedRepresentation(@ConceptMetamac concept, boolean throwException, Boolean isImported) throws MetamacException;
     		"Retrieves concept by urn"
     		@ConceptMetamac retrieveConceptByUrn(String urn) throws MetamacException;
     		"Finds concepts by criteria"
