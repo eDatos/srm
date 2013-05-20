@@ -1581,7 +1581,7 @@
       </str:Codelist>
     </str:Codelists>
     <str:Concepts>
-      <str:ConceptScheme id="STANDALONE_CONCEPT_SCHEME" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=INE:STANDALONE_CONCEPT_SCHEME(1.0)" agencyID="INE" version="1.0" isExternalReference="false" isFinal="false">
+      <str:ConceptScheme id="STANDALONE_CONCEPT_SCHEME" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=INE:STANDALONE_CONCEPT_SCHEME(1.0)" agencyID="INE" version="1.0" isExternalReference="false" isFinal="true">
         <com:Name xml:lang="en">Default Scheme</com:Name>
         <str:Concept id="COD_SERIE" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=INE:STANDALONE_CONCEPT_SCHEME(1.0).COD_SERIE">
           <com:Name xml:lang="es">Código de la serie</com:Name>
