@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -30,6 +31,8 @@ import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceResult;
+import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityAction;
+import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityResult;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
@@ -283,6 +286,22 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             public void onWaitSuccess(DeleteCategorySchemesResult result) {
                 ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeDeleted()), MessageTypeEnum.SUCCESS);
                 goTo(PlaceRequestUtils.buildAbsoluteCategorySchemesPlaceRequest());
+            }
+        });
+    }
+
+    @Override
+    public void cancelCategorisationValidity(String urn, Date validTo) {
+        dispatcher.execute(new CancelCategorisationValidityAction(urn, validTo), new WaitingAsyncCallback<CancelCategorisationValidityResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorCancelValidity()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CancelCategorisationValidityResult result) {
+                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveCategorisations(categorySchemeMetamacDto.getUrn());
             }
         });
     }

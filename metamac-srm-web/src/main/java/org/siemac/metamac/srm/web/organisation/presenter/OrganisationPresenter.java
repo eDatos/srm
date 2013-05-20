@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
@@ -299,6 +300,11 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
     @Override
     public void createCategorisations(List<String> categoryUrns) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void cancelCategorisationValidity(String urn, Date validTo) {
         throw new UnsupportedOperationException();
     }
 

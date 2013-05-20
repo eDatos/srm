@@ -42,6 +42,7 @@ public abstract class CategorisationsPanel extends VLayout {
 
     protected ToolStripButton                 newCategorisationButton;
     protected ToolStripButton                 deleteCategorisationButton;
+    protected ToolStripButton                 cancelCategorisationValidityButton;
     protected NavigableListGrid               categorisationListGrid;
 
     private SearchCategoriesForCategorisation searchCategoriesWindow;
@@ -78,8 +79,19 @@ public abstract class CategorisationsPanel extends VLayout {
             }
         });
 
+        cancelCategorisationValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), RESOURCE.disable().getURL());
+        cancelCategorisationValidityButton.setVisibility(Visibility.HIDDEN);
+        cancelCategorisationValidityButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO
+            }
+        });
+
         toolStrip.addButton(newCategorisationButton);
         toolStrip.addButton(deleteCategorisationButton);
+        toolStrip.addButton(cancelCategorisationValidityButton);
 
         // Deletion window
 

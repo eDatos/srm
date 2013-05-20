@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.category.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.Date;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -240,6 +241,11 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
     @Override
     public void createCategorisations(List<String> categoryUrns) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void cancelCategorisationValidity(String urn, Date validTo) {
         throw new UnsupportedOperationException();
     }
 

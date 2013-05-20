@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.dsd.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.Date;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -17,6 +18,8 @@ import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdCategorisationsTabUiHandlers;
+import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityAction;
+import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityResult;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsAction;
@@ -168,6 +171,22 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
             }
             @Override
             public void onWaitSuccess(DeleteCategorisationsResult result) {
+                ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveCategorisations(dataStructureDefinitionDto.getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void cancelCategorisationValidity(String urn, Date validTo) {
+        dispatcher.execute(new CancelCategorisationValidityAction(urn, validTo), new WaitingAsyncCallback<CancelCategorisationValidityResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorCancelValidity()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CancelCategorisationValidityResult result) {
                 ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
                 retrieveCategorisations(dataStructureDefinitionDto.getUrn());
             }

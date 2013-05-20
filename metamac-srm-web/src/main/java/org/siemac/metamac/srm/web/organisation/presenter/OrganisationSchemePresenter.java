@@ -6,6 +6,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
@@ -30,6 +31,8 @@ import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeU
 import org.siemac.metamac.srm.web.organisation.widgets.presenter.OrganisationsToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceResult;
+import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityAction;
+import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityResult;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsAction;
@@ -607,6 +610,22 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             }
             @Override
             public void onWaitSuccess(DeleteCategorisationsResult result) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
+                retrieveCategorisations(organisationSchemeMetamacDto.getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void cancelCategorisationValidity(String urn, Date validTo) {
+        dispatcher.execute(new CancelCategorisationValidityAction(urn, validTo), new WaitingAsyncCallback<CancelCategorisationValidityResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorCancelValidity()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(CancelCategorisationValidityResult result) {
                 ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
                 retrieveCategorisations(organisationSchemeMetamacDto.getUrn());
             }
