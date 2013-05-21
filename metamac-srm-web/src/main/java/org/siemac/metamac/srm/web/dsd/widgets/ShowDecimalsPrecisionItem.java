@@ -21,6 +21,9 @@ public class ShowDecimalsPrecisionItem extends CustomCanvasItem {
     public ShowDecimalsPrecisionItem(String name, String title, boolean editionMode) {
         super(name, title);
         setCellStyle("dragAndDropCellStyle");
+        if (!editionMode) {
+            setTitleStyle("staticFormItemTitle");
+        }
 
         measureDimensionConceptsTreeGrid = new MeasureDimensionConceptsTreeGrid(editionMode);
         setCanvas(measureDimensionConceptsTreeGrid);

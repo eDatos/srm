@@ -35,8 +35,12 @@ public class DimensionsVisualisationItem extends CustomCanvasItem {
 
     public DimensionsVisualisationItem(String name, String title, boolean editionMode) {
         super(name, title);
-        setCellStyle("dragAndDropCellStyle");
         this.editionMode = editionMode;
+        
+        setCellStyle("dragAndDropCellStyle");
+        if (!editionMode) {
+            setTitleStyle("staticFormItemTitle");
+        }
 
         DimensionsVisualisationCanvas dimensionsVisualisationCanvas = new DimensionsVisualisationCanvas(editionMode);
         dimensionsVisualisationCanvas.setBackgroundColor("#dee6f3");

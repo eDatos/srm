@@ -66,6 +66,9 @@ public class DsdDimensionCodesVisualisationItem extends CustomCanvasItem {
         super(name, title);
 
         setCellStyle("dragAndDropCellStyle");
+        if (!editionMode) {
+            setTitleStyle("staticFormItemTitle");
+        }
 
         listGrid = new BaseCustomListGrid();
         listGrid.setAutoFitMaxRecords(6);
