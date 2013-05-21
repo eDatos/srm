@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
@@ -665,7 +666,11 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     }
 
     public void setConceptSchemeEditionMode(ConceptSchemeMetamacDto conceptSchemeDto) {
-        // Identifiers
+
+        String[] requiredFieldsToNextProcStatus = RequiredFieldUtils.getConceptSchemeRequiredFieldsToNextProcStatus(conceptSchemeDto.getLifeCycle().getProcStatus());
+
+        // IDENTIFIERS
+
         identifiersEditionForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
         identifiersEditionForm.setValue(ConceptSchemeDS.CODE_VIEW, conceptSchemeDto.getCode());
         identifiersEditionForm.setValue(ConceptSchemeDS.URI, conceptSchemeDto.getUriProvider());
@@ -673,9 +678,11 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         identifiersEditionForm.setValue(ConceptSchemeDS.URN_PROVIDER, conceptSchemeDto.getUrnProvider());
         identifiersEditionForm.setValue(ConceptSchemeDS.VERSION_LOGIC, conceptSchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
+        identifiersEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         identifiersEditionForm.markForRedraw();
 
-        // Content descriptors
+        // CONTENT DESCRIPTORS
+
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(conceptSchemeDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon
@@ -683,26 +690,34 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.FINAL, conceptSchemeDto.getFinalLogic() != null ? (conceptSchemeDto.getFinalLogic()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Class descriptors
+        // CLASS DESCRIPTORS
+
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE, conceptSchemeDto.getType() != null ? conceptSchemeDto.getType().name() : null);
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE_VIEW, CommonUtils.getConceptSchemeTypeName(conceptSchemeDto.getType()));
         ((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).setExternalItem(conceptSchemeDto.getRelatedOperation());
+        classDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         classDescriptorsEditionForm.markForRedraw();
 
-        // Production descriptors
+        // PRODUCTION DESCRIPTORS
+
         ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(ConceptSchemeDS.MAINTAINER)).setRelatedResource(conceptSchemeDto.getMaintainer());
         productionDescriptorsEditionForm.setValue(ConceptSchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(conceptSchemeDto.getLifeCycle().getProcStatus()));
         productionDescriptorsEditionForm.setValue(CodelistDS.VERSION_CREATION_DATE, conceptSchemeDto.getCreatedDate());
         productionDescriptorsEditionForm.setValue(CodelistDS.RESOURCE_CREATION_DATE, conceptSchemeDto.getResourceCreatedDate());
+        productionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Diffusion descriptors
+        // DIFFUSION DESCRIPTORS
+
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.REPLACED_BY_VERSION, conceptSchemeDto.getReplacedByVersion());
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.REPLACE_TO_VERSION, conceptSchemeDto.getReplaceToVersion());
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.VALID_FROM, DateUtils.getFormattedDate(conceptSchemeDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(ConceptSchemeDS.VALID_TO, DateUtils.getFormattedDate(conceptSchemeDto.getValidTo()));
+        diffusionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Version responsibility
+        // VERSION RESPONSIBILITY
+
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_USER, conceptSchemeDto.getLifeCycle().getProductionValidationUser());
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.PRODUCTION_VALIDATION_DATE, conceptSchemeDto.getLifeCycle().getProductionValidationDate());
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.DIFFUSION_VALIDATION_USER, conceptSchemeDto.getLifeCycle().getDiffusionValidationUser());
@@ -711,11 +726,15 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.INTERNAL_PUBLICATION_DATE, conceptSchemeDto.getLifeCycle().getInternalPublicationDate());
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_USER, conceptSchemeDto.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityEditionForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, conceptSchemeDto.getLifeCycle().getExternalPublicationDate());
+        versionResponsibilityEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Comments
+        // COMMENTS
+
         commentsEditionForm.setValue(ConceptSchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getComment()));
+        commentsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Annotations
+        // ANNOTATIONS
+
         annotationsEditionPanel.setAnnotations(conceptSchemeDto.getAnnotations(), conceptSchemeDto);
     }
 

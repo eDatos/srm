@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
@@ -821,7 +822,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     private void setCodelistEditionMode(CodelistMetamacDto codelistDto) {
+
+        String[] requiredFieldsToNextProcStatus = RequiredFieldUtils.getCodelistRequiredFieldsToNextProcStatus(codelistDto.getLifeCycle().getProcStatus());
+
         // IDENTIFIERS
+
         identifiersEditionForm.setValue(CodelistDS.CODE, codelistDto.getCode());
         identifiersEditionForm.setValue(CodelistDS.CODE_VIEW, codelistDto.getCode());
         identifiersEditionForm.setValue(CodelistDS.URI, codelistDto.getUriProvider());
@@ -830,9 +835,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         identifiersEditionForm.setValue(CodelistDS.VERSION_LOGIC, codelistDto.getVersionLogic());
         identifiersEditionForm.setValue(CodelistDS.NAME, RecordUtils.getInternationalStringRecord(codelistDto.getName()));
         identifiersEditionForm.setValue(CodelistDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(codelistDto.getShortName()));
+        identifiersEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         identifiersEditionForm.markForRedraw();
 
         // CONTENT DESCRIPTORS
+
         contentDescriptorsEditionForm.setValue(CodelistDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codelistDto.getDescription()));
         ((MultilanguageRichTextEditorItem) contentDescriptorsEditionForm.getItem(CodelistDS.DESCRIPTION_SOURCE)).setValueInternational(codelistDto.getDescriptionSource());
         contentDescriptorsEditionForm.setValue(CodelistDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsPartial()));
@@ -844,16 +851,20 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.FAMILY)).setRelatedResource(codelistDto.getFamily());
         ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.VARIABLE)).setRelatedResource(codelistDto.getVariable());
         ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.VARIABLE_VIEW)).setRelatedResource(codelistDto.getVariable());
+        contentDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         contentDescriptorsEditionForm.markForRedraw();
 
         // PRODUCTION DESCRIPTORS
+
         ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(CodelistDS.MAINTAINER)).setRelatedResource(codelistDto.getMaintainer());
         productionDescriptorsEditionForm.setValue(CodelistDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(codelistDto.getLifeCycle().getProcStatus()));
         productionDescriptorsEditionForm.setValue(CodelistDS.VERSION_CREATION_DATE, codelistDto.getCreatedDate());
         productionDescriptorsEditionForm.setValue(CodelistDS.RESOURCE_CREATION_DATE, codelistDto.getResourceCreatedDate());
+        productionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         productionDescriptorsEditionForm.markForRedraw();
 
         // DIFFUSION DESCRIPTORS
+
         ((RelatedResourceLinkItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACED_BY_CODELIST)).setRelatedResource(codelistDto.getReplacedByCodelist());
         ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(codelistDto.getReplaceToCodelists());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.ACCESS_TYPE, codelistDto.getAccessType() != null ? codelistDto.getAccessType().name() : StringUtils.EMPTY);
@@ -866,8 +877,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACE_TO_VERSION, codelistDto.getReplaceToVersion());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.VALID_FROM, DateUtils.getFormattedDate(codelistDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(CodelistDS.VALID_TO, DateUtils.getFormattedDate(codelistDto.getValidTo()));
+        diffusionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
         // VERSION RESPONSIBILITY
+
         versionResponsibilityEditionForm.setValue(CodelistDS.PRODUCTION_VALIDATION_USER, codelistDto.getLifeCycle().getProductionValidationUser());
         versionResponsibilityEditionForm.setValue(CodelistDS.PRODUCTION_VALIDATION_DATE, codelistDto.getLifeCycle().getProductionValidationDate());
         versionResponsibilityEditionForm.setValue(CodelistDS.DIFFUSION_VALIDATION_USER, codelistDto.getLifeCycle().getDiffusionValidationUser());
@@ -876,11 +889,15 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         versionResponsibilityEditionForm.setValue(CodelistDS.INTERNAL_PUBLICATION_DATE, codelistDto.getLifeCycle().getInternalPublicationDate());
         versionResponsibilityEditionForm.setValue(CodelistDS.EXTERNAL_PUBLICATION_USER, codelistDto.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityEditionForm.setValue(CodelistDS.EXTERNAL_PUBLICATION_DATE, codelistDto.getLifeCycle().getExternalPublicationDate());
+        versionResponsibilityEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
         // COMMENTS
+
         commentsEditionForm.setValue(CodelistDS.COMMENTS, RecordUtils.getInternationalStringRecord(codelistDto.getComment()));
+        commentsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
         // ANNOTATIONS
+
         annotationsEditionPanel.setAnnotations(codelistDto.getAnnotations(), codelistDto);
     }
 

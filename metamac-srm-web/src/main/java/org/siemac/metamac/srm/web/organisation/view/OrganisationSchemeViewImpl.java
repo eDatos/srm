@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetama
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
+import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
@@ -705,7 +706,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     }
 
     public void setOrganisationSchemeEditionMode(OrganisationSchemeMetamacDto organisationSchemeDto) {
-        // Identifiers
+
+        String[] requiredFieldsToNextProcStatus = RequiredFieldUtils.getOrganisationSchemeRequiredFieldsToNextProcStatus(organisationSchemeDto.getLifeCycle().getProcStatus());
+
+        // IDENTIFIERS
+
         identifiersEditionForm.setValue(OrganisationSchemeDS.CODE, organisationSchemeDto.getCode());
         identifiersEditionForm.setValue(OrganisationSchemeDS.CODE_VIEW, organisationSchemeDto.getCode());
         identifiersEditionForm.setValue(OrganisationSchemeDS.URI, organisationSchemeDto.getUriProvider());
@@ -713,9 +718,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         identifiersEditionForm.setValue(OrganisationSchemeDS.URN_PROVIDER, organisationSchemeDto.getUrnProvider());
         identifiersEditionForm.setValue(OrganisationSchemeDS.VERSION_LOGIC, organisationSchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(OrganisationSchemeDS.NAME, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getName()));
+        identifiersEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         identifiersEditionForm.markForRedraw();
 
-        // Content descriptors
+        // CONTENT DESCRIPTORS
+
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.TYPE, CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getDescription()));
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(organisationSchemeDto.getIsPartial()));
@@ -724,22 +731,28 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.FINAL, organisationSchemeDto.getFinalLogic() != null ? (organisationSchemeDto.getFinalLogic() ? MetamacWebCommon.getConstants()
                 .yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         contentDescriptorsEditionForm.markForRedraw();
 
-        // Production descriptors
+        // PRODUCTION DESCRIPTORS
+
         ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(OrganisationSchemeDS.MAINTAINER)).setRelatedResource(organisationSchemeDto.getMaintainer());
         productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.PROC_STATUS,
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
         productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VERSION_CREATION_DATE, organisationSchemeDto.getCreatedDate());
         productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.RESOURCE_CREATION_DATE, organisationSchemeDto.getResourceCreatedDate());
+        productionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Diffusion descriptors
+        // DIFFUSION DESCRIPTORS
+
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACED_BY_VERSION, organisationSchemeDto.getReplacedByVersion());
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.REPLACE_TO_VERSION, organisationSchemeDto.getReplaceToVersion());
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VALID_FROM, DateUtils.getFormattedDate(organisationSchemeDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VALID_TO, DateUtils.getFormattedDate(organisationSchemeDto.getValidTo()));
+        diffusionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Version responsibility
+        // VERSION RESPONSIBILITY
+
         versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_USER, organisationSchemeDto.getLifeCycle().getProductionValidationUser());
         versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.PRODUCTION_VALIDATION_DATE, organisationSchemeDto.getLifeCycle().getProductionValidationDate());
         versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.DIFFUSION_VALIDATION_USER, organisationSchemeDto.getLifeCycle().getDiffusionValidationUser());
@@ -748,9 +761,12 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.INTERNAL_PUBLICATION_DATE, organisationSchemeDto.getLifeCycle().getInternalPublicationDate());
         versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_USER, organisationSchemeDto.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityEditionForm.setValue(OrganisationSchemeDS.EXTERNAL_PUBLICATION_DATE, organisationSchemeDto.getLifeCycle().getExternalPublicationDate());
+        versionResponsibilityEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Comments
+        // COMMENTS
+
         commentsEditionForm.setValue(OrganisationSchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getComment()));
+        commentsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
         // Annotations
         annotationsEditionPanel.setAnnotations(organisationSchemeDto.getAnnotations(), organisationSchemeDto);

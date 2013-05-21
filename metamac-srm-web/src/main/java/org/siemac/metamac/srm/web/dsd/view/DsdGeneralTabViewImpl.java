@@ -16,6 +16,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
+import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
@@ -545,7 +546,11 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     private void setDsdEditionMode(DataStructureDefinitionMetamacDto dsd, List<DimensionComponentDto> dimensionComponentDtos) {
-        // Identifiers form
+
+        String[] requiredFieldsToNextProcStatus = RequiredFieldUtils.getDsdRequiredFieldsToNextProcStatus(dsd.getLifeCycle().getProcStatus());
+
+        // IDENTIFIERS FORM
+
         identifiersEditionForm.setValue(DataStructureDefinitionDS.CODE, dsd.getCode());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.CODE_VIEW, dsd.getCode());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.NAME, RecordUtils.getInternationalStringRecord(dsd.getName()));
@@ -553,28 +558,38 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         identifiersEditionForm.setValue(DataStructureDefinitionDS.URN, dsd.getUrn());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.URN_PROVIDER, dsd.getUrnProvider());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.VERSION_LOGIC, dsd.getVersionLogic());
+        identifiersEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Content Descriptors form
+        // CONTENT DESCRIPTORS FORM
+
         contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
         contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
                 .getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Class descriptors form
+        // CLASS DESCRIPTORS FORM
+
         ((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).setExternalItem(dsd.getStatisticalOperation());
+        classDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Production descriptors form
+        // PRODUCTION DESCRIPTORS FORM
+
         ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(DataStructureDefinitionDS.MAINTAINER)).setRelatedResource(dsd.getMaintainer());
         productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.PROC_STATUS, CommonUtils.getProcStatusName(dsd.getLifeCycle().getProcStatus()));
         productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.VERSION_CREATION_DATE, dsd.getCreatedDate());
         productionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.RESOURCE_CREATION_DATE, dsd.getResourceCreatedDate());
+        productionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Status form
+        // STATUS FORM
+
         diffusionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
         diffusionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
         diffusionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, dsd.getIsExternalReference() != null ? (dsd.getIsExternalReference() ? MetamacWebCommon
                 .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        diffusionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Version responsibility
+        // VERSION RESPONSIBILITY
+
         versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.PRODUCTION_VALIDATION_USER, dsd.getLifeCycle().getProductionValidationUser());
         versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.PRODUCTION_VALIDATION_DATE, dsd.getLifeCycle().getProductionValidationDate());
         versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.DIFFUSION_VALIDATION_USER, dsd.getLifeCycle().getDiffusionValidationUser());
@@ -583,8 +598,10 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.INTERNAL_PUBLICATION_DATE, dsd.getLifeCycle().getInternalPublicationDate());
         versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_USER, dsd.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityEditionForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_DATE, dsd.getLifeCycle().getExternalPublicationDate());
+        versionResponsibilityEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Visualisation metadata
+        // VISUALISATION METADATA
+
         ((BooleanSelectItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.AUTO_OPEN)).setBooleanValue(dsd.getAutoOpen());
 
         visualisationMetadataEditionForm.setValue(DataStructureDefinitionDS.SHOW_DECIMALS, dsd.getShowDecimals() != null ? dsd.getShowDecimals().toString() : StringUtils.EMPTY);
@@ -596,11 +613,15 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ((ShowDecimalsPrecisionItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).setMeasureDimensionPrecisions(dsd.getShowDecimalsPrecisions());
 
         // DIMENSION_CODES_VISUALISATION is set in set setDimensionsAndCandidateVisualisations
+        visualisationMetadataEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Comments
+        // COMMENTS
+
         commentsEditionForm.setValue(DataStructureDefinitionDS.COMMENTS, RecordUtils.getInternationalStringRecord(dsd.getComment()));
+        commentsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Annotations
+        // ANNOTATIONS
+
         annotationsEditionPanel.setAnnotations(dsd.getAnnotations(), dataStructureDefinitionMetamacDto);
     }
 

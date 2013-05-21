@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.web.category.widgets.CategorySchemeCategorisations
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeMainFormLayout;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
+import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
@@ -552,11 +553,16 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         commentsForm.setValue(CategorySchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(categorySchemeDto.getComment()));
 
         // Annotations
+
         annotationsPanel.setAnnotations(categorySchemeDto.getAnnotations(), categorySchemeDto);
     }
 
     public void setCategorySchemeEditionMode(CategorySchemeMetamacDto categorySchemeDto) {
-        // Identifiers
+
+        String[] requiredFieldsToNextProcStatus = RequiredFieldUtils.getCategorySchemeRequiredFieldsToNextProcStatus(categorySchemeDto.getLifeCycle().getProcStatus());
+
+        // IDENTIFIERS
+
         identifiersEditionForm.setValue(CategorySchemeDS.CODE, categorySchemeDto.getCode());
         identifiersEditionForm.setValue(CategorySchemeDS.CODE_VIEW, categorySchemeDto.getCode());
         identifiersEditionForm.setValue(CategorySchemeDS.URI, categorySchemeDto.getUriProvider());
@@ -564,9 +570,11 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         identifiersEditionForm.setValue(CategorySchemeDS.URN_PROVIDER, categorySchemeDto.getUrnProvider());
         identifiersEditionForm.setValue(CategorySchemeDS.VERSION_LOGIC, categorySchemeDto.getVersionLogic());
         identifiersEditionForm.setValue(CategorySchemeDS.NAME, RecordUtils.getInternationalStringRecord(categorySchemeDto.getName()));
+        identifiersEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         identifiersEditionForm.markForRedraw();
 
-        // Content descriptors
+        // CONTENT DESCRIPTORS
+
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categorySchemeDto.getDescription()));
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_PARTIAL, CommonUtils.getBooleanName(categorySchemeDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_EXTERNAL_REFERENCE, categorySchemeDto.getIsExternalReference() != null ? (categorySchemeDto.getIsExternalReference()
@@ -575,22 +583,28 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.FINAL, categorySchemeDto.getFinalLogic() != null ? (categorySchemeDto.getFinalLogic()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         contentDescriptorsEditionForm.markForRedraw();
 
-        // Production descriptors
+        // PRODUCTION DESCRIPTORS
+
         ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(CategorySchemeDS.MAINTAINER)).setRelatedResource(categorySchemeDto.getMaintainer());
         productionDescriptorsEditionForm
                 .setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
         productionDescriptorsEditionForm.setValue(CategorySchemeDS.VERSION_CREATION_DATE, categorySchemeDto.getCreatedDate());
         productionDescriptorsEditionForm.setValue(CategorySchemeDS.RESOURCE_CREATION_DATE, categorySchemeDto.getResourceCreatedDate());
+        productionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Diffusion descriptors
+        // DIFFUSION DESCRIPTORS
+
         diffusionDescriptorsEditionForm.setValue(CategorySchemeDS.REPLACED_BY_VERSION, categorySchemeDto.getReplacedByVersion());
         diffusionDescriptorsEditionForm.setValue(CategorySchemeDS.REPLACE_TO_VERSION, categorySchemeDto.getReplaceToVersion());
         diffusionDescriptorsEditionForm.setValue(CategorySchemeDS.VALID_FROM, DateUtils.getFormattedDate(categorySchemeDto.getValidFrom()));
         diffusionDescriptorsEditionForm.setValue(CategorySchemeDS.VALID_TO, DateUtils.getFormattedDate(categorySchemeDto.getValidTo()));
+        diffusionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Version responsibility
+        // VERSION RESPONSIBILITY
+
         versionResponsibilityEditionForm.setValue(CategorySchemeDS.PRODUCTION_VALIDATION_USER, categorySchemeDto.getLifeCycle().getProductionValidationUser());
         versionResponsibilityEditionForm.setValue(CategorySchemeDS.PRODUCTION_VALIDATION_DATE, categorySchemeDto.getLifeCycle().getProductionValidationDate());
         versionResponsibilityEditionForm.setValue(CategorySchemeDS.DIFFUSION_VALIDATION_USER, categorySchemeDto.getLifeCycle().getDiffusionValidationUser());
@@ -599,11 +613,15 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         versionResponsibilityEditionForm.setValue(CategorySchemeDS.INTERNAL_PUBLICATION_DATE, categorySchemeDto.getLifeCycle().getInternalPublicationDate());
         versionResponsibilityEditionForm.setValue(CategorySchemeDS.EXTERNAL_PUBLICATION_USER, categorySchemeDto.getLifeCycle().getExternalPublicationUser());
         versionResponsibilityEditionForm.setValue(CategorySchemeDS.EXTERNAL_PUBLICATION_DATE, categorySchemeDto.getLifeCycle().getExternalPublicationDate());
+        versionResponsibilityEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Comments
+        // COMMENTS
+
         commentsEditionForm.setValue(CategorySchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(categorySchemeDto.getComment()));
+        commentsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
-        // Annotations
+        // ANNOTATIONS
+
         annotationsEditionPanel.setAnnotations(categorySchemeDto.getAnnotations(), categorySchemeDto);
     }
 
