@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.srm.web.client.model.ds.ItemSchemeDS;
 import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
+import org.siemac.metamac.web.common.client.widgets.CustomListGridSectionStack;
 
 import com.smartgwt.client.widgets.grid.ListGridField;
 
