@@ -72,6 +72,7 @@ public abstract class ImportationMetamacCommonValidations {
                     .withMessageParameters(structureVersionNoFinal.getMaintainableArtefact().getUrn()).build();
         }
     }
+
     /**
      * Besides this, other validations are performed in the methods preCreate of services.
      * 

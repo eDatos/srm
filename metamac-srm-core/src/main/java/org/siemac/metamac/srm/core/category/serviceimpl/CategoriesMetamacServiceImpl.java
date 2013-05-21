@@ -81,6 +81,10 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     private ItemSchemesCopyCallback        categoriesVersioningCallback;
 
     @Autowired
+    @Qualifier("categoriesDummyVersioningCallbackMetamac")
+    private ItemSchemesCopyCallback        categoriesDummyVersioningCallback;
+
+    @Autowired
     @Qualifier("categoriesCopyCallbackMetamac")
     private ItemSchemesCopyCallback        categoriesCopyCallback;
 
@@ -204,12 +208,12 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Override
     public TaskInfo versioningCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        return createVersionOfCategoryScheme(ctx, urnToCopy, versionType, false);
+        return createVersionOfCategoryScheme(ctx, urnToCopy, categoriesVersioningCallback, versionType, false);
     }
 
     @Override
     public TaskInfo createTemporalVersionCategoryScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
-        return createVersionOfCategoryScheme(ctx, urnToCopy, null, true);
+        return createVersionOfCategoryScheme(ctx, urnToCopy, categoriesDummyVersioningCallback, null, true);
     }
 
     @Override
@@ -545,12 +549,13 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         checkCategorySchemeCanBeModified(categorySchemeVersion);
     }
 
-    private TaskInfo createVersionOfCategoryScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+    private TaskInfo createVersionOfCategoryScheme(ServiceContext ctx, String urnToCopy, ItemSchemesCopyCallback itemSchemesCopyCallback, VersionTypeEnum versionType, boolean isTemporal)
+            throws MetamacException {
         // Validation
         CategoriesMetamacInvocationValidator.checkVersioningCategoryScheme(urnToCopy, versionType, isTemporal, null, null);
         checkCategorySchemeToVersioning(ctx, urnToCopy, isTemporal);
         // Versioning
-        return categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, isTemporal, categoriesVersioningCallback);
+        return categoriesService.versioningCategoryScheme(ctx, urnToCopy, versionType, isTemporal, itemSchemesCopyCallback);
     }
 
     private void checkCategorySchemeToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {

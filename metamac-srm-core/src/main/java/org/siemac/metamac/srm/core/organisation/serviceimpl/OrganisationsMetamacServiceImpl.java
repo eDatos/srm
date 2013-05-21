@@ -80,6 +80,10 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     private ItemSchemesCopyCallback       organisationsVersioningCallback;
 
     @Autowired
+    @Qualifier("organisationsDummyVersioningCallbackMetamac")
+    private ItemSchemesCopyCallback       organisationsDummyVersioningCallback;
+
+    @Autowired
     @Qualifier("organisationsCopyCallbackMetamac")
     private ItemSchemesCopyCallback       organisationsCopyCallback;
 
@@ -192,12 +196,12 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Override
     public TaskInfo versioningOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        return createVersionOfOrganisationScheme(ctx, urnToCopy, versionType, false);
+        return createVersionOfOrganisationScheme(ctx, urnToCopy, organisationsVersioningCallback, versionType, false);
     }
 
     @Override
     public TaskInfo createTemporalOrganisationScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
-        return createVersionOfOrganisationScheme(ctx, urnToCopy, null, true);
+        return createVersionOfOrganisationScheme(ctx, urnToCopy, organisationsDummyVersioningCallback, null, true);
     }
 
     @Override
@@ -482,13 +486,14 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         SrmValidationUtils.checkArtefactWithoutTaskInBackground(organisationSchemeVersion);
     }
 
-    private TaskInfo createVersionOfOrganisationScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+    private TaskInfo createVersionOfOrganisationScheme(ServiceContext ctx, String urnToCopy, ItemSchemesCopyCallback itemSchemesCopyCallback, VersionTypeEnum versionType, boolean isTemporal)
+            throws MetamacException {
         // Validation
         OrganisationsMetamacInvocationValidator.checkVersioningOrganisationScheme(urnToCopy, versionType, isTemporal, null, null);
         checkOrganisationSchemeToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
-        return organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType, isTemporal, organisationsVersioningCallback);
+        return organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType, isTemporal, itemSchemesCopyCallback);
     }
 
 }

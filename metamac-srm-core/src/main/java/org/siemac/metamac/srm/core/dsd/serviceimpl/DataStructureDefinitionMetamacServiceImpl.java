@@ -123,6 +123,10 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     private DataStructureDefinitionsCopyCallback    dataStructureDefinitionsVersioningCallback;
 
     @Autowired
+    @Qualifier("dataStructureDefinitionsDummyVersioningCallbackMetamac")
+    private DataStructureDefinitionsCopyCallback    dataStructureDefinitionsDummyVersioningCallback;
+
+    @Autowired
     @Qualifier("dataStructureDefinitionsCopyCallbackMetamac")
     private DataStructureDefinitionsCopyCallback    dataStructureDefinitionsCopyCallback;
 
@@ -387,12 +391,12 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
     @Override
     public DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        return createVersionOfDataStructureDefinition(ctx, urnToCopy, versionType, false);
+        return createVersionOfDataStructureDefinition(ctx, urnToCopy, dataStructureDefinitionsVersioningCallback, versionType, false);
     }
 
     @Override
     public DataStructureDefinitionVersionMetamac createTemporalDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
-        return createVersionOfDataStructureDefinition(ctx, urnToCopy, null, true);
+        return createVersionOfDataStructureDefinition(ctx, urnToCopy, dataStructureDefinitionsDummyVersioningCallback, null, true);
     }
 
     @Override
@@ -797,14 +801,15 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
     }
 
-    private DataStructureDefinitionVersionMetamac createVersionOfDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+    private DataStructureDefinitionVersionMetamac createVersionOfDataStructureDefinition(ServiceContext ctx, String urnToCopy,
+            DataStructureDefinitionsCopyCallback dataStructureDefinitionsCopyCallback, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
         // Validation
         DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, isTemporal, null, null);
         checkDataStructureDefinitionToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService
-                .versioningDataStructureDefinition(ctx, urnToCopy, versionType, isTemporal, dataStructureDefinitionsVersioningCallback);
+                .versioningDataStructureDefinition(ctx, urnToCopy, versionType, isTemporal, dataStructureDefinitionsCopyCallback);
 
         return dataStructureDefinitionVersionMetamacNewVersion;
     }

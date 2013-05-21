@@ -109,6 +109,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private ItemSchemesCopyCallback          conceptsCopyCallback;
 
     @Autowired
+    @Qualifier("conceptsDummyVersioningCallbackMetamac")
+    private ItemSchemesCopyCallback          conceptsDummyVersioningCallback;
+
+    @Autowired
     private InternationalStringRepository    internationalStringRepository;
 
     @Autowired
@@ -263,12 +267,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public TaskInfo versioningConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
-        return createVersionOfConceptScheme(ctx, urnToCopy, versionType, false);
+        return createVersionOfConceptScheme(ctx, urnToCopy, conceptsVersioningCallback, versionType, false);
     }
 
     @Override
     public TaskInfo createTemporalVersionConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
-        return createVersionOfConceptScheme(ctx, urnToCopy, null, true);
+        return createVersionOfConceptScheme(ctx, urnToCopy, conceptsDummyVersioningCallback, null, true);
     }
 
     @Override
@@ -894,13 +898,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
     }
 
-    private TaskInfo createVersionOfConceptScheme(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+    private TaskInfo createVersionOfConceptScheme(ServiceContext ctx, String urnToCopy, ItemSchemesCopyCallback itemSchemesCopyCallback, VersionTypeEnum versionType, boolean isTemporal)
+            throws MetamacException {
 
         // Validation
         checkConceptSchemeToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
-        return conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, isTemporal, conceptsVersioningCallback);
+        return conceptsService.versioningConceptScheme(ctx, urnToCopy, versionType, isTemporal, itemSchemesCopyCallback);
     }
 
     private void versioningRelatedConcepts(ConceptMetamac conceptToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
