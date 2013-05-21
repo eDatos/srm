@@ -24,6 +24,7 @@ import org.siemac.metamac.web.common.shared.MockCASUserAction;
 import org.siemac.metamac.web.common.shared.MockCASUserResult;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.Window;
 import com.gwtplatform.mvp.client.DelayedBindRegistry;
 
@@ -177,6 +178,7 @@ public class MetamacSrmWeb extends MetamacEntryPoint {
                 // This is required for GWT-Platform proxy's generator.
                 DelayedBindRegistry.bind(ginjector);
                 ginjector.getPlaceManager().revealCurrentPlace();
+                Document.get().setTitle(getConstants().appTitle());
             }
         });
     }
