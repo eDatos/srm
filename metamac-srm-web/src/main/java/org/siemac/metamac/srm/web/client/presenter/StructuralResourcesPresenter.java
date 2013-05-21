@@ -256,4 +256,15 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
             placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteCodelistPlaceRequest(urn));
         }
     }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
+        }
+    }
 }

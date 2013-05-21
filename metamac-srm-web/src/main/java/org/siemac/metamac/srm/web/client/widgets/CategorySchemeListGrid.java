@@ -6,9 +6,8 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
 import org.siemac.metamac.srm.web.category.utils.RecordUtils;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
-import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
-public class CategorySchemeListGrid extends BaseCustomListGrid {
+public class CategorySchemeListGrid extends NavigableListGrid {
 
     public CategorySchemeListGrid() {
         this.setFields(ResourceFieldUtils.getCategorySchemeListGridFields());

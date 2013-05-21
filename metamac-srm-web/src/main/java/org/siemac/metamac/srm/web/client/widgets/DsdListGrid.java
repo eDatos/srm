@@ -6,9 +6,8 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDt
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
-import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
-public class DsdListGrid extends BaseCustomListGrid {
+public class DsdListGrid extends NavigableListGrid {
 
     public DsdListGrid() {
         super();

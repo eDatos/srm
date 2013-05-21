@@ -155,6 +155,16 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
     }
 
     @Override
+    public void setUiHandlers(StructuralResourcesUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        conceptSchemeListGrid.setUiHandlers(uiHandlers);
+        dsdListGrid.setUiHandlers(uiHandlers);
+        codelistListGrid.setUiHandlers(uiHandlers);
+        organisationSchemeListGrid.setUiHandlers(uiHandlers);
+        categorySchemeListGrid.setUiHandlers(uiHandlers);
+    }
+
+    @Override
     public void resetView() {
         for (int i = 0; i < lastModifiedArtifactsSectionStack.getSections().length; i++) {
             lastModifiedArtifactsSectionStack.collapseSection(i);
