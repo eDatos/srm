@@ -169,7 +169,7 @@ Application SrmFacadeCore {
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-    		@DataStructureDefinitionMetamacDto versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		TaskInfo versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		
     		"
 	    	 Creates a temporal version of a dsd, copying metadata from version with provided urnn  		
@@ -178,7 +178,7 @@ Application SrmFacadeCore {
 		     @return
 		     @throws org.siemac.metamac.core.common.exception.MetamacException
 		    "
-    		@DataStructureDefinitionMetamacDto createTemporalVersionDataStructureDefinition(String urnToCopy) throws MetamacException;
+    		TaskInfo createTemporalVersionDataStructureDefinition(String urnToCopy) throws MetamacException;
    		
     		"
 	    	 Ends the dsd scheme validity  		

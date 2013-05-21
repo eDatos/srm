@@ -394,17 +394,17 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     }
 
     @Override
-    public DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+    public TaskInfo versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         return createVersionOfDataStructureDefinition(ctx, urnToCopy, dataStructureDefinitionsVersioningCallback, versionType, false);
     }
 
     @Override
-    public DataStructureDefinitionVersionMetamac createTemporalDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo createTemporalDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
         return createVersionOfDataStructureDefinition(ctx, urnToCopy, dataStructureDefinitionsDummyVersioningCallback, null, true);
     }
 
     @Override
-    public DataStructureDefinitionVersionMetamac createVersionFromTemporalDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
+    public TaskInfo createVersionFromTemporalDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
         DataStructureDefinitionVersionMetamac dataStructureVersionTemporal = retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
 
         // Check if is a temporal version
@@ -427,7 +427,10 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         // Convert categorisations in no temporal
         categoriesMetamacService.createVersionFromTemporalCategorisations(ctx, dataStructureVersionTemporal.getMaintainableArtefact());
 
-        return dataStructureVersionTemporal;
+        // Result
+        TaskInfo taskInfo = new TaskInfo();
+        taskInfo.setUrnResult(dataStructureVersionTemporal.getMaintainableArtefact().getUrn());
+        return taskInfo;
     }
 
     @Override
@@ -808,17 +811,14 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
     }
 
-    private DataStructureDefinitionVersionMetamac createVersionOfDataStructureDefinition(ServiceContext ctx, String urnToCopy,
-            DataStructureDefinitionsCopyCallback dataStructureDefinitionsCopyCallback, VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
+    private TaskInfo createVersionOfDataStructureDefinition(ServiceContext ctx, String urnToCopy, DataStructureDefinitionsCopyCallback dataStructureDefinitionsCopyCallback,
+            VersionTypeEnum versionType, boolean isTemporal) throws MetamacException {
         // Validation
         DsdsMetamacInvocationValidator.checkVersioningDataStructureDefinition(urnToCopy, versionType, isTemporal, null, null);
         checkDataStructureDefinitionToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService
-                .versioningDataStructureDefinition(ctx, urnToCopy, versionType, isTemporal, dataStructureDefinitionsCopyCallback);
-
-        return dataStructureDefinitionVersionMetamacNewVersion;
+        return dataStructureDefinitionService.versioningDataStructureDefinition(ctx, urnToCopy, versionType, isTemporal, dataStructureDefinitionsCopyCallback);
     }
 
     @Override

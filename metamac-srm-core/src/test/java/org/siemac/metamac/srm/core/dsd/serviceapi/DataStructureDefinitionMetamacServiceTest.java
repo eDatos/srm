@@ -420,8 +420,13 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
         String urn = DSD_6_V1;
         String versionExpected = "02.000";
 
+        TaskInfo versioningResult = dataStructureDefinitionMetamacService.versioningDataStructureDefinition(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+
+        // Validate response
+        entityManager.clear();
         DataStructureDefinitionVersionMetamac dsdToCopy = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), urn);
-        DataStructureDefinitionVersionMetamac dsdNewVersion = dataStructureDefinitionMetamacService.versioningDataStructureDefinition(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+        DataStructureDefinitionVersionMetamac dsdNewVersion = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(),
+                versioningResult.getUrnResult());
 
         // Validate response
         {
@@ -488,8 +493,13 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
         String dsd_6_v1temp_time_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX02:DATASTRUCTUREDEFINITION06(" + versionExpected + ").timeDimension-01";
         String dsd_6_v1temp_measure_dimension_1 = "urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX02:DATASTRUCTUREDEFINITION06(" + versionExpected + ").measureDimension-01";
 
+        TaskInfo versioningResult = dataStructureDefinitionMetamacService.createTemporalDataStructureDefinition(getServiceContextAdministrador(), urn);
+
+        // Validate response
+        entityManager.clear();
         DataStructureDefinitionVersionMetamac dsdToCopy = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), urn);
-        DataStructureDefinitionVersionMetamac dsdNewVersion = dataStructureDefinitionMetamacService.createTemporalDataStructureDefinition(getServiceContextAdministrador(), urn);
+        DataStructureDefinitionVersionMetamac dsdNewVersion = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(),
+                versioningResult.getUrnResult());
 
         // Validate response
         {
@@ -562,11 +572,10 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     public void testCreateVersionFromTemporalDataStructureDefinition() throws Exception {
         String urn = DSD_6_V1;
 
-        DataStructureDefinitionVersionMetamac temporalDataStructureDefinitionVersionMetamac = dataStructureDefinitionMetamacService.createTemporalDataStructureDefinition(
-                getServiceContextAdministrador(), urn);
+        TaskInfo versioningResult1 = dataStructureDefinitionMetamacService.createTemporalDataStructureDefinition(getServiceContextAdministrador(), urn);
         entityManager.clear();
-        temporalDataStructureDefinitionVersionMetamac = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(),
-                temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn());
+        DataStructureDefinitionVersionMetamac temporalDataStructureDefinitionVersionMetamac = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(
+                getServiceContextAdministrador(), versioningResult1.getUrnResult());
 
         assertEquals(3, temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getCategorisations().size());
         assertListContainsCategorisation(temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getCategorisations(),
@@ -576,11 +585,11 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
         assertListContainsCategorisation(temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getCategorisations(),
                 "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX02:cat3(01.000_temporal)");
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionNewVersion = dataStructureDefinitionMetamacService.createVersionFromTemporalDataStructureDefinition(
-                getServiceContextAdministrador(), temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
+        TaskInfo versioningResult2 = dataStructureDefinitionMetamacService.createVersionFromTemporalDataStructureDefinition(getServiceContextAdministrador(),
+                temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
         entityManager.clear();
-        dataStructureDefinitionNewVersion = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), dataStructureDefinitionNewVersion
-                .getMaintainableArtefact().getUrn());
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionNewVersion = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(),
+                versioningResult2.getUrnResult());
 
         String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX02:DATASTRUCTUREDEFINITION06(" + versionExpected + ")";
@@ -611,9 +620,11 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     public void testMergeTemporalVersion() throws Exception {
         {
             String urn = DSD_6_V1;
-            DataStructureDefinitionVersionMetamac temporalDataStructureDefinitionVersionMetamac = dataStructureDefinitionMetamacService.createTemporalDataStructureDefinition(
-                    getServiceContextAdministrador(), urn);
+            TaskInfo versioningResult = dataStructureDefinitionMetamacService.createTemporalDataStructureDefinition(getServiceContextAdministrador(), urn);
 
+            entityManager.clear();
+            DataStructureDefinitionVersionMetamac temporalDataStructureDefinitionVersionMetamac = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(
+                    getServiceContextAdministrador(), versioningResult.getUrnResult());
             // Change temporal version *********************
 
             // DataStructure: Change Name

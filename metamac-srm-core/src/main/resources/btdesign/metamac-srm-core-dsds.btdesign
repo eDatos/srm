@@ -60,7 +60,7 @@ Application DsdsMetamac {
     		"Copies a data structure definition version, creating a new data structure definition"
     		TaskInfo copyDataStructureDefinition(String urnToCopy) throws MetamacException;
     		"Creates a new version of a data structure definition, copying metadata from version with provided urn"
-    		@DataStructureDefinitionVersionMetamac versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
+    		TaskInfo versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Create heading and stub metadata in the new version if exists in the previous DSD heading and stub"
     		@DataStructureDefinitionVersionMetamac versioningHeadingAndStub(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy, @DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException;
    			"Create showDecimalsPrecision in the new version if are valid metadata in the new version"
@@ -68,9 +68,9 @@ Application DsdsMetamac {
     		"Create dimensionVisualisationInfo in the new version if are valid metadata in the new version"
     		@DataStructureDefinitionVersionMetamac versioningDimensionVisualisationInfo(@DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacToCopy, @DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacNewVersion) throws MetamacException;
     		"Creates a temporal version of a data structure definition, copying metadata from version with provided urn"
-    		@DataStructureDefinitionVersionMetamac createTemporalDataStructureDefinition(String urnToCopy) throws MetamacException;
+    		TaskInfo createTemporalDataStructureDefinition(String urnToCopy) throws MetamacException;
      		"Creates a new version of a data structure definition from temporal version with provided urn"
-    		@DataStructureDefinitionVersionMetamac createVersionFromTemporalDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
+    		TaskInfo createVersionFromTemporalDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
     		"Merge temporal version into published version"
     		@DataStructureDefinitionVersionMetamac mergeTemporalVersion(@DataStructureDefinitionVersionMetamac dataStructureTemporalVersion) throws MetamacException;
     		"Ends the data structure definition validity"

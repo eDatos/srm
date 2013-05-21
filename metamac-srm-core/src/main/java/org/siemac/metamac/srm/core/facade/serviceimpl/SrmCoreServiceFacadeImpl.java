@@ -384,34 +384,25 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
+    public TaskInfo versioningDataStructureDefinition(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionType) throws MetamacException {
         // Security
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
         DataStructureDefinitionSecurityUtils.canVersioningDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld);
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
-            dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().createVersionFromTemporalDataStructureDefinition(ctx, urnToCopy, versionType);
+            return getDataStructureDefinitionMetamacService().createVersionFromTemporalDataStructureDefinition(ctx, urnToCopy, versionType);
         } else {
-            dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().versioningDataStructureDefinition(ctx, urnToCopy, versionType);
+            return getDataStructureDefinitionMetamacService().versioningDataStructureDefinition(ctx, urnToCopy, versionType);
         }
-
-        // Transform to Dto
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
-        return dataStructureDefinitionMetamacDto;
     }
 
     @Override
-    public DataStructureDefinitionMetamacDto createTemporalVersionDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo createTemporalVersionDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
         // Security
         DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamacOld = getDataStructureDefinitionMetamacService().retrieveDataStructureDefinitionByUrn(ctx, urnToCopy);
         DataStructureDefinitionSecurityUtils.canCreateDataStructureDefinitionTemporalVersion(ctx, dataStructureDefinitionVersionMetamacOld);
 
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = getDataStructureDefinitionMetamacService().createTemporalDataStructureDefinition(ctx, urnToCopy);
-
-        // Transform to Dto
-        DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToDto(dataStructureDefinitionVersionMetamac);
-        return dataStructureDefinitionMetamacDto;
+        return getDataStructureDefinitionMetamacService().createTemporalDataStructureDefinition(ctx, urnToCopy);
     }
 
     @Override
