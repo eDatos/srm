@@ -10,5 +10,4 @@ public class CustomVLayout extends VLayout {
         setOverflow(Overflow.VISIBLE);
         setAutoHeight();
     }
-
 }

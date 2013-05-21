@@ -19,6 +19,7 @@ import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.CustomSectionStack;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
@@ -47,7 +48,6 @@ import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
-import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -139,8 +139,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         conceptsTreeGrid.setAutoFitMaxRecords(10);
 
         CustomVLayout conceptsListGridLayout = new CustomVLayout();
-        conceptsListGridLayout.addMember(new TitleLabel(getConstants().conceptSchemeConcepts()));
-        conceptsListGridLayout.addMember(conceptsTreeGrid);
+        CustomSectionStack sectionStack = new CustomSectionStack(getConstants().conceptSchemeConcepts());
+        sectionStack.getDefaultSection().setItems(conceptsTreeGrid);
+        conceptsListGridLayout.addMember(sectionStack);
 
         //
         // CONCEPT

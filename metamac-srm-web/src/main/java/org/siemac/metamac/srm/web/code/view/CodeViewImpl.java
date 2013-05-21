@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.CustomSectionStack;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
@@ -27,7 +28,6 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
-import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -93,8 +93,9 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         codesTreeGrid.setAutoFitMaxRecords(10);
 
         CustomVLayout codesListGridLayout = new CustomVLayout();
-        codesListGridLayout.addMember(new TitleLabel(getConstants().codelistCodes()));
-        codesListGridLayout.addMember(codesTreeGrid);
+        CustomSectionStack sectionStack = new CustomSectionStack(getConstants().codelistCodes());
+        sectionStack.getDefaultSection().setItems(codesTreeGrid);
+        codesListGridLayout.addMember(sectionStack);
 
         //
         // CODE

@@ -25,7 +25,7 @@ import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public abstract class BaseCodelistVisualisationSectionStack extends CustomSectionStack {
+public abstract class BaseCodelistVisualisationSectionStack extends CustomListGridSectionStack {
 
     protected ToolStrip                toolStrip;
     protected ToolStripButton          newCodelistVisualisationButton;
@@ -121,7 +121,7 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomSectio
             }
         });
 
-        section.setItems(toolStrip, listGrid);
+        defaultSection.setItems(toolStrip, listGrid);
 
     }
 

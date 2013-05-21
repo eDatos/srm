@@ -7,11 +7,10 @@ import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
 import com.smartgwt.client.widgets.grid.ListGridField;
 
-public class ItemSchemeVersionsSectionStack extends CustomSectionStack {
+public class ItemSchemeVersionsSectionStack extends CustomListGridSectionStack {
 
     public ItemSchemeVersionsSectionStack(String title) {
-        super(new BaseCustomListGrid(), title);
-        setStyleName("versionSectionStackStyle");
+        super(new BaseCustomListGrid(), title, "versionSectionStackStyle");
 
         // Add fields to listGrid
         ListGridField codeField = new ListGridField(ItemSchemeDS.CODE, getConstants().identifiableArtefactCode());
@@ -22,6 +21,6 @@ public class ItemSchemeVersionsSectionStack extends CustomSectionStack {
         listGrid.setFields(codeField, nameField, versionField);
 
         // Add listGrid to sectionStack
-        section.setItems(listGrid);
+        defaultSection.setItems(listGrid);
     }
 }

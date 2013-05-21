@@ -16,10 +16,10 @@ import org.siemac.metamac.srm.web.category.widgets.CategoriesTreeGrid;
 import org.siemac.metamac.srm.web.category.widgets.CategoryMainFormLayout;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.CustomSectionStack;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
-import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
@@ -75,8 +75,9 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         categoriesTreeGrid.setAutoFitMaxRecords(10);
 
         CustomVLayout categoriesListGridLayout = new CustomVLayout();
-        categoriesListGridLayout.addMember(new TitleLabel(getConstants().categorySchemeCategories()));
-        categoriesListGridLayout.addMember(categoriesTreeGrid);
+        CustomSectionStack sectionStack = new CustomSectionStack(getConstants().categorySchemeCategories());
+        sectionStack.getDefaultSection().setItems(categoriesTreeGrid);
+        categoriesListGridLayout.addMember(sectionStack);
 
         //
         // CATEGORY

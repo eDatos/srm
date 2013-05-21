@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.CustomSectionStack;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.srm.web.organisation.model.ds.ContactDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
@@ -113,8 +114,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         organisationsTreeGrid.setAutoFitMaxRecords(10);
 
         organisationsTreeGridLayout = new CustomVLayout();
-        organisationsTreeGridLayout.addMember(new TitleLabel(getConstants().organisationSchemeOrganisations()));
-        organisationsTreeGridLayout.addMember(organisationsTreeGrid);
+        CustomSectionStack sectionStack = new CustomSectionStack(getConstants().organisationSchemeOrganisations());
+        sectionStack.getDefaultSection().setItems(organisationsTreeGrid);
+        organisationsTreeGridLayout.addMember(sectionStack);
 
         //
         // ORGANISATION
