@@ -112,7 +112,7 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
         ListGridRecord[] records = getRecords();
         for (ListGridRecord record : records) {
             // update concept
-            record.setAttribute(CONCEPT_FIELD, CommonWebUtils.getElementName(record.getAttribute(CodeDS.CODE), CodeDS.NAME));
+            record.setAttribute(CONCEPT_FIELD, CommonWebUtils.getElementName(record.getAttribute(CodeDS.CODE), record.getAttribute(CodeDS.NAME)));
             // update decimals
             record.setAttribute(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getDecimalsByConcept(record.getAttribute(ItemDS.URN)));
         }
