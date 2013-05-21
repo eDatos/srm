@@ -39,6 +39,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
+import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
@@ -116,6 +117,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Autowired
     private CodesService                   codesService;
+
+    @Autowired
+    private CategoriesMetamacService       categoriesMetamacService;
 
     @Autowired
     private ItemSchemeVersionRepository    itemSchemeVersionRepository;
@@ -399,11 +403,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Set null replacedBy in the original entity
         codelistVersion.getMaintainableArtefact().setReplacedByVersion(null);
 
+        // Convert categorisations in no temporal
+        categoriesMetamacService.createVersionFromTemporalCategorisations(ctx, codelistVersionTemporal.getMaintainableArtefact());
+
         TaskInfo versioningResult = new TaskInfo();
         versioningResult.setUrnResult(codelistVersionTemporal.getMaintainableArtefact().getUrn());
         return versioningResult;
     }
-
+    
     @Override
     public CodelistVersionMetamac mergeTemporalVersion(ServiceContext ctx, String urnTemporal) throws MetamacException {
 

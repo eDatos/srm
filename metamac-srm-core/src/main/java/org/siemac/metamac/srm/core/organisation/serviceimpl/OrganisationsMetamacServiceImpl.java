@@ -17,6 +17,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
+import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
@@ -58,6 +59,9 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Autowired
     private OrganisationsService          organisationsService;
+
+    @Autowired
+    private CategoriesMetamacService      categoriesMetamacService;
 
     @Autowired
     private ItemSchemeVersionRepository   itemSchemeVersionRepository;
@@ -226,6 +230,9 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Set null replacedBy in the original entity
         organisationSchemeVersion.getMaintainableArtefact().setReplacedByVersion(null);
+
+        // Convert categorisations in no temporal
+        categoriesMetamacService.createVersionFromTemporalCategorisations(ctx, organisationSchemeVersionTemporal.getMaintainableArtefact());
 
         TaskInfo versioningResult = new TaskInfo();
         versioningResult.setUrnResult(organisationSchemeVersionTemporal.getMaintainableArtefact().getUrn());

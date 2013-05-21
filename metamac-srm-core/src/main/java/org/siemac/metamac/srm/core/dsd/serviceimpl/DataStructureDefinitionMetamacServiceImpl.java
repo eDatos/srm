@@ -24,6 +24,7 @@ import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
+import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisationRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -92,6 +93,9 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
     @Autowired
     private DataStructureDefinitionService          dataStructureDefinitionService;
+
+    @Autowired
+    private CategoriesMetamacService                categoriesMetamacService;
 
     @Autowired
     private ConceptMetamacRepository                conceptMetamacRepository;
@@ -419,6 +423,9 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
         // Set null replacedBy in the original entity
         dataStructureDefinitionVersion.getMaintainableArtefact().setReplacedByVersion(null);
+
+        // Convert categorisations in no temporal
+        categoriesMetamacService.createVersionFromTemporalCategorisations(ctx, dataStructureVersionTemporal.getMaintainableArtefact());
 
         return dataStructureVersionTemporal;
     }

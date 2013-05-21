@@ -7395,6 +7395,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         TaskInfo versioningTemporalResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
         entityManager.clear();
         CodelistVersionMetamac temporalCodelistVersionMetamac = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), versioningTemporalResult.getUrnResult());
+        assertEquals(3, temporalCodelistVersionMetamac.getMaintainableArtefact().getCategorisations().size());
+        assertListContainsCategorisation(temporalCodelistVersionMetamac.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000_temporal)");
+        assertListContainsCategorisation(temporalCodelistVersionMetamac.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat2(01.000_temporal)");
+        assertListContainsCategorisation(temporalCodelistVersionMetamac.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat3(01.000_temporal)");
 
         TaskInfo versioningTemporalToVersionResult = codesService.createVersionFromTemporalCodelist(getServiceContextAdministrador(),
                 temporalCodelistVersionMetamac.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
@@ -7404,7 +7411,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST03(" + versionExpected + ")";
 
-        // Validate response
+        // Validate
         {
             assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, codelistVersionNewVersion.getMaintainableArtefact().getVersionLogic());
@@ -7414,6 +7421,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertTrue(codelistVersionNewVersion.getMaintainableArtefact().getIsLastVersion());
             assertFalse(codelistVersionNewVersion.getMaintainableArtefact().getLatestFinal());
             assertFalse(codelistVersionNewVersion.getMaintainableArtefact().getLatestPublic());
+
+            assertEquals(3, codelistVersionNewVersion.getMaintainableArtefact().getCategorisations().size());
+            assertListContainsCategorisation(codelistVersionNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)");
+            assertListContainsCategorisation(codelistVersionNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat5(01.000)");
+            assertListContainsCategorisation(codelistVersionNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat6(01.000)");
         }
     }
 

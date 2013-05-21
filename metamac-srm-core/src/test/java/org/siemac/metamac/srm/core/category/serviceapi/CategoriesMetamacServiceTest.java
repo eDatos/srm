@@ -1372,6 +1372,13 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         TaskInfo versioningResult1 = categoriesService.createTemporalVersionCategoryScheme(getServiceContextAdministrador(), urn);
         entityManager.clear();
         CategorySchemeVersionMetamac categorySchemeVersionTemporal = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), versioningResult1.getUrnResult());
+        assertEquals(3, categorySchemeVersionTemporal.getMaintainableArtefact().getCategorisations().size());
+        assertListContainsCategorisation(categorySchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000_temporal)");
+        assertListContainsCategorisation(categorySchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat2(01.000_temporal)");
+        assertListContainsCategorisation(categorySchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat3(01.000_temporal)");
 
         TaskInfo versioningResult2 = categoriesService.createVersionFromTemporalCategoryScheme(getServiceContextAdministrador(), categorySchemeVersionTemporal.getMaintainableArtefact().getUrn(),
                 VersionTypeEnum.MAJOR);
@@ -1381,7 +1388,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME03(" + versionExpected + ")";
 
-        // Validate response
+        // Validate
 
         {
             assertEquals(ProcStatusEnum.DRAFT, categorySchemeNewVersion.getLifeCycleMetadata().getProcStatus());
@@ -1392,6 +1399,11 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertTrue(categorySchemeNewVersion.getMaintainableArtefact().getIsLastVersion());
             assertFalse(categorySchemeNewVersion.getMaintainableArtefact().getLatestFinal());
             assertFalse(categorySchemeNewVersion.getMaintainableArtefact().getLatestPublic());
+
+            assertEquals(3, categorySchemeNewVersion.getMaintainableArtefact().getCategorisations().size());
+            assertListContainsCategorisation(categorySchemeNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)");
+            assertListContainsCategorisation(categorySchemeNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat5(01.000)");
+            assertListContainsCategorisation(categorySchemeNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat6(01.000)");
         }
     }
 
@@ -2047,6 +2059,10 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     }
     @Override
     public void testEndCategorisationValidity() throws Exception {
+    }
+    @Override
+    public void testCreateVersionFromTemporalCategorisations() throws Exception {
+        // in services of categorised artefacts
     }
 
     @SuppressWarnings("rawtypes")

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
@@ -237,6 +238,9 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         // Set null replacedBy in the original entity
         categorySchemeVersion.getMaintainableArtefact().setReplacedByVersion(null);
 
+        // Convert categorisations in no temporal
+        createVersionFromTemporalCategorisations(ctx, categorySchemeVersionTemporal.getMaintainableArtefact());
+
         TaskInfo versioningResult = new TaskInfo();
         versioningResult.setUrnResult(categorySchemeVersionTemporal.getMaintainableArtefact().getUrn());
         return versioningResult;
@@ -436,6 +440,23 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
         // Delete
         categoriesService.deleteCategorisation(ctx, urn);
+    }
+
+    @Override
+    public void createVersionFromTemporalCategorisations(ServiceContext ctx, MaintainableArtefact maintainableArtefact) throws MetamacException {
+        List<Categorisation> categorisationsToDelete = new ArrayList<Categorisation>(maintainableArtefact.getCategorisations());
+        if (!CollectionUtils.isEmpty(categorisationsToDelete)) {
+            for (Categorisation categorisationToDelete : categorisationsToDelete) {
+                maintainableArtefact.removeCategorisation(categorisationToDelete);
+            }
+            String maintainerUrn = maintainableArtefact.getMaintainer().getNameableArtefact().getUrn();
+            String artefactCategorisedUrn = maintainableArtefact.getUrn();
+            for (Categorisation categorisationToDelete : categorisationsToDelete) {
+                String categoryUrn = categorisationToDelete.getCategory().getNameableArtefact().getUrn();
+                Categorisation categorisation = categoriesService.createCategorisation(ctx, categoryUrn, artefactCategorisedUrn, maintainerUrn, SrmConstants.VERSION_PATTERN_METAMAC);
+                maintainableArtefact.getCategorisations().add(categorisation);
+            }
+        }
     }
 
     @Override

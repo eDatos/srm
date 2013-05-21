@@ -1,5 +1,6 @@
 import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
 import "classpath:/btdesign/metamac-core-common-enum.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-base.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-categories.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
@@ -85,6 +86,8 @@ Application CategoriesMetamac {
     		preCreateCategorisation(String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException;
     		"Post Create"
     		@Categorisation postCreateCategorisation(String artefactCategorisedUrn, @Categorisation categorisation) throws MetamacException;
+    		"Convert temporal categorisations in real versions"
+    		createVersionFromTemporalCategorisations(@MaintainableArtefact maintainableArtefact) throws MetamacException;
     		"Retrieves categorisation by urn"
     		@Categorisation retrieveCategorisationByUrn(String urn) throws MetamacException;
     		"Deletes categorisation"

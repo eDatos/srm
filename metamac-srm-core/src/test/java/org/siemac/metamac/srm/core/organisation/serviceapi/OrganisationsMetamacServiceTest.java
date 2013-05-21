@@ -1562,6 +1562,13 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         TaskInfo versioningResult = organisationsService.createTemporalOrganisationScheme(getServiceContextAdministrador(), urn);
         entityManager.clear();
         OrganisationSchemeVersionMetamac organisationSchemeVersionTemporal = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
+        assertEquals(3, organisationSchemeVersionTemporal.getMaintainableArtefact().getCategorisations().size());
+        assertListContainsCategorisation(organisationSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000_temporal)");
+        assertListContainsCategorisation(organisationSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat2(01.000_temporal)");
+        assertListContainsCategorisation(organisationSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat3(01.000_temporal)");
 
         // Create no temporal version
         TaskInfo versioningResult2 = organisationsService.createVersionFromTemporalOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersionTemporal.getMaintainableArtefact()
@@ -1570,7 +1577,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME03(" + versionExpected + ")";
 
-        // Validate response
+        // Validate
         entityManager.clear();
         OrganisationSchemeVersionMetamac organisationSchemeNewVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), versioningResult2.getUrnResult());
         {
@@ -1582,6 +1589,14 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertTrue(organisationSchemeNewVersion.getMaintainableArtefact().getIsLastVersion());
             assertFalse(organisationSchemeNewVersion.getMaintainableArtefact().getLatestFinal());
             assertFalse(organisationSchemeNewVersion.getMaintainableArtefact().getLatestPublic());
+
+            assertEquals(3, organisationSchemeNewVersion.getMaintainableArtefact().getCategorisations().size());
+            assertListContainsCategorisation(organisationSchemeNewVersion.getMaintainableArtefact().getCategorisations(),
+                    "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)");
+            assertListContainsCategorisation(organisationSchemeNewVersion.getMaintainableArtefact().getCategorisations(),
+                    "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat5(01.000)");
+            assertListContainsCategorisation(organisationSchemeNewVersion.getMaintainableArtefact().getCategorisations(),
+                    "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat6(01.000)");
         }
     }
 

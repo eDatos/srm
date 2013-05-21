@@ -1855,6 +1855,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         TaskInfo versioningResult1 = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
         entityManager.clear();
         ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), versioningResult1.getUrnResult());
+        assertEquals(3, conceptSchemeVersionTemporal.getMaintainableArtefact().getCategorisations().size());
+        assertListContainsCategorisation(conceptSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000_temporal)");
+        assertListContainsCategorisation(conceptSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat2(01.000_temporal)");
+        assertListContainsCategorisation(conceptSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat3(01.000_temporal)");
 
         TaskInfo versioningResult2 = conceptsService.createVersionFromTemporalConceptScheme(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn(),
                 VersionTypeEnum.MAJOR);
@@ -1864,7 +1871,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME03(" + versionExpected + ")";
 
-        // Validate response
+        // Validate
         {
             assertEquals(ProcStatusEnum.DRAFT, conceptSchemeNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, conceptSchemeNewVersion.getMaintainableArtefact().getVersionLogic());
@@ -1874,6 +1881,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertTrue(conceptSchemeNewVersion.getMaintainableArtefact().getIsLastVersion());
             assertFalse(conceptSchemeNewVersion.getMaintainableArtefact().getLatestFinal());
             assertFalse(conceptSchemeNewVersion.getMaintainableArtefact().getLatestPublic());
+
+            assertEquals(3, conceptSchemeNewVersion.getMaintainableArtefact().getCategorisations().size());
+            assertListContainsCategorisation(conceptSchemeNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)");
+            assertListContainsCategorisation(conceptSchemeNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat5(01.000)");
+            assertListContainsCategorisation(conceptSchemeNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat6(01.000)");
         }
     }
 

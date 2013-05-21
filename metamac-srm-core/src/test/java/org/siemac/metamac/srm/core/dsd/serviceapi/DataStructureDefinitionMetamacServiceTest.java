@@ -564,13 +564,28 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
         DataStructureDefinitionVersionMetamac temporalDataStructureDefinitionVersionMetamac = dataStructureDefinitionMetamacService.createTemporalDataStructureDefinition(
                 getServiceContextAdministrador(), urn);
+        entityManager.clear();
+        temporalDataStructureDefinitionVersionMetamac = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(),
+                temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn());
+
+        assertEquals(3, temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getCategorisations().size());
+        assertListContainsCategorisation(temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX02:cat1(01.000_temporal)");
+        assertListContainsCategorisation(temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX02:cat2(01.000_temporal)");
+        assertListContainsCategorisation(temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getCategorisations(),
+                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX02:cat3(01.000_temporal)");
+
         DataStructureDefinitionVersionMetamac dataStructureDefinitionNewVersion = dataStructureDefinitionMetamacService.createVersionFromTemporalDataStructureDefinition(
                 getServiceContextAdministrador(), temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
+        entityManager.clear();
+        dataStructureDefinitionNewVersion = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), dataStructureDefinitionNewVersion
+                .getMaintainableArtefact().getUrn());
 
         String versionExpected = "02.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX02:DATASTRUCTUREDEFINITION06(" + versionExpected + ")";
 
-        // Validate response
+        // Validate
         {
             assertEquals(ProcStatusEnum.DRAFT, dataStructureDefinitionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, dataStructureDefinitionNewVersion.getMaintainableArtefact().getVersionLogic());
@@ -580,6 +595,14 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
             assertTrue(dataStructureDefinitionNewVersion.getMaintainableArtefact().getIsLastVersion());
             assertFalse(dataStructureDefinitionNewVersion.getMaintainableArtefact().getLatestFinal());
             assertFalse(dataStructureDefinitionNewVersion.getMaintainableArtefact().getLatestPublic());
+
+            assertEquals(3, dataStructureDefinitionNewVersion.getMaintainableArtefact().getCategorisations().size());
+            assertListContainsCategorisation(dataStructureDefinitionNewVersion.getMaintainableArtefact().getCategorisations(),
+                    "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX02:cat4(01.000)");
+            assertListContainsCategorisation(dataStructureDefinitionNewVersion.getMaintainableArtefact().getCategorisations(),
+                    "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX02:cat5(01.000)");
+            assertListContainsCategorisation(dataStructureDefinitionNewVersion.getMaintainableArtefact().getCategorisations(),
+                    "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX02:cat6(01.000)");
         }
     }
 
