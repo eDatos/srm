@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
@@ -479,6 +478,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // NOTE: do not call 'findCodelistsCanBeEnumeratedRepresentationForConceptByCondition' to throw specific exception
 
+        if (isImported && concept.getId() == null) {
+            return null; // when importing (only when creating), skip validations
+        }
+
         if (concept.getCoreRepresentation() == null || !RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())
                 || concept.getCoreRepresentation().getEnumerationCodelist() == null) {
             return null;
@@ -487,19 +490,16 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         String codelistUrn = codelistVersion.getMaintainableArtefact().getUrn();
 
         MetamacExceptionItem exceptionItem = null;
-        if (!BooleanUtils.isTrue(isImported)) {
-            // 1) Check codelist published
-            exceptionItem = SrmValidationUtils.checkArtefactProcStatusReturningExceptionItem(codelistVersion.getLifeCycleMetadata(), codelistUrn, ProcStatusEnum.INTERNALLY_PUBLISHED,
-                    ProcStatusEnum.EXTERNALLY_PUBLISHED);
-            if (exceptionItem == null) {
-                // 2) Check variable
-                if (concept.getVariable() == null || !concept.getVariable().getId().equals(codelistVersion.getVariable().getId())) {
-                    exceptionItem = MetamacExceptionItemBuilder.metamacExceptionItem()
-                            .withCommonServiceExceptionType(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE)
-                            .withMessageParameters(concept.getNameableArtefact().getCode(), codelistUrn).build();
-                }
-
+        // 1) Check codelist published
+        exceptionItem = SrmValidationUtils.checkArtefactProcStatusReturningExceptionItem(codelistVersion.getLifeCycleMetadata(), codelistUrn, ProcStatusEnum.INTERNALLY_PUBLISHED,
+                ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        if (exceptionItem == null) {
+            // 2) Check variable
+            if (concept.getVariable() == null || !concept.getVariable().getId().equals(codelistVersion.getVariable().getId())) {
+                exceptionItem = MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE)
+                        .withMessageParameters(concept.getNameableArtefact().getCode(), codelistUrn).build();
             }
+
         }
 
         if (exceptionItem != null && throwException) {
