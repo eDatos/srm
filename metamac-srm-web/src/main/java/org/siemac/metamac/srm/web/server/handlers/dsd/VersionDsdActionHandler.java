@@ -11,6 +11,7 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -26,8 +27,10 @@ public class VersionDsdActionHandler extends SecurityActionHandler<VersionDsdAct
     @Override
     public VersionDsdResult executeSecurityAction(VersionDsdAction action) throws ActionException {
         try {
-            DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.versioningDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(),
-                    action.getUrn(), action.getVersionType());
+            TaskInfo taskInfo = srmCoreServiceFacade.versioningDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getVersionType());
+            // DSD version is never run in background
+            DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(ServiceContextHolder.getCurrentServiceContext(),
+                    taskInfo.getUrnResult());
             return new VersionDsdResult(dataStructureDefinitionMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

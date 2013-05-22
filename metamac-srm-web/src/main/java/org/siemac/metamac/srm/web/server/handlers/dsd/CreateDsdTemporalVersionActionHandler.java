@@ -11,6 +11,7 @@ import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.gwtplatform.dispatch.shared.ActionException;
 
 @Component
@@ -26,8 +27,10 @@ public class CreateDsdTemporalVersionActionHandler extends SecurityActionHandler
     @Override
     public CreateDsdTemporalVersionResult executeSecurityAction(CreateDsdTemporalVersionAction action) throws ActionException {
         try {
-            DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.createTemporalVersionDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(),
-                    action.getUrn());
+            TaskInfo taskInfo = srmCoreServiceFacade.createTemporalVersionDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            // Temporal version is never created in background
+            DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(ServiceContextHolder.getCurrentServiceContext(),
+                    taskInfo.getUrnResult());
             return new CreateDsdTemporalVersionResult(dataStructureDefinitionMetamacDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
