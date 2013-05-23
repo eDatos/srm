@@ -595,11 +595,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ViewTextItem code = new ViewTextItem(CodelistDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CodelistDS.NAME, getConstants().nameableArtefactName());
         ViewMultiLanguageTextItem shortName = new ViewMultiLanguageTextItem(CodelistDS.SHORT_NAME, getConstants().codelistShortName());
-        ViewTextItem uri = new ViewTextItem(CodelistDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem uriProvider = new ViewTextItem(CodelistDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem urn = new ViewTextItem(CodelistDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CodelistDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem version = new ViewTextItem(CodelistDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersForm.setFields(code, name, shortName, uri, urn, urnProvider, version);
+        identifiersForm.setFields(code, name, shortName, uriProvider, urn, urnProvider, version);
 
         // CONTENT DESCRIPTORS
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
@@ -680,11 +680,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         MultiLanguageTextItem name = new MultiLanguageTextItem(CodelistDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         MultiLanguageTextItem shortName = new MultiLanguageTextItem(CodelistDS.SHORT_NAME, getConstants().codelistShortName(), SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH);
-        ViewTextItem uri = new ViewTextItem(CodelistDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem uriProvider = new ViewTextItem(CodelistDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem urn = new ViewTextItem(CodelistDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CodelistDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem version = new ViewTextItem(CodelistDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersEditionForm.setFields(code, staticCode, name, shortName, uri, urn, urnProvider, version);
+        identifiersEditionForm.setFields(code, staticCode, name, shortName, uriProvider, urn, urnProvider, version);
 
         // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());

@@ -431,11 +431,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(OrganisationSchemeDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
-        ViewTextItem uri = new ViewTextItem(OrganisationSchemeDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem uriProvider = new ViewTextItem(OrganisationSchemeDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem urn = new ViewTextItem(OrganisationSchemeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(OrganisationSchemeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem version = new ViewTextItem(OrganisationSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersForm.setFields(code, name, uri, urn, urnProvider, version);
+        identifiersForm.setFields(code, name, uriProvider, urn, urnProvider, version);
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
@@ -505,11 +505,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         MultiLanguageTextItem name = new MultiLanguageTextItem(OrganisationSchemeDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
-        ViewTextItem uri = new ViewTextItem(OrganisationSchemeDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem uriProvider = new ViewTextItem(OrganisationSchemeDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem urn = new ViewTextItem(OrganisationSchemeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(OrganisationSchemeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem version = new ViewTextItem(OrganisationSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
-        identifiersEditionForm.setFields(code, staticCode, name, uri, urn, urnProvider, version);
+        identifiersEditionForm.setFields(code, staticCode, name, uriProvider, urn, urnProvider, version);
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());

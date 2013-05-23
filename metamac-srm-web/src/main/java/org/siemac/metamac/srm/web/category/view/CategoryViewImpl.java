@@ -165,10 +165,10 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(CategoryDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CategoryDS.NAME, getConstants().nameableArtefactName());
-        ViewTextItem uri = new ViewTextItem(CategoryDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem uriProvider = new ViewTextItem(CategoryDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem urn = new ViewTextItem(CategoryDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CategoryDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        identifiersForm.setFields(code, name, uri, urn, urnProvider);
+        identifiersForm.setFields(code, name, uriProvider, urn, urnProvider);
 
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -208,10 +208,10 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
         MultiLanguageTextItem name = new MultiLanguageTextItem(CategoryDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
-        ViewTextItem uri = new ViewTextItem(CategoryDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem uriProvider = new ViewTextItem(CategoryDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem urn = new ViewTextItem(CategoryDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CategoryDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        identifiersEditionForm.setFields(code, staticCode, name, uri, urn, urnProvider);
+        identifiersEditionForm.setFields(code, staticCode, name, uriProvider, urn, urnProvider);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());

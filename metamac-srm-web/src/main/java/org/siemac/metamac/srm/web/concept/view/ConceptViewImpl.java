@@ -246,10 +246,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(ConceptDS.NAME, getConstants().nameableArtefactName());
         ViewMultiLanguageTextItem pluralName = new ViewMultiLanguageTextItem(ConceptDS.PLURAL_NAME, getConstants().conceptPluralName());
         ViewMultiLanguageTextItem acronym = new ViewMultiLanguageTextItem(ConceptDS.ACRONYM, getConstants().conceptAcronym());
-        ViewTextItem uri = new ViewTextItem(ConceptDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem uriProvider = new ViewTextItem(ConceptDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem urn = new ViewTextItem(ConceptDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(ConceptDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        identifiersForm.setFields(code, name, pluralName, acronym, uri, urn, urnProvider);
+        identifiersForm.setFields(code, name, pluralName, acronym, uriProvider, urn, urnProvider);
 
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -335,10 +335,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         name.setRequired(true);
         MultiLanguageTextItem pluralName = new MultiLanguageTextItem(ConceptDS.PLURAL_NAME, getConstants().conceptPluralName());
         MultiLanguageTextItem acronym = new MultiLanguageTextItem(ConceptDS.ACRONYM, getConstants().conceptAcronym());
-        ViewTextItem uri = new ViewTextItem(ConceptDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem uriProvider = new ViewTextItem(ConceptDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem urn = new ViewTextItem(ConceptDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(ConceptDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        identifiersEditionForm.setFields(code, staticCode, name, pluralName, acronym, uri, urn, urnProvider);
+        identifiersEditionForm.setFields(code, staticCode, name, pluralName, acronym, uriProvider, urn, urnProvider);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());

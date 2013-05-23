@@ -208,10 +208,10 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         ViewTextItem code = new ViewTextItem(CodeDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(CodeDS.NAME, getConstants().nameableArtefactName());
         ViewMultiLanguageTextItem shortName = new ViewMultiLanguageTextItem(CodeDS.SHORT_NAME, getConstants().codeShortName());
-        ViewTextItem uri = new ViewTextItem(CodeDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem uriProvider = new ViewTextItem(CodeDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem urn = new ViewTextItem(CodeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CodeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        identifiersForm.setFields(code, name, shortName, uri, urn, urnProvider);
+        identifiersForm.setFields(code, name, shortName, uriProvider, urn, urnProvider);
 
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -253,10 +253,10 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         MultiLanguageTextItem name = new MultiLanguageTextItem(CodeDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
         MultiLanguageTextItem shortName = new MultiLanguageTextItem(CodeDS.SHORT_NAME, getConstants().codeShortName(), SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH);
-        ViewTextItem uri = new ViewTextItem(CodeDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem uriProvider = new ViewTextItem(CodeDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem urn = new ViewTextItem(CodeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(CodeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        identifiersEditionForm.setFields(code, staticCode, name, shortName, uri, urn, urnProvider);
+        identifiersEditionForm.setFields(code, staticCode, name, shortName, uriProvider, urn, urnProvider);
 
         // PRODUCTION DESCRIPTORS
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());

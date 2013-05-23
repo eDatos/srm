@@ -272,7 +272,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         identifiersForm = new GroupDynamicForm(MetamacSrmWeb.getConstants().formIdentifiers());
         ViewTextItem staticIdLogic = new ViewTextItem(DataStructureDefinitionDS.CODE, getConstants().dsdIdentifier());
         ViewMultiLanguageTextItem staticNameItem = new ViewMultiLanguageTextItem(DataStructureDefinitionDS.NAME, getConstants().nameableArtefactName());
-        ViewTextItem staticUriItem = new ViewTextItem(DataStructureDefinitionDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem staticUriItem = new ViewTextItem(DataStructureDefinitionDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem staticUrnItem = new ViewTextItem(DataStructureDefinitionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem staticUrnProviderItem = new ViewTextItem(DataStructureDefinitionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem staticVersion = new ViewTextItem(DataStructureDefinitionDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
@@ -368,7 +368,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         MultiLanguageTextItem nameItem = new MultiLanguageTextItem(DataStructureDefinitionDS.NAME, getConstants().nameableArtefactName());
         nameItem.setRequired(true);
-        ViewTextItem staticUriItemEdit = new ViewTextItem(DataStructureDefinitionDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem staticUriItemEdit = new ViewTextItem(DataStructureDefinitionDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem staticUrnItemEdit = new ViewTextItem(DataStructureDefinitionDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem staticUrnProviderEditItem = new ViewTextItem(DataStructureDefinitionDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
         ViewTextItem staticVersionEdit = new ViewTextItem(DataStructureDefinitionDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());

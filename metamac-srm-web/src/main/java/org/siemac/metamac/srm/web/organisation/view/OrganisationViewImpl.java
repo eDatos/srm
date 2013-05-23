@@ -334,10 +334,10 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         identifiersForm = new GroupDynamicForm(getConstants().formIdentifiers());
         ViewTextItem code = new ViewTextItem(OrganisationDS.CODE, getConstants().identifiableArtefactCode());
         ViewMultiLanguageTextItem name = new ViewMultiLanguageTextItem(OrganisationDS.NAME, getConstants().nameableArtefactName());
-        ViewTextItem uri = new ViewTextItem(OrganisationDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem uriProvider = new ViewTextItem(OrganisationDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem urn = new ViewTextItem(OrganisationDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(OrganisationDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        identifiersForm.setFields(code, name, uri, urn, urnProvider);
+        identifiersForm.setFields(code, name, uriProvider, urn, urnProvider);
 
         // Production descriptors
         productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -378,10 +378,10 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         MultiLanguageTextItem name = new MultiLanguageTextItem(OrganisationDS.NAME, getConstants().nameableArtefactName());
         name.setRequired(true);
-        ViewTextItem uri = new ViewTextItem(OrganisationDS.URI, getConstants().identifiableArtefactUri());
+        ViewTextItem uriProvider = new ViewTextItem(OrganisationDS.URI, getConstants().identifiableArtefactUriProvider());
         ViewTextItem urn = new ViewTextItem(OrganisationDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(OrganisationDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
-        identifiersEditionForm.setFields(codeView, code, name, uri, urn, urnProvider);
+        identifiersEditionForm.setFields(codeView, code, name, uriProvider, urn, urnProvider);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
