@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.siemac.metamac.core.common.conf.ConfigurationService;
-import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operations;
@@ -31,17 +29,12 @@ public class GetStatisticalOperationsActionHandler extends SecurityActionHandler
     @Autowired
     private StatisticalOperationsRestInternalFacade statisticalOperationsRestInternalFacade;
 
-    @Autowired
-    private ConfigurationService                    configurationService;
-
     public GetStatisticalOperationsActionHandler() {
         super(GetStatisticalOperationsAction.class);
     }
 
     @Override
     public GetStatisticalOperationsResult executeSecurityAction(GetStatisticalOperationsAction action) throws ActionException {
-
-        String operationsApiEndpoint = configurationService.getProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_INTERNAL_API);
 
         try {
 
@@ -69,7 +62,7 @@ public class GetStatisticalOperationsActionHandler extends SecurityActionHandler
             if (result != null && result.getOperations() != null) {
                 int firstResultOut = result.getOffset().intValue();
                 int totalResults = result.getTotal().intValue();
-                List<ExternalItemDto> externalItemDtos = ExternalItemUtils.getOperationsAsExternalItemDtos(result.getOperations(), operationsApiEndpoint);
+                List<ExternalItemDto> externalItemDtos = ExternalItemUtils.getOperationsAsExternalItemDtos(result.getOperations());
                 return new GetStatisticalOperationsResult(externalItemDtos, firstResultOut, totalResults);
             } else {
                 // There is no operations

@@ -10,7 +10,7 @@ import org.siemac.metamac.web.common.server.utils.DtoUtils;
 
 public class ExternalItemUtils {
 
-    public static ExternalItemDto getOperationAsExternalItemDto(ResourceInternal resource, String operationsApiEndpoint) {
+    public static ExternalItemDto getOperationAsExternalItemDto(ResourceInternal resource) {
         ExternalItemDto externalItemDto = new ExternalItemDto();
         externalItemDto.setCode(resource.getId());
         externalItemDto.setUri(resource.getSelfLink().getHref());
@@ -21,10 +21,10 @@ public class ExternalItemUtils {
         return externalItemDto;
     }
 
-    public static List<ExternalItemDto> getOperationsAsExternalItemDtos(List<ResourceInternal> resources, String operationsApiEndpoint) {
+    public static List<ExternalItemDto> getOperationsAsExternalItemDtos(List<ResourceInternal> resources) {
         List<ExternalItemDto> externalItemDtos = new ArrayList<ExternalItemDto>(resources.size());
         for (ResourceInternal resource : resources) {
-            externalItemDtos.add(getOperationAsExternalItemDto(resource, operationsApiEndpoint));
+            externalItemDtos.add(getOperationAsExternalItemDto(resource));
         }
         return externalItemDtos;
     }
