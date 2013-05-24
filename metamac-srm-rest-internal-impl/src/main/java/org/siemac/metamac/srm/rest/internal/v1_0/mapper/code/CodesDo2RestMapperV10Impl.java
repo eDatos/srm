@@ -139,7 +139,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         Code target = new Code();
-        codesDo2JaxbSdmxMapper.codeDoToJaxb(source, target, false, false);
+        codesDo2JaxbSdmxMapper.codeDoToJaxb(source, target, WITH_LOCAL_REFERENCES);
 
         target.setKind(RestInternalConstants.KIND_CODE);
         target.setSelfLink(toCodeSelfLink(source));

@@ -182,7 +182,7 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         // following method will call toCode(CodeMetamac source, Code target) method, thank to callback
-        return (Code) codesDo2JaxbSdmxMapper.codeDoToJaxb(source, codesDo2JaxbCallback, AS_STUB, WITH_LOCAL_REFERENCES);
+        return (Code) codesDo2JaxbSdmxMapper.codeDoToJaxb(source, codesDo2JaxbCallback, WITH_LOCAL_REFERENCES);
     }
 
     @Override

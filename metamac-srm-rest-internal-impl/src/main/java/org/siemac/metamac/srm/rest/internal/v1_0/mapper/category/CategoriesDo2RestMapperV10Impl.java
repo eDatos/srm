@@ -29,6 +29,9 @@ import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbCallbac
 @Component
 public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements CategoriesDo2RestMapperV10 {
 
+    private final boolean                                                            AS_STUB               = false;
+    private final boolean                                                            WITH_LOCAL_REFERENCES = false;
+
     @Autowired
     private com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbMapper categoriesDo2JaxbSdmxMapper;
 
@@ -60,7 +63,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
             return null;
         }
         // following method will call toCategoryScheme(CategorySchemeVersionMetamac source, CategoryScheme target) method, thank to callback
-        return (CategoryScheme) categoriesDo2JaxbSdmxMapper.categorySchemeDoToJaxb(source, categoriesDo2JaxbCallback);
+        return (CategoryScheme) categoriesDo2JaxbSdmxMapper.categorySchemeDoToJaxb(source, categoriesDo2JaxbCallback, AS_STUB, WITH_LOCAL_REFERENCES);
     }
 
     @Override
@@ -156,7 +159,8 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
             return null;
         }
         // following method will call toCategorisation(Categorisation source, Categorisation target) method, thank to callback
-        return (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation) categoriesDo2JaxbSdmxMapper.categorisationDoToJaxb(source, categoriesDo2JaxbCallback);
+        return (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation) categoriesDo2JaxbSdmxMapper.categorisationDoToJaxb(source, categoriesDo2JaxbCallback, AS_STUB,
+                WITH_LOCAL_REFERENCES, null);
     }
 
     @Override

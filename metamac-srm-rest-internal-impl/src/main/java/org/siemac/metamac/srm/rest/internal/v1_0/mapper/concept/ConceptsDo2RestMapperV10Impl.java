@@ -125,7 +125,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             return null;
         }
         Concept target = new Concept();
-        conceptsDo2JaxbSdmxMapper.conceptDoToJaxb(source, target, false, false, null);
+        conceptsDo2JaxbSdmxMapper.conceptDoToJaxb(source, target, WITH_LOCAL_REFERENCES, null);
 
         target.setKind(RestInternalConstants.KIND_CONCEPT);
         target.setSelfLink(toConceptSelfLink(source));

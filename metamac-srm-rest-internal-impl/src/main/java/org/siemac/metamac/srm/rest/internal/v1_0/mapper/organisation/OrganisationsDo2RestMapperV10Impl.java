@@ -49,6 +49,9 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 @Component
 public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements OrganisationsDo2RestMapperV10 {
 
+    private final boolean                                                                   AS_STUB               = false;
+    private final boolean                                                                   WITH_LOCAL_REFERENCES = false;
+
     @Autowired
     private com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsDo2JaxbMapper organisationsDo2JaxbSdmxMapper;
 
@@ -195,7 +198,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             return null;
         }
         // following method will call toAgencyScheme(OrganisationSchemeVersionMetamac source, AgencyScheme target) method, thank to callback
-        return (AgencyScheme) organisationsDo2JaxbSdmxMapper.agencySchemeDoToJaxb(source, organisationsDo2JaxbCallback);
+        return (AgencyScheme) organisationsDo2JaxbSdmxMapper.agencySchemeDoToJaxb(source, organisationsDo2JaxbCallback, AS_STUB, WITH_LOCAL_REFERENCES);
     }
 
     @Override
@@ -204,7 +207,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             return null;
         }
         // following method will call toAgencyScheme(OrganisationSchemeVersionMetamac source, OrganisationUnitScheme target) method, thank to callback
-        return (OrganisationUnitScheme) organisationsDo2JaxbSdmxMapper.organisationUnitSchemeDoToJaxb(source, organisationsDo2JaxbCallback);
+        return (OrganisationUnitScheme) organisationsDo2JaxbSdmxMapper.organisationUnitSchemeDoToJaxb(source, organisationsDo2JaxbCallback, AS_STUB, WITH_LOCAL_REFERENCES);
     }
 
     @Override
@@ -213,7 +216,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             return null;
         }
         // following method will call toDataProviderScheme(OrganisationSchemeVersionMetamac source, DataProviderScheme target) method, thank to callback
-        return (DataProviderScheme) organisationsDo2JaxbSdmxMapper.dataProviderSchemeDoToJaxb(source, organisationsDo2JaxbCallback);
+        return (DataProviderScheme) organisationsDo2JaxbSdmxMapper.dataProviderSchemeDoToJaxb(source, organisationsDo2JaxbCallback, AS_STUB, WITH_LOCAL_REFERENCES);
     }
 
     @Override
@@ -222,7 +225,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             return null;
         }
         // following method will call toDataConsumerScheme(OrganisationSchemeVersionMetamac source, DataConsumerScheme target) method, thank to callback
-        return (DataConsumerScheme) organisationsDo2JaxbSdmxMapper.dataConsumerSchemeDoToJaxb(source, organisationsDo2JaxbCallback);
+        return (DataConsumerScheme) organisationsDo2JaxbSdmxMapper.dataConsumerSchemeDoToJaxb(source, organisationsDo2JaxbCallback, AS_STUB, WITH_LOCAL_REFERENCES);
     }
 
     @Override
