@@ -83,7 +83,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         // following method will call toCodelist(CodelistVersionMetamac source, Codelist target) method, thank to callback
-        return (Codelist) codesDo2JaxbSdmxMapper.codelistDoToJaxb(source, codesDo2JaxbCallback, AS_STUB, WITH_LOCAL_REFERENCES);
+        return (Codelist) codesDo2JaxbSdmxMapper.codelistDoToJaxb(source, codesDo2JaxbCallback, AS_STUB);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         Code target = new Code();
-        codesDo2JaxbSdmxMapper.codeDoToJaxb(source, target, WITH_LOCAL_REFERENCES);
+        codesDo2JaxbSdmxMapper.codeDoToJaxb(source, target);
 
         target.setKind(RestInternalConstants.KIND_CODE);
         target.setSelfLink(toCodeSelfLink(source));

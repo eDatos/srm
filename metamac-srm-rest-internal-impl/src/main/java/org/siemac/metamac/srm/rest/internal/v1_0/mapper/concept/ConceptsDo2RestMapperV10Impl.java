@@ -77,7 +77,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             return null;
         }
         // following method will call toConceptScheme(ConceptSchemeVersionMetamac source, ConceptScheme target) method, thank to callback
-        return (ConceptScheme) conceptsDo2JaxbSdmxMapper.conceptSchemeDoToJaxb(source, conceptsDo2JaxbCallback, AS_STUB, WITH_LOCAL_REFERENCES, null);
+        return (ConceptScheme) conceptsDo2JaxbSdmxMapper.conceptSchemeDoToJaxb(source, conceptsDo2JaxbCallback, AS_STUB, null);
     }
     @Override
     public void toConceptScheme(ConceptSchemeVersionMetamac source, ConceptScheme target) {
@@ -125,7 +125,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             return null;
         }
         Concept target = new Concept();
-        conceptsDo2JaxbSdmxMapper.conceptDoToJaxb(source, target, WITH_LOCAL_REFERENCES, null);
+        conceptsDo2JaxbSdmxMapper.conceptDoToJaxb(source, target, null);
 
         target.setKind(RestInternalConstants.KIND_CONCEPT);
         target.setSelfLink(toConceptSelfLink(source));

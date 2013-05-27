@@ -43,8 +43,7 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionType
 @Component
 public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapperV10Impl implements DataStructuresDo2RestMapperV10 {
 
-    private final boolean                                                            AS_STUB               = false;
-    private final boolean                                                            WITH_LOCAL_REFERENCES = false;
+    private final boolean                                                            AS_STUB = false;
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.structure.mapper.StructureDo2JaxbMapper dataStructuresDo2JaxbSdmxMapper;
@@ -77,7 +76,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
             return null;
         }
         // following method will call toDataStructure(DataStructureDefinitionVersionMetamac source, DataStructure target) method, thank to callback
-        return (DataStructure) dataStructuresDo2JaxbSdmxMapper.dataStructureDefinitionDoToJaxb(source, dataStructuresDo2JaxbCallback, AS_STUB, WITH_LOCAL_REFERENCES, null);
+        return (DataStructure) dataStructuresDo2JaxbSdmxMapper.dataStructureDefinitionDoToJaxb(source, dataStructuresDo2JaxbCallback, AS_STUB, null);
     }
 
     @Override

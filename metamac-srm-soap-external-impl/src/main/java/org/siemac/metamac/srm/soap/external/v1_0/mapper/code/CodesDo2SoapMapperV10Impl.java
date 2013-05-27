@@ -35,8 +35,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 @Component
 public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Impl implements CodesDo2SoapMapperV10 {
 
-    private final boolean                                                   AS_STUB               = false;
-    private final boolean                                                   WITH_LOCAL_REFERENCES = false;
+    private final boolean                                                   AS_STUB = false;
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbMapper codesDo2JaxbSdmxMapper;
@@ -151,7 +150,7 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         // following method will call toCodelist(CodelistVersionMetamac source, Codelist target) method, thank to callback
-        return (Codelist) codesDo2JaxbSdmxMapper.codelistDoToJaxb(source, codesDo2JaxbCallback, AS_STUB, WITH_LOCAL_REFERENCES);
+        return (Codelist) codesDo2JaxbSdmxMapper.codelistDoToJaxb(source, codesDo2JaxbCallback, AS_STUB);
     }
 
     @Override
@@ -182,7 +181,7 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         // following method will call toCode(CodeMetamac source, Code target) method, thank to callback
-        return (Code) codesDo2JaxbSdmxMapper.codeDoToJaxb(source, codesDo2JaxbCallback, WITH_LOCAL_REFERENCES);
+        return (Code) codesDo2JaxbSdmxMapper.codeDoToJaxb(source, codesDo2JaxbCallback);
     }
 
     @Override
