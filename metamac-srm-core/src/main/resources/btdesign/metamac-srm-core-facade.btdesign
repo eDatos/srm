@@ -472,6 +472,8 @@ Application SrmFacadeCore {
     		deleteCategorisation(String urn) throws MetamacException;
     		"Retrieves all categorisations by categorised artefact"
     		List<@CategorisationDto> retrieveCategorisationsByArtefact(String urn) throws MetamacException;
+    		"Ends the validity of a categorisation. ValidTo date is optional"
+    		@CategorisationDto endCategorisationValidity(String urn, DateTimeTZ validTo) throws MetamacException;
     		
 	    	/**************************************************************************
 		     * CODES

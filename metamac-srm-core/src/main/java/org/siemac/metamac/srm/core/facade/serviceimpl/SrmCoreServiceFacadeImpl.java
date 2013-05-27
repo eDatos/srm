@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
@@ -3160,6 +3161,20 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform
         List<CategorisationDto> categorisationsDto = categoriesDo2DtoMapper.categorisationDoListToDtoList(categorisations);
         return categorisationsDto;
+    }
+
+    @Override
+    public CategorisationDto endCategorisationValidity(ServiceContext ctx, String urn, DateTime validTo) throws MetamacException {
+        // Security
+        Categorisation categorisation = getCategoriesMetamacService().retrieveCategorisationByUrn(ctx, urn);
+        canModifyCategorisation(ctx, categorisation.getArtefactCategorised().getUrn());
+
+        // Delete
+        categorisation = getCategoriesMetamacService().endCategorisationValidity(ctx, urn, validTo);
+
+        // Transform
+        CategorisationDto categorisationDto = categoriesDo2DtoMapper.categorisationDoToDto(categorisation);
+        return categorisationDto;
     }
 
     /**************************************************************************

@@ -5,8 +5,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -98,6 +100,17 @@ public class SrmCoreServiceFacadeCategorisationsTest extends SrmBaseTest {
         assertEquals(CATEGORISATION_1, categorisations.get(i++).getUrn());
         assertEquals(CATEGORISATION_2, categorisations.get(i++).getUrn());
         assertEquals(categorisations.size(), i);
+    }
+
+    @Test
+    public void testEndCategorisationValidity() throws Exception {
+
+        String urn = CATEGORISATION_1;
+
+        CategorisationDto categorisation = srmCoreServiceFacade.endCategorisationValidity(getServiceContextAdministrador(), urn, null);
+
+        assertNotNull(categorisation);
+        assertTrue(DateUtils.isSameDay(new Date(), categorisation.getValidTo()));
     }
 
     @Override
