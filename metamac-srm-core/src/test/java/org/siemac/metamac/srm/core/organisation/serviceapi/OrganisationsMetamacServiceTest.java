@@ -792,6 +792,10 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertFalse(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
             assertFalse(organisationSchemeVersion.getMaintainableArtefact().getLatestFinal());
         }
+        {
+            OrganisationMetamac organisation1 = organisationsService.retrieveOrganisationByUrn(ctx, ORGANISATION_SCHEME_6_V1_ORGANISATION_1);
+            assertFalse(organisation1.getHasBeenPublished());
+        }
 
         // Publish internally
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.publishInternallyOrganisationScheme(ctx, urn, Boolean.FALSE);
@@ -830,6 +834,13 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertNull(organisationSchemeVersion.getLifeCycleMetadata().getExternalPublicationUser());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getLatestFinal());
+        }
+        entityManager.clear();
+
+        // Validate organisations
+        {
+            OrganisationMetamac organisation1 = organisationsService.retrieveOrganisationByUrn(ctx, ORGANISATION_SCHEME_6_V1_ORGANISATION_1);
+            assertTrue(organisation1.getHasBeenPublished());
         }
     }
 
@@ -1789,7 +1800,48 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             fail("imported");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_IMPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
+    @Test
+    public void testCreateOrganisationAgencySchemeTemporal() throws Exception {
+        String organisationSchemeUrn = ORGANISATION_SCHEME_100_V1;
+        TaskInfo taskInfo = organisationsService.createTemporalOrganisationScheme(getServiceContextAdministrador(), organisationSchemeUrn);
+        String organisationSchemeTemporalUrn = taskInfo.getUrnResult();
+        OrganisationMetamac organisation = OrganisationsMetamacDoMocks.mockOrganisation(OrganisationTypeEnum.AGENCY);
+
+        organisation = organisationsService.createOrganisation(getServiceContextAdministrador(), organisationSchemeTemporalUrn, organisation);
+        assertNotNull(organisation.getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testCreateOrganisationErrorAgencySchemeMaintainerIncorrect() throws Exception {
+        String organisationSchemeUrn = ORGANISATION_SCHEME_8_V1;
+        TaskInfo taskInfo = organisationsService.createTemporalOrganisationScheme(getServiceContextAdministrador(), organisationSchemeUrn);
+        String organisationSchemeTemporalUrn = taskInfo.getUrnResult();
+        OrganisationMetamac organisation = OrganisationsMetamacDoMocks.mockOrganisation(OrganisationTypeEnum.AGENCY);
+        try {
+            organisationsService.createOrganisation(getServiceContextAdministrador(), organisationSchemeTemporalUrn, organisation);
+            fail("imported");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_MAINTAINER_IS_NOT_DEFAULT_NOR_SDMX.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
+    @Test
+    public void testCreateOrganisationErrorOrganisationUnitSchemeTemporal() throws Exception {
+        String organisationSchemeUrn = ORGANISATION_SCHEME_3_V1;
+        TaskInfo taskInfo = organisationsService.createTemporalOrganisationScheme(getServiceContextAdministrador(), organisationSchemeUrn);
+        String organisationSchemeTemporalUrn = taskInfo.getUrnResult();
+        OrganisationMetamac organisation = OrganisationsMetamacDoMocks.mockOrganisation(OrganisationTypeEnum.ORGANISATION_UNIT);
+        try {
+            organisationsService.createOrganisation(getServiceContextAdministrador(), organisationSchemeTemporalUrn, organisation);
+            fail("imported");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_CAN_NOT_BE_TEMPORAL.getCode(), e.getExceptionItems().get(0).getCode());
         }
     }
 
@@ -1835,20 +1887,31 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
-    public void testUpdateOrganisationCodeErrorAgency() throws Exception {
+    public void testUpdateOrganisationCodeAgency() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
         String urn = ORGANISATION_SCHEME_10_V1_ORGANISATION_1;
         OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(ctx, urn);
         organisation.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(1));
         organisation.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        organisationsService.updateOrganisation(getServiceContextAdministrador(), organisation);
+    }
+
+    @Test
+    public void testUpdateOrganisationCodeErrorOrganisationSchemeWasEverPublished() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_1;
+        OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(ctx, urn);
+        organisation.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(1));
+        organisation.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         // Validation
         try {
             organisationsService.updateOrganisation(getServiceContextAdministrador(), organisation);
-            fail("Organisation code can not be changed - agency");
+            fail("Organisation code can not be changed");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.ORGANISATION_TYPE_AGENCY_UPDATE_CODE_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.ORGANISATION_UPDATE_CODE_NOT_SUPPORTED_ORGANISATION_SCHEME_WAS_EVER_PUBLISHED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
@@ -1949,6 +2012,24 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
+    public void testDeleteOrganisationWithSpecialTreatment() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_2_V1_ORGANISATION_1;
+        organisationsService.deleteOrganisation(getServiceContextAdministrador(), urn);
+
+        // Validation
+        try {
+            organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
+            fail("Organisation deleted");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
     public void testDeleteOrganisationWithParentAndChildren() throws Exception {
 
         String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1;
@@ -2025,14 +2106,14 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             fail("imported");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_IMPORTED.getCode(), e.getExceptionItems().get(0).getCode());
         }
     }
 
     @Test
-    public void testDeleteOrganisationErrorAgency() throws Exception {
+    public void testDeleteOrganisationErrorWasPublished() throws Exception {
 
-        String urn = ORGANISATION_SCHEME_10_V1_ORGANISATION_1;
+        String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_1;
 
         // Validation
         try {
@@ -2040,7 +2121,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             fail("Organisation can not be deleted");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.ORGANISATION_TYPE_AGENCY_DELETING_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.ORGANISATION_DELETING_NOT_SUPPORTED_ORGANISATION_SCHEME_WAS_EVER_PUBLISHED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }

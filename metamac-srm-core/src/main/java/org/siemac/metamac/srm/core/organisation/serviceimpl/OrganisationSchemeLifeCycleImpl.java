@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacRepository;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacRepository;
@@ -40,6 +41,9 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private ItemRepository                             itemRepository;
+
+    @Autowired
+    private OrganisationMetamacRepository              organisationMetamacRepository;
 
     @Autowired
     private OrganisationSchemeVersionMetamacRepository organisationSchemeVersionMetamacRepository;
@@ -132,7 +136,8 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion) {
-            // nothing
+            Long itemSchemeVersionId = getOrganisationSchemeVersionMetamac(srmResourceVersion).getId();
+            organisationMetamacRepository.updateHasBeenPublishedEfficiently(itemSchemeVersionId);
             return srmResourceVersion;
         }
 

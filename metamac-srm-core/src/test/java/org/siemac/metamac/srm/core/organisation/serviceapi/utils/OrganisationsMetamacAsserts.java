@@ -75,7 +75,10 @@ public class OrganisationsMetamacAsserts extends OrganisationsAsserts {
     }
 
     private static void assertEqualsOrganisation(OrganisationMetamac entity, OrganisationMetamacDto dto, MapperEnum mapperEnum) {
-        // Metamac: no metadata
+        // Metamac
+        if (MapperEnum.DO2DTO.equals(mapperEnum)) {
+            assertEquals(entity.getHasBeenPublished(), dto.getHasBeenPublished());
+        }
 
         // Sdmx
         OrganisationsAsserts.assertEqualsOrganisation(entity, dto, mapperEnum);

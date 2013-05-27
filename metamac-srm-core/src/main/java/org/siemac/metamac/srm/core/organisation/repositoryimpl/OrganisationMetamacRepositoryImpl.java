@@ -105,6 +105,15 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
         // no metadata specific in metamac
     }
 
+    @Override
+    public void updateHasBeenPublishedEfficiently(Long itemSchemeVersionId) {
+        Query queryUpdate = getEntityManager().createNativeQuery(
+                "UPDATE TB_M_ORGANISATIONS SET HAS_BEEN_PUBLISHED = :hasBeenPublished WHERE TB_ORGANISATIONS IN (SELECT ID FROM TB_ITEMS_BASE WHERE ITEM_SCHEME_VERSION_FK = :itemSchemeVersion)");
+        queryUpdate.setParameter("itemSchemeVersion", itemSchemeVersionId);
+        queryUpdate.setParameter("hasBeenPublished", true);
+        queryUpdate.executeUpdate();
+    }
+
     private OrganisationMetamacVisualisationResult itemResultSqlToOrganisationVisualisationResult(Object[] source) throws MetamacException {
         OrganisationMetamacVisualisationResult target = new OrganisationMetamacVisualisationResult();
         int i = 0;

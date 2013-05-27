@@ -22,6 +22,7 @@ Application DtosMetamacOrganisationDomain {
 				
 		"Dto for OrganisationMetamac"
 		DataTransferObject OrganisationMetamacDto extends @OrganisationDto {
+			Boolean hasBeenPublished;
 		}		
 		
 		"Dto for OrganisationMetamac"

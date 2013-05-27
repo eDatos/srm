@@ -107,6 +107,9 @@ Application OrganisationsMetamac {
 			databaseTable="TB_M_ORGANISATIONS"
 			hint="idSequence=M_ORGANISATIONS"
 			
+			"Item scheme was ever published"
+			Boolean hasBeenPublished nullable;
+			
 			Repository OrganisationMetamacRepository {
 				findByQuery;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
@@ -115,6 +118,7 @@ Application OrganisationsMetamac {
 				List<ItemResult> findOrganisationsByOrganisationSchemeUnordered(Long itemSchemeVersionId, ItemMetamacResultSelection resultSelection);
 				List<OrganisationMetamacVisualisationResult> findOrganisationsByOrganisationSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException;
 				checkOrganisationTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
+				updateHasBeenPublishedEfficiently(Long itemSchemeVersionId);
 			}
 		}
 	}

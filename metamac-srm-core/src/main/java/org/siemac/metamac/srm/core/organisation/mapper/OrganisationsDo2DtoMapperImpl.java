@@ -61,6 +61,7 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
         }
         OrganisationMetamacDto target = new OrganisationMetamacDto();
         do2DtoMapperSdmxSrm.organisationDoToDto(source, target);
+        target.setHasBeenPublished(source.getHasBeenPublished());
         return target;
     }
 

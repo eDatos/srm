@@ -148,6 +148,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="10011"
+                HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -202,6 +203,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="10012"
+                HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -361,6 +363,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="111"
+                HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -510,6 +513,7 @@
             
 	        <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="121"
+                HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -564,6 +568,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="122"
+                HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -1046,6 +1051,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="211"
+                HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -1442,6 +1448,7 @@
 
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="311"
+                HAS_BEEN_PUBLISHED="1"
             />
 
             <TB_ORGANISATIONS
@@ -1589,6 +1596,7 @@
 
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="312"
+                HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -1643,6 +1651,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="3121"
+                HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -1697,6 +1706,7 @@
                     
                     <TB_M_ORGANISATIONS
                         TB_ORGANISATIONS="31211"
+                        HAS_BEEN_PUBLISHED="1"
                     />
                     
                     <TB_ORGANISATIONS
@@ -1750,6 +1760,7 @@
             <!-- ORGANISATION0202 -->
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="3122"
+                HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -1906,6 +1917,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="411"
+                HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -2081,6 +2093,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="511"
+                HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -2239,6 +2252,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="611"
+                HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -2479,6 +2493,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="721"
+                HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -2636,6 +2651,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="811"
+                HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -2793,6 +2809,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="911"
+                HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -2963,8 +2980,8 @@
         
         CODE="AGENCIES"
         URI_PROVIDER="[null]"
-        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX02.ORGANISATION01.ORGANISATION02:AGENCIES(01.000)"
-        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX02.ORGANISATION01.ORGANISATION02:AGENCIES(01.000)"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX02.ORGANISATION01:AGENCIES(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=SDMX02.ORGANISATION01:AGENCIES(01.000)"
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
@@ -2985,7 +3002,7 @@
         SERVICE_URL="[null]"
         IS_LAST_VERSION="1"
         IS_IMPORTED="1"
-        MAINTAINER_FK="912"
+        MAINTAINER_FK="811"
         
         UUID="annotableArtefact-101"
         VERSION="1"
@@ -3004,6 +3021,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="1011"
+                HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -3035,12 +3053,12 @@
 
                 CODE="ORGANISATION01"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01.ORGANISATION02:AGENCIES(01.000).ORGANISATION01"
-                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01.ORGANISATION02:AGENCIES(01.000).ORGANISATION01"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01:AGENCIES(01.000).ORGANISATION01"
+                URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX02.ORGANISATION01:AGENCIES(01.000).ORGANISATION01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
 
-                NAME_FK="[null]"
+                NAME_FK="70"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
 
@@ -4737,5 +4755,18 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="69"
-    />                                                                             
+    />   
+ 
+   <TB_INTERNATIONAL_STRINGS
+        ID="70"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="701"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="70"
+    />                                                                                
 </dataset>

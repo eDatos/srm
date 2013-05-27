@@ -17,6 +17,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 
 @Component("srmValidation")
 public class SrmValidationImpl implements SrmValidation {
@@ -28,9 +29,19 @@ public class SrmValidationImpl implements SrmValidation {
     private SrmConfiguration            srmConfiguration;
 
     @Override
+    public boolean isMaintainerSdmxRoot(ServiceContext ctx, Organisation maintainer) throws MetamacException {
+        return maintainer == null;
+    }
+
+    @Override
+    public boolean isMaintainerIsDefault(ServiceContext ctx, Organisation maintainer) throws MetamacException {
+        return isMaintainerIsDefault(ctx, maintainer.getNameableArtefact().getUrn());
+    }
+
+    @Override
     public void checkMaintainerIsDefault(ServiceContext ctx, String maintainerUrn) throws MetamacException {
-        String maintainerUrnDefault = srmConfiguration.retrieveMaintainerUrnDefault(); // can not be empty
-        if (!maintainerUrnDefault.equals(maintainerUrn)) {
+        if (!isMaintainerIsDefault(ctx, maintainerUrn)) {
+            String maintainerUrnDefault = srmConfiguration.retrieveMaintainerUrnDefault();
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINER_MUST_BE_DEFAULT).withMessageParameters(maintainerUrn, maintainerUrnDefault).build();
         }
     }
@@ -60,17 +71,23 @@ public class SrmValidationImpl implements SrmValidation {
 
     @Override
     public void checkItemsStructureCanBeModified(ServiceContext ctx, ItemSchemeVersion itemSchemeVersion) throws MetamacException {
-        checkItemsStructureCanBeModified(ctx, itemSchemeVersion.getMaintainableArtefact().getIsImported());
+        checkItemsStructureCanBeModified(ctx, itemSchemeVersion.getMaintainableArtefact());
     }
 
     @Override
     public void checkItemsStructureCanBeModified(ServiceContext ctx, StructureVersion structureVersion) throws MetamacException {
-        checkItemsStructureCanBeModified(ctx, structureVersion.getMaintainableArtefact().getIsImported());
+        checkItemsStructureCanBeModified(ctx, structureVersion.getMaintainableArtefact());
     }
 
-    private void checkItemsStructureCanBeModified(ServiceContext ctx, Boolean artefactImported) throws MetamacException {
-        if (BooleanUtils.isTrue(artefactImported)) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED).build();
+    private boolean isMaintainerIsDefault(ServiceContext ctx, String maintainerUrn) throws MetamacException {
+        String maintainerUrnDefault = srmConfiguration.retrieveMaintainerUrnDefault();
+        return maintainerUrnDefault.equals(maintainerUrn);
+    }
+
+    private void checkItemsStructureCanBeModified(ServiceContext ctx, MaintainableArtefact maintainableArtefact) throws MetamacException {
+        SrmValidationUtils.checkArtefactIsNotTemporal(maintainableArtefact);
+        if (BooleanUtils.isTrue(maintainableArtefact.getIsImported())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_IMPORTED).build();
         }
     }
 }

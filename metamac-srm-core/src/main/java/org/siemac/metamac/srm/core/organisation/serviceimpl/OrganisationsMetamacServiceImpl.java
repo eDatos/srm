@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -44,12 +45,13 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 /**
  * Implementation of OrganisationsMetamacService.
@@ -298,7 +300,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // Validation
         preCreateOrganisation(ctx, organisationSchemeUrn, organisation);
         OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
-        srmValidation.checkItemsStructureCanBeModified(ctx, organisationSchemeVersion);
+        checkOrganisationsStructureCanBeModified(ctx, organisationSchemeVersion, organisation, false);
 
         // Save organisation
         return (OrganisationMetamac) organisationsService.createOrganisation(ctx, organisationSchemeUrn, organisation);
@@ -320,9 +322,9 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Validation
         OrganisationsMetamacInvocationValidator.checkUpdateOrganisation(organisation, null);
-        // Check code is not change if it is agency
-        if (organisation.getNameableArtefact().getIsCodeUpdated() && OrganisationTypeEnum.AGENCY.equals(organisation.getOrganisationType())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_TYPE_AGENCY_UPDATE_CODE_NOT_SUPPORTED)
+        // Check code can be changed
+        if (organisation.getNameableArtefact().getIsCodeUpdated() && BooleanUtils.isTrue(organisation.getHasBeenPublished())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_UPDATE_CODE_NOT_SUPPORTED_ORGANISATION_SCHEME_WAS_EVER_PUBLISHED)
                     .withMessageParameters(organisation.getNameableArtefact().getUrn()).build();
         }
 
@@ -359,14 +361,9 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     public void deleteOrganisation(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        Organisation organisation = retrieveOrganisationByUrn(ctx, urn);
-        if (OrganisationTypeEnum.AGENCY.equals(organisation.getOrganisationType())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_TYPE_AGENCY_DELETING_NOT_SUPPORTED).withMessageParameters(urn).build();
-        }
-
+        OrganisationMetamac organisation = retrieveOrganisationByUrn(ctx, urn);
         OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByOrganisationUrn(ctx, urn);
-        checkOrganisationSchemeCanBeModified(organisationSchemeVersion);
-        srmValidation.checkItemsStructureCanBeModified(ctx, organisationSchemeVersion);
+        checkOrganisationsStructureCanBeModified(ctx, organisationSchemeVersion, organisation, true);
 
         // Delete
         organisationsService.deleteOrganisation(ctx, urn);
@@ -501,6 +498,36 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Versioning
         return organisationsService.versioningOrganisationScheme(ctx, urnToCopy, versionType, isTemporal, itemSchemesCopyCallback);
+    }
+
+    /**
+     * Validations to can modify structure of organisations is different than other items type.
+     */
+    private void checkOrganisationsStructureCanBeModified(ServiceContext ctx, OrganisationSchemeVersionMetamac organisationSchemeVersion, OrganisationMetamac organisation, boolean deleting)
+            throws MetamacException {
+
+        checkOrganisationSchemeCanBeModified(organisationSchemeVersion);
+
+        if (BooleanUtils.isTrue(organisationSchemeVersion.getMaintainableArtefact().getIsImported())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_IMPORTED).build();
+        }
+
+        if (deleting && BooleanUtils.isTrue(organisation.getHasBeenPublished())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_DELETING_NOT_SUPPORTED_ORGANISATION_SCHEME_WAS_EVER_PUBLISHED)
+                    .withMessageParameters(organisation.getNameableArtefact().getUrn()).build();
+        }
+
+        if (SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
+            // allowed when temporal and not temporal and maintainer is default or root (really, it is when it is not imported)
+            if (!srmValidation.isMaintainerSdmxRoot(ctx, organisationSchemeVersion.getMaintainableArtefact().getMaintainer())
+                    && !srmValidation.isMaintainerIsDefault(ctx, organisationSchemeVersion.getMaintainableArtefact().getMaintainer())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_MAINTAINER_IS_NOT_DEFAULT_NOR_SDMX).build();
+            }
+        } else if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeVersion.getOrganisationSchemeType())) {
+            SrmValidationUtils.checkArtefactIsNotTemporal(organisationSchemeVersion.getMaintainableArtefact());
+        } else {
+            throw new IllegalArgumentException("Unexpected organisation type: " + organisationSchemeVersion.getOrganisationSchemeType());
+        }
     }
 
 }
