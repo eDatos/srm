@@ -18,6 +18,9 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
+
 @Component
 public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements OrganisationsRest2DoMapper {
 
@@ -84,7 +87,8 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
                             propertyRestriction.getOperationType());
                 case TYPE:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.organisationSchemeType(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.organisationSchemeType(),
+                            propertyRestrictionValueToOrganisationSchemeTypeEnum(propertyRestriction.getValue()), propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -128,7 +132,8 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().urnProvider(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case TYPE:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.organisationType(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.organisationType(), propertyRestrictionValueToOrganisationTypeEnum(propertyRestriction.getValue()),
+                            propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -151,5 +156,13 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
         public Property retrievePropertyOrderDefault() throws RestException {
             return OrganisationMetamacProperties.nameableArtefact().code();
         }
+    }
+
+    private OrganisationSchemeTypeEnum propertyRestrictionValueToOrganisationSchemeTypeEnum(String value) {
+        return value != null ? OrganisationSchemeTypeEnum.valueOf(value) : null;
+    }
+
+    private OrganisationTypeEnum propertyRestrictionValueToOrganisationTypeEnum(String value) {
+        return value != null ? OrganisationTypeEnum.valueOf(value) : null;
     }
 }

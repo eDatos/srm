@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
 import org.springframework.stereotype.Component;
 
@@ -58,6 +59,11 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                 case DESCRIPTION:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
+                case TYPE:
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.type(), propertyRestrictionValueToConceptSchemeTypeEnum(propertyRestriction.getValue()),
+                            propertyRestriction.getOperationType());
+                case STATISTICAL_OPERATION_URN:
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.relatedOperation().uri(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case VALID_FROM:
                     return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.maintainableArtefact().validFrom(), ConceptSchemeVersionMetamac.class, false);
                 case VALID_TO:
@@ -155,4 +161,9 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
             return ConceptMetamacProperties.nameableArtefact().code();
         }
     }
+
+    private ConceptSchemeTypeEnum propertyRestrictionValueToConceptSchemeTypeEnum(String value) {
+        return value != null ? ConceptSchemeTypeEnum.valueOf(value) : null;
+    }
+
 }
