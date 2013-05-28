@@ -27,5 +27,7 @@
     <!--  ********************************************************************************************** -->
     <entry key="metamac.endpoints.statistical.operations.rest.external">http://FILL_ME_WITH_HOST_AND_PORT/FILL_ME_WITH_STATISTICAL_OPERATIONS_EXTERNAL_APP/apis/operations</entry>
     <entry key="metamac.endpoints.srm.rest.external">http://FILL_ME_WITH_HOST_AND_PORT/FILL_ME_WITH_SRM_EXTERNAL_APP/apis/structural-resources</entry>
+    <!-- The following URN must be the same in the SQL script provided -->
+    <entry key="metamac.organisation.urn">urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).FILL_ME_WITH_ORGANISATION_NAME</entry>
 
 </properties>
