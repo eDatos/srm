@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept;
 
+import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
@@ -135,9 +136,16 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                 case RELATED_CONCEPT_URN:
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.relatedConcepts().nameableArtefact().urnProvider(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
-                case ITEM_SCHEME_URN:
+                case CONCEPT_SCHEME_URN:
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urnProvider(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
+                case CONCEPT_SCHEME_TYPE:
+                    return new SculptorPropertyCriteria(new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(),
+                            ConceptSchemeVersionMetamacProperties.type().getName(), false, ConceptMetamac.class), propertyRestrictionValueToConceptSchemeTypeEnum(propertyRestriction.getValue()),
+                            propertyRestriction.getOperationType());
+                case CONCEPT_SCHEME_STATISTICAL_OPERATION_URN:
+                    return new SculptorPropertyCriteria(new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties
+                            .relatedOperation().urn().getName(), false, ConceptMetamac.class), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }

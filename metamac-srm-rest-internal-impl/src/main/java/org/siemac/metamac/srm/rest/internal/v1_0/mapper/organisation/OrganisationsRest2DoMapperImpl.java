@@ -128,7 +128,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                 case DESCRIPTION:
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
-                case ITEM_SCHEME_URN:
+                case ORGANISATION_SCHEME_URN:
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().urnProvider(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case TYPE:
