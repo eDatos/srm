@@ -1,6 +1,11 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
+import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agencies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumer;
@@ -14,30 +19,25 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
-
 public interface OrganisationsDo2RestMapperV10 {
 
     // Organisations (Global search)
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationSchemes toOrganisationSchemes(PagedResult<OrganisationSchemeVersionMetamac> sources, String agencyID,
             String resourceID, String query, String orderBy, Integer limit);
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationScheme toOrganisationScheme(OrganisationSchemeVersionMetamac source);
-    public void toOrganisationScheme(OrganisationSchemeVersionMetamac source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationScheme target);
+    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationScheme toOrganisationScheme(OrganisationSchemeVersionMetamac source) throws MetamacException;
+    public void toOrganisationScheme(OrganisationSchemeVersionMetamac source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationScheme target) throws MetamacException;
 
     public Organisations toOrganisations(PagedResult<OrganisationMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
-    public Organisation toOrganisation(OrganisationMetamac source);
+    public Organisation toOrganisation(OrganisationMetamac source) throws MetamacException;
 
     // Agencies
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencySchemes toAgencySchemes(PagedResult<OrganisationSchemeVersionMetamac> sources, String agencyID, String resourceID,
             String query, String orderBy, Integer limit);
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencyScheme toAgencyScheme(OrganisationSchemeVersionMetamac source);
+    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencyScheme toAgencyScheme(OrganisationSchemeVersionMetamac source) throws MetamacException;
     public void toAgencyScheme(OrganisationSchemeVersionMetamac source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencyScheme target);
 
     public Agencies toAgencies(PagedResult<OrganisationMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
-    public Agency toAgency(OrganisationMetamac source);
+    public Agency toAgency(OrganisationMetamac source) throws MetamacException;
     public void toAgency(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation source, AgencyType target);
 
     // Organisation Units

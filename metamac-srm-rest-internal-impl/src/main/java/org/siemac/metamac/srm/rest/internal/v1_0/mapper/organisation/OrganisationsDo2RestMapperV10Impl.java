@@ -7,6 +7,7 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
@@ -31,6 +32,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnits;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisations;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -49,7 +51,11 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 @Component
 public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements OrganisationsDo2RestMapperV10 {
 
-    private final boolean                                                                   AS_STUB = false;
+    private final boolean                                                                   AS_STUB         = false;
+    private final boolean                                                                   IS_INTERNAL_API = true;
+
+    @Autowired
+    private SrmConfiguration                                                                srmConfiguration;
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.organisation.mapper.OrganisationsDo2JaxbMapper organisationsDo2JaxbSdmxMapper;
@@ -160,7 +166,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
     }
 
     @Override
-    public OrganisationScheme toOrganisationScheme(OrganisationSchemeVersionMetamac source) {
+    public OrganisationScheme toOrganisationScheme(OrganisationSchemeVersionMetamac source) throws MetamacException {
         if (source == null) {
             return null;
         }
@@ -171,7 +177,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
     }
 
     @Override
-    public void toOrganisationScheme(OrganisationSchemeVersionMetamac source, OrganisationScheme target) {
+    public void toOrganisationScheme(OrganisationSchemeVersionMetamac source, OrganisationScheme target) throws MetamacException {
         target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
         switch (source.getOrganisationSchemeType()) {
             case AGENCY_SCHEME:
@@ -192,12 +198,12 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
     }
 
     @Override
-    public AgencyScheme toAgencyScheme(OrganisationSchemeVersionMetamac source) {
+    public AgencyScheme toAgencyScheme(OrganisationSchemeVersionMetamac source) throws MetamacException {
         if (source == null) {
             return null;
         }
         // following method will call toAgencyScheme(OrganisationSchemeVersionMetamac source, AgencyScheme target) method, thank to callback
-        return (AgencyScheme) organisationsDo2JaxbSdmxMapper.agencySchemeDoToJaxb(source, organisationsDo2JaxbCallback, AS_STUB);
+        return (AgencyScheme) organisationsDo2JaxbSdmxMapper.agencySchemeDoToJaxb(source, organisationsDo2JaxbCallback, AS_STUB, IS_INTERNAL_API, srmConfiguration.retrieveMaintainerUrnDefault());
     }
 
     @Override
@@ -402,7 +408,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
     }
 
     @Override
-    public Organisation toOrganisation(OrganisationMetamac source) {
+    public Organisation toOrganisation(OrganisationMetamac source) throws MetamacException {
         if (source == null) {
             return null;
         }
@@ -429,12 +435,12 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
     }
 
     @Override
-    public Agency toAgency(OrganisationMetamac source) {
+    public Agency toAgency(OrganisationMetamac source) throws MetamacException {
         if (source == null) {
             return null;
         }
         Agency target = new Agency();
-        organisationsDo2JaxbSdmxMapper.agencyDoToJaxb(source, target);
+        organisationsDo2JaxbSdmxMapper.agencyDoToJaxb(source, target, IS_INTERNAL_API, srmConfiguration.retrieveMaintainerUrnDefault());
 
         target.setKind(toKindItem(source.getOrganisationType()));
         target.setSelfLink(toOrganisationSelfLink(source));
