@@ -64,7 +64,7 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.type(), propertyRestrictionValueToConceptSchemeTypeEnum(propertyRestriction.getValue()),
                             propertyRestriction.getOperationType());
                 case STATISTICAL_OPERATION_URN:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.relatedOperation().uri(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.relatedOperation().urn(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case VALID_FROM:
                     return getSculptorPropertyCriteriaDate(propertyRestriction, ConceptSchemeVersionMetamacProperties.maintainableArtefact().validFrom(), ConceptSchemeVersionMetamac.class, false);
                 case VALID_TO:
