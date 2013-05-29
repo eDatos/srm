@@ -23,11 +23,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.arte.statistic.statistic-sdmx-srm</groupId>
-            <artifactId>statistic-sdmx-srm-rest-external-impl</artifactId>
-            <version>${statistic-sdmx-srm.version}</version>
-        </dependency>        
-        <dependency>
             <groupId>org.siemac.metamac.metamac-srm</groupId>
             <artifactId>metamac-srm-soap-external-impl</artifactId>
             <version>${project.version}</version>
