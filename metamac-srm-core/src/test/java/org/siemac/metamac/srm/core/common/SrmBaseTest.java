@@ -420,6 +420,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tables.add("TB_M_CONCEPT_RELATED");
         tables.add("TB_M_CONCEPT_ROLES");
         tables.add("TB_M_LIS_CONCEPT_TYPES");
+        tables.add("TB_M_QUANTITIES");
         tables.add("TB_M_CONCEPTS");
         tables.add("TB_M_CONCEPT_SCHEMES_VERSIONS");
         tables.add("TB_M_DATASTRUCTURE_VERSIONS");

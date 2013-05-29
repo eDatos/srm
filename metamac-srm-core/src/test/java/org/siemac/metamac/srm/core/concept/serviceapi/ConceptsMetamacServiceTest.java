@@ -45,6 +45,8 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.QuantityUnitSymbolPositionEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -499,6 +501,30 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(1, conceptSchemeVersionPagedResult.getTotalRows());
         int i = 0;
         assertEquals(CONCEPT_SCHEME_7_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+    }
+
+    @Test
+    @Override
+    public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityNumerator() throws Exception {
+        // TODO testFindConceptSchemesByConditionWithConceptsCanBeQuantityNumerator
+    }
+
+    @Test
+    @Override
+    public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityDenominator() throws Exception {
+        // TODO testFindConceptSchemesByConditionWithConceptsCanBeQuantityDenominator
+    }
+
+    @Test
+    @Override
+    public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity() throws Exception {
+        // TODO testFindConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity
+    }
+
+    @Override
+    @Test
+    public void testFindCodelistsByConditionWithCodesCanBeQuantityUnit() throws Exception {
+        // TODO testFindCodelistsByConditionWithCodesCanBeQuantityUnit
     }
 
     @Test
@@ -2318,7 +2344,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
-    public void testUpdateConceptErrorEnumeratedRepresentation() throws Exception {
+    public void testUpdateConceptExtends() throws Exception {
 
         ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
         concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
@@ -2382,6 +2408,24 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(CONCEPT_TYPE_DIRECT, concept.getConceptType().getIdentifier());
         assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, concept.getConceptExtends().getNameableArtefact().getUrn());
         assertEquals(VARIABLE_1, concept.getVariable().getNameableArtefact().getUrn());
+        // quantity
+        assertNotNull(concept.getQuantity());
+        assertEquals(QuantityTypeEnum.CHANGE_RATE, concept.getQuantity().getQuantityType());
+        assertEquals(CODELIST_7_V2_CODE_1, concept.getQuantity().getUnitCode().getNameableArtefact().getUrn());
+        assertEquals(QuantityUnitSymbolPositionEnum.END, concept.getQuantity().getUnitSymbolPosition());
+        assertEquals(Integer.valueOf(2), concept.getQuantity().getSignificantDigits());
+        assertEquals(Integer.valueOf(3), concept.getQuantity().getDecimalPlaces());
+        assertEquals(Integer.valueOf(10), concept.getQuantity().getUnitMultiplier());
+        assertEquals(Integer.valueOf(100), concept.getQuantity().getMinimum());
+        assertEquals(Integer.valueOf(200), concept.getQuantity().getMaximum());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getQuantity().getNumerator().getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_12_V1_CONCEPT_1, concept.getQuantity().getDenominator().getNameableArtefact().getUrn());
+        assertEquals(Boolean.TRUE, concept.getQuantity().getIsPercentage());
+        ConceptsAsserts.assertEqualsInternationalString(concept.getQuantity().getPercentageOf(), "es", "Porcentaje de 1", "en", "Percentage of 1");
+        assertNull(concept.getQuantity().getBaseValue());
+        assertNull(concept.getQuantity().getBaseTime());
+        assertNull(concept.getQuantity().getBaseLocation());
+        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, concept.getQuantity().getBaseQuantity().getNameableArtefact().getUrn());
     }
 
     @Test
@@ -2959,6 +3003,31 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         int i = 0;
         assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(conceptsPagedResult.getValues().size(), i);
+    }
+
+    @Test
+    @Override
+    public void testFindConceptsCanBeQuantityDenominator() throws Exception {
+        // TODO testFindConceptsCanBeQuantityDenominator
+    }
+
+    @Test
+    @Override
+    public void testFindConceptsCanBeQuantityNumerator() throws Exception {
+        // TODO testFindConceptsCanBeQuantityNumerator
+
+    }
+
+    @Test
+    @Override
+    public void testFindConceptsCanBeQuantityBaseQuantity() throws Exception {
+        // TODO testFindConceptsCanBeQuantityBaseQuantity
+    }
+
+    @Override
+    @Test
+    public void testFindCodesCanBeQuantityUnit() throws Exception {
+        // TODO testFindCodesCanBeQuantityUnit
     }
 
     @Override

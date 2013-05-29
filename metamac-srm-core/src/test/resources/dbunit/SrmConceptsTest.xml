@@ -32,6 +32,7 @@
     <TB_SEQUENCES SEQUENCE_NAME="M_CATEGORIES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_CONCEPT_SCHEMES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_CONCEPTS" SEQUENCE_NEXT_VALUE="100000000" />
+    <TB_SEQUENCES SEQUENCE_NAME="M_QUANTITIES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_CONCEPT_TYPES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_DATASTRUCTURE_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_ORG_SCHEMES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
@@ -375,6 +376,7 @@
               CONCEPT_TYPE_FK="[null]"
               EXTENDS_FK="711"
               VARIABLE_FK="[null]"
+              QUANTITY_FK="[null]"
               TB_CONCEPTS="111"
              />
             
@@ -534,6 +536,7 @@
               EXTENDS_FK="711"
               VARIABLE_FK="1"
               TB_CONCEPTS="121"
+              QUANTITY_FK="121"
              />
             
             <TB_ITEMS_BASE
@@ -587,7 +590,37 @@
                 
                 UUID="representation-121"
                 VERSION="1"
-            />                 
+            />      
+            
+            <TB_M_QUANTITIES
+                ID="121"
+                UUID="Quantity-121"
+                QUANTITY_TYPE="CHANGE_RATE"
+                UNIT_CODE_FK="20111"
+                UNIT_SYMBOL_POSITION="END"
+                UNIT_MULTIPLIER="10"
+                SIGNIFICANT_DIGITS="2"
+                DECIMAL_PLACES="3"
+                MINIMUM="100"
+                MAXIMUM="200"
+                IS_PERCENTAGE="1"
+                PERCENTAGE_OF_FK="98"
+                BASE_VALUE="[null]"
+                BASE_TIME="[null]"
+                BASE_LOCATION_FK="[null]"
+                BASE_QUANTITY_FK="124"
+                NUMERATOR_FK="122"
+                DENOMINATOR_FK="1211"
+
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:04"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:04"
+                LAST_UPDATED_TZ="Europe/London"
+            />
+                       
 
                 <!-- Concept Relations -->            
                 <TB_M_CONCEPT_ROLES
@@ -4690,7 +4723,7 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
-        <!-- CODE03 -->
+        <!-- CODE01 -->
             <TB_CODES
                 TB_ITEMS_BASE="20111"
             />
@@ -4708,7 +4741,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="2011"
                 NAMEABLE_ARTEFACT_FK="20111"
                       
-                UUID="codelist-1-v2-code-3"
+                UUID="codelist-1-v2-code-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -4722,10 +4755,10 @@
                 ID="20111"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
-                CODE="CODE03"
+                CODE="CODE01"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE03"
-                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE03"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE01"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE01"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
@@ -4743,7 +4776,7 @@
                 LAST_UPDATED_TZ="Europe/London"
             />     
 
-            <!-- CODE04 -->
+            <!-- CODE02 -->
             <TB_CODES
                 TB_ITEMS_BASE="20112"
             />
@@ -4775,10 +4808,10 @@
                 ID="20112"
                 ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
                 
-                CODE="CODE04"
+                CODE="CODE02"
                 URI_PROVIDER="[null]"
-                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE04"
-                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE04"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE02"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE02"
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
@@ -6633,5 +6666,25 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="97"
     />                                  
-                            
+   
+    <TB_INTERNATIONAL_STRINGS
+        ID="98"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="981"
+        LABEL="Porcentaje de 1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="98"
+    />   
+    
+    <TB_LOCALISED_STRINGS
+        ID="982"
+        LABEL="Percentage of 1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="98"
+    />                                
 </dataset>

@@ -21,5 +21,23 @@ Application EnumsMetamacConceptDomain {
     		ATTRIBUTE_OR_DIMENSION,
     		MEASURE_DIMENSION
     	}
+    	
+    	"Type of quantity"
+    	enum QuantityTypeEnum {
+    		QUANTITY,
+    		AMOUNT,
+    		MAGNITUDE,
+    		FRACTION,
+    		RATIO,
+    		RATE,
+    		INDEX,
+    		CHANGE_RATE
+    	}
+    	
+    	"Type of symbol position of quantity unit"
+    	enum QuantityUnitSymbolPositionEnum {
+    		START,
+    		END
+    	}	
 	}
 }

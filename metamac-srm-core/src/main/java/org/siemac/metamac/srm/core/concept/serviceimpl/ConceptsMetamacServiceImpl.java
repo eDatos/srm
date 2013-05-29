@@ -22,10 +22,13 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
@@ -39,6 +42,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionP
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.domain.Quantity;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
@@ -81,6 +85,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Autowired
     private CategoriesMetamacService         categoriesMetamacService;
+
+    @Autowired
+    private CodesMetamacService              codesMetamacService;
 
     @Autowired
     private ItemSchemeVersionRepository      itemSchemeVersionRepository;
@@ -193,9 +200,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 .eq(ConceptSchemeTypeEnum.ROLE).buildSingle();
         conditions.add(roleCondition);
         // concept scheme externally published
-        ConditionalCriteria validityStartedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
                 .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
-        conditions.add(validityStartedCondition);
+        conditions.add(externallyPublishedCondition);
 
         PagedResult<ConceptSchemeVersion> conceptsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
         return pagedResultConceptSchemeVersionToMetamac(conceptsPagedResult);
@@ -214,12 +221,45 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 .eq(ConceptSchemeTypeEnum.GLOSSARY).buildSingle();
         conditions.add(roleCondition);
         // concept scheme externally published
-        ConditionalCriteria validityStartedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
                 .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
-        conditions.add(validityStartedCondition);
+        conditions.add(externallyPublishedCondition);
 
         PagedResult<ConceptSchemeVersion> conceptsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
         return pagedResultConceptSchemeVersionToMetamac(conceptsPagedResult);
+    }
+
+    @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ServiceContext ctx, String conceptSchemeUrn,
+            List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        return findConceptSchemesCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
+    }
+
+    @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter) throws MetamacException {
+        return findConceptSchemesCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
+    }
+
+    @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(ServiceContext ctx, String conceptSchemeUrn,
+            List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+        return findConceptSchemesCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
+    }
+
+    @Override
+    public PagedResult<CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeQuantityUnit(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build();
+        }
+        // scheme externally published
+        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                .withProperty(CodelistVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(externallyPublishedCondition);
+
+        return codesMetamacService.findCodelistsByCondition(ctx, conditions, pagingParameter);
     }
 
     @Override
@@ -546,9 +586,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 .eq(ConceptSchemeTypeEnum.ROLE).buildSingle();
         conditions.add(roleCondition);
         // concept scheme externally published
-        ConditionalCriteria validityStartedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
+        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
                 .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
-        conditions.add(validityStartedCondition);
+        conditions.add(externallyPublishedCondition);
 
         PagedResult<Concept> conceptsPagedResult = conceptsService.findConceptsByCondition(ctx, conditions, pagingParameter);
         return pagedResultConceptToMetamac(conceptsPagedResult);
@@ -570,12 +610,45 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 .eq(ConceptSchemeTypeEnum.GLOSSARY).buildSingle();
         conditions.add(roleCondition);
         // concept scheme externally published
-        ConditionalCriteria validityStartedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
+        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
                 .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
-        conditions.add(validityStartedCondition);
+        conditions.add(externallyPublishedCondition);
 
         PagedResult<Concept> conceptsPagedResult = conceptsService.findConceptsByCondition(ctx, conditions, pagingParameter);
         return pagedResultConceptToMetamac(conceptsPagedResult);
+    }
+
+    @Override
+    public PagedResult<ConceptMetamac> findConceptsCanBeQuantityNumerator(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        return findConceptsCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
+    }
+
+    @Override
+    public PagedResult<ConceptMetamac> findConceptsCanBeQuantityDenominator(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        return findConceptsCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
+    }
+
+    @Override
+    public PagedResult<ConceptMetamac> findConceptsCanBeQuantityBaseQuantity(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        return findConceptsCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
+    }
+
+    @Override
+    public PagedResult<CodeMetamac> findCodesCanBeQuantityUnit(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).distinctRoot().build();
+        }
+        // codelist externally published
+        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
+                .withProperty(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(externallyPublishedCondition);
+
+        return codesMetamacService.findCodesByCondition(ctx, conditions, pagingParameter);
     }
 
     @Override
@@ -588,6 +661,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Delete bidirectional relations of concepts relate this concept and its children (will be removed in cascade)
         removeRelatedConceptsBidirectional(concept);
+        // TODO comprobar que ni él ni algún hijo es quantity de otro concepto del esquema
 
         // note: do not check if it is role or extends of another concept, because one concept must be published to be role or extends
 
@@ -999,24 +1073,31 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
      */
     private void checkConceptToCreateOrUpdate(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) throws MetamacException {
         checkConceptSchemeCanBeModified(conceptSchemeVersion);
-        checkConceptMetadataExtends(ctx, concept, conceptSchemeVersion.getMaintainableArtefact().getUrn());
+        checkConceptMetadataExtends(ctx, conceptSchemeVersion, concept);
         checkConceptEnumeratedRepresentation(ctx, concept, true, conceptSchemeVersion.getMaintainableArtefact().getIsImported());
+        checkConceptsLinkedInQuantity(ctx, conceptSchemeVersion, concept);
     }
 
-    private void checkConceptMetadataExtends(ServiceContext ctx, ConceptMetamac concept, String conceptSchemeUrn) throws MetamacException {
+    private void checkConceptMetadataExtends(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionSource, ConceptMetamac concept) throws MetamacException {
         if (concept.getConceptExtends() == null) {
             return;
         }
 
+        // Not same concept scheme
+        if (concept.getConceptExtends() != null) {
+            if (conceptSchemeVersionSource.getItemScheme().getId().equals(concept.getConceptExtends().getItemSchemeVersion().getItemScheme().getId())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.CONCEPT_EXTENDS).build();
+            }
+        }
+
         // Check concept scheme source: type
-        ConceptSchemeVersionMetamac conceptSchemeVersionSource = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
         if (!ConceptSchemeTypeEnum.GLOSSARY.equals(conceptSchemeVersionSource.getType()) && !ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersionSource.getType())
                 && !ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersionSource.getType()) && !ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersionSource.getType())) {
             throw MetamacExceptionBuilder
                     .builder()
                     .withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
                     .withMessageParameters(
-                            conceptSchemeUrn,
+                            conceptSchemeVersionSource.getMaintainableArtefact().getUrn(),
                             new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_GLOSSARY, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION,
                                     ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_TRANSVERSAL, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_MEASURE}).build();
 
@@ -1032,9 +1113,109 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
     }
 
+    /**
+     * Numerator, denominator and base quantity can be a concept of same concept scheme or a concept of another concept scheme type measure without operation
+     */
+    private void checkConceptsLinkedInQuantity(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionSource, ConceptMetamac concept) throws MetamacException {
+        Quantity quantity = concept.getQuantity();
+        if (quantity == null) {
+            return;
+        }
+        String conceptSchemeVersionSourceUrn = conceptSchemeVersionSource.getMaintainableArtefact().getUrn();
+        // Check concept scheme source: type
+        if (!ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersionSource.getType()) && !ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersionSource.getType())) {
+            throw MetamacExceptionBuilder
+                    .builder()
+                    .withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
+                    .withMessageParameters(conceptSchemeVersionSourceUrn,
+                            new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_MEASURE}).build();
+
+        }
+
+        // Check quantity concepts
+        PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+        if (quantity.getNumerator() != null) {
+            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityNumerator(ctx, conceptSchemeVersionSourceUrn, null, pagingParameter);
+            if (result.getValues().size() != 1) {
+                throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_NUMERATOR);
+            }
+        }
+        if (quantity.getDenominator() != null) {
+            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityDenominator(ctx, conceptSchemeVersionSourceUrn, null, pagingParameter);
+            if (result.getValues().size() != 1) {
+                throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_DENOMINATOR);
+            }
+        }
+        if (quantity.getBaseQuantity() != null) {
+            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityBaseQuantity(ctx, conceptSchemeVersionSourceUrn, null, pagingParameter);
+            if (result.getValues().size() != 1) {
+                throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_QUANTITY);
+            }
+        }
+        // TODO quantity.baseLocation
+    }
+
     private void checkConceptSchemeCanBeModified(ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(conceptSchemeVersion.getLifeCycleMetadata(), conceptSchemeVersion.getMaintainableArtefact().getUrn());
         SrmValidationUtils.checkArtefactWithoutTaskInBackground(conceptSchemeVersion);
+    }
+
+    /**
+     * At the moment, conditions to be numerator, numerator o base quantity are identical
+     */
+    private PagedResult<ConceptMetamac> findConceptsCanBeQuantity(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).distinctRoot().build();
+        }
+        // Add restrictions to be numerated. IMPORTANT! If any condition change, review findConceptSchemesCanBeQuantity
+        // concept scheme can be same scheme or another concept scheme type Measure without operation
+        ConditionalCriteria quantityCondition = ConditionalCriteriaBuilder
+                .criteriaFor(ConceptMetamac.class)
+                // same scheme
+                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urn())
+                .eq(conceptSchemeUrn)
+                .or()
+                // in another scheme, externally published and specific type
+                .lbrace()
+                .withProperty(
+                        new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class))
+                .eq(ConceptSchemeTypeEnum.MEASURE)
+                .and()
+                .withProperty(
+                        new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.relatedOperation().getName(), true,
+                                ConceptMetamac.class)).isNull().and().withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).rbrace()
+                .buildSingle();
+        conditions.add(quantityCondition);
+
+        PagedResult<Concept> conceptsPagedResult = conceptsService.findConceptsByCondition(ctx, conditions, pagingParameter);
+        return pagedResultConceptToMetamac(conceptsPagedResult);
+    }
+
+    /**
+     * At the moment, conditions to be numerator, numerator o base quantity are identical
+     */
+    private PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCanBeQuantity(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build();
+        }
+        // Add restrictions to be numerated. IMPORTANT! If any condition change, review findConceptsCanBeQuantity
+        // concept scheme can be same scheme or another concept scheme type Measure without operation
+        ConditionalCriteria quantityCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                // same scheme
+                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn()).eq(conceptSchemeUrn).or()
+                // in another scheme, externally published and specific type
+                .lbrace().withProperty(ConceptSchemeVersionMetamacProperties.type()).eq(ConceptSchemeTypeEnum.MEASURE).and().withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation())
+                .isNull().and().withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).rbrace().buildSingle();
+        conditions.add(quantityCondition);
+
+        PagedResult<ConceptSchemeVersion> conceptSchemeVersionsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
+        return pagedResultConceptSchemeVersionToMetamac(conceptSchemeVersionsPagedResult);
     }
 
 }

@@ -39,6 +39,14 @@ Application ConceptsMetamac {
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeExtended(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Finds concept schemes with concepts that can be role"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeRole(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Finds concept schemes with concepts than can be numerator in quantity by criteria"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Finds concept schemes with concepts than can be denominator in quantity by criteria"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Finds concept schemes with concepts than can be base quantity in quantity by criteria"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Find codelists with codes than than can be unit in concept quantity by criteria"
+    		PagedResult<@CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeQuantityUnit(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Sends concept scheme to production validation"
     		@ConceptSchemeVersionMetamac sendConceptSchemeToProductionValidation(String urn) throws MetamacException;
     		"Sends concept scheme to diffusion validation"
@@ -82,12 +90,6 @@ Application ConceptsMetamac {
 			MetamacExceptionItem checkConceptEnumeratedRepresentation(@ConceptMetamac concept, boolean throwException, Boolean isImported) throws MetamacException;
     		"Retrieves concept by urn"
     		@ConceptMetamac retrieveConceptByUrn(String urn) throws MetamacException;
-    		"Finds concepts by criteria"
-    		PagedResult<@ConceptMetamac> findConceptsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-    		"Finds concepts than can be Role by criteria"
-    		PagedResult<@ConceptMetamac> findConceptsCanBeRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
-			"Finds concepts than can be extended by criteria"
-    		PagedResult<@ConceptMetamac> findConceptsCanBeExtendedByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes concept"
     		deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme in locale requested"
@@ -104,6 +106,20 @@ Application ConceptsMetamac {
     		deleteRoleConcept(String urn, String conceptRoleUrn) throws MetamacException;
     		"Retrieves all related concepts with a concept with relation 'roles'"
     		List<@ConceptMetamac> retrieveRoleConcepts(String urn) throws MetamacException;
+    		"Finds concepts by criteria"
+    		PagedResult<@ConceptMetamac> findConceptsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		"Finds concepts than can be Role by criteria"
+    		PagedResult<@ConceptMetamac> findConceptsCanBeRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Finds concepts than can be extended by criteria"
+    		PagedResult<@ConceptMetamac> findConceptsCanBeExtendedByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Finds concepts than can be numerator in quantity by criteria"
+    		PagedResult<@ConceptMetamac> findConceptsCanBeQuantityNumerator(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Finds concepts than can be denominator in quantity by criteria"
+    		PagedResult<@ConceptMetamac> findConceptsCanBeQuantityDenominator(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Finds concepts than can be base quantity in quantity by criteria"
+    		PagedResult<@ConceptMetamac> findConceptsCanBeQuantityBaseQuantity(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Finds codes than can be unit in concept quantity by criteria"
+    		PagedResult<@CodeMetamac> findCodesCanBeQuantityUnit(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		
     		"Finds all concept types"
     		List<@ConceptType> findAllConceptTypes throws MetamacException;
@@ -171,6 +187,8 @@ Application ConceptsMetamac {
 			- Bag<@ConceptMetamac> relatedConcepts cascade="none" fetch="lazy" databaseJoinTable="TB_M_CONCEPT_RELATED" databaseJoinColumn="CONCEPT_FK" databaseColumn="CONCEPT_RELATED_FK" ;
 			"Variable"
 			- @Variable variable nullable cascade="none" fetch="lazy" databaseColumn="VARIABLE_FK" <-> concepts;
+			"Quantity"
+			- @Quantity quantity nullable cascade="all" fetch="lazy" databaseColumn="QUANTITY_FK";
 			
 			Repository ConceptMetamacRepository {
 				save;
@@ -183,6 +201,45 @@ Application ConceptsMetamac {
 				checkConceptTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
 			}
 		}
+		
+		"Metric characteristics of concept"
+	    Entity Quantity {
+        	databaseTable = "TB_M_QUANTITIES"
+        	hint="idSequence=M_QUANTITIES"
+        	
+	    	"Type"
+			- @QuantityTypeEnum quantityType nullable;
+			"Unit"
+			- @CodeMetamac unitCode nullable cascade="none" databaseColumn="UNIT_CODE_FK";
+			"Position of symbol of unit"
+			- @QuantityUnitSymbolPositionEnum unitSymbolPosition nullable;
+			"Number of significant digits to use when displaying the values of a metric concept"
+			Integer significantDigits nullable;
+			"Number of decimal places to use for displaying the values of a metric concept"
+			Integer decimalPlaces nullable;
+			"Multiplier of percentage"
+			Integer unitMultiplier nullable;
+			"Min. Only when Quantity is Magnitude"
+			Integer minimum nullable;
+			"Max. Only when Quantity is Magnitude"
+			Integer maximum nullable;
+			"Numerator of the fraction. Only when Quantity is Fraction"
+			- @ConceptMetamac numerator nullable cascade="none" databaseColumn="NUMERATOR_FK";
+			"Denominator of the fraction. Only when Quantity is Fraction"
+			- @ConceptMetamac denominator nullable cascade="none" databaseColumn="DENOMINATOR_FK";
+			"True if is a percentage. Only when Quantity is Ratio"
+			Boolean isPercentage nullable;
+			"In percentages, descriptive text to display next to number that specifies what this is a percentage of. Only when Quantity is Ratio"
+			- @InternationalString percentageOf cascade="all" nullable databaseColumn="PERCENTAGE_OF_FK";
+			"Value base. Only when Quantity is Index"
+			Integer baseValue nullable;
+			"Time value base. Only when Quantity is Index"
+			String baseTime nullable;
+            "Geographical value base. Only when Quantity is Index"
+			String baseLocation nullable databaseColumn="BASE_LOCATION_FK";
+			"Base quantity. Only when Quantity is Change Rate"
+			- @ConceptMetamac baseQuantity nullable cascade="none" databaseColumn="BASE_QUANTITY_FK";
+	    }
 		
 		"Concept Type List"
     	Entity ConceptType {

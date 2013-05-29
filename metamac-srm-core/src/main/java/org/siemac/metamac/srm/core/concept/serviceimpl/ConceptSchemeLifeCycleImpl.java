@@ -136,7 +136,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                         if (exceptionItem != null) {
                             exceptionsConcepts.add(exceptionItem);
                         } else {
-                            // Check another metadata
+                            // Check another metadata // TODO QUANTITY
                             ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, concept, false, false, exceptionsConcepts);
                         }
                         if (exceptionsConcepts.size() != 0) {

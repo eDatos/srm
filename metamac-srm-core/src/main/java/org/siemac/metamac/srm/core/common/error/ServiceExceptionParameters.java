@@ -33,6 +33,25 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String CONCEPT_EXTENDS                                            = CONCEPT + ".extends";
     public static final String CONCEPT_VARIABLE                                           = CONCEPT + ".variable";
 
+    // CONCEPT QUANTITY
+    public static final String CONCEPT_QUANTITY                                           = CONCEPT + ".quantity";
+    public static final String CONCEPT_QUANTITY_TYPE                                      = CONCEPT_QUANTITY + ".type";
+    public static final String CONCEPT_QUANTITY_UNIT_CODE                                 = CONCEPT_QUANTITY + ".unit_code";
+    public static final String CONCEPT_QUANTITY_UNIT_SYMBOL_POSITION                      = CONCEPT_QUANTITY + ".unit_symbol_position";
+    public static final String CONCEPT_QUANTITY_SIGNIFICANT_DIGITS                        = CONCEPT_QUANTITY + ".significant_digits";
+    public static final String CONCEPT_QUANTITY_DECIMAL_PLACES                            = CONCEPT_QUANTITY + ".decimal_places";
+    public static final String CONCEPT_QUANTITY_UNIT_MULTIPLIER                           = CONCEPT_QUANTITY + ".unit_multiplier";
+    public static final String CONCEPT_QUANTITY_MIN                                       = CONCEPT_QUANTITY + ".min";
+    public static final String CONCEPT_QUANTITY_MAX                                       = CONCEPT_QUANTITY + ".max";
+    public static final String CONCEPT_QUANTITY_NUMERATOR                                 = CONCEPT_QUANTITY + ".numerator";
+    public static final String CONCEPT_QUANTITY_DENOMINATOR                               = CONCEPT_QUANTITY + ".denominator";
+    public static final String CONCEPT_QUANTITY_IS_PERCENTAGE                             = CONCEPT_QUANTITY + ".is_percentage";
+    public static final String CONCEPT_QUANTITY_PERCENTAGE_OF                             = CONCEPT_QUANTITY + ".percentage_of";
+    public static final String CONCEPT_QUANTITY_BASE_VALUE                                = CONCEPT_QUANTITY + ".base_value";
+    public static final String CONCEPT_QUANTITY_BASE_TIME                                 = CONCEPT_QUANTITY + ".base_time";
+    public static final String CONCEPT_QUANTITY_BASE_LOCATION                             = CONCEPT_QUANTITY + ".base_location";
+    public static final String CONCEPT_QUANTITY_BASE_QUANTITY                             = CONCEPT_QUANTITY + ".base_quantity";
+
     // CODELIST
     public static final String CODELIST_SHORT_NAME                                        = CODELIST + ".short_name";
     public static final String CODELIST_ACCESS_TYPE                                       = CODELIST + ".access_type";
