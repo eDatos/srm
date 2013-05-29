@@ -116,7 +116,7 @@ public class ConceptsCopyCallbackMetamacImpl extends ConceptsCopyCallbackImpl {
         // target.setNumerator(source.getNumerator()); // TODO no se puede copiar xq puede ser del mismo concept scheme
         // target.setDenominator(source.getDenominator()); // TODO no se puede copiar xq puede ser del mismo concept scheme
         target.setIsPercentage(source.getIsPercentage());
-        target.setPercentageOf(copy(source.getPercentageOf()));
+        target.setPercentageOf(copyInternationalString(source.getPercentageOf()));
         target.setBaseValue(source.getBaseValue());
         target.setBaseTime(source.getBaseTime());
         // target.setBaseLocation(source.getBaseLocation()); // TODO quantity.baseLocation
