@@ -9,8 +9,11 @@ import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.domain.Quantity;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.QuantityUnitSymbolPositionEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
@@ -63,6 +66,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         target.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
         target.setConceptType(mockConceptTypeFixedValues("conceptType1"));
         target.setVariable(CodesMetamacDoMocks.mockVariableFixedValues("variable1"));
+        target.setQuantity(mockQuantityFixedValues());
         mockConceptFixedValues(target, resourceID, itemSchemeVersion, parent, RepresentationTypeEnum.ENUMERATION);
         return target;
     }
@@ -83,6 +87,18 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         target.setIdentifier(identifier);
         target.setDescription(mockInternationalStringFixedValues("description", identifier));
         return target;
+    }
+
+    private static Quantity mockQuantityFixedValues() {
+        Quantity target = new Quantity();
+        target.setQuantityType(QuantityTypeEnum.QUANTITY);
+        target.setUnitCode(CodesMetamacDoMocks.mockCodeFixedValues("code01", CodesMetamacDoMocks.mockCodelistFixedValues("agency01", "codelist01", "01.000"), null));
+        target.setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+        target.setSignificantDigits(5);
+        target.setDecimalPlaces(2);
+        target.setUnitMultiplier(10);
+        return target;
+
     }
 
 }

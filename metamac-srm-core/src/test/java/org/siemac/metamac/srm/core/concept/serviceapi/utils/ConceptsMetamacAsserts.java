@@ -7,12 +7,14 @@ import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.domain.Quantity;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsAsserts;
 
 public class ConceptsMetamacAsserts extends ConceptsAsserts {
@@ -65,6 +67,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalString(expected.getLegalActs(), actual.getLegalActs());
         assertEqualsConceptExtends(expected.getConceptExtends(), actual.getConceptExtends());
         CodesMetamacAsserts.assertEqualsVariable(expected.getVariable(), actual.getVariable());
+        assertEqualsQuantity(expected.getQuantity(), actual.getQuantity());
 
         // Sdmx
         ConceptsAsserts.assertEqualsConcept(expected, actual);
@@ -84,7 +87,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalStringDto(expected.getLegalActs(), actual.getLegalActs());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getConceptExtends(), actual.getConceptExtends());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getVariable(), actual.getVariable());
-
+        // TODO quantity
         // Sdmx
         ConceptsAsserts.assertEqualsConceptDto(expected, actual);
     }
@@ -166,8 +169,41 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
             assertEquals(entity.getConceptExtends().getNameableArtefact().getUrn(), dto.getConceptExtends().getUrn());
         }
         CodesMetamacAsserts.assertEqualsVariableRelatedResourceDto(entity.getVariable(), dto.getVariable(), mapperEnum);
+        // TODO quantity
 
         // Sdmx
         ConceptsAsserts.assertEqualsConcept(entity, dto, mapperEnum);
+    }
+
+    private static void assertEqualsQuantity(Quantity expected, Quantity actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected == null) {
+            return;
+        }
+        assertEquals(expected.getQuantityType(), actual.getQuantityType());
+        assertQuantityRelatedItem(expected.getUnitCode(), actual.getUnitCode());
+        assertEquals(expected.getUnitSymbolPosition(), actual.getUnitSymbolPosition());
+        assertEquals(expected.getSignificantDigits(), actual.getSignificantDigits());
+        assertEquals(expected.getDecimalPlaces(), actual.getDecimalPlaces());
+        assertEquals(expected.getUnitMultiplier(), actual.getUnitMultiplier());
+        assertEquals(expected.getMinimum(), actual.getMinimum());
+        assertEquals(expected.getMaximum(), actual.getMaximum());
+        assertQuantityRelatedItem(expected.getNumerator(), actual.getNumerator());
+        assertQuantityRelatedItem(expected.getDenominator(), actual.getDenominator());
+        assertEquals(expected.getIsPercentage(), actual.getIsPercentage());
+        assertEqualsInternationalString(expected.getPercentageOf(), actual.getPercentageOf());
+        assertEquals(expected.getBaseValue(), actual.getBaseValue());
+        assertEquals(expected.getBaseTime(), actual.getBaseTime());
+        assertEquals(expected.getBaseLocation(), actual.getBaseLocation()); // TODO quantity.baseLocation
+        assertQuantityRelatedItem(expected.getBaseQuantity(), actual.getBaseQuantity());
+
+    }
+
+    private static void assertQuantityRelatedItem(Item expected, Item actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected == null) {
+            return;
+        }
+        assertEquals(expected.getNameableArtefact().getUrn(), actual.getNameableArtefact().getUrn());
     }
 }

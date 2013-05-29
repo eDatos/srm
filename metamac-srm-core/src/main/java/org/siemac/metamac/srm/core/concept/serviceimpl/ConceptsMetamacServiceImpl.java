@@ -647,7 +647,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
                 .withProperty(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
         conditions.add(externallyPublishedCondition);
-
         return codesMetamacService.findCodesByCondition(ctx, conditions, pagingParameter);
     }
 
@@ -1132,26 +1131,44 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         }
 
-        // Check quantity concepts
+        // Check quantity concepts and codes
         PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+        if (quantity.getUnitCode() != null) {
+            Long unitCodeId = quantity.getUnitCode().getId();
+            List<ConditionalCriteria> criteriaToVerifyUnitCode = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.id()).eq(unitCodeId).build();
+            PagedResult<CodeMetamac> result = findCodesCanBeQuantityUnit(ctx, criteriaToVerifyUnitCode, pagingParameter);
+            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(unitCodeId)) {
+                throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_CODE);
+            }
+        }
         if (quantity.getNumerator() != null) {
-            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityNumerator(ctx, conceptSchemeVersionSourceUrn, null, pagingParameter);
-            if (result.getValues().size() != 1) {
+            Long conceptNumeratorId = quantity.getNumerator().getId();
+            List<ConditionalCriteria> criteriaToVerifyNumerator = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id()).eq(conceptNumeratorId)
+                    .build();
+            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityNumerator(ctx, conceptSchemeVersionSourceUrn, criteriaToVerifyNumerator, pagingParameter);
+            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptNumeratorId)) {
                 throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_NUMERATOR);
             }
         }
         if (quantity.getDenominator() != null) {
-            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityDenominator(ctx, conceptSchemeVersionSourceUrn, null, pagingParameter);
-            if (result.getValues().size() != 1) {
+            Long conceptDenominatorId = quantity.getDenominator().getId();
+            List<ConditionalCriteria> criteriaToVerifyDenominator = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id()).eq(conceptDenominatorId)
+                    .build();
+            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityDenominator(ctx, conceptSchemeVersionSourceUrn, criteriaToVerifyDenominator, pagingParameter);
+            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptDenominatorId)) {
                 throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_DENOMINATOR);
             }
         }
         if (quantity.getBaseQuantity() != null) {
-            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityBaseQuantity(ctx, conceptSchemeVersionSourceUrn, null, pagingParameter);
-            if (result.getValues().size() != 1) {
+            Long conceptBaseQuantityId = quantity.getBaseQuantity().getId();
+            List<ConditionalCriteria> criteriaToVerifyBaseQuantity = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id()).eq(conceptBaseQuantityId)
+                    .build();
+            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityBaseQuantity(ctx, conceptSchemeVersionSourceUrn, criteriaToVerifyBaseQuantity, pagingParameter);
+            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptBaseQuantityId)) {
                 throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_QUANTITY);
             }
         }
+
         // TODO quantity.baseLocation
     }
 
@@ -1161,7 +1178,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     /**
-     * At the moment, conditions to be numerator, numerator o base quantity are identical
+     * At the moment, conditions to be numerator, numerator o base quantity are identical.
      */
     private PagedResult<ConceptMetamac> findConceptsCanBeQuantity(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
