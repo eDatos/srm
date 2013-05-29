@@ -46,9 +46,7 @@ public class OrganisationsCopyCallbackMetamacImpl extends OrganisationsCopyCallb
     public void copyItem(Item sourceItem, ItemResult sourceItemResult, Item targetItem) {
         super.copyItem(sourceItem, sourceItemResult, targetItem);
 
-        OrganisationMetamac source = (OrganisationMetamac) sourceItem;
-        OrganisationMetamac target = (OrganisationMetamac) targetItem;
-        target.setHasBeenPublished(source.getHasBeenPublished());
+        // target.setHasBeenPublished(source.getHasBeenPublished()); // do not copy! it will be true when scheme is published
 
         // IMPORTANT! If any InternationalString is added, do an efficient query and retrieve from sourceItemResult
     }

@@ -1191,6 +1191,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertEquals(3, organisationSchemeVersionNewArtefact.getItemsFirstLevel().size());
         {
             OrganisationMetamac organisation = assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedOrganisation1);
+            assertEquals(null, organisation.getHasBeenPublished());
             OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "en", "name org1", "it", "nombre it org1");
             OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getDescription(), "es", "descripción org1", "it", "descripción it org1");
             assertEquals(null, organisation.getNameableArtefact().getComment());
@@ -1204,6 +1205,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
         {
             OrganisationMetamac organisation = assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedOrganisation2);
+            assertEquals(null, organisation.getHasBeenPublished());
             OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "en", "name org2", null, null);
 
             assertEquals(0, organisation.getChildren().size());
@@ -1268,6 +1270,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(2, organisationSchemeVersionNewVersion.getItemsFirstLevel().size());
             {
                 OrganisationMetamac organisation = assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewVersion.getItemsFirstLevel(), urnExpectedOrganisation1);
+                assertEquals(null, organisation.getHasBeenPublished());
                 assertEquals(0, organisation.getChildren().size());
                 // Contacts
                 assertEquals(2, organisation.getContacts().size());
@@ -1302,6 +1305,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             }
             {
                 OrganisationMetamac organisation = assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewVersion.getItemsFirstLevel(), urnExpectedOrganisation2);
+                assertEquals(null, organisation.getHasBeenPublished());
                 assertEquals(0, organisation.getContacts().size());
                 assertEquals(2, organisation.getChildren().size());
                 {
