@@ -18,6 +18,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -162,7 +163,14 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public Object markSrmResourceAsPublic(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return codesService.markCodelistAsPublic(ctx, getCodelistVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
+            CodelistVersionMetamac codelistVersionMetamac = getCodelistVersionMetamac(srmResourceVersion);
+
+            // To avoid retrieve in external API
+            if (AccessTypeEnum.PUBLIC.equals(codelistVersionMetamac.getAccessType())) {
+                return codesService.markCodelistAsPublic(ctx, codelistVersionMetamac.getMaintainableArtefact().getUrn());
+            } else {
+                return srmResourceVersion;
+            }
         }
 
         @Override
