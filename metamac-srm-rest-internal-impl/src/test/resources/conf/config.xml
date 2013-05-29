@@ -5,6 +5,6 @@
         <system />
         <properties fileName="${environment.metamac.data}/common/conf/static/endpoints.xml" basePath="" config-optional="false" />
         <properties fileName="${environment.metamac.data}/common/conf/static/web-applications.xml" basePath="" config-optional="false" />
-        <properties fileName="conf/statistic-sdmx-srm-external-web-configuration.xml" basePath="" config-optional="false" />
+        <properties fileName="conf/metamac-srm-external-web-configuration.xml" basePath="" config-optional="false" />
     </override>
 </configuration>
