@@ -45,7 +45,11 @@ public class OrganisationsCopyCallbackMetamacImpl extends OrganisationsCopyCallb
     @Override
     public void copyItem(Item sourceItem, ItemResult sourceItemResult, Item targetItem) {
         super.copyItem(sourceItem, sourceItemResult, targetItem);
-        // nothing more
+
+        OrganisationMetamac source = (OrganisationMetamac) sourceItem;
+        OrganisationMetamac target = (OrganisationMetamac) targetItem;
+        target.setHasBeenPublished(source.getHasBeenPublished());
+
         // IMPORTANT! If any InternationalString is added, do an efficient query and retrieve from sourceItemResult
     }
 
