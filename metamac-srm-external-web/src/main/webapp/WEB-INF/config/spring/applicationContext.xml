@@ -29,8 +29,6 @@
     <import resource="classpath:/spring/srm/applicationContext.xml" />
     <!-- Rest -->
     <import resource="classpath:/spring/sdmx-srm-rest-external/applicationContext.xml" />
-    <!-- TODO: CAMBIAR POR EXTERNAL CUANDO SE IMPLEMENTE -->
-    <import resource="classpath:/spring/srm-rest-internal/applicationContext.xml" />
     <!-- Soap -->   
     <import resource="classpath:/spring/srm-soap-external/applicationContext.xml" />
 </beans>
