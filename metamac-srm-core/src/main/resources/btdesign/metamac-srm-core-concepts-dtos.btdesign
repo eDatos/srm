@@ -42,6 +42,7 @@ Application DtosMetamacConceptDomain {
 			- @InternationalStringDto legalActs nullable;
 			- @RelatedResourceDto conceptExtends nullable;
 			- @RelatedResourceDto variable nullable;
+			- @QuantityDto quantity nullable;
 		}
 		
 		"Dto for ConceptMetamac"
@@ -50,6 +51,43 @@ Application DtosMetamacConceptDomain {
 			- @RelatedResourceDto variable nullable;
 			- @ConceptRoleEnum sdmxRelatedArtefact nullable;
 		}
+		
+		"Dto for Quatity"
+	    DataTransferObject QuantityDto {
+        	
+	    	"Type"
+			- @QuantityTypeEnum quantityType nullable;
+			"Unit"
+			- @RelatedResourceDto unitCode nullable;
+			"Position of symbol of unit"
+			- @QuantityUnitSymbolPositionEnum unitSymbolPosition nullable;
+			"Number of significant digits to use when displaying the values of a metric concept"
+			Integer significantDigits nullable;
+			"Number of decimal places to use for displaying the values of a metric concept"
+			Integer decimalPlaces nullable;
+			"Multiplier of percentage"
+			Integer unitMultiplier nullable;
+			"Min. Only when Quantity is Magnitude"
+			Integer minimum nullable;
+			"Max. Only when Quantity is Magnitude"
+			Integer maximum nullable;
+			"Numerator of the fraction. Only when Quantity is Fraction"
+			- @RelatedResourceDto numerator nullable;
+			"Denominator of the fraction. Only when Quantity is Fraction"
+			- @RelatedResourceDto denominator nullable;
+			"True if is a percentage. Only when Quantity is Ratio"
+			Boolean isPercentage nullable;
+			"In percentages, descriptive text to display next to number that specifies what this is a percentage of. Only when Quantity is Ratio"
+			- @InternationalStringDto percentageOf nullable;
+			"Value base. Only when Quantity is Index"
+			Integer baseValue nullable;
+			"Time value base. Only when Quantity is Index"
+			String baseTime nullable;
+            "Geographical value base. Only when Quantity is Index"
+			String baseLocation nullable;
+			"Base quantity. Only when Quantity is Change Rate"
+			- @RelatedResourceDto baseQuantity nullable;
+	    }
 		
         "Dto for ConceptType"
         DataTransferObject ConceptTypeDto extends @IdentityDto {
