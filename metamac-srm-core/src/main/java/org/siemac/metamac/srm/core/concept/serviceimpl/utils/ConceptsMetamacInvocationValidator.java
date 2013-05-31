@@ -276,10 +276,6 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
                             ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_TIME, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_LOCATION));
                 }
             }
-            // TODO optional?
-            // if (QuantityUtils.isChangeRateOrExtension(quantity.getQuantityType())) {
-            // ValidationUtils.checkMetadataRequired(quantity.getBaseQuantity(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_QUANTITY, exceptions);
-            // }
         }
 
         // Quantity: checks unexpected

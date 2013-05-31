@@ -1074,7 +1074,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         checkConceptSchemeCanBeModified(conceptSchemeVersion);
         checkConceptMetadataExtends(ctx, conceptSchemeVersion, concept);
         checkConceptEnumeratedRepresentation(ctx, concept, true, conceptSchemeVersion.getMaintainableArtefact().getIsImported());
-        checkConceptsLinkedInQuantity(ctx, conceptSchemeVersion, concept);
+        checkConceptQuantity(ctx, conceptSchemeVersion, concept);
     }
 
     private void checkConceptMetadataExtends(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionSource, ConceptMetamac concept) throws MetamacException {
@@ -1115,19 +1115,16 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     /**
      * Numerator, denominator and base quantity can be a concept of same concept scheme or a concept of another concept scheme type measure without operation
      */
-    private void checkConceptsLinkedInQuantity(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionSource, ConceptMetamac concept) throws MetamacException {
+    private void checkConceptQuantity(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionSource, ConceptMetamac concept) throws MetamacException {
         Quantity quantity = concept.getQuantity();
         if (quantity == null) {
             return;
         }
         String conceptSchemeVersionSourceUrn = conceptSchemeVersionSource.getMaintainableArtefact().getUrn();
         // Check concept scheme source: type
-        if (!ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersionSource.getType()) && !ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersionSource.getType())) {
-            throw MetamacExceptionBuilder
-                    .builder()
-                    .withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
-                    .withMessageParameters(conceptSchemeVersionSourceUrn,
-                            new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_MEASURE}).build();
+        if (!ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersionSource.getType())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
+                    .withMessageParameters(conceptSchemeVersionSourceUrn, new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_MEASURE}).build();
 
         }
 
