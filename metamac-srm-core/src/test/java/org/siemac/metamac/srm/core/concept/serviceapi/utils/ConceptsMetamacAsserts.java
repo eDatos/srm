@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
+import org.siemac.metamac.srm.core.concept.dto.QuantityDto;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsAsserts;
@@ -169,7 +170,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
             assertEquals(entity.getConceptExtends().getNameableArtefact().getUrn(), dto.getConceptExtends().getUrn());
         }
         CodesMetamacAsserts.assertEqualsVariableRelatedResourceDto(entity.getVariable(), dto.getVariable(), mapperEnum);
-        // TODO quantity
+        assertEqualsQuantity(entity.getQuantity(), dto.getQuantity(), mapperEnum);
 
         // Sdmx
         ConceptsAsserts.assertEqualsConcept(entity, dto, mapperEnum);
@@ -194,9 +195,39 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalString(expected.getPercentageOf(), actual.getPercentageOf());
         assertEquals(expected.getBaseValue(), actual.getBaseValue());
         assertEquals(expected.getBaseTime(), actual.getBaseTime());
-        assertEquals(expected.getBaseLocation(), actual.getBaseLocation()); // TODO quantity.baseLocation
+        // TODO quantity.baseLocation
         assertQuantityRelatedItem(expected.getBaseQuantity(), actual.getBaseQuantity());
+    }
 
+    private static void assertEqualsQuantity(Quantity entity, QuantityDto dto, MapperEnum mapperEnum) {
+        assertEqualsNullability(entity, dto);
+        if (entity == null) {
+            return;
+        }
+        assertEquals(entity.getQuantityType(), dto.getQuantityType());
+        if (entity.getUnitCode() != null) {
+            assertEquals(entity.getUnitCode().getNameableArtefact().getUrn(), dto.getUnitCode().getUrn());
+        }
+        assertEquals(entity.getUnitSymbolPosition(), dto.getUnitSymbolPosition());
+        assertEquals(entity.getSignificantDigits(), dto.getSignificantDigits());
+        assertEquals(entity.getDecimalPlaces(), dto.getDecimalPlaces());
+        assertEquals(entity.getUnitMultiplier(), dto.getUnitMultiplier());
+        assertEquals(entity.getMinimum(), dto.getMinimum());
+        assertEquals(entity.getMaximum(), dto.getMaximum());
+        if (entity.getNumerator() != null) {
+            assertEquals(entity.getNumerator().getNameableArtefact().getUrn(), dto.getNumerator().getUrn());
+        }
+        if (entity.getDenominator() != null) {
+            assertEquals(entity.getDenominator().getNameableArtefact().getUrn(), dto.getDenominator().getUrn());
+        }
+        assertEquals(entity.getIsPercentage(), dto.getIsPercentage());
+        assertEqualsInternationalString(entity.getPercentageOf(), dto.getPercentageOf());
+        assertEquals(entity.getBaseValue(), dto.getBaseValue());
+        assertEquals(entity.getBaseTime(), dto.getBaseTime());
+        // TODO quantity.baseLocation
+        if (entity.getBaseQuantity() != null) {
+            assertEquals(entity.getBaseQuantity().getNameableArtefact().getUrn(), dto.getBaseQuantity().getUrn());
+        }
     }
 
     private static void assertQuantityRelatedItem(Item expected, Item actual) {

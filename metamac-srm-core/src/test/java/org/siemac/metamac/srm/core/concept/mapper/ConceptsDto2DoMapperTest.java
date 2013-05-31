@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,7 +43,14 @@ public class ConceptsDto2DoMapperTest extends SrmBaseTest {
     public void testConceptMetamacDoToDto() throws MetamacException {
         ConceptMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptDto(RepresentationTypeEnum.ENUMERATION);
         dto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE01", VARIABLE_1));
+        // quantity
+        RelatedResourceDto unitCode = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CODE01", CODELIST_7_V2_CODE_1);
+        RelatedResourceDto numerator = ConceptsMetamacDtoMocks.mockConceptRelatedResourceDto("CONCEPT0201", CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
+        RelatedResourceDto denominator = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CONCEPT03", CONCEPT_SCHEME_1_V2_CONCEPT_3);
+        RelatedResourceDto baseQuantity = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CONCEPT04", CONCEPT_SCHEME_1_V2_CONCEPT_4);
+        dto.setQuantity(ConceptsMetamacDtoMocks.mockQuantityDto(unitCode, numerator, denominator, baseQuantity));
 
+        // transform
         ConceptMetamac entity = conceptsDto2DoMapper.conceptDtoToDo(dto);
         ConceptsMetamacAsserts.assertEqualsConcept(dto, entity);
     }

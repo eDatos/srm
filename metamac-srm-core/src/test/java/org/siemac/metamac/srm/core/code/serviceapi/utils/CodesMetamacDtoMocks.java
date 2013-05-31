@@ -55,6 +55,16 @@ public class CodesMetamacDtoMocks {
         return codeMetamacDto;
     }
 
+    public static RelatedResourceDto mockCodeRelatedResourceDto(String code, String urn) {
+        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+        relatedResourceDto.setTitle(MetamacMocks.mockInternationalStringDto());
+        relatedResourceDto.setCode(code);
+        relatedResourceDto.setUrn(urn);
+        relatedResourceDto.setUrnProvider(urn);
+        relatedResourceDto.setType(RelatedResourceTypeEnum.CODE);
+        return relatedResourceDto;
+    }
+
     // -----------------------------------------------------------------------------------
     // CODELIST FAMILIES
     // -----------------------------------------------------------------------------------

@@ -39,6 +39,7 @@ public interface CodesDo2DtoMapper {
     // Codes
     public CodeMetamacDto codeMetamacDoToDto(CodeMetamac source);
     public CodeMetamacBasicDto codeMetamacDoToBasicDto(CodeMetamac source);
+    public RelatedResourceDto codeMetamacDoToRelatedResourceDto(CodeMetamac source);
 
     // Codelist family
     public CodelistFamilyDto codelistFamilyDoToDto(CodelistFamily source);

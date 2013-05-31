@@ -6,6 +6,8 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
 import org.siemac.metamac.srm.core.base.mapper.BaseDto2DoMapperImpl;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableRepository;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -16,10 +18,15 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptTypeRepository;
+import org.siemac.metamac.srm.core.concept.domain.Quantity;
+import org.siemac.metamac.srm.core.concept.domain.QuantityRepository;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
+import org.siemac.metamac.srm.core.concept.dto.QuantityDto;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 @org.springframework.stereotype.Component("conceptsDto2DoMapper")
 public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements ConceptsDto2DoMapper {
@@ -38,6 +45,12 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
 
     @Autowired
     private VariableRepository                                                   variableRepository;
+
+    @Autowired
+    private QuantityRepository                                                   quantityRepository;
+
+    @Autowired
+    private CodeMetamacRepository                                                codeMetamacRepository;
 
     // ------------------------------------------------------------
     // CONCEPTS
@@ -94,13 +107,8 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
         target.setConceptType(conceptTypeDtoToDo(source.getConceptType()));
         target.setDerivation(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getDerivation(), target.getDerivation(), ServiceExceptionParameters.CONCEPT_DERIVATION));
         target.setLegalActs(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getLegalActs(), target.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS));
-
-        if (source.getConceptExtends() != null) {
-            ConceptMetamac conceptExtends = retrieveConcept(source.getConceptExtends().getUrn());
-            target.setConceptExtends(conceptExtends);
-        } else {
-            target.setConceptExtends(null);
-        }
+        target.setConceptExtends(toConceptRelation(source.getConceptExtends()));
+        target.setQuantity(quantityDtoToDo(source.getQuantity(), target.getQuantity()));
         // note: not conversion to relatedConcepts, roles... Call 'add/delete RelatedConcepts' operation of Service
 
         if (source.getVariable() != null) {
@@ -114,7 +122,6 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
 
         return target;
     }
-
     private ConceptType conceptTypeDtoToDo(ConceptTypeDto source) throws MetamacException {
         if (source == null) {
             return null;
@@ -127,6 +134,35 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
         return conceptType;
     }
 
+    private Quantity quantityDtoToDo(QuantityDto source, Quantity target) throws MetamacException {
+        if (source == null) {
+            if (target != null) {
+                quantityRepository.delete(target);
+            }
+            return null;
+        }
+        if (target == null) {
+            target = new Quantity();
+        }
+        target.setQuantityType(source.getQuantityType());
+        target.setUnitCode(toCodeRelation(source.getUnitCode()));
+        target.setUnitSymbolPosition(source.getUnitSymbolPosition());
+        target.setSignificantDigits(source.getSignificantDigits());
+        target.setDecimalPlaces(source.getDecimalPlaces());
+        target.setUnitMultiplier(source.getUnitMultiplier());
+        target.setMinimum(source.getMinimum());
+        target.setMaximum(source.getMaximum());
+        target.setNumerator(toConceptRelation(source.getNumerator()));
+        target.setDenominator(toConceptRelation(source.getDenominator()));
+        target.setIsPercentage(source.getIsPercentage());
+        target.setPercentageOf(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getPercentageOf(), target.getPercentageOf(), ServiceExceptionParameters.CONCEPT_QUANTITY_PERCENTAGE_OF));
+        target.setBaseValue(source.getBaseValue());
+        target.setBaseTime(source.getBaseTime());
+        // TODO quantity.baseLocation
+        target.setBaseQuantity(toConceptRelation(source.getBaseQuantity()));
+        return target;
+    }
+
     private ConceptSchemeVersionMetamac retrieveConceptScheme(String urn) throws MetamacException {
         ConceptSchemeVersionMetamac target = conceptSchemeVersionMetamacRepository.findByUrn(urn);
         if (target == null) {
@@ -134,6 +170,13 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
                     .build();
         }
         return target;
+    }
+
+    private ConceptMetamac toConceptRelation(RelatedResourceDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        return retrieveConcept(source.getUrn());
     }
 
     private ConceptMetamac retrieveConcept(String urn) throws MetamacException {
@@ -147,6 +190,22 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
 
     private Variable retrieveVariable(String urn) throws MetamacException {
         Variable target = variableRepository.findByUrn(urn);
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        return target;
+    }
+
+    private CodeMetamac toCodeRelation(RelatedResourceDto source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        return retrieveCode(source.getUrn());
+    }
+
+    private CodeMetamac retrieveCode(String urn) throws MetamacException {
+        CodeMetamac target = codeMetamacRepository.findByUrn(urn);
         if (target == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).withLoggedLevel(ExceptionLevelEnum.ERROR)
                     .build();

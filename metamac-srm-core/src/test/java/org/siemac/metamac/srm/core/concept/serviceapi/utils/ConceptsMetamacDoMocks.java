@@ -54,6 +54,12 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         return target;
     }
 
+    public static ConceptMetamac mockConceptSimpleFixedValues(String resourceID, ConceptSchemeVersionMetamac itemSchemeVersion) {
+        ConceptMetamac target = new ConceptMetamac();
+        mockConceptFixedValues(target, resourceID, itemSchemeVersion, null, RepresentationTypeEnum.ENUMERATION);
+        return target;
+    }
+
     public static ConceptMetamac mockConceptFixedValues(String resourceID, ConceptSchemeVersionMetamac itemSchemeVersion, ConceptMetamac parent) {
         ConceptMetamac target = new ConceptMetamac();
         target.setPluralName(mockInternationalStringFixedValues("pluralName", resourceID));
@@ -91,14 +97,24 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
 
     private static Quantity mockQuantityFixedValues() {
         Quantity target = new Quantity();
-        target.setQuantityType(QuantityTypeEnum.QUANTITY);
-        target.setUnitCode(CodesMetamacDoMocks.mockCodeFixedValues("code01", CodesMetamacDoMocks.mockCodelistFixedValues("agency01", "codelist01", "01.000"), null));
+        target.setQuantityType(QuantityTypeEnum.CHANGE_RATE);
+        target.setUnitCode(CodesMetamacDoMocks.mockCodeFixedValues("unitCode01", CodesMetamacDoMocks.mockCodelistFixedValues("agency01", "codelist01", "01.000"), null));
         target.setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
-        target.setSignificantDigits(5);
-        target.setDecimalPlaces(2);
-        target.setUnitMultiplier(10);
+        target.setSignificantDigits(Integer.valueOf(5));
+        target.setDecimalPlaces(Integer.valueOf(2));
+        target.setUnitMultiplier(Integer.valueOf(10));
+        target.setMinimum(Integer.valueOf(1000));
+        target.setMaximum(Integer.valueOf(2000));
+        target.setNumerator(mockConceptSimpleFixedValues("numerator1", mockConceptSchemeFixedValues("agency01", "conceptScheme02", "01.000")));
+        target.setDenominator(mockConceptSimpleFixedValues("denominator1", mockConceptSchemeFixedValues("agency01", "conceptScheme03", "01.000")));
+        target.setIsPercentage(Boolean.FALSE);
+        target.setPercentageOf(mockInternationalString("percentageOf"));
+        target.setBaseQuantity(mockConceptSimpleFixedValues("baseQuantity1", mockConceptSchemeFixedValues("agency01", "conceptScheme04", "01.000")));
+        // Note: following metadata are not in change_rate, but put it to test all metadata conversion. This entity never will be saved
+        target.setBaseValue(Integer.valueOf(5));
+        target.setBaseTime("2010");
+        // TODO quantity.baseLocation
         return target;
-
     }
 
 }

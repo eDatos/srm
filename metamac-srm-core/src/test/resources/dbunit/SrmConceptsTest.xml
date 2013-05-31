@@ -2642,7 +2642,7 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="100"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -4987,7 +4987,7 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="99"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -6911,5 +6911,31 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="98"
-    />                                
+    />     
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="99"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="991"
+        LABEL="code01"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="99"
+    /> 
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="100"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1001"
+        LABEL="concept01"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="100"
+    />                                    
 </dataset>

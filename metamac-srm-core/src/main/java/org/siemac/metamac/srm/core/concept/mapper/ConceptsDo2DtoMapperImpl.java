@@ -9,11 +9,13 @@ import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.domain.Quantity;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
+import org.siemac.metamac.srm.core.concept.dto.QuantityDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -91,6 +93,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
         target.setLegalActs(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getLegalActs()));
         target.setConceptExtends(conceptMetamacDoToRelatedResourceDto(source.getConceptExtends()));
         target.setVariable(codesDo2DtoMapper.variableDoToRelatedResourceDto(source.getVariable()));
+        target.setQuantity(quantityDoToDto(source.getQuantity()));
         do2DtoMapperSdmxSrm.conceptDoToDto(source, target);
 
         // note: not conversion to relatedConcepts and roles. Call specific operations in Service
@@ -148,5 +151,29 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
             targets.add(conceptTypeDoToDto(source));
         }
         return targets;
+    }
+
+    private QuantityDto quantityDoToDto(Quantity source) {
+        if (source == null) {
+            return null;
+        }
+        QuantityDto target = new QuantityDto();
+        target.setQuantityType(source.getQuantityType());
+        target.setUnitCode(codesDo2DtoMapper.codeMetamacDoToRelatedResourceDto(source.getUnitCode()));
+        target.setUnitSymbolPosition(source.getUnitSymbolPosition());
+        target.setSignificantDigits(source.getSignificantDigits());
+        target.setDecimalPlaces(source.getDecimalPlaces());
+        target.setUnitMultiplier(source.getUnitMultiplier());
+        target.setMinimum(source.getMinimum());
+        target.setMaximum(source.getMaximum());
+        target.setNumerator(conceptMetamacDoToRelatedResourceDto(source.getNumerator()));
+        target.setDenominator(conceptMetamacDoToRelatedResourceDto(source.getDenominator()));
+        target.setIsPercentage(source.getIsPercentage());
+        target.setPercentageOf(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getPercentageOf()));
+        target.setBaseValue(source.getBaseValue());
+        target.setBaseTime(source.getBaseTime());
+        // TODO quantity.baseLocation
+        target.setBaseQuantity(conceptMetamacDoToRelatedResourceDto(source.getBaseQuantity()));
+        return target;
     }
 }

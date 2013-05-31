@@ -239,6 +239,10 @@ Application ConceptsMetamac {
 			String baseLocation nullable databaseColumn="BASE_LOCATION_FK";
 			"Base quantity. Only when Quantity is Change Rate"
 			- @ConceptMetamac baseQuantity nullable cascade="none" databaseColumn="BASE_QUANTITY_FK";
+			
+			Repository QuantityRepository {
+    			delete;
+    		}
 	    }
 		
 		"Concept Type List"
