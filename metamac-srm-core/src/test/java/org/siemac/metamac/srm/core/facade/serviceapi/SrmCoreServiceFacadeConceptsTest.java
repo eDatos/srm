@@ -41,6 +41,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.QuantityUnitSymbolPositionEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDtoMocks;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
@@ -1466,6 +1467,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_1_V2);
         conceptMetamacDto.setConceptExtends(ConceptsMetamacDtoMocks.mockConceptRelatedResourceDto("CONCEPT01", CONCEPT_SCHEME_7_V1_CONCEPT_1));
         conceptMetamacDto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
+        RelatedResourceDto unitCode = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CODE01", CODELIST_7_V2_CODE_1);
+        conceptMetamacDto.setQuantity(ConceptsMetamacDtoMocks.mockQuantityDtoTypeQuantity(unitCode));
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());
@@ -1521,18 +1524,19 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         conceptMetamacDto.setName(MetamacMocks.mockInternationalStringDto());
         conceptMetamacDto.setDescription(MetamacMocks.mockInternationalStringDto());
         conceptMetamacDto.getConceptExtends().setUrn(CONCEPT_SCHEME_7_V1_CONCEPT_1);
+        conceptMetamacDto.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+        conceptMetamacDto.getQuantity().setSignificantDigits(Integer.valueOf(8));
 
         ConceptMetamacDto conceptMetamacDtoUpdated = srmCoreServiceFacade.updateConcept(getServiceContextAdministrador(), conceptMetamacDto);
 
-        assertNotNull(conceptMetamacDto);
         assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoUpdated);
         assertTrue(conceptMetamacDtoUpdated.getVersionOptimisticLocking() > conceptMetamacDto.getVersionOptimisticLocking());
 
-        // Update again to check removing concept extends
+        // Update again to check removing concept extends and quantity
         conceptMetamacDtoUpdated.setConceptExtends(null);
+        conceptMetamacDtoUpdated.setQuantity(null);
         ConceptMetamacDto conceptMetamacDtoUpdatedAgain = srmCoreServiceFacade.updateConcept(getServiceContextAdministrador(), conceptMetamacDtoUpdated);
 
-        assertNotNull(conceptMetamacDto);
         assertEqualsConceptDto(conceptMetamacDtoUpdated, conceptMetamacDtoUpdatedAgain);
         assertTrue(conceptMetamacDtoUpdatedAgain.getVersionOptimisticLocking() > conceptMetamacDtoUpdated.getVersionOptimisticLocking());
     }

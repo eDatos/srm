@@ -88,7 +88,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalStringDto(expected.getLegalActs(), actual.getLegalActs());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getConceptExtends(), actual.getConceptExtends());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getVariable(), actual.getVariable());
-        // TODO quantity
+        assertEqualsQuantityDto(expected.getQuantity(), actual.getQuantity());
         // Sdmx
         ConceptsAsserts.assertEqualsConceptDto(expected, actual);
     }
@@ -197,6 +197,29 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEquals(expected.getBaseTime(), actual.getBaseTime());
         // TODO quantity.baseLocation
         assertQuantityRelatedItem(expected.getBaseQuantity(), actual.getBaseQuantity());
+    }
+
+    private static void assertEqualsQuantityDto(QuantityDto expected, QuantityDto actual) {
+        assertEqualsNullability(expected, actual);
+        if (expected == null) {
+            return;
+        }
+        assertEquals(expected.getQuantityType(), actual.getQuantityType());
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getUnitCode(), actual.getUnitCode());
+        assertEquals(expected.getUnitSymbolPosition(), actual.getUnitSymbolPosition());
+        assertEquals(expected.getSignificantDigits(), actual.getSignificantDigits());
+        assertEquals(expected.getDecimalPlaces(), actual.getDecimalPlaces());
+        assertEquals(expected.getUnitMultiplier(), actual.getUnitMultiplier());
+        assertEquals(expected.getMinimum(), actual.getMinimum());
+        assertEquals(expected.getMaximum(), actual.getMaximum());
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getNumerator(), actual.getNumerator());
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getDenominator(), actual.getDenominator());
+        assertEquals(expected.getIsPercentage(), actual.getIsPercentage());
+        assertEqualsInternationalStringDto(expected.getPercentageOf(), actual.getPercentageOf());
+        assertEquals(expected.getBaseValue(), actual.getBaseValue());
+        assertEquals(expected.getBaseTime(), actual.getBaseTime());
+        // TODO quantity.baseLocation
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getBaseQuantity(), actual.getBaseQuantity());
     }
 
     private static void assertEqualsQuantity(Quantity entity, QuantityDto dto, MapperEnum mapperEnum) {

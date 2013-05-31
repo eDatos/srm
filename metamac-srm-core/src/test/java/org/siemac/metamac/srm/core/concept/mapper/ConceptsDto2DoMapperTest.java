@@ -48,7 +48,7 @@ public class ConceptsDto2DoMapperTest extends SrmBaseTest {
         RelatedResourceDto numerator = ConceptsMetamacDtoMocks.mockConceptRelatedResourceDto("CONCEPT0201", CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
         RelatedResourceDto denominator = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CONCEPT03", CONCEPT_SCHEME_1_V2_CONCEPT_3);
         RelatedResourceDto baseQuantity = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CONCEPT04", CONCEPT_SCHEME_1_V2_CONCEPT_4);
-        dto.setQuantity(ConceptsMetamacDtoMocks.mockQuantityDto(unitCode, numerator, denominator, baseQuantity));
+        dto.setQuantity(ConceptsMetamacDtoMocks.mockQuantityDtoTypeChangeRate(unitCode, numerator, denominator, baseQuantity));
 
         // transform
         ConceptMetamac entity = conceptsDto2DoMapper.conceptDtoToDo(dto);

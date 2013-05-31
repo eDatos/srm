@@ -349,6 +349,15 @@ Application SrmFacadeCore {
             MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeRole(MetamacCriteria criteria) throws MetamacException;
             "Finds concepts schemes by criteria with concepts that can be extended"
             MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeExtended(MetamacCriteria criteria) throws MetamacException;
+			"Finds concept schemes with concepts than can be numerator in quantity by criteria"
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(String conceptSchemeUrn, MetamacCriteria criteria)  throws MetamacException;
+			"Finds concept schemes with concepts than can be denominator in quantity by criteria"
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(String conceptSchemeUrn, MetamacCriteria criteria)  throws MetamacException;
+			"Finds concept schemes with concepts than can be base quantity in quantity by criteria"
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(String conceptSchemeUrn, MetamacCriteria criteria)  throws MetamacException;
+			"Find codelists with codes than than can be unit in concept quantity by criteria"
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsByConditionWithCodesCanBeQuantityUnit(MetamacCriteria criteria)  throws MetamacException;
+            
             "Retrieves a concept scheme by URN"
             @ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(String urn) throws MetamacException;
             "Retrieves all concept scheme versions"
@@ -386,6 +395,14 @@ Application SrmFacadeCore {
             MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeRoleByCondition(MetamacCriteria criteria) throws MetamacException;
             "Finds concepts that can be extended by criteria"
             MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeExtendedByCondition(MetamacCriteria criteria) throws MetamacException;
+			"Finds concepts than can be numerator in quantity by criteria"
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeQuantityNumerator(String conceptSchemeUrn, MetamacCriteria criteria)  throws MetamacException;
+			"Finds concepts than can be denominator in quantity by criteria"
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeQuantityDenominator(String conceptSchemeUrn, MetamacCriteria criteria)  throws MetamacException;
+			"Finds concepts than can be base quantity in quantity by criteria"
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeQuantityBaseQuantity(String conceptSchemeUrn, MetamacCriteria criteria)  throws MetamacException;
+			"Finds codes than can be unit in concept quantity by criteria"
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodesCanBeQuantityUnit(MetamacCriteria criteria)  throws MetamacException;
 			"Deletes concept"
             deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme in locale requested"

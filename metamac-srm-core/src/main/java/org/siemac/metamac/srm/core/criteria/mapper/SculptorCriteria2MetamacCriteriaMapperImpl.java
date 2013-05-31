@@ -275,6 +275,19 @@ public class SculptorCriteria2MetamacCriteriaMapperImpl implements SculptorCrite
     }
 
     @Override
+    public MetamacCriteriaResult<RelatedResourceDto> pageResultCodeToMetamacCriteriaResultRelatedResource(PagedResult<CodeMetamac> source, Integer pageSize) throws MetamacException {
+        MetamacCriteriaResult<RelatedResourceDto> target = new MetamacCriteriaResult<RelatedResourceDto>();
+        target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));
+        if (source.getValues() != null) {
+            target.setResults(new ArrayList<RelatedResourceDto>(source.getValues().size()));
+            for (CodeMetamac scheme : source.getValues()) {
+                target.getResults().add(codesDo2DtoMapper.codeMetamacDoToRelatedResourceDto(scheme));
+            }
+        }
+        return target;
+    }
+
+    @Override
     public MetamacCriteriaResult<CodelistFamilyBasicDto> pageResultToMetamacCriteriaResultCodelistFamily(PagedResult<CodelistFamily> source, Integer pageSize) {
         MetamacCriteriaResult<CodelistFamilyBasicDto> target = new MetamacCriteriaResult<CodelistFamilyBasicDto>();
         target.setPaginatorResult(SculptorCriteria2MetamacCriteria.sculptorResultToMetamacCriteriaResult(source, pageSize));

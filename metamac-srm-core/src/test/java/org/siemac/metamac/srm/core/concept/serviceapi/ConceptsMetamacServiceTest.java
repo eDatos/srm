@@ -2661,27 +2661,27 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Override
     @Test
     public void testUpdateConcept() throws Exception {
-
         ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
         concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        concept.getNameableArtefact().setName(ConceptsDoMocks.mockInternationalString());
+        concept.setConceptExtends(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1_CONCEPT_1));
+        assertTrue(RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType()));
+        concept.setCoreRepresentation(ConceptsDoMocks.mockTextFormatRepresentation());
+        concept.getQuantity().setSignificantDigits(Integer.valueOf(5));
+        concept.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
 
-        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1);
-        try {
-            assertFalse(codelistVersion.getVariable().getNameableArtefact().getUrn().equals(concept.getVariable().getNameableArtefact().getUrn()));
-            Representation enumeratedRepresentation = new Representation();
-            enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
-            enumeratedRepresentation.setEnumerationCodelist(codelistVersion);
-            concept.setCoreRepresentation(enumeratedRepresentation);
+        // Update
+        ConceptMetamac conceptUpdated = conceptsService.updateConcept(getServiceContextAdministrador(), concept);
 
-            conceptsService.updateConcept(getServiceContextAdministrador(), concept);
-            fail("wrong enumerated representation");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(concept.getNameableArtefact().getCode(), e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(codelistVersion.getMaintainableArtefact().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[1]);
-        }
+        // Validate
+        ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptUpdated);
+
+        // Update to remove metadata 'extends'
+        conceptUpdated.setConceptExtends(null);
+        conceptUpdated = conceptsService.updateConcept(getServiceContextAdministrador(), concept);
+
+        // Validate
+        ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptUpdated);
     }
 
     @Test
@@ -2706,6 +2706,30 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         // Validate
         ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptUpdated);
+    }
+
+    @Test
+    public void testUpdateConceptErrorEnumeratedRepresentation() throws Exception {
+        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1);
+        try {
+            assertFalse(codelistVersion.getVariable().getNameableArtefact().getUrn().equals(concept.getVariable().getNameableArtefact().getUrn()));
+            Representation enumeratedRepresentation = new Representation();
+            enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+            enumeratedRepresentation.setEnumerationCodelist(codelistVersion);
+            concept.setCoreRepresentation(enumeratedRepresentation);
+
+            conceptsService.updateConcept(getServiceContextAdministrador(), concept);
+            fail("wrong enumerated representation");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(concept.getNameableArtefact().getCode(), e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(codelistVersion.getMaintainableArtefact().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[1]);
+        }
     }
 
     @Test

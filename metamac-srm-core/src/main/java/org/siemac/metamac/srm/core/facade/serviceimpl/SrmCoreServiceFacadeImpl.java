@@ -2427,6 +2427,85 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria)
+            throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(ctx, conceptSchemeUrn,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria)
+            throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(ctx, conceptSchemeUrn,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria)
+            throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ctx, conceptSchemeUrn,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsByConditionWithCodesCanBeQuantityUnit(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canFindCodelistsByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CodelistVersionMetamac> result = getConceptsMetamacService().findCodelistsByConditionWithCodesCanBeQuantityUnit(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
     public ConceptSchemeMetamacDto sendConceptSchemeToProductionValidation(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
@@ -2682,6 +2761,81 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeQuantityNumerator(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptMetamac> result = getConceptsMetamacService().findConceptsCanBeQuantityNumerator(ctx, conceptSchemeUrn, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeQuantityDenominator(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptMetamac> result = getConceptsMetamacService().findConceptsCanBeQuantityDenominator(ctx, conceptSchemeUrn, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeQuantityBaseQuantity(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptMetamac> result = getConceptsMetamacService().findConceptsCanBeQuantityBaseQuantity(ctx, conceptSchemeUrn, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findCodesCanBeQuantityUnit(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canFindCodesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CodeMetamac> result = getConceptsMetamacService().findCodesCanBeQuantityUnit(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodeToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;

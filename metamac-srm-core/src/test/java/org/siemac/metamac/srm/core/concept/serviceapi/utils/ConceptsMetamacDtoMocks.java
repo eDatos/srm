@@ -74,7 +74,18 @@ public class ConceptsMetamacDtoMocks {
         return relatedResourceDto;
     }
 
-    public static QuantityDto mockQuantityDto(RelatedResourceDto unitCode, RelatedResourceDto numerator, RelatedResourceDto denominator, RelatedResourceDto baseQuantity) {
+    public static QuantityDto mockQuantityDtoTypeQuantity(RelatedResourceDto unitCode) {
+        QuantityDto target = new QuantityDto();
+        target.setQuantityType(QuantityTypeEnum.QUANTITY);
+        target.setUnitCode(unitCode);
+        target.setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+        target.setSignificantDigits(Integer.valueOf(5));
+        target.setDecimalPlaces(Integer.valueOf(2));
+        target.setUnitMultiplier(Integer.valueOf(10));
+        return target;
+    }
+
+    public static QuantityDto mockQuantityDtoTypeChangeRate(RelatedResourceDto unitCode, RelatedResourceDto numerator, RelatedResourceDto denominator, RelatedResourceDto baseQuantity) {
         QuantityDto target = new QuantityDto();
         target.setQuantityType(QuantityTypeEnum.CHANGE_RATE);
         target.setUnitCode(unitCode);
