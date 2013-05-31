@@ -165,10 +165,10 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         public Object markSrmResourceAsPublic(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             CodelistVersionMetamac codelistVersionMetamac = getCodelistVersionMetamac(srmResourceVersion);
 
-            // To avoid retrieve in external API
             if (AccessTypeEnum.PUBLIC.equals(codelistVersionMetamac.getAccessType())) {
                 return codesService.markCodelistAsPublic(ctx, codelistVersionMetamac.getMaintainableArtefact().getUrn());
             } else {
+                // Do not mark as public to avoid retrieve in external API
                 return srmResourceVersion;
             }
         }

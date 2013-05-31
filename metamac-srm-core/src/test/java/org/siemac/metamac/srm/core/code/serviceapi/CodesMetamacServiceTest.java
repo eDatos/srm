@@ -1472,6 +1472,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
             assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(AccessTypeEnum.PUBLIC, codelistVersion.getAccessType());
             assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationDate());
             assertNotNull(codelistVersion.getLifeCycleMetadata().getProductionValidationUser());
             assertNotNull(codelistVersion.getLifeCycleMetadata().getDiffusionValidationDate());
@@ -1532,6 +1533,24 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNotNull(codelistVersionExternallyPublished.getMaintainableArtefact().getValidFrom());
             assertTrue(DateUtils.isSameDay(new Date(), codelistVersionExternallyPublished.getMaintainableArtefact().getValidTo().toDate()));
         }
+    }
+
+    @Test
+    public void testPublishExternallyCodelistRestricted() throws Exception {
+        String urn = CODELIST_3_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        {
+            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
+            assertEquals(AccessTypeEnum.RESTRICTED, codelistVersion.getAccessType());
+        }
+
+        // Publish externally
+        CodelistVersionMetamac codelistVersion = codesService.publishExternallyCodelist(ctx, urn);
+        assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        assertFalse(codelistVersion.getMaintainableArtefact().getPublicLogic());
+        assertFalse(codelistVersion.getMaintainableArtefact().getLatestPublic());
     }
 
     @Test
