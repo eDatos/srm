@@ -18,6 +18,14 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Quantity;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityAmount;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityChangeRate;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityFraction;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityIndex;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityMagnitude;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityRate;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityRatio;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RelatedConcepts;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RoleConcepts;
@@ -25,6 +33,8 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.QuantityUnitSymbolPositionEnum;
+import org.siemac.metamac.srm.core.concept.serviceimpl.utils.QuantityUtils;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
@@ -40,8 +50,7 @@ import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbCallback;
 @Component
 public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
 
-    private final boolean                                                         AS_STUB               = false;
-    private final boolean                                                         WITH_LOCAL_REFERENCES = false;
+    private final boolean                                                         AS_STUB = false;
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbMapper conceptsDo2JaxbSdmxMapper;
@@ -148,6 +157,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         target.setRelatedConcepts(toRelatedConcepts(source));
         target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         target.setVariable(codesDo2RestMapper.toResource(source.getVariable()));
+        target.setQuantity(toQuantity(source.getQuantity()));
 
         return target;
     }
@@ -286,6 +296,73 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         return targets;
     }
 
+    private Quantity toQuantity(org.siemac.metamac.srm.core.concept.domain.Quantity source) {
+        if (source == null) {
+            return null;
+        }
+        Quantity target = null;
+        switch (source.getQuantityType()) {
+            case QUANTITY:
+                target = new Quantity();
+                break;
+            case AMOUNT:
+                target = new QuantityAmount();
+                break;
+            case MAGNITUDE:
+                target = new QuantityMagnitude();
+                break;
+            case FRACTION:
+                target = new QuantityFraction();
+                break;
+            case RATIO:
+                target = new QuantityRatio();
+                break;
+            case RATE:
+                target = new QuantityRate();
+                break;
+            case INDEX:
+                target = new QuantityIndex();
+                break;
+            case CHANGE_RATE:
+                target = new QuantityChangeRate();
+                break;
+        }
+        if (QuantityUtils.isQuantityOrExtension(source.getQuantityType())) {
+            target.setUnitCode(codesDo2RestMapper.toResource(source.getUnitCode()));
+            target.setUnitSymbolPosition(toQuantityUnitSymbolPosition(source.getUnitSymbolPosition()));
+            target.setSignificantDigits(toBigInteger(source.getSignificantDigits()));
+            target.setDecimalPlaces(toBigInteger(source.getDecimalPlaces()));
+            target.setUnitMultiplier(toBigInteger(source.getUnitMultiplier()));
+        }
+        if (QuantityUtils.isAmountOrExtension(source.getQuantityType())) {
+            // nothing
+        }
+        if (QuantityUtils.isMagnitudeOrExtension(source.getQuantityType())) {
+            ((QuantityMagnitude) target).setMin(toBigInteger(source.getMinimum()));
+            ((QuantityMagnitude) target).setMax(toBigInteger(source.getMaximum()));
+        }
+        if (QuantityUtils.isFractionOrExtension(source.getQuantityType())) {
+            ((QuantityFraction) target).setNumerator(toResource(source.getNumerator()));
+            ((QuantityFraction) target).setDenominator(toResource(source.getDenominator()));
+        }
+        if (QuantityUtils.isRatioOrExtension(source.getQuantityType())) {
+            ((QuantityRatio) target).setIsPercentage(source.getIsPercentage());
+            ((QuantityRatio) target).setPercentageOf(toInternationalString(source.getPercentageOf()));
+        }
+        if (QuantityUtils.isRateOrExtension(source.getQuantityType())) {
+            // nothing
+        }
+        if (QuantityUtils.isIndexOrExtension(source.getQuantityType())) {
+            ((QuantityIndex) target).setBaseValue(toBigInteger(source.getBaseValue()));
+            ((QuantityIndex) target).setBaseTime(source.getBaseTime());
+            // TODO quantity.baseLocation
+        }
+        if (QuantityUtils.isChangeRateOrExtension(source.getQuantityType())) {
+            ((QuantityChangeRate) target).setBaseQuantity(toResource(source.getBaseQuantity()));
+        }
+        return target;
+    }
+
     private String toConceptSchemesLink(String agencyID, String resourceID, String version) {
         return toMaintainableArtefactLink(toSubpathItemSchemes(), agencyID, resourceID, version);
     }
@@ -315,5 +392,20 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
 
     private String toConceptManagementApplicationLink(ConceptMetamac source) {
         return getInternalWebApplicationNavigation().buildConceptUrl(source);
+    }
+
+    private org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityUnitSymbolPosition toQuantityUnitSymbolPosition(QuantityUnitSymbolPositionEnum source) {
+        if (source == null) {
+            return null;
+        }
+        switch (source) {
+            case START:
+                return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityUnitSymbolPosition.START;
+            case END:
+                return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityUnitSymbolPosition.END;
+            default:
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
+                throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+        }
     }
 }

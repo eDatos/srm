@@ -49,8 +49,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 @Component
 public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements CodesDo2RestMapperV10 {
 
-    private final boolean                                                   AS_STUB               = false;
-    private final boolean                                                   WITH_LOCAL_REFERENCES = false;
+    private final boolean                                                   AS_STUB = false;
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbMapper codesDo2JaxbSdmxMapper;
@@ -179,6 +178,14 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         if (SrmRestInternalUtils.uriMustBeSelfLink(itemSchemeVersion.getMaintainableArtefact())) {
             target.setUri(toCodeLink(itemSchemeVersion, source));
         }
+    }
+
+    @Override
+    public ResourceInternal toResource(CodeMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source));
     }
 
     @Override
@@ -368,13 +375,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CODELIST, toCodelistSelfLink(source), toCodelistManagementApplicationLink(source));
-    }
-
-    private ResourceInternal toResource(CodeMetamac source) {
-        if (source == null) {
-            return null;
-        }
-        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source));
     }
 
     private ResourceInternal toResource(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {

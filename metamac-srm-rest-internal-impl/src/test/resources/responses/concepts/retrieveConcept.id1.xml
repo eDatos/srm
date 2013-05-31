@@ -144,4 +144,57 @@
         <cdomain:text xml:lang="en">legalActs-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">legalActs-item1 en Español</cdomain:text>
     </sr:legalActs>
+    <sr:quantity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sr:QuantityChangeRate">
+        <sr:unitCode kind="structuralResources#code">
+            <cdomain:id>unitCode01</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency01:codelist01(01.000).unitCode01</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency01/codelist01/01.000/codes/unitCode01"/>
+            <cdomain:title>
+                <cdomain:text xml:lang="en">name-unitCode01 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-unitCode01 en Español</cdomain:text>
+            </cdomain:title>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency01:codelist01(01.000)/code;id=unitCode01</sr:managementAppLink>
+        </sr:unitCode>
+        <sr:unitSymbolPosition>START</sr:unitSymbolPosition>
+        <sr:significantDigits>5</sr:significantDigits>
+        <sr:decimalPlaces>2</sr:decimalPlaces>
+        <sr:unitMultiplier>10</sr:unitMultiplier>
+        <sr:min>1000</sr:min>
+        <sr:max>2000</sr:max>
+        <sr:numerator kind="structuralResources#concept">
+            <cdomain:id>numerator1</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme02(01.000).numerator1</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme02/01.000/concepts/numerator1"/>
+            <cdomain:title>
+                <cdomain:text xml:lang="en">name-numerator1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-numerator1 en Español</cdomain:text>
+            </cdomain:title>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme02(01.000)/concept;id=numerator1</sr:managementAppLink>
+        </sr:numerator>
+        <sr:denominator kind="structuralResources#concept">
+            <cdomain:id>denominator1</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme03(01.000).denominator1</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme03/01.000/concepts/denominator1"/>
+            <cdomain:title>
+                <cdomain:text xml:lang="es">name-denominator1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-denominator1 in English</cdomain:text>
+            </cdomain:title>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme03(01.000)/concept;id=denominator1</sr:managementAppLink>
+        </sr:denominator>
+        <sr:isPercentage>false</sr:isPercentage>
+        <sr:percentageOf>
+            <cdomain:text xml:lang="en">percentageOf-item1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">percentageOf-item1 en Español</cdomain:text>
+        </sr:percentageOf>
+        <sr:baseQuantity kind="structuralResources#concept">
+            <cdomain:id>baseQuantity1</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme04(01.000).baseQuantity1</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme04/01.000/concepts/baseQuantity1"/>
+            <cdomain:title>
+                <cdomain:text xml:lang="es">name-baseQuantity1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-baseQuantity1 in English</cdomain:text>
+            </cdomain:title>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme04(01.000)/concept;id=baseQuantity1</sr:managementAppLink>
+        </sr:baseQuantity>
+    </sr:quantity>    
 </sr:concept>

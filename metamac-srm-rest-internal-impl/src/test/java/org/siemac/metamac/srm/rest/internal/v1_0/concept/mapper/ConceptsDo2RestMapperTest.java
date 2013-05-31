@@ -42,6 +42,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concepts;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityChangeRate;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityUnitSymbolPosition;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -279,6 +281,21 @@ public class ConceptsDo2RestMapperTest {
         assertEqualsRoleConcepts(source.getRoleConcepts(), target.getRoles());
         assertEqualsRelatedConcepts(source.getRelatedConcepts(), target.getRelatedConcepts());
         assertEqualsResource(source.getConceptExtends(), target.getExtends());
+
+        assertTrue(target.getQuantity() instanceof QuantityChangeRate);
+        QuantityChangeRate quantityChangeRate = (QuantityChangeRate) target.getQuantity();
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=agency01:codelist01(01.000).unitCode01", quantityChangeRate.getUnitCode().getUrn());
+        assertEquals(QuantityUnitSymbolPosition.START, quantityChangeRate.getUnitSymbolPosition());
+        assertEquals(BigInteger.valueOf(5), quantityChangeRate.getSignificantDigits());
+        assertEquals(BigInteger.valueOf(2), quantityChangeRate.getDecimalPlaces());
+        assertEquals(BigInteger.valueOf(10), quantityChangeRate.getUnitMultiplier());
+        assertEquals(BigInteger.valueOf(1000), quantityChangeRate.getMin());
+        assertEquals(BigInteger.valueOf(2000), quantityChangeRate.getMax());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme02(01.000).numerator1", quantityChangeRate.getNumerator().getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme03(01.000).denominator1", quantityChangeRate.getDenominator().getUrn());
+        assertEquals(false, quantityChangeRate.isIsPercentage());
+        assertEqualsInternationalString("es", "percentageOf-concept2 en Español", "en", "percentageOf-concept2 in English", quantityChangeRate.getPercentageOf());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme04(01.000).baseQuantity1", quantityChangeRate.getBaseQuantity().getUrn());
     }
 
     @Test
