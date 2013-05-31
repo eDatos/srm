@@ -50,6 +50,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CONCEPT_SCHEME_13_V1                                 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME13(01.000)";
     protected static final String CONCEPT_SCHEME_14_V1                                 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX02:CONCEPTSCHEME14(01.000)";
     protected static final String CONCEPT_SCHEME_15_V1                                 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX02:CONCEPTSCHEME15(01.000)";
+    protected static final String CONCEPT_SCHEME_16_V1                                 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX02:CONCEPTSCHEME16(01.000)";
 
     // Concepts
     protected static final String CONCEPT_SCHEME_1_V1_CONCEPT_1                        = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(01.000).CONCEPT01";
@@ -87,6 +88,8 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String CONCEPT_SCHEME_14_V1_CONCEPT_3                       = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME14(01.000).CONCEPT03";
     protected static final String CONCEPT_SCHEME_15_V1_CONCEPT_1                       = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(01.000).CONCEPT01";
     protected static final String CONCEPT_SCHEME_15_V1_CONCEPT_2                       = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(01.000).CONCEPT02";
+    protected static final String CONCEPT_SCHEME_15_V1_CONCEPT_3                       = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(01.000).CONCEPT03";
+    protected static final String CONCEPT_SCHEME_16_V1_CONCEPT_1                       = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME16(01.000).CONCEPT01";
 
     // Concept types
     protected static final String CONCEPT_TYPE_DERIVED                                 = "DERIVED";

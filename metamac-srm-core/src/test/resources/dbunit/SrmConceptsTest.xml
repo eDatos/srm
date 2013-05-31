@@ -536,7 +536,7 @@
               EXTENDS_FK="711"
               VARIABLE_FK="1"
               TB_CONCEPTS="121"
-              QUANTITY_FK="121"
+              QUANTITY_FK="[null]"
              />
             
             <TB_ITEMS_BASE
@@ -592,35 +592,6 @@
                 VERSION="1"
             />      
             
-            <TB_M_QUANTITIES
-                ID="121"
-                UUID="Quantity-121"
-                QUANTITY_TYPE="CHANGE_RATE"
-                UNIT_CODE_FK="20111"
-                UNIT_SYMBOL_POSITION="END"
-                UNIT_MULTIPLIER="10"
-                SIGNIFICANT_DIGITS="2"
-                DECIMAL_PLACES="3"
-                MINIMUM="100"
-                MAXIMUM="200"
-                IS_PERCENTAGE="1"
-                PERCENTAGE_OF_FK="98"
-                BASE_VALUE="[null]"
-                BASE_TIME="[null]"
-                BASE_LOCATION_FK="[null]"
-                BASE_QUANTITY_FK="124"
-                NUMERATOR_FK="122"
-                DENOMINATOR_FK="1511"
-
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:04"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:04"
-                LAST_UPDATED_TZ="Europe/London"
-            />
-                       
 
                 <!-- Concept Relations -->            
                 <TB_M_CONCEPT_ROLES
@@ -4708,8 +4679,260 @@
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             />                         
-                                            
-            
+                  
+            <!-- CONCEPT03 -->
+            <TB_CONCEPTS
+                TB_ITEMS_BASE="1513"
+                CORE_REPRESENTATION_FK="[null]"    
+            />
+ 
+            <TB_M_CONCEPTS
+              PLURAL_NAME_FK="[null]"
+              ACRONYM_FK="[null]"
+              DESCRIPTION_SOURCE_FK="[null]"
+              CONTEXT_FK="[null]"
+              DOC_METHOD_FK="[null]"
+              DERIVATION_FK="[null]"
+              LEGAL_ACTS_FK="[null]"
+              SDMX_RELATED_ARTEFACT="ATTRIBUTE"
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
+              TB_CONCEPTS="1513"
+             />            
+        
+            <TB_ITEMS_BASE
+                ID="1513"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="151"
+                ITEM_SCHEME_VERSION_FIRST_FK="151"
+                NAMEABLE_ARTEFACT_FK="1513"
+                      
+                UUID="conceptScheme-15-v1-concept-3"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="1513"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CONCEPT03"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(01.000).CONCEPT03"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(01.000).CONCEPT03"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+                
+                UUID="annotableArtefact-1513"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />                         
+                                                           
+   <!-- ************************************************************************************** -->
+    <!-- CONCEPT SCHEME 16                                                                      -->
+    <!--        - Version 1: draft (measure type)                              -->
+    <!-- *************************************************************************************  -->
+
+    <TB_ITEM_SCHEMES
+        ID="16"
+        UUID="itemScheme-16"
+        VERSION="1"
+        VERSION_PATTERN="XX_YYY"
+        RESOURCE_CREATED_DATE="2011-01-01 01:02:03"
+        RESOURCE_CREATED_DATE_TZ="Europe/London"
+        RESOURCE_LAST_UPDATED="2011-01-23 01:02:03"
+        RESOURCE_LAST_UPDATED_TZ="Europe/London"
+    />
+    
+    <!-- Version 1 -->
+    
+    <TB_ITEM_SCHEMES_VERSIONS
+        ID="161"
+        ITEM_SCHEME_FK="16"
+        IS_PARTIAL="0"
+        MAINTAINABLE_ARTEFACT_FK="161"
+        
+        UUID="conceptScheme-16-v1"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
+        
+    <TB_CONCEPT_SCHEMES_VERSIONS
+        TB_ITEM_SCHEMES_VERSIONS="161"
+    />
+    
+    <TB_M_CONCEPT_SCHEMES_VERSIONS
+        TB_CONCEPT_SCHEMES_VERSIONS="161"
+        CONCEPT_SCHEME_TYPE="MEASURE"          
+        RELATED_OPERATION_FK="[null]"
+        PROC_STATUS="DRAFT"
+        
+        PRODUCTION_VALIDATION_DATE_TZ="[null]"
+        PRODUCTION_VALIDATION_DATE="[null]"
+        PRODUCTION_VALIDATION_USER="[null]"
+        DIFFUSION_VALIDATION_DATE_TZ="[null]"
+        DIFFUSION_VALIDATION_DATE="[null]"
+        DIFFUSION_VALIDATION_USER="[null]"
+        INTERNAL_PUBLICATION_DATE_TZ="[null]"
+        INTERNAL_PUBLICATION_DATE="[null]"
+        INTERNAL_PUBLICATION_USER="[null]"
+        EXTERNAL_PUBLICATION_DATE_TZ="[null]"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
+    />
+    
+    <TB_ANNOTABLE_ARTEFACTS 
+        ID="161"
+        ANNOTABLE_ARTEFACT_TYPE="MAINTAINABLE_ARTEFACT"
+        
+        CODE="CONCEPTSCHEME16"
+        URI_PROVIDER="[null]"
+        URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX02:CONCEPTSCHEME16(01.000)"
+        URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX02:CONCEPTSCHEME16(01.000)"
+        REPLACED_BY_VERSION="[null]"
+        REPLACE_TO_VERSION="[null]"
+        
+        NAME_FK="[null]"
+        
+        VERSION_LOGIC="01.000"
+        FINAL_LOGIC="0"
+        FINAL_LOGIC_CLIENT="0"
+        LATEST_FINAL="0"
+        PUBLIC_LOGIC="0"
+        LATEST_PUBLIC="0"
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="[null]"
+        VALID_TO="[null]"
+        IS_EXTERNAL_REFERENCE="0"
+        STRUCTURE_URL="[null]"
+        SERVICE_URL="[null]"
+        IS_LAST_VERSION="1"
+        IS_IMPORTED="0"
+        MAINTAINER_FK="10012"
+        
+        UUID="annotableArtefact-161"
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"
+    />
+    
+            <!-- CONCEPT01 -->
+            <TB_CONCEPTS
+                TB_ITEMS_BASE="1611"
+                CORE_REPRESENTATION_FK="[null]"    
+            />
+ 
+            <TB_M_CONCEPTS
+              PLURAL_NAME_FK="[null]"
+              ACRONYM_FK="[null]"
+              DESCRIPTION_SOURCE_FK="[null]"
+              CONTEXT_FK="[null]"
+              DOC_METHOD_FK="[null]"
+              DERIVATION_FK="[null]"
+              LEGAL_ACTS_FK="[null]"
+              SDMX_RELATED_ARTEFACT="ATTRIBUTE"
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
+              TB_CONCEPTS="1611"
+              QUANTITY_FK="1611"
+             />            
+        
+            <TB_ITEMS_BASE
+                ID="1611"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="161"
+                ITEM_SCHEME_VERSION_FIRST_FK="161"
+                NAMEABLE_ARTEFACT_FK="1611"
+                      
+                UUID="conceptScheme-16-v1-concept-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="1611"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CONCEPT01"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME16(01.000).CONCEPT01"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME16(01.000).CONCEPT01"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+                
+                UUID="annotableArtefact-1611"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />         
+                       
+            <TB_M_QUANTITIES
+                ID="1611"
+                UUID="Quantity-1611"
+                QUANTITY_TYPE="CHANGE_RATE"
+                UNIT_CODE_FK="20111"
+                UNIT_SYMBOL_POSITION="END"
+                UNIT_MULTIPLIER="10"
+                SIGNIFICANT_DIGITS="2"
+                DECIMAL_PLACES="3"
+                MINIMUM="100"
+                MAXIMUM="200"
+                IS_PERCENTAGE="1"
+                PERCENTAGE_OF_FK="98"
+                BASE_VALUE="[null]"
+                BASE_TIME="[null]"
+                BASE_LOCATION_FK="[null]"
+                BASE_QUANTITY_FK="1513"
+                NUMERATOR_FK="1512"
+                DENOMINATOR_FK="1511"
+
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:04"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:04"
+                LAST_UPDATED_TZ="Europe/London"
+            />                       
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
     <!-- *************************************************************************************  -->    

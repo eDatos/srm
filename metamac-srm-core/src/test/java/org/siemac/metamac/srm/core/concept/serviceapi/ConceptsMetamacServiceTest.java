@@ -405,7 +405,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(19, conceptSchemeVersionPagedResult.getTotalRows());
+            assertEquals(20, conceptSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(CONCEPT_SCHEME_1_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -426,6 +426,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_13_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_14_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_16_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(conceptSchemeVersionPagedResult.getTotalRows(), i);
         }
 
@@ -455,7 +456,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(15, conceptSchemeVersionPagedResult.getTotalRows());
+            assertEquals(16, conceptSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_2_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -472,6 +473,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_13_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_14_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_16_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         }
     }
 
@@ -2106,7 +2108,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         ConceptType conceptType = null;
         String unitCodeUrn = CODELIST_7_V2_CODE_1;
-        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1));
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, null);
         concept.setQuantity(new Quantity());
         concept.getQuantity().setQuantityType(QuantityTypeEnum.QUANTITY);
         concept.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), unitCodeUrn));
@@ -2116,7 +2118,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.getQuantity().setUnitMultiplier(Integer.valueOf(100));
 
         // Create
-        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptSchemeUrn = CONCEPT_SCHEME_16_V1;
         ConceptMetamac conceptSchemeVersionCreated = conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
         String urn = conceptSchemeVersionCreated.getNameableArtefact().getUrn();
 
@@ -2131,7 +2133,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         ConceptType conceptType = null;
         String unitCodeUrn = CODELIST_7_V2_CODE_1;
-        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1));
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, null);
         concept.setQuantity(new Quantity());
         concept.getQuantity().setQuantityType(QuantityTypeEnum.MAGNITUDE);
         concept.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), unitCodeUrn));
@@ -2143,7 +2145,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.getQuantity().setMaximum(Integer.valueOf(2000));
 
         // Create
-        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptSchemeUrn = CONCEPT_SCHEME_16_V1;
         ConceptMetamac conceptSchemeVersionCreated = conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
         String urn = conceptSchemeVersionCreated.getNameableArtefact().getUrn();
 
@@ -2158,9 +2160,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         ConceptType conceptType = null;
         String unitCodeUrn = CODELIST_7_V2_CODE_1;
-        String conceptNumerator = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
-        String conceptDenominator = CONCEPT_SCHEME_1_V2_CONCEPT_3;
-        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1));
+        String conceptNumerator = CONCEPT_SCHEME_15_V1_CONCEPT_1;
+        String conceptDenominator = CONCEPT_SCHEME_16_V1_CONCEPT_1;
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, null);
         concept.setQuantity(new Quantity());
         concept.getQuantity().setQuantityType(QuantityTypeEnum.FRACTION);
         concept.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), unitCodeUrn));
@@ -2174,7 +2176,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.getQuantity().setDenominator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptDenominator));
 
         // Create
-        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptSchemeUrn = CONCEPT_SCHEME_16_V1;
         ConceptMetamac conceptSchemeVersionCreated = conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
         String urn = conceptSchemeVersionCreated.getNameableArtefact().getUrn();
 
@@ -2189,9 +2191,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         ConceptType conceptType = null;
         String unitCodeUrn = CODELIST_7_V2_CODE_1;
-        String conceptNumerator = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
-        String conceptDenominator = CONCEPT_SCHEME_1_V2_CONCEPT_3;
-        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1));
+        String conceptNumerator = CONCEPT_SCHEME_15_V1_CONCEPT_1;
+        String conceptDenominator = CONCEPT_SCHEME_16_V1_CONCEPT_1;
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, null);
         concept.setQuantity(new Quantity());
         concept.getQuantity().setQuantityType(QuantityTypeEnum.RATIO);
         concept.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), unitCodeUrn));
@@ -2207,7 +2209,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.getQuantity().setPercentageOf(BaseDoMocks.mockInternationalString());
 
         // Create
-        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptSchemeUrn = CONCEPT_SCHEME_16_V1;
         ConceptMetamac conceptSchemeVersionCreated = conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
         String urn = conceptSchemeVersionCreated.getNameableArtefact().getUrn();
 
@@ -2222,9 +2224,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         ConceptType conceptType = null;
         String unitCodeUrn = CODELIST_7_V2_CODE_1;
-        String conceptNumerator = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
-        String conceptDenominator = CONCEPT_SCHEME_1_V2_CONCEPT_3;
-        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1));
+        String conceptNumerator = CONCEPT_SCHEME_15_V1_CONCEPT_1;
+        String conceptDenominator = CONCEPT_SCHEME_16_V1_CONCEPT_1;
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, null);
         concept.setQuantity(new Quantity());
         concept.getQuantity().setQuantityType(QuantityTypeEnum.INDEX);
         concept.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), unitCodeUrn));
@@ -2242,7 +2244,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.getQuantity().setBaseTime("2011");
 
         // Create
-        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptSchemeUrn = CONCEPT_SCHEME_16_V1;
         ConceptMetamac conceptSchemeVersionCreated = conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
         String urn = conceptSchemeVersionCreated.getNameableArtefact().getUrn();
 
@@ -2257,10 +2259,10 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         ConceptType conceptType = null;
         String unitCodeUrn = CODELIST_7_V2_CODE_1;
-        String conceptNumerator = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
-        String conceptDenominator = CONCEPT_SCHEME_1_V2_CONCEPT_3;
-        String conceptBaseQuantity = CONCEPT_SCHEME_1_V2_CONCEPT_4;
-        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1));
+        String conceptNumerator = CONCEPT_SCHEME_15_V1_CONCEPT_1;
+        String conceptDenominator = CONCEPT_SCHEME_16_V1_CONCEPT_1;
+        String conceptBaseQuantity = CONCEPT_SCHEME_15_V1_CONCEPT_2;
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, null);
         concept.setQuantity(new Quantity());
         concept.getQuantity().setQuantityType(QuantityTypeEnum.CHANGE_RATE);
         concept.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), unitCodeUrn));
@@ -2277,7 +2279,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.getQuantity().setBaseQuantity(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptBaseQuantity));
 
         // Create
-        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptSchemeUrn = CONCEPT_SCHEME_16_V1;
         ConceptMetamac conceptSchemeVersionCreated = conceptsService.createConcept(getServiceContextAdministrador(), conceptSchemeUrn, concept);
         String urn = conceptSchemeVersionCreated.getNameableArtefact().getUrn();
 
@@ -2667,8 +2669,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.setConceptExtends(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1_CONCEPT_1));
         assertTrue(RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType()));
         concept.setCoreRepresentation(ConceptsDoMocks.mockTextFormatRepresentation());
-        concept.getQuantity().setSignificantDigits(Integer.valueOf(5));
-        concept.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+        concept.setQuantity(null);
 
         // Update
         ConceptMetamac conceptUpdated = conceptsService.updateConcept(getServiceContextAdministrador(), concept);
@@ -2686,6 +2687,30 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     public void testUpdateConceptExtends() throws Exception {
+
+        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        concept.getNameableArtefact().setName(ConceptsDoMocks.mockInternationalString());
+        concept.setConceptExtends(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1_CONCEPT_1));
+        assertTrue(RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType()));
+        concept.setCoreRepresentation(ConceptsDoMocks.mockTextFormatRepresentation());
+
+        // Update
+        ConceptMetamac conceptUpdated = conceptsService.updateConcept(getServiceContextAdministrador(), concept);
+
+        // Validate
+        ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptUpdated);
+
+        // Update to remove metadata 'extends'
+        conceptUpdated.setConceptExtends(null);
+        conceptUpdated = conceptsService.updateConcept(getServiceContextAdministrador(), concept);
+
+        // Validate
+        ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptUpdated);
+    }
+
+    @Test
+    public void testUpdateConceptQuantity() throws Exception {
 
         ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
         concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
@@ -2773,7 +2798,17 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(CONCEPT_TYPE_DIRECT, concept.getConceptType().getIdentifier());
         assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, concept.getConceptExtends().getNameableArtefact().getUrn());
         assertEquals(VARIABLE_1, concept.getVariable().getNameableArtefact().getUrn());
-        // quantity
+        assertNull(concept.getQuantity());
+    }
+
+    @Test
+    public void testRetrieveConceptByUrnWithQuantity() throws Exception {
+        // Retrieve
+        String urn = CONCEPT_SCHEME_16_V1_CONCEPT_1;
+        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
+
+        // Validate
+        assertEquals(urn, concept.getNameableArtefact().getUrn());
         assertNotNull(concept.getQuantity());
         assertEquals(QuantityTypeEnum.CHANGE_RATE, concept.getQuantity().getQuantityType());
         assertEquals(CODELIST_7_V2_CODE_1, concept.getQuantity().getUnitCode().getNameableArtefact().getUrn());
@@ -2783,14 +2818,14 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(Integer.valueOf(10), concept.getQuantity().getUnitMultiplier());
         assertEquals(Integer.valueOf(100), concept.getQuantity().getMinimum());
         assertEquals(Integer.valueOf(200), concept.getQuantity().getMaximum());
-        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_2, concept.getQuantity().getNumerator().getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, concept.getQuantity().getNumerator().getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_1, concept.getQuantity().getDenominator().getNameableArtefact().getUrn());
         assertEquals(Boolean.TRUE, concept.getQuantity().getIsPercentage());
         ConceptsAsserts.assertEqualsInternationalString(concept.getQuantity().getPercentageOf(), "es", "Porcentaje de 1", "en", "Percentage of 1");
         assertNull(concept.getQuantity().getBaseValue());
         assertNull(concept.getQuantity().getBaseTime());
         assertNull(concept.getQuantity().getBaseLocation());
-        assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_4, concept.getQuantity().getBaseQuantity().getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, concept.getQuantity().getBaseQuantity().getNameableArtefact().getUrn());
     }
 
     @Test
@@ -3154,8 +3189,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(35, conceptsPagedResult.getTotalRows());
-            assertEquals(35, conceptsPagedResult.getValues().size());
+            assertEquals(37, conceptsPagedResult.getTotalRows());
+            assertEquals(37, conceptsPagedResult.getValues().size());
             assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
 
             int i = 0;
@@ -3194,6 +3229,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_14_V1_CONCEPT_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(conceptsPagedResult.getValues().size(), i);
         }
 

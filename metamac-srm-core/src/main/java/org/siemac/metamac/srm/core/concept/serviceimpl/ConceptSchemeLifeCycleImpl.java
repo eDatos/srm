@@ -92,7 +92,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
             // Assign variable automatically
             for (Item item : conceptSchemeVersion.getItems()) {
                 ConceptMetamac concept = (ConceptMetamac) item;
-                boolean assigned = SrmServiceUtils.assignToConceptSameVariableOfCodelist(concept);
+                boolean assigned = SrmServiceUtils.assignToConceptSameVariableOfCodelist(conceptSchemeVersion, concept);
                 if (assigned) {
                     itemRepository.save(concept);
                 }

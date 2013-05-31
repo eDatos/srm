@@ -50,7 +50,11 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         target.setConceptType(conceptType);
         target.setDerivation(mockInternationalString("derivation"));
         target.setLegalActs(mockInternationalString("legalActs"));
-        mockConcept(target, RepresentationTypeEnum.ENUMERATION, coreRepresentation);
+        if (coreRepresentation != null) {
+            mockConcept(target, RepresentationTypeEnum.ENUMERATION, coreRepresentation);
+        } else {
+            mockConcept(target, RepresentationTypeEnum.TEXT_FORMAT, null);
+        }
         return target;
     }
 

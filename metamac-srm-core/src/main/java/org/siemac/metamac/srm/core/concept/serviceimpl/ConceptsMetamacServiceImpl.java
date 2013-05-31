@@ -495,11 +495,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public ConceptMetamac preCreateConcept(ServiceContext ctx, String conceptSchemeUrn, ConceptMetamac concept) throws MetamacException {
 
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
+
         // Automatically updates pre-validation
-        SrmServiceUtils.assignToConceptSameVariableOfCodelist(concept);
+        SrmServiceUtils.assignToConceptSameVariableOfCodelist(conceptSchemeVersion, concept);
 
         // Validation
-        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
         ConceptsMetamacInvocationValidator.checkCreateConcept(conceptSchemeVersion, concept, null);
         checkConceptToCreateOrUpdate(ctx, conceptSchemeVersion, concept);
 
@@ -509,11 +510,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public ConceptMetamac updateConcept(ServiceContext ctx, ConceptMetamac concept) throws MetamacException {
 
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByConceptUrn(ctx, concept.getNameableArtefact().getUrn());
+
         // Automatically updates pre-validation
-        SrmServiceUtils.assignToConceptSameVariableOfCodelist(concept);
+        SrmServiceUtils.assignToConceptSameVariableOfCodelist(conceptSchemeVersion, concept);
 
         // Validation
-        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByConceptUrn(ctx, concept.getNameableArtefact().getUrn());
         ConceptsMetamacInvocationValidator.checkUpdateConcept(conceptSchemeVersion, concept, null);
         checkConceptToCreateOrUpdate(ctx, conceptSchemeVersion, concept);
 

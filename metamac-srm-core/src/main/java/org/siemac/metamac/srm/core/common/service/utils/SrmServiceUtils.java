@@ -20,6 +20,8 @@ import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
@@ -441,7 +443,10 @@ public class SrmServiceUtils {
      * 
      * @return true if variable was assigned
      */
-    public static boolean assignToConceptSameVariableOfCodelist(ConceptMetamac concept) {
+    public static boolean assignToConceptSameVariableOfCodelist(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) {
+        if (!ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType()) && !ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersion.getType())) {
+            return false; // only these types can have variable
+        }
         if (concept.getVariable() != null) {
             // do not override
             return false;
