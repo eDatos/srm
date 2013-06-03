@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation;
 
+import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
@@ -130,6 +131,10 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                             propertyRestriction.getOperationType());
                 case ORGANISATION_SCHEME_URN:
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().urnProvider(), propertyRestriction.getValue(),
+                            propertyRestriction.getOperationType());
+                case ORGANISATION_SCHEME_PROC_STATUS:
+                    return new SculptorPropertyCriteria(new LeafProperty<OrganisationMetamac>(OrganisationMetamacProperties.itemSchemeVersion().getName(), OrganisationSchemeVersionMetamacProperties
+                            .lifeCycleMetadata().procStatus().getName(), false, OrganisationMetamac.class), propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()),
                             propertyRestriction.getOperationType());
                 case TYPE:
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.organisationType(), propertyRestrictionValueToOrganisationTypeEnum(propertyRestriction.getValue()),

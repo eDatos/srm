@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.code;
 
+import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
@@ -163,6 +164,9 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case CODELIST_URN:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().urnProvider(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
+                case CODELIST_PROC_STATUS:
+                    return new SculptorPropertyCriteria(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.lifeCycleMetadata()
+                            .procStatus().getName(), false, CodeMetamac.class), propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()), propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }

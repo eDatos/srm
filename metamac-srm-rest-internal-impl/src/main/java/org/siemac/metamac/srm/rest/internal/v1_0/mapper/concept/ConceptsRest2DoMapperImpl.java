@@ -146,6 +146,10 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                 case CONCEPT_SCHEME_STATISTICAL_OPERATION_URN:
                     return new SculptorPropertyCriteria(new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties
                             .relatedOperation().urn().getName(), false, ConceptMetamac.class), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                case CONCEPT_SCHEME_PROC_STATUS:
+                    return new SculptorPropertyCriteria(new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties
+                            .lifeCycleMetadata().procStatus().getName(), false, ConceptMetamac.class), propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()),
+                            propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
