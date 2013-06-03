@@ -169,6 +169,10 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Update life cycle metadata
         SrmLifeCycleMetadata lifeCycle = callback.getLifeCycleMetadata(srmResourceVersion);
+        boolean isTemporalVersionWithExternalPublished = false;
+        if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(lifeCycle.getProcStatus())) {
+            isTemporalVersionWithExternalPublished = true;
+        }
         lifeCycle.setProcStatus(targetStatus);
         lifeCycle.setInternalPublicationDate(new DateTime());
         lifeCycle.setInternalPublicationUser(ctx.getUserId());
@@ -188,8 +192,9 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // If the artefact to publishInternally is a temporal version (a merge was performed) and if the Proc Status of original version is PublishExternally, then merge changes to publish externally
         // version
-        if (callback.isTemporalToPublishExternally(ctx, srmResourceVersion)) {
-            publishExternally(ctx, urn);
+        // if (callback.isTemporalToPublishExternally(ctx, srmResourceVersion)) {
+        if (isTemporalVersionWithExternalPublished) {
+            publishExternally(ctx, maintainableArtefact.getUrn());
         }
 
         return srmResourceVersion;
