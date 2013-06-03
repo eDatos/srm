@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.concept.utils;
 
+import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -64,8 +65,16 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canAnnounceConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
-    public static boolean canCancelConceptSchemeValidity(ConceptSchemeTypeEnum type, String operationCode) {
-        return SharedConceptsSecurityUtils.canEndConceptSchemeValidity(MetamacSrmWeb.getCurrentUser(), type, operationCode);
+    public static boolean canCancelConceptSchemeValidity(ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto) {
+        return SharedConceptsSecurityUtils.canEndConceptSchemeValidity(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getType(),
+                org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(conceptSchemeMetamacDto);
+    }
+
+    public static boolean canCancelConceptSchemeValidity(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        return SharedConceptsSecurityUtils.canEndConceptSchemeValidity(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getType(),
+                org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(conceptSchemeMetamacDto);
     }
 
     public static boolean canCreateCategorisation(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {

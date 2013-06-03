@@ -275,7 +275,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
             ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto = ((ConceptSchemeRecord) record).getConceptSchemeBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
             if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getLifeCycle().getProcStatus()) || conceptSchemeMetamacDto.getValidTo() != null
-                    || !ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(conceptSchemeMetamacDto.getType(), CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
+                    || !ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(conceptSchemeMetamacDto)) {
                 allSelectedSchemesValidityCanBeCanceled = false;
             }
         }
