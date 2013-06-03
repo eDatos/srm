@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.code.utils;
 
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedCodesSecurityUtils;
@@ -94,11 +95,15 @@ public class CodesClientSecurityUtils {
     // public static boolean canAnnounceCodelist() {
     // }
 
-    public static boolean canCancelCodelistValidity(Boolean isTaskInBackground) {
+    public static boolean canCancelCodelistValidity(CodelistMetamacBasicDto codelistMetamacDto) {
+        return canCancelCodelistValidity(codelistMetamacDto.getIsTaskInBackground(), codelistMetamacDto.getMaintainer(), codelistMetamacDto.getVersionLogic());
+    }
+
+    public static boolean canCancelCodelistValidity(Boolean isTaskInBackground, RelatedResourceDto maintainer, String versionLogic) {
         if (isTaskInBackground(isTaskInBackground)) {
             return false;
         }
-        return SharedCodesSecurityUtils.canEndCodelistValidity(MetamacSrmWeb.getCurrentUser());
+        return SharedCodesSecurityUtils.canEndCodelistValidity(MetamacSrmWeb.getCurrentUser()) && CommonUtils.canSdmxMetadataAndStructureBeModified(maintainer, versionLogic);
     }
 
     public static boolean canCreateCategorisation(ProcStatusEnum procStatus, Boolean isTaskInBackground) {

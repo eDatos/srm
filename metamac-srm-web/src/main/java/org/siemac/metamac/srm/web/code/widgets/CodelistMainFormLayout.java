@@ -112,7 +112,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCancelValidityButton() {
-        if (CodesClientSecurityUtils.canCancelCodelistValidity(isTaskInBackground)) {
+        if (CodesClientSecurityUtils.canCancelCodelistValidity(isTaskInBackground, maintainer, versionLogic)) {
             cancelValidity.show();
         }
     }
