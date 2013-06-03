@@ -4940,7 +4940,7 @@
     <TB_EXTERNAL_ITEMS 
         ID="13"
         CODE="op1"
-        URI="/operations/op1"
+        URI="/latest/operations/op1"
         URN="urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=op1"
         MANAGEMENT_APP_URL="/#operations;id=op1"
         VERSION="1"
@@ -4951,7 +4951,7 @@
     <TB_EXTERNAL_ITEMS 
         ID="82"
         CODE="op1"
-        URI="/operations/op1"
+        URI="/latest/operations/op1"
         URN="urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=op1"
         MANAGEMENT_APP_URL="/#operations;id=op1"
         VERSION="1"

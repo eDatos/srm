@@ -174,7 +174,7 @@ public class BaseAsserts extends com.arte.statistic.sdmx.srm.core.base.serviceap
             if (MapperEnum.DO2DTO.equals(mapperEnum)) {
                 assertEquals(baseApi + entity.getUri(), dto.getUri());
             } else if (MapperEnum.DTO2DO.equals(mapperEnum)) {
-                assertEquals(dto.getUri().replaceFirst(baseApi, StringUtils.EMPTY), entity.getUri());
+                assertEquals(dto.getUri().replaceFirst(baseApi, StringUtils.EMPTY).replaceFirst("v1.0", "latest"), entity.getUri());
             } else {
                 fail("Mapper unexpected: " + mapperEnum);
             }

@@ -15,7 +15,7 @@ public class BaseDtoMocks extends com.arte.statistic.sdmx.srm.core.base.servicea
         target.setTitle(null); // statistical operations has not title in dto
         target.setUrn("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=" + code);
         target.setCode(code);
-        target.setUri(SrmConstantsTest.ENDPOINT_INTERNAL_API_STATISTICAL_OPERATIONS + "/operations/" + target.getCode());
+        target.setUri(SrmConstantsTest.ENDPOINT_INTERNAL_API_STATISTICAL_OPERATIONS + "/v1.0/operations/" + target.getCode());
         target.setManagementAppUrl(SrmConstantsTest.INTERNAL_WEB_APPLICATION_STATISTICAL_OPERATIONS + "/#operations;id=" + target.getCode());
         return target;
     }

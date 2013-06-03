@@ -40,7 +40,7 @@ public class ConceptsDto2DoMapperTest extends SrmBaseTest {
     }
 
     @Test
-    public void testConceptMetamacDoToDto() throws MetamacException {
+    public void testConceptMetamacDtoToDo() throws MetamacException {
         ConceptMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptDto(RepresentationTypeEnum.ENUMERATION);
         dto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE01", VARIABLE_1));
         // quantity

@@ -84,7 +84,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
     public static ExternalItem mockExternalItemOperation(String code) {
         ExternalItem target = new ExternalItem();
         target.setCode(code);
-        target.setUri("/operations/" + code);
+        target.setUri("/latest/operations/" + code);
         target.setUrn("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=" + code);
         target.setType(TypeExternalArtefactsEnum.STATISTICAL_OPERATION);
         target.setManagementAppUrl("/#operations;id=" + code);
