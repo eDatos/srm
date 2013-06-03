@@ -8,6 +8,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
+import org.siemac.metamac.srm.core.base.dto.MaintainableArtefactMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.BooleanItemEnum;
@@ -16,6 +17,7 @@ import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
+import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.MaintainableArtefactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.NameableArtefactDto;
@@ -149,10 +151,17 @@ public class CommonUtils {
     }
 
     public static boolean isDefaultMaintainer(RelatedResourceDto maintainer) {
-        if (maintainer == null) { // The maintainer is null in the root AgencyScheme
-            return true; // If the maintainer is null, the resource can be modified by anybody
+        if (isRootAgency(maintainer)) {
+            return true; // If the maintainer is ROOT, the resource can be modified by anybody
         }
         return isDefaultMaintainer(maintainer.getUrn());
+    }
+
+    public static boolean isRootAgency(RelatedResourceDto agencyScheme) {
+        if (SdmxConstants.AGENCY_SDMX_URN.equals(agencyScheme.getUrn())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -162,7 +171,21 @@ public class CommonUtils {
      * @return
      */
     public static boolean canSdmxMetadataAndStructureBeModified(MaintainableArtefactDto artefactDto) {
-        return isDefaultMaintainer(artefactDto.getMaintainer()) && !VersionUtil.isTemporalVersion(artefactDto.getVersionLogic());
+        return canSdmxMetadataAndStructureBeModified(artefactDto.getMaintainer(), artefactDto.getVersionLogic());
+    }
+
+    /**
+     * Returns true if the artefactDto belongs to the default maintainer, and the version is not a temporal one
+     * 
+     * @param artefactDto
+     * @return
+     */
+    public static boolean canSdmxMetadataAndStructureBeModified(MaintainableArtefactMetamacBasicDto artefactDto) {
+        return canSdmxMetadataAndStructureBeModified(artefactDto.getMaintainer(), artefactDto.getVersionLogic());
+    }
+
+    public static boolean canSdmxMetadataAndStructureBeModified(RelatedResourceDto maintainer, String versionLogic) {
+        return isDefaultMaintainer(maintainer) && !VersionUtil.isTemporalVersion(versionLogic);
     }
 
     // EXPORTATION UTILS
