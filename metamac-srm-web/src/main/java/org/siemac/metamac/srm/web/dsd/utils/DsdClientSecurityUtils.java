@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.utils;
 
+import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedDsdSecurityUtils;
@@ -33,8 +34,14 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canDeleteDsd(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode);
     }
 
-    public static boolean canCancelDsdValidity(String operationCode) {
-        return SharedDsdSecurityUtils.canEndDsdValidity(MetamacSrmWeb.getCurrentUser(), operationCode);
+    public static boolean canCancelDsdValidity(DataStructureDefinitionMetamacBasicDto dataStructureDefinitionMetamacBasicDto) {
+        return canCancelDsdValidity(CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacBasicDto), dataStructureDefinitionMetamacBasicDto.getMaintainer(),
+                dataStructureDefinitionMetamacBasicDto.getVersionLogic());
+    }
+
+    public static boolean canCancelDsdValidity(String operationCode, RelatedResourceDto maintainer, String versionLogic) {
+        return SharedDsdSecurityUtils.canEndDsdValidity(MetamacSrmWeb.getCurrentUser(), operationCode)
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(maintainer, versionLogic);
     }
 
     public static boolean canAnnounceDsd(String operationCode) {

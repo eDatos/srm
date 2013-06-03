@@ -298,8 +298,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         for (ListGridRecord record : records) {
             DataStructureDefinitionMetamacBasicDto dsd = ((DsdRecord) record).getDsdBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsd.getLifeCycle().getProcStatus()) || dsd.getValidTo() != null
-                    || !DsdClientSecurityUtils.canCancelDsdValidity(CommonUtils.getStatisticalOperationCodeFromDsd(dsd))) {
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsd.getLifeCycle().getProcStatus()) || dsd.getValidTo() != null || !DsdClientSecurityUtils.canCancelDsdValidity(dsd)) {
                 allSelectedDsdsExternallyPublished = false;
             }
         }
