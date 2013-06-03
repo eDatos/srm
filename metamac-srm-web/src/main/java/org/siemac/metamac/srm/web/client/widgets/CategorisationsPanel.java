@@ -127,7 +127,9 @@ public abstract class CategorisationsPanel extends VLayout {
         ListGridUtils.setCheckBoxSelectionType(categorisationListGrid);
         CustomListGridField codeField = new CustomListGridField(CategorisationDS.CODE, getConstants().identifiableArtefactCode());
         CustomLinkListGridField categoryField = new CustomLinkListGridField(CategorisationDS.CATEGORY, getConstants().category());
-        categorisationListGrid.setFields(codeField, categoryField);
+        CustomListGridField validFrom = new CustomListGridField(CategorisationDS.VALID_FROM, getConstants().maintainableArtefactValidFrom());
+        CustomListGridField validTo = new CustomListGridField(CategorisationDS.VALID_TO, getConstants().maintainableArtefactValidTo());
+        categorisationListGrid.setFields(codeField, categoryField, validFrom, validTo);
 
         categorisationListGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
 
