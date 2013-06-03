@@ -5,13 +5,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
@@ -20,6 +20,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
@@ -3318,13 +3319,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public CategorisationDto endCategorisationValidity(ServiceContext ctx, String urn, DateTime validTo) throws MetamacException {
+    public CategorisationDto endCategorisationValidity(ServiceContext ctx, String urn, Date validTo) throws MetamacException {
         // Security
         Categorisation categorisation = getCategoriesMetamacService().retrieveCategorisationByUrn(ctx, urn);
         canModifyCategorisation(ctx, categorisation.getArtefactCategorised().getUrn());
 
         // Delete
-        categorisation = getCategoriesMetamacService().endCategorisationValidity(ctx, urn, validTo);
+        categorisation = getCategoriesMetamacService().endCategorisationValidity(ctx, urn, CoreCommonUtil.transformDateToDateTime(validTo));
 
         // Transform
         CategorisationDto categorisationDto = categoriesDo2DtoMapper.categorisationDoToDto(categorisation);
