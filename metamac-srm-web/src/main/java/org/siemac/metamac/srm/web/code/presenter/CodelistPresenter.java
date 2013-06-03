@@ -484,11 +484,10 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                             ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistPublishedInternally()), MessageTypeEnum.SUCCESS);
                             getView().setCodelist(codelistMetamacDto);
 
-                            // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal
-                            // version
-                            // (the URN changes!).
+                            // If the version published was a temporal version, reload the complete codelist and the URL. When a temporal version is published, is automatically converted into a normal
+                            // version (the URN changes!).
                             if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
-                                retrieveCodelistVersions(codelistMetamacDto.getUrn());
+                                retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn());
                                 updateUrl();
                             }
                         }

@@ -428,10 +428,10 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         getView().setCategoryScheme(categorySchemeMetamacDto);
 
-                        // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal version
-                        // (the URN changes!).
+                        // If the version published was a temporal version, reload the complete category scheme and the URL. Wwhen a temporal version is published, is automatically converted into a
+                        // normal version (the URN changes!).
                         if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
-                            retrieveCategorySchemeVersions(categorySchemeMetamacDto.getUrn());
+                            retrieveCompleteCategorySchemeByUrn(categorySchemeMetamacDto.getUrn());
                             updateUrl();
                         }
                     }

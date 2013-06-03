@@ -443,10 +443,10 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
 
-                        // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal version
-                        // (the URN changes!).
+                        // If the version published was a temporal version, reload the complete organisation scheme and the URL. When a temporal version is published, is automatically converted into a
+                        // normal version (the URN changes!).
                         if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
-                            retrieveOrganisationSchemeVersions(organisationSchemeMetamacDto.getUrn());
+                            retrieveCompleteOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
                             updateUrl();
                         }
                     }
