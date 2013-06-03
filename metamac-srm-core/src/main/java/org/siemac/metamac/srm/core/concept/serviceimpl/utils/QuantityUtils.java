@@ -4,8 +4,8 @@ import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
 
 /**
  * Quantity: Quantity
- * Amount: Quantity
- * Magnitude: Quantity
+ * Amount: extends Quantity
+ * Magnitude: extends Quantity
  * Fraction: extends Magnitude
  * Ratio: extends Fraction
  * Rate: extends Ratio
@@ -15,7 +15,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
 public class QuantityUtils {
 
     public static Boolean isQuantityOrExtension(QuantityTypeEnum type) {
-        return QuantityTypeEnum.QUANTITY.equals(type);
+        return QuantityTypeEnum.QUANTITY.equals(type) || isAmountOrExtension(type) || isMagnitudeOrExtension(type);
     }
 
     public static Boolean isAmountOrExtension(QuantityTypeEnum type) {
