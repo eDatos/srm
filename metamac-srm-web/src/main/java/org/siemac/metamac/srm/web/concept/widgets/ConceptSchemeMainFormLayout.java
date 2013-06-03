@@ -10,16 +10,14 @@ import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 
 public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
-    private ConceptSchemeMetamacDto conceptSchemeMetamacDto;
-    private ConceptSchemeTypeEnum   type;
-    private String                  relatedOperationCode;
+    private ConceptSchemeTypeEnum type;
+    private String                relatedOperationCode;
 
     public ConceptSchemeMainFormLayout() {
         super();
     }
 
     public void setConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        this.conceptSchemeMetamacDto = conceptSchemeMetamacDto;
         super.updatePublishSection(conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto);
         this.type = conceptSchemeMetamacDto.getType();
         this.relatedOperationCode = CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
@@ -92,7 +90,7 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCancelValidityButton() {
-        if (ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(conceptSchemeMetamacDto)) {
+        if (ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(type, relatedOperationCode, maintainer, versionLogic)) {
             cancelValidity.show();
         }
     }
