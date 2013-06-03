@@ -149,8 +149,12 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         @Override
         public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion, Boolean forceLastestFinal) throws MetamacException {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
-            // Mark as final
-            if (!SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
+            if (SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
+                // Do not mark as final in SDMX metadata. Only mark is LastFinal
+                organisationSchemeVersion.getMaintainableArtefact().setLatestFinal(Boolean.TRUE);
+                updateSrmResource(ctx, organisationSchemeVersion);
+            } else {
+                // Mark as final
                 return organisationsService.markOrganisationSchemeAsFinal(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(), forceLastestFinal);
             }
             return srmResourceVersion;

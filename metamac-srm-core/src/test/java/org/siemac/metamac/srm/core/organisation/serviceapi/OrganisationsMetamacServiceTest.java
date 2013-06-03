@@ -866,7 +866,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, organisationSchemeVersion.getLifeCycleMetadata().getProcStatus());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getFinalLogicClient());
             assertFalse(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
-            assertFalse(organisationSchemeVersion.getMaintainableArtefact().getLatestFinal());
+            assertTrue(organisationSchemeVersion.getMaintainableArtefact().getLatestFinal());
         }
     }
 
