@@ -480,7 +480,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         // Security
         mainFormLayout.setCategoryScheme(categorySchemeDto);
         mainFormLayout.setViewMode();
-        categorisationsPanel.updateVisibility(categorySchemeDto.getLifeCycle().getProcStatus());
+        categorisationsPanel.updateVisibility(categorySchemeDto);
 
         setCategorySchemeViewMode(categorySchemeDto);
         setCategorySchemeEditionMode(categorySchemeDto);

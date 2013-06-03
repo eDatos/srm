@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -50,7 +51,9 @@ public abstract class CategorisationsPanel extends VLayout {
 
     private CategorisationUiHandlers          uiHandlers;
 
-    protected ProcStatusEnum                  procStatus;
+    protected ProcStatusEnum                  categorisedArtefactProcStatus;
+
+    protected DateWindow                      dateWindow;
 
     public CategorisationsPanel() {
         setMargin(15);
@@ -85,7 +88,19 @@ public abstract class CategorisationsPanel extends VLayout {
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO
+                dateWindow = new DateWindow(getConstants().categorisationCancelValidityDate());
+                dateWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        if (dateWindow.validateForm()) {
+                            Date endValidityDate = dateWindow.getSelectedDate();
+                            dateWindow.markForDestroy();
+                            ListGridRecord[] records = categorisationListGrid.getSelectedRecords();
+                            getUiHandlers().cancelCategorisationValidity(getUrnsFromSelectedRecords(records), endValidityDate);
+                        }
+                    }
+                });
             }
         });
 
@@ -120,8 +135,10 @@ public abstract class CategorisationsPanel extends VLayout {
             public void onSelectionChanged(SelectionEvent event) {
                 if (categorisationListGrid.getSelectedRecords().length > 0) {
                     showDeleteCategorisationButton(categorisationListGrid.getSelectedRecords());
+                    showCancelCategorisationValidity(categorisationListGrid.getSelectedRecords());
                 } else {
                     deleteCategorisationButton.hide();
+                    cancelCategorisationValidityButton.hide();
                 }
             }
         });
@@ -159,12 +176,12 @@ public abstract class CategorisationsPanel extends VLayout {
         return uiHandlers;
     }
 
-    public ProcStatusEnum getProcStatus() {
-        return procStatus;
+    public ProcStatusEnum getCategorisedArtefactProcStatus() {
+        return categorisedArtefactProcStatus;
     }
 
-    public void setProcStatus(ProcStatusEnum procStatus) {
-        this.procStatus = procStatus;
+    public void setCategorisedArtefactProcStatus(ProcStatusEnum procStatus) {
+        this.categorisedArtefactProcStatus = procStatus;
     }
 
     private List<String> getSelectedCategorisationUrns() {
@@ -253,6 +270,23 @@ public abstract class CategorisationsPanel extends VLayout {
         }
     }
 
+    private void showCancelCategorisationValidity(ListGridRecord[] selectedRecords) {
+        if (canCancelAllCategorisationsValidity(selectedRecords)) {
+            cancelCategorisationValidityButton.show();
+        } else {
+            cancelCategorisationValidityButton.hide();
+        }
+    }
+
+    private List<String> getUrnsFromSelectedRecords(ListGridRecord[] records) {
+        List<String> urns = new ArrayList<String>();
+        for (ListGridRecord record : records) {
+            urns.add(((CategorisationRecord) record).getUrn());
+        }
+        return urns;
+    }
+
     public abstract void updateNewButtonVisibility();
     public abstract boolean canAllCategorisationsBeDeleted(ListGridRecord[] records);
+    public abstract boolean canCancelAllCategorisationsValidity(ListGridRecord[] records);
 }

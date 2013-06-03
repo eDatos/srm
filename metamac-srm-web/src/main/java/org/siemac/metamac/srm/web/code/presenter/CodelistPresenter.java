@@ -998,8 +998,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void cancelCategorisationValidity(String urn, Date validTo) {
-        dispatcher.execute(new CancelCategorisationValidityAction(urn, validTo), new WaitingAsyncCallback<CancelCategorisationValidityResult>() {
+    public void cancelCategorisationValidity(List<String> urns, Date validTo) {
+        dispatcher.execute(new CancelCategorisationValidityAction(urns, validTo), new WaitingAsyncCallback<CancelCategorisationValidityResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

@@ -13,7 +13,6 @@ public class DsdCategorisationsPanel extends CategorisationsPanel {
     private String operationCode;
 
     public void updateVisibility(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        super.setCategorisedArtefactUrn(dataStructureDefinitionMetamacDto.getUrn());
         super.setCategorisedArtefactProcStatus(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
         this.operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
         updateNewButtonVisibility();

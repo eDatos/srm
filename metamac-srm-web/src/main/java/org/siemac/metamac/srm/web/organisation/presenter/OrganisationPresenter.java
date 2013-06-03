@@ -304,7 +304,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
     }
 
     @Override
-    public void cancelCategorisationValidity(String urn, Date validTo) {
+    public void cancelCategorisationValidity(List<String> urns, Date validTo) {
         throw new UnsupportedOperationException();
     }
 

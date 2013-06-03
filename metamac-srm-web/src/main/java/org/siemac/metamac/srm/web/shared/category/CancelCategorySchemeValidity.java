@@ -16,5 +16,4 @@ public class CancelCategorySchemeValidity {
 
     @Out(1)
     List<CategorySchemeMetamacDto> categorySchemeMetamacDtos;
-
 }

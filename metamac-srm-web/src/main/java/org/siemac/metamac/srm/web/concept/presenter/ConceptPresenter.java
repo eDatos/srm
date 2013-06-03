@@ -422,7 +422,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void cancelCategorisationValidity(String urn, Date validTo) {
+    public void cancelCategorisationValidity(List<String> urns, Date validTo) {
         throw new UnsupportedOperationException();
     }
 

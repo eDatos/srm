@@ -13,7 +13,6 @@ public class OrganisationSchemeCategorisationsPanel extends CategorisationsPanel
     private OrganisationSchemeTypeEnum type;
 
     public void updateVisibility(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        super.setCategorisedArtefactUrn(organisationSchemeMetamacDto.getUrn());
         super.setCategorisedArtefactProcStatus(organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
         this.type = organisationSchemeMetamacDto.getType();
         updateNewButtonVisibility();

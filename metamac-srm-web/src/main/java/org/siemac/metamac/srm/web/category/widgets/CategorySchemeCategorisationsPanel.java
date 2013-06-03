@@ -10,7 +10,6 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 public class CategorySchemeCategorisationsPanel extends CategorisationsPanel {
 
     public void updateVisibility(CategorySchemeMetamacDto categorySchemeMetamacDto) {
-        super.setCategorisedArtefactUrn(categorySchemeMetamacDto.getUrn());
         super.setCategorisedArtefactProcStatus(categorySchemeMetamacDto.getLifeCycle().getProcStatus());
         updateNewButtonVisibility();
     }

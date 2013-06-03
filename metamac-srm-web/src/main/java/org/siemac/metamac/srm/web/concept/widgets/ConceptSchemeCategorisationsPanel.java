@@ -15,7 +15,6 @@ public class ConceptSchemeCategorisationsPanel extends CategorisationsPanel {
     private ConceptSchemeTypeEnum type;
 
     public void updateVisibility(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        super.setCategorisedArtefactUrn(conceptSchemeMetamacDto.getUrn());
         super.setCategorisedArtefactProcStatus(conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
         this.operationCode = CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
         this.type = conceptSchemeMetamacDto.getType();

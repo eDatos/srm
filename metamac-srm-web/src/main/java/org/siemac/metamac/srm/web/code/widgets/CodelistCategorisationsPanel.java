@@ -12,7 +12,6 @@ public class CodelistCategorisationsPanel extends CategorisationsPanel {
     private Boolean versioningBackground;
 
     public void updateVisibility(CodelistMetamacDto codelistMetamacDto) {
-        super.setCategorisedArtefactUrn(codelistMetamacDto.getUrn());
         super.setCategorisedArtefactProcStatus(codelistMetamacDto.getLifeCycle().getProcStatus());
         this.versioningBackground = codelistMetamacDto.getIsTaskInBackground();
         updateNewButtonVisibility();

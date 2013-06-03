@@ -8,10 +8,11 @@ import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
+@Component
 public class CancelCategorisationValidityActionHandler extends SecurityActionHandler<CancelCategorisationValidityAction, CancelCategorisationValidityResult> {
 
     @Autowired
@@ -24,8 +25,10 @@ public class CancelCategorisationValidityActionHandler extends SecurityActionHan
     @Override
     public CancelCategorisationValidityResult executeSecurityAction(CancelCategorisationValidityAction action) throws ActionException {
         try {
-            CategorisationDto categorisationDto = srmCoreServiceFacade.endCategorisationValidity(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), action.getValidTo());
-            return new CancelCategorisationValidityResult(categorisationDto);
+            for (String urn : action.getUrns()) {
+                srmCoreServiceFacade.endCategorisationValidity(ServiceContextHolder.getCurrentServiceContext(), urn, action.getValidTo());
+            }
+            return new CancelCategorisationValidityResult();
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
