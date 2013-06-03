@@ -44,5 +44,10 @@
             <version>${servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>        
+        <dependency>
+            <groupId>org.tuckey</groupId>
+            <artifactId>urlrewritefilter</artifactId>
+            <version>${urlrewritefilter.version}</version>
+        </dependency>
     </dependencies>
 </project>

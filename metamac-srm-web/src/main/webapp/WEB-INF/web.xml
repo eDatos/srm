@@ -31,6 +31,16 @@
     <listener>
         <listener-class>org.siemac.metamac.web.common.server.session.SingleSignOutHttpSessionListener</listener-class>
     </listener>
+    
+    <!-- URL rewriting -->
+    <filter>
+            <filter-name>UrlRewriteFilter</filter-name>
+            <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+    </filter>
+    <filter-mapping>
+            <filter-name>UrlRewriteFilter</filter-name>
+            <url-pattern>/apis/*</url-pattern>
+    </filter-mapping>    
 
     <!-- Spring dispatcher for GWT-RPC services.
         See: http://code.google.com/p/gwt-platform/source/browse/gwtp-samples/gwtp-sample-basic-spring/src/main/webapp/WEB-INF/web.xml?r=7efb6ee3ef7b9458693830e713d679f1c78e98dd -->

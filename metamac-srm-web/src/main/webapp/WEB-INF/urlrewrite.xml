@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
+        "http://tuckey.org/res/dtds/urlrewrite3.2.dtd">
+<urlrewrite>
+    <rule>
+        <from>/apis/structural-resources-internal/latest</from>
+        <to type="redirect">%{context-path}/apis/structural-resources-internal/v1.0</to>
+    </rule>
+</urlrewrite>

@@ -24,6 +24,16 @@
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
 
+    <!-- URL rewriting -->
+    <filter>
+            <filter-name>UrlRewriteFilter</filter-name>
+            <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+    </filter>
+    <filter-mapping>
+            <filter-name>UrlRewriteFilter</filter-name>
+            <url-pattern>/apis/*</url-pattern>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>dispatch</servlet-name>
         <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
