@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.category.utils;
 
+import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedCategoriesSecurityUtils;
@@ -60,8 +61,12 @@ public class CategoriesClientSecurityUtils {
         return SharedCategoriesSecurityUtils.canAnnounceCategoryScheme(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canCancelCategorySchemeValidity() {
-        return SharedCategoriesSecurityUtils.canEndCategorySchemeValidity(MetamacSrmWeb.getCurrentUser());
+    public static boolean canCancelCategorySchemeValidity(CategorySchemeMetamacBasicDto categorySchemeMetamacBasicDto) {
+        return canCancelCategorySchemeValidity(categorySchemeMetamacBasicDto.getMaintainer(), categorySchemeMetamacBasicDto.getVersionLogic());
+    }
+
+    public static boolean canCancelCategorySchemeValidity(RelatedResourceDto maintainer, String versionLogic) {
+        return SharedCategoriesSecurityUtils.canEndCategorySchemeValidity(MetamacSrmWeb.getCurrentUser()) && CommonUtils.canSdmxMetadataAndStructureBeModified(maintainer, versionLogic);
     }
 
     public static boolean canCreateCategorisation(ProcStatusEnum procStatus) {

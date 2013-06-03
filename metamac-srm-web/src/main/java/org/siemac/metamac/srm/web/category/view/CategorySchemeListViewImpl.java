@@ -257,7 +257,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
             CategorySchemeMetamacBasicDto categorySchemeMetamacDto = ((CategorySchemeRecord) record).getCategorySchemeBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
             if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(categorySchemeMetamacDto.getLifeCycle().getProcStatus()) || categorySchemeMetamacDto.getValidTo() != null
-                    || !CategoriesClientSecurityUtils.canCancelCategorySchemeValidity()) {
+                    || !CategoriesClientSecurityUtils.canCancelCategorySchemeValidity(categorySchemeMetamacDto)) {
                 allSelectedSchemesValidityCanBeCanceled = false;
             }
         }

@@ -76,7 +76,7 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
     }
     @Override
     protected void showCancelValidityButton() {
-        if (CategoriesClientSecurityUtils.canCancelCategorySchemeValidity()) {
+        if (CategoriesClientSecurityUtils.canCancelCategorySchemeValidity(maintainer, versionLogic)) {
             cancelValidity.show();
         }
     }
