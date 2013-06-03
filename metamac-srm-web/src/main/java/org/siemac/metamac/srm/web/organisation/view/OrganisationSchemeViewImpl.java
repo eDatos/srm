@@ -11,6 +11,7 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
@@ -107,7 +108,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     // Organisation list
     private ToolStrip                              toolStrip;
     private ToolStripButton                        newButton;
-    private ToolStripButton                        deleteButton;
+    private ToolStripButton                        deleteOrganisationButton;
     private NewOrganisationWindow                  newOrganisationWindow;
     private DeleteConfirmationWindow               deleteConfirmationWindow;
     private CustomListGrid                         organisationListGrid;
@@ -191,9 +192,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             }
         });
 
-        deleteButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteButton.setVisibility(Visibility.HIDDEN);
-        deleteButton.addClickHandler(new ClickHandler() {
+        deleteOrganisationButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
+        deleteOrganisationButton.setVisibility(Visibility.HIDDEN);
+        deleteOrganisationButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -202,7 +203,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         });
 
         toolStrip.addButton(newButton);
-        toolStrip.addButton(deleteButton);
+        toolStrip.addButton(deleteOrganisationButton);
 
         // ListGrid
 
@@ -216,9 +217,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             public void onSelectionChanged(SelectionEvent event) {
                 if (organisationListGrid.getSelectedRecords().length > 0) {
                     // Show delete button
-                    showListGridDeleteButton();
+                    showListGridDeleteButton(organisationListGrid.getSelectedRecords());
                 } else {
-                    deleteButton.hide();
+                    deleteOrganisationButton.hide();
                 }
             }
         });
@@ -812,12 +813,20 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         organisationsTreeGrid.show();
     }
 
-    private void showListGridDeleteButton() {
-        // Agencies can never be deleted!
-        if (OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeDto)) {
-            deleteButton.show();
+    private void showListGridDeleteButton(ListGridRecord[] records) {
+        boolean allOrganisationsCanBeDeleted = true;
+        for (ListGridRecord record : records) {
+            OrganisationMetamacBasicDto organisationMetamacDto = ((OrganisationRecord) record).getOrganisationBasicDto();
+            // FIXME PENDIENTE DEL CORE!
+            // TODO
+            // if (organisationMetamacDto.getHasBeenPublished()) {
+            // allOrganisationsCanBeDeleted = false;
+            // }
+        }
+        if (allOrganisationsCanBeDeleted) {
+            deleteOrganisationButton.show();
         } else {
-            deleteButton.hide();
+            deleteOrganisationButton.hide();
         }
     }
 

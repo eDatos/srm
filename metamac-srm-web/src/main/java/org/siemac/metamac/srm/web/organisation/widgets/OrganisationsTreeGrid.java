@@ -107,7 +107,8 @@ public class OrganisationsTreeGrid extends ItemsTreeGrid {
     protected void onNodeContextClick(String nodeName, ItemVisualisationResult organisation) {
         selectedOrganisation = organisation;
         createOrganisationMenuItem.setEnabled(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeMetamacDto));
-        deleteOrganisationMenuItem.setEnabled(!SCHEME_NODE_NAME.equals(nodeName) && OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeMetamacDto));
+        // Only organisation units are shown in a tree(that's why the method to check the deletion of an organisation is 'canDeleteOrganisationUnit')
+        deleteOrganisationMenuItem.setEnabled(!SCHEME_NODE_NAME.equals(nodeName) && OrganisationsClientSecurityUtils.canDeleteOrganisationUnit(organisationSchemeMetamacDto));
         showContextMenu();
     }
 

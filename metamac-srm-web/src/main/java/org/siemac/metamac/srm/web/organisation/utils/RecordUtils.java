@@ -30,6 +30,7 @@ public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordU
         record = (OrganisationRecord) getItemRecord(record, organisationDto);
         record.setOrganisationTypeName(CommonUtils.getOrganisationTypeName(organisationDto.getType()));
         record.setOrganisationType(organisationDto.getType());
+        record.setOrganisationBasicDto(organisationDto);
         return record;
     }
 
@@ -39,7 +40,6 @@ public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordU
         record.setCode(organisation.getCode());
         record.setName(organisation.getName());
         record.setUrn(organisation.getUrn());
-        // TODO how can i set the rest of the fields?
         return record;
     }
 

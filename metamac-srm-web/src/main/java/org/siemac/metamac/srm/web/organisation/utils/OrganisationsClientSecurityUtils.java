@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.organisation.utils;
 
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
@@ -100,7 +101,6 @@ public class OrganisationsClientSecurityUtils {
     // ORGANISATIONS
 
     public static boolean canCreateOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        // Maintainer is checked because the structure of an imported resource can not be modified
         if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer())) {
             return false;
 
@@ -122,17 +122,35 @@ public class OrganisationsClientSecurityUtils {
         return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type);
     }
 
-    public static boolean canDeleteOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        // Agencies can never be deleted!
-        if (org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isAgencyScheme(organisationSchemeMetamacDto.getType())) {
+    public static boolean canDeleteOrganisationUnit(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        return canDeleteOrganisation(organisationSchemeMetamacDto, null);
+    }
+
+    public static boolean canDeleteOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, Boolean hasOrganisationBeenPublished) {
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer())) {
             return false;
         }
+
         if (CommonUtils.isMaintainableArtefactPublished(organisationSchemeMetamacDto.getLifeCycle().getProcStatus())) {
             return false;
         }
+
+        if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(organisationSchemeMetamacDto.getUrn())) {
+            if (org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isOrganisationUnitScheme(organisationSchemeMetamacDto)) {
+                // ORGANISATION UNIT
+                return false;
+            } else {
+                // AGENCY, DATA PROVIDER and DATA CONSUMER
+                if (BooleanUtils.isTrue(hasOrganisationBeenPublished)) {
+                    // if organisation has been published, DO not delete
+                    return false;
+                }
+            }
+        }
+
         // Maintainer is checked because the structure of an imported resource can not be modified
         return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
-                organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto);
+                organisationSchemeMetamacDto.getType());
     }
 
     // CONTACTS

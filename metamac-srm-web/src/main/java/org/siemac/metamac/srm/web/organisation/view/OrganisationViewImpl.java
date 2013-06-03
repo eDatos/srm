@@ -429,7 +429,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
     @Override
     public void setOrganisation(OrganisationMetamacDto organisationDto, OrganisationSchemeMetamacDto organisationSchemeMetamacDto, Long contactToShowId) {
-        setOrganisationScheme(organisationSchemeMetamacDto);
+        setOrganisationScheme(organisationSchemeMetamacDto, organisationDto);
         setOrganisation(organisationDto, contactToShowId);
         searchSectionStack.setOrganisationMetamacDto(organisationDto);
     }
@@ -481,11 +481,11 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         }
     }
 
-    private void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+    private void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, OrganisationMetamacDto organisationDto) {
         this.organisationSchemeMetamacDto = organisationSchemeMetamacDto;
 
         // Security
-        mainFormLayout.setOrganisationScheme(organisationSchemeMetamacDto);
+        mainFormLayout.setOrganisationScheme(organisationSchemeMetamacDto, organisationDto);
         contactMainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateContact(organisationSchemeMetamacDto));
         contactNewButton.setVisibility(OrganisationsClientSecurityUtils.canCreateContact(organisationSchemeMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
 

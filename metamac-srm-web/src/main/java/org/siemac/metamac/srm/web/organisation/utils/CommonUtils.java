@@ -145,4 +145,12 @@ public class CommonUtils {
     public static boolean isAgencyScheme(OrganisationSchemeTypeEnum type) {
         return OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(type);
     }
+
+    public static boolean isOrganisationUnitScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        return isOrganisationUnitScheme(organisationSchemeMetamacDto.getType());
+    }
+
+    public static boolean isOrganisationUnitScheme(OrganisationSchemeTypeEnum type) {
+        return OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(type);
+    }
 }
