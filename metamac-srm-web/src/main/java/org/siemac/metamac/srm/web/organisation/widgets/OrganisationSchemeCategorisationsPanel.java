@@ -13,14 +13,15 @@ public class OrganisationSchemeCategorisationsPanel extends CategorisationsPanel
     private OrganisationSchemeTypeEnum type;
 
     public void updateVisibility(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        super.setProcStatus(organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
+        super.setCategorisedArtefactUrn(organisationSchemeMetamacDto.getUrn());
+        super.setCategorisedArtefactProcStatus(organisationSchemeMetamacDto.getLifeCycle().getProcStatus());
         this.type = organisationSchemeMetamacDto.getType();
         updateNewButtonVisibility();
     }
 
     @Override
     public void updateNewButtonVisibility() {
-        if (OrganisationsClientSecurityUtils.canCreateCategorisationFromOrganisationScheme(procStatus, type)) {
+        if (OrganisationsClientSecurityUtils.canCreateCategorisationFromOrganisationScheme(categorisedArtefactProcStatus, type)) {
             newCategorisationButton.show();
         } else {
             newCategorisationButton.hide();
@@ -32,7 +33,7 @@ public class OrganisationSchemeCategorisationsPanel extends CategorisationsPanel
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!OrganisationsClientSecurityUtils.canDeleteCategorisationFromOrganisationScheme(procStatus, type, categorisationRecord.getCategorisationDto())) {
+                if (!OrganisationsClientSecurityUtils.canDeleteCategorisationFromOrganisationScheme(categorisedArtefactProcStatus, type, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }
@@ -45,7 +46,7 @@ public class OrganisationSchemeCategorisationsPanel extends CategorisationsPanel
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!OrganisationsClientSecurityUtils.canCancelCategorisationValidityFromOrganisationScheme(procStatus, type, categorisationRecord.getCategorisationDto())) {
+                if (!OrganisationsClientSecurityUtils.canCancelCategorisationValidityFromOrganisationScheme(categorisedArtefactProcStatus, type, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }

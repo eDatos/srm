@@ -15,7 +15,8 @@ public class ConceptSchemeCategorisationsPanel extends CategorisationsPanel {
     private ConceptSchemeTypeEnum type;
 
     public void updateVisibility(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        super.setProcStatus(conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+        super.setCategorisedArtefactUrn(conceptSchemeMetamacDto.getUrn());
+        super.setCategorisedArtefactProcStatus(conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
         this.operationCode = CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
         this.type = conceptSchemeMetamacDto.getType();
         updateNewButtonVisibility();
@@ -23,7 +24,7 @@ public class ConceptSchemeCategorisationsPanel extends CategorisationsPanel {
 
     @Override
     public void updateNewButtonVisibility() {
-        if (ConceptsClientSecurityUtils.canCreateCategorisation(procStatus, type, operationCode)) {
+        if (ConceptsClientSecurityUtils.canCreateCategorisation(categorisedArtefactProcStatus, type, operationCode)) {
             newCategorisationButton.show();
         } else {
             newCategorisationButton.hide();
@@ -35,7 +36,7 @@ public class ConceptSchemeCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!ConceptsClientSecurityUtils.canDeleteCategorisation(procStatus, type, operationCode, categorisationRecord.getCategorisationDto())) {
+                if (!ConceptsClientSecurityUtils.canDeleteCategorisation(categorisedArtefactProcStatus, type, operationCode, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }
@@ -48,7 +49,7 @@ public class ConceptSchemeCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!ConceptsClientSecurityUtils.canCancelCategorisationValidity(procStatus, type, operationCode, categorisationRecord.getCategorisationDto())) {
+                if (!ConceptsClientSecurityUtils.canCancelCategorisationValidity(categorisedArtefactProcStatus, type, operationCode, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }

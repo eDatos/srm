@@ -13,14 +13,15 @@ public class DsdCategorisationsPanel extends CategorisationsPanel {
     private String operationCode;
 
     public void updateVisibility(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        super.setProcStatus(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
+        super.setCategorisedArtefactUrn(dataStructureDefinitionMetamacDto.getUrn());
+        super.setCategorisedArtefactProcStatus(dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus());
         this.operationCode = CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacDto);
         updateNewButtonVisibility();
     }
 
     @Override
     public void updateNewButtonVisibility() {
-        if (DsdClientSecurityUtils.canCreateCategorisationForDataStructureDefinition(procStatus, operationCode)) {
+        if (DsdClientSecurityUtils.canCreateCategorisationForDataStructureDefinition(categorisedArtefactProcStatus, operationCode)) {
             newCategorisationButton.show();
         } else {
             newCategorisationButton.hide();
@@ -32,7 +33,7 @@ public class DsdCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!DsdClientSecurityUtils.canDeleteCategorisationForDataStructureDefinition(procStatus, operationCode, categorisationRecord.getCategorisationDto())) {
+                if (!DsdClientSecurityUtils.canDeleteCategorisationForDataStructureDefinition(categorisedArtefactProcStatus, operationCode, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }
@@ -45,7 +46,7 @@ public class DsdCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!DsdClientSecurityUtils.canCancelCategorisationValidityForDataStructureDefinition(procStatus, operationCode, categorisationRecord.getCategorisationDto())) {
+                if (!DsdClientSecurityUtils.canCancelCategorisationValidityForDataStructureDefinition(categorisedArtefactProcStatus, operationCode, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }

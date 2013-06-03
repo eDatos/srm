@@ -12,14 +12,15 @@ public class CodelistCategorisationsPanel extends CategorisationsPanel {
     private Boolean versioningBackground;
 
     public void updateVisibility(CodelistMetamacDto codelistMetamacDto) {
-        super.setProcStatus(codelistMetamacDto.getLifeCycle().getProcStatus());
+        super.setCategorisedArtefactUrn(codelistMetamacDto.getUrn());
+        super.setCategorisedArtefactProcStatus(codelistMetamacDto.getLifeCycle().getProcStatus());
         this.versioningBackground = codelistMetamacDto.getIsTaskInBackground();
         updateNewButtonVisibility();
     }
 
     @Override
     public void updateNewButtonVisibility() {
-        if (CodesClientSecurityUtils.canCreateCategorisation(procStatus, versioningBackground)) {
+        if (CodesClientSecurityUtils.canCreateCategorisation(categorisedArtefactProcStatus, versioningBackground)) {
             newCategorisationButton.show();
         } else {
             newCategorisationButton.hide();
@@ -31,7 +32,7 @@ public class CodelistCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!CodesClientSecurityUtils.canDeleteCategorisation(procStatus, versioningBackground, categorisationRecord.getCategorisationDto())) {
+                if (!CodesClientSecurityUtils.canDeleteCategorisation(categorisedArtefactProcStatus, versioningBackground, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }
@@ -44,7 +45,7 @@ public class CodelistCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!CodesClientSecurityUtils.canCancelCategorisationValidity(procStatus, versioningBackground, categorisationRecord.getCategorisationDto())) {
+                if (!CodesClientSecurityUtils.canCancelCategorisationValidity(categorisedArtefactProcStatus, versioningBackground, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }
