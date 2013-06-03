@@ -509,6 +509,21 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     @Override
+    public void testFindConceptSchemesCanBeEnumeratedRepresentationForConcepts() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
+                .build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesCanBeEnumeratedRepresentationForConcepts(getServiceContextAdministrador(),
+                conditions, pagingParameter);
+
+        // Validate
+        assertEquals(1, conceptSchemeVersionPagedResult.getTotalRows());
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+    }
+
+    @Test
+    @Override
     public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityNumerator() throws Exception {
         // TODO testFindConceptSchemesByConditionWithConceptsCanBeQuantityNumerator
     }
@@ -2074,6 +2089,45 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
         assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
         assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), conceptRetrieved.getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testCreateConceptWithExtendsRepresentation() throws Exception {
+
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1));
+        concept.setParent(null);
+        concept.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V1_CONCEPT_1));
+        concept.setVariable(codesService.retrieveVariableByUrn(ctx, VARIABLE_1));
+        Representation enumeratedRepresentation = new Representation();
+        enumeratedRepresentation.setIsExtended(true);
+        enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+        enumeratedRepresentation.setEnumerationConceptScheme(conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_15_V1));// codesService.retrieveCodelistByUrn(getServiceContextAdministrador(),
+        concept.setCoreRepresentation(enumeratedRepresentation);
+
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+
+        // Create
+        ConceptMetamac conceptCreated = conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+        String urn = conceptCreated.getNameableArtefact().getUrn();
+        assertEquals(ctx.getUserId(), conceptCreated.getCreatedBy());
+        assertEquals(ctx.getUserId(), conceptCreated.getLastUpdatedBy());
+
+        // // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
+        // ConceptMetamac conceptRetrieved = conceptsService.retrieveConceptByUrn(ctx, urn);
+        // ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptRetrieved);
+        //
+        // // Validate new structure
+        // ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
+        // assertEquals(5, conceptSchemeVersion.getItemsFirstLevel().size());
+        // assertEquals(9, conceptSchemeVersion.getItems().size());
+        // assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        // assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
+        // assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
+        // assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
+        // assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), conceptRetrieved.getNameableArtefact().getUrn());
     }
 
     @Test

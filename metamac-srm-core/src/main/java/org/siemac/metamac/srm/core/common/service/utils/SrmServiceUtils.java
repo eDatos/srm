@@ -404,6 +404,14 @@ public class SrmServiceUtils {
         return result;
     }
 
+    public static Map<String, Item> createMapOfItemsByUrn(List<Item> items) {
+        Map<String, Item> result = new HashMap<String, Item>(items.size());
+        for (Item item : items) {
+            result.put(item.getNameableArtefact().getUrn(), item);
+        }
+        return result;
+    }
+
     public static Map<String, ComponentList> createMapOfComponentListsByOriginalUrn(Set<ComponentList> componentLists) {
         Map<String, ComponentList> result = new HashMap<String, ComponentList>(componentLists.size());
         for (ComponentList componentList : componentLists) {

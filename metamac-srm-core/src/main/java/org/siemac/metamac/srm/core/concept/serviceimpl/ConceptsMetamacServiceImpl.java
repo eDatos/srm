@@ -230,6 +230,34 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build();
+        }
+        // Add restrictions to be extended
+        // concept scheme must be MEASURE
+        ConditionalCriteria roleCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.type())
+                .eq(ConceptSchemeTypeEnum.MEASURE).buildSingle();
+
+        // TODO comprobar restriccion
+        // ConditionalCriteria roleCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.type())
+        // .eq(ConceptSchemeTypeEnum.MEASURE).buildSingle();
+
+        conditions.add(roleCondition);
+        // concept scheme externally published
+        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(externallyPublishedCondition);
+
+        PagedResult<ConceptSchemeVersion> conceptsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
+        return pagedResultConceptSchemeVersionToMetamac(conceptsPagedResult);
+
+    }
+
+    @Override
     public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ServiceContext ctx, String conceptSchemeUrn,
             List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         return findConceptSchemesCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);

@@ -38,6 +38,8 @@ Application ConceptsMetamac {
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Finds concept schemes with concepts that can be extended"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeExtended(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		"Finds concept schemes with concepts that can be enumerated representation for concepts"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForConcepts(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Finds concept schemes with concepts that can be role"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeRole(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Finds concept schemes with concepts than can be numerator in quantity by criteria"

@@ -262,6 +262,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
                 ItemMetamacResultSelection.ALL);
         Map<String, ItemResult> organisationsFoundEfficientlyByUrn = SdmxSrmUtils.createMapOfItemsResultByUrn(organisationsFoundEfficiently);
         for (Item item : organisationSchemeVersion.getItems()) {
+
             OrganisationMetamac organisation = (OrganisationMetamac) item;
             OrganisationMetamac organisationTemp = (OrganisationMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
             ItemResult organisationTempItemResult = organisationsFoundEfficientlyByUrn.get(organisationTemp.getNameableArtefact().getUrn());
@@ -270,6 +271,23 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
             BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItem(organisation, organisationTempItemResult, internationalStringRepository);
 
             // IMPORTANT! If any InternationalString is added, do an efficient query and retrieve from organisationTempItemResult
+
+        }
+
+        if (SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
+            Map<String, Item> currentItemMap = SrmServiceUtils.createMapOfItemsByUrn(organisationSchemeVersion.getItems());
+            for (Item item : organisationSchemeTemporalVersion.getItems()) {
+                String urnFromTemporal = GeneratorUrnUtils.makeUrnFromTemporal(item.getNameableArtefact().getUrn());
+                if (!currentItemMap.containsKey(urnFromTemporal)) {
+                    // Add
+                    item.setItemSchemeVersion(organisationSchemeVersion);
+                    item.setItemSchemeVersionFirstLevel(organisationSchemeVersion); // IMPORTANT! These types of organisations have only one level
+                    item.getNameableArtefact().setUrn(GeneratorUrnUtils.makeUrnFromTemporal(urnFromTemporal));
+                    item.getNameableArtefact().setUrnProvider(GeneratorUrnUtils.makeUrnFromTemporal(item.getNameableArtefact().getUrnProvider()));
+                }
+            }
+        } else {
+            // Add items is not supported in temporal version for another types.
         }
 
         // Delete temporal version
