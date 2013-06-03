@@ -114,7 +114,7 @@ public class OrganisationsClientSecurityUtils {
 
         } else {
             return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
-                    organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto);
+                    organisationSchemeMetamacDto.getType());
         }
     }
 
