@@ -242,11 +242,12 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         for (ListGridRecord record : records) {
             OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDto = ((OrganisationSchemeRecord) record).getOrganisationSchemeBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()) || organisationSchemeMetamacDto.getValidTo() != null) {
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()) || organisationSchemeMetamacDto.getValidTo() != null
+                    || !OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity(organisationSchemeMetamacDto)) {
                 allSelectedSchemesValidityCanBeCanceled = false;
             }
         }
-        if (allSelectedSchemesValidityCanBeCanceled && OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity()) {
+        if (allSelectedSchemesValidityCanBeCanceled) {
             cancelValidityButton.show();
         } else {
             cancelValidityButton.hide();

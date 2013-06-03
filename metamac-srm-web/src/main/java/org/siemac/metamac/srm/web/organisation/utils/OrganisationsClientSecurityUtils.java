@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.organisation.utils;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.core.security.shared.SharedOrganisationsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -61,8 +62,18 @@ public class OrganisationsClientSecurityUtils {
         return SharedOrganisationsSecurityUtils.canAnnounceOrganisationScheme(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canCancelOrganisationSchemeValidity() {
-        return SharedOrganisationsSecurityUtils.canEndOrganisationSchemeValidity(MetamacSrmWeb.getCurrentUser());
+    public static boolean canCancelOrganisationSchemeValidity(OrganisationSchemeMetamacBasicDto organisationSchemeMetamacBasicDto) {
+        return canCancelOrganisationSchemeValidity(organisationSchemeMetamacBasicDto.getMaintainer(), organisationSchemeMetamacBasicDto.getVersionLogic(), organisationSchemeMetamacBasicDto.getType());
+    }
+
+    public static boolean canCancelOrganisationSchemeValidity(RelatedResourceDto maintainer, String versionLogic, OrganisationSchemeTypeEnum organisationSchemeType) {
+        // Agency schemes, data consumer schemes and data provider schemes can not be canceled
+        if (org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isDataConsumerScheme(organisationSchemeType)
+                || org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isDataProviderScheme(organisationSchemeType)
+                || org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isAgencyScheme(organisationSchemeType)) {
+            return false;
+        }
+        return SharedOrganisationsSecurityUtils.canEndOrganisationSchemeValidity(MetamacSrmWeb.getCurrentUser()) && CommonUtils.canSdmxMetadataAndStructureBeModified(maintainer, versionLogic);
     }
 
     public static boolean canCreateCategorisationFromOrganisationScheme(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {

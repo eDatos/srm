@@ -86,11 +86,8 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCancelValidityButton() {
-        // Agency schemes, data consumer schemes and data provider schemes can not be canceled
-        if (!CommonUtils.isDataConsumerScheme(organisationSchemeType) && !CommonUtils.isDataProviderScheme(organisationSchemeType) & !CommonUtils.isAgencyScheme(organisationSchemeType)) {
-            if (OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity()) {
-                cancelValidity.show();
-            }
+        if (OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity(maintainer, versionLogic, organisationSchemeType)) {
+            cancelValidity.show();
         }
     }
 
