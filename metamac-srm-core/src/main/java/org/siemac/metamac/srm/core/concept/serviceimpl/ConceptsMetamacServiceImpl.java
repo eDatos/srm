@@ -659,10 +659,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByConceptUrn(ctx, urn);
         checkConceptSchemeCanBeModified(conceptSchemeVersion);
         srmValidation.checkItemsStructureCanBeModified(ctx, conceptSchemeVersion);
+        checkNoQuantityRelated(concept);
 
         // Delete bidirectional relations of concepts relate this concept and its children (will be removed in cascade)
         removeRelatedConceptsBidirectional(concept);
-        // TODO comprobar que ni él ni algún hijo es quantity de otro concepto del esquema
 
         // note: do not check if it is role or extends of another concept, because one concept must be published to be role or extends
 
@@ -977,6 +977,23 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Children (will be removed in cascade)
         for (Item child : relatedConceptToRemove.getChildren()) {
             removeRelatedConceptsBidirectional((ConceptMetamac) child);
+        }
+    }
+
+    /**
+     * When concept is going to be deleted, checks the concept is not as quantity in another concept
+     */
+    private void checkNoQuantityRelated(ConceptMetamac concept) throws MetamacException {
+        Long quantityRelatedId = getQuantityRepository().findOneQuantityRelatedWithConcept(concept.getId());
+        if (quantityRelatedId != null) {
+            ConceptMetamac conceptQuantity = getConceptMetamacRepository().retrieveConceptWithQuantityId(quantityRelatedId);
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_DELETE_NOT_SUPPORTED_CONCEPT_IN_QUANTITY)
+                    .withMessageParameters(concept.getNameableArtefact().getUrn(), conceptQuantity.getNameableArtefact().getUrn()).build();
+        }
+
+        // Children (will be removed in cascade)
+        for (Item child : concept.getChildren()) {
+            checkNoQuantityRelated((ConceptMetamac) child);
         }
     }
 

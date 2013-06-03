@@ -21,6 +21,7 @@ Application ConceptsMetamac {
 			
 			> @ConceptSchemeVersionMetamacRepository
 			> @ConceptMetamacRepository
+			> @QuantityRepository
 			> @ConceptTypeRepository
 			
 			"Creates concept scheme"
@@ -199,6 +200,7 @@ Application ConceptsMetamac {
 				List<ItemResult> findConceptsByConceptSchemeUnordered(Long conceptSchemeVersionId, ItemMetamacResultSelection resultSelection);
 				List<ConceptMetamacVisualisationResult> findConceptsByConceptSchemeUnorderedToVisualisation(Long conceptSchemeVersionId, String locale) throws MetamacException;
 				checkConceptTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
+				ConceptMetamac retrieveConceptWithQuantityId(Long quantityId);
 			}
 		}
 		
@@ -242,6 +244,7 @@ Application ConceptsMetamac {
 			
 			Repository QuantityRepository {
     			delete;
+    			Long findOneQuantityRelatedWithConcept(Long conceptId);
     		}
 	    }
 		

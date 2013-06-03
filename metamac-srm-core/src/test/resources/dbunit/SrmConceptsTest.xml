@@ -4932,7 +4932,101 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:04"
                 LAST_UPDATED_TZ="Europe/London"
-            />                       
+            />      
+            
+            <!-- CONCEPT02 -->
+            <TB_CONCEPTS
+                TB_ITEMS_BASE="1612"
+                CORE_REPRESENTATION_FK="[null]"    
+            />
+ 
+            <TB_M_CONCEPTS
+              PLURAL_NAME_FK="[null]"
+              ACRONYM_FK="[null]"
+              DESCRIPTION_SOURCE_FK="[null]"
+              CONTEXT_FK="[null]"
+              DOC_METHOD_FK="[null]"
+              DERIVATION_FK="[null]"
+              LEGAL_ACTS_FK="[null]"
+              SDMX_RELATED_ARTEFACT="ATTRIBUTE"
+              CONCEPT_TYPE_FK="2"
+              EXTENDS_FK="[null]"
+              VARIABLE_FK="[null]"              
+              TB_CONCEPTS="1612"
+              QUANTITY_FK="1612"
+             />            
+        
+            <TB_ITEMS_BASE
+                ID="1612"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="161"
+                ITEM_SCHEME_VERSION_FIRST_FK="161"
+                NAMEABLE_ARTEFACT_FK="1612"
+                      
+                UUID="conceptScheme-16-v1-concept-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="1612"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CONCEPT02"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME16(01.000).CONCEPT02"
+                URN="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME16(01.000).CONCEPT02"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+                
+                UUID="annotableArtefact-1612"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />         
+                       
+            <TB_M_QUANTITIES
+                ID="1612"
+                UUID="Quantity-1612"
+                QUANTITY_TYPE="CHANGE_RATE"
+                UNIT_CODE_FK="20111"
+                UNIT_SYMBOL_POSITION="END"
+                UNIT_MULTIPLIER="10"
+                SIGNIFICANT_DIGITS="2"
+                DECIMAL_PLACES="3"
+                MINIMUM="100"
+                MAXIMUM="200"
+                IS_PERCENTAGE="1"
+                PERCENTAGE_OF_FK="101"
+                BASE_VALUE="[null]"
+                BASE_TIME="[null]"
+                BASE_LOCATION_FK="[null]"
+                BASE_QUANTITY_FK="1513"
+                NUMERATOR_FK="1512"
+                DENOMINATOR_FK="1611"
+
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:04"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:04"
+                LAST_UPDATED_TZ="Europe/London"
+            />                  
+                             
     <!-- ************************************************************************************** -->
     <!-- EXTERNAL ITEMS                                                                         -->
     <!-- *************************************************************************************  -->    
@@ -7160,5 +7254,18 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="100"
-    />                                    
+    />   
+    
+ <TB_INTERNATIONAL_STRINGS
+        ID="101"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1011"
+        LABEL="porcentaje"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="101"
+    />                                        
 </dataset>

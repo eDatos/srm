@@ -155,6 +155,17 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         checkConceptMetamacTranslations(itemSchemeVersionId, locale, exceptionItems);
     }
 
+    @Override
+    public ConceptMetamac retrieveConceptWithQuantityId(Long quantityId) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("quantityId", quantityId);
+        List<ConceptMetamac> result = findByQuery("from ConceptMetamac where quantity.id = :quantityId", parameters, 1);
+        if (result.size() != 0) {
+            return result.get(0);
+        }
+        return null;
+    }
+
     /**
      * Checks concrete metadata of ConceptMetamac
      */

@@ -55,7 +55,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ValidationUtils.checkParameterRequired(conceptSchemeVersion, ServiceExceptionParameters.CONCEPT_SCHEME, exceptions);
         ValidationUtils.checkParameterRequired(concept, ServiceExceptionParameters.CONCEPT, exceptions);
         if (concept != null && conceptSchemeVersion != null) {
-            checkConcept(conceptSchemeVersion, concept, true, true, exceptions);
+            checkConcept(conceptSchemeVersion, concept, true, true, true, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
@@ -68,7 +68,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
 
         ValidationUtils.checkParameterRequired(concept, ServiceExceptionParameters.CONCEPT, exceptions);
         if (concept != null) {
-            checkConcept(conceptSchemeVersionMetamac, concept, false, true, exceptions);
+            checkConcept(conceptSchemeVersionMetamac, concept, false, true, true, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
@@ -204,8 +204,9 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
 
     /**
      * @param checkOptionalInternationalStrings False to avoid extra queries. When publishing, international strings are checked with native queries
+     * @param checkQuantity False to avoid extra queries. Quantity is checked when create or update concept
      */
-    public static void checkConcept(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept, boolean creating, boolean checkOptionalInternationalStrings,
+    public static void checkConcept(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept, boolean creating, boolean checkOptionalInternationalStrings, boolean checkQuantity,
             List<MetamacExceptionItem> exceptions) {
 
         if (checkOptionalInternationalStrings) {
@@ -218,8 +219,10 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
             ValidationUtils.checkMetadataOptionalIsValid(concept.getLegalActs(), ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, exceptions);
         }
 
-        // Quantity: do not validate required attributes of quantity, only when send to production validation
-        checkConceptQuantity(concept.getQuantity(), false, exceptions);
+        // Quantity
+        if (checkQuantity) {
+            checkConceptQuantity(concept.getQuantity(), exceptions);
+        }
 
         // note: variable is optional. If enumerated representation is codelist, Service will assign automatically to concept the variable of codelist
 
@@ -245,7 +248,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         // common metadata in sdmx are checked in Sdmx module
     }
 
-    public static void checkConceptQuantity(Quantity quantity, boolean checksRequired, List<MetamacExceptionItem> exceptions) {
+    public static void checkConceptQuantity(Quantity quantity, List<MetamacExceptionItem> exceptions) {
 
         if (ValidationUtils.isEmpty(quantity)) {
             // it is optional
@@ -256,25 +259,19 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         if (!ValidationUtils.isEmpty(quantity.getBaseTime()) && !TimeUtils.isTimeValue(quantity.getBaseTime())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_TIME));
         }
-        if (!ValidationUtils.isEmpty(quantity.getDecimalPlaces()) && quantity.getDecimalPlaces().intValue() > 10) {
-            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_DECIMAL_PLACES));
-        }
-
         // checks required
-        if (checksRequired) {
-            ValidationUtils.checkMetadataRequired(quantity.getQuantityType(), ServiceExceptionParameters.CONCEPT_QUANTITY_TYPE, exceptions);
-            ValidationUtils.checkMetadataRequired(quantity.getUnitCode(), ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_CODE, exceptions);
-            ValidationUtils.checkMetadataRequired(quantity.getUnitSymbolPosition(), ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_SYMBOL_POSITION, exceptions);
-            ValidationUtils.checkMetadataRequired(quantity.getUnitMultiplier(), ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_MULTIPLIER, exceptions);
-            // required by quantity type
-            if (QuantityUtils.isRatioOrExtension(quantity.getQuantityType())) {
-                ValidationUtils.checkMetadataRequired(quantity.getIsPercentage(), ServiceExceptionParameters.CONCEPT_QUANTITY_IS_PERCENTAGE, exceptions);
-            }
-            if (QuantityUtils.isIndexOrExtension(quantity.getQuantityType())) {
-                if (ValidationUtils.isEmpty(quantity.getBaseValue()) && ValidationUtils.isEmpty(quantity.getBaseTime()) && ValidationUtils.isEmpty(quantity.getBaseLocation())) {
-                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_VALUE,
-                            ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_TIME, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_LOCATION));
-                }
+        ValidationUtils.checkMetadataRequired(quantity.getQuantityType(), ServiceExceptionParameters.CONCEPT_QUANTITY_TYPE, exceptions);
+        ValidationUtils.checkMetadataRequired(quantity.getUnitCode(), ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_CODE, exceptions);
+        ValidationUtils.checkMetadataRequired(quantity.getUnitSymbolPosition(), ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_SYMBOL_POSITION, exceptions);
+        ValidationUtils.checkMetadataRequired(quantity.getUnitMultiplier(), ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_MULTIPLIER, exceptions);
+        // required by quantity type
+        if (QuantityUtils.isRatioOrExtension(quantity.getQuantityType())) {
+            ValidationUtils.checkMetadataRequired(quantity.getIsPercentage(), ServiceExceptionParameters.CONCEPT_QUANTITY_IS_PERCENTAGE, exceptions);
+        }
+        if (QuantityUtils.isIndexOrExtension(quantity.getQuantityType())) {
+            if (ValidationUtils.isEmpty(quantity.getBaseValue()) && ValidationUtils.isEmpty(quantity.getBaseTime()) && ValidationUtils.isEmpty(quantity.getBaseLocation())) {
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_VALUE,
+                        ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_TIME, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_LOCATION));
             }
         }
 
@@ -296,14 +293,17 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
             ValidationUtils.checkMetadataEmpty(quantity.getBaseTime(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_TIME, exceptions);
             ValidationUtils.checkMetadataEmpty(quantity.getBaseLocation(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_LOCATION, exceptions);
         } else {
-            // TODO confirmar que no es igual...
-            // // must be filled only one of followings
-            // if (!ValidationUtils.isEmpty(quantity.getBaseValue())) {
-            // ValidationUtils.checkMetadataEmpty(quantity.getBaseTime(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_TIME, exceptions);
-            // ValidationUtils.checkMetadataEmpty(quantity.getBaseLocation(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_LOCATION, exceptions);
-            // } else if (!ValidationUtils.isEmpty(quantity.getBaseTime())) {
-            // ValidationUtils.checkMetadataEmpty(quantity.getBaseLocation(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_LOCATION, exceptions);
-            // }
+            // must be filled only one of followings
+            if (!ValidationUtils.isEmpty(quantity.getBaseValue())) {
+                ValidationUtils.checkMetadataEmpty(quantity.getBaseTime(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_TIME, exceptions);
+                ValidationUtils.checkMetadataEmpty(quantity.getBaseLocation(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_LOCATION, exceptions);
+            } else if (!ValidationUtils.isEmpty(quantity.getBaseTime())) {
+                ValidationUtils.checkMetadataEmpty(quantity.getBaseValue(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_VALUE, exceptions);
+                ValidationUtils.checkMetadataEmpty(quantity.getBaseLocation(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_LOCATION, exceptions);
+            } else if (!ValidationUtils.isEmpty(quantity.getBaseLocation())) {
+                ValidationUtils.checkMetadataEmpty(quantity.getBaseTime(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_TIME, exceptions);
+                ValidationUtils.checkMetadataEmpty(quantity.getBaseValue(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_VALUE, exceptions);
+            }
         }
         if (!QuantityUtils.isChangeRateOrExtension(quantity.getQuantityType())) {
             ValidationUtils.checkMetadataEmpty(quantity.getBaseQuantity(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_QUANTITY, exceptions);

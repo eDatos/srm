@@ -2241,7 +2241,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.getQuantity().setIsPercentage(Boolean.FALSE);
         concept.getQuantity().setPercentageOf(BaseDoMocks.mockInternationalString());
         concept.getQuantity().setBaseValue(Integer.valueOf(15));
-        concept.getQuantity().setBaseTime("2011");
 
         // Create
         String conceptSchemeUrn = CONCEPT_SCHEME_16_V1;
@@ -2482,7 +2481,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.getQuantity().setDenominator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptDenominator));
         concept.getQuantity().setIsPercentage(Boolean.FALSE);
         concept.getQuantity().setPercentageOf(BaseDoMocks.mockInternationalString());
-        concept.getQuantity().setBaseValue(Integer.valueOf(15));
         concept.getQuantity().setBaseTime("2011xx");
 
         // Create
@@ -3027,6 +3025,24 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Test
+    public void testDeleteConceptErrorAsQuantity() throws Exception {
+
+        String urn = CONCEPT_SCHEME_16_V1_CONCEPT_1;
+
+        // Validation
+        try {
+            conceptsService.deleteConcept(getServiceContextAdministrador(), urn);
+            fail("quantity");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.CONCEPT_DELETE_NOT_SUPPORTED_CONCEPT_IN_QUANTITY.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, e.getExceptionItems().get(0).getMessageParameters()[1]);
+        }
+    }
+
     @Override
     @Test
     public void testRetrieveConceptsByConceptSchemeUrn() throws Exception {
@@ -3177,6 +3193,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             }
         }
     }
+
     @Override
     @Test
     public void testFindConceptsByCondition() throws Exception {
@@ -3189,8 +3206,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(37, conceptsPagedResult.getTotalRows());
-            assertEquals(37, conceptsPagedResult.getValues().size());
+            assertEquals(38, conceptsPagedResult.getTotalRows());
+            assertEquals(38, conceptsPagedResult.getValues().size());
             assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
 
             int i = 0;
@@ -3231,6 +3248,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(conceptsPagedResult.getValues().size(), i);
         }
 

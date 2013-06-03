@@ -123,7 +123,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeMetamacDto.getType());
         assertEquals("op1", conceptSchemeMetamacDto.getRelatedOperation().getCode());
-        assertEquals("apis.metamac.org/statistical-operations-internal/operations/op1", conceptSchemeMetamacDto.getRelatedOperation().getUri());
+        assertEquals("apis.metamac.org/statistical-operations-internal/latest/operations/op1", conceptSchemeMetamacDto.getRelatedOperation().getUri());
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=op1", conceptSchemeMetamacDto.getRelatedOperation().getUrn());
         assertEquals("http://localhost:8080/metamac-statistical-operations-web/#operations;id=op1", conceptSchemeMetamacDto.getRelatedOperation().getManagementAppUrl());
         assertEquals(1, conceptSchemeMetamacDto.getRelatedOperation().getVersion().longValue());
@@ -193,6 +193,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(getServiceContextAdministrador(), conceptSchemeDto);
 
+        conceptSchemeDto.getRelatedOperation().setUri(conceptSchemeDto.getRelatedOperation().getUri().replace("v1.0", "latest")); // dto2Do change version for latest
         assertEqualsConceptSchemeMetamacDto(conceptSchemeDto, conceptSchemeMetamacCreated);
 
         // Identifiers
@@ -1076,8 +1077,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             MetamacCriteriaResult<ConceptMetamacBasicDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(37, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(37, conceptsPagedResult.getResults().size());
+            assertEquals(38, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(38, conceptsPagedResult.getResults().size());
 
             int i = 0;
             assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
@@ -1118,6 +1119,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(conceptsPagedResult.getResults().size(), i);
         }
 
@@ -1162,8 +1164,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             MetamacCriteriaResult<ConceptMetamacBasicDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(29, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(29, conceptsPagedResult.getResults().size());
+            assertEquals(30, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(30, conceptsPagedResult.getResults().size());
 
             int i = 0;
             assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
@@ -1195,6 +1197,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(conceptsPagedResult.getResults().size(), i);
         }
 

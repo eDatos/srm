@@ -136,8 +136,8 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                         if (exceptionItem != null) {
                             exceptionsConcepts.add(exceptionItem);
                         } else {
-                            // Check another metadata // TODO QUANTITY
-                            ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, concept, false, false, exceptionsConcepts);
+                            // Check another metadata
+                            ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, concept, false, false, false, exceptionsConcepts);
                         }
                         if (exceptionsConcepts.size() != 0) {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, item.getNameableArtefact().getUrn()));
