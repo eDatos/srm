@@ -69,6 +69,8 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
+import com.smartgwt.client.widgets.form.validator.RequiredIfFunction;
+import com.smartgwt.client.widgets.form.validator.RequiredIfValidator;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -454,7 +456,8 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return ConceptSchemeTypeEnum.OPERATION.name().equals(form.getValueAsString(ConceptSchemeDS.TYPE_VIEW));
+                return ConceptSchemeTypeEnum.OPERATION.name().equals(form.getValueAsString(ConceptSchemeDS.TYPE_VIEW))
+                        || ConceptSchemeTypeEnum.MEASURE.name().equals(form.getValueAsString(ConceptSchemeDS.TYPE_VIEW));
             }
         });
         classDescriptorsForm.setFields(type, typeView, operation);
@@ -541,7 +544,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             @Override
             public void onChanged(ChangedEvent event) {
                 classDescriptorsEditionForm.markForRedraw();
-                if (!ConceptSchemeTypeEnum.OPERATION.name().equals(type.getValueAsString())) {
+                if (!ConceptSchemeTypeEnum.OPERATION.name().equals(type.getValueAsString()) && !ConceptSchemeTypeEnum.MEASURE.name().equals(type.getValueAsString())) {
                     // if the concept scheme is not an operation type anymore, remove the related operation
                     ((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).clearExternalItem();
                 }
@@ -555,7 +558,8 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return ConceptSchemeTypeEnum.OPERATION.name().equals(form.getValueAsString(ConceptSchemeDS.TYPE));
+                return ConceptSchemeTypeEnum.OPERATION.name().equals(form.getValueAsString(ConceptSchemeDS.TYPE))
+                        || ConceptSchemeTypeEnum.MEASURE.name().equals(form.getValueAsString(ConceptSchemeDS.TYPE));
             }
         });
 
@@ -628,12 +632,13 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         // Class descriptors
         classDescriptorsForm.setValue(ConceptSchemeDS.TYPE_VIEW, conceptSchemeDto.getType() != null ? conceptSchemeDto.getType().name() : null);
         classDescriptorsForm.setValue(ConceptSchemeDS.TYPE, CommonUtils.getConceptSchemeTypeName(conceptSchemeDto.getType()));
-        if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeDto.getType())) {
+        if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeDto.getType()) || ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeDto.getType())) {
             classDescriptorsForm.getItem(ConceptSchemeDS.RELATED_OPERATION).show();
         } else {
             classDescriptorsForm.getItem(ConceptSchemeDS.RELATED_OPERATION).hide();
         }
         ((ExternalItemLinkItem) classDescriptorsForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).setExternalItem(conceptSchemeDto.getRelatedOperation());
+        classDescriptorsForm.markForRedraw();
 
         // Production descriptors
 
@@ -760,7 +765,14 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
     private SearchExternalItemLinkItem createRelatedOperationItem(String name, String title) {
         SearchExternalItemLinkItem operation = new SearchExternalItemLinkItem(name, title);
-        operation.setRequired(true);
+        RequiredIfValidator requiredIfValidator = new RequiredIfValidator(new RequiredIfFunction() {
+
+            @Override
+            public boolean execute(FormItem formItem, Object value) {
+                return ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeDto.getType());
+            }
+        });
+        operation.setValidators(requiredIfValidator);
         operation.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override

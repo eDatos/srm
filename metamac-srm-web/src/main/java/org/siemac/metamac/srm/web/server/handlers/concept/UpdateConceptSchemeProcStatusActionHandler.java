@@ -4,7 +4,6 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operation;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
-import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.server.rest.StatisticalOperationsRestInternalFacade;
@@ -52,14 +51,12 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
             } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 scheme = srmCoreServiceFacade.publishConceptSchemeInternally(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeToUpdateStatus.getUrn(), action.getForceLatestFinal());
             } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-                // If the concept scheme type is OPERATION, check that the associated statistical operation is externally published
-                if (ConceptSchemeTypeEnum.OPERATION.equals(action.getConceptSchemeMetamacDto().getType())) {
-                    if (conceptSchemeToUpdateStatus.getRelatedOperation() != null) {
-                        Operation operation = statisticalOperationsRestInternalFacade.retrieveOperation(conceptSchemeToUpdateStatus.getRelatedOperation().getCode());
-                        if (!ProcStatus.PUBLISH_EXTERNALLY.equals(operation.getProcStatus())) {
-                            throw new MetamacWebException(WebMessageExceptionsConstants.MAINTAINABLE_ARTEFACT_ERROR_RELATED_OPERATION_NOT_EXTERNALLY_PUBLISHED,
-                                    "Concept scheme cannot be externally published because the related operation is not externally published");
-                        }
+                // Check that the associated statistical operation is externally published
+                if (conceptSchemeToUpdateStatus.getRelatedOperation() != null) {
+                    Operation operation = statisticalOperationsRestInternalFacade.retrieveOperation(conceptSchemeToUpdateStatus.getRelatedOperation().getCode());
+                    if (!ProcStatus.PUBLISH_EXTERNALLY.equals(operation.getProcStatus())) {
+                        throw new MetamacWebException(WebMessageExceptionsConstants.MAINTAINABLE_ARTEFACT_ERROR_RELATED_OPERATION_NOT_EXTERNALLY_PUBLISHED,
+                                "Concept scheme cannot be externally published because the related operation is not externally published");
                     }
                 }
                 scheme = srmCoreServiceFacade.publishConceptSchemeExternally(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeToUpdateStatus.getUrn());
