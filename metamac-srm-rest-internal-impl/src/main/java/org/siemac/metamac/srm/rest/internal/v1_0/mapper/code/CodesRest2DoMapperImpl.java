@@ -242,7 +242,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case SHORT_NAME:
                     return new SculptorPropertyCriteria(VariableProperties.shortName().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case FAMILY_URN:
-                    return new SculptorPropertyCriteria(VariableProperties.families().nameableArtefact().urn(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return new SculptorPropertyCriteria(VariableProperties.families().nameableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }

@@ -81,14 +81,14 @@ public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl im
                             propertyRestriction.getOperationType());
                 case DIMENSION_CONCEPT_URN: {
                     SculptorPropertyCriteria propertyCriteria1 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact()
-                            .urn(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                            .urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                     SculptorPropertyCriteria propertyCriteria2 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().componentType(),
                             TypeComponent.DIMENSION_COMPONENT, OperationTypeEnum.EQ);
                     return new SculptorPropertyCriteriaConjunction(propertyCriteria1, propertyCriteria2);
                 }
                 case ATTRIBUTE_CONCEPT_URN: {
                     SculptorPropertyCriteria propertyCriteria1 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact()
-                            .urn(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                            .urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                     SculptorPropertyCriteria propertyCriteria2 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().componentType(),
                             TypeComponent.DATA_ATTRIBUTE, OperationTypeEnum.EQ);
                     return new SculptorPropertyCriteriaConjunction(propertyCriteria1, propertyCriteria2);
