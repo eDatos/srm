@@ -146,4 +146,10 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode)
                 && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
+
+    public static boolean canCancelCategorisationValidityForDataStructureDefinition(ProcStatusEnum procStatus, String operationCode, CategorisationDto categorisationDto) {
+        // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
+        return SharedDsdSecurityUtils.canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode)
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
+    }
 }

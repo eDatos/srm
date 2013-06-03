@@ -75,6 +75,12 @@ public class OrganisationsClientSecurityUtils {
                 && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
+    public static boolean canCancelCategorisationValidityFromOrganisationScheme(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type, CategorisationDto categorisationDto) {
+        // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
+        return SharedOrganisationsSecurityUtils.canModifyCategorisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), procStatus, type)
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
+    }
+
     public static boolean canCopyOrganisationScheme(RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
         return SharedOrganisationsSecurityUtils.canCopyOrganisationScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
@@ -84,10 +90,17 @@ public class OrganisationsClientSecurityUtils {
 
     public static boolean canCreateOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
         // Maintainer is checked because the structure of an imported resource can not be modified
-        if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeMetamacDto.getType())) {
-            // Agencies can be added when the AgencyScheme is a temporal version
-            return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
-                    organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer());
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer())) {
+            return false;
+
+        } else if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(organisationSchemeMetamacDto.getUrn())
+                && OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeMetamacDto.getType())) {
+            return false;
+
+        } else if (!org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(organisationSchemeMetamacDto.getUrn())
+                && CommonUtils.isMaintainableArtefactPublished(organisationSchemeMetamacDto.getLifeCycle().getProcStatus())) {
+            return false;
+
         } else {
             return SharedOrganisationsSecurityUtils.canModifyOrganisationFromOrganisationScheme(MetamacSrmWeb.getCurrentUser(), organisationSchemeMetamacDto.getLifeCycle().getProcStatus(),
                     organisationSchemeMetamacDto.getType()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto);

@@ -39,4 +39,17 @@ public class OrganisationSchemeCategorisationsPanel extends CategorisationsPanel
         }
         return true;
     }
+
+    @Override
+    public boolean canCancelAllCategorisationsValidity(ListGridRecord[] records) {
+        for (ListGridRecord record : records) {
+            if (record instanceof CategorisationRecord) {
+                CategorisationRecord categorisationRecord = (CategorisationRecord) record;
+                if (!OrganisationsClientSecurityUtils.canCancelCategorisationValidityFromOrganisationScheme(procStatus, type, categorisationRecord.getCategorisationDto())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

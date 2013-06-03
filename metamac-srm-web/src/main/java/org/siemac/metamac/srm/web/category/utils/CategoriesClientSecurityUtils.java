@@ -75,6 +75,13 @@ public class CategoriesClientSecurityUtils {
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
+    public static boolean canCancelCategorisationValidity(ProcStatusEnum procStatus, CategorisationDto categorisationDto) {
+        // Maintainer and temporal version is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is a
+        // temporal one
+        return SharedCategoriesSecurityUtils.canModifyCategorisationFromCategoryScheme(MetamacSrmWeb.getCurrentUser(), procStatus)
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
+    }
+
     public static boolean canCopyCategoryScheme(RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
         return SharedCategoriesSecurityUtils.canCopyCategoryScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);

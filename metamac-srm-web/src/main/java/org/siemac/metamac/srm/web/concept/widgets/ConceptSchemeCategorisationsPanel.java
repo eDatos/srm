@@ -42,4 +42,17 @@ public class ConceptSchemeCategorisationsPanel extends CategorisationsPanel {
         }
         return true;
     }
+
+    @Override
+    public boolean canCancelAllCategorisationsValidity(ListGridRecord[] records) {
+        for (ListGridRecord record : records) {
+            if (record instanceof CategorisationRecord) {
+                CategorisationRecord categorisationRecord = (CategorisationRecord) record;
+                if (!ConceptsClientSecurityUtils.canCancelCategorisationValidity(procStatus, type, operationCode, categorisationRecord.getCategorisationDto())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

@@ -79,6 +79,13 @@ public class ConceptsClientSecurityUtils {
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
+    public static boolean canCancelCategorisationValidity(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode, CategorisationDto categorisationDto) {
+        // Maintainer and temporal version are checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is not
+        // the temporal one
+        return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode)
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
+    }
+
     public static boolean canCopyConceptScheme(ConceptSchemeTypeEnum type, String operationCode, RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
         return SharedConceptsSecurityUtils.canCopyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode) && !CommonUtils.isDefaultMaintainer(maintainer);

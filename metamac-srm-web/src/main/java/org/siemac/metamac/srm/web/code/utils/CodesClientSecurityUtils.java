@@ -114,7 +114,15 @@ public class CodesClientSecurityUtils {
         }
         // Maintainer and temporal version is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is the
         // temporal one
-        // TODO canModifyCategorisationFromCodelist
+        return SharedCodesSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus) && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
+    }
+
+    public static boolean canCancelCategorisationValidity(ProcStatusEnum procStatus, Boolean isTaskInBackground, CategorisationDto categorisationDto) {
+        if (isTaskInBackground(isTaskInBackground)) {
+            return false;
+        }
+        // Maintainer and temporal version is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is the
+        // temporal one
         return SharedCodesSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus) && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
     }
 
