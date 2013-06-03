@@ -142,7 +142,7 @@ Application ConceptsMetamac {
 			"True if type has been updated"
 			Boolean isTypeUpdated nullable transient;
 			"Related operation, only when type is Operation"
-			- @ExternalItem relatedOperation nullable cascade="all" fetch="lazy" databaseColumn="RELATED_OPERATION_FK";
+			- @ExternalItem relatedOperation nullable cascade="all" databaseColumn="RELATED_OPERATION_FK";
 			
 			"Life cycle information"
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
