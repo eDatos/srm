@@ -11,7 +11,6 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
@@ -816,12 +815,10 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     private void showListGridDeleteButton(ListGridRecord[] records) {
         boolean allOrganisationsCanBeDeleted = true;
         for (ListGridRecord record : records) {
-            OrganisationMetamacBasicDto organisationMetamacDto = ((OrganisationRecord) record).getOrganisationBasicDto();
-            // FIXME PENDIENTE DEL CORE!
-            // TODO
-            // if (organisationMetamacDto.getHasBeenPublished()) {
-            // allOrganisationsCanBeDeleted = false;
-            // }
+            Boolean hasBeenPublished = ((OrganisationRecord) record).getSpecialOrganisationHasBeenPublished();
+            if (!OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeDto, hasBeenPublished)) {
+                allOrganisationsCanBeDeleted = false;
+            }
         }
         if (allOrganisationsCanBeDeleted) {
             deleteOrganisationButton.show();
