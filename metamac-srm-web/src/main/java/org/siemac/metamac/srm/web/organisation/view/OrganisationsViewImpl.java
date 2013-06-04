@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.organisation.view;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacBasicDto;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.NavigablePaginatedListGrid;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
@@ -41,14 +42,14 @@ public class OrganisationsViewImpl extends ViewWithUiHandlers<OrganisationsUiHan
 
         // Organisations
 
-        organisationsListGrid = new NavigablePaginatedListGrid(OrganisationsPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
+        organisationsListGrid = new NavigablePaginatedListGrid(SrmWebConstants.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
                 getUiHandlers().retrieveOrganisations(firstResult, maxResults, searchSectionStack.getOrganisationWebCriteria());
             }
         });
-        organisationsListGrid.getListGrid().setAutoFitMaxRecords(OrganisationsPresenter.ITEM_LIST_MAX_RESULTS);
+        organisationsListGrid.getListGrid().setAutoFitMaxRecords(SrmWebConstants.ITEM_LIST_MAX_RESULTS);
         organisationsListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         organisationsListGrid.getListGrid().setDataSource(new OrganisationDS());
         organisationsListGrid.getListGrid().setUseAllDataSourceFields(false);

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
@@ -114,14 +115,14 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
 
         // Organisations scheme list
 
-        organisationSchemeList = new VersionableResourcePaginatedCheckListGrid(OrganisationSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
+        organisationSchemeList = new VersionableResourcePaginatedCheckListGrid(SrmWebConstants.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
                 getUiHandlers().retrieveOrganisationSchemes(firstResult, maxResults, searchSectionStack.getOrganisationSchemeWebCriteria());
             }
         });
-        organisationSchemeList.getListGrid().setAutoFitMaxRecords(OrganisationSchemeListPresenter.SCHEME_LIST_MAX_RESULTS);
+        organisationSchemeList.getListGrid().setAutoFitMaxRecords(SrmWebConstants.SCHEME_LIST_MAX_RESULTS);
         organisationSchemeList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         organisationSchemeList.getListGrid().setDataSource(new OrganisationSchemeDS());
         organisationSchemeList.getListGrid().setUseAllDataSourceFields(false);

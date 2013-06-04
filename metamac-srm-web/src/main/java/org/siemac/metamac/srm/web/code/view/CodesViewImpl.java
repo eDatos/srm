@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.code.view;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.NavigablePaginatedListGrid;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
@@ -39,14 +40,14 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
 
         // Codes
 
-        codesListGrid = new NavigablePaginatedListGrid(CodesPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
+        codesListGrid = new NavigablePaginatedListGrid(SrmWebConstants.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
                 getUiHandlers().retrieveCodes(firstResult, maxResults, searchSectionStack.getCodeWebCriteria());
             }
         });
-        codesListGrid.getListGrid().setAutoFitMaxRecords(CodesPresenter.ITEM_LIST_MAX_RESULTS);
+        codesListGrid.getListGrid().setAutoFitMaxRecords(SrmWebConstants.ITEM_LIST_MAX_RESULTS);
         codesListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         codesListGrid.getListGrid().setDataSource(new CodeDS());
         codesListGrid.getListGrid().setUseAllDataSourceFields(false);

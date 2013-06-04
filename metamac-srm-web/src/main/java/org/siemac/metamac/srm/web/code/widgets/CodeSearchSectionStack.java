@@ -2,9 +2,9 @@ package org.siemac.metamac.srm.web.code.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.widgets.ItemSearchSectionStack;
 import org.siemac.metamac.srm.web.code.model.ds.CodeDS;
-import org.siemac.metamac.srm.web.code.presenter.CodesPresenter;
 import org.siemac.metamac.srm.web.code.view.handlers.CodesUiHandlers;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 
@@ -20,7 +20,7 @@ public class CodeSearchSectionStack extends ItemSearchSectionStack {
 
     @Override
     public void retrieveResources() {
-        getUiHandlers().retrieveCodes(CodesPresenter.ITEM_LIST_FIRST_RESULT, CodesPresenter.ITEM_LIST_MAX_RESULTS, getCodeWebCriteria());
+        getUiHandlers().retrieveCodes(SrmWebConstants.ITEM_LIST_FIRST_RESULT, SrmWebConstants.ITEM_LIST_MAX_RESULTS, getCodeWebCriteria());
     }
 
     @Override

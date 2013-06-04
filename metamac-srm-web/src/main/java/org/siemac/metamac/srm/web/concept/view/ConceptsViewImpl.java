@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.concept.view;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.NavigablePaginatedListGrid;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
@@ -40,14 +41,14 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
 
         // Concepts
 
-        conceptsListGrid = new NavigablePaginatedListGrid(ConceptsPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
+        conceptsListGrid = new NavigablePaginatedListGrid(SrmWebConstants.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
                 getUiHandlers().retrieveConcepts(firstResult, maxResults, searchSectionStack.getConceptWebCriteria());
             }
         });
-        conceptsListGrid.getListGrid().setAutoFitMaxRecords(ConceptsPresenter.ITEM_LIST_MAX_RESULTS);
+        conceptsListGrid.getListGrid().setAutoFitMaxRecords(SrmWebConstants.ITEM_LIST_MAX_RESULTS);
         conceptsListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         conceptsListGrid.getListGrid().setDataSource(new ConceptDS());
         conceptsListGrid.getListGrid().setUseAllDataSourceFields(false);

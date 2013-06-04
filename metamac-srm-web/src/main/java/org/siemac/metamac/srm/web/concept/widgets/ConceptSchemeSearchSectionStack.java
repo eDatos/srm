@@ -5,9 +5,9 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourceSearchSectionStack;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
-import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
@@ -62,7 +62,7 @@ public class ConceptSchemeSearchSectionStack extends VersionableResourceSearchSe
 
     @Override
     public void retrieveResources() {
-        getUiHandlers().retrieveConceptSchemes(ConceptSchemeListPresenter.SCHEME_LIST_FIRST_RESULT, ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, getConceptSchemeWebCriteria());
+        getUiHandlers().retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS, getConceptSchemeWebCriteria());
     }
 
     public void setOperations(GetStatisticalOperationsResult result) {

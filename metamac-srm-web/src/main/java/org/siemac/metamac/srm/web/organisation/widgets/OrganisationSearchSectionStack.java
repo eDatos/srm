@@ -3,9 +3,9 @@ package org.siemac.metamac.srm.web.organisation.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.widgets.ItemSearchSectionStack;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
-import org.siemac.metamac.srm.web.organisation.presenter.OrganisationsPresenter;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationsUiHandlers;
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationWebCriteria;
@@ -23,7 +23,7 @@ public class OrganisationSearchSectionStack extends ItemSearchSectionStack {
 
     @Override
     public void retrieveResources() {
-        getUiHandlers().retrieveOrganisations(OrganisationsPresenter.ITEM_LIST_FIRST_RESULT, OrganisationsPresenter.ITEM_LIST_MAX_RESULTS, getOrganisationWebCriteria());
+        getUiHandlers().retrieveOrganisations(SrmWebConstants.ITEM_LIST_FIRST_RESULT, SrmWebConstants.ITEM_LIST_MAX_RESULTS, getOrganisationWebCriteria());
     }
 
     @Override

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -117,14 +118,14 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
 
         // Concepts scheme list
 
-        conceptSchemesList = new VersionableResourcePaginatedCheckListGrid(ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
+        conceptSchemesList = new VersionableResourcePaginatedCheckListGrid(SrmWebConstants.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
                 getUiHandlers().retrieveConceptSchemes(firstResult, maxResults, searchSectionStack.getConceptSchemeWebCriteria());
             }
         });
-        conceptSchemesList.getListGrid().setAutoFitMaxRecords(ConceptSchemeListPresenter.SCHEME_LIST_MAX_RESULTS);
+        conceptSchemesList.getListGrid().setAutoFitMaxRecords(SrmWebConstants.SCHEME_LIST_MAX_RESULTS);
         conceptSchemesList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         conceptSchemesList.getListGrid().setDataSource(new ConceptSchemeDS());
         conceptSchemesList.getListGrid().setUseAllDataSourceFields(false);

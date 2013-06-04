@@ -4,9 +4,9 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.widgets.ItemSearchSectionStack;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
-import org.siemac.metamac.srm.web.concept.presenter.ConceptsPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptsUiHandlers;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
@@ -24,7 +24,7 @@ public class ConceptSearchSectionStack extends ItemSearchSectionStack {
 
     @Override
     public void retrieveResources() {
-        getUiHandlers().retrieveConcepts(ConceptsPresenter.ITEM_LIST_FIRST_RESULT, ConceptsPresenter.ITEM_LIST_MAX_RESULTS, getConceptWebCriteria());
+        getUiHandlers().retrieveConcepts(SrmWebConstants.ITEM_LIST_FIRST_RESULT, SrmWebConstants.ITEM_LIST_MAX_RESULTS, getConceptWebCriteria());
     }
 
     @Override

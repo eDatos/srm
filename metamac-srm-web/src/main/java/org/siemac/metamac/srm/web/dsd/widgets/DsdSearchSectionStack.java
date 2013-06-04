@@ -5,11 +5,11 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.List;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourceSearchSectionStack;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
-import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
@@ -78,7 +78,7 @@ public class DsdSearchSectionStack extends VersionableResourceSearchSectionStack
 
     @Override
     public void retrieveResources() {
-        getUiHandlers().retrieveDsdList(DsdListPresenter.DSD_LIST_FIRST_RESULT, DsdListPresenter.DSD_LIST_MAX_RESULTS, getDataStructureDefinitionWebCriteria());
+        getUiHandlers().retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS, getDataStructureDefinitionWebCriteria());
     }
 
     public void setOperations(GetStatisticalOperationsResult result) {

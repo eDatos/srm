@@ -181,12 +181,14 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorCancelValidity()), MessageTypeEnum.ERROR);
-                retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
+                retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
             }
             @Override
             public void onWaitSuccess(CancelCodelistValidityResult result) {
                 ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistCanceledValidity()), MessageTypeEnum.SUCCESS);
-                retrieveCodelists(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
+                retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
             }
         });
     }

@@ -3,9 +3,9 @@ package org.siemac.metamac.srm.web.organisation.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourceSearchSectionStack;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
-import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListPresenter;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
@@ -43,8 +43,7 @@ public class OrganisationSchemeSearchSectionStack extends VersionableResourceSea
 
     @Override
     public void retrieveResources() {
-        getUiHandlers().retrieveOrganisationSchemes(OrganisationSchemeListPresenter.SCHEME_LIST_FIRST_RESULT, OrganisationSchemeListPresenter.SCHEME_LIST_MAX_RESULTS,
-                getOrganisationSchemeWebCriteria());
+        getUiHandlers().retrieveOrganisationSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS, getOrganisationSchemeWebCriteria());
     }
 
     public void setUiHandlers(OrganisationSchemeListUiHandlers uiHandlers) {

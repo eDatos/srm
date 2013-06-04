@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
@@ -114,14 +115,14 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
 
         // Codelist list
 
-        codelistsList = new VersionableResourcePaginatedCheckListGrid(CodelistListPresenter.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
+        codelistsList = new VersionableResourcePaginatedCheckListGrid(SrmWebConstants.SCHEME_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
                 getUiHandlers().retrieveCodelists(firstResult, maxResults, searchSectionStack.getCodelistWebCriteria());
             }
         });
-        codelistsList.getListGrid().setAutoFitMaxRecords(CodelistListPresenter.SCHEME_LIST_MAX_RESULTS);
+        codelistsList.getListGrid().setAutoFitMaxRecords(SrmWebConstants.SCHEME_LIST_MAX_RESULTS);
         codelistsList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         codelistsList.getListGrid().setDataSource(new CodelistDS());
         codelistsList.getListGrid().setUseAllDataSourceFields(false);
