@@ -125,7 +125,10 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
 
         dto2DoMapperSdmxSrm.conceptDtoToDo(source, target);
 
-        target.getCoreRepresentation().setIsExtended(isCoreRepresentationExtends); // Set if special requirements are required
+        // Set if special requirements are required
+        if (target.getCoreRepresentation() != null) {
+            target.getCoreRepresentation().setIsExtended(isCoreRepresentationExtends);
+        }
 
         return target;
     }
