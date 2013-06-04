@@ -8,6 +8,7 @@ public class OrganisationMetamacVisualisationResult extends ItemVisualisationRes
     private static final long    serialVersionUID = 1L;
 
     private OrganisationTypeEnum type;
+    private Boolean              specialOrganisationHasBeenPublished;
 
     public OrganisationMetamacVisualisationResult() {
     }
@@ -18,5 +19,13 @@ public class OrganisationMetamacVisualisationResult extends ItemVisualisationRes
 
     public void setType(OrganisationTypeEnum type) {
         this.type = type;
+    }
+
+    public Boolean getSpecialOrganisationHasBeenPublished() {
+        return specialOrganisationHasBeenPublished;
+    }
+
+    public void setSpecialOrganisationHasBeenPublished(Boolean specialOrganisationHasBeenPublished) {
+        this.specialOrganisationHasBeenPublished = specialOrganisationHasBeenPublished;
     }
 }

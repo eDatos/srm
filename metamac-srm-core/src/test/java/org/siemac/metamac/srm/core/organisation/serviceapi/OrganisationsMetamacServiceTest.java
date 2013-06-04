@@ -2205,6 +2205,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisation.getUrn());
                 assertEquals("ORGANISATION01", organisation.getCode());
                 assertEquals(OrganisationTypeEnum.ORGANISATION_UNIT, organisation.getType());
+                assertEquals(Boolean.FALSE, organisation.getSpecialOrganisationHasBeenPublished());
                 assertEquals("Nombre organisationScheme-1-v2-organisation-1", organisation.getName());
                 assertEquals("Descripción organisationScheme-1-v2-organisation-1", organisation.getDescription());
                 assertEquals(Long.valueOf(121), organisation.getItemIdDatabase());
@@ -2217,6 +2218,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
                 assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getUrn());
                 assertEquals("ORGANISATION02", organisation.getCode());
+                assertEquals(OrganisationTypeEnum.ORGANISATION_UNIT, organisation.getType());
+                assertEquals(null, organisation.getSpecialOrganisationHasBeenPublished());
                 assertEquals("Nombre organisationScheme-1-v2-organisation-2", organisation.getName());
                 assertEquals(null, organisation.getDescription());
                 MetamacAsserts.assertEqualsDate("2011-03-02 04:05:06", organisation.getCreatedDate());

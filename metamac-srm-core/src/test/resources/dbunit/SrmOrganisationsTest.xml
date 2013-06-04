@@ -568,7 +568,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="122"
-                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="[null]"
             />
             
             <TB_ORGANISATIONS

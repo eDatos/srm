@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.organisation.repositoryimpl;
 
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getBoolean;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getDate;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getLong;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
@@ -65,8 +66,9 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
     public List<OrganisationMetamacVisualisationResult> findOrganisationsByOrganisationSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException {
         // Find items. Returns only one row by item. NOTE: this query return null label if locale not exits for a code.
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT i.ID as ITEM_ID, i.CREATED_DATE, i.CREATED_DATE_TZ, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, o.ORGANISATION_TYPE ");
-        sb.append("FROM TB_ORGANISATIONS o ");
+        sb.append("SELECT i.ID as ITEM_ID, i.CREATED_DATE, i.CREATED_DATE_TZ, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, o.ORGANISATION_TYPE, om.SPECIAL_ORG_HAS_BEEN_PUBLISHED ");
+        sb.append("FROM TB_M_ORGANISATIONS om ");
+        sb.append("INNER JOIN TB_ORGANISATIONS o on om.TB_ORGANISATIONS = o.TB_ITEMS_BASE ");
         sb.append("INNER JOIN TB_ITEMS_BASE i on o.TB_ITEMS_BASE = i.ID ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale ");
@@ -125,6 +127,7 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
         target.setParentIdDatabase(getLong(source[i++]));
         target.setName(getString(source[i++]));
         target.setType(OrganisationTypeEnum.valueOf(getString(source[i++])));
+        target.setSpecialOrganisationHasBeenPublished(getBoolean(source[i++]));
         return target;
     }
 }
