@@ -350,7 +350,7 @@ Application SrmFacadeCore {
             "Finds concepts schemes by criteria with concepts that can be extended"
             MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeExtended(MetamacCriteria criteria) throws MetamacException;
   			"Finds concept schemes with concepts that can be enumerated representation for concepts"
-    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForConcepts(MetamacCriteria criteria)  throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForConcepts(String conceptUrn, MetamacCriteria criteria)  throws MetamacException;
 			"Finds concept schemes with concepts than can be numerator in quantity by criteria"
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(String conceptSchemeUrn, MetamacCriteria criteria)  throws MetamacException;
 			"Finds concept schemes with concepts than can be denominator in quantity by criteria"

@@ -514,7 +514,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 .build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
         PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesCanBeEnumeratedRepresentationForConcepts(getServiceContextAdministrador(),
-                conditions, pagingParameter);
+                conditions, pagingParameter, CONCEPT_SCHEME_15_V1_CONCEPT_1);
 
         // Validate
         assertEquals(1, conceptSchemeVersionPagedResult.getTotalRows());

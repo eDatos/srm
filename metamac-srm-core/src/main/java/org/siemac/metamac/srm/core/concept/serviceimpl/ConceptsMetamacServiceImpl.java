@@ -11,6 +11,7 @@ import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.ent.domain.ExternalItemRepository;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
@@ -230,23 +231,46 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
-            throws MetamacException {
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, String conceptUrn) throws MetamacException {
 
         // Find
         if (conditions == null) {
             conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build();
         }
+
+        ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
+        String conceptSchemeRelatedOperationUrn = "NULL";
+        ConceptSchemeVersionMetamac conceptScheme = retrieveConceptSchemeByUrn(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        ExternalItem relatedOperation = conceptScheme.getRelatedOperation();
+        if (relatedOperation != null) {
+            conceptSchemeRelatedOperationUrn = (relatedOperation.getUrn() != null) ? relatedOperation.getUrn() : conceptSchemeRelatedOperationUrn;
+        }
+
         // Add restrictions to be extended
         // concept scheme must be MEASURE
-        ConditionalCriteria roleCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.type())
-                .eq(ConceptSchemeTypeEnum.MEASURE).buildSingle();
+        ConditionalCriteria measureCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+        //
+                .withProperty(ConceptSchemeVersionMetamacProperties.type()).eq(ConceptSchemeTypeEnum.MEASURE)
+                //
+                .and()
+                //
+                .lbrace().withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation()).isNull()
+                //
+                .or()
+                //
+                .lbrace()
+                //
+                .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation()).isNotNull()//
+                .and()//
+                .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation().urn())//
+                .eq(conceptSchemeRelatedOperationUrn)//
+                .rbrace() //
+                .rbrace()//
+                .buildSingle();
 
-        // TODO comprobar restriccion
-        // ConditionalCriteria roleCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.type())
-        // .eq(ConceptSchemeTypeEnum.MEASURE).buildSingle();
+        conditions.add(measureCondition);
 
-        conditions.add(roleCondition);
         // concept scheme externally published
         ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
                 .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
@@ -256,7 +280,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return pagedResultConceptSchemeVersionToMetamac(conceptsPagedResult);
 
     }
-
     @Override
     public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ServiceContext ctx, String conceptSchemeUrn,
             List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {

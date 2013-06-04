@@ -2144,7 +2144,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         TaskInfo versioningResult = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
-            getOrganisationsMetamacService().createVersionFromTemporalOrganisationScheme(ctx, urnToCopy, versionType);
+            versioningResult = getOrganisationsMetamacService().createVersionFromTemporalOrganisationScheme(ctx, urnToCopy, versionType);
         } else {
             versioningResult = getOrganisationsMetamacService().versioningOrganisationScheme(ctx, urnToCopy, versionType);
         }
@@ -2428,7 +2428,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContext ctx, String conceptUrn, MetamacCriteria criteria)
+            throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
@@ -2437,7 +2438,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // Find
         PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ctx, sculptorCriteria.getConditions(),
-                sculptorCriteria.getPagingParameter());
+                sculptorCriteria.getPagingParameter(), conceptUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
