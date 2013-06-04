@@ -155,7 +155,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
                     result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
-                            codelistWebCriteria.getConceptUrn());
+                            codelistWebCriteria.getConceptUrn(), codelistWebCriteria.getVariableUrn());
                     break;
                 }
                 case VARIABLE_ELEMENT_WITH_CODE: {
@@ -213,8 +213,8 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CONCEPT_SCHEME_WITH_CONCEPT_ENUMERATED_REPRESENTATION: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    // TODO poner conceptUrn en el find
-                    result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getConceptUrn(),
+                            criteria);
                     break;
                 }
                 default:
