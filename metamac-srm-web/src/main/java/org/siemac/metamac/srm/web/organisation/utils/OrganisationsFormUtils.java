@@ -1,8 +1,10 @@
 package org.siemac.metamac.srm.web.organisation.utils;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 /**
@@ -51,31 +53,47 @@ public class OrganisationsFormUtils {
     // CONTACT
     // ---------------------------------------------------------------------------------------------
 
-    public static boolean canContactUrlBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
-        if (organisationSchemeDto == null) {
-            return false;
-        }
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeDto);
+    public static boolean canContactUrlBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto, ContactDto contactDto) {
+        return canContactMetadataBeEdited(organisationSchemeDto, contactDto);
     }
 
-    public static boolean canContactTelephoneBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
-        if (organisationSchemeDto == null) {
-            return false;
-        }
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeDto);
+    public static boolean canContactTelephoneBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto, ContactDto contactDto) {
+        return canContactMetadataBeEdited(organisationSchemeDto, contactDto);
     }
 
-    public static boolean canContactEmailBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
-        if (organisationSchemeDto == null) {
-            return false;
-        }
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeDto);
+    public static boolean canContactEmailBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto, ContactDto contactDto) {
+        return canContactMetadataBeEdited(organisationSchemeDto, contactDto);
     }
 
-    public static boolean canContactFaxBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
+    public static boolean canContactFaxBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto, ContactDto contactDto) {
+        return canContactMetadataBeEdited(organisationSchemeDto, contactDto);
+    }
+
+    private static boolean canContactMetadataBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto, ContactDto contactDto) {
         if (organisationSchemeDto == null) {
             return false;
         }
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeDto);
+
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(organisationSchemeDto.getLifeCycle().getProcStatus())) {
+            return false;
+        }
+
+        if (org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isOrganisationUnitScheme(organisationSchemeDto)) {
+
+            // ORGANISATION UNIT
+
+            return org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeDto);
+
+        } else {
+
+            // DATA PROVIDER, DATA CONSUMER and AGENCY SCHEME
+
+            if (BooleanUtils.isTrue(contactDto.getIsImported())) {
+                // if the contact was imported, cannot be modified
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 }

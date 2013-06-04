@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 public class OrganisationsClientSecurityUtils {
@@ -156,18 +157,57 @@ public class OrganisationsClientSecurityUtils {
     // CONTACTS
 
     public static boolean canCreateContact(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        // Maintainer is checked because the structure of an imported resource can not be modified
-        return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType())
-                && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto);
+        if (org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isOrganisationUnitScheme(organisationSchemeMetamacDto)) {
+
+            // ORGANISATION UNIT
+
+            return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType())
+                    && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto);
+        } else {
+
+            // AGENCY, DATA PROVIDER and DATA CONSUMER
+
+            return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType());
+        }
     }
 
     public static boolean canUpdateContact(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType());
+
+        if (org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isOrganisationUnitScheme(organisationSchemeMetamacDto)) {
+
+            // ORGANISATION UNIT
+
+            return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType());
+
+        } else {
+
+            // AGENCY, DATA PROVIDER and DATA CONSUMER
+
+            return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType());
+        }
     }
 
-    public static boolean canDeleteContact(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        // Maintainer is checked because the structure of an imported resource can not be modified
-        return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType())
-                && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto);
+    public static boolean canDeleteContact(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, ContactDto contactDto) {
+
+        if (CommonUtils.isMaintainableArtefactPublished(organisationSchemeMetamacDto.getLifeCycle().getProcStatus())) {
+            return false;
+        }
+
+        if (org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isOrganisationUnitScheme(organisationSchemeMetamacDto)) {
+
+            // ORGANISATION UNIT
+
+            return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType())
+                    && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto);
+        } else {
+
+            // AGENCY, DATA PROVIDER and DATA CONSUMER
+
+            if (BooleanUtils.isTrue(contactDto.getIsImported())) {
+                return false;
+            }
+
+            return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType());
+        }
     }
 }

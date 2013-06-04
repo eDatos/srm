@@ -4,7 +4,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
-import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.model.ds.ContactDS;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsFormUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
@@ -145,20 +144,18 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         contactDto.setName((InternationalStringDto) editionForm.getValue(ContactDS.NAME));
         contactDto.setOrganisationUnit((InternationalStringDto) editionForm.getValue(ContactDS.ORGANISATION_UNIT));
         contactDto.setResponsibility((InternationalStringDto) editionForm.getValue(ContactDS.RESPONSIBILITY));
-        if (CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeMetamacDto)) {
-            // URLs
-            contactDto.getUrls().clear();
-            contactDto.getUrls().addAll(((MultiTextItem) editionForm.getItem(ContactDS.URL)).getValues());
-            // Telephones
-            contactDto.getTelephones().clear();
-            contactDto.getTelephones().addAll(((MultiTextItem) editionForm.getItem(ContactDS.TELEPHONE)).getValues());
-            // Emails
-            contactDto.getEmails().clear();
-            contactDto.getEmails().addAll(((MultiTextItem) editionForm.getItem(ContactDS.EMAIL)).getValues());
-            // Faxes
-            contactDto.getFaxes().clear();
-            contactDto.getFaxes().addAll(((MultiTextItem) editionForm.getItem(ContactDS.FAX)).getValues());
-        }
+        // URLs
+        contactDto.getUrls().clear();
+        contactDto.getUrls().addAll(((MultiTextItem) editionForm.getItem(ContactDS.URL)).getValues());
+        // Telephones
+        contactDto.getTelephones().clear();
+        contactDto.getTelephones().addAll(((MultiTextItem) editionForm.getItem(ContactDS.TELEPHONE)).getValues());
+        // Emails
+        contactDto.getEmails().clear();
+        contactDto.getEmails().addAll(((MultiTextItem) editionForm.getItem(ContactDS.EMAIL)).getValues());
+        // Faxes
+        contactDto.getFaxes().clear();
+        contactDto.getFaxes().addAll(((MultiTextItem) editionForm.getItem(ContactDS.FAX)).getValues());
         return contactDto;
     }
 
@@ -214,7 +211,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return OrganisationsFormUtils.canContactUrlBeEdited(organisationSchemeMetamacDto);
+                return OrganisationsFormUtils.canContactUrlBeEdited(organisationSchemeMetamacDto, contactDto);
             }
         };
     }
@@ -224,7 +221,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !OrganisationsFormUtils.canContactUrlBeEdited(organisationSchemeMetamacDto);
+                return !OrganisationsFormUtils.canContactUrlBeEdited(organisationSchemeMetamacDto, contactDto);
             }
         };
     }
@@ -236,7 +233,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return OrganisationsFormUtils.canContactTelephoneBeEdited(organisationSchemeMetamacDto);
+                return OrganisationsFormUtils.canContactTelephoneBeEdited(organisationSchemeMetamacDto, contactDto);
             }
         };
     }
@@ -246,7 +243,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !OrganisationsFormUtils.canContactTelephoneBeEdited(organisationSchemeMetamacDto);
+                return !OrganisationsFormUtils.canContactTelephoneBeEdited(organisationSchemeMetamacDto, contactDto);
             }
         };
     }
@@ -258,7 +255,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return OrganisationsFormUtils.canContactEmailBeEdited(organisationSchemeMetamacDto);
+                return OrganisationsFormUtils.canContactEmailBeEdited(organisationSchemeMetamacDto, contactDto);
             }
         };
     }
@@ -268,7 +265,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !OrganisationsFormUtils.canContactEmailBeEdited(organisationSchemeMetamacDto);
+                return !OrganisationsFormUtils.canContactEmailBeEdited(organisationSchemeMetamacDto, contactDto);
             }
         };
     }
@@ -280,7 +277,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return OrganisationsFormUtils.canContactFaxBeEdited(organisationSchemeMetamacDto);
+                return OrganisationsFormUtils.canContactFaxBeEdited(organisationSchemeMetamacDto, contactDto);
             }
         };
     }
@@ -290,7 +287,7 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !OrganisationsFormUtils.canContactFaxBeEdited(organisationSchemeMetamacDto);
+                return !OrganisationsFormUtils.canContactFaxBeEdited(organisationSchemeMetamacDto, contactDto);
             }
         };
     }

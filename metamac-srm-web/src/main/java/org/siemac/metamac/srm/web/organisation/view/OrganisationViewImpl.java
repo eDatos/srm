@@ -192,7 +192,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             public void onSelectionChanged(SelectionEvent event) {
                 if (contactListGrid.getSelectedRecords().length > 0) {
                     // Show delete button
-                    showContactListGridDeleteButton();
+                    showContactListGridDeleteButton(contactListGrid.getSelectedRecords());
                     if (contactListGrid.getSelectedRecords().length > 1) {
                         contactMainFormLayout.hide();
                     }
@@ -573,9 +573,21 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         return identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false);
     }
 
-    private void showContactListGridDeleteButton() {
-        if (OrganisationsClientSecurityUtils.canDeleteContact(organisationSchemeMetamacDto)) {
+    private void showContactListGridDeleteButton(ListGridRecord[] records) {
+        boolean canAllContactsBeDeleted = true;
+
+        for (ListGridRecord record : records) {
+            ContactDto contactDto = ((ContactRecord) record).getContactDto();
+            if (!OrganisationsClientSecurityUtils.canDeleteContact(organisationSchemeMetamacDto, contactDto)) {
+                canAllContactsBeDeleted = false;
+                break;
+            }
+        }
+
+        if (canAllContactsBeDeleted) {
             contactDeleteButton.show();
+        } else {
+            contactDeleteButton.hide();
         }
     }
 
