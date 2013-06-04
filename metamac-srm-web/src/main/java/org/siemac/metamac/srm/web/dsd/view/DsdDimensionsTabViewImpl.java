@@ -519,12 +519,21 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     }
 
     @Override
+    public void setDefaultConceptSchemeEnumeratedRepresentation(RelatedResourceDto conceptScheme) {
+        // This is only call when we are creating a measure dimension
+        setEnumeratedRepresentationTypeInEditionForm();
+        setConceptSchemeEnumerationRepresentationInEditionForm(conceptScheme);
+        editionForm.markForRedraw();
+        editionForm.validate();
+    }
+
+    @Override
     public DimensionComponentDto getDsdDimension() {
         // Id
         dimensionComponentDto.setCode(editionForm.getItem(DimensionDS.CODE).getVisible() ? editionForm.getValueAsString(DimensionDS.CODE) : null);
 
         // Type
-        dimensionComponentDto.setTypeDimensionComponent(CommonUtils.getTypeDimensionComponent(editionForm.getValueAsString(DimensionDS.TYPE)));
+        dimensionComponentDto.setTypeDimensionComponent(getDimensionTypeFromEditionForm());
         dimensionComponentDto.setSpecialDimensionType(CommonUtils.getSpecialDimensionType(editionForm.getValueAsString(DimensionDS.TYPE)));
 
         // Concept
@@ -549,8 +558,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             if (RepresentationTypeEnum.ENUMERATION.equals(representationType)) {
                 dimensionComponentDto.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.ENUMERATION);
                 if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                    dimensionComponentDto.getLocalRepresentation().setEnumeration(
-                            ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)).getRelatedResourceDto());
+                    dimensionComponentDto.getLocalRepresentation().setEnumeration(getConceptSchemeEnumeratedRepresentationFromEditionForm());
                 } else {
                     dimensionComponentDto.getLocalRepresentation().setEnumeration(
                             ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)).getRelatedResourceDto());
@@ -577,6 +585,14 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         dimensionComponentDto.getAnnotations().addAll(editionAnnotationsPanel.getAnnotations());
 
         return dimensionComponentDto;
+    }
+
+    private TypeDimensionComponent getDimensionTypeFromEditionForm() {
+        return CommonUtils.getTypeDimensionComponent(editionForm.getValueAsString(DimensionDS.TYPE));
+    }
+
+    private RelatedResourceDto getConceptSchemeEnumeratedRepresentationFromEditionForm() {
+        return ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)).getRelatedResourceDto();
     }
 
     @Override
@@ -703,8 +719,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                 // ENUMERATED REPRESENTATION
 
-                editionForm.setValue(DimensionDS.REPRESENTATION_TYPE, RepresentationTypeEnum.ENUMERATION.toString());
-                editionForm.setValue(DimensionDS.REPRESENTATION_TYPE_VIEW, getCoreMessages().representationTypeEnumENUMERATION());
+                setEnumeratedRepresentationTypeInEditionForm();
 
                 if (RelatedResourceTypeEnum.CODELIST.equals(dimensionComponentDto.getLocalRepresentation().getEnumeration().getType())) {
 
@@ -722,10 +737,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                     // ConceptScheme
 
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
-                        ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)).setRelatedResource(dimensionComponentDto.getLocalRepresentation()
-                                .getEnumeration());
-                        ((RelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW)).setRelatedResource(dimensionComponentDto.getLocalRepresentation()
-                                .getEnumeration());
+
+                        setConceptSchemeEnumerationRepresentationInEditionForm(dimensionComponentDto.getLocalRepresentation().getEnumeration());
                     }
                 }
 
@@ -746,6 +759,16 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Annotations
         editionAnnotationsPanel.setAnnotations(dimensionComponentDto.getAnnotations(), dataStructureDefinitionMetamacDto);
+    }
+
+    private void setEnumeratedRepresentationTypeInEditionForm() {
+        editionForm.setValue(DimensionDS.REPRESENTATION_TYPE, RepresentationTypeEnum.ENUMERATION.toString());
+        editionForm.setValue(DimensionDS.REPRESENTATION_TYPE_VIEW, getCoreMessages().representationTypeEnumENUMERATION());
+    }
+
+    private void setConceptSchemeEnumerationRepresentationInEditionForm(RelatedResourceDto relatedResourceDto) {
+        ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)).setRelatedResource(relatedResourceDto);
+        ((RelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW)).setRelatedResource(relatedResourceDto);
     }
 
     @Override
@@ -978,8 +1001,21 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                         // Set selected concepts in form
                         ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.CONCEPT)).setRelatedResource(selectedConcept);
 
-                        // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
-                        ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)).clearRelatedResource();
+                        TypeDimensionComponent dimensionType = getDimensionTypeFromEditionForm();
+                        if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionType)) {
+                            // If the dimension is a measure dimension, the concept select may have an enumerated representation (with a conceptScheme). If so, set this conceptScheme as the default
+                            // enumerated representation of the dimension (only if the enumerated representation of the dimension was empty)
+
+                            if (selectedConcept != null) {
+                                RelatedResourceDto conceptSchemeEnumeratedRepresentation = getConceptSchemeEnumeratedRepresentationFromEditionForm();
+                                if (conceptSchemeEnumeratedRepresentation == null) {
+                                    getUiHandlers().retrieveConceptSchemeEnumeratedRepresentationFromConcept(selectedConcept.getUrn());
+                                }
+                            }
+                        } else {
+                            // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
+                            ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)).clearRelatedResource();
+                        }
 
                         editionForm.markForRedraw();
                         editionForm.validate(false);

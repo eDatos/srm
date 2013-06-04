@@ -8,6 +8,7 @@ import java.util.Set;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
@@ -21,6 +22,8 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdDimensionsTabUiHandlers;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
@@ -39,6 +42,8 @@ import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
@@ -101,6 +106,8 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         boolean validate();
 
         void setConceptsAsRole(List<RelatedResourceDto> roles, int firstResult, int totalResults);
+
+        void setDefaultConceptSchemeEnumeratedRepresentation(RelatedResourceDto conceptScheme);
 
         HasClickHandlers getSave();
         HasClickHandlers getDelete();
@@ -338,6 +345,27 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
                         getView().setConceptsForDimensionRole(result);
                     }
                 });
+    }
+
+    @Override
+    public void retrieveConceptSchemeEnumeratedRepresentationFromConcept(String conceptUrn) {
+        dispatcher.execute(new GetConceptAction(conceptUrn), new WaitingAsyncCallback<GetConceptResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptResult result) {
+                ConceptMetamacDto concept = result.getConceptDto();
+                if (concept.getCoreRepresentation() != null && RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())) {
+                    RelatedResourceDto enumeration = concept.getCoreRepresentation().getEnumeration();
+                    if (enumeration != null && RelatedResourceTypeEnum.CONCEPT_SCHEME.equals(enumeration.getType())) {
+                        getView().setDefaultConceptSchemeEnumeratedRepresentation(enumeration);
+                    }
+                }
+            }
+        });
     }
 
     private void setDsdDimensions(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto, List<DimensionComponentDto> dimensionComponentDtos) {
