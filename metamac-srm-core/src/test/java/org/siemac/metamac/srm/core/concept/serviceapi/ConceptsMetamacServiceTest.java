@@ -32,6 +32,7 @@ import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
@@ -66,6 +67,8 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
+import com.arte.statistic.sdmx.srm.core.code.domain.Code;
+import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptProperties;
@@ -525,25 +528,79 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     @Override
     public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityNumerator() throws Exception {
-        // TODO testFindConceptSchemesByConditionWithConceptsCanBeQuantityNumerator
+        String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.id()).ascending().distinctRoot()
+                .build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemesPagedResult = conceptsService.findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(getServiceContextAdministrador(),
+                conceptSchemeUrn, conditions, pagingParameter);
+
+        // Validate
+        assertEquals(2, conceptSchemesPagedResult.getTotalRows());
+        assertEquals(2, conceptSchemesPagedResult.getValues().size());
+
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_4_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(conceptSchemesPagedResult.getValues().size(), i);
     }
 
     @Test
     @Override
     public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityDenominator() throws Exception {
-        // TODO testFindConceptSchemesByConditionWithConceptsCanBeQuantityDenominator
+        String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.id()).ascending().distinctRoot()
+                .build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemesPagedResult = conceptsService.findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(getServiceContextAdministrador(),
+                conceptSchemeUrn, conditions, pagingParameter);
+
+        // Validate
+        assertEquals(2, conceptSchemesPagedResult.getTotalRows());
+        assertEquals(2, conceptSchemesPagedResult.getValues().size());
+
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_4_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(conceptSchemesPagedResult.getValues().size(), i);
     }
 
     @Test
     @Override
     public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity() throws Exception {
-        // TODO testFindConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity
+        String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.id()).ascending().distinctRoot()
+                .build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemesPagedResult = conceptsService.findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(getServiceContextAdministrador(),
+                conceptSchemeUrn, conditions, pagingParameter);
+
+        // Validate
+        assertEquals(2, conceptSchemesPagedResult.getTotalRows());
+        assertEquals(2, conceptSchemesPagedResult.getValues().size());
+
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_4_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(conceptSchemesPagedResult.getValues().size(), i);
     }
 
     @Override
     @Test
     public void testFindCodelistsByConditionWithCodesCanBeQuantityUnit() throws Exception {
-        // TODO testFindCodelistsByConditionWithCodesCanBeQuantityUnit
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.id()).ascending().distinctRoot().build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<CodelistVersionMetamac> codelistsPagedResult = conceptsService.findCodelistsByConditionWithCodesCanBeQuantityUnit(getServiceContextAdministrador(), conditions, pagingParameter);
+
+        // Validate
+        assertEquals(3, codelistsPagedResult.getTotalRows());
+        assertEquals(3, codelistsPagedResult.getValues().size());
+
+        int i = 0;
+        assertEquals(CODELIST_7_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CODELIST_8_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CODELIST_9_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(codelistsPagedResult.getValues().size(), i);
     }
 
     @Test
@@ -3484,26 +3541,82 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     @Override
     public void testFindConceptsCanBeQuantityDenominator() throws Exception {
-        // TODO testFindConceptsCanBeQuantityDenominator
+        String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
+                .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeQuantityDenominator(getServiceContextAdministrador(), conceptSchemeUrn, conditions, pagingParameter);
+
+        // Validate
+        assertEquals(4, conceptsPagedResult.getTotalRows());
+        assertEquals(4, conceptsPagedResult.getValues().size());
+
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(conceptsPagedResult.getValues().size(), i);
     }
 
     @Test
     @Override
     public void testFindConceptsCanBeQuantityNumerator() throws Exception {
-        // TODO testFindConceptsCanBeQuantityNumerator
+        String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
+                .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeQuantityNumerator(getServiceContextAdministrador(), conceptSchemeUrn, conditions, pagingParameter);
 
+        // Validate
+        assertEquals(4, conceptsPagedResult.getTotalRows());
+        assertEquals(4, conceptsPagedResult.getValues().size());
+
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(conceptsPagedResult.getValues().size(), i);
     }
 
     @Test
     @Override
     public void testFindConceptsCanBeQuantityBaseQuantity() throws Exception {
-        // TODO testFindConceptsCanBeQuantityBaseQuantity
+        String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
+                .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeQuantityBaseQuantity(getServiceContextAdministrador(), conceptSchemeUrn, conditions, pagingParameter);
+
+        // Validate
+        assertEquals(4, conceptsPagedResult.getTotalRows());
+        assertEquals(4, conceptsPagedResult.getValues().size());
+
+        int i = 0;
+        assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(conceptsPagedResult.getValues().size(), i);
     }
 
     @Override
     @Test
     public void testFindCodesCanBeQuantityUnit() throws Exception {
-        // TODO testFindCodesCanBeQuantityUnit
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Code.class).orderBy(CodeProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
+                .orderBy(CodeProperties.id()).ascending().distinctRoot().build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<CodeMetamac> codesPagedResult = conceptsService.findCodesCanBeQuantityUnit(getServiceContextAdministrador(), conditions, pagingParameter);
+
+        // Validate
+        assertEquals(2, codesPagedResult.getTotalRows());
+        assertEquals(2, codesPagedResult.getValues().size());
+
+        int i = 0;
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE01", codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE02", codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(codesPagedResult.getValues().size(), i);
     }
 
     @Override
