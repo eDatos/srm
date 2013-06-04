@@ -666,7 +666,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return OrganisationsFormUtils.canOrganisationCodeBeEdited(organisationSchemeMetamacDto);
+                return OrganisationsFormUtils.canOrganisationCodeBeEdited(organisationSchemeMetamacDto, organisationDto);
             }
         };
     }
@@ -676,7 +676,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !OrganisationsFormUtils.canOrganisationCodeBeEdited(organisationSchemeMetamacDto);
+                return !OrganisationsFormUtils.canOrganisationCodeBeEdited(organisationSchemeMetamacDto, organisationDto);
             }
         };
     }
