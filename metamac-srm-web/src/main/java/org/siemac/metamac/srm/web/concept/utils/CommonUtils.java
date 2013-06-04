@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
@@ -19,6 +20,7 @@ public class CommonUtils {
     private static LinkedHashMap<String, String> conceptSchemeTypeHashMap     = null;
     private static LinkedHashMap<String, String> conceptRoleHashMap           = null;
     private static LinkedHashMap<String, String> conceptFacetValueTypeHashMap = null;
+    private static LinkedHashMap<String, String> quantityTypeHashMap          = null;
 
     public static LinkedHashMap<String, String> getConceptTypeHashMap(List<ConceptTypeDto> conceptTypeDtos) {
         LinkedHashMap<String, String> hashMap = new LinkedHashMap<String, String>();
@@ -79,6 +81,22 @@ public class CommonUtils {
 
     public static String getRelatedOperationCode(ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto) {
         return conceptSchemeMetamacDto.getRelatedOperation() != null ? conceptSchemeMetamacDto.getRelatedOperation().getCode() : null;
+    }
+
+    public static String getQuantityTypeName(QuantityTypeEnum quantityType) {
+        return quantityType != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().quantityTypeEnum() + quantityType.name()) : null;
+    }
+
+    public static LinkedHashMap<String, String> getQuantityTypeHashMap() {
+        if (quantityTypeHashMap == null) {
+            quantityTypeHashMap = new LinkedHashMap<String, String>();
+            quantityTypeHashMap.put(new String(), new String());
+            for (QuantityTypeEnum c : QuantityTypeEnum.values()) {
+                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().quantityTypeEnum() + c.getName());
+                quantityTypeHashMap.put(c.toString(), value);
+            }
+        }
+        return quantityTypeHashMap;
     }
 
     /**
