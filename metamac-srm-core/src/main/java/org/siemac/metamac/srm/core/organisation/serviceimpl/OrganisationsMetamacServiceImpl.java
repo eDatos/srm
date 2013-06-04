@@ -294,8 +294,8 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
                 }
             }
             // ===============================================================
-            // DANGEROUS CODE: For associate a temporary to a permanent organization, we need to clear the context to avoid delete
-            // the temporary scheme with the previous temporary organization.
+            // DANGEROUS CODE: In spite of to remove item from temporal scheme and then associate to another scheme, hibernate delete this item when delete item scheme. For this, we need to clear the
+            // context to avoid delete the temporary scheme with the previous temporary organisation when delete the temporary item scheme.
             entityManager.flush();
             entityManager.clear();
             // ===============================================================
