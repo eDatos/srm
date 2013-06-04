@@ -304,7 +304,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptRoleEnum conceptRole, int firstResult, int maxResults, String criteria, String conceptUrn) {
+    public void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptRoleEnum conceptRole, String variableUrn, int firstResult, int maxResults, String criteria, String conceptUrn) {
 
         if (ConceptRoleEnum.MEASURE_DIMENSION.equals(conceptRole)) {
 
@@ -312,6 +312,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria(criteria);
             conceptSchemeWebCriteria.setConceptUrn(conceptUrn);
+
             dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_CONCEPT_ENUMERATED_REPRESENTATION, firstResult, maxResults, conceptSchemeWebCriteria),
                     new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
@@ -330,7 +331,16 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             // for the rest of the concepts, the enumerated representation must be a codelist
 
             CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
-            codelistWebCriteria.setConceptUrn(conceptUrn);
+            if (!StringUtils.isBlank(variableUrn)) {
+
+                // The concept URN is not set in the criteria because if it were set, the query to find the codelists will take into account the concept that is in the DB, and we want to take into
+                // account the concept that is being edited at this moment (in the facade, if the concept is null, take into account the variable passed as paramter, not the one that is in the DB)
+
+                codelistWebCriteria.setVariableUrn(variableUrn);
+
+            } else {
+                codelistWebCriteria.setConceptUrn(conceptUrn);
+            }
 
             dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_CONCEPT_ENUMERATED_REPRESENTATION, firstResult, maxResults, codelistWebCriteria),
                     new WaitingAsyncCallback<GetRelatedResourcesResult>() {
