@@ -178,6 +178,45 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                             codelistOpennessLevelVisualisationWebCriteria.getDsdDimensionUrn());
                     break;
                 }
+                case CODELIST_WITH_QUANTITY_UNIT: {
+                    // TODO
+                    break;
+                }
+                case CODE_WITH_QUANTITY_UNIT: {
+                    // TODO
+                    break;
+                }
+                case CONCEPT_SCHEME_WITH_QUANTITY_NUMERATOR: {
+                    // TODO
+                    break;
+                }
+                case CONCEPT_WITH_QUANTITY_NUMERATOR: {
+                    // TODO
+                    break;
+                }
+                case CONCEPT_SCHEME_WITH_QUANTITY_DENOMINATOR: {
+                    // TODO
+                    break;
+                }
+                case CONCEPT_WITH_QUANTITY_DENOMINATOR: {
+
+                    break;
+                }// TODO
+                case CONCEPT_SCHEME_WITH_QUANTITY_BASE_QUANTITY: {
+
+                    break;
+                }// TODO
+                case CONCEPT_WITH_QUANTITY_BASE_QUANTITY: {
+                    // TODO
+                    break;
+                }
+                case CONCEPT_SCHEME_WITH_CONCEPT_ENUMERATED_REPRESENTATION: {
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    // TODO poner conceptUrn en el find
+                    result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
                 default:
                     throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, MetamacSrmWeb.getCoreMessages().exception_common_unknown());
             }
