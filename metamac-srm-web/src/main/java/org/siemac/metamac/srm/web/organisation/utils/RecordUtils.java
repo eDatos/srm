@@ -40,7 +40,7 @@ public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordU
         record.setCode(organisation.getCode());
         record.setName(organisation.getName());
         record.setUrn(organisation.getUrn());
-        // TODO OrganisationSpecialHasBeenPublished
+        record.setOrganisationSpecialHasBeenPublished(organisation.getSpecialOrganisationHasBeenPublished());
         return record;
     }
 
