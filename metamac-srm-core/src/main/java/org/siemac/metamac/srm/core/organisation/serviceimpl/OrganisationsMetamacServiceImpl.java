@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
@@ -92,6 +95,9 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     @Autowired
     @Qualifier("organisationsCopyCallbackMetamac")
     private ItemSchemesCopyCallback       organisationsCopyCallback;
+
+    @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
+    protected EntityManager               entityManager;
 
     public OrganisationsMetamacServiceImpl() {
     }
@@ -276,16 +282,24 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         if (SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
             Map<String, Item> currentItemMap = SrmServiceUtils.createMapOfItemsByUrn(organisationSchemeVersion.getItems());
-            for (Item item : organisationSchemeTemporalVersion.getItems()) {
+            for (Item item : new ArrayList<Item>(organisationSchemeTemporalVersion.getItems())) {
                 String urnFromTemporal = GeneratorUrnUtils.makeUrnFromTemporal(item.getNameableArtefact().getUrn());
                 if (!currentItemMap.containsKey(urnFromTemporal)) {
                     // Add
-                    item.setItemSchemeVersion(organisationSchemeVersion);
-                    item.setItemSchemeVersionFirstLevel(organisationSchemeVersion); // IMPORTANT! These types of organisations have only one level
-                    item.getNameableArtefact().setUrn(GeneratorUrnUtils.makeUrnFromTemporal(urnFromTemporal));
+                    organisationSchemeVersion.addItem(item);
+                    organisationSchemeVersion.addItemsFirstLevel(item);
+
+                    item.getNameableArtefact().setUrn(urnFromTemporal);
                     item.getNameableArtefact().setUrnProvider(GeneratorUrnUtils.makeUrnFromTemporal(item.getNameableArtefact().getUrnProvider()));
                 }
             }
+            // ===============================================================
+            // DANGEROUS CODE: For associate a temporary to a permanent organization, we need to clear the context to avoid delete
+            // the temporary scheme with the previous temporary organization.
+            entityManager.flush();
+            entityManager.clear();
+            // ===============================================================
+
         } else {
             // Add items is not supported in temporal version for another types.
         }
@@ -293,6 +307,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // Delete temporal version
         deleteOrganisationScheme(ctx, organisationSchemeTemporalVersion.getMaintainableArtefact().getUrn());
 
+        organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn());
         return organisationSchemeVersion;
     }
 
