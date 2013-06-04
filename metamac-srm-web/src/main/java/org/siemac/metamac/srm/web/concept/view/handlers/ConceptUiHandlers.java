@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.concept.view.handlers;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 
 public interface ConceptUiHandlers extends BaseConceptUiHandlers {
 
@@ -16,7 +17,7 @@ public interface ConceptUiHandlers extends BaseConceptUiHandlers {
 
     void retrieveConceptTypes();
 
-    void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn);
+    void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptRoleEnum conceptRoleEnum, int firstResult, int maxResults, String criteria, String conceptUrn);
 
     void retrieveVariables(int firstResult, int maxResults, String criteria, String variableFamilyUrn);
     void retrieveVariableFamilies(int firstResult, int maxResults, String criteria);

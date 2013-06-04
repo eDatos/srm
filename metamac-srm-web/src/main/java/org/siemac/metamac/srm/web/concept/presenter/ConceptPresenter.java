@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -52,6 +53,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
@@ -110,7 +112,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
         void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos);
 
-        void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result);
+        void setCodelistsOrConceptSchemesForEnumeratedRepresentation(GetRelatedResourcesResult result);
 
         void setConceptSchemesWithConceptsThatCanBeRole(List<RelatedResourceDto> conceptSchemes);
         void setConceptSchemesWithConceptsThatCanBeExtended(List<RelatedResourceDto> conceptSchemes);
@@ -302,19 +304,47 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn) {
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_CONCEPT_ENUMERATED_REPRESENTATION, firstResult, maxResults, new CodelistWebCriteria(criteria,
-                conceptUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+    public void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptRoleEnum conceptRole, int firstResult, int maxResults, String criteria, String conceptUrn) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setCodelistsForEnumeratedRepresentation(result);
-            }
-        });
+        if (ConceptRoleEnum.MEASURE_DIMENSION.equals(conceptRole)) {
+
+            // the enumerated representation of a measure dimension concept must be a concept scheme
+
+            ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria(criteria);
+            conceptSchemeWebCriteria.setConceptUrn(conceptUrn);
+            dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_CONCEPT_ENUMERATED_REPRESENTATION, firstResult, maxResults, conceptSchemeWebCriteria),
+                    new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                        @Override
+                        public void onWaitFailure(Throwable caught) {
+                            ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        }
+                        @Override
+                        public void onWaitSuccess(GetRelatedResourcesResult result) {
+                            getView().setCodelistsOrConceptSchemesForEnumeratedRepresentation(result);
+                        }
+                    });
+
+        } else {
+
+            // for the rest of the concepts, the enumerated representation must be a codelist
+
+            CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
+            codelistWebCriteria.setConceptUrn(conceptUrn);
+
+            dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_CONCEPT_ENUMERATED_REPRESENTATION, firstResult, maxResults, codelistWebCriteria),
+                    new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                        @Override
+                        public void onWaitFailure(Throwable caught) {
+                            ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        }
+                        @Override
+                        public void onWaitSuccess(GetRelatedResourcesResult result) {
+                            getView().setCodelistsOrConceptSchemesForEnumeratedRepresentation(result);
+                        }
+                    });
+        }
     }
 
     @Override
@@ -461,5 +491,4 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     public void goToConceptScheme(String urn) {
         goTo(PlaceRequestUtils.buildAbsoluteConceptSchemePlaceRequest(urn));
     }
-
 }

@@ -7,6 +7,7 @@ public class ConceptSchemeWebCriteria extends VersionableResourceWebCriteria {
     private static final long     serialVersionUID = 1L;
 
     private String                dsdUrn;
+    private String                conceptUrn;
     private String                statisticalOperationUrn;
     private ConceptSchemeTypeEnum conceptSchemeTypeEnum;
 
@@ -44,5 +45,13 @@ public class ConceptSchemeWebCriteria extends VersionableResourceWebCriteria {
 
     public void setConceptSchemeTypeEnum(ConceptSchemeTypeEnum conceptSchemeTypeEnum) {
         this.conceptSchemeTypeEnum = conceptSchemeTypeEnum;
+    }
+
+    public String getConceptUrn() {
+        return conceptUrn;
+    }
+
+    public void setConceptUrn(String conceptUrn) {
+        this.conceptUrn = conceptUrn;
     }
 }

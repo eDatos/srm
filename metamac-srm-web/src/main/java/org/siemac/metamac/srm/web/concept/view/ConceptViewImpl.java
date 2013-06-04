@@ -123,7 +123,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private SearchMultipleRelatedResourcePaginatedWindow searchRolesWindow;
     private SearchRelatedResourcePaginatedWindow         searchExtendsWindow;
     private SearchRelatedResourcePaginatedWindow         searchVariableWindow;
-    private SearchRelatedResourcePaginatedWindow         searchCodelistForEnumeratedRepresentationWindow;
+    private SearchRelatedResourcePaginatedWindow         searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow;
 
     @Inject
     public ConceptViewImpl() {
@@ -270,7 +270,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewTextItem representation = new ViewTextItem(RepresentationDS.TYPE, getConstants().representation());
         representation.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
         ViewTextItem representationView = new ViewTextItem(RepresentationDS.TYPE_VIEW, getConstants().representation());
-        RelatedResourceLinkItem enumeratedRepresentation = new RelatedResourceLinkItem(RepresentationDS.ENUMERATED_CODELIST, getConstants().codelist(), getCustomLinkItemNavigationClickHandler());
+        RelatedResourceLinkItem enumeratedRepresentation = new RelatedResourceLinkItem(RepresentationDS.ENUMERATED, getConstants().codelist(), getCustomLinkItemNavigationClickHandler());
         enumeratedRepresentation.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
@@ -376,13 +376,12 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewTextItem staticRepresentationType = new ViewTextItem(RepresentationDS.TYPE_VIEW, getConstants().representation());
         staticRepresentationType.setShowIfCondition(getStaticRepresentationTypeFormItemIfFunction());
 
-        // Enumerated representation (Codelist)
+        // Enumerated representation: Codelist or ConceptScheme (only for concepts with sdmxRelatedArtefact = MEASURE_DIMENSION)
 
-        SearchRelatedResourceLinkItem codelist = createEnumeratedRepresentationItem(RepresentationDS.ENUMERATED_CODELIST, MetamacSrmWeb.getConstants().codelist());
+        SearchRelatedResourceLinkItem codelist = createEnumeratedRepresentationItem(RepresentationDS.ENUMERATED, MetamacSrmWeb.getConstants().codelist());
         codelist.setShowIfCondition(getEnumeratedRepresentationFormItemIfFunction()); // Shown in editionMode, only when the enumerated representation is editable
 
-        RelatedResourceLinkItem codelistView = new RelatedResourceLinkItem(RepresentationDS.ENUMERATED_CODELIST_VIEW, MetamacSrmWeb.getConstants().codelist(),
-                getCustomLinkItemNavigationClickHandler());
+        RelatedResourceLinkItem codelistView = new RelatedResourceLinkItem(RepresentationDS.ENUMERATED_VIEW, MetamacSrmWeb.getConstants().codelist(), getCustomLinkItemNavigationClickHandler());
         codelistView.setShowIfCondition(getStaticEnumeratedRepresentationFormItemIfFunction()); // This item is shown when the enumerated representation can not be edited
 
         contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod, variableView, type, roles, representationType, staticRepresentationType, codelist, codelistView);
@@ -400,22 +399,26 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         classDescriptorsEditionForm.setFields(derivation, sdmxRelatedArtefact);
 
         // RELATION BETWEEN CONCEPTS
+
         relationBetweenConceptsEditionForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
         SearchRelatedResourceLinkItem extendsConcept = createExtendsItem(ConceptDS.EXTENDS, getConstants().conceptExtends());
         ConceptsListItem relatedConcepts = createRelatedConceptsItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts());
         relationBetweenConceptsEditionForm.setFields(extendsConcept, relatedConcepts);
 
         // LEGAL ACTS
+
         legalActsEditionForm = new GroupDynamicForm(getConstants().conceptLegalActs());
         MultilanguageRichTextEditorItem legalActs = new MultilanguageRichTextEditorItem(ConceptDS.LEGAL_ACTS, getConstants().conceptLegalActs());
         legalActsEditionForm.setFields(legalActs);
 
         // COMMENTS
+
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
         MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(ConceptDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
         // ANNOTATIONS
+
         annotationsEditionPanel = new AnnotationsPanel(false);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
@@ -481,15 +484,23 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     @Override
-    public void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result) {
-        if (searchCodelistForEnumeratedRepresentationWindow != null) {
-            searchCodelistForEnumeratedRepresentationWindow.setRelatedResources(result.getRelatedResourceDtos());
-            searchCodelistForEnumeratedRepresentationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
-            // If there is no results, show an info message (maybe the attribute concept has no variable)
-            if (result.getRelatedResourceDtos().size() > 0) {
-                searchCodelistForEnumeratedRepresentationWindow.hideInfoMessage();
-            } else {
-                searchCodelistForEnumeratedRepresentationWindow.showInfoMessage();
+    public void setCodelistsOrConceptSchemesForEnumeratedRepresentation(GetRelatedResourcesResult result) {
+        if (searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow != null) {
+
+            searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.setRelatedResources(result.getRelatedResourceDtos());
+            searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
+
+            if (!ConceptRoleEnum.MEASURE_DIMENSION.equals(conceptDto.getSdmxRelatedArtefact())) {
+
+                // The result contains codelists:
+                // if there is no results, show an info message (maybe the attribute concept has no variable)
+
+                if (result.getRelatedResourceDtos().size() > 0) {
+                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.hideInfoMessage();
+                } else {
+                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.showInfoMessage();
+                }
+
             }
         }
     }
@@ -518,8 +529,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 conceptDto.getCoreRepresentation() != null
                         ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation().getRepresentationType())
                         : null);
-        ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(RepresentationDS.ENUMERATED_CODELIST)).setRelatedResource(conceptDto.getCoreRepresentation() != null ? conceptDto
-                .getCoreRepresentation().getEnumeration() : null);
+        ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(RepresentationDS.ENUMERATED)).setRelatedResource(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation()
+                .getEnumeration() : null);
         contentDescriptorsForm.setValue(ConceptDS.TYPE,
                 conceptDto.getConceptType() != null ? CommonWebUtils.getElementName(conceptDto.getConceptType().getIdentifier(), conceptDto.getConceptType().getDescription()) : null);
         ((RelatedResourceListItem) contentDescriptorsForm.getItem(ConceptDS.ROLES)).setRelatedResources(roles);
@@ -578,9 +589,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                         ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation().getRepresentationType())
                         : null);
 
-        ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED_CODELIST)).setRelatedResource(conceptDto.getCoreRepresentation() != null ? conceptDto
+        ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED)).setRelatedResource(conceptDto.getCoreRepresentation() != null ? conceptDto
                 .getCoreRepresentation().getEnumeration() : null);
-        ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED_CODELIST_VIEW)).setRelatedResource(conceptDto.getCoreRepresentation() != null ? conceptDto
+        ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED_VIEW)).setRelatedResource(conceptDto.getCoreRepresentation() != null ? conceptDto
                 .getCoreRepresentation().getEnumeration() : null);
 
         contentDescriptorsEditionForm.setValue(ConceptDS.TYPE, conceptDto.getConceptType() != null ? conceptDto.getConceptType().getIdentifier() : null);
@@ -634,8 +645,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                             .getValueAsString(RepresentationDS.TYPE)) : null);
             if (RepresentationTypeEnum.ENUMERATION.equals(conceptDto.getCoreRepresentation().getRepresentationType())) {
                 conceptDto.getCoreRepresentation().setTextFormat(null);
-                conceptDto.getCoreRepresentation()
-                        .setEnumeration(((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED_CODELIST)).getRelatedResourceDto());
+                conceptDto.getCoreRepresentation().setEnumeration(((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED)).getRelatedResourceDto());
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(conceptDto.getCoreRepresentation().getRepresentationType())) {
                 conceptDto.getCoreRepresentation().setEnumeration(null);
                 conceptDto.getCoreRepresentation().setTextFormat(facetEditionForm.getFacet());
@@ -975,8 +985,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                         ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE)).setRelatedResource(selectedVariable);
 
                         // Reset the codelist associated with the enumerated representation of the concept (the codelist depends on the variable selected)
-                        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST, StringUtils.EMPTY);
-                        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED_CODELIST_EDITION_VIEW, StringUtils.EMPTY);
+                        contentDescriptorsEditionForm.setValue(RepresentationDS.ENUMERATED, StringUtils.EMPTY);
                     }
                 });
             }
@@ -987,58 +996,66 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private SearchRelatedResourceLinkItem createEnumeratedRepresentationItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
-        final SearchRelatedResourceLinkItem codelistItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
-        codelistItem.setRequired(true);
-        codelistItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+        final SearchRelatedResourceLinkItem searchItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
+        searchItem.setRequired(true);
+        searchItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
 
                 final String conceptUrn = conceptDto.getUrn();
+                final ConceptRoleEnum conceptRole = conceptDto.getSdmxRelatedArtefact();
+                final String variableUrn = null;
 
-                if (StringUtils.isBlank(conceptUrn)) {
+                // check concept role is not null (may be null when a concept has been imported)
+
+                if (conceptRole == null) {
                     // If a concept has not been selected, show a message and do not let the user to select a codelist
-                    InformationWindow conceptRequiredWindow = new InformationWindow(getConstants().codelistSelection(), getConstants().dsdAttributeCodelistSelectionConceptRequired());
-                    conceptRequiredWindow.show();
-                } else {
-                    searchCodelistForEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().codelistSelection(), MAX_RESULTS, new PaginatedAction() {
+                    InformationWindow conceptRoleRequiredWindow = new InformationWindow(getConstants().codelistSelection(), getConstants()
+                            .conceptSdmxRelatedArtefactRequiredForEnumeratedRepresentation());
+                    conceptRoleRequiredWindow.show();
 
-                        @Override
-                        public void retrieveResultSet(int firstResult, int maxResults) {
-                            getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(),
-                                    conceptUrn);
-                        }
-                    });
-                    searchCodelistForEnumeratedRepresentationWindow.setInfoMessage(getConstants().conceptEnumeratedRepresentationInfoMessage());
-                    searchCodelistForEnumeratedRepresentationWindow.showInfoMessage();
+                } else {
+
+                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().enumeratedRepresentationSelection(), MAX_RESULTS,
+                            new PaginatedAction() {
+
+                                @Override
+                                public void retrieveResultSet(int firstResult, int maxResults) {
+                                    getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, firstResult, maxResults,
+                                            searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn);
+                                }
+                            });
+                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.setInfoMessage(getConstants().conceptEnumeratedRepresentationInfoMessage());
+                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.showInfoMessage();
 
                     // Load codelists (to populate the selection window)
-                    getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, conceptUrn);
+                    getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, FIRST_RESULST, MAX_RESULTS, null, conceptUrn);
 
-                    searchCodelistForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
-                    searchCodelistForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                         @Override
                         public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                            getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, criteria, conceptUrn);
+                            getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, firstResult, maxResults, criteria, conceptUrn);
                         }
                     });
 
-                    searchCodelistForEnumeratedRepresentationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                         @Override
                         public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                            RelatedResourceDto selectedCodelist = searchCodelistForEnumeratedRepresentationWindow.getSelectedRelatedResource();
-                            searchCodelistForEnumeratedRepresentationWindow.markForDestroy();
-                            // Set selected codelist in form
-                            ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED_CODELIST)).setRelatedResource(selectedCodelist);
+                            RelatedResourceDto selectedItemScheme = searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getSelectedRelatedResource();
+                            searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.markForDestroy();
+                            // Set selected itemScheme in form
+                            ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED)).setRelatedResource(selectedItemScheme);
                             contentDescriptorsEditionForm.validate(false);
                         }
                     });
                 }
             }
         });
-        return codelistItem;
+        return searchItem;
     }
 
     private void markFormsForRedraw() {
