@@ -9,6 +9,7 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
@@ -49,9 +50,6 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class OrganisationsPresenter extends Presenter<OrganisationsPresenter.OrganisationsView, OrganisationsPresenter.OrganisationsProxy> implements OrganisationsUiHandlers {
-
-    public final static int                           ITEM_LIST_FIRST_RESULT                         = 0;
-    public final static int                           ITEM_LIST_MAX_RESULTS                          = 30;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
@@ -99,7 +97,8 @@ public class OrganisationsPresenter extends Presenter<OrganisationsPresenter.Org
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
         // Load organisations
-        retrieveOrganisations(ITEM_LIST_FIRST_RESULT, ITEM_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.addLastVersionConditionToOrganisationWebCriteria(new OrganisationWebCriteria()));
+        retrieveOrganisations(SrmWebConstants.ITEM_LIST_FIRST_RESULT, SrmWebConstants.ITEM_LIST_MAX_RESULTS,
+                MetamacWebCriteriaClientUtils.addLastVersionConditionToOrganisationWebCriteria(new OrganisationWebCriteria()));
         // Clear search section
         getView().clearSearchSection();
     }

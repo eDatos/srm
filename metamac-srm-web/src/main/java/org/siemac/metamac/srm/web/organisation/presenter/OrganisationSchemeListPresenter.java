@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
@@ -56,9 +57,6 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchemeListPresenter.OrganisationSchemeListView, OrganisationSchemeListPresenter.OrganisationSchemeListProxy>
         implements
             OrganisationSchemeListUiHandlers {
-
-    public final static int                           SCHEME_LIST_FIRST_RESULT                       = 0;
-    public final static int                           SCHEME_LIST_MAX_RESULTS                        = 30;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
@@ -107,7 +105,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
         // Load organisation schemes
-        retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS,
+        retrieveOrganisationSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                 MetamacWebCriteriaClientUtils.addLastVersionConditionToOrganisationSchemeWebCriteria(new OrganisationSchemeWebCriteria()));
         // Clear search section
         getView().clearSearchSection();
@@ -142,7 +140,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
             @Override
             public void onWaitSuccess(SaveOrganisationSchemeResult result) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
-                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS,
+                retrieveOrganisationSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToOrganisationSchemeWebCriteria(new OrganisationSchemeWebCriteria()));
             }
         });
@@ -155,13 +153,13 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorDelete()), MessageTypeEnum.ERROR);
-                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS,
+                retrieveOrganisationSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToOrganisationSchemeWebCriteria(new OrganisationSchemeWebCriteria()));
             }
             @Override
             public void onWaitSuccess(DeleteOrganisationSchemeListResult result) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeDeleted()), MessageTypeEnum.SUCCESS);
-                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS,
+                retrieveOrganisationSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToOrganisationSchemeWebCriteria(new OrganisationSchemeWebCriteria()));
             }
         });
@@ -193,7 +191,7 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
             @Override
             public void onWaitSuccess(CancelOrganisationSchemeValidityResult result) {
                 ShowMessageEvent.fire(OrganisationSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
-                retrieveOrganisationSchemes(SCHEME_LIST_FIRST_RESULT, SCHEME_LIST_MAX_RESULTS,
+                retrieveOrganisationSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToOrganisationSchemeWebCriteria(new OrganisationSchemeWebCriteria()));
             }
         });

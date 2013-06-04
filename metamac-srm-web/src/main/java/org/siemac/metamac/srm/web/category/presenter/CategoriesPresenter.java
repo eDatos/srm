@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.category.view.handlers.CategoriesUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.presenter.CategoriesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
@@ -46,9 +47,6 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class CategoriesPresenter extends Presenter<CategoriesPresenter.CategoriesView, CategoriesPresenter.CategoriesProxy> implements CategoriesUiHandlers {
-
-    public final static int                           ITEM_LIST_FIRST_RESULT                      = 0;
-    public final static int                           ITEM_LIST_MAX_RESULTS                       = 30;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
@@ -96,7 +94,8 @@ public class CategoriesPresenter extends Presenter<CategoriesPresenter.Categorie
     public void prepareFromRequest(PlaceRequest request) {
         super.prepareFromRequest(request);
         // Load categories
-        retrieveCategories(ITEM_LIST_FIRST_RESULT, ITEM_LIST_MAX_RESULTS, MetamacWebCriteriaClientUtils.addLastVersionConditionToCategoryWebCriteria(new CategoryWebCriteria()));
+        retrieveCategories(SrmWebConstants.ITEM_LIST_FIRST_RESULT, SrmWebConstants.ITEM_LIST_MAX_RESULTS,
+                MetamacWebCriteriaClientUtils.addLastVersionConditionToCategoryWebCriteria(new CategoryWebCriteria()));
         // Clear search section
         getView().clearSearchSection();
     }
