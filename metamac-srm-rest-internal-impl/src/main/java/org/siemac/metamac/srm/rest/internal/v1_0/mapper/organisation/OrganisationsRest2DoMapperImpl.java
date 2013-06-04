@@ -5,6 +5,7 @@ import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
 import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteria;
+import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteriaBase;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
@@ -48,15 +49,14 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
     private class OrganisationSchemeCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteria retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
             OrganisationSchemeCriteriaPropertyRestriction propertyNameCriteria = OrganisationSchemeCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urnProvider(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact());
                 case NAME:
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
@@ -117,21 +117,20 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
     private class OrganisationCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteria retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
             OrganisationCriteriaPropertyRestriction propertyNameCriteria = OrganisationCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, OrganisationMetamacProperties.nameableArtefact());
                 case NAME:
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case DESCRIPTION:
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case ORGANISATION_SCHEME_URN:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().urnProvider(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 case ORGANISATION_SCHEME_PROC_STATUS:
                     return new SculptorPropertyCriteria(new LeafProperty<OrganisationMetamac>(OrganisationMetamacProperties.itemSchemeVersion().getName(), OrganisationSchemeVersionMetamacProperties
                             .lifeCycleMetadata().procStatus().getName(), false, OrganisationMetamac.class), propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()),

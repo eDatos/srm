@@ -5,6 +5,7 @@ import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
 import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteria;
+import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteriaBase;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
@@ -46,14 +47,13 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
     private class ConceptSchemeCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteria retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
             ConceptSchemeCriteriaPropertyRestriction propertyNameCriteria = ConceptSchemeCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urnProvider(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, ConceptSchemeVersionMetamacProperties.maintainableArtefact());
                 case NAME:
                     return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
@@ -114,13 +114,13 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
     private class ConceptCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteria retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
             ConceptCriteriaPropertyRestriction propertyNameCriteria = ConceptCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, ConceptMetamacProperties.nameableArtefact());
                 case NAME:
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case DESCRIPTION:
@@ -131,14 +131,11 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                 case ACRONYM:
                     return new SculptorPropertyCriteria(ConceptMetamacProperties.acronym().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case EXTENDS_URN:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.conceptExtends().nameableArtefact().urnProvider(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, ConceptMetamacProperties.conceptExtends().nameableArtefact());
                 case RELATED_CONCEPT_URN:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.relatedConcepts().nameableArtefact().urnProvider(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, ConceptMetamacProperties.relatedConcepts().nameableArtefact());
                 case CONCEPT_SCHEME_URN:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urnProvider(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 case CONCEPT_SCHEME_TYPE:
                     return new SculptorPropertyCriteria(new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(),
                             ConceptSchemeVersionMetamacProperties.type().getName(), false, ConceptMetamac.class), propertyRestrictionValueToConceptSchemeTypeEnum(propertyRestriction.getValue()),

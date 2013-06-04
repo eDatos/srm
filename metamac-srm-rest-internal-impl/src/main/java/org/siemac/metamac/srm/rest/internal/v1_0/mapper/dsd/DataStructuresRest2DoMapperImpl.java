@@ -7,6 +7,7 @@ import org.siemac.metamac.rest.common.query.domain.OperationTypeEnum;
 import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteria;
 import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteriaBase;
 import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteriaConjunction;
+import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteriaDisjunction;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
@@ -44,8 +45,7 @@ public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl im
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().urnProvider(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, DataStructureDefinitionVersionMetamacProperties.maintainableArtefact());
                 case NAME:
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
@@ -80,15 +80,15 @@ public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl im
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.statisticalOperation().urn(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case DIMENSION_CONCEPT_URN: {
-                    SculptorPropertyCriteria propertyCriteria1 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact()
-                            .urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    SculptorPropertyCriteriaDisjunction propertyCriteria1 = getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, DataStructureDefinitionVersionMetamacProperties.grouping()
+                            .components().cptIdRef().nameableArtefact());
                     SculptorPropertyCriteria propertyCriteria2 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().componentType(),
                             TypeComponent.DIMENSION_COMPONENT, OperationTypeEnum.EQ);
                     return new SculptorPropertyCriteriaConjunction(propertyCriteria1, propertyCriteria2);
                 }
                 case ATTRIBUTE_CONCEPT_URN: {
-                    SculptorPropertyCriteria propertyCriteria1 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact()
-                            .urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    SculptorPropertyCriteriaDisjunction propertyCriteria1 = getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, DataStructureDefinitionVersionMetamacProperties.grouping()
+                            .components().cptIdRef().nameableArtefact());
                     SculptorPropertyCriteria propertyCriteria2 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().componentType(),
                             TypeComponent.DATA_ATTRIBUTE, OperationTypeEnum.EQ);
                     return new SculptorPropertyCriteriaConjunction(propertyCriteria1, propertyCriteria2);

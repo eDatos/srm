@@ -82,13 +82,13 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
     private class CodelistCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteria retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
             CodelistCriteriaPropertyRestriction propertyNameCriteria = CodelistCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact());
                 case NAME:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
@@ -150,7 +150,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case ID:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CodeMetamacProperties.nameableArtefact());
                 case NAME:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case SHORT_NAME:
@@ -162,8 +162,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case DESCRIPTION:
                     return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case CODELIST_URN:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().urnProvider(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CodeMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 case CODELIST_PROC_STATUS:
                     return new SculptorPropertyCriteria(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.lifeCycleMetadata()
                             .procStatus().getName(), false, CodeMetamac.class), propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()), propertyRestriction.getOperationType());
@@ -200,7 +199,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case ID:
                     return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, VariableFamilyProperties.nameableArtefact());
                 case NAME:
                     return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 default:
@@ -236,13 +235,13 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case ID:
                     return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, VariableProperties.nameableArtefact());
                 case NAME:
                     return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case SHORT_NAME:
                     return new SculptorPropertyCriteria(VariableProperties.shortName().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case FAMILY_URN:
-                    return new SculptorPropertyCriteria(VariableProperties.families().nameableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, VariableProperties.families().nameableArtefact());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -276,7 +275,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case ID:
                     return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().urnProvider(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CodelistFamilyProperties.nameableArtefact());
                 case NAME:
                     return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 default:
