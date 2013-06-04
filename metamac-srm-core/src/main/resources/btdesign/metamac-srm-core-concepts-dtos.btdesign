@@ -54,6 +54,7 @@ Application DtosMetamacConceptDomain {
 		
 		"Dto for Quatity"
 	    DataTransferObject QuantityDto {
+	    	gap
         	
 	    	"Type"
 			- @QuantityTypeEnum quantityType nullable;
