@@ -2,10 +2,10 @@ package org.siemac.metamac.srm.web.organisation.utils;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
+import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 /**
  * The methods of this class check if a SDMX metadata can me edited or not. The "editability" of a SDMX metadata usually depends on the maintainer of the resource and on whether the resource is in a
@@ -38,15 +38,26 @@ public class OrganisationsFormUtils {
 
     // CODE
 
-    public static boolean canOrganisationCodeBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto) {
-        if (organisationSchemeDto == null || !org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeDto)) {
+    public static boolean canOrganisationCodeBeEdited(OrganisationSchemeMetamacDto organisationSchemeDto, OrganisationMetamacDto organisationDto) {
+        if (organisationSchemeDto == null || organisationDto == null) {
             return false;
         }
-        // If organisation type is AGENCY, code can never be modified
-        if (OrganisationSchemeTypeEnum.AGENCY_SCHEME.equals(organisationSchemeDto.getType())) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(organisationSchemeDto.getLifeCycle().getProcStatus())) {
             return false;
         }
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeDto);
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeDto.getMaintainer())) {
+            return false;
+        }
+
+        if (CommonUtils.isOrganisationUnitScheme(organisationSchemeDto.getType())) {
+            return org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(organisationSchemeDto);
+        } else {
+            if (BooleanUtils.isTrue(organisationDto.getSpecialOrganisationHasBeenPublished())) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
     // ---------------------------------------------------------------------------------------------
