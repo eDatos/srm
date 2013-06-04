@@ -217,7 +217,7 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
         if (isNonOperationConceptSchemeType(type)) {
             return canUpdateItemScheme(metamacPrincipal, procStatus);
         } else if (isOperationConceptSchemeType(type)) {
-            if (ProcStatusEnum.DRAFT.equals(procStatus)) {
+            if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.VALIDATION_REJECTED.equals(procStatus)) {
                 SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION, JEFE_NORMALIZACION};
                 return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
             } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
@@ -235,7 +235,7 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
         if (isNonOperationConceptSchemeType(type)) {
             return canModifyItemFromItemScheme(metamacPrincipal, procStatus);
         } else if (isOperationConceptSchemeType(type)) {
-            if (ProcStatusEnum.DRAFT.equals(procStatus)) {
+            if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.VALIDATION_REJECTED.equals(procStatus)) {
                 return isAnySrmRole(metamacPrincipal)
                         && isOperationAllowed(metamacPrincipal, operationCode, TECNICO_APOYO_PRODUCCION, TECNICO_APOYO_NORMALIZACION, TECNICO_PRODUCCION, TECNICO_NORMALIZACION, JEFE_PRODUCCION,
                                 JEFE_NORMALIZACION);

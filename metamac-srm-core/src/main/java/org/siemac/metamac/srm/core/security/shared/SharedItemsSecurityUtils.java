@@ -18,7 +18,7 @@ public class SharedItemsSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canUpdateItemScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.VALIDATION_REJECTED.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
         } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
@@ -81,7 +81,7 @@ public class SharedItemsSecurityUtils extends SharedSecurityUtils {
      * Determines if items from an item scheme can be created, deleted or updated
      */
     public static boolean canModifyItemFromItemScheme(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.VALIDATION_REJECTED.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_APOYO_NORMALIZACION, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);
         } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             return isSrmRoleAllowed(metamacPrincipal, TECNICO_NORMALIZACION, JEFE_NORMALIZACION);

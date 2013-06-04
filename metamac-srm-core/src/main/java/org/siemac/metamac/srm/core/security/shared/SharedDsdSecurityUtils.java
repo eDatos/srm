@@ -45,7 +45,7 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
      * @return
      */
     public static boolean canUpdateDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.VALIDATION_REJECTED.equals(procStatus)) {
             SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_APOYO_PRODUCCION, JEFE_PRODUCCION};
             return isAnyDsdRole(metamacPrincipal) && isOperationAllowed(metamacPrincipal, operationCode, roles);
         } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
@@ -59,7 +59,7 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
     }
 
     public static boolean canDeleteDsd(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.VALIDATION_REJECTED.equals(procStatus) || ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
             SrmRoleEnum roles[] = {TECNICO_PRODUCCION, JEFE_PRODUCCION};
             return isSrmRoleAllowed(metamacPrincipal, roles) && isOperationAllowed(metamacPrincipal, operationCode, roles);
         } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus)) {
@@ -188,7 +188,7 @@ public class SharedDsdSecurityUtils extends SharedSecurityUtils {
     }
 
     private static boolean canModifyComponentFromDataStructureDefinition(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, String operationCode) {
-        if (ProcStatusEnum.DRAFT.equals(procStatus)) {
+        if (ProcStatusEnum.DRAFT.equals(procStatus) || ProcStatusEnum.VALIDATION_REJECTED.equals(procStatus)) {
             SrmRoleEnum[] roles = {TECNICO_PRODUCCION, TECNICO_APOYO_PRODUCCION, JEFE_PRODUCCION};
             return isAnyDsdRole(metamacPrincipal) && isOperationAllowed(metamacPrincipal, operationCode, roles);
         } else if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus)) {
