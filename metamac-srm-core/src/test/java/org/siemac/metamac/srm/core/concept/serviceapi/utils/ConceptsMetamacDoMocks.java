@@ -76,7 +76,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         target.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
         target.setConceptType(mockConceptTypeFixedValues("conceptType1"));
         target.setVariable(CodesMetamacDoMocks.mockVariableFixedValues("variable1"));
-        target.setQuantity(mockQuantityFixedValues());
+        target.setQuantity(mockQuantityFixedValues(resourceID));
         mockConceptFixedValues(target, resourceID, itemSchemeVersion, parent, RepresentationTypeEnum.ENUMERATION);
         return target;
     }
@@ -99,7 +99,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         return target;
     }
 
-    private static Quantity mockQuantityFixedValues() {
+    private static Quantity mockQuantityFixedValues(String resourceId) {
         Quantity target = new Quantity();
         target.setQuantityType(QuantityTypeEnum.CHANGE_RATE);
         target.setUnitCode(CodesMetamacDoMocks.mockCodeFixedValues("unitCode01", CodesMetamacDoMocks.mockCodelistFixedValues("agency01", "codelist01", "01.000"), null));
@@ -112,7 +112,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         target.setNumerator(mockConceptSimpleFixedValues("numerator1", mockConceptSchemeFixedValues("agency01", "conceptScheme02", "01.000")));
         target.setDenominator(mockConceptSimpleFixedValues("denominator1", mockConceptSchemeFixedValues("agency01", "conceptScheme03", "01.000")));
         target.setIsPercentage(Boolean.FALSE);
-        target.setPercentageOf(mockInternationalString("percentageOf"));
+        target.setPercentageOf(mockInternationalStringFixedValues("percentageOf", resourceId));
         target.setBaseQuantity(mockConceptSimpleFixedValues("baseQuantity1", mockConceptSchemeFixedValues("agency01", "conceptScheme04", "01.000")));
         // Note: following metadata are not in change_rate, but put it to test all metadata conversion. This entity never will be saved
         target.setBaseValue(Integer.valueOf(5));
