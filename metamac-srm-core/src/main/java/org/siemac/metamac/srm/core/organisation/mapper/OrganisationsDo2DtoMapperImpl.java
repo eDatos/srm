@@ -61,7 +61,7 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
         }
         OrganisationMetamacDto target = new OrganisationMetamacDto();
         do2DtoMapperSdmxSrm.organisationDoToDto(source, target);
-        target.setHasBeenPublished(source.getHasBeenPublished());
+        target.setSpecialOrganisationHasBeenPublished(source.getSpecialOrganisationHasBeenPublished());
         return target;
     }
 
@@ -72,6 +72,7 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
         }
         OrganisationMetamacBasicDto target = new OrganisationMetamacBasicDto();
         target.setType(source.getOrganisationType());
+        target.setSpecialOrganisationHasBeenPublished(source.getSpecialOrganisationHasBeenPublished());
         itemDoToItemBasicDto(source, target);
         return target;
     }

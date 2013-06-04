@@ -22,13 +22,13 @@ Application DtosMetamacOrganisationDomain {
 				
 		"Dto for OrganisationMetamac"
 		DataTransferObject OrganisationMetamacDto extends @OrganisationDto {
-			Boolean hasBeenPublished;
+			Boolean specialOrganisationHasBeenPublished;
 		}		
 		
 		"Dto for OrganisationMetamac"
 		DataTransferObject OrganisationMetamacBasicDto extends @ItemMetamacBasicDto {
-			"Type"
 			- @OrganisationTypeEnum type;
+			Boolean specialOrganisationHasBeenPublished;
 		}
 		
 	}

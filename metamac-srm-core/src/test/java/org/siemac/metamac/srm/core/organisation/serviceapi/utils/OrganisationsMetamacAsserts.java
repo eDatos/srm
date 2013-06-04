@@ -64,6 +64,7 @@ public class OrganisationsMetamacAsserts extends OrganisationsAsserts {
 
     public static void assertEqualsOrganisation(OrganisationMetamac expected, OrganisationMetamacBasicDto actual) {
         assertEquals(expected.getOrganisationType(), actual.getType());
+        assertEquals(expected.getSpecialOrganisationHasBeenPublished(), actual.getSpecialOrganisationHasBeenPublished());
         BaseAsserts.assertEqualsItemBasicDto(expected, actual);
     }
 
@@ -77,7 +78,7 @@ public class OrganisationsMetamacAsserts extends OrganisationsAsserts {
     private static void assertEqualsOrganisation(OrganisationMetamac entity, OrganisationMetamacDto dto, MapperEnum mapperEnum) {
         // Metamac
         if (MapperEnum.DO2DTO.equals(mapperEnum)) {
-            assertEquals(entity.getHasBeenPublished(), dto.getHasBeenPublished());
+            assertEquals(entity.getSpecialOrganisationHasBeenPublished(), dto.getSpecialOrganisationHasBeenPublished());
         }
 
         // Sdmx

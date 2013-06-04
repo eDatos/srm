@@ -148,7 +148,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="10011"
-                HAS_BEEN_PUBLISHED="1"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -203,7 +203,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="10012"
-                HAS_BEEN_PUBLISHED="1"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -363,7 +363,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="111"
-                HAS_BEEN_PUBLISHED="1"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -513,7 +513,7 @@
             
 	        <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="121"
-                HAS_BEEN_PUBLISHED="1"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -568,7 +568,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="122"
-                HAS_BEEN_PUBLISHED="0"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -1051,7 +1051,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="211"
-                HAS_BEEN_PUBLISHED="0"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -1448,7 +1448,7 @@
 
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="311"
-                HAS_BEEN_PUBLISHED="1"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
 
             <TB_ORGANISATIONS
@@ -1596,7 +1596,7 @@
 
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="312"
-                HAS_BEEN_PUBLISHED="1"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -1651,7 +1651,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="3121"
-                HAS_BEEN_PUBLISHED="1"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -1706,7 +1706,7 @@
                     
                     <TB_M_ORGANISATIONS
                         TB_ORGANISATIONS="31211"
-                        HAS_BEEN_PUBLISHED="1"
+                        SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
                     />
                     
                     <TB_ORGANISATIONS
@@ -1760,7 +1760,7 @@
             <!-- ORGANISATION0202 -->
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="3122"
-                HAS_BEEN_PUBLISHED="1"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -1917,7 +1917,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="411"
-                HAS_BEEN_PUBLISHED="0"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -2093,7 +2093,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="511"
-                HAS_BEEN_PUBLISHED="0"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -2252,7 +2252,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="611"
-                HAS_BEEN_PUBLISHED="0"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -2493,7 +2493,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="721"
-                HAS_BEEN_PUBLISHED="1"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS
@@ -2651,7 +2651,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="811"
-                HAS_BEEN_PUBLISHED="1"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -2809,7 +2809,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="911"
-                HAS_BEEN_PUBLISHED="1"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="1"
             />
             
             <TB_ORGANISATIONS
@@ -3021,7 +3021,7 @@
             
             <TB_M_ORGANISATIONS
                 TB_ORGANISATIONS="1011"
-                HAS_BEEN_PUBLISHED="0"
+                SPECIAL_ORG_HAS_BEEN_PUBLISHED="0"
             />
             
             <TB_ORGANISATIONS

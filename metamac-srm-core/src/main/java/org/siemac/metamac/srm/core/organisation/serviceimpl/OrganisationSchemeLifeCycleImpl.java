@@ -136,8 +136,10 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion) {
-            Long itemSchemeVersionId = getOrganisationSchemeVersionMetamac(srmResourceVersion).getId();
-            organisationMetamacRepository.updateHasBeenPublishedEfficiently(itemSchemeVersionId);
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
+            if (SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
+                organisationMetamacRepository.updateHasBeenPublishedEfficiently(organisationSchemeVersion.getId());
+            }
             return srmResourceVersion;
         }
 

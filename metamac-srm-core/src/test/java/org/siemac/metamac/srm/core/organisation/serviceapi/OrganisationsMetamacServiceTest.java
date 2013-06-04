@@ -794,7 +794,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
         {
             OrganisationMetamac organisation1 = organisationsService.retrieveOrganisationByUrn(ctx, ORGANISATION_SCHEME_6_V1_ORGANISATION_1);
-            assertFalse(organisation1.getHasBeenPublished());
+            assertFalse(organisation1.getSpecialOrganisationHasBeenPublished());
         }
 
         // Publish internally
@@ -837,10 +837,10 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
         entityManager.clear();
 
-        // Validate organisations
+        // Validate organisations (it has been published FALSE)
         {
             OrganisationMetamac organisation1 = organisationsService.retrieveOrganisationByUrn(ctx, ORGANISATION_SCHEME_6_V1_ORGANISATION_1);
-            assertTrue(organisation1.getHasBeenPublished());
+            assertFalse(organisation1.getSpecialOrganisationHasBeenPublished());
         }
     }
 
@@ -867,6 +867,12 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getFinalLogicClient());
             assertFalse(organisationSchemeVersion.getMaintainableArtefact().getFinalLogic());
             assertTrue(organisationSchemeVersion.getMaintainableArtefact().getLatestFinal());
+        }
+
+        // Validate organisations (it has been published TRUE)
+        {
+            OrganisationMetamac organisation1 = organisationsService.retrieveOrganisationByUrn(ctx, ORGANISATION_SCHEME_10_V1_ORGANISATION_1);
+            assertTrue(organisation1.getSpecialOrganisationHasBeenPublished());
         }
     }
 
@@ -1191,7 +1197,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertEquals(3, organisationSchemeVersionNewArtefact.getItemsFirstLevel().size());
         {
             OrganisationMetamac organisation = assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedOrganisation1);
-            assertEquals(null, organisation.getHasBeenPublished());
+            assertEquals(null, organisation.getSpecialOrganisationHasBeenPublished());
             OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "en", "name org1", "it", "nombre it org1");
             OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getDescription(), "es", "descripción org1", "it", "descripción it org1");
             assertEquals(null, organisation.getNameableArtefact().getComment());
@@ -1205,7 +1211,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
         {
             OrganisationMetamac organisation = assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewArtefact.getItemsFirstLevel(), urnExpectedOrganisation2);
-            assertEquals(null, organisation.getHasBeenPublished());
+            assertEquals(null, organisation.getSpecialOrganisationHasBeenPublished());
             OrganisationsMetamacAsserts.assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "en", "name org2", null, null);
 
             assertEquals(0, organisation.getChildren().size());
@@ -1270,7 +1276,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(2, organisationSchemeVersionNewVersion.getItemsFirstLevel().size());
             {
                 OrganisationMetamac organisation = assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewVersion.getItemsFirstLevel(), urnExpectedOrganisation1);
-                assertEquals(null, organisation.getHasBeenPublished());
+                assertEquals(null, organisation.getSpecialOrganisationHasBeenPublished());
                 assertEquals(0, organisation.getChildren().size());
                 // Contacts
                 assertEquals(2, organisation.getContacts().size());
@@ -1305,7 +1311,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             }
             {
                 OrganisationMetamac organisation = assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewVersion.getItemsFirstLevel(), urnExpectedOrganisation2);
-                assertEquals(null, organisation.getHasBeenPublished());
+                assertEquals(null, organisation.getSpecialOrganisationHasBeenPublished());
                 assertEquals(0, organisation.getContacts().size());
                 assertEquals(2, organisation.getChildren().size());
                 {
@@ -1567,6 +1573,17 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
             assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
         }
+
+        // Try delete organisation (unsupported)
+        try {
+            organisationsService.deleteOrganisation(getServiceContextAdministrador(), urnExpectedOrganisation1);
+            fail("temporal unsupported");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_CAN_NOT_BE_TEMPORAL.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(urnExpected, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
     }
 
     @Override
@@ -1584,6 +1601,15 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat2(01.000_temporal)");
         assertListContainsCategorisation(organisationSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
                 "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat3(01.000_temporal)");
+
+        // Organisations
+        assertEquals(5, organisationSchemeVersionTemporal.getItems().size());
+        // TODO Check any organisation
+        {
+            String organisationUrn = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000_temporal).ORGANISATION01";
+            OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), organisationUrn);
+            assertFalse(organisation.getSpecialOrganisationHasBeenPublished());
+        }
 
         // Create no temporal version
         TaskInfo versioningResult2 = organisationsService.createVersionFromTemporalOrganisationScheme(getServiceContextAdministrador(), organisationSchemeVersionTemporal.getMaintainableArtefact()
@@ -1612,6 +1638,15 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                     "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat5(01.000)");
             assertListContainsCategorisation(organisationSchemeNewVersion.getMaintainableArtefact().getCategorisations(),
                     "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat6(01.000)");
+
+            // Organisations
+            assertEquals(5, organisationSchemeVersionTemporal.getItems().size());
+            // TODO Check any organisation
+            {
+                String organisationUrn = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(02.000).ORGANISATION01";
+                OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), organisationUrn);
+                assertFalse(organisation.getSpecialOrganisationHasBeenPublished());
+            }
         }
     }
 
@@ -1891,28 +1926,37 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
-    public void testUpdateOrganisationCodeAgency() throws Exception {
+    public void testUpdateOrganisationCodeAgencyNotPublished() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
         String urn = ORGANISATION_SCHEME_10_V1_ORGANISATION_1;
         OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(ctx, urn);
+        assertFalse(organisation.getSpecialOrganisationHasBeenPublished());
         organisation.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(1));
         organisation.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         organisationsService.updateOrganisation(getServiceContextAdministrador(), organisation);
     }
 
     @Test
-    public void testUpdateOrganisationCodeErrorOrganisationSchemeWasEverPublished() throws Exception {
-        ServiceContext ctx = getServiceContextAdministrador();
+    public void testUpdateOrganisationCodeErrorSpecialOrganisationWasEverPublished() throws Exception {
 
-        String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_1;
-        OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(ctx, urn);
+        String organisationSchemeUrn = ORGANISATION_SCHEME_8_V1;
+        String urn = ORGANISATION_SCHEME_8_V1_ORGANISATION_1;
+
+        // save to force draft to skip validation of proc status
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+        organisationSchemeVersion.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.DRAFT);
+        itemSchemeRepository.save(organisationSchemeVersion);
+
+        OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
+        assertTrue(organisation.getSpecialOrganisationHasBeenPublished());
         organisation.getNameableArtefact().setCode("code-" + MetamacMocks.mockString(1));
         organisation.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+
         // Validation
         try {
             organisationsService.updateOrganisation(getServiceContextAdministrador(), organisation);
-            fail("Organisation code can not be changed");
+            fail("update code error");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
             assertEquals(ServiceExceptionType.ORGANISATION_UPDATE_CODE_NOT_SUPPORTED_ORGANISATION_SCHEME_WAS_EVER_PUBLISHED.getCode(), e.getExceptionItems().get(0).getCode());
@@ -2115,9 +2159,18 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     }
 
     @Test
-    public void testDeleteOrganisationErrorWasPublished() throws Exception {
+    public void testDeleteOrganisationErrorSpecialOrganisationWasPublished() throws Exception {
 
-        String urn = ORGANISATION_SCHEME_1_V2_ORGANISATION_1;
+        String organisationSchemeUrn = ORGANISATION_SCHEME_8_V1;
+        String urn = ORGANISATION_SCHEME_8_V1_ORGANISATION_1;
+
+        // save to force draft to skip error with proc status
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+        organisationSchemeVersion.getLifeCycleMetadata().setProcStatus(ProcStatusEnum.DRAFT);
+        itemSchemeRepository.save(organisationSchemeVersion);
+
+        OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), urn);
+        assertTrue(organisation.getSpecialOrganisationHasBeenPublished());
 
         // Validation
         try {

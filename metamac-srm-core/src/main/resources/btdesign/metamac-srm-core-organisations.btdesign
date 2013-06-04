@@ -108,7 +108,7 @@ Application OrganisationsMetamac {
 			hint="idSequence=M_ORGANISATIONS"
 			
 			"Item scheme was ever published"
-			Boolean hasBeenPublished nullable;
+			Boolean specialOrganisationHasBeenPublished nullable databaseColumn="SPECIAL_ORG_HAS_BEEN_PUBLISHED";
 			
 			Repository OrganisationMetamacRepository {
 				findByQuery;

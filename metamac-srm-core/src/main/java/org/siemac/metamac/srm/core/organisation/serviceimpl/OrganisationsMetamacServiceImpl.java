@@ -340,13 +340,16 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         // Validation
         OrganisationsMetamacInvocationValidator.checkUpdateOrganisation(organisation, null);
-        // Check code can be changed
-        if (organisation.getNameableArtefact().getIsCodeUpdated() && BooleanUtils.isTrue(organisation.getHasBeenPublished())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_UPDATE_CODE_NOT_SUPPORTED_ORGANISATION_SCHEME_WAS_EVER_PUBLISHED)
-                    .withMessageParameters(organisation.getNameableArtefact().getUrn()).build();
-        }
 
         OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByOrganisationUrn(ctx, organisation.getNameableArtefact().getUrn());
+
+        // Check code can be changed
+        if (organisation.getNameableArtefact().getIsCodeUpdated()) {
+            if (BooleanUtils.isTrue(organisation.getSpecialOrganisationHasBeenPublished())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_UPDATE_CODE_NOT_SUPPORTED_ORGANISATION_SCHEME_WAS_EVER_PUBLISHED)
+                        .withMessageParameters(organisation.getNameableArtefact().getUrn()).build();
+            }
+        }
         checkOrganisationToCreateOrUpdate(ctx, organisationSchemeVersion, organisation);
 
         // Update
@@ -530,19 +533,20 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_IMPORTED).build();
         }
 
-        if (deleting && BooleanUtils.isTrue(organisation.getHasBeenPublished())) {
+        if (deleting && BooleanUtils.isTrue(organisation.getSpecialOrganisationHasBeenPublished())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_DELETING_NOT_SUPPORTED_ORGANISATION_SCHEME_WAS_EVER_PUBLISHED)
                     .withMessageParameters(organisation.getNameableArtefact().getUrn()).build();
         }
 
-        if (SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
-            // allowed when temporal and not temporal and maintainer is default or root (really, it is when it is not imported)
+        if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeVersion.getOrganisationSchemeType())) {
+            // add, delete... organisations are unsupported in temporal versions. Must create version from temporal to allow these actions
+            SrmValidationUtils.checkArtefactIsNotTemporal(organisationSchemeVersion.getMaintainableArtefact());
+        } else if (SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
+            // allowed when temporal and not temporal and maintainer is default or root (really, this condition is similar to be not imported)
             if (!srmValidation.isMaintainerSdmxRoot(ctx, organisationSchemeVersion.getMaintainableArtefact().getMaintainer())
                     && !srmValidation.isMaintainerIsDefault(ctx, organisationSchemeVersion.getMaintainableArtefact().getMaintainer())) {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_MAINTAINER_IS_NOT_DEFAULT_NOR_SDMX).build();
             }
-        } else if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeVersion.getOrganisationSchemeType())) {
-            SrmValidationUtils.checkArtefactIsNotTemporal(organisationSchemeVersion.getMaintainableArtefact());
         } else {
             throw new IllegalArgumentException("Unexpected organisation type: " + organisationSchemeVersion.getOrganisationSchemeType());
         }

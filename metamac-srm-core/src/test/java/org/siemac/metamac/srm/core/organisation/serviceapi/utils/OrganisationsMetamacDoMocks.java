@@ -37,7 +37,7 @@ public class OrganisationsMetamacDoMocks extends OrganisationsDoMocks {
             throws MetamacException {
         OrganisationMetamac target = new OrganisationMetamac();
         target.setOrganisationType(type);
-        target.setHasBeenPublished(Boolean.TRUE);
+        target.setSpecialOrganisationHasBeenPublished(Boolean.TRUE);
         mockOrganisationFixedValues(target, resourceID, itemSchemeVersion, parent, type);
         return target;
     }
