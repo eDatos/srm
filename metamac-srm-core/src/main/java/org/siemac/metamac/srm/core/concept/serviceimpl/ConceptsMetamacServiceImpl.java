@@ -923,16 +923,21 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
-            PagingParameter pagingParameter, String conceptUrn) throws MetamacException {
+            PagingParameter pagingParameter, String conceptUrn, String variableUrn) throws MetamacException {
 
         // IMPORTANT: If any condition change, review 'checkConceptEnumeratedRepresentation' method
 
         // Validation
-        ConceptsMetamacInvocationValidator.checkFindCodelistsCanBeEnumeratedRepresentationForConceptByCondition(conditions, pagingParameter, conceptUrn, null);
+        ConceptsMetamacInvocationValidator.checkFindCodelistsCanBeEnumeratedRepresentationForConceptByCondition(conditions, pagingParameter, conceptUrn, variableUrn, null);
 
         // Find
-        ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
-        Variable variable = concept.getVariable();
+        Variable variable = null;
+        if (conceptUrn != null) {
+            ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
+            variable = concept.getVariable();
+        } else if (variableUrn != null) {
+            variable = codesMetamacService.retrieveVariableByUrn(ctx, variableUrn);
+        }
         if (variable == null) {
             return SrmServiceUtils.pagedResultZeroResults(pagingParameter);
         }

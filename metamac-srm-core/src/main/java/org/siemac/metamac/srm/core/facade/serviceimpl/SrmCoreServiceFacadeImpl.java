@@ -2963,7 +2963,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn)
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn, String variableUrn)
             throws MetamacException {
         // Security
         CodesSecurityUtils.canFindCodelistsByCondition(ctx);
@@ -2973,7 +2973,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // Find
         PagedResult<CodelistVersionMetamac> result = getConceptsMetamacService().findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ctx, sculptorCriteria.getConditions(),
-                sculptorCriteria.getPagingParameter(), conceptUrn);
+                sculptorCriteria.getPagingParameter(), conceptUrn, variableUrn);
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistToMetamacCriteriaResultRelatedResource(result,

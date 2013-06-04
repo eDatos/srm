@@ -1678,7 +1678,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             // Concept has Variable 1
             String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
             MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(getServiceContextAdministrador(), metamacCriteria,
-                    conceptUrn);
+                    conceptUrn, null);
 
             // Validate
             assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
@@ -1691,7 +1691,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             // Concept has Variable 2
             String conceptUrn = CONCEPT_SCHEME_3_V1_CONCEPT_2;
             MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(getServiceContextAdministrador(), metamacCriteria,
-                    conceptUrn);
+                    conceptUrn, null);
 
             // Validate
             assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());

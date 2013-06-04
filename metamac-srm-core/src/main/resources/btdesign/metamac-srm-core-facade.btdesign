@@ -428,8 +428,8 @@ Application SrmFacadeCore {
     		"Retrieves concept type by identifier"
     		@ConceptTypeDto retrieveConceptTypeByIdentifier(String identifier) throws MetamacException;
     		
-    		"Find codelists belong to same variable of concept"
-    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(MetamacCriteria criteria, String conceptUrn) throws MetamacException;
+    		"Find codelists belong to same variable of concept. Can specify variable instead concept"
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(MetamacCriteria criteria, String conceptUrn, String variableUrn) throws MetamacException;
 
 	    	/**************************************************************************
 		     * CATEGORIES
