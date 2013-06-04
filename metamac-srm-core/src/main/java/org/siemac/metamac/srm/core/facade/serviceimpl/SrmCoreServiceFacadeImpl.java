@@ -2428,6 +2428,25 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria)
             throws MetamacException {
         // Security
