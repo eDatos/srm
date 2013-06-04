@@ -493,16 +493,13 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
 
             if (!ConceptRoleEnum.MEASURE_DIMENSION.equals(conceptDto.getSdmxRelatedArtefact())) {
-
-                // The result contains codelists:
-                // if there is no results, show an info message (maybe the attribute concept has no variable)
-
-                if (result.getRelatedResourceDtos().size() > 0) {
-                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.hideInfoMessage();
-                } else {
+                // The result contains codelists
+                if (result.getRelatedResourceDtos().isEmpty()) {
+                    // if there is no results, show an info message (maybe the attribute concept has no variable)
                     searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.showInfoMessage();
                 }
-
+            } else {
+                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.hideInfoMessage();
             }
         }
     }
