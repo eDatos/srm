@@ -9,6 +9,6 @@ public class OrganisationMainFormLayout extends InternationalMainFormLayout {
 
     public void setOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, OrganisationMetamacDto organisationMetamacDto) {
         setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType()));
-        setCanDelete(OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeMetamacDto, organisationMetamacDto.getHasBeenPublished()));
+        setCanDelete(OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeMetamacDto, organisationMetamacDto.getSpecialOrganisationHasBeenPublished()));
     }
 }
