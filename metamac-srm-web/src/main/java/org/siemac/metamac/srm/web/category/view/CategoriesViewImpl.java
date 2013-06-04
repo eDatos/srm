@@ -9,6 +9,7 @@ import org.siemac.metamac.srm.web.category.presenter.CategoriesPresenter;
 import org.siemac.metamac.srm.web.category.utils.RecordUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategoriesUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategorySearchSectionStack;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.NavigablePaginatedListGrid;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
@@ -40,14 +41,14 @@ public class CategoriesViewImpl extends ViewWithUiHandlers<CategoriesUiHandlers>
 
         // Categories
 
-        categoriesListGrid = new NavigablePaginatedListGrid(CategoriesPresenter.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
+        categoriesListGrid = new NavigablePaginatedListGrid(SrmWebConstants.ITEM_LIST_MAX_RESULTS, new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
                 getUiHandlers().retrieveCategories(firstResult, maxResults, searchSectionStack.getCategoryWebCriteria());
             }
         });
-        categoriesListGrid.getListGrid().setAutoFitMaxRecords(CategoriesPresenter.ITEM_LIST_MAX_RESULTS);
+        categoriesListGrid.getListGrid().setAutoFitMaxRecords(SrmWebConstants.ITEM_LIST_MAX_RESULTS);
         categoriesListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         categoriesListGrid.getListGrid().setDataSource(new CategoryDS());
         categoriesListGrid.getListGrid().setUseAllDataSourceFields(false);

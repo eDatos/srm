@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.category.widgets;
 
-import org.siemac.metamac.srm.web.category.presenter.CategoriesPresenter;
 import org.siemac.metamac.srm.web.category.view.handlers.CategoriesUiHandlers;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.widgets.ItemSearchSectionStack;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 
@@ -14,7 +14,7 @@ public class CategorySearchSectionStack extends ItemSearchSectionStack {
 
     @Override
     public void retrieveResources() {
-        getUiHandlers().retrieveCategories(CategoriesPresenter.ITEM_LIST_FIRST_RESULT, CategoriesPresenter.ITEM_LIST_MAX_RESULTS, getCategoryWebCriteria());
+        getUiHandlers().retrieveCategories(SrmWebConstants.ITEM_LIST_FIRST_RESULT, SrmWebConstants.ITEM_LIST_MAX_RESULTS, getCategoryWebCriteria());
     }
 
     public CategoryWebCriteria getCategoryWebCriteria() {
