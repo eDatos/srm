@@ -26,8 +26,8 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.dto.QuantityDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 @org.springframework.stereotype.Component("conceptsDto2DoMapper")
@@ -121,7 +121,7 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
         }
 
         // Process special representation type
-        boolean isCoreRepresentationExtends = isCoreRepresentationExtends(target.getCoreRepresentation());
+        boolean isCoreRepresentationExtends = isCoreRepresentationExtends(source.getCoreRepresentation());
 
         dto2DoMapperSdmxSrm.conceptDtoToDo(source, target);
 
@@ -224,13 +224,13 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
         return target;
     }
 
-    private boolean isCoreRepresentationExtends(Representation representation) throws MetamacException {
-        if (representation == null) {
+    private boolean isCoreRepresentationExtends(RepresentationDto representationDto) throws MetamacException {
+        if (representationDto == null) {
             return false;
         }
 
-        if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
-            if (representation.getEnumerationConceptScheme() != null) {
+        if (RepresentationTypeEnum.ENUMERATION.equals(representationDto.getRepresentationType())) {
+            if (representationDto.getEnumeration() != null) {
                 return true;
             }
         }
