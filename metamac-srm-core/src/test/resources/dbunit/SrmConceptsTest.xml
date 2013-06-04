@@ -587,7 +587,7 @@
                 CODELIST_FK="2011"
                 CONCEPT_SCHEME_FK="[null]"
                 TEXT_FORMAT_FK="[null]"
-                
+                IS_EXTENDED="0"
                 UUID="representation-121"
                 VERSION="1"
             />      

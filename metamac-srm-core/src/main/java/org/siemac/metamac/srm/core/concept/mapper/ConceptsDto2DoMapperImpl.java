@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 @org.springframework.stereotype.Component("conceptsDto2DoMapper")
@@ -120,14 +121,11 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
             target.setVariable(null);
         }
 
-        // Process special representation type
-        boolean isCoreRepresentationExtends = isCoreRepresentationExtends(source.getCoreRepresentation());
-
         dto2DoMapperSdmxSrm.conceptDtoToDo(source, target);
 
         // Set if special requirements are required
         if (target.getCoreRepresentation() != null) {
-            target.getCoreRepresentation().setIsExtended(isCoreRepresentationExtends);
+            target.getCoreRepresentation().setIsExtended(isCoreRepresentationExtends(source.getCoreRepresentation()));
         }
 
         return target;
@@ -230,7 +228,8 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
         }
 
         if (RepresentationTypeEnum.ENUMERATION.equals(representationDto.getRepresentationType())) {
-            if (representationDto.getEnumeration() != null) {
+            // TODO confirmar condición con conceptScheme
+            if (representationDto.getEnumeration() != null && RelatedResourceTypeEnum.CONCEPT_SCHEME.equals(representationDto.getEnumeration().getType())) {
                 return true;
             }
         }
