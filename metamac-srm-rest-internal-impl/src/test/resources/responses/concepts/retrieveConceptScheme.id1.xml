@@ -5,29 +5,29 @@
             <common:AnnotationTitle>title-code2</common:AnnotationTitle>
             <common:AnnotationType>type-code2</common:AnnotationType>
             <common:AnnotationURL>url-code2</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
             <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
         </common:Annotation>
         <common:Annotation id="code1">
             <common:AnnotationTitle>title-code1</common:AnnotationTitle>
             <common:AnnotationType>type-code1</common:AnnotationType>
             <common:AnnotationURL>url-code1</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
             <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
         </common:Annotation>
     </common:Annotations>
     <common:Name xml:lang="es">name-itemScheme1v01.000 en Español</common:Name>
     <common:Name xml:lang="en">name-itemScheme1v01.000 in English</common:Name>
-    <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
     <common:Description xml:lang="es">description-itemScheme1v01.000 en Español</common:Description>
+    <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
     <structure:Concept id="concept1" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).concept1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/concept1">
         <common:Annotations>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
                 <common:AnnotationType>type-code2</common:AnnotationType>
                 <common:AnnotationURL>url-code2</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
                 <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
             </common:Annotation>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -37,10 +37,10 @@
                 <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
-        <common:Name xml:lang="es">name-concept1 en Español</common:Name>
         <common:Name xml:lang="en">name-concept1 in English</common:Name>
-        <common:Description xml:lang="es">description-concept1 en Español</common:Description>
+        <common:Name xml:lang="es">name-concept1 en Español</common:Name>
         <common:Description xml:lang="en">description-concept1 in English</common:Description>
+        <common:Description xml:lang="es">description-concept1 en Español</common:Description>
         <structure:CoreRepresentation>
             <structure:Enumeration>
                 <URN>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</URN>
@@ -49,19 +49,19 @@
     </structure:Concept>
     <structure:Concept id="concept2" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).concept2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/concept2">
         <common:Annotations>
-            <common:Annotation id="code1">
-                <common:AnnotationTitle>title-code1</common:AnnotationTitle>
-                <common:AnnotationType>type-code1</common:AnnotationType>
-                <common:AnnotationURL>url-code1</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
-            </common:Annotation>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
                 <common:AnnotationType>type-code2</common:AnnotationType>
                 <common:AnnotationURL>url-code2</common:AnnotationURL>
                 <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
                 <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
+            </common:Annotation>
+            <common:Annotation id="code1">
+                <common:AnnotationTitle>title-code1</common:AnnotationTitle>
+                <common:AnnotationType>type-code1</common:AnnotationType>
+                <common:AnnotationURL>url-code1</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
         <common:Name xml:lang="en">name-concept2 in English</common:Name>
@@ -87,14 +87,14 @@
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
                 <common:AnnotationType>type-code1</common:AnnotationType>
                 <common:AnnotationURL>url-code1</common:AnnotationURL>
-                <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
                 <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
+                <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
         <common:Name xml:lang="es">name-concept2A en Español</common:Name>
         <common:Name xml:lang="en">name-concept2A in English</common:Name>
-        <common:Description xml:lang="en">description-concept2A in English</common:Description>
         <common:Description xml:lang="es">description-concept2A en Español</common:Description>
+        <common:Description xml:lang="en">description-concept2A in English</common:Description>
         <structure:Parent>
             <Ref id="concept2"/>
         </structure:Parent>
@@ -121,8 +121,8 @@
                 <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
-        <common:Name xml:lang="en">name-concept2B in English</common:Name>
         <common:Name xml:lang="es">name-concept2B en Español</common:Name>
+        <common:Name xml:lang="en">name-concept2B in English</common:Name>
         <common:Description xml:lang="en">description-concept2B in English</common:Description>
         <common:Description xml:lang="es">description-concept2B en Español</common:Description>
         <structure:Parent>
@@ -162,7 +162,7 @@
     <sr:statisticalOperation kind="statisticalOperations#operation">
         <cdomain:id>operation-itemScheme1</cdomain:id>
         <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-itemScheme1</cdomain:urn>
-        <cdomain:selfLink kind="statisticalOperations#operation" href="http://data.istac.es/apis/operations-internal/operations/operation-itemScheme1"/>
+        <cdomain:selfLink kind="statisticalOperations#operation" href="http://data.istac.es/apis/operations-internal/latest/operations/operation-itemScheme1"/>
         <sr:managementAppLink>http://localhost:8080/metamac-statistical-operations-web/#operations;id=operation-itemScheme1</sr:managementAppLink>
     </sr:statisticalOperation>
 </sr:conceptScheme>
