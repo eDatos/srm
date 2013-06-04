@@ -34,7 +34,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.QuantityUnitSymbolPositionEnum;
-import org.siemac.metamac.srm.core.concept.serviceimpl.utils.QuantityUtils;
+import org.siemac.metamac.srm.core.concept.serviceimpl.utils.shared.QuantityUtils;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
