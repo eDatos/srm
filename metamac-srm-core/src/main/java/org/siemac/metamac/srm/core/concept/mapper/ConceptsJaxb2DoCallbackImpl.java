@@ -85,8 +85,9 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
         ConceptSchemeVersionMetamac previousMetamac = (ConceptSchemeVersionMetamac) previous;
         ConceptSchemeVersionMetamac targetMetamac = (ConceptSchemeVersionMetamac) target;
 
-        // Versioning related concepts
+        // Versioning relations
         conceptsMetamacService.versioningRelatedConcepts(ctx, previousMetamac, targetMetamac);
+        conceptsMetamacService.versioningConceptsQuantity(ctx, previousMetamac, targetMetamac);
     }
 
     @Override
@@ -135,6 +136,8 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
                 targetMetamac.setVariable(((CodelistVersionMetamac) targetMetamac.getCoreRepresentation().getEnumerationCodelist()).getVariable());
             }
         }
+
+        // NOTE: relatedConcepts and quantity are copied in conceptSchemeJaxbToDoExtensionPostCreate
 
         // Fill metadata
         conceptsMetamacService.preCreateConcept(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn(), targetMetamac);
