@@ -2,8 +2,7 @@
 «EXTENSION extensions::helper»
 «EXTENSION extensions::dbhelper»
 «EXTENSION extensions::properties» 
-
-
+«EXTENSION generator::SpecialCases» 
 
 «AROUND templates::domain::DomainObjectAttributeAnnotation::columnAnnotations FOR Attribute»
 	«IF type == "DateTimeTZ"»
@@ -24,13 +23,17 @@
 «ENDAROUND»
 
 «AROUND templates::db::OracleDDL::column(String prefix, boolean parentIsNullable) FOR Attribute-»
-  «IF type == "DateTimeTZ" || name == "lastUpdated" || name == "createdDate"»«getDatabaseName()»_TZ VARCHAR2(50)«parentIsNullable || nullable ? "" : getDatabaseTypeNullability()-»,
+  «IF type == "DateTimeTZ" || name == "lastUpdated" || name == "createdDate"»«getDatabaseName()»_TZ VARCHAR2(50 CHAR)«parentIsNullable || nullable ? "" : getDatabaseTypeNullability()-»,
   «ENDIF-»
-  «targetDef.proceed()-»
+  «getDatabaseName(prefix, this)» «useCharactersInsteadBytes(getDatabaseType())»«parentIsNullable ? "" : getDatabaseTypeNullability()-»
+«ENDAROUND»
+
+«AROUND templates::db::OracleDDL::enumColumn(String prefix, boolean parentIsNullable) FOR Reference-»
+  «getDatabaseName(prefix, this)» «useCharactersInsteadBytes(getEnumDatabaseType())»«parentIsNullable ? "" : getDatabaseTypeNullability()-»
 «ENDAROUND»
 
 «AROUND templates::db::CustomDDL::column(String prefix, boolean parentIsNullable) FOR Attribute-»
-  «IF type == "DateTimeTZ" || name == "lastUpdated" || name == "createdDate"»«getDatabaseName()»_TZ VARCHAR(50)«parentIsNullable || nullable ? "" : getDatabaseTypeNullability()-»,
+  «IF type == "DateTimeTZ" || name == "lastUpdated" || name == "createdDate"»«getDatabaseName()»_TZ VARCHAR(50 CHAR)«parentIsNullable || nullable ? "" : getDatabaseTypeNullability()-»,
   «ENDIF-»
   «targetDef.proceed()-»
 «ENDAROUND»
