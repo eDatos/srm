@@ -4525,7 +4525,7 @@
         REPLACED_BY_VERSION="[null]"
         REPLACE_TO_VERSION="[null]"
         
-        NAME_FK="[null]"
+        NAME_FK="103"
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
@@ -4604,7 +4604,7 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="104"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -4698,7 +4698,7 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="105"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -4762,7 +4762,7 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="106"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -7350,5 +7350,57 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="102"
-    />                                                  
+    />  
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="103"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1031"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="103"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="104"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1041"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="104"
+    />     
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="105"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1051"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="105"
+    />     
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="106"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1061"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="106"
+    />                                                             
 </dataset>

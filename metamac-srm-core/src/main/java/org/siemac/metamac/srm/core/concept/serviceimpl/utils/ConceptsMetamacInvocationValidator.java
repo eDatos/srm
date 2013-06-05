@@ -263,6 +263,12 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         }
 
         // checks invalid
+        if (!ValidationUtils.isEmpty(quantity.getUnitMultiplier())) {
+            if (quantity.getUnitMultiplier().intValue() != 1 && quantity.getUnitMultiplier().intValue() % 10 != 0) {
+                // must be 1, 10, 100...
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_MULTIPLIER));
+            }
+        }
         if (!ValidationUtils.isEmpty(quantity.getBaseTime()) && !TimeUtils.isTimeValue(quantity.getBaseTime())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_TIME));
         }
