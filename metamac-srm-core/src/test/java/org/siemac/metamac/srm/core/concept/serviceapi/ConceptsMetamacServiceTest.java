@@ -2158,6 +2158,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         concept.setParent(null);
         concept.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V1_CONCEPT_1));
         concept.setVariable(codesService.retrieveVariableByUrn(ctx, VARIABLE_1));
+        concept.setSdmxRelatedArtefact(ConceptRoleEnum.MEASURE_DIMENSION);
         Representation enumeratedRepresentation = new Representation();
         enumeratedRepresentation.setIsExtended(true);
         enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);

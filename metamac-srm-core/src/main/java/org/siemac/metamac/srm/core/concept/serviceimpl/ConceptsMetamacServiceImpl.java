@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
@@ -45,6 +46,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.domain.Quantity;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
@@ -239,37 +241,64 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build();
         }
 
-        ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
-        String conceptSchemeRelatedOperationUrn = "NULL";
-        ConceptSchemeVersionMetamac conceptScheme = retrieveConceptSchemeByUrn(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-        ExternalItem relatedOperation = conceptScheme.getRelatedOperation();
-        if (relatedOperation != null) {
-            conceptSchemeRelatedOperationUrn = (relatedOperation.getUrn() != null) ? relatedOperation.getUrn() : conceptSchemeRelatedOperationUrn;
+        String conceptSchemeRelatedOperationUrn = null;
+        if (StringUtils.isNotEmpty(conceptUrn)) {
+            ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
+            ConceptSchemeVersionMetamac conceptScheme = retrieveConceptSchemeByUrn(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+            ExternalItem relatedOperation = conceptScheme.getRelatedOperation();
+            if (relatedOperation != null) {
+                conceptSchemeRelatedOperationUrn = (relatedOperation.getUrn() != null) ? relatedOperation.getUrn() : conceptSchemeRelatedOperationUrn;
+            }
         }
 
-        // Add restrictions to be extended
-        // concept scheme must be MEASURE
-        ConditionalCriteria measureCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
-        //
-                .withProperty(ConceptSchemeVersionMetamacProperties.type()).eq(ConceptSchemeTypeEnum.MEASURE)
-                //
-                .and()
-                //
-                .lbrace().withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation()).isNull()
-                //
-                .or()
-                //
-                .lbrace()
-                //
-                .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation()).isNotNull()//
-                .and()//
-                .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation().urn())//
-                .eq(conceptSchemeRelatedOperationUrn)//
-                .rbrace() //
-                .rbrace()//
-                .buildSingle();
-
+        ConditionalCriteria measureCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.type())
+                .eq(ConceptSchemeTypeEnum.MEASURE).buildSingle();
         conditions.add(measureCondition);
+
+        ConditionalCriteria secondPart = null;
+        if (conceptSchemeRelatedOperationUrn == null) {
+            secondPart = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)//
+                    .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation())//
+                    .isNull()//
+                    .buildSingle();
+        } else {
+            secondPart = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)//
+                    .lbrace()//
+                    .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation())//
+                    .isNull()//
+                    .or()//
+                    .lbrace()//
+                    .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation()).isNotNull()//
+                    .and()//
+                    .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation().urn())//
+                    .eq(conceptSchemeRelatedOperationUrn)//
+                    .rbrace() //
+                    .rbrace()//
+                    .buildSingle();
+        }
+        conditions.add(secondPart);
+
+        // // Add restrictions to be extended
+        // // concept scheme must be MEASURE
+        // ConditionalCriteria measureCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+        // //
+        // .withProperty(ConceptSchemeVersionMetamacProperties.type()).eq(ConceptSchemeTypeEnum.MEASURE)
+        // //
+        // .and()
+        // //
+        // .lbrace().withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation()).isNull()
+        // //
+        // .or()
+        // //
+        // .lbrace()
+        // //
+        // .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation()).isNotNull()//
+        // .and()//
+        // .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation().urn())//
+        // .eq(conceptSchemeRelatedOperationUrn)//
+        // .rbrace() //
+        // .rbrace()//
+        // .buildSingle();
 
         // concept scheme externally published
         ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
@@ -586,24 +615,48 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             return null; // when importing (only when creating), skip validations
         }
 
-        if (concept.getCoreRepresentation() == null || !RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())
-                || concept.getCoreRepresentation().getEnumerationCodelist() == null) {
+        if (concept.getCoreRepresentation() == null || !RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())) {
             return null;
         }
-        CodelistVersionMetamac codelistVersion = (CodelistVersionMetamac) concept.getCoreRepresentation().getEnumerationCodelist();
-        String codelistUrn = codelistVersion.getMaintainableArtefact().getUrn();
+
+        if (concept.getCoreRepresentation().getEnumerationCodelist() == null && concept.getCoreRepresentation().getEnumerationConceptScheme() == null) {
+            throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
+        }
 
         MetamacExceptionItem exceptionItem = null;
-        // 1) Check codelist published
-        exceptionItem = SrmValidationUtils.checkArtefactProcStatusReturningExceptionItem(codelistVersion.getLifeCycleMetadata(), codelistUrn, ProcStatusEnum.INTERNALLY_PUBLISHED,
-                ProcStatusEnum.EXTERNALLY_PUBLISHED);
-        if (exceptionItem == null) {
-            // 2) Check variable
-            if (concept.getVariable() == null || !concept.getVariable().getId().equals(codelistVersion.getVariable().getId())) {
-                exceptionItem = MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE)
-                        .withMessageParameters(concept.getNameableArtefact().getCode(), codelistUrn).build();
+        if (concept.getCoreRepresentation().getEnumerationCodelist() != null) {
+            if (ConceptRoleEnum.MEASURE_DIMENSION.equals(concept.getSdmxRelatedArtefact())) {
+                throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
             }
 
+            CodelistVersionMetamac codelistVersion = (CodelistVersionMetamac) concept.getCoreRepresentation().getEnumerationCodelist();
+            String codelistUrn = codelistVersion.getMaintainableArtefact().getUrn();
+
+            // 1) Check codelist published
+            exceptionItem = SrmValidationUtils.checkArtefactProcStatusReturningExceptionItem(codelistVersion.getLifeCycleMetadata(), codelistUrn, ProcStatusEnum.INTERNALLY_PUBLISHED,
+                    ProcStatusEnum.EXTERNALLY_PUBLISHED);
+            if (exceptionItem == null) {
+                // 2) Check variable
+                if (concept.getVariable() == null || !concept.getVariable().getId().equals(codelistVersion.getVariable().getId())) {
+                    exceptionItem = MetamacExceptionItemBuilder.metamacExceptionItem()
+                            .withCommonServiceExceptionType(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE)
+                            .withMessageParameters(concept.getNameableArtefact().getCode(), codelistUrn).build();
+                }
+
+            }
+        } else if (concept.getCoreRepresentation().getEnumerationConceptScheme() != null) {
+            if (!ConceptRoleEnum.MEASURE_DIMENSION.equals(concept.getSdmxRelatedArtefact())) {
+                throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
+            }
+            PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+            Long conceptSchemeId = concept.getCoreRepresentation().getEnumerationConceptScheme().getId();
+            List<ConditionalCriteria> criteriaToVerifyConceptSchemeRepresentation = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                    .withProperty(ConceptSchemeVersionMetamacProperties.id()).eq(conceptSchemeId).build();
+            PagedResult<ConceptSchemeVersionMetamac> result = findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ctx, criteriaToVerifyConceptSchemeRepresentation, pagingParameter, concept
+                    .getNameableArtefact().getUrn());
+            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptSchemeId)) {
+                throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
+            }
         }
 
         if (exceptionItem != null && throwException) {
