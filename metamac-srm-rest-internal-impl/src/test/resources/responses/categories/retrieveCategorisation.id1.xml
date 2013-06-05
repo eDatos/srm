@@ -28,4 +28,5 @@
     </structure:Target>
     <cdomain:selfLink kind="structuralResources#categorisation" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations/agency1/categorisation1/01.000"/>
     <cdomain:parentLink kind="structuralResources#categorisations" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations"/>
+    <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.xxx=categorisation1(01.000)</sr:urnInternal>
 </sr:categorisation>

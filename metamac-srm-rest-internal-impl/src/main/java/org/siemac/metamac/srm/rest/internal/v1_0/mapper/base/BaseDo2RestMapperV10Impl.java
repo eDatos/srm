@@ -134,6 +134,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         ResourceInternal target = new ResourceInternal();
         target.setId(source.getCode());
         target.setUrn(source.getUrnProvider());
+        target.setUrnInternal(source.getUrn());
         target.setKind(kind);
         target.setSelfLink(selfLink);
         target.setTitle(toInternationalString(source.getName()));
@@ -155,6 +156,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         ResourceInternal target = new ResourceInternal();
         target.setId(source.getCode());
         target.setUrn(source.getUrn());
+        target.setUrnInternal(source.getUrnInternal());
         target.setKind(source.getType().getValue());
         target.setSelfLink(toResourceLink(target.getKind(), RestUtils.createLink(apiExternalItemBaseUrl, source.getUri())));
         if (source.getManagementAppUrl() != null) {

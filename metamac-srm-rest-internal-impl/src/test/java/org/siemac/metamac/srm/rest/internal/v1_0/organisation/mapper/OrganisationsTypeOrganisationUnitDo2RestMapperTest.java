@@ -116,6 +116,7 @@ public class OrganisationsTypeOrganisationUnitDo2RestMapperTest {
         assertEquals("resourceID1", target.getId());
         assertEquals("01.000", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agencyID1:resourceID1(01.000)", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agencyID1:resourceID1(01.000)", target.getUrnInternal());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agencyID1/resourceID1/01.000";
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -176,14 +177,17 @@ public class OrganisationsTypeOrganisationUnitDo2RestMapperTest {
     @Test
     public void testToOrganisationUnitSchemeImported() throws MetamacException {
 
-        OrganisationSchemeVersionMetamac source = mockOrganisationScheme("agencyID1", "resourceID1", "01.123", OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
+        OrganisationSchemeVersionMetamac source = mockOrganisationScheme("agencyID1", "resourceID1", "01.000", OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
         source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
         source.getMaintainableArtefact().setUriProvider("uriProviderDb");
+        source.getMaintainableArtefact().setUrnProvider("urnProvider");
 
         // Transform
         OrganisationUnitScheme target = do2RestInternalMapper.toOrganisationUnitScheme(source);
 
         // Validate
+        assertEquals("urnProvider", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agencyID1:resourceID1(01.000)", target.getUrnInternal());
         assertEquals("uriProviderDb", target.getUri());
     }
 
@@ -253,6 +257,7 @@ public class OrganisationsTypeOrganisationUnitDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, target.getKind());
         assertEquals("organisation2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agencyID1:resourceID1(01.000).organisation2", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agencyID1:resourceID1(01.000).organisation2", target.getUrnInternal());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agencyID1/resourceID1/01.000/organisationunits";
         String selfLink = parentLink + "/organisation2";
@@ -275,15 +280,18 @@ public class OrganisationsTypeOrganisationUnitDo2RestMapperTest {
         OrganisationSchemeTypeEnum organisationSchemeTypeEnum = OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME;
         OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.ORGANISATION_UNIT;
 
-        OrganisationSchemeVersionMetamac organisationScheme = mockOrganisationScheme("agencyID1", "resourceID1", "01.123", organisationSchemeTypeEnum);
+        OrganisationSchemeVersionMetamac organisationScheme = mockOrganisationScheme("agencyID1", "resourceID1", "01.000", organisationSchemeTypeEnum);
         organisationScheme.getMaintainableArtefact().setIsImported(Boolean.TRUE);
         OrganisationMetamac source = mockOrganisation("organisation2", organisationScheme, null, organisationTypeEnum);
         source.getNameableArtefact().setUriProvider("uriProviderDb");
+        source.getNameableArtefact().setUrnProvider("urnProvider");
 
         // Transform
         OrganisationUnit target = do2RestInternalMapper.toOrganisationUnit(source);
 
         // Validate
+        assertEquals("urnProvider", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agencyID1:resourceID1(01.000).organisation2", target.getUrnInternal());
         assertEquals("uriProviderDb", target.getUri());
     }
 }

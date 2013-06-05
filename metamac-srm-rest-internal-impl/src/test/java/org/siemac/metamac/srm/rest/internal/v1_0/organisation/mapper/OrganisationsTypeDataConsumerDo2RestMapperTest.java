@@ -115,6 +115,7 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
         assertEquals("DATACONSUMERS", target.getId());
         assertEquals("01.000", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=agencyID1:DATACONSUMERS(01.000)", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=agencyID1:DATACONSUMERS(01.000)", target.getUrnInternal());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agencyID1/DATACONSUMERS/01.000";
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -163,14 +164,17 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
     @Test
     public void testToDataConsumerSchemeImported() throws MetamacException {
 
-        OrganisationSchemeVersionMetamac source = mockOrganisationScheme("agencyID1", "resourceID1", "01.123", OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
+        OrganisationSchemeVersionMetamac source = mockOrganisationScheme("agencyID1", "DATACONSUMERS", "01.000", OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
         source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        source.getMaintainableArtefact().setUrnProvider("urnProvider");
         source.getMaintainableArtefact().setUriProvider("uriProviderDb");
 
         // Transform
         DataConsumerScheme target = do2RestInternalMapper.toDataConsumerScheme(source);
 
         // Validate
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=agencyID1:DATACONSUMERS(01.000)", target.getUrnInternal());
+        assertEquals("urnProvider", target.getUrn());
         assertEquals("uriProviderDb", target.getUri());
     }
 
@@ -240,6 +244,7 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER, target.getKind());
         assertEquals("organisation2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agencyID1:DATACONSUMERS(01.000).organisation2", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agencyID1:DATACONSUMERS(01.000).organisation2", target.getUrnInternal());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agencyID1/DATACONSUMERS/01.000/dataconsumers";
         String selfLink = parentLink + "/organisation2";
@@ -262,15 +267,18 @@ public class OrganisationsTypeDataConsumerDo2RestMapperTest {
         OrganisationSchemeTypeEnum organisationSchemeTypeEnum = OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME;
         OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.DATA_CONSUMER;
 
-        OrganisationSchemeVersionMetamac organisationScheme = mockOrganisationScheme("agencyID1", "resourceID1", "01.123", organisationSchemeTypeEnum);
+        OrganisationSchemeVersionMetamac organisationScheme = mockOrganisationScheme("agencyID1", "DATACONSUMERS", "01.000", organisationSchemeTypeEnum);
         organisationScheme.getMaintainableArtefact().setIsImported(Boolean.TRUE);
         OrganisationMetamac source = mockOrganisation("organisation2", organisationScheme, null, organisationTypeEnum);
+        source.getNameableArtefact().setUrnProvider("urnProvider");
         source.getNameableArtefact().setUriProvider("uriProviderDb");
 
         // Transform
         DataConsumer target = do2RestInternalMapper.toDataConsumer(source);
 
         // Validate
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agencyID1:DATACONSUMERS(01.000).organisation2", target.getUrnInternal());
+        assertEquals("urnProvider", target.getUrn());
         assertEquals("uriProviderDb", target.getUri());
     }
 }

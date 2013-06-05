@@ -115,6 +115,7 @@ public class ConceptsDo2RestMapperTest {
         assertEquals("resourceID1", target.getId());
         assertEquals("01.123", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=agencyID1:resourceID1(01.123)", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=agencyID1:resourceID1(01.123)", target.getUrnInternal());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -182,11 +183,14 @@ public class ConceptsDo2RestMapperTest {
         ConceptSchemeVersionMetamac source = mockConceptSchemeWithConcepts("agencyID1", "resourceID1", "01.123");
         source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
         source.getMaintainableArtefact().setUriProvider("uriProviderDb");
+        source.getMaintainableArtefact().setUrnProvider("urnProvider");
 
         // Transform
         ConceptScheme target = do2RestInternalMapper.toConceptScheme(source);
 
         // Validate
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=agencyID1:resourceID1(01.123)", target.getUrnInternal());
+        assertEquals("urnProvider", target.getUrn());
         assertEquals("uriProviderDb", target.getUri());
     }
 
@@ -249,6 +253,7 @@ public class ConceptsDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CONCEPT, target.getKind());
         assertEquals("concept2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2", target.getUrnInternal());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agencyID1/resourceID1/01.123/concepts";
         String selfLink = parentLink + "/concept2";
@@ -302,13 +307,16 @@ public class ConceptsDo2RestMapperTest {
     public void testToConceptImported() {
         ConceptSchemeVersionMetamac conceptScheme = mockConceptScheme("agencyID1", "resourceID1", "01.123");
         conceptScheme.getMaintainableArtefact().setIsImported(Boolean.TRUE);
-        ConceptMetamac source = mockConceptWithConceptRelations("concept2", conceptScheme, null);
+        ConceptMetamac source = mockConcept("concept2", conceptScheme, null);
+        source.getNameableArtefact().setUrnProvider("urnProvider");
         source.getNameableArtefact().setUriProvider("uriProviderDb");
 
         // Transform
         Concept target = do2RestInternalMapper.toConcept(source);
 
         // Validate
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2", target.getUrnInternal());
+        assertEquals("urnProvider", target.getUrn());
         assertEquals("uriProviderDb", target.getUri());
     }
 }

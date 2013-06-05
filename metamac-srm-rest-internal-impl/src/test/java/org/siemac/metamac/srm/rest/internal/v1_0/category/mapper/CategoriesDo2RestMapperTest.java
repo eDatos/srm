@@ -112,6 +112,7 @@ public class CategoriesDo2RestMapperTest {
         assertEquals("resourceID1", target.getId());
         assertEquals("01.123", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agencyID1:resourceID1(01.123)", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agencyID1:resourceID1(01.123)", target.getUrnInternal());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -176,11 +177,14 @@ public class CategoriesDo2RestMapperTest {
         CategorySchemeVersionMetamac source = mockCategorySchemeWithCategories("agencyID1", "resourceID1", "01.123");
         source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
         source.getMaintainableArtefact().setUriProvider("uriProviderDb");
+        source.getMaintainableArtefact().setUrnProvider("urnProvider");
 
         // Transform
         CategoryScheme target = do2RestInternalMapper.toCategoryScheme(source);
 
         // Validate
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agencyID1:resourceID1(01.123)", target.getUrnInternal());
+        assertEquals("urnProvider", target.getUrn());
         assertEquals("uriProviderDb", target.getUri());
     }
 
@@ -243,6 +247,7 @@ public class CategoriesDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CATEGORY, target.getKind());
         assertEquals("category2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).categoryParent1.category2", target.getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).categoryParent1.category2", target.getUrnInternal());
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agencyID1/resourceID1/01.123/categories";
         String selfLink = parentLink + "/category2";
         assertEquals(RestInternalConstants.KIND_CATEGORY, target.getSelfLink().getKind());
@@ -263,11 +268,14 @@ public class CategoriesDo2RestMapperTest {
         categoryScheme.getMaintainableArtefact().setIsImported(Boolean.TRUE);
         CategoryMetamac source = mockCategory("category2", categoryScheme, null);
         source.getNameableArtefact().setUriProvider("uriProviderDb");
+        source.getNameableArtefact().setUrnProvider("urnProvider");
 
         // Transform
         Category target = do2RestInternalMapper.toCategory(source);
 
         // Validate
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).category2", target.getUrnInternal());
+        assertEquals("urnProvider", target.getUrn());
         assertEquals("uriProviderDb", target.getUri());
     }
 

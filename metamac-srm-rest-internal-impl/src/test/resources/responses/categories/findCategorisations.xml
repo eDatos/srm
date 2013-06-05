@@ -8,6 +8,7 @@
             <cdomain:text xml:lang="es">name-categorisation1v01.000 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-categorisation1v01.000 in English</cdomain:text>
         </cdomain:title>
+        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.xxx=categorisation1(01.000)</sr:urnInternal>
     </sr:categorisation>
     <sr:categorisation kind="structuralResources#categorisation">
         <cdomain:id>categorisation2</cdomain:id>
@@ -17,6 +18,7 @@
             <cdomain:text xml:lang="en">name-categorisation2v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-categorisation2v01.000 en Español</cdomain:text>
         </cdomain:title>
+        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.xxx=categorisation1(01.000)</sr:urnInternal>
     </sr:categorisation>
     <sr:categorisation kind="structuralResources#categorisation">
         <cdomain:id>categorisation3</cdomain:id>
@@ -26,5 +28,6 @@
             <cdomain:text xml:lang="en">name-categorisation3v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-categorisation3v01.000 en Español</cdomain:text>
         </cdomain:title>
+        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.xxx=categorisation1(01.000)</sr:urnInternal>
     </sr:categorisation>
 </sr:categorisations>

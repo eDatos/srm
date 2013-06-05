@@ -22,6 +22,7 @@
     <common:Description xml:lang="es">description-item1 en Español</common:Description>
     <cdomain:selfLink kind="structuralResources#category" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/item1"/>
     <cdomain:parentLink kind="structuralResources#categories" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories"/>
+    <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).item2.item1</sr:urnInternal>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme1(01.000)/category;id=item1</sr:managementAppLink>
     <sr:comment>
         <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>

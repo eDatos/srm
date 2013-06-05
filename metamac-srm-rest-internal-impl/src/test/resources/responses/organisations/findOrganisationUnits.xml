@@ -8,6 +8,7 @@
             <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
         </cdomain:title>
+        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agency1:itemScheme1(01.000).item1</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=item1</sr:managementAppLink>
     </sr:organisationUnit>
     <sr:organisationUnit kind="structuralResources#organisationUnit">
@@ -18,6 +19,7 @@
             <cdomain:text xml:lang="en">name-item2 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-item2 en Español</cdomain:text>
         </cdomain:title>
+        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agency1:itemScheme1(01.000).item2</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=item2</sr:managementAppLink>
     </sr:organisationUnit>
     <sr:organisationUnit kind="structuralResources#organisationUnit">
@@ -28,6 +30,7 @@
             <cdomain:text xml:lang="es">name-item3 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item3 in English</cdomain:text>
         </cdomain:title>
+        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agency1:itemScheme1(01.000).item3</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=item3</sr:managementAppLink>
     </sr:organisationUnit>
     <sr:organisationUnit kind="structuralResources#organisationUnit">
@@ -38,6 +41,7 @@
             <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
         </cdomain:title>
+        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agency1:itemScheme2(01.000).item1</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme2(01.000)/organisation;id=item1</sr:managementAppLink>
     </sr:organisationUnit>
 </sr:organisationUnits>

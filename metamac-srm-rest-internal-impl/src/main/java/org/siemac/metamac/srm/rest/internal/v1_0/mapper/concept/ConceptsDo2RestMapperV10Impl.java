@@ -94,6 +94,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             return;
         }
         target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEME);
+        target.setUrnInternal(source.getMaintainableArtefact().getUrn());
         target.setSelfLink(toConceptSchemeSelfLink(source));
         target.setParentLink(toConceptSchemeParentLink(source));
         target.setChildLinks(toConceptSchemeChildLinks(source));
@@ -137,6 +138,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         conceptsDo2JaxbSdmxMapper.conceptDoToJaxb(source, target, null);
 
         target.setKind(RestInternalConstants.KIND_CONCEPT);
+        target.setUrnInternal(source.getNameableArtefact().getUrn());
         target.setSelfLink(toConceptSelfLink(source));
         target.setParentLink(toConceptParentLink(source));
         target.setChildLinks(toConceptChildLinks(source));

@@ -326,6 +326,7 @@
     </structure:DataStructureComponents>
     <cdomain:selfLink kind="structuralResources#dataStructure" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency1/artefact1/01.000"/>
     <cdomain:parentLink kind="structuralResources#dataStructures" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures"/>
+    <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact1(01.000)</sr:urnInternal>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency1:artefact1(01.000)</sr:managementAppLink>
     <sr:lifeCycle>
         <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>

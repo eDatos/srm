@@ -85,6 +85,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
             return;
         }
         target.setKind(RestInternalConstants.KIND_DATA_STRUCTURE);
+        target.setUrnInternal(source.getMaintainableArtefact().getUrn());
         target.setSelfLink(toDataStructureSelfLink(source));
         target.setParentLink(toDataStructureParentLink(source));
         target.setChildLinks(toDataStructureChildLinks(source));
