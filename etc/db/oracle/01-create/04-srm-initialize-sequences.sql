@@ -19,3 +19,4 @@ CREATE OR REPLACE FUNCTION GET_NEXT_SEQUENCE_VALUE(sequence_name_in IN VARCHAR2)
     WHERE SEQUENCE_NAME = sequence_name_in;
     RETURN (sequence_next_value_out);
   END;
+/
