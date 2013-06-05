@@ -135,7 +135,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                 case CATEGORY_SCHEME_URN:
                     return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 case CATEGORY_SCHEME_EXTERNALLY_PUBLISHED:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), propertyRestriction.getValue(),
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), Boolean.valueOf(propertyRestriction.getValue()),
                             propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());

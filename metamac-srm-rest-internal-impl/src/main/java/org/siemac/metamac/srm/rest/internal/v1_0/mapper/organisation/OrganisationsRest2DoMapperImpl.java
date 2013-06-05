@@ -132,7 +132,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                 case ORGANISATION_SCHEME_URN:
                     return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 case ORGANISATION_SCHEME_EXTERNALLY_PUBLISHED:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), propertyRestriction.getValue(),
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), Boolean.valueOf(propertyRestriction.getValue()),
                             propertyRestriction.getOperationType());
                 case TYPE:
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.organisationType(), propertyRestrictionValueToOrganisationTypeEnum(propertyRestriction.getValue()),
