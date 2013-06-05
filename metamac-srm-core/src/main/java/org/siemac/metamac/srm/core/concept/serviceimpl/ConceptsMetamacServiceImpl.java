@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -24,6 +27,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
+import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -132,6 +136,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Autowired
     private ExternalItemRepository           externalItemRepository;
+
+    @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
+    protected EntityManager                  entityManager;
 
     public ConceptsMetamacServiceImpl() {
     }
@@ -525,9 +532,22 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Versioning quantity
         versioningConceptsQuantity(ctx, conceptSchemeTemporalVersion, conceptSchemeVersion);
 
+        // Add Categorisations
+        boolean thereAreNewCategorisations = false;
+        thereAreNewCategorisations = CategorisationsUtils.addCategorisationsTemporalToItemScheme(conceptSchemeTemporalVersion, conceptSchemeVersion);
+        if (thereAreNewCategorisations) {
+            // ===============================================================
+            // DANGEROUS CODE: In spite of to remove item from temporal scheme and then associate to another scheme, hibernate delete this item when delete item scheme. For this, we need to clear the
+            // context to avoid delete the temporary scheme with the previous temporary item when delete the temporary item scheme.
+            entityManager.flush();
+            entityManager.clear();
+            // ===============================================================
+        }
+
         // Delete temporal version
         deleteConceptScheme(ctx, conceptSchemeTemporalVersion.getMaintainableArtefact().getUrn());
 
+        conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn());
         return conceptSchemeVersion;
     }
 

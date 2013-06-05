@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -21,6 +24,7 @@ import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTempora
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
+import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
@@ -100,6 +104,9 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Autowired
     private InternationalStringRepository  internationalStringRepository;
+
+    @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
+    protected EntityManager                entityManager;
 
     public CategoriesMetamacServiceImpl() {
     }
@@ -278,9 +285,35 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
             // IMPORTANT! If any InternationalString is added, do an efficient query and retrieve from categoryTempItemResult
         }
 
+        // Merge Categorizations
+        Map<String, Categorisation> temporalCategorisationMap = SrmServiceUtils.createMapOfCategorisationsByOriginalUrn(categorySchemeTemporalVersion.getMaintainableArtefact().getCategorisations());
+        for (Categorisation categorisation : categorySchemeVersion.getMaintainableArtefact().getCategorisations()) {
+            Categorisation categorisationTemp = temporalCategorisationMap.get(categorisation.getMaintainableArtefact().getUrn());
+            // Inherit InternationalStrings
+            BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToCategorisation(categorisation, categorisationTemp, internationalStringRepository);
+
+            // Valid To
+            if (!categorisation.getMaintainableArtefact().getIsImported()) {
+                categorisation.getMaintainableArtefact().setValidTo(categorisationTemp.getMaintainableArtefact().getValidTo());
+            }
+        }
+
+        // Add Categorisations
+        boolean thereAreNewCategorisations = false;
+        thereAreNewCategorisations = CategorisationsUtils.addCategorisationsTemporalToItemScheme(categorySchemeTemporalVersion, categorySchemeVersion);
+        if (thereAreNewCategorisations) {
+            // ===============================================================
+            // DANGEROUS CODE: In spite of to remove item from temporal scheme and then associate to another scheme, hibernate delete this item when delete item scheme. For this, we need to clear the
+            // context to avoid delete the temporary scheme with the previous temporary item when delete the temporary item scheme.
+            entityManager.flush();
+            entityManager.clear();
+            // ===============================================================
+        }
+
         // Delete temporal version
         deleteCategoryScheme(ctx, categorySchemeTemporalVersion.getMaintainableArtefact().getUrn());
 
+        categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn());
         return categorySchemeVersion;
     }
 

@@ -19,6 +19,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.BooleanUtils;
@@ -40,6 +43,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
+import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
@@ -164,6 +168,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Autowired
     private InternationalStringRepository  internationalStringRepository;
+
+    @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
+    protected EntityManager                entityManager;
 
     private static Logger                  logger = LoggerFactory.getLogger(CodesMetamacService.class);
 
@@ -410,7 +417,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         versioningResult.setUrnResult(codelistVersionTemporal.getMaintainableArtefact().getUrn());
         return versioningResult;
     }
-    
+
     @Override
     public CodelistVersionMetamac mergeTemporalVersion(ServiceContext ctx, String urnTemporal) throws MetamacException {
 
@@ -491,6 +498,18 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion.removeAllOrderVisualisations();
         itemSchemeVersionRepository.flush();
         codelistVersion = versioningCodelistOrderVisualisations(ctx, codelistTemporalVersion, codelistVersion);
+
+        // Add Categorisations
+        boolean thereAreNewCategorisations = false;
+        thereAreNewCategorisations = CategorisationsUtils.addCategorisationsTemporalToItemScheme(codelistTemporalVersion, codelistVersion);
+        if (thereAreNewCategorisations) {
+            // ===============================================================
+            // DANGEROUS CODE: In spite of to remove item from temporal scheme and then associate to another scheme, hibernate delete this item when delete item scheme. For this, we need to clear the
+            // context to avoid delete the temporary scheme with the previous temporary item when delete the temporary item scheme.
+            entityManager.flush();
+            entityManager.clear();
+            // ===============================================================
+        }
 
         // Delete temporal version
         deleteCodelist(ctx, codelistTemporalVersion, Boolean.FALSE);

@@ -22,6 +22,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
+import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
@@ -281,24 +282,34 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         }
 
         if (SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
+            // Add Organisations
+            boolean thereAreNewOrganisations = false;
             Map<String, Item> currentItemMap = SrmServiceUtils.createMapOfItemsByUrn(organisationSchemeVersion.getItems());
-            for (Item item : new ArrayList<Item>(organisationSchemeTemporalVersion.getItems())) {
-                String urnFromTemporal = GeneratorUrnUtils.makeUrnFromTemporal(item.getNameableArtefact().getUrn());
+            for (Item itemTemp : new ArrayList<Item>(organisationSchemeTemporalVersion.getItems())) {
+                String urnFromTemporal = GeneratorUrnUtils.makeUrnFromTemporal(itemTemp.getNameableArtefact().getUrn());
                 if (!currentItemMap.containsKey(urnFromTemporal)) {
                     // Add
-                    organisationSchemeVersion.addItem(item);
-                    organisationSchemeVersion.addItemsFirstLevel(item);
+                    organisationSchemeVersion.addItem(itemTemp);
+                    organisationSchemeVersion.addItemsFirstLevel(itemTemp);
 
-                    item.getNameableArtefact().setUrn(urnFromTemporal);
-                    item.getNameableArtefact().setUrnProvider(GeneratorUrnUtils.makeUrnFromTemporal(item.getNameableArtefact().getUrnProvider()));
+                    itemTemp.getNameableArtefact().setUrn(urnFromTemporal);
+                    itemTemp.getNameableArtefact().setUrnProvider(GeneratorUrnUtils.makeUrnFromTemporal(itemTemp.getNameableArtefact().getUrnProvider()));
+                    thereAreNewOrganisations = true;
                 }
             }
-            // ===============================================================
-            // DANGEROUS CODE: In spite of to remove item from temporal scheme and then associate to another scheme, hibernate delete this item when delete item scheme. For this, we need to clear the
-            // context to avoid delete the temporary scheme with the previous temporary organisation when delete the temporary item scheme.
-            entityManager.flush();
-            entityManager.clear();
-            // ===============================================================
+
+            // Add Categorisations
+            boolean thereAreNewCategorisations = false;
+            thereAreNewCategorisations = CategorisationsUtils.addCategorisationsTemporalToItemScheme(organisationSchemeTemporalVersion, organisationSchemeVersion);
+
+            if (thereAreNewOrganisations || thereAreNewCategorisations) {
+                // ===============================================================
+                // DANGEROUS CODE: In spite of to remove item from temporal scheme and then associate to another scheme, hibernate delete this item when delete item scheme. For this, we need to clear
+                // the context to avoid delete the temporary scheme with the previous temporary item when delete the temporary item scheme.
+                entityManager.flush();
+                entityManager.clear();
+                // ===============================================================
+            }
 
         } else {
             // Add items is not supported in temporal version for another types.

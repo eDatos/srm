@@ -30,6 +30,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.CopyOperationTypeEnum;
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
@@ -408,6 +409,23 @@ public class SrmServiceUtils {
         Map<String, Item> result = new HashMap<String, Item>(items.size());
         for (Item item : items) {
             result.put(item.getNameableArtefact().getUrn(), item);
+        }
+        return result;
+    }
+
+    public static Map<String, Categorisation> createMapOfCategorisationsByOriginalUrn(List<Categorisation> categorisations) {
+        Map<String, Categorisation> result = new HashMap<String, Categorisation>(categorisations.size());
+        for (Categorisation categorisation : categorisations) {
+            String originalUrn = GeneratorUrnUtils.makeUrnFromTemporal(categorisation.getMaintainableArtefact().getUrn());
+            result.put(originalUrn, categorisation);
+        }
+        return result;
+    }
+
+    public static Map<String, Categorisation> createMapOfCategorisationsByUrn(List<Categorisation> categorisations) {
+        Map<String, Categorisation> result = new HashMap<String, Categorisation>(categorisations.size());
+        for (Categorisation categorisation : categorisations) {
+            result.put(categorisation.getMaintainableArtefact().getUrn(), categorisation);
         }
         return result;
     }
