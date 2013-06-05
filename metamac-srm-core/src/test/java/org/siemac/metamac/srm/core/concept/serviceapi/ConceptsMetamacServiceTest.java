@@ -1795,6 +1795,75 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
+    public void testVersioningConceptSchemeCheckQuantity() throws Exception {
+
+        String urn = CONCEPT_SCHEME_15_V1;
+
+        // Versioning
+        conceptsService.versioningConceptScheme(getServiceContextAdministrador(), urn, VersionTypeEnum.MAJOR);
+        String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(02.000).CONCEPT01";
+        String urnExpectedConcept2 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(02.000).CONCEPT02";
+        String urnExpectedConcept3 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(02.000).CONCEPT03";
+
+        // Check quantity after versioning
+        entityManager.clear();
+
+        {
+            // Concept 1
+            {
+                ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnExpectedConcept1);
+                Quantity quantity = concept.getQuantity();
+                assertNotNull(quantity);
+                assertEquals(QuantityTypeEnum.CHANGE_RATE, quantity.getQuantityType());
+                assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE01", quantity.getUnitCode().getNameableArtefact().getUrn());
+                assertEquals(QuantityUnitSymbolPositionEnum.END, quantity.getUnitSymbolPosition());
+                assertEquals(Integer.valueOf(2), quantity.getSignificantDigits());
+                assertEquals(Integer.valueOf(3), quantity.getDecimalPlaces());
+                assertEquals(Integer.valueOf(10), quantity.getUnitMultiplier());
+                assertEquals(Integer.valueOf(100), quantity.getMinimum());
+                assertEquals(Integer.valueOf(200), quantity.getMaximum());
+                assertEquals(urnExpectedConcept2, quantity.getNumerator().getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, quantity.getDenominator().getNameableArtefact().getUrn());
+                assertEquals(Boolean.TRUE, quantity.getIsPercentage());
+                ConceptsAsserts.assertEqualsInternationalString(quantity.getPercentageOf(), "es", "porcentaje quantity c1", "en", "percentage quantity c1");
+                assertNull(quantity.getBaseValue());
+                assertNull(quantity.getBaseTime());
+                assertNull(quantity.getBaseLocation());
+                assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_1, quantity.getBaseQuantity().getNameableArtefact().getUrn());
+            }
+
+            // Concept 2
+            {
+                ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnExpectedConcept2);
+                assertNull(concept.getQuantity());
+            }
+            // Concept 3
+            {
+                ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnExpectedConcept3);
+                assertNotNull(concept.getQuantity());
+                Quantity quantity = concept.getQuantity();
+                assertNotNull(quantity);
+                assertEquals(QuantityTypeEnum.FRACTION, quantity.getQuantityType());
+                assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE02", quantity.getUnitCode().getNameableArtefact().getUrn());
+                assertEquals(QuantityUnitSymbolPositionEnum.START, quantity.getUnitSymbolPosition());
+                assertEquals(Integer.valueOf(3), quantity.getSignificantDigits());
+                assertEquals(Integer.valueOf(2), quantity.getDecimalPlaces());
+                assertEquals(Integer.valueOf(100), quantity.getUnitMultiplier());
+                assertEquals(Integer.valueOf(200), quantity.getMinimum());
+                assertEquals(Integer.valueOf(350), quantity.getMaximum());
+                assertEquals(urnExpectedConcept1, quantity.getNumerator().getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, quantity.getDenominator().getNameableArtefact().getUrn());
+                assertNull(quantity.getIsPercentage());
+                assertNull(quantity.getPercentageOf());
+                assertNull(quantity.getBaseValue());
+                assertNull(quantity.getBaseTime());
+                assertNull(quantity.getBaseLocation());
+                assertNull(quantity.getBaseQuantity());
+            }
+        }
+    }
+
+    @Test
     public void testVersioningConceptSchemeErrorAlreadyExistsDraft() throws Exception {
 
         String urn = CONCEPT_SCHEME_1_V1;
@@ -2081,6 +2150,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     public void testVersioningRelatedConcepts() throws Exception {
         // tested in testVersioningConceptSchemeCheckConceptRelations
+    }
+
+    @Override
+    public void testVersioningConceptsQuantity() throws Exception {
+        // tested in testVersioningConceptSchemeCheckQuantity
     }
 
     @Override

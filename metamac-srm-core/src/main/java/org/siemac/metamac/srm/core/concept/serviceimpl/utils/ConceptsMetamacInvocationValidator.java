@@ -254,7 +254,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         // common metadata in sdmx are checked in Sdmx module
     }
 
-    public static void checkConceptQuantity(Quantity quantity, List<MetamacExceptionItem> exceptions) {
+    private static void checkConceptQuantity(Quantity quantity, List<MetamacExceptionItem> exceptions) {
 
         if (ValidationUtils.isEmpty(quantity)) {
             // it is optional
@@ -282,6 +282,9 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         }
 
         // Quantity: checks unexpected
+        if (!QuantityUtils.isAmountOrExtension(quantity.getQuantityType())) {
+            // nothing
+        }
         if (!QuantityUtils.isMagnitudeOrExtension(quantity.getQuantityType())) {
             ValidationUtils.checkMetadataEmpty(quantity.getMinimum(), ServiceExceptionParameters.CONCEPT_QUANTITY_MIN, exceptions);
             ValidationUtils.checkMetadataEmpty(quantity.getMaximum(), ServiceExceptionParameters.CONCEPT_QUANTITY_MAX, exceptions);
@@ -293,6 +296,9 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         if (!QuantityUtils.isRatioOrExtension(quantity.getQuantityType())) {
             ValidationUtils.checkMetadataEmpty(quantity.getIsPercentage(), ServiceExceptionParameters.CONCEPT_QUANTITY_IS_PERCENTAGE, exceptions);
             ValidationUtils.checkMetadataEmpty(quantity.getPercentageOf(), ServiceExceptionParameters.CONCEPT_QUANTITY_PERCENTAGE_OF, exceptions);
+        }
+        if (!QuantityUtils.isRateOrExtension(quantity.getQuantityType())) {
+            // nothing
         }
         if (!QuantityUtils.isIndexOrExtension(quantity.getQuantityType())) {
             ValidationUtils.checkMetadataEmpty(quantity.getBaseValue(), ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_VALUE, exceptions);

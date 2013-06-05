@@ -62,6 +62,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
@@ -532,15 +533,23 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Versioning related concepts (metadata of Metamac 'relatedConcepts'). Note: other relations are copied in copy callback
         if (conceptSchemeVersionToCopy == null) {
             // source only can be null when importing
-            if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN)
-                        .withMessageParameters("Error copying related concepts to versioning. Concept scheme expected imported: " + conceptSchemeNewVersion.getMaintainableArtefact().getUrn()).build();
-
-            }
+            SrmValidationUtils.checkMaintainableArtefactImported(conceptSchemeNewVersion.getMaintainableArtefact());
             return;
         }
         for (Item conceptToCopyRelatedConcepts : conceptSchemeVersionToCopy.getItems()) {
             versioningRelatedConcepts((ConceptMetamac) conceptToCopyRelatedConcepts, conceptSchemeNewVersion);
+        }
+    }
+    @Override
+    public void versioningConceptsQuantity(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
+        // Versioning quantity. Note: other relations are copied in copy callback
+        if (conceptSchemeVersionToCopy == null) {
+            // source only can be null when importing
+            SrmValidationUtils.checkMaintainableArtefactImported(conceptSchemeNewVersion.getMaintainableArtefact());
+            return;
+        }
+        for (Item conceptToCopyQuantity : conceptSchemeVersionToCopy.getItems()) {
+            versioningConceptQuantity((ConceptMetamac) conceptToCopyQuantity, conceptSchemeNewVersion);
         }
     }
 
@@ -1125,14 +1134,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         if (conceptInNewVersion == null) {
             // concept only can not exist in new version when importing: in this case, do not copy related concepts to this concept
-            if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
-                throw MetamacExceptionBuilder
-                        .builder()
-                        .withExceptionItems(ServiceExceptionType.UNKNOWN)
-                        .withMessageParameters(
-                                "Error copying related concepts to versioning. Concept not found " + conceptToCopy.getNameableArtefact().getCode() + ", so concept scheme expected imported: "
-                                        + conceptSchemeNewVersion.getMaintainableArtefact().getUrn()).build();
-            }
+            SrmValidationUtils.checkMaintainableArtefactImported(conceptSchemeNewVersion.getMaintainableArtefact());
             return;
         }
 
@@ -1142,17 +1144,71 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                     .getMaintainableArtefact().getUrn());
             if (relatedConceptIntNewVersion == null) {
                 // concept only can not exist in new version when importing: in this case, do not copy
-                if (!conceptSchemeNewVersion.getMaintainableArtefact().getIsImported()) {
-                    throw MetamacExceptionBuilder
-                            .builder()
-                            .withExceptionItems(ServiceExceptionType.UNKNOWN)
-                            .withMessageParameters(
-                                    "Error copying related concepts to versioning. Concept not found " + relatedConcept.getNameableArtefact().getCode() + ", so concept scheme expected imported: "
-                                            + conceptSchemeNewVersion.getMaintainableArtefact().getUrn()).build();
-                }
+                SrmValidationUtils.checkMaintainableArtefactImported(conceptSchemeNewVersion.getMaintainableArtefact());
                 continue;
             }
             conceptInNewVersion.addRelatedConcept(relatedConceptIntNewVersion);
+        }
+    }
+
+    private void versioningConceptQuantity(ConceptMetamac conceptToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
+        if (conceptToCopy.getQuantity() == null) {
+            return;
+        }
+        ConceptMetamac conceptInNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptToCopy.getNameableArtefact().getCode(), conceptSchemeNewVersion
+                .getMaintainableArtefact().getUrn());
+
+        if (conceptInNewVersion == null) {
+            // concept only can not exist in new version when importing: in this case, do not copy quantity to this concept
+            SrmValidationUtils.checkMaintainableArtefactImported(conceptSchemeNewVersion.getMaintainableArtefact());
+            return;
+        }
+
+        // Copy quantity in new version
+        Quantity quantityToCopy = conceptToCopy.getQuantity();
+        Long itemSchemeVersionIdToCopy = conceptToCopy.getItemSchemeVersion().getId();
+
+        Quantity quantityCopied = new Quantity();
+        quantityCopied.setQuantityType(quantityToCopy.getQuantityType());
+        quantityCopied.setUnitCode(quantityToCopy.getUnitCode());
+        quantityCopied.setUnitSymbolPosition(quantityToCopy.getUnitSymbolPosition());
+        quantityCopied.setSignificantDigits(quantityToCopy.getSignificantDigits());
+        quantityCopied.setDecimalPlaces(quantityToCopy.getDecimalPlaces());
+        quantityCopied.setUnitMultiplier(quantityToCopy.getUnitMultiplier());
+        quantityCopied.setMinimum(quantityToCopy.getMinimum());
+        quantityCopied.setMaximum(quantityToCopy.getMaximum());
+        quantityCopied.setNumerator(versioningConceptRelatedInQuantity(itemSchemeVersionIdToCopy, conceptSchemeNewVersion, quantityToCopy.getNumerator()));
+        quantityCopied.setDenominator(versioningConceptRelatedInQuantity(itemSchemeVersionIdToCopy, conceptSchemeNewVersion, quantityToCopy.getDenominator()));
+        quantityCopied.setIsPercentage(quantityToCopy.getIsPercentage());
+        quantityCopied.setPercentageOf(BaseCopyAllMetadataUtils.copy(quantityToCopy.getPercentageOf()));
+        quantityCopied.setBaseValue(quantityToCopy.getBaseValue());
+        quantityCopied.setBaseTime(quantityToCopy.getBaseTime());
+        // target.setBaseLocation(source.getBaseLocation()); // TODO quantity.baseLocation
+        quantityCopied.setBaseQuantity(versioningConceptRelatedInQuantity(itemSchemeVersionIdToCopy, conceptSchemeNewVersion, quantityToCopy.getBaseQuantity()));
+
+        conceptInNewVersion.setQuantity(quantityCopied);
+    }
+
+    // TODO mejorar. pasar mapa en target para no tener q hacer find?
+    private ConceptMetamac versioningConceptRelatedInQuantity(Long itemSchemeVersionIdToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion, ConceptMetamac conceptInQuantityToCopy)
+            throws MetamacException {
+        if (conceptInQuantityToCopy == null) {
+            return null;
+        }
+        if (!conceptInQuantityToCopy.getItemSchemeVersion().getId().equals(itemSchemeVersionIdToCopy)) {
+            // belong to another concept scheme. So, can copy link
+            return conceptInQuantityToCopy;
+        } else {
+            // belong to same concept scheme
+            ConceptMetamac numeratorInNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptInQuantityToCopy.getNameableArtefact().getCode(), conceptSchemeNewVersion
+                    .getMaintainableArtefact().getUrn());
+            if (numeratorInNewVersion == null) {
+                // concept only can not exist in new version when importing: in this case, do not copy
+                SrmValidationUtils.checkMaintainableArtefactImported(conceptSchemeNewVersion.getMaintainableArtefact());
+                return null;
+            } else {
+                return numeratorInNewVersion;
+            }
         }
     }
 

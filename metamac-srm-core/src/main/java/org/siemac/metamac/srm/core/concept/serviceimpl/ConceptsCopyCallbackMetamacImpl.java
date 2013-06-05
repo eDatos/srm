@@ -10,7 +10,6 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
-import org.siemac.metamac.srm.core.concept.domain.Quantity;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,9 @@ public class ConceptsCopyCallbackMetamacImpl extends ConceptsCopyCallbackImpl {
         super.createItemSchemeVersionRelations(ctx, sourceItemSchemeVersion, targetItemSchemeVersion);
         ConceptSchemeVersionMetamac source = (ConceptSchemeVersionMetamac) sourceItemSchemeVersion;
         ConceptSchemeVersionMetamac target = (ConceptSchemeVersionMetamac) targetItemSchemeVersion;
+
         conceptsMetamacService.versioningRelatedConcepts(ctx, source, target);
+        conceptsMetamacService.versioningConceptsQuantity(ctx, source, target);
     }
 
     @Override
@@ -89,38 +90,17 @@ public class ConceptsCopyCallbackMetamacImpl extends ConceptsCopyCallbackImpl {
         target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
         target.setConceptType(source.getConceptType());
         target.setVariable(source.getVariable());
-        target.setQuantity(copy(source.getQuantity()));
 
         // can copy "extends" and "roles", because they are concepts in another concept scheme
         target.setConceptExtends(source.getConceptExtends());
         for (ConceptMetamac conceptRole : source.getRoleConcepts()) {
             target.addRoleConcept(conceptRole);
         }
-        // Do not copy related concepts in this point, because they belong to same concept scheme, and new concept in new version must relate to versioned related concept.
+        // Related concepts: Do not copy related concepts in this point, because they belong to same concept scheme, and new concept in new version must relate to versioned related concept
+        // They will be copied in createItemSchemeVersionRelations
+
+        // Quantity: Do not copy quantity in this point, because related concepts can belong to same concept scheme, and new concept in new version must relate to versioned concept
         // They will be copied in createItemSchemeVersionRelations
     }
 
-    private static Quantity copy(Quantity source) {
-        if (source == null) {
-            return null;
-        }
-        Quantity target = new Quantity();
-        target.setQuantityType(source.getQuantityType());
-        target.setUnitCode(source.getUnitCode());
-        target.setUnitSymbolPosition(source.getUnitSymbolPosition());
-        target.setSignificantDigits(source.getSignificantDigits());
-        target.setDecimalPlaces(source.getDecimalPlaces());
-        target.setUnitMultiplier(source.getUnitMultiplier());
-        target.setMinimum(source.getMinimum());
-        target.setMaximum(source.getMaximum());
-        // target.setNumerator(source.getNumerator()); // TODO no se puede copiar xq puede ser del mismo concept scheme
-        // target.setDenominator(source.getDenominator()); // TODO no se puede copiar xq puede ser del mismo concept scheme
-        target.setIsPercentage(source.getIsPercentage());
-        target.setPercentageOf(copyInternationalString(source.getPercentageOf()));
-        target.setBaseValue(source.getBaseValue());
-        target.setBaseTime(source.getBaseTime());
-        // target.setBaseLocation(source.getBaseLocation()); // TODO quantity.baseLocation
-        // target.setBaseQuantity(source.getBaseQuantity()); // TODO no se puede copiar xq puede ser del mismo concept scheme
-        return target;
-    }
 }

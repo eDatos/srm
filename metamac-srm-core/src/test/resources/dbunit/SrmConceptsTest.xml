@@ -4529,10 +4529,10 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
-        FINAL_LOGIC_CLIENT="0"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
-        PUBLIC_LOGIC="1"
-        LATEST_PUBLIC="1"
+        PUBLIC_LOGIC="0"
+        LATEST_PUBLIC="0"
         VALID_FROM_TZ="Europe/London"
         VALID_FROM="2011-01-02 02:02:04" 
         VALID_TO_TZ="[null]"
@@ -4573,6 +4573,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="[null]"              
               TB_CONCEPTS="1511"
+              QUANTITY_FK="1511"
              />            
         
             <TB_ITEMS_BASE
@@ -4615,7 +4616,37 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
-            />         
+            />     
+            
+            <TB_M_QUANTITIES
+                ID="1511"
+                UUID="Quantity-1511"
+                QUANTITY_TYPE="CHANGE_RATE"
+                UNIT_CODE_FK="20111"
+                UNIT_SYMBOL_POSITION="END"
+                UNIT_MULTIPLIER="10"
+                SIGNIFICANT_DIGITS="2"
+                DECIMAL_PLACES="3"
+                MINIMUM="100"
+                MAXIMUM="200"
+                IS_PERCENTAGE="1"
+                PERCENTAGE_OF_FK="102"
+                BASE_VALUE="[null]"
+                BASE_TIME="[null]"
+                BASE_LOCATION_FK="[null]"
+                BASE_QUANTITY_FK="1611"
+                NUMERATOR_FK="1512"
+                DENOMINATOR_FK="1612"
+
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:04"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:04"
+                LAST_UPDATED_TZ="Europe/London"
+            />      
+                
             
            <!-- CONCEPT02 -->
             <TB_CONCEPTS
@@ -4636,6 +4667,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="[null]"              
               TB_CONCEPTS="1512"
+              QUANTITY_FK="[null]"
              />            
         
             <TB_ITEMS_BASE
@@ -4699,6 +4731,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="[null]"              
               TB_CONCEPTS="1513"
+              QUANTITY_FK="1513"
              />            
         
             <TB_ITEMS_BASE
@@ -4741,7 +4774,36 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
-            />                         
+            />                
+            
+            <TB_M_QUANTITIES
+                ID="1513"
+                UUID="Quantity-1513"
+                QUANTITY_TYPE="FRACTION"
+                UNIT_CODE_FK="20112"
+                UNIT_SYMBOL_POSITION="START"
+                UNIT_MULTIPLIER="100"
+                SIGNIFICANT_DIGITS="3"
+                DECIMAL_PLACES="2"
+                MINIMUM="200"
+                MAXIMUM="350"
+                NUMERATOR_FK="1511"
+                DENOMINATOR_FK="1612"
+                IS_PERCENTAGE="[null]"
+                PERCENTAGE_OF_FK="[null]"
+                BASE_VALUE="[null]"
+                BASE_TIME="[null]"
+                BASE_LOCATION_FK="[null]"
+                BASE_QUANTITY_FK="[null]"
+
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:04"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:04"
+                LAST_UPDATED_TZ="Europe/London"
+            />                      
                                                            
    <!-- ************************************************************************************** -->
     <!-- CONCEPT SCHEME 16                                                                      -->
@@ -7256,7 +7318,7 @@
         INTERNATIONAL_STRING_FK="100"
     />   
     
- <TB_INTERNATIONAL_STRINGS
+    <TB_INTERNATIONAL_STRINGS
         ID="101"
         VERSION="1"
     />
@@ -7267,5 +7329,26 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="101"
-    />                                        
+    />    
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="102"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1021"
+        LABEL="porcentaje quantity c1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="102"
+    />  
+    
+    <TB_LOCALISED_STRINGS
+        ID="1022"
+        LABEL="percentage quantity c1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="102"
+    />                                                  
 </dataset>
