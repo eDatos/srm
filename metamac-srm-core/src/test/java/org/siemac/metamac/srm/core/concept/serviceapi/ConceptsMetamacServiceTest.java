@@ -45,6 +45,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.domain.Quantity;
+import org.siemac.metamac.srm.core.concept.domain.QuantityRepository;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
@@ -98,6 +99,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Autowired
     private ItemRepository                itemRepository;
+
+    @Autowired
+    private QuantityRepository            quantityRepository;
 
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
     protected EntityManager               entityManager;
@@ -408,7 +412,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(20, conceptSchemeVersionPagedResult.getTotalRows());
+            assertEquals(21, conceptSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(CONCEPT_SCHEME_1_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -430,6 +434,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_14_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_16_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_17_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(conceptSchemeVersionPagedResult.getTotalRows(), i);
         }
 
@@ -459,7 +464,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(16, conceptSchemeVersionPagedResult.getTotalRows());
+            assertEquals(17, conceptSchemeVersionPagedResult.getTotalRows());
             int i = 0;
             assertEquals(CONCEPT_SCHEME_1_V2, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_2_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
@@ -477,6 +482,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_14_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_16_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_17_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         }
     }
 
@@ -520,9 +526,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 conditions, pagingParameter, CONCEPT_SCHEME_15_V1_CONCEPT_1);
 
         // Validate
-        assertEquals(1, conceptSchemeVersionPagedResult.getTotalRows());
+        assertEquals(2, conceptSchemeVersionPagedResult.getTotalRows());
         int i = 0;
         assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(conceptSchemeVersionPagedResult.getValues().size(), i);
     }
 
     @Test
@@ -536,12 +544,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 conceptSchemeUrn, conditions, pagingParameter);
 
         // Validate
-        assertEquals(2, conceptSchemesPagedResult.getTotalRows());
-        assertEquals(2, conceptSchemesPagedResult.getValues().size());
+        assertEquals(3, conceptSchemesPagedResult.getTotalRows());
+        assertEquals(3, conceptSchemesPagedResult.getValues().size());
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         assertEquals(conceptSchemesPagedResult.getValues().size(), i);
     }
 
@@ -556,12 +565,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 conceptSchemeUrn, conditions, pagingParameter);
 
         // Validate
-        assertEquals(2, conceptSchemesPagedResult.getTotalRows());
-        assertEquals(2, conceptSchemesPagedResult.getValues().size());
+        assertEquals(3, conceptSchemesPagedResult.getTotalRows());
+        assertEquals(3, conceptSchemesPagedResult.getValues().size());
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         assertEquals(conceptSchemesPagedResult.getValues().size(), i);
     }
 
@@ -576,12 +586,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 conceptSchemeUrn, conditions, pagingParameter);
 
         // Validate
-        assertEquals(2, conceptSchemesPagedResult.getTotalRows());
-        assertEquals(2, conceptSchemesPagedResult.getValues().size());
+        assertEquals(3, conceptSchemesPagedResult.getTotalRows());
+        assertEquals(3, conceptSchemesPagedResult.getValues().size());
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1, conceptSchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         assertEquals(conceptSchemesPagedResult.getValues().size(), i);
     }
 
@@ -1543,13 +1554,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(Integer.valueOf(100), quantity.getMinimum());
                 assertEquals(Integer.valueOf(200), quantity.getMaximum());
                 assertEquals(urnExpectedConcept2, quantity.getNumerator().getNameableArtefact().getUrn());
-                assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, quantity.getDenominator().getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, quantity.getDenominator().getNameableArtefact().getUrn());
                 assertEquals(Boolean.TRUE, quantity.getIsPercentage());
                 ConceptsAsserts.assertEqualsInternationalString(quantity.getPercentageOf(), "es", "porcentaje quantity c1", "en", "percentage quantity c1");
                 assertNull(quantity.getBaseValue());
                 assertNull(quantity.getBaseTime());
                 assertNull(quantity.getBaseLocation());
-                assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_1, quantity.getBaseQuantity().getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, quantity.getBaseQuantity().getNameableArtefact().getUrn());
             }
 
             // Concept 2
@@ -1571,8 +1582,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(Integer.valueOf(100), quantity.getUnitMultiplier());
                 assertEquals(Integer.valueOf(200), quantity.getMinimum());
                 assertEquals(Integer.valueOf(350), quantity.getMaximum());
-                assertEquals(urnExpectedConcept1, quantity.getNumerator().getNameableArtefact().getUrn());
-                assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, quantity.getDenominator().getNameableArtefact().getUrn());
+                assertEquals(urnExpectedConcept2, quantity.getNumerator().getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, quantity.getDenominator().getNameableArtefact().getUrn());
                 assertNull(quantity.getIsPercentage());
                 assertNull(quantity.getPercentageOf());
                 assertNull(quantity.getBaseValue());
@@ -1894,13 +1905,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(Integer.valueOf(100), quantity.getMinimum());
                 assertEquals(Integer.valueOf(200), quantity.getMaximum());
                 assertEquals(urnExpectedConcept2, quantity.getNumerator().getNameableArtefact().getUrn());
-                assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, quantity.getDenominator().getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, quantity.getDenominator().getNameableArtefact().getUrn());
                 assertEquals(Boolean.TRUE, quantity.getIsPercentage());
                 ConceptsAsserts.assertEqualsInternationalString(quantity.getPercentageOf(), "es", "porcentaje quantity c1", "en", "percentage quantity c1");
                 assertNull(quantity.getBaseValue());
                 assertNull(quantity.getBaseTime());
                 assertNull(quantity.getBaseLocation());
-                assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_1, quantity.getBaseQuantity().getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, quantity.getBaseQuantity().getNameableArtefact().getUrn());
             }
 
             // Concept 2
@@ -1922,8 +1933,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(Integer.valueOf(100), quantity.getUnitMultiplier());
                 assertEquals(Integer.valueOf(200), quantity.getMinimum());
                 assertEquals(Integer.valueOf(350), quantity.getMaximum());
-                assertEquals(urnExpectedConcept1, quantity.getNumerator().getNameableArtefact().getUrn());
-                assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, quantity.getDenominator().getNameableArtefact().getUrn());
+                assertEquals(urnExpectedConcept2, quantity.getNumerator().getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, quantity.getDenominator().getNameableArtefact().getUrn());
                 assertNull(quantity.getIsPercentage());
                 assertNull(quantity.getPercentageOf());
                 assertNull(quantity.getBaseValue());
@@ -2214,6 +2225,129 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = conceptsService.mergeTemporalVersion(getServiceContextAdministrador(), conceptSchemeVersionTemporal);
 
             assertFalse(conceptSchemeVersionMetamac.getMaintainableArtefact().getIsLastVersion());
+        }
+    }
+
+    @Test
+    public void testMergeConceptSchemeCheckQuantity() throws Exception {
+
+        String urn = CONCEPT_SCHEME_15_V1;
+
+        // Create temporal version
+        TaskInfo versioningResult = conceptsService.createTemporalVersionConceptScheme(getServiceContextAdministrador(), urn);
+
+        entityManager.clear();
+        ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
+
+        // // Modify quantities
+        String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(01.000_temporal).CONCEPT01";
+        String urnExpectedConcept2 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(01.000_temporal).CONCEPT02";
+        String urnExpectedConcept3 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(01.000_temporal).CONCEPT03";
+        // Concept 1: modify
+        {
+            ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnExpectedConcept1);
+            assertEquals(urnExpectedConcept2, concept.getQuantity().getNumerator().getNameableArtefact().getUrn());
+            // Modify
+            concept.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+            concept.getQuantity().setSignificantDigits(Integer.valueOf(6));
+            concept.getQuantity().setNumerator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnExpectedConcept3));
+            concept.getQuantity().setDenominator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_17_V1_CONCEPT_1));
+            concept.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE02"));
+            concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+            conceptsService.updateConcept(getServiceContextAdministrador(), concept);
+        }
+        // Concept 2: add
+        {
+
+            ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnExpectedConcept2);
+            assertNull(concept.getQuantity());
+
+            concept.setQuantity(new Quantity());
+            concept.getQuantity().setQuantityType(QuantityTypeEnum.FRACTION);
+            concept.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE01"));
+            concept.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+            concept.getQuantity().setSignificantDigits(Integer.valueOf(2));
+            concept.getQuantity().setDecimalPlaces(Integer.valueOf(3));
+            concept.getQuantity().setUnitMultiplier(Integer.valueOf(100));
+            concept.getQuantity().setMinimum(Integer.valueOf(1000));
+            concept.getQuantity().setMaximum(Integer.valueOf(2000));
+            concept.getQuantity().setNumerator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnExpectedConcept1));
+            concept.getQuantity().setDenominator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_17_V1_CONCEPT_2));
+            concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+            conceptsService.updateConcept(getServiceContextAdministrador(), concept);
+        }
+        // Concept 3: remove
+        {
+            ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnExpectedConcept3);
+            assertNotNull(concept.getQuantity());
+            quantityRepository.delete(concept.getQuantity());
+            concept.setQuantity(null);
+            concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+            conceptsService.updateConcept(getServiceContextAdministrador(), concept);
+        }
+
+        // Merge
+        conceptSchemeVersionTemporal = conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn());
+        conceptSchemeVersionTemporal = conceptsService.sendConceptSchemeToDiffusionValidation(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn());
+        conceptsService.mergeTemporalVersion(getServiceContextAdministrador(), conceptSchemeVersionTemporal);
+
+        urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(01.000).CONCEPT01";
+        urnExpectedConcept2 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(01.000).CONCEPT02";
+        urnExpectedConcept3 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME15(01.000).CONCEPT03";
+
+        // Check quantity after merge
+        entityManager.clear();
+        {
+            // Concept 1 (modified)
+            {
+                ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnExpectedConcept1);
+                Quantity quantity = concept.getQuantity();
+                assertNotNull(quantity);
+                assertEquals(QuantityTypeEnum.CHANGE_RATE, quantity.getQuantityType());
+                assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE02", quantity.getUnitCode().getNameableArtefact().getUrn());
+                assertEquals(QuantityUnitSymbolPositionEnum.START, quantity.getUnitSymbolPosition());
+                assertEquals(Integer.valueOf(6), quantity.getSignificantDigits());
+                assertEquals(Integer.valueOf(3), quantity.getDecimalPlaces());
+                assertEquals(Integer.valueOf(10), quantity.getUnitMultiplier());
+                assertEquals(Integer.valueOf(100), quantity.getMinimum());
+                assertEquals(Integer.valueOf(200), quantity.getMaximum());
+                assertEquals(urnExpectedConcept3, quantity.getNumerator().getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, quantity.getDenominator().getNameableArtefact().getUrn());
+                assertEquals(Boolean.TRUE, quantity.getIsPercentage());
+                ConceptsAsserts.assertEqualsInternationalString(quantity.getPercentageOf(), "es", "porcentaje quantity c1", "en", "percentage quantity c1");
+                assertNull(quantity.getBaseValue());
+                assertNull(quantity.getBaseTime());
+                assertNull(quantity.getBaseLocation());
+                assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, quantity.getBaseQuantity().getNameableArtefact().getUrn());
+            }
+
+            // Concept 2 (added)
+            {
+                ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnExpectedConcept2);
+                assertNotNull(concept.getQuantity());
+                Quantity quantity = concept.getQuantity();
+                assertEquals(QuantityTypeEnum.FRACTION, quantity.getQuantityType());
+                assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE01", quantity.getUnitCode().getNameableArtefact().getUrn());
+                assertEquals(QuantityUnitSymbolPositionEnum.START, quantity.getUnitSymbolPosition());
+                assertEquals(Integer.valueOf(2), quantity.getSignificantDigits());
+                assertEquals(Integer.valueOf(3), quantity.getDecimalPlaces());
+                assertEquals(Integer.valueOf(100), quantity.getUnitMultiplier());
+                assertEquals(Integer.valueOf(1000), quantity.getMinimum());
+                assertEquals(Integer.valueOf(2000), quantity.getMaximum());
+                assertEquals(urnExpectedConcept1, quantity.getNumerator().getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, quantity.getDenominator().getNameableArtefact().getUrn());
+                assertNull(quantity.getIsPercentage());
+                assertNull(quantity.getPercentageOf());
+                assertNull(quantity.getBaseValue());
+                assertNull(quantity.getBaseTime());
+                assertNull(quantity.getBaseLocation());
+                assertNull(quantity.getBaseQuantity());
+            }
+            // Concept 3 (removed)
+            {
+                ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnExpectedConcept3);
+                assertNull(concept.getQuantity());
+            }
         }
     }
 
@@ -3463,8 +3597,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(38, conceptsPagedResult.getTotalRows());
-            assertEquals(38, conceptsPagedResult.getValues().size());
+            assertEquals(40, conceptsPagedResult.getTotalRows());
+            assertEquals(40, conceptsPagedResult.getValues().size());
             assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
 
             int i = 0;
@@ -3506,6 +3640,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(conceptsPagedResult.getValues().size(), i);
         }
 
@@ -3694,14 +3830,16 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeQuantityDenominator(getServiceContextAdministrador(), conceptSchemeUrn, conditions, pagingParameter);
 
         // Validate
-        assertEquals(4, conceptsPagedResult.getTotalRows());
-        assertEquals(4, conceptsPagedResult.getValues().size());
+        assertEquals(6, conceptsPagedResult.getTotalRows());
+        assertEquals(6, conceptsPagedResult.getValues().size());
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(conceptsPagedResult.getValues().size(), i);
     }
 
@@ -3715,14 +3853,16 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeQuantityNumerator(getServiceContextAdministrador(), conceptSchemeUrn, conditions, pagingParameter);
 
         // Validate
-        assertEquals(4, conceptsPagedResult.getTotalRows());
-        assertEquals(4, conceptsPagedResult.getValues().size());
+        assertEquals(6, conceptsPagedResult.getTotalRows());
+        assertEquals(6, conceptsPagedResult.getValues().size());
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(conceptsPagedResult.getValues().size(), i);
     }
 
@@ -3736,14 +3876,16 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeQuantityBaseQuantity(getServiceContextAdministrador(), conceptSchemeUrn, conditions, pagingParameter);
 
         // Validate
-        assertEquals(4, conceptsPagedResult.getTotalRows());
-        assertEquals(4, conceptsPagedResult.getValues().size());
+        assertEquals(6, conceptsPagedResult.getTotalRows());
+        assertEquals(6, conceptsPagedResult.getValues().size());
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(conceptsPagedResult.getValues().size(), i);
     }
 

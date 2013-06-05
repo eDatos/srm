@@ -328,7 +328,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         {
             MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
-            assertEquals(20, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(21, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
                 ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto = result.getResults().get(i++);
@@ -430,6 +430,11 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
                 assertEquals(CONCEPT_SCHEME_16_V1, conceptSchemeMetamacDto.getUrn());
                 assertEquals(ProcStatusEnum.DRAFT, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
             }
+            {
+                ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_17_V1, conceptSchemeMetamacDto.getUrn());
+                assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, conceptSchemeMetamacDto.getLifeCycle().getProcStatus());
+            }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
         // Find by Name
@@ -451,7 +456,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
                     1).toDate(), OperationType.GT));
 
             MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
-            assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(5, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
                 ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto = result.getResults().get(i++);
@@ -469,6 +474,10 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
                 ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemeMetamacDto.getUrn());
             }
+            {
+                ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_17_V1, conceptSchemeMetamacDto.getUrn());
+            }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
 
@@ -478,7 +487,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
                     1).toDate(), OperationType.LT));
 
             MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> result = srmCoreServiceFacade.findConceptSchemesByCondition(getServiceContextAdministrador(), metamacCriteria);
-            assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             {
                 ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto = result.getResults().get(i++);
@@ -491,6 +500,10 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             {
                 ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto = result.getResults().get(i++);
                 assertEquals(CONCEPT_SCHEME_15_V1, conceptSchemeMetamacDto.getUrn());
+            }
+            {
+                ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto = result.getResults().get(i++);
+                assertEquals(CONCEPT_SCHEME_17_V1, conceptSchemeMetamacDto.getUrn());
             }
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
@@ -593,11 +606,12 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
                 metamacCriteria);
 
         // Validate
-        assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+        assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1, result.getResults().get(i++).getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1, result.getResults().get(i++).getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1, result.getResults().get(i++).getUrn());
         assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
     }
 
@@ -612,11 +626,12 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
                 metamacCriteria);
 
         // Validate
-        assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+        assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1, result.getResults().get(i++).getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1, result.getResults().get(i++).getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1, result.getResults().get(i++).getUrn());
         assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
     }
 
@@ -631,11 +646,12 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
                 metamacCriteria);
 
         // Validate
-        assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+        assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1, result.getResults().get(i++).getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1, result.getResults().get(i++).getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1, result.getResults().get(i++).getUrn());
         assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
     }
 
@@ -1152,8 +1168,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             MetamacCriteriaResult<ConceptMetamacBasicDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(38, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(38, conceptsPagedResult.getResults().size());
+            assertEquals(40, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(40, conceptsPagedResult.getResults().size());
 
             int i = 0;
             assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
@@ -1195,6 +1211,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(conceptsPagedResult.getResults().size(), i);
         }
 
@@ -1239,8 +1257,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             MetamacCriteriaResult<ConceptMetamacBasicDto> conceptsPagedResult = srmCoreServiceFacade.findConceptsByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(30, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(30, conceptsPagedResult.getResults().size());
+            assertEquals(32, conceptsPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(32, conceptsPagedResult.getResults().size());
 
             int i = 0;
             assertEquals(CONCEPT_SCHEME_1_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
@@ -1273,6 +1291,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(CONCEPT_SCHEME_16_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, conceptsPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, conceptsPagedResult.getResults().get(i++).getUrn());
             assertEquals(conceptsPagedResult.getResults().size(), i);
         }
 
@@ -1563,13 +1583,15 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeQuantityDenominator(getServiceContextAdministrador(), conceptSchemeUrn, metamacCriteria);
 
         // Validate
-        assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
+        assertEquals(6, result.getPaginatorResult().getTotalResults().intValue());
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, result.getResults().get(i++).getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, result.getResults().get(i++).getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, result.getResults().get(i++).getUrn());
         assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
     }
 
@@ -1583,13 +1605,15 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeQuantityNumerator(getServiceContextAdministrador(), conceptSchemeUrn, metamacCriteria);
 
         // Validate
-        assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
+        assertEquals(6, result.getPaginatorResult().getTotalResults().intValue());
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, result.getResults().get(i++).getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, result.getResults().get(i++).getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, result.getResults().get(i++).getUrn());
         assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
     }
 
@@ -1603,13 +1627,15 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeQuantityBaseQuantity(getServiceContextAdministrador(), conceptSchemeUrn, metamacCriteria);
 
         // Validate
-        assertEquals(4, result.getPaginatorResult().getTotalResults().intValue());
+        assertEquals(6, result.getPaginatorResult().getTotalResults().intValue());
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_4_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_2, result.getResults().get(i++).getUrn());
         assertEquals(CONCEPT_SCHEME_15_V1_CONCEPT_3, result.getResults().get(i++).getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_1, result.getResults().get(i++).getUrn());
+        assertEquals(CONCEPT_SCHEME_17_V1_CONCEPT_2, result.getResults().get(i++).getUrn());
         assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
     }
 

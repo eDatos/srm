@@ -522,6 +522,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             versioningRelatedConcepts((ConceptMetamac) conceptToCopyRelatedConcepts, conceptSchemeVersion);
         }
 
+        // Versioning quantity
+        versioningConceptsQuantity(ctx, conceptSchemeTemporalVersion, conceptSchemeVersion);
+
         // Delete temporal version
         deleteConceptScheme(ctx, conceptSchemeTemporalVersion.getMaintainableArtefact().getUrn());
 
@@ -1152,15 +1155,20 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     private void versioningConceptQuantity(ConceptMetamac conceptToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
-        if (conceptToCopy.getQuantity() == null) {
-            return;
-        }
+
         ConceptMetamac conceptInNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptToCopy.getNameableArtefact().getCode(), conceptSchemeNewVersion
                 .getMaintainableArtefact().getUrn());
-
         if (conceptInNewVersion == null) {
             // concept only can not exist in new version when importing: in this case, do not copy quantity to this concept
             SrmValidationUtils.checkMaintainableArtefactImported(conceptSchemeNewVersion.getMaintainableArtefact());
+            return;
+        }
+
+        if (conceptToCopy.getQuantity() == null) {
+            if (conceptInNewVersion.getQuantity() != null) {
+                getQuantityRepository().delete(conceptInNewVersion.getQuantity());
+                conceptInNewVersion.setQuantity(null);
+            }
             return;
         }
 
@@ -1168,7 +1176,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         Quantity quantityToCopy = conceptToCopy.getQuantity();
         Long itemSchemeVersionIdToCopy = conceptToCopy.getItemSchemeVersion().getId();
 
-        Quantity quantityCopied = new Quantity();
+        Quantity quantityCopied = conceptInNewVersion.getQuantity();
+        if (quantityCopied == null) {
+            quantityCopied = new Quantity();
+        }
         quantityCopied.setQuantityType(quantityToCopy.getQuantityType());
         quantityCopied.setUnitCode(quantityToCopy.getUnitCode());
         quantityCopied.setUnitSymbolPosition(quantityToCopy.getUnitSymbolPosition());
@@ -1189,7 +1200,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptInNewVersion.setQuantity(quantityCopied);
     }
 
-    // TODO mejorar. pasar mapa en target para no tener q hacer find?
+    // TODO mejorar? pasar mapa en target para no tener q hacer find?
     private ConceptMetamac versioningConceptRelatedInQuantity(Long itemSchemeVersionIdToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion, ConceptMetamac conceptInQuantityToCopy)
             throws MetamacException {
         if (conceptInQuantityToCopy == null) {
