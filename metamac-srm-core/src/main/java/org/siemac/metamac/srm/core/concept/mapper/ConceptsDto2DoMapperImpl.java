@@ -228,7 +228,6 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
         }
 
         if (RepresentationTypeEnum.ENUMERATION.equals(representationDto.getRepresentationType())) {
-            // TODO confirmar condición con conceptScheme
             if (representationDto.getEnumeration() != null && RelatedResourceTypeEnum.CONCEPT_SCHEME.equals(representationDto.getEnumeration().getType())) {
                 return true;
             }
