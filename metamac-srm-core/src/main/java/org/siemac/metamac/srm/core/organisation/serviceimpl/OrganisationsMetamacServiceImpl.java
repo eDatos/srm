@@ -282,8 +282,20 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         }
 
         if (SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
+            // Add Contact, always remove and add all contacts
+            for (Item item : organisationSchemeVersion.getItems()) {
+                OrganisationMetamac organisation = (OrganisationMetamac) item;
+                OrganisationMetamac organisationTemp = (OrganisationMetamac) temporalItemMap.get(item.getNameableArtefact().getUrn());
+
+                organisation.removeAllContacts();
+
+                for (Contact contact : organisationTemp.getContacts()) {
+                    contact.setOrganisation(organisation);
+                    organisation.addContact(contact);
+                }
+            }
+
             // Add Organisations
-            boolean thereAreNewOrganisations = false;
             Map<String, Item> currentItemMap = SrmServiceUtils.createMapOfItemsByUrn(organisationSchemeVersion.getItems());
             for (Item itemTemp : new ArrayList<Item>(organisationSchemeTemporalVersion.getItems())) {
                 String urnFromTemporal = GeneratorUrnUtils.makeUrnFromTemporal(itemTemp.getNameableArtefact().getUrn());
@@ -294,22 +306,18 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
                     itemTemp.getNameableArtefact().setUrn(urnFromTemporal);
                     itemTemp.getNameableArtefact().setUrnProvider(GeneratorUrnUtils.makeUrnFromTemporal(itemTemp.getNameableArtefact().getUrnProvider()));
-                    thereAreNewOrganisations = true;
                 }
             }
 
             // Add Categorisations
-            boolean thereAreNewCategorisations = false;
-            thereAreNewCategorisations = CategorisationsUtils.addCategorisationsTemporalToItemScheme(organisationSchemeTemporalVersion, organisationSchemeVersion);
+            CategorisationsUtils.addCategorisationsTemporalToItemScheme(organisationSchemeTemporalVersion, organisationSchemeVersion);
 
-            if (thereAreNewOrganisations || thereAreNewCategorisations) {
-                // ===============================================================
-                // DANGEROUS CODE: In spite of to remove item from temporal scheme and then associate to another scheme, hibernate delete this item when delete item scheme. For this, we need to clear
-                // the context to avoid delete the temporary scheme with the previous temporary item when delete the temporary item scheme.
-                entityManager.flush();
-                entityManager.clear();
-                // ===============================================================
-            }
+            // ===============================================================
+            // DANGEROUS CODE: In spite of to remove item from temporal scheme and then associate to another scheme, hibernate delete this item when delete item scheme. For this, we need to clear
+            // the context to avoid delete the temporary scheme with the previous temporary item when delete the temporary item scheme.
+            entityManager.flush();
+            entityManager.clear();
+            // ===============================================================
 
         } else {
             // Add items is not supported in temporal version for another types.
