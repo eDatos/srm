@@ -31,6 +31,8 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
             // urn in ExternalItems is optional, but it is required for statistical operation
             ValidationUtils.checkMetadataRequired(dataStructureDefinitionVersionMetamac.getStatisticalOperation().getUrn(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_STATISTICAL_OPERATION,
                     exceptions);
+            ValidationUtils.checkMetadataEmpty(dataStructureDefinitionVersionMetamac.getStatisticalOperation().getUrnInternal(),
+                    ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_STATISTICAL_OPERATION, exceptions);
         }
 
         ExceptionUtils.throwIfException(exceptions);
