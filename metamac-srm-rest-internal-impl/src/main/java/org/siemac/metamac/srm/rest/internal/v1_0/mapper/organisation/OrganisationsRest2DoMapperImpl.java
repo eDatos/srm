@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation;
 
-import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
@@ -13,6 +12,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationSchemeCriteriaPropertyOrder;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationSchemeCriteriaPropertyRestriction;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -131,9 +131,8 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                             propertyRestriction.getOperationType());
                 case ORGANISATION_SCHEME_URN:
                     return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact());
-                case ORGANISATION_SCHEME_PROC_STATUS:
-                    return new SculptorPropertyCriteria(new LeafProperty<OrganisationMetamac>(OrganisationMetamacProperties.itemSchemeVersion().getName(), OrganisationSchemeVersionMetamacProperties
-                            .lifeCycleMetadata().procStatus().getName(), false, OrganisationMetamac.class), propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()),
+                case ORGANISATION_SCHEME_EXTERNALLY_PUBLISHED:
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case TYPE:
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.organisationType(), propertyRestrictionValueToOrganisationTypeEnum(propertyRestriction.getValue()),

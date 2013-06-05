@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.category;
 
-import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
@@ -135,9 +134,8 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                             propertyRestriction.getOperationType());
                 case CATEGORY_SCHEME_URN:
                     return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact());
-                case CATEGORY_SCHEME_PROC_STATUS:
-                    return new SculptorPropertyCriteria(new LeafProperty<CategoryMetamac>(CategoryMetamacProperties.itemSchemeVersion().getName(), CategorySchemeVersionMetamacProperties
-                            .lifeCycleMetadata().procStatus().getName(), false, CategoryMetamac.class), propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()),
+                case CATEGORY_SCHEME_EXTERNALLY_PUBLISHED:
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
