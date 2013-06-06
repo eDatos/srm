@@ -112,7 +112,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCancelValidityButton() {
-        if (CodesClientSecurityUtils.canCancelCodelistValidity(isTaskInBackground, maintainer, versionLogic)) {
+        if (CodesClientSecurityUtils.canCancelCodelistValidity(urn, isTaskInBackground, maintainer, versionLogic)) {
             cancelValidity.show();
         }
     }
@@ -151,6 +151,6 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     private boolean canVersionCodelist() {
         // Resources from other maintainers can not be version
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(maintainer) && CodesClientSecurityUtils.canVersioningCodelist(isTaskInBackground);
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CodesClientSecurityUtils.canVersioningCodelist(isTaskInBackground);
     }
 }

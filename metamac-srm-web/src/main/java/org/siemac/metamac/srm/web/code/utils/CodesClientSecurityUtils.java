@@ -96,14 +96,14 @@ public class CodesClientSecurityUtils {
     // }
 
     public static boolean canCancelCodelistValidity(CodelistMetamacBasicDto codelistMetamacDto) {
-        return canCancelCodelistValidity(codelistMetamacDto.getIsTaskInBackground(), codelistMetamacDto.getMaintainer(), codelistMetamacDto.getVersionLogic());
+        return canCancelCodelistValidity(codelistMetamacDto.getUrn(), codelistMetamacDto.getIsTaskInBackground(), codelistMetamacDto.getMaintainer(), codelistMetamacDto.getVersionLogic());
     }
 
-    public static boolean canCancelCodelistValidity(Boolean isTaskInBackground, RelatedResourceDto maintainer, String versionLogic) {
+    public static boolean canCancelCodelistValidity(String urn, Boolean isTaskInBackground, RelatedResourceDto maintainer, String versionLogic) {
         if (isTaskInBackground(isTaskInBackground)) {
             return false;
         }
-        return SharedCodesSecurityUtils.canEndCodelistValidity(MetamacSrmWeb.getCurrentUser()) && CommonUtils.canSdmxMetadataAndStructureBeModified(maintainer, versionLogic);
+        return SharedCodesSecurityUtils.canEndCodelistValidity(MetamacSrmWeb.getCurrentUser()) && CommonUtils.canSdmxMetadataAndStructureBeModified(urn, maintainer, versionLogic);
     }
 
     public static boolean canCreateCategorisation(ProcStatusEnum procStatus, Boolean isTaskInBackground) {
@@ -164,7 +164,7 @@ public class CodesClientSecurityUtils {
             return false;
         }
         // Only resources from other organisations can be copied
-        return SharedCodesSecurityUtils.canCopyCodelist(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultOrRootMaintainer(maintainer);
+        return SharedCodesSecurityUtils.canCopyCodelist(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
     }
 
     // CODES

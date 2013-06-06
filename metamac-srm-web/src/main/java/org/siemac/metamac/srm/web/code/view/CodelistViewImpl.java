@@ -935,7 +935,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     private void publishCodelistInternally() {
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(codelistDto.getMaintainer())) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(codelistDto.getMaintainer())) {
             getUiHandlers().publishInternally(codelistDto.getUrn(), codelistDto.getLifeCycle().getProcStatus(), null);
         } else {
             // If the codelist is imported, ask the user if this resource should be the latest one.

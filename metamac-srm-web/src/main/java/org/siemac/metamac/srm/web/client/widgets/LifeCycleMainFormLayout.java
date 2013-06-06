@@ -27,6 +27,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
     protected MainFormLayoutButton copy;
     // protected AnnounceToolStripButton announce;
 
+    protected String               urn;
     protected ProcStatusEnum       procStatus;
     protected Date                 validTo;
     protected RelatedResourceDto   maintainer;
@@ -84,6 +85,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
     }
 
     public void updatePublishSection(ProcStatusEnum status, MaintainableArtefactDto maintainableArtefactDto) {
+        this.urn = maintainableArtefactDto.getUrn();
         this.procStatus = status;
         this.validTo = maintainableArtefactDto.getValidTo();
         this.maintainer = maintainableArtefactDto.getMaintainer();
