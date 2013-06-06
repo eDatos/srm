@@ -2,8 +2,11 @@ package org.siemac.metamac.srm.core.dsd.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
@@ -20,6 +23,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
@@ -36,6 +40,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
@@ -73,13 +78,17 @@ import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
+import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
+import com.arte.statistic.sdmx.srm.core.structure.domain.Dimension;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure;
+import com.arte.statistic.sdmx.srm.core.structure.domain.ReportingYearStartDay;
+import com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.DataStructureDefinitionsCopyCallback;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.DataStructureInvocationValidator;
@@ -696,6 +705,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
         return findCodelistOrderVisualisationRepositoryByConditions(ctx, conditions, pagingParameter, codelistId);
     }
+
     @Override
     public PagedResult<CodelistOpennessVisualisation> findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter, String dimensionUrn) throws MetamacException {
@@ -815,6 +825,251 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
      */
     private void checkComponentToCreateOrUpdate(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, Component component) throws MetamacException {
         checkDataStructureDefinitionCanBeModified(dataStructureDefinitionVersion);
+
+        // Restrictions to related resources.
+        List<MetamacExceptionItem> exceptions = new LinkedList<MetamacExceptionItem>();
+        checkPrimaryMeasure(ctx, dataStructureDefinitionVersion, component, exceptions);
+        checkTimeDimension(ctx, dataStructureDefinitionVersion, component, exceptions);
+        checkMeasureDimension(ctx, dataStructureDefinitionVersion, component, exceptions);
+        checkDimension(ctx, dataStructureDefinitionVersion, component, exceptions);
+        checkAttribute(ctx, dataStructureDefinitionVersion, component, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+
+    }
+
+    @Override
+    public void checkPrimaryMeasure(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, Component component, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (component instanceof PrimaryMeasure) {
+            if (exceptions == null) {
+                exceptions = new LinkedList<MetamacExceptionItem>();
+            }
+
+            PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+            String dataStructureDefinitionVersionUrn = dataStructureDefinitionVersion.getMaintainableArtefact().getUrn();
+
+            // ConceptIdentity
+            {
+                Long conceptIdentityId = component.getCptIdRef().getId();
+                List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id())
+                        .eq(conceptIdentityId).build();
+                PagedResult<ConceptMetamac> result = findConceptsCanBeDsdPrimaryMeasureByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+                if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptIdentityId)) {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.PRIMARY_MEASURE_CONCEPT_ID_REF));
+                }
+            }
+
+            // Representation
+            {
+                if (component.getLocalRepresentation() != null) {
+                    Representation representation = component.getLocalRepresentation();
+                    if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
+                        Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
+                        List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                                .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
+                        PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(ctx, criteriaToVerifyConceptIdentityCode,
+                                pagingParameter);
+                        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.PRIMARY_MEASURE_REPRESENTATION_ENUMERATED));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void checkTimeDimension(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, Component component, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (component instanceof TimeDimension) {
+            if (exceptions == null) {
+                exceptions = new LinkedList<MetamacExceptionItem>();
+            }
+            PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+            String dataStructureDefinitionVersionUrn = dataStructureDefinitionVersion.getMaintainableArtefact().getUrn();
+
+            // ConceptIdentity
+            Long conceptIdentityId = component.getCptIdRef().getId();
+            List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id())
+                    .eq(conceptIdentityId).build();
+            PagedResult<ConceptMetamac> result = findConceptsCanBeDsdTimeDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptIdentityId)) {
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.TIME_DIMENSION_CONCEPT_ID_REF));
+            }
+        }
+    }
+
+    @Override
+    public void checkMeasureDimension(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, Component component, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (component instanceof MeasureDimension) {
+            if (exceptions == null) {
+                exceptions = new LinkedList<MetamacExceptionItem>();
+            }
+            PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+            String dataStructureDefinitionVersionUrn = dataStructureDefinitionVersion.getMaintainableArtefact().getUrn();
+
+            // ConceptIdentity
+            {
+                Long conceptIdentityId = component.getCptIdRef().getId();
+                List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id())
+                        .eq(conceptIdentityId).build();
+                PagedResult<ConceptMetamac> result = findConceptsCanBeDsdMeasureDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+                if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptIdentityId)) {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MEASURE_DIMENSION_CONCEPT_ID_REF));
+                }
+            }
+
+            // Role
+            checkComponentRoles(ctx, dataStructureDefinitionVersion, component, exceptions);
+
+            // Representation
+            {
+                if (component.getLocalRepresentation() != null) {
+                    Representation representation = component.getLocalRepresentation();
+                    if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
+                        Long conceptSchemeRepresentationId = representation.getEnumerationConceptScheme().getId();
+                        List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                                .withProperty(CodelistVersionMetamacProperties.id()).eq(conceptSchemeRepresentationId).build();
+                        PagedResult<ConceptSchemeVersionMetamac> result = findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode,
+                                pagingParameter);
+                        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptSchemeRepresentationId)) {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MEASURE_DIMENSION_REPRESENTATION_ENUMERATED));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void checkDimension(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, Component component, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (component instanceof Dimension) {
+            if (exceptions == null) {
+                exceptions = new LinkedList<MetamacExceptionItem>();
+            }
+            PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+            String dataStructureDefinitionVersionUrn = dataStructureDefinitionVersion.getMaintainableArtefact().getUrn();
+
+            // ConceptIdentity
+            {
+                Long conceptIdentityId = component.getCptIdRef().getId();
+                List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id())
+                        .eq(conceptIdentityId).build();
+                PagedResult<ConceptMetamac> result = findConceptsCanBeDsdDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+                if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptIdentityId)) {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DIMENSION_CONCEPT_ID_REF));
+                }
+            }
+
+            // Role
+            checkComponentRoles(ctx, dataStructureDefinitionVersion, component, exceptions);
+
+            // Representation
+            {
+                if (component.getLocalRepresentation() != null) {
+                    Representation representation = component.getLocalRepresentation();
+                    if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
+                        Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
+                        List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                                .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
+                        PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter,
+                                component.getCptIdRef().getNameableArtefact().getUrn());
+                        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DIMENSION_REPRESENTATION_ENUMERATED));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void checkAttribute(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, Component component, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (component instanceof DataAttribute) {
+            if (exceptions == null) {
+                exceptions = new LinkedList<MetamacExceptionItem>();
+            }
+            PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+            String dataStructureDefinitionVersionUrn = dataStructureDefinitionVersion.getMaintainableArtefact().getUrn();
+
+            // ConceptIdentity
+            {
+                Long conceptIdentityId = component.getCptIdRef().getId();
+                List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id())
+                        .eq(conceptIdentityId).build();
+                PagedResult<ConceptMetamac> result = findConceptsCanBeDsdDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+                if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptIdentityId)) {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DATA_ATTRIBUTE_CONCEPT_ID_REF));
+                }
+            }
+
+            // Role
+            checkComponentRoles(ctx, dataStructureDefinitionVersion, component, exceptions);
+
+            // Representation
+            {
+                if (component.getLocalRepresentation() != null) {
+                    Representation representation = component.getLocalRepresentation();
+                    if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
+                        Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
+                        List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                                .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
+                        PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter,
+                                component.getCptIdRef().getNameableArtefact().getUrn());
+                        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DATA_ATTRIBUTE_REPRESENTATION_ENUMERATED));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkComponentRoles(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, Component component, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        String serviceExceptionParameter = null;
+        if (component instanceof Dimension) {
+            serviceExceptionParameter = ServiceExceptionParameters.DIMENSION_ROLE;
+        } else if (component instanceof MeasureDimension) {
+            serviceExceptionParameter = ServiceExceptionParameters.MEASURE_DIMENSION_ROLE;
+        } else if (component instanceof DataAttribute && !(component instanceof ReportingYearStartDay)) {
+            serviceExceptionParameter = ServiceExceptionParameters.DATA_ATTRIBUTE_ROLE;
+        } else {
+            return;
+        }
+
+        if (exceptions == null) {
+            exceptions = new LinkedList<MetamacExceptionItem>();
+        }
+
+        // Role
+        Set<Long> conceptRolesId = new HashSet<Long>();
+        for (Concept concept : ((MeasureDimension) component).getRole()) {
+            conceptRolesId.add(concept.getId());
+        }
+
+        if (!conceptRolesId.isEmpty()) {
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            List<ConditionalCriteria> criteriaToVerifyRoleCode = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id()).in(conceptRolesId).build();
+            PagedResult<ConceptMetamac> result = findConceptsCanBeDsdRoleByCondition(ctx, criteriaToVerifyRoleCode, pagingParameter);
+
+            // Check, all concept roles must be exists in the result
+            Set<Long> conceptRolesResultId = new HashSet<Long>();
+            for (Concept concept : result.getValues()) {
+                conceptRolesResultId.add(concept.getId());
+            }
+
+            for (Concept concept : ((MeasureDimension) component).getRole()) {
+                if (!conceptRolesResultId.contains(concept.getId())) {
+                    exceptions.add(MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.METADATA_INCORRECT)
+                            .withMessageParameters(serviceExceptionParameter).build());
+                }
+            }
+        }
     }
 
     private TaskInfo createVersionOfDataStructureDefinition(ServiceContext ctx, String urnToCopy, DataStructureDefinitionsCopyCallback dataStructureDefinitionsCopyCallback,

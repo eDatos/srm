@@ -164,35 +164,33 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                 }
             }
 
-            // Constraints only valid for non imported artifacts
-            if (!dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getIsImported()) {
-                // Check: If the DSD not contain a measure-dimension, then it must have a special attribute type
-                // Check: If the DSD not contain a spatial-dimension, then it must have a special attribute type
-                boolean foundSpecialAttributeOfMeasure = false;
-                boolean foundSpecialAttributeOfSpatial = false;
-                boolean foundSpecialAttributeOfTime = false;
-                for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
-                    if (componentList instanceof AttributeDescriptor) {
-                        for (Component component : componentList.getComponents()) {
-                            SpecialAttributeTypeEnum specialAttributeType = ((DataAttribute) component).getSpecialAttributeType();
-                            if (specialAttributeType != null) {
-                                switch (specialAttributeType) {
-                                    case MEASURE_EXTENDS:
-                                        foundSpecialAttributeOfMeasure = true;
-                                        break;
-                                    case SPATIAL_EXTENDS:
-                                        foundSpecialAttributeOfSpatial = true;
-                                        break;
-                                    case TIME_EXTENDS:
-                                        foundSpecialAttributeOfTime = true;
-                                        break;
-                                    default:
-                                        break;
-                                }
+            // Metamac Constraints
+            // Check: If the DSD not contain a measure-dimension, then it must have a special attribute type
+            // Check: If the DSD not contain a spatial-dimension, then it must have a special attribute type
+            boolean foundSpecialAttributeOfMeasure = false;
+            boolean foundSpecialAttributeOfSpatial = false;
+            boolean foundSpecialAttributeOfTime = false;
+            for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
+                if (componentList instanceof AttributeDescriptor) {
+                    for (Component component : componentList.getComponents()) {
+                        SpecialAttributeTypeEnum specialAttributeType = ((DataAttribute) component).getSpecialAttributeType();
+                        if (specialAttributeType != null) {
+                            switch (specialAttributeType) {
+                                case MEASURE_EXTENDS:
+                                    foundSpecialAttributeOfMeasure = true;
+                                    break;
+                                case SPATIAL_EXTENDS:
+                                    foundSpecialAttributeOfSpatial = true;
+                                    break;
+                                case TIME_EXTENDS:
+                                    foundSpecialAttributeOfTime = true;
+                                    break;
+                                default:
+                                    break;
                             }
                         }
-                        break;
                     }
+                    break;
                 }
 
                 if (!isDsdWithMeasureDimension && !foundSpecialAttributeOfMeasure) {
@@ -207,6 +205,17 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                     exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_TIMEDIM_SPECIAL_ATTR));
                 }
             }
+
+            for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
+                for (Component component : componentList.getComponents()) {
+                    dataStructureDefinitionMetamacService.checkPrimaryMeasure(ctx, dataStructureDefinitionVersionMetamac, component, exceptions);
+                    dataStructureDefinitionMetamacService.checkTimeDimension(ctx, dataStructureDefinitionVersionMetamac, component, exceptions);
+                    dataStructureDefinitionMetamacService.checkMeasureDimension(ctx, dataStructureDefinitionVersionMetamac, component, exceptions);
+                    dataStructureDefinitionMetamacService.checkDimension(ctx, dataStructureDefinitionVersionMetamac, component, exceptions);
+                    dataStructureDefinitionMetamacService.checkAttribute(ctx, dataStructureDefinitionVersionMetamac, component, exceptions);
+                }
+            }
+
         }
 
         @Override
