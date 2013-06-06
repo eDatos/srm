@@ -855,7 +855,6 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         checkAttribute(ctx, dataStructureDefinitionVersion, component, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
-
     }
 
     @Override

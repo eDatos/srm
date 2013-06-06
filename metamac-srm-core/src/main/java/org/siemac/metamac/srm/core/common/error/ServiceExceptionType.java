@@ -8,6 +8,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType LIFE_CYCLE_WRONG_PROC_STATUS                                                  = create("exception.srm.life_cycle.wrong_proc_status");
     public static final CommonServiceExceptionType ITEM_SCHEME_WITHOUT_ITEMS                                                     = create("exception.srm.item_scheme.without_items");
     public static final CommonServiceExceptionType ITEM_WITH_INCORRECT_METADATA                                                  = create("exception.srm.item_scheme.item_with_incorrect_metadata");
+    public static final CommonServiceExceptionType COMPONENT_WITH_INCORRECT_METADATA                                             = create("exception.srm.structure.component_with_incorrect_metadata");
     public static final CommonServiceExceptionType STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_IMPORTED                                = create("exception.srm.structure_modifications.operation_not_supported.imported");
     public static final CommonServiceExceptionType STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_MAINTAINER_IS_NOT_DEFAULT_NOR_SDMX      = create("exception.srm.structure_modifications.operation_not_supported.maintainer_not_default_nor_sdmx");
     public static final CommonServiceExceptionType MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED_VERSION_NOT_PUBLISHED          = create("exception.srm.maintainable_artefact.versioning_not_supported.version_unpublished_found");

@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.dsd.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -208,16 +209,47 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
 
             for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
                 for (Component component : componentList.getComponents()) {
-                    dataStructureDefinitionMetamacService.checkPrimaryMeasure(ctx, dataStructureDefinitionVersionMetamac, component, exceptions);
-                    dataStructureDefinitionMetamacService.checkTimeDimension(ctx, dataStructureDefinitionVersionMetamac, component, exceptions);
-                    dataStructureDefinitionMetamacService.checkMeasureDimension(ctx, dataStructureDefinitionVersionMetamac, component, exceptions);
-                    dataStructureDefinitionMetamacService.checkDimension(ctx, dataStructureDefinitionVersionMetamac, component, exceptions);
-                    dataStructureDefinitionMetamacService.checkAttribute(ctx, dataStructureDefinitionVersionMetamac, component, exceptions);
+
+                    List<MetamacExceptionItem> relatedResourceExceptions = new LinkedList<MetamacExceptionItem>();
+                    dataStructureDefinitionMetamacService.checkPrimaryMeasure(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                    if (!relatedResourceExceptions.isEmpty()) {
+                        exceptions.add(MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.COMPONENT_WITH_INCORRECT_METADATA)
+                                .withMessageParameters(component.getUrn()).build());
+                        relatedResourceExceptions.clear();
+                    }
+
+                    dataStructureDefinitionMetamacService.checkTimeDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                    if (!relatedResourceExceptions.isEmpty()) {
+                        exceptions.add(MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.COMPONENT_WITH_INCORRECT_METADATA)
+                                .withMessageParameters(component.getUrn()).build());
+                        relatedResourceExceptions.clear();
+                    }
+
+                    dataStructureDefinitionMetamacService.checkMeasureDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                    if (!relatedResourceExceptions.isEmpty()) {
+                        exceptions.add(MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.COMPONENT_WITH_INCORRECT_METADATA)
+                                .withMessageParameters(component.getUrn()).build());
+                        relatedResourceExceptions.clear();
+                    }
+
+                    dataStructureDefinitionMetamacService.checkDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                    if (!relatedResourceExceptions.isEmpty()) {
+                        exceptions.add(MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.COMPONENT_WITH_INCORRECT_METADATA)
+                                .withMessageParameters(component.getUrn()).build());
+                        relatedResourceExceptions.clear();
+                    }
+
+                    dataStructureDefinitionMetamacService.checkAttribute(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                    if (!relatedResourceExceptions.isEmpty()) {
+                        exceptions.add(MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.COMPONENT_WITH_INCORRECT_METADATA)
+                                .withMessageParameters(component.getUrn()).build());
+                        relatedResourceExceptions.clear();
+                    }
+
                 }
             }
 
         }
-
         @Override
         public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
