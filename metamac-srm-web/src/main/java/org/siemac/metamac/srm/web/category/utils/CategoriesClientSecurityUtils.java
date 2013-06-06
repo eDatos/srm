@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.category.utils;
 
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -74,17 +75,39 @@ public class CategoriesClientSecurityUtils {
     }
 
     public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, CategorisationDto categorisationDto) {
-        // Maintainer and temporal version is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is a
-        // temporal one
-        return SharedCategoriesSecurityUtils.canModifyCategorisationFromCategoryScheme(MetamacSrmWeb.getCurrentUser(), procStatus)
-                && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
+
+        if (BooleanUtils.isTrue(categorisationDto.getFinalLogic())) {
+
+            // if it is final, can NEVER be deleted
+            return false;
+
+        } else {
+
+            if (CommonUtils.isDefaultMaintainer(categorisationDto.getMaintainer())) {
+
+                return SharedCategoriesSecurityUtils.canModifyCategorisationFromCategoryScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+
+            } else {
+
+                // if it does not have the default maintainer, can NEVER be deleted
+                return false;
+            }
+        }
     }
 
     public static boolean canCancelCategorisationValidity(ProcStatusEnum procStatus, CategorisationDto categorisationDto) {
-        // Maintainer and temporal version is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is a
-        // temporal one
-        return SharedCategoriesSecurityUtils.canModifyCategorisationFromCategoryScheme(MetamacSrmWeb.getCurrentUser(), procStatus)
-                && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
+
+        if (categorisationDto.getValidTo() != null) { // The validity has been canceled previously
+            return false;
+        }
+
+        // Only categorisations of default maintainer can be canceled
+
+        if (CommonUtils.isDefaultMaintainer(categorisationDto.getMaintainer())) {
+            return SharedCategoriesSecurityUtils.canModifyCategorisationFromCategoryScheme(MetamacSrmWeb.getCurrentUser(), procStatus);
+        } else {
+            return false;
+        }
     }
 
     public static boolean canCopyCategoryScheme(RelatedResourceDto maintainer) {

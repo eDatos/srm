@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.utils;
 
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -149,14 +150,38 @@ public class DsdClientSecurityUtils {
     }
 
     public static boolean canDeleteCategorisationForDataStructureDefinition(ProcStatusEnum procStatus, String operationCode, CategorisationDto categorisationDto) {
-        // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
-        return SharedDsdSecurityUtils.canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode)
-                && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
+
+        if (BooleanUtils.isTrue(categorisationDto.getFinalLogic())) {
+
+            // if it is final, can NEVER be deleted
+            return false;
+
+        } else {
+
+            if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(categorisationDto.getMaintainer())) {
+
+                return SharedDsdSecurityUtils.canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode);
+
+            } else {
+
+                // if it does not have the default maintainer, can NEVER be deleted
+                return false;
+            }
+        }
     }
 
     public static boolean canCancelCategorisationValidityForDataStructureDefinition(ProcStatusEnum procStatus, String operationCode, CategorisationDto categorisationDto) {
-        // Maintainer is checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer)
-        return SharedDsdSecurityUtils.canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode)
-                && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
+
+        if (categorisationDto.getValidTo() != null) { // The validity has been canceled previously
+            return false;
+        }
+
+        // Only categorisations of default maintainer can be canceled
+
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(categorisationDto.getMaintainer())) {
+            return SharedDsdSecurityUtils.canModifyCategorisationForDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode);
+        } else {
+            return false;
+        }
     }
 }

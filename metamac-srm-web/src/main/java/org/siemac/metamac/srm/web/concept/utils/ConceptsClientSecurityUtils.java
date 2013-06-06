@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.concept.utils;
 
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
@@ -81,17 +82,39 @@ public class ConceptsClientSecurityUtils {
     }
 
     public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode, CategorisationDto categorisationDto) {
-        // Maintainer and temporal version are checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is not
-        // the temporal one
-        return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode)
-                && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
+
+        if (BooleanUtils.isTrue(categorisationDto.getFinalLogic())) {
+
+            // if it is final, can NEVER be deleted
+            return false;
+
+        } else {
+
+            if (CommonUtils.isDefaultMaintainer(categorisationDto.getMaintainer())) {
+
+                return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
+
+            } else {
+
+                // if it does not have the default maintainer, can NEVER be deleted
+                return false;
+            }
+        }
     }
 
     public static boolean canCancelCategorisationValidity(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode, CategorisationDto categorisationDto) {
-        // Maintainer and temporal version are checked because the creation/deletion of a categorisation is not allowed when the resource is imported (i am not the maintainer) or the version is not
-        // the temporal one
-        return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode)
-                && CommonUtils.canSdmxMetadataAndStructureBeModified(categorisationDto);
+
+        if (categorisationDto.getValidTo() != null) { // The validity has been canceled previously
+            return false;
+        }
+
+        // Only categorisations of default maintainer can be canceled
+
+        if (CommonUtils.isDefaultMaintainer(categorisationDto.getMaintainer())) {
+            return SharedConceptsSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus, type, operationCode);
+        } else {
+            return false;
+        }
     }
 
     public static boolean canCopyConceptScheme(ConceptSchemeTypeEnum type, String operationCode, RelatedResourceDto maintainer) {
