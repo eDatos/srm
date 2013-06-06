@@ -62,11 +62,11 @@ public class CategoriesClientSecurityUtils {
     }
 
     public static boolean canCancelCategorySchemeValidity(CategorySchemeMetamacBasicDto categorySchemeMetamacBasicDto) {
-        return canCancelCategorySchemeValidity(categorySchemeMetamacBasicDto.getMaintainer(), categorySchemeMetamacBasicDto.getVersionLogic());
+        return canCancelCategorySchemeValidity(categorySchemeMetamacBasicDto.getUrn(), categorySchemeMetamacBasicDto.getMaintainer(), categorySchemeMetamacBasicDto.getVersionLogic());
     }
 
-    public static boolean canCancelCategorySchemeValidity(RelatedResourceDto maintainer, String versionLogic) {
-        return SharedCategoriesSecurityUtils.canEndCategorySchemeValidity(MetamacSrmWeb.getCurrentUser()) && CommonUtils.canSdmxMetadataAndStructureBeModified(maintainer, versionLogic);
+    public static boolean canCancelCategorySchemeValidity(String urn, RelatedResourceDto maintainer, String versionLogic) {
+        return SharedCategoriesSecurityUtils.canEndCategorySchemeValidity(MetamacSrmWeb.getCurrentUser()) && CommonUtils.canSdmxMetadataAndStructureBeModified(urn, maintainer, versionLogic);
     }
 
     public static boolean canCreateCategorisation(ProcStatusEnum procStatus) {
@@ -89,7 +89,7 @@ public class CategoriesClientSecurityUtils {
 
     public static boolean canCopyCategoryScheme(RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
-        return SharedCategoriesSecurityUtils.canCopyCategoryScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultOrRootMaintainer(maintainer);
+        return SharedCategoriesSecurityUtils.canCopyCategoryScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
     }
 
     // CATEGORIES
