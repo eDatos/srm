@@ -1,9 +1,10 @@
 package org.siemac.metamac.srm.web.concept.widgets;
 
-import java.util.LinkedHashMap;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
+
+import java.util.LinkedHashMap;
+
 import org.siemac.metamac.core.common.util.shared.StringUtils;
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityUnitSymbolPosition;
 import org.siemac.metamac.srm.core.concept.dto.QuantityDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.QuantityUnitSymbolPositionEnum;
@@ -19,7 +20,6 @@ import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavig
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.form.validator.CustomValidator;
 
 public class BaseQuantityForm extends GroupDynamicForm {
 
