@@ -5738,7 +5738,7 @@
 
     <TB_CATEGORISATION_SEQUENCES
         ID="1"
-        MAINTAINER_URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX01"
+        MAINTAINER_URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX02"
         ACTUAL_SEQUENCE="3"
     /> 
        

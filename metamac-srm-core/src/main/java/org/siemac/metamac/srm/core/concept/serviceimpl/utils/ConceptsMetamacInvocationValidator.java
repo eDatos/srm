@@ -243,7 +243,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
                 } else {
                     ValidationUtils.checkMetadataEmpty(concept.getSdmxRelatedArtefact(), ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT, exceptions);
                 }
-                // Variable TODO para qué tipos?
+                // Variable
                 if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersion.getType())) {
                     // variable is optional
                 } else {
