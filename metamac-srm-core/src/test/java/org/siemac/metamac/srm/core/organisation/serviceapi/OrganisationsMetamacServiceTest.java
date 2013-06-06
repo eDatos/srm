@@ -52,6 +52,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
@@ -1593,8 +1594,15 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         entityManager.clear();
         OrganisationSchemeVersionMetamac organisationSchemeVersionTemporal = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
         assertEquals(3, organisationSchemeVersionTemporal.getMaintainableArtefact().getCategorisations().size());
-        assertListContainsCategorisation(organisationSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
-                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000_temporal)");
+        {
+            Categorisation categorisation = assertListContainsCategorisation(organisationSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
+                    "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000_temporal)");
+            assertTrue(categorisation.getMaintainableArtefact().getFinalLogic());
+            assertTrue(categorisation.getMaintainableArtefact().getFinalLogicClient());
+            assertTrue(categorisation.getMaintainableArtefact().getLatestFinal());
+            assertFalse(categorisation.getMaintainableArtefact().getPublicLogic());
+            assertFalse(categorisation.getMaintainableArtefact().getLatestPublic());
+        }
         assertListContainsCategorisation(organisationSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
                 "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat2(01.000_temporal)");
         assertListContainsCategorisation(organisationSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
@@ -1630,8 +1638,15 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertFalse(organisationSchemeNewVersion.getMaintainableArtefact().getLatestPublic());
 
             assertEquals(3, organisationSchemeNewVersion.getMaintainableArtefact().getCategorisations().size());
-            assertListContainsCategorisation(organisationSchemeNewVersion.getMaintainableArtefact().getCategorisations(),
-                    "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)");
+            {
+                Categorisation categorisation = assertListContainsCategorisation(organisationSchemeNewVersion.getMaintainableArtefact().getCategorisations(),
+                        "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)");
+                assertFalse(categorisation.getMaintainableArtefact().getFinalLogic());
+                assertFalse(categorisation.getMaintainableArtefact().getFinalLogicClient());
+                assertFalse(categorisation.getMaintainableArtefact().getLatestFinal());
+                assertFalse(categorisation.getMaintainableArtefact().getPublicLogic());
+                assertFalse(categorisation.getMaintainableArtefact().getLatestPublic());
+            }
             assertListContainsCategorisation(organisationSchemeNewVersion.getMaintainableArtefact().getCategorisations(),
                     "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat5(01.000)");
             assertListContainsCategorisation(organisationSchemeNewVersion.getMaintainableArtefact().getCategorisations(),

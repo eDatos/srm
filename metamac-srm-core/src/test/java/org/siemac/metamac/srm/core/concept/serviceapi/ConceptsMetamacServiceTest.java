@@ -66,6 +66,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
@@ -2107,8 +2108,15 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         entityManager.clear();
         ConceptSchemeVersionMetamac conceptSchemeVersionTemporal = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), versioningResult1.getUrnResult());
         assertEquals(3, conceptSchemeVersionTemporal.getMaintainableArtefact().getCategorisations().size());
-        assertListContainsCategorisation(conceptSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
-                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000_temporal)");
+        {
+            Categorisation categorisation = assertListContainsCategorisation(conceptSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
+                    "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000_temporal)");
+            assertTrue(categorisation.getMaintainableArtefact().getFinalLogic());
+            assertTrue(categorisation.getMaintainableArtefact().getFinalLogicClient());
+            assertTrue(categorisation.getMaintainableArtefact().getLatestFinal());
+            assertFalse(categorisation.getMaintainableArtefact().getPublicLogic());
+            assertFalse(categorisation.getMaintainableArtefact().getLatestPublic());
+        }
         assertListContainsCategorisation(conceptSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
                 "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat2(01.000_temporal)");
         assertListContainsCategorisation(conceptSchemeVersionTemporal.getMaintainableArtefact().getCategorisations(),
@@ -2134,7 +2142,16 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertFalse(conceptSchemeNewVersion.getMaintainableArtefact().getLatestPublic());
 
             assertEquals(3, conceptSchemeNewVersion.getMaintainableArtefact().getCategorisations().size());
-            assertListContainsCategorisation(conceptSchemeNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)");
+            {
+                Categorisation categorisation = assertListContainsCategorisation(conceptSchemeNewVersion.getMaintainableArtefact().getCategorisations(),
+                        "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)");
+                assertFalse(categorisation.getMaintainableArtefact().getFinalLogic());
+                assertFalse(categorisation.getMaintainableArtefact().getFinalLogicClient());
+                assertFalse(categorisation.getMaintainableArtefact().getLatestFinal());
+                assertFalse(categorisation.getMaintainableArtefact().getPublicLogic());
+                assertFalse(categorisation.getMaintainableArtefact().getLatestPublic());
+            }
+
             assertListContainsCategorisation(conceptSchemeNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat5(01.000)");
             assertListContainsCategorisation(conceptSchemeNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat6(01.000)");
         }

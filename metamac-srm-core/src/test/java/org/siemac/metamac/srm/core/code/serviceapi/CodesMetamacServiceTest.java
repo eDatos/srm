@@ -106,6 +106,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseDoMocks;
+import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
@@ -7409,17 +7410,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testCreateVersionFromTemporalCodelist() throws Exception {
         String urn = CODELIST_3_V1;
 
+        // --- Temporal version
         TaskInfo versioningTemporalResult = codesService.createTemporalCodelist(getServiceContextAdministrador(), urn);
         entityManager.clear();
         CodelistVersionMetamac temporalCodelistVersionMetamac = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), versioningTemporalResult.getUrnResult());
         assertEquals(3, temporalCodelistVersionMetamac.getMaintainableArtefact().getCategorisations().size());
-        assertListContainsCategorisation(temporalCodelistVersionMetamac.getMaintainableArtefact().getCategorisations(),
-                "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000_temporal)");
+        {
+            Categorisation categorisation = assertListContainsCategorisation(temporalCodelistVersionMetamac.getMaintainableArtefact().getCategorisations(),
+                    "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat1(01.000_temporal)");
+            assertTrue(categorisation.getMaintainableArtefact().getFinalLogic());
+            assertTrue(categorisation.getMaintainableArtefact().getFinalLogicClient());
+            assertTrue(categorisation.getMaintainableArtefact().getLatestFinal());
+            assertFalse(categorisation.getMaintainableArtefact().getPublicLogic());
+            assertFalse(categorisation.getMaintainableArtefact().getLatestPublic());
+        }
         assertListContainsCategorisation(temporalCodelistVersionMetamac.getMaintainableArtefact().getCategorisations(),
                 "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat2(01.000_temporal)");
         assertListContainsCategorisation(temporalCodelistVersionMetamac.getMaintainableArtefact().getCategorisations(),
                 "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat3(01.000_temporal)");
 
+        // -- No temporal
         TaskInfo versioningTemporalToVersionResult = codesService.createVersionFromTemporalCodelist(getServiceContextAdministrador(),
                 temporalCodelistVersionMetamac.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
         entityManager.clear();
@@ -7440,7 +7450,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertFalse(codelistVersionNewVersion.getMaintainableArtefact().getLatestPublic());
 
             assertEquals(3, codelistVersionNewVersion.getMaintainableArtefact().getCategorisations().size());
-            assertListContainsCategorisation(codelistVersionNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)");
+            {
+                Categorisation categorisation = assertListContainsCategorisation(codelistVersionNewVersion.getMaintainableArtefact().getCategorisations(),
+                        "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat4(01.000)");
+                assertFalse(categorisation.getMaintainableArtefact().getFinalLogic());
+                assertFalse(categorisation.getMaintainableArtefact().getFinalLogicClient());
+                assertFalse(categorisation.getMaintainableArtefact().getLatestFinal());
+                assertFalse(categorisation.getMaintainableArtefact().getPublicLogic());
+                assertFalse(categorisation.getMaintainableArtefact().getLatestPublic());
+            }
             assertListContainsCategorisation(codelistVersionNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat5(01.000)");
             assertListContainsCategorisation(codelistVersionNewVersion.getMaintainableArtefact().getCategorisations(), "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat6(01.000)");
         }

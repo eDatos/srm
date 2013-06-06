@@ -18,6 +18,7 @@
     <TB_SEQUENCES SEQUENCE_NAME="CAT_SCHEMES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="CATEGORIES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="CATEGORISATIONS" SEQUENCE_NEXT_VALUE="100000000" />
+    <TB_SEQUENCES SEQUENCE_NAME="CATEGORISATION_SEQUENCES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="CONCEPT_SCHEMES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="CONCEPTS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ORG_SCHEMES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
@@ -1904,8 +1905,9 @@
             COMMENT_FK="[null]"
             
             VERSION_LOGIC="01.000"
-            FINAL_LOGIC="0"
-            LATEST_FINAL="0"
+            FINAL_LOGIC="1"
+            FINAL_LOGIC_CLIENT="1"
+            LATEST_FINAL="1"
             PUBLIC_LOGIC="0"
             LATEST_PUBLIC="0"
             VALID_FROM_TZ="[null]"
@@ -1965,9 +1967,9 @@
             COMMENT_FK="[null]"
             
             VERSION_LOGIC="01.000"
-            FINAL_LOGIC="0"
-            LATEST_FINAL="0"
-            PUBLIC_LOGIC="0"
+            FINAL_LOGIC="1"
+            FINAL_LOGIC_CLIENT="1"
+            LATEST_FINAL="1"
             LATEST_PUBLIC="0"
             VALID_FROM_TZ="[null]"
             VALID_FROM="[null]" 
@@ -2027,9 +2029,9 @@
             COMMENT_FK="[null]"
             
             VERSION_LOGIC="01.000"
-            FINAL_LOGIC="0"
-            LATEST_FINAL="0"
-            PUBLIC_LOGIC="0"
+            FINAL_LOGIC="1"
+            FINAL_LOGIC_CLIENT="1"
+            LATEST_FINAL="1"
             LATEST_PUBLIC="0"
             VALID_FROM_TZ="[null]"
             VALID_FROM="[null]" 
@@ -6648,7 +6650,17 @@
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             />  
-                        
+
+    <!-- ************************************************************************************** -->
+    <!-- MISC                                                                                   -->
+    <!-- *************************************************************************************  -->
+
+    <TB_CATEGORISATION_SEQUENCES
+        ID="1"
+        MAINTAINER_URN="urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX01"
+        ACTUAL_SEQUENCE="3"
+    /> 
+                            
     <!-- ************************************************************************************** -->
     <!-- INTERNATIONAL STRINGS                                                                  -->
     <!-- *************************************************************************************  -->

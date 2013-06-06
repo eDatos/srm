@@ -480,6 +480,9 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         categoriesService.deleteCategorisation(ctx, urn);
     }
 
+    /**
+     * Important: Categorisations must be created with new code
+     */
     @Override
     public void createVersionFromTemporalCategorisations(ServiceContext ctx, MaintainableArtefact maintainableArtefact) throws MetamacException {
         List<Categorisation> categorisationsToDelete = new ArrayList<Categorisation>(maintainableArtefact.getCategorisations());
