@@ -8,6 +8,7 @@ public class ConceptSchemeWebCriteria extends VersionableResourceWebCriteria {
 
     private String                dsdUrn;
     private String                conceptUrn;
+    private String                relatedConceptSchemeUrn;
     private String                statisticalOperationUrn;
     private ConceptSchemeTypeEnum conceptSchemeTypeEnum;
 
@@ -54,4 +55,16 @@ public class ConceptSchemeWebCriteria extends VersionableResourceWebCriteria {
     public void setConceptUrn(String conceptUrn) {
         this.conceptUrn = conceptUrn;
     }
+
+    
+    public String getRelatedConceptSchemeUrn() {
+        return relatedConceptSchemeUrn;
+    }
+
+    
+    public void setRelatedConceptSchemeUrn(String relatedConceptSchemeUrn) {
+        this.relatedConceptSchemeUrn = relatedConceptSchemeUrn;
+    }
+    
+    
 }

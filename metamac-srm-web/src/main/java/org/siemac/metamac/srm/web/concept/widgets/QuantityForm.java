@@ -2,32 +2,45 @@ package org.siemac.metamac.srm.web.concept.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import java.util.List;
+
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.QuantityDto;
+import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.QuantityUnitSymbolPositionEnum;
+import org.siemac.metamac.srm.core.concept.serviceimpl.utils.shared.QuantityUtils;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.widgets.SearchItemItem;
+import org.siemac.metamac.srm.web.concept.enums.QuantityIndexBaseTypeEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
+import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
-import org.siemac.metamac.web.common.client.widgets.SearchWindow;
+import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.utils.TimeVariableWebUtils;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomIntegerItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.CustomTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
+import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
+import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.form.validator.RequiredIfFunction;
 import com.smartgwt.client.widgets.form.validator.RequiredIfValidator;
 
-public class QuantityForm extends BaseQuantityForm {
+public class QuantityForm extends BaseQuantityForm  {
 
-    private QuantityDto  quantityDto;
-    // private IndicatorDto indicatorDto;
+    //private QuantityDto  quantityDto;
 
-    private SearchWindow indicatorDenominatorSearchWindow;
-    private SearchWindow indicatorNumeratorSearchWindow;
-    private SearchWindow indicatorBaseSearchWindow;
+    private SearchConceptForQuantityDenominatorItem searchDenominatorItem;
+    private SearchConceptForQuantityNumeratorItem searchNumeratorItem;
+    private SearchConceptForQuantityBaseItem searchBaseItem;
+    private SearchCodeForQuantityUnitItem searchUnitItem;
 
     public QuantityForm(String groupTitle) {
         super(groupTitle);
@@ -41,18 +54,27 @@ public class QuantityForm extends BaseQuantityForm {
                 QuantityForm.this.markForRedraw();
             }
         });
-        type.setValidators(getQuantityRequiredIfValidator());
+        type.setRequired(false);
 
-        CustomSelectItem unitUuid = new CustomSelectItem(ConceptDS.QUANTITY_UNIT_UUID, getConstants().conceptQuantityUnit());
-        unitUuid.setValidators(getQuantityRequiredIfValidator());
+        searchUnitItem = createQuantityUnitItem(ConceptDS.QUANTITY_UNIT, getConstants().conceptQuantityUnit());
+        searchUnitItem.setValidators(getQuantityRequiredIfValidator());
+        searchUnitItem.setShowIfCondition(getShowIfAnyQuantityType());
+        
+        CustomSelectItem unitSymbol = new CustomSelectItem(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION, getConstants().conceptQuantityUnitSymbolPosition());
+        unitSymbol.setValueMap(getQuantityUnitSymbolValueMap());
+        unitSymbol.setValidators(getQuantityRequiredIfValidator());
+        unitSymbol.setShowIfCondition(getShowIfAnyQuantityType());
 
-        CustomSelectItem unitMultiplier = new CustomSelectItem(ConceptDS.QUANTITY_UNIT_MULTIPLIER, getConstants().conceptQuantityUnitMultiplier());
-        unitMultiplier.setValidators(getQuantityRequiredIfValidator());
+        CustomIntegerItem unitMultiplier = new CustomIntegerItem(ConceptDS.QUANTITY_UNIT_MULTIPLIER, getConstants().conceptQuantityUnitMultiplier());
+        unitMultiplier.setValidators(getQuantityRequiredIfValidator(), getUnitMultiplierValidator());
+        unitMultiplier.setShowIfCondition(getShowIfAnyQuantityType());
 
         CustomIntegerItem sigDigits = new CustomIntegerItem(ConceptDS.QUANTITY_SIGNIFICANT_DIGITS, getConstants().conceptQuantitySignificantDigits());
+        sigDigits.setShowIfCondition(getShowIfAnyQuantityType());
 
         CustomIntegerItem decPlaces = new CustomIntegerItem(ConceptDS.QUANTITY_DECIMAL_PLACES, getConstants().conceptQuantityDecimalPlaces());
         decPlaces.setRequired(true);
+        decPlaces.setShowIfCondition(getShowIfAnyQuantityType());
 
         CustomIntegerItem min = new CustomIntegerItem(ConceptDS.QUANTITY_MINIMUM, getConstants().conceptQuantityMinimum());
         min.setShowIfCondition(getMinIfFunction());
@@ -61,41 +83,46 @@ public class QuantityForm extends BaseQuantityForm {
         max.setShowIfCondition(getMaxIfFunction());
 
         // Search denominator indicator
-        CustomTextItem searchDenominatorUuid = new CustomTextItem(ConceptDS.QUANTITY_DENOMINATOR_INDICATOR_UUID, getConstants().conceptQuantityDenominatorConcept());
-        searchDenominatorUuid.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        // searchDenominatorUuid.setValidators(getIndicatorSelectedValidator());
-        // SearchViewTextItem searchDenominatorText = getSearchDenominatorTextItem();
+        searchDenominatorItem = createQuantityDenominatorItem(ConceptDS.QUANTITY_DENOMINATOR, getConstants().conceptQuantityDenominatorConcept());
+        searchDenominatorItem.setShowIfCondition(getDenominatorIfFunction());
 
         // Search numerator indicator
-        CustomTextItem searchNumeratorUuid = new CustomTextItem(ConceptDS.QUANTITY_NUMERATOR_INDICATOR_UUID, getConstants().conceptQuantityNumeratorConcept());
-        searchNumeratorUuid.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        // searchNumeratorUuid.setValidators(getIndicatorSelectedValidator());
-        // SearchViewTextItem searchNumeratorText = getSearchNumeratorTextItem();
+        searchNumeratorItem = createQuantityNumeratorItem(ConceptDS.QUANTITY_NUMERATOR, getConstants().conceptQuantityNumeratorConcept());
+        searchNumeratorItem.setShowIfCondition(getNumeratorIfFunction());
 
         CustomCheckboxItem isPercentange = new CustomCheckboxItem(ConceptDS.QUANTITY_IS_PERCENTAGE, getConstants().conceptQuantityIsPercentage());
         isPercentange.setShowIfCondition(getIsPercentageIfFunction());
+        isPercentange.addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                QuantityForm.this.markForRedraw();
+            }
+        });
 
         MultiLanguageTextItem percentageOf = new MultiLanguageTextItem(ConceptDS.QUANTITY_PERCENTAGE_OF, getConstants().conceptQuantityPercentageOf());
         percentageOf.setShowIfCondition(getPercentageOfIfFunction());
 
-        // CustomSelectItem indexBaseType = new CustomSelectItem(ConceptDS.QUANTITY_INDEX_BASE_TYPE, getConstants().conceptQuantityIndexMetadata());
-        // indexBaseType.setValueMap(getQuantityIndexBaseTypeValueMap());
-        // indexBaseType.setShowIfCondition(getIndexBaseTypeIfFunction());
-        // indexBaseType.addChangedHandler(new ChangedHandler() {
-        //
-        // @Override
-        // public void onChanged(ChangedEvent event) {
-        // QuantityForm.this.markForRedraw();
-        // }
-        // });
+        CustomSelectItem indexBaseType = new CustomSelectItem(ConceptDS.QUANTITY_INDEX_BASE_TYPE, getConstants().conceptQuantityIndexMetadata());
+        indexBaseType.setValueMap(getQuantityIndexBaseTypeValueMap());
+        indexBaseType.setShowIfCondition(getIndexBaseTypeIfFunction());
+        indexBaseType.setValidators(getQuantityIndexBaseTypeRequiredIfValidator());
+        indexBaseType.addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                QuantityForm.this.markForRedraw();
+            }
+        });
 
         CustomIntegerItem baseValue = new CustomIntegerItem(ConceptDS.QUANTITY_BASE_VALUE, getConstants().conceptQuantityBaseValue());
         baseValue.setRequired(true);
         baseValue.setShowIfCondition(getBaseValueIfFunction());
-        //
-        // RequiredTextItem baseTime = new RequiredTextItem(ConceptDS.QUANTITY_BASE_TIME, getConstants().conceptQuantityBaseTime());
-        // baseTime.setShowIfCondition(getBaseTimeIfFunction());
-        // baseTime.setValidators(TimeVariableWebUtils.getTimeCustomValidator());
+        
+         RequiredTextItem baseTime = new RequiredTextItem(ConceptDS.QUANTITY_BASE_TIME, getConstants().conceptQuantityBaseTime());
+         baseTime.setRequired(true);
+         baseTime.setShowIfCondition(getBaseTimeIfFunction());
+         baseTime.setValidators(TimeVariableWebUtils.getTimeCustomValidator());
 
         // final GeographicalSelectItem baseLocation = new GeographicalSelectItem(ConceptDS.QUANTITY_BASE_LOCATION, getConstants().conceptQuantityBaseLocation());
         // baseLocation.setRequired(true);
@@ -117,310 +144,287 @@ public class QuantityForm extends BaseQuantityForm {
         // });
 
         // Search indicator base
-        TextItem searchIndicatorBaseUuid = new TextItem(ConceptDS.QUANTITY_BASE_QUANTITY_INDICATOR_UUID, getConstants().conceptQuantityBaseQuantity());
-        searchIndicatorBaseUuid.setRequired(true);
-        searchIndicatorBaseUuid.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
-        // searchIndicatorBaseUuid.setValidators(getIndicatorSelectedValidator());
-        // SearchViewTextItem searchIndicatorBaseText = getSearchIndicatorBaseTextItem();
+        searchBaseItem = createQuantityBaseItem(ConceptDS.QUANTITY_BASE_QUANTITY, getConstants().conceptQuantityBaseQuantity());
+        //FIXME
+        searchBaseItem.setRequired(true);
+        searchBaseItem.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
 
-        setFields(type, unitUuid, unitMultiplier, sigDigits, decPlaces, min, max, searchDenominatorUuid/* , searchDenominatorText */, searchNumeratorUuid/* , searchNumeratorText */, isPercentange,
-                percentageOf, /* indexBaseType, */baseValue, /* baseTime, baseLocation, */searchIndicatorBaseUuid /* , searchIndicatorBaseText */);
+        setFields(type, searchUnitItem, unitSymbol, unitMultiplier, sigDigits, decPlaces, min, max, searchDenominatorItem, searchNumeratorItem, isPercentange,
+                percentageOf, indexBaseType, baseValue,  baseTime, /*baseLocation, */searchBaseItem);
     }
 
-    // public void setValue(QuantityDto quantityDto) {
-    // this.quantityDto = quantityDto;
-    // clearValues();
-    // if (quantityDto != null) {
-    // setValue(ConceptDS.QUANTITY_TYPE, quantityDto.getType() != null ? quantityDto.getType().toString() : null);
-    // setValue(ConceptDS.QUANTITY_UNIT_UUID, quantityDto.getUnitUuid());
-    // setValue(ConceptDS.QUANTITY_UNIT_MULTIPLIER, quantityDto.getUnitMultiplier());
-    // if (quantityDto.getSignificantDigits() != null) {
-    // setValue(ConceptDS.QUANTITY_SIGNIFICANT_DIGITS, quantityDto.getSignificantDigits());
-    // }
-    // setValue(ConceptDS.QUANTITY_DECIMAL_PLACES, quantityDto.getDecimalPlaces() != null ? quantityDto.getDecimalPlaces() : 2);
-    // if (quantityDto.getMinimum() != null) {
-    // setValue(ConceptDS.QUANTITY_MINIMUM, quantityDto.getMinimum());
-    // }
-    // if (quantityDto.getMaximum() != null) {
-    // setValue(ConceptDS.QUANTITY_MAXIMUM, quantityDto.getMaximum());
-    // }
-    //
-    // setValue(ConceptDS.QUANTITY_DENOMINATOR_INDICATOR_UUID, quantityDto.getDenominatorIndicatorUuid());
-    // setValue(ConceptDS.QUANTITY_DENOMINATOR_INDICATOR_TEXT, quantityDto.getDenominatorIndicatorUuid()); // Value set in setIndicatorQuantityDenominator method
-    //
-    // setValue(ConceptDS.QUANTITY_NUMERATOR_INDICATOR_UUID, quantityDto.getNumeratorIndicatorUuid());
-    // setValue(ConceptDS.QUANTITY_NUMERATOR_INDICATOR_TEXT, quantityDto.getNumeratorIndicatorUuid()); // Value set in setIndicatorQuantityNumerator method
-    //
-    // setValue(ConceptDS.QUANTITY_IS_PERCENTAGE, quantityDto.getIsPercentage() != null ? quantityDto.getIsPercentage().booleanValue() : false);
-    // setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE, getIndexBaseTypeEnum(quantityDto) != null ? getIndexBaseTypeEnum(quantityDto).toString() : "");
-    // if (quantityDto.getBaseValue() != null) {
-    // setValue(ConceptDS.QUANTITY_BASE_VALUE, quantityDto.getBaseValue());
-    // }
-    // setValue(ConceptDS.QUANTITY_BASE_TIME, quantityDto.getBaseTime());
-    //
-    // // Base location granularity set in setGeographicalGranularity method
-    // ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoGranularity(new String());
-    // ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoValue(quantityDto.getBaseLocationUuid());
-    //
-    // setValue(ConceptDS.QUANTITY_BASE_QUANTITY_INDICATOR_UUID, quantityDto.getBaseQuantityIndicatorUuid());
-    // setValue(ConceptDS.QUANTITY_BASE_QUANTITY_INDICATOR_TEXT, quantityDto.getBaseQuantityIndicatorUuid()); // Value set in setIndicatorQuantityIndicatorBase method
-    //
-    // setValue(ConceptDS.QUANTITY_PERCENTAGE_OF, RecordUtils.getInternationalStringRecord(quantityDto.getPercentageOf()));
-    // }
-    // }
-    //
-    // public void setIndicatorQuantityDenominator(IndicatorDto indicator) {
-    // setValue(ConceptDS.QUANTITY_DENOMINATOR_INDICATOR_TEXT, CommonUtils.getIndicatorText(indicator.getCode(), indicator.getTitle()));
-    // }
-    //
-    // public void setIndicatorQuantityNumerator(IndicatorDto indicator) {
-    // setValue(ConceptDS.QUANTITY_NUMERATOR_INDICATOR_TEXT, CommonUtils.getIndicatorText(indicator.getCode(), indicator.getTitle()));
-    // }
-    //
-    // public void setIndicatorQuantityIndicatorBase(IndicatorDto indicator) {
-    // setValue(ConceptDS.QUANTITY_BASE_QUANTITY_INDICATOR_TEXT, CommonUtils.getIndicatorText(indicator.getCode(), indicator.getTitle()));
-    // }
-    //
-    // public QuantityDto getValue() {
-    // quantityDto.setType((getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !getValueAsString(ConceptDS.QUANTITY_TYPE).isEmpty()) ? QuantityTypeEnum
-    // .valueOf(getValueAsString(ConceptDS.QUANTITY_TYPE)) : null);
-    // quantityDto.setUnitUuid(CommonUtils.getUuidString(getValueAsString(ConceptDS.QUANTITY_UNIT_UUID)));
-    // quantityDto.setUnitMultiplier(getValue(ConceptDS.QUANTITY_UNIT_MULTIPLIER) != null ? Integer.valueOf(getValueAsString(ConceptDS.QUANTITY_UNIT_MULTIPLIER)) : null);
-    // quantityDto.setSignificantDigits(getValue(ConceptDS.QUANTITY_SIGNIFICANT_DIGITS) != null ? (Integer) getValue(ConceptDS.QUANTITY_SIGNIFICANT_DIGITS) : null);
-    // quantityDto.setDecimalPlaces(getValue(ConceptDS.QUANTITY_DECIMAL_PLACES) != null ? (Integer) getValue(ConceptDS.QUANTITY_DECIMAL_PLACES) : null);
-    // // Only set value if item is visible (these item are quantity type dependent)
-    // quantityDto.setMinimum(getItem(ConceptDS.QUANTITY_MINIMUM).isVisible() ? (getValue(ConceptDS.QUANTITY_MINIMUM) != null ? (Integer) getValue(ConceptDS.QUANTITY_MINIMUM) : null) : null);
-    // quantityDto.setMaximum(getItem(ConceptDS.QUANTITY_MAXIMUM).isVisible() ? (getValue(ConceptDS.QUANTITY_MAXIMUM) != null ? (Integer) getValue(ConceptDS.QUANTITY_MAXIMUM) : null) : null);
-    // quantityDto.setDenominatorIndicatorUuid(getItem(ConceptDS.QUANTITY_DENOMINATOR_INDICATOR_TEXT).isVisible() ? CommonUtils
-    // .getUuidString(getValueAsString(ConceptDS.QUANTITY_DENOMINATOR_INDICATOR_UUID)) : null);
-    // quantityDto.setNumeratorIndicatorUuid(getItem(ConceptDS.QUANTITY_NUMERATOR_INDICATOR_TEXT).isVisible() ? CommonUtils
-    // .getUuidString(getValueAsString(ConceptDS.QUANTITY_NUMERATOR_INDICATOR_UUID)) : null);
-    // quantityDto.setIsPercentage(getItem(ConceptDS.QUANTITY_IS_PERCENTAGE).isVisible() ? (getValue(ConceptDS.QUANTITY_IS_PERCENTAGE) != null ? Boolean
-    // .valueOf((Boolean) getValue(ConceptDS.QUANTITY_IS_PERCENTAGE)) : false) : null);
-    // quantityDto.setPercentageOf(getItem(ConceptDS.QUANTITY_PERCENTAGE_OF).isVisible() ? ((MultiLanguageTextItem) getItem(ConceptDS.QUANTITY_PERCENTAGE_OF)).getValue() : null);
-    // quantityDto.setBaseValue(getItem(ConceptDS.QUANTITY_BASE_VALUE).isVisible()
-    // ? (getValue(ConceptDS.QUANTITY_BASE_VALUE) != null ? (Integer) getValue(ConceptDS.QUANTITY_BASE_VALUE) : null)
-    // : null);
-    // quantityDto.setBaseTime(getItem(ConceptDS.QUANTITY_BASE_TIME).isVisible() ? getValueAsString(ConceptDS.QUANTITY_BASE_TIME) : null);
-    // quantityDto.setBaseLocationUuid(getItem(ConceptDS.QUANTITY_BASE_LOCATION).isVisible() ? CommonUtils.getUuidString(((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION))
-    // .getSelectedGeoValue()) : null);
-    // quantityDto.setBaseQuantityIndicatorUuid(getItem(ConceptDS.QUANTITY_BASE_QUANTITY_INDICATOR_TEXT).isVisible() ? CommonUtils
-    // .getUuidString(getValueAsString(ConceptDS.QUANTITY_BASE_QUANTITY_INDICATOR_UUID)) : null);
-    // return quantityDto;
-    // }
-    //
-    // public void setIndicatorListQuantityDenominator(List<IndicatorSummaryDto> indicators) {
-    // if (indicatorDenominatorSearchWindow != null) {
-    // indicatorDenominatorSearchWindow.setIndicatorList(indicators);
-    // }
-    // }
-    //
-    // public void setIndicatorListQuantityNumerator(List<IndicatorSummaryDto> indicators) {
-    // if (indicatorNumeratorSearchWindow != null) {
-    // indicatorNumeratorSearchWindow.setIndicatorList(indicators);
-    // }
-    // }
-    //
-    // public void setIndicatorListQuantityIndicatorBase(List<IndicatorSummaryDto> indicators) {
-    // if (indicatorBaseSearchWindow != null) {
-    // indicatorBaseSearchWindow.setIndicatorList(indicators);
-    // }
-    // }
-    //
-    // @Override
-    // public void setQuantityUnits(List<QuantityUnitDto> units) {
-    // super.setQuantityUnits(units);
-    // LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
-    // for (QuantityUnitDto unit : units) {
-    // valueMap.put(unit.getUuid(), InternationalStringUtils.getLocalisedString(unit.getTitle()));
-    // }
-    // ((SelectItem) getItem(ConceptDS.QUANTITY_UNIT_UUID)).setValueMap(valueMap);
-    // }
-    //
-    // public void setIndicator(IndicatorDto indicatorDto) {
-    // this.indicatorDto = indicatorDto;
-    // }
-    //
-    // private CustomValidator getIndicatorSelectedValidator() {
-    // CustomValidator validator = new CustomValidator() {
-    //
-    // @Override
-    // protected boolean condition(Object value) {
-    // return (value != null && value.equals(indicatorDto.getUuid())) ? false : true;
-    // }
-    // };
-    // validator.setErrorMessage(getMessages().validatorErrorIndicatorSelected());
-    // return validator;
-    // }
-    //
-    // public void setUnitMultipliers(List<UnitMultiplierDto> unitMultiplierDtos) {
-    // ((CustomSelectItem) getItem(ConceptDS.QUANTITY_UNIT_MULTIPLIER)).setValueMap(CommonUtils.getUnitMultiplierValueMap(unitMultiplierDtos));
-    // }
-    //
-    // public void setGeographicalGranularities(List<GeographicalGranularityDto> granularityDtos) {
-    // ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoGranularitiesValueMap(CommonUtils.getGeographicalGranularituesValueMap(granularityDtos));
-    // }
-    //
-    // public void setGeographicalValues(List<GeographicalValueDto> geographicalValueDtos) {
-    // ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoValuesValueMap(CommonUtils.getGeographicalValuesValueMap(geographicalValueDtos));
-    // }
-    //
-    // public void setGeographicalValue(GeographicalValueDto geographicalValueDto) {
-    // if (geographicalValueDto != null) {
-    // ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoGranularity(geographicalValueDto.getGranularityUuid());
-    // // Make sure value map is set properly
-    // if (uiHandlers instanceof IndicatorUiHandler) {
-    // ((IndicatorUiHandler) uiHandlers).retrieveGeographicalValues(geographicalValueDto.getGranularityUuid());
-    // }
-    // }
-    // }
+    public void setCodelistsForQuantityUnitFilter(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
+        if (searchUnitItem != null && searchUnitItem.getSearchWindow() != null) {
+            searchUnitItem.getSearchWindow().setFilterRelatedResources(resources);
+            searchUnitItem.getSearchWindow().refreshFilterListPaginationInfo(firstResult, resources.size(), totalResults);
+        }
+    }
+    
+    public void setCodesForQuantityUnit(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
+        if (searchUnitItem != null && searchUnitItem.getSearchWindow() != null) {
+            searchUnitItem.getSearchWindow().setRelatedResources(resources);
+            searchUnitItem.getSearchWindow().refreshListPaginationInfo(firstResult, resources.size(), totalResults);
+        }
+    }
+    
+    public void setConceptSchemesForQuantityBaseFilter(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
+        if (searchBaseItem != null && searchBaseItem.getSearchWindow() != null) {
+            searchBaseItem.getSearchWindow().setFilterRelatedResources(resources);
+            searchBaseItem.getSearchWindow().refreshFilterListPaginationInfo(firstResult, resources.size(), totalResults);
+        }
+    }
+    
+    public void setConceptsForQuantityBase(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
+        if (searchBaseItem != null && searchBaseItem.getSearchWindow() != null) {
+            searchBaseItem.getSearchWindow().setRelatedResources(resources);
+            searchBaseItem.getSearchWindow().refreshListPaginationInfo(firstResult, resources.size(), totalResults);
+        }
+    }
+    
+    public void setConceptSchemesForQuantityNumeratorFilter(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
+        if (searchNumeratorItem != null && searchNumeratorItem.getSearchWindow() != null) {
+            searchNumeratorItem.getSearchWindow().setFilterRelatedResources(resources);
+            searchNumeratorItem.getSearchWindow().refreshFilterListPaginationInfo(firstResult, resources.size(), totalResults);
+        }
+    }
+    
+    public void setConceptsForQuantityNumerator(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
+        if (searchNumeratorItem != null && searchNumeratorItem.getSearchWindow() != null) {
+            searchNumeratorItem.getSearchWindow().setRelatedResources(resources);
+            searchNumeratorItem.getSearchWindow().refreshListPaginationInfo(firstResult, resources.size(), totalResults);
+        }
+    }
+    
+    public void setConceptSchemesForQuantityDenominatorFilter(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
+        if (searchDenominatorItem != null && searchDenominatorItem.getSearchWindow() != null) {
+            searchDenominatorItem.getSearchWindow().setFilterRelatedResources(resources);
+            searchDenominatorItem.getSearchWindow().refreshFilterListPaginationInfo(firstResult, resources.size(), totalResults);
+        }
+    }
+    
+    public void setConceptsForQuantityDenominator(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
+        if (searchDenominatorItem != null && searchDenominatorItem.getSearchWindow() != null) {
+            searchDenominatorItem.getSearchWindow().setRelatedResources(resources);
+            searchDenominatorItem.getSearchWindow().refreshListPaginationInfo(firstResult, resources.size(), totalResults);
+        }
+    }
+    
+    public void setValue(QuantityDto quantityDto) {
+        clearValues();
+        if (quantityDto != null) {
+            setValue(ConceptDS.QUANTITY_TYPE, quantityDto.getQuantityType() != null? quantityDto.getQuantityType().toString() : "");
+            if (quantityDto.getUnitCode() != null) {
+                setRelatedResourceDtoValue(ConceptDS.QUANTITY_UNIT, quantityDto.getUnitCode());
+            }
+            setValue(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION, quantityDto.getUnitSymbolPosition() != null? quantityDto.getUnitSymbolPosition().toString() : "");
+            setValue(ConceptDS.QUANTITY_UNIT_MULTIPLIER, quantityDto.getUnitMultiplier());
+            if (quantityDto.getSignificantDigits() != null) {
+                setValue(ConceptDS.QUANTITY_SIGNIFICANT_DIGITS, quantityDto.getSignificantDigits());
+            }
+            setValue(ConceptDS.QUANTITY_DECIMAL_PLACES, quantityDto.getDecimalPlaces() != null ? quantityDto.getDecimalPlaces() : 2);
+            if (quantityDto.getMinimum() != null) {
+                setValue(ConceptDS.QUANTITY_MINIMUM, quantityDto.getMinimum());
+            }
+            if (quantityDto.getMaximum() != null) {
+                setValue(ConceptDS.QUANTITY_MAXIMUM, quantityDto.getMaximum());
+            }
 
+            if (quantityDto.getDenominator() != null) {
+                setRelatedResourceDtoValue(ConceptDS.QUANTITY_DENOMINATOR, quantityDto.getDenominator());
+            }
+
+            if (quantityDto.getNumerator() != null) {
+                setRelatedResourceDtoValue(ConceptDS.QUANTITY_NUMERATOR, quantityDto.getNumerator());
+            }
+
+            setValue(ConceptDS.QUANTITY_IS_PERCENTAGE, quantityDto.getIsPercentage() != null ? quantityDto.getIsPercentage().booleanValue() : true);
+            setValue(ConceptDS.QUANTITY_PERCENTAGE_OF, RecordUtils.getInternationalStringRecord(quantityDto.getPercentageOf()));
+            
+            setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE, getIndexBaseTypeEnum(quantityDto) != null ? getIndexBaseTypeEnum(quantityDto).toString() : "");
+
+            if (quantityDto.getBaseValue() != null) {
+                setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE, QuantityIndexBaseTypeEnum.BASE_VALUE.toString());
+                setValue(ConceptDS.QUANTITY_BASE_VALUE, quantityDto.getBaseValue());
+            }
+            
+            if (quantityDto.getBaseTime() != null) {
+                setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE, QuantityIndexBaseTypeEnum.BASE_TIME.toString());
+                setValue(ConceptDS.QUANTITY_BASE_TIME, quantityDto.getBaseTime());
+            }
+
+            //FIXME: baseLocation
+//            if (quantityDto.getBaseLocation() != null) {
+//                setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE, QuantityIndexBaseTypeEnum.BASE_LOCATION.toString());
+//                 Base location granularity set in setGeographicalGranularity method
+//                ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoGranularity(new String());
+//                ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoValue(quantityDto.getBaseLocationUuid());
+//            }
+
+            if (quantityDto.getBaseQuantity() != null) {
+                setRelatedResourceDtoValue(ConceptDS.QUANTITY_BASE_QUANTITY, quantityDto.getBaseQuantity());
+            }
+        } else {
+            setValue(ConceptDS.QUANTITY_IS_PERCENTAGE, true);
+        }
+    }
+    
+    public QuantityDto getValue(QuantityDto quantityDto) {
+        if (!isVisible()) {
+            return null;
+        }
+        if (getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !StringUtils.isEmpty(getValueAsString(ConceptDS.QUANTITY_TYPE))) {
+            if (quantityDto == null) {
+                quantityDto = new QuantityDto();
+            }
+            quantityDto.setQuantityType((getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !getValueAsString(ConceptDS.QUANTITY_TYPE).isEmpty()) ? QuantityTypeEnum.valueOf(getValueAsString(ConceptDS.QUANTITY_TYPE)) : null);
+            quantityDto.setUnitSymbolPosition((getValueAsString(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION) != null && !getValueAsString(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION).isEmpty()) ? QuantityUnitSymbolPositionEnum.valueOf(getValueAsString(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION)) : null);
+            
+            quantityDto.setUnitCode(getRelatedResourceDtoValue(ConceptDS.QUANTITY_UNIT));
+            quantityDto.setUnitMultiplier(getValueAsInteger(ConceptDS.QUANTITY_UNIT_MULTIPLIER));
+            quantityDto.setSignificantDigits(getValueAsInteger(ConceptDS.QUANTITY_SIGNIFICANT_DIGITS));
+            quantityDto.setDecimalPlaces(getValueAsInteger(ConceptDS.QUANTITY_DECIMAL_PLACES));
+            // Only set value if item is visible (these item are quantity type dependent)
+            quantityDto.setMinimum(getItem(ConceptDS.QUANTITY_MINIMUM).isVisible() ? getValueAsInteger(ConceptDS.QUANTITY_MINIMUM) : null);
+            quantityDto.setMaximum(getItem(ConceptDS.QUANTITY_MAXIMUM).isVisible() ? getValueAsInteger(ConceptDS.QUANTITY_MAXIMUM) : null);
+            
+            quantityDto.setDenominator(getRelatedResourceDtoValue(ConceptDS.QUANTITY_DENOMINATOR));
+            quantityDto.setNumerator(getRelatedResourceDtoValue(ConceptDS.QUANTITY_NUMERATOR));
+            
+            quantityDto.setIsPercentage(getItem(ConceptDS.QUANTITY_IS_PERCENTAGE).isVisible() ? (getValue(ConceptDS.QUANTITY_IS_PERCENTAGE) != null ? Boolean
+                    .valueOf((Boolean) getValue(ConceptDS.QUANTITY_IS_PERCENTAGE)) : false) : null);
+            quantityDto.setPercentageOf(getItem(ConceptDS.QUANTITY_PERCENTAGE_OF).isVisible() ? ((MultiLanguageTextItem) getItem(ConceptDS.QUANTITY_PERCENTAGE_OF)).getValue() : null);
+            quantityDto.setBaseValue(getItem(ConceptDS.QUANTITY_BASE_VALUE).isVisible() ? (getValue(ConceptDS.QUANTITY_BASE_VALUE) != null ? (Integer) getValue(ConceptDS.QUANTITY_BASE_VALUE) : null) : null);
+            quantityDto.setBaseTime(getItem(ConceptDS.QUANTITY_BASE_TIME).isVisible() ? getValueAsString(ConceptDS.QUANTITY_BASE_TIME) : null);
+            //FIXME:
+            //quantityDto.setBaseLocation();
+            quantityDto.setBaseQuantity(getRelatedResourceDtoValue(ConceptDS.QUANTITY_BASE_QUANTITY));
+            return quantityDto;
+        }
+        return null;
+    }
+
+    
+    private SearchCodeForQuantityUnitItem createQuantityUnitItem(final String name, String title) {
+        final SearchCodeForQuantityUnitItem item = new SearchCodeForQuantityUnitItem(name, title, getCustomLinkItemNavigationClickHandler());
+        item.setSaveClickHandler(getSearchItemSaveClickHandler(item, name));
+        return item;
+    }
+    
+    private SearchConceptForQuantityNumeratorItem createQuantityNumeratorItem(final String name, String title) {
+        final SearchConceptForQuantityNumeratorItem item = new SearchConceptForQuantityNumeratorItem(name, title, getCustomLinkItemNavigationClickHandler());
+        item.setSaveClickHandler(getSearchItemSaveClickHandler(item, name));
+        return item;
+    }
+    
+    private SearchConceptForQuantityDenominatorItem createQuantityDenominatorItem(final String name, String title) {
+        final SearchConceptForQuantityDenominatorItem item = new SearchConceptForQuantityDenominatorItem(name, title, getCustomLinkItemNavigationClickHandler());
+        item.setSaveClickHandler(getSearchItemSaveClickHandler(item, name));
+        return item;
+    }
+    
+    private SearchConceptForQuantityBaseItem createQuantityBaseItem(final String name, String title) {
+        final SearchConceptForQuantityBaseItem item = new SearchConceptForQuantityBaseItem(name, title, getCustomLinkItemNavigationClickHandler());
+        item.setSaveClickHandler(getSearchItemSaveClickHandler(item, name));
+        return item;
+    }
+    
+    private ClickHandler getSearchItemSaveClickHandler(final SearchItemItem searchItem, final String itemName) {
+        com.smartgwt.client.widgets.form.fields.events.ClickHandler clickHandler = new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+            
+            @Override
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                RelatedResourceDto code = searchItem.getSelectedItem();
+                searchItem.markSearchWindowForDestroy();
+                searchItem.setRelatedResource(code);
+                validate(false);
+            }
+        };
+        return clickHandler;
+    }
+  
     public RequiredIfValidator getQuantityRequiredIfValidator() {
         return new RequiredIfValidator(new RequiredIfFunction() {
 
             @Override
             public boolean execute(FormItem formItem, Object value) {
-                // TODO return !IndicatorProcStatusEnum.DRAFT.equals(indicatorDto.getProcStatus());
-                return true;
+                if (QuantityForm.this.getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !QuantityForm.this.getValueAsString(ConceptDS.QUANTITY_TYPE).isEmpty()) {
+                    return true;
+                }
+                return false;
             }
         });
     }
-
-    // ITEMS
-
-    // private SearchViewTextItem getSearchDenominatorTextItem() {
-    // SearchViewTextItem searchDenominatorText = new SearchViewTextItem(ConceptDS.QUANTITY_DENOMINATOR_INDICATOR_TEXT, getConstants().conceptQuantityDenominatorIndicator());
-    // searchDenominatorText.setShowIfCondition(getDenominatorIfFunction());
-    // searchDenominatorText.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
-    //
-    // @Override
-    // public void onFormItemClick(FormItemIconClickEvent event) {
-    // indicatorDenominatorSearchWindow = new IndicatorsSearchWindow(getConstants().indicatorSelection());
-    // indicatorDenominatorSearchWindow.getSearchButton().addClickHandler(new ClickHandler() {
-    //
-    // @Override
-    // public void onClick(ClickEvent event) {
-    // if (uiHandlers instanceof IndicatorUiHandler) {
-    // ((IndicatorUiHandler) uiHandlers).searchIndicatorsQuantityDenominator(indicatorDenominatorSearchWindow.getSearchCriteria());
-    // }
-    // }
-    // });
-    //
-    // indicatorDenominatorSearchWindow.getAceptButton().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
-    //
-    // @Override
-    // public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
-    // IndicatorSummaryDto indicatorSummaryDto = indicatorDenominatorSearchWindow.getSelectedIndicator();
-    // indicatorDenominatorSearchWindow.destroy();
-    // QuantityForm.this.setValue(ConceptDS.QUANTITY_DENOMINATOR_INDICATOR_UUID, indicatorSummaryDto != null ? indicatorSummaryDto.getUuid() : new String());
-    // QuantityForm.this.setValue(ConceptDS.QUANTITY_DENOMINATOR_INDICATOR_TEXT,
-    // indicatorSummaryDto != null ? CommonUtils.getIndicatorText(indicatorSummaryDto.getCode(), CommonUtils.getIndicatorTitle(indicatorSummaryDto)) : new String());
-    // QuantityForm.this.getItem(ConceptDS.QUANTITY_DENOMINATOR_INDICATOR_TEXT).validate();
-    // }
-    // });
-    // }
-    // });
-    // CustomValidator validator = new CustomValidator() {
-    //
-    // @Override
-    // protected boolean condition(Object value) {
-    // return QuantityForm.this.getItem(ConceptDS.QUANTITY_DENOMINATOR_INDICATOR_UUID).validate();
-    // }
-    // };
-    // validator.setErrorMessage(getMessages().validatorErrorIndicatorSelected());
-    // searchDenominatorText.setValidators(validator);
-    //
-    // return searchDenominatorText;
-    // }
-
-    // private SearchViewTextItem getSearchNumeratorTextItem() {
-    // SearchViewTextItem searchNumeratorText = new SearchViewTextItem(ConceptDS.QUANTITY_NUMERATOR_INDICATOR_TEXT, getConstants().conceptQuantityNumeratorIndicator());
-    // searchNumeratorText.setShowIfCondition(getNumeratorIfFunction());
-    // searchNumeratorText.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
-    //
-    // @Override
-    // public void onFormItemClick(FormItemIconClickEvent event) {
-    // indicatorNumeratorSearchWindow = new IndicatorsSearchWindow(getConstants().indicatorSelection());
-    // indicatorNumeratorSearchWindow.getSearchButton().addClickHandler(new ClickHandler() {
-    //
-    // @Override
-    // public void onClick(ClickEvent event) {
-    // if (uiHandlers instanceof IndicatorUiHandler) {
-    // ((IndicatorUiHandler) uiHandlers).searchIndicatorsQuantityNumerator(indicatorNumeratorSearchWindow.getSearchCriteria());
-    // }
-    // }
-    // });
-    //
-    // indicatorNumeratorSearchWindow.getAceptButton().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
-    //
-    // @Override
-    // public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
-    // IndicatorSummaryDto indicatorSummaryDto = indicatorNumeratorSearchWindow.getSelectedIndicator();
-    // indicatorNumeratorSearchWindow.destroy();
-    // QuantityForm.this.setValue(ConceptDS.QUANTITY_NUMERATOR_INDICATOR_UUID, indicatorSummaryDto != null ? indicatorSummaryDto.getUuid() : new String());
-    // QuantityForm.this.setValue(ConceptDS.QUANTITY_NUMERATOR_INDICATOR_TEXT,
-    // indicatorSummaryDto != null ? CommonUtils.getIndicatorText(indicatorSummaryDto.getCode(), CommonUtils.getIndicatorTitle(indicatorSummaryDto)) : new String());
-    // QuantityForm.this.getItem(ConceptDS.QUANTITY_NUMERATOR_INDICATOR_TEXT).validate();
-    // }
-    // });
-    // }
-    // });
-    // CustomValidator validator = new CustomValidator() {
-    //
-    // @Override
-    // protected boolean condition(Object value) {
-    // return QuantityForm.this.getItem(ConceptDS.QUANTITY_NUMERATOR_INDICATOR_UUID).validate();
-    // }
-    // };
-    // validator.setErrorMessage(getMessages().validatorErrorIndicatorSelected());
-    // searchNumeratorText.setValidators(validator);
-    //
-    // return searchNumeratorText;
-    // }
-
-    // private SearchViewTextItem getSearchIndicatorBaseTextItem() {
-    // SearchViewTextItem searchIndicatorBaseText = new SearchViewTextItem(ConceptDS.QUANTITY_BASE_QUANTITY_INDICATOR_TEXT, getConstants().conceptQuantityBaseQuantityConcept());
-    // searchIndicatorBaseText.setRequired(true);
-    // searchIndicatorBaseText.setShowIfCondition(getBaseQuantityIfFunction());
-    // searchIndicatorBaseText.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
-    //
-    // @Override
-    // public void onFormItemClick(FormItemIconClickEvent event) {
-    // indicatorBaseSearchWindow = new IndicatorsSearchWindow(getConstants().indicatorSelection());
-    // indicatorBaseSearchWindow.getSearchButton().addClickHandler(new ClickHandler() {
-    //
-    // @Override
-    // public void onClick(ClickEvent event) {
-    // if (uiHandlers instanceof IndicatorUiHandler) {
-    // ((IndicatorUiHandler) uiHandlers).searchIndicatorsQuantityIndicatorBase(indicatorBaseSearchWindow.getSearchCriteria());
-    // }
-    // }
-    // });
-    //
-    // indicatorBaseSearchWindow.getAceptButton().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
-    //
-    // @Override
-    // public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
-    // IndicatorSummaryDto indicatorDto = indicatorBaseSearchWindow.getSelectedIndicator();
-    // indicatorBaseSearchWindow.destroy();
-    // QuantityForm.this.setValue(ConceptDS.QUANTITY_BASE_QUANTITY_INDICATOR_UUID, indicatorDto != null ? indicatorDto.getUuid() : new String());
-    // QuantityForm.this.setValue(ConceptDS.QUANTITY_BASE_QUANTITY_INDICATOR_TEXT,
-    // indicatorDto != null ? CommonUtils.getIndicatorText(indicatorDto.getCode(), CommonUtils.getIndicatorTitle(indicatorDto)) : new String());
-    // QuantityForm.this.getItem(ConceptDS.QUANTITY_BASE_QUANTITY_INDICATOR_TEXT).validate();
-    // }
-    // });
-    // }
-    // });
-    // CustomValidator validator = new CustomValidator() {
-    //
-    // @Override
-    // protected boolean condition(Object value) {
-    // return QuantityForm.this.getItem(ConceptDS.QUANTITY_BASE_QUANTITY_INDICATOR_UUID).validate();
-    // }
-    // };
-    // validator.setErrorMessage(getMessages().validatorErrorIndicatorSelected());
-    // searchIndicatorBaseText.setValidators(validator);
-    //
-    // return searchIndicatorBaseText;
-    // }
+    
+    public RequiredIfValidator getQuantityIndexBaseTypeRequiredIfValidator() {
+        return new RequiredIfValidator(new RequiredIfFunction() {
+            
+            @Override
+            public boolean execute(FormItem formItem, Object value) {
+                if (QuantityForm.this.getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !QuantityForm.this.getValueAsString(ConceptDS.QUANTITY_TYPE).isEmpty()) {
+                    QuantityTypeEnum type = QuantityTypeEnum.valueOf(QuantityForm.this.getValueAsString(ConceptDS.QUANTITY_TYPE));
+                    if (QuantityUtils.isIndexOrExtension(type)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+    
+    protected CustomValidator getUnitMultiplierValidator() {
+        CustomValidator validator =  new CustomValidator() {
+            
+            @Override
+            protected boolean condition(Object value) {
+                if (value != null) {
+                    Integer intValue = null;
+                    if (value instanceof Integer) {
+                        intValue = (Integer)value;
+                    } else if (value instanceof String) {
+                        try {
+                            intValue = Integer.parseInt(value.toString());
+                        } catch (Exception e) {}
+                    }
+                    if (intValue != null) {
+                        if (intValue > 0) {
+                            double log = Math.log(intValue);
+                            if (Math.pow(10, log) == Double.valueOf(intValue)) {
+                                return true;
+                            }
+                        } 
+                        return false;
+                    }
+                    return false;
+                }
+                return true;
+            }
+        };
+        validator.setErrorMessage(MetamacSrmWeb.getMessages().errorConceptQuantityUnitMultiplier());
+        return validator;
+    }
+    
+    @Override
+    public void setUiHandlers(ConceptUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        searchUnitItem.setUiHandlers(uiHandlers);
+        searchNumeratorItem.setUiHandlers(uiHandlers);
+        searchDenominatorItem.setUiHandlers(uiHandlers);
+        searchBaseItem.setUiHandlers(uiHandlers);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void setRelatedResourceDtoValue(String name, RelatedResourceDto relatedResourceDto) {
+        ((SearchItemItem)getField(name)).setRelatedResource(relatedResourceDto);
+    }
+    
+    private RelatedResourceDto getRelatedResourceDtoValue(String name) {
+        if (getItem(name).isVisible()) {
+            return ((SearchItemItem)getField(name)).getRelatedResourceDto();
+        }
+        return null;
+    }
+    
+    private Integer getValueAsInteger(String fieldName) {
+        return FormItemUtils.getValueAsInteger((CustomIntegerItem)getItem(fieldName));
+    }
 }

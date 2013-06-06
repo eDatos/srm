@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
@@ -37,6 +38,8 @@ import org.siemac.metamac.srm.web.concept.widgets.ConceptMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsListItem;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeWindow;
+import org.siemac.metamac.srm.web.concept.widgets.QuantityForm;
+import org.siemac.metamac.srm.web.concept.widgets.ViewQuantityForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
@@ -98,6 +101,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private StaticFacetForm                              facetForm;
     private GroupDynamicForm                             classDescriptorsForm;
     private GroupDynamicForm                             relationBetweenConceptsForm;
+    private ViewQuantityForm                             quantityForm;
     private GroupDynamicForm                             legalActsForm;
     private GroupDynamicForm                             commentsForm;
     private AnnotationsPanel                             annotationsPanel;
@@ -110,6 +114,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private StaticFacetForm                              facetStaticEditionForm;
     private GroupDynamicForm                             classDescriptorsEditionForm;
     private GroupDynamicForm                             relationBetweenConceptsEditionForm;
+    private QuantityForm                                 quantityEditionForm;
     private GroupDynamicForm                             legalActsEditionForm;
     private GroupDynamicForm                             commentsEditionForm;
     private AnnotationsPanel                             annotationsEditionPanel;
@@ -237,6 +242,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     public void setUiHandlers(ConceptUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         conceptsTreeGrid.setUiHandlers(uiHandlers);
+        quantityForm.setUiHandlers(uiHandlers);
+        quantityEditionForm.setUiHandlers(uiHandlers);
     }
 
     private void createViewForm() {
@@ -296,6 +303,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ConceptsListItem relatedConcepts = new ConceptsListItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts(), false, getListRecordNavigationClickHandler());
         relationBetweenConceptsForm.setFields(extendsConcept, relatedConcepts);
 
+        //Quantity
+        quantityForm = new ViewQuantityForm(getConstants().conceptQuantity());
+        
         // Legal acts
         legalActsForm = new GroupDynamicForm(getConstants().conceptLegalActs());
         ViewMultiLanguageTextItem legalActs = new ViewMultiLanguageTextItem(ConceptDS.LEGAL_ACTS, getConstants().conceptLegalActs());
@@ -315,6 +325,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         mainFormLayout.addViewCanvas(facetForm);
         mainFormLayout.addViewCanvas(classDescriptorsForm);
         mainFormLayout.addViewCanvas(relationBetweenConceptsForm);
+        mainFormLayout.addViewCanvas(quantityForm);
         mainFormLayout.addViewCanvas(legalActsForm);
         mainFormLayout.addViewCanvas(commentsForm);
         mainFormLayout.addViewCanvas(annotationsPanel);
@@ -406,7 +417,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         SearchRelatedResourceLinkItem extendsConcept = createExtendsItem(ConceptDS.EXTENDS, getConstants().conceptExtends());
         ConceptsListItem relatedConcepts = createRelatedConceptsItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts());
         relationBetweenConceptsEditionForm.setFields(extendsConcept, relatedConcepts);
-
+        
+        quantityEditionForm = new QuantityForm(getConstants().conceptQuantity());
+        
         // LEGAL ACTS
 
         legalActsEditionForm = new GroupDynamicForm(getConstants().conceptLegalActs());
@@ -430,6 +443,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         mainFormLayout.addEditionCanvas(facetStaticEditionForm);
         mainFormLayout.addEditionCanvas(classDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(relationBetweenConceptsEditionForm);
+        mainFormLayout.addEditionCanvas(quantityEditionForm);
         mainFormLayout.addEditionCanvas(legalActsEditionForm);
         mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
@@ -552,6 +566,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ((RelatedResourceLinkItem) relationBetweenConceptsForm.getItem(ConceptDS.EXTENDS)).setRelatedResource(conceptDto.getConceptExtends());
         ((ConceptsListItem) relationBetweenConceptsForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
+        //Quantity Form
+        quantityForm.setValue(conceptDto.getQuantity());
+        quantityForm.setVisible(conceptSchemeMetamacDto != null && ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeMetamacDto.getType()));
+        
         // Legal acts
         legalActsForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
 
@@ -612,6 +630,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
+        //Quantity
+        quantityEditionForm.setValue(conceptDto.getQuantity());
+        quantityEditionForm.setVisible(conceptSchemeMetamacDto != null && ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeMetamacDto.getType()));
+        
         // LEGAL ACTS
         legalActsEditionForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
 
@@ -663,6 +685,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         conceptDto.setConceptExtends(((SearchRelatedResourceLinkItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.EXTENDS)).getRelatedResourceDto());
         // Related concepts get in getRelatedConcepts method
 
+        conceptDto.setQuantity(quantityEditionForm.getValue(conceptDto.getQuantity()));
+        
         // Legal acts
         conceptDto.setLegalActs((InternationalStringDto) legalActsEditionForm.getValue(ConceptDS.LEGAL_ACTS));
 
@@ -731,6 +755,60 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         }
     }
 
+    @Override
+    public void setCodelistsForQuantityUnitFilter(List<RelatedResourceDto> codeListDtos, int firstResult, int totalResults) {
+        if (quantityEditionForm != null) {
+            quantityEditionForm.setCodelistsForQuantityUnitFilter(codeListDtos, firstResult, totalResults);
+        }
+    }
+    
+    @Override
+    public void setCodeThatCanBeQuantityUnit(List<RelatedResourceDto> codesDtos, int firstResult, int totalResults) {
+        if (quantityEditionForm != null) {
+            quantityEditionForm.setCodesForQuantityUnit(codesDtos, firstResult, totalResults);
+        }
+    }
+    
+    @Override
+    public void setConceptSchemesForQuantityBaseFilter(List<RelatedResourceDto> conceptSchemesDtos, int firstResult, int totalResults) {
+        if (quantityEditionForm != null) {
+            quantityEditionForm.setConceptSchemesForQuantityBaseFilter(conceptSchemesDtos, firstResult, totalResults);
+        }
+    }
+    
+    @Override
+    public void setConceptThatCanBeQuantityBase(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults) {
+        if (quantityEditionForm != null) {
+            quantityEditionForm.setConceptsForQuantityBase(conceptDtos, firstResult, totalResults);
+        }
+    }
+    @Override
+    public void setConceptSchemesForQuantityNumeratorFilter(List<RelatedResourceDto> conceptSchemesDtos, int firstResult, int totalResults) {
+        if (quantityEditionForm != null) {
+            quantityEditionForm.setConceptSchemesForQuantityNumeratorFilter(conceptSchemesDtos, firstResult, totalResults);
+        }
+    }
+    
+    @Override
+    public void setConceptThatCanBeQuantityNumerator(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults) {
+        if (quantityEditionForm != null) {
+            quantityEditionForm.setConceptsForQuantityNumerator(conceptDtos, firstResult, totalResults);
+        }
+    }
+    @Override
+    public void setConceptSchemesForQuantityDenominatorFilter(List<RelatedResourceDto> conceptSchemesDtos, int firstResult, int totalResults) {
+        if (quantityEditionForm != null) {
+            quantityEditionForm.setConceptSchemesForQuantityDenominatorFilter(conceptSchemesDtos, firstResult, totalResults);
+        }
+    }
+    
+    @Override
+    public void setConceptThatCanBeQuantityDenominator(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults) {
+        if (quantityEditionForm != null) {
+            quantityEditionForm.setConceptsForQuantityDenominator(conceptDtos, firstResult, totalResults);
+        }
+    }
+    
     private List<String> getRelatedConcepts() {
         return ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).getConceptUrns();
     }
@@ -891,7 +969,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private boolean validateEditionForms() {
         return identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && (facetEditionForm.isVisible() ? facetEditionForm.validate(false) : true)
                 && contentDescriptorsEditionForm.validate(false) && classDescriptorsEditionForm.validate(false) && relationBetweenConceptsEditionForm.validate(false)
-                && legalActsEditionForm.validate(false);
+                && (quantityEditionForm.isVisible() ? quantityEditionForm.validate(false) : true) && legalActsEditionForm.validate(false);
     }
 
     private FormItemIfFunction getSdmxRelatedArtefactFormItemIfFunction() {
@@ -1078,6 +1156,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         relationBetweenConceptsForm.markForRedraw();
         relationBetweenConceptsEditionForm.markForRedraw();
+        
+        quantityEditionForm.markForRedraw();
+        quantityForm.markForRedraw();
 
         legalActsForm.markForRedraw();
         legalActsEditionForm.markForRedraw();

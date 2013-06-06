@@ -9,6 +9,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistOpennessLevelVisualisationWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistOrderVisualisationWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
@@ -179,42 +180,57 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     break;
                 }
                 case CODELIST_WITH_QUANTITY_UNIT: {
-                    // TODO
+                    CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
+                    result = srmCoreServiceFacade.findCodelistsByConditionWithCodesCanBeQuantityUnit(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CODE_WITH_QUANTITY_UNIT: {
-                    // TODO
+                    CodeWebCriteria codeWebCriteria = (CodeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getCodeCriteriaRestriction(codeWebCriteria));
+                    result = srmCoreServiceFacade.findCodesCanBeQuantityUnit(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CONCEPT_SCHEME_WITH_QUANTITY_NUMERATOR: {
-                    // TODO
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getRelatedConceptSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_WITH_QUANTITY_NUMERATOR: {
-                    // TODO
+                    ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
+                    result = srmCoreServiceFacade.findConceptsCanBeQuantityNumerator(ServiceContextHolder.getCurrentServiceContext(), conceptWebCriteria.getItemSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_SCHEME_WITH_QUANTITY_DENOMINATOR: {
-                    // TODO
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getRelatedConceptSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_WITH_QUANTITY_DENOMINATOR: {
-
+                    ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
+                    result = srmCoreServiceFacade.findConceptsCanBeQuantityDenominator(ServiceContextHolder.getCurrentServiceContext(), conceptWebCriteria.getItemSchemeUrn(), criteria);
                     break;
-                }// TODO
+                }
                 case CONCEPT_SCHEME_WITH_QUANTITY_BASE_QUANTITY: {
-
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getRelatedConceptSchemeUrn(), criteria);
                     break;
-                }// TODO
+                }
                 case CONCEPT_WITH_QUANTITY_BASE_QUANTITY: {
-                    // TODO
+                    ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
+                    result = srmCoreServiceFacade.findConceptsCanBeQuantityBaseQuantity(ServiceContextHolder.getCurrentServiceContext(), conceptWebCriteria.getItemSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_SCHEME_WITH_CONCEPT_ENUMERATED_REPRESENTATION: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getConceptUrn(),
-                            criteria);
+                    result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getConceptUrn(), criteria);
                     break;
                 }
                 default:

@@ -1,35 +1,40 @@
 package org.siemac.metamac.srm.web.concept.widgets;
 
+import java.util.LinkedHashMap;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getCoreMessages;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityUnitSymbolPosition;
 import org.siemac.metamac.srm.core.concept.dto.QuantityDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.QuantityUnitSymbolPositionEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.shared.QuantityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.concept.enums.QuantityIndexBaseTypeEnum;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
+import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
+import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
 
-import com.gwtplatform.mvp.client.UiHandlers;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.validator.CustomValidator;
 
 public class BaseQuantityForm extends GroupDynamicForm {
 
-    // protected List<QuantityUnitDto> quantityUnitDtos;
-    protected UiHandlers uiHandlers;
+    protected ConceptUiHandlers uiHandlers;
 
     public BaseQuantityForm(String groupTitle) {
         super(groupTitle);
     }
 
-    // public void setQuantityUnits(List<QuantityUnitDto> units) {
-    // sortQuantityUnits(units);
-    // this.quantityUnitDtos = units;
-    // }
-
-    public void setUiHandlers(UiHandlers uiHandlers) {
+    public void setUiHandlers(ConceptUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
+    }
+    
+    public ConceptUiHandlers getUiHandlers() {
+        return uiHandlers;
     }
 
     protected QuantityIndexBaseTypeEnum getIndexBaseTypeEnum(QuantityDto quantityDto) {
@@ -54,13 +59,24 @@ public class BaseQuantityForm extends GroupDynamicForm {
         return "";
     }
 
-    // protected LinkedHashMap<String, String> getQuantityIndexBaseTypeValueMap() {
-    // LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
-    // for (QuantityIndexBaseTypeEnum type : QuantityIndexBaseTypeEnum.values()) {
-    // valueMap.put(type.toString(), getCoreMessages().getString(getCoreMessages().quantityIndexBaseTypeEnum() + type.getName()));
-    // }
-    // return valueMap;
-    // }
+    protected LinkedHashMap<String, String> getQuantityIndexBaseTypeValueMap() {
+        LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
+        for (QuantityIndexBaseTypeEnum type : QuantityIndexBaseTypeEnum.values()) {
+            //FIXME: ENABLED LOCATION when its done
+            if (!QuantityIndexBaseTypeEnum.BASE_LOCATION.equals(type)) {
+                valueMap.put(type.toString(), getCoreMessages().getString(getCoreMessages().quantityIndexBaseTypeEnum() + type.getName()));
+            }
+        }
+        return valueMap;
+    }
+    
+    protected LinkedHashMap<String, String> getQuantityUnitSymbolValueMap() {
+        LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
+        for (QuantityUnitSymbolPositionEnum position : QuantityUnitSymbolPositionEnum.values()) {
+            valueMap.put(position.toString(), getCoreMessages().getString(getCoreMessages().quantityUnitSymbolPositionEnum() + position.getName()));
+        }
+        return valueMap;
+    }
 
     protected FormItemIfFunction getMinIfFunction() {
         return new FormItemIfFunction() {
@@ -102,6 +118,8 @@ public class BaseQuantityForm extends GroupDynamicForm {
         return false;
     }
 
+
+    
     protected FormItemIfFunction getDenominatorIfFunction() {
         return new FormItemIfFunction() {
 
@@ -176,7 +194,10 @@ public class BaseQuantityForm extends GroupDynamicForm {
         if (form.getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !form.getValueAsString(ConceptDS.QUANTITY_TYPE).isEmpty()) {
             QuantityTypeEnum type = QuantityTypeEnum.valueOf(form.getValueAsString(ConceptDS.QUANTITY_TYPE));
             if (QuantityUtils.isRatioOrExtension(type)) {
-                return true;
+                Object isPercentageValue = form.getValue(ConceptDS.QUANTITY_IS_PERCENTAGE);
+                if (isPercentageValue != null && (Boolean)isPercentageValue) {
+                    return true;
+                }
             }
         }
         return false;
@@ -192,6 +213,19 @@ public class BaseQuantityForm extends GroupDynamicForm {
                     if (QuantityUtils.isIndexOrExtension(type)) {
                         return true;
                     }
+                }
+                return false;
+            }
+        };
+    }
+    
+    protected FormItemIfFunction getShowIfAnyQuantityType() {
+        return new FormItemIfFunction() {
+            
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                if (form.getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !form.getValueAsString(ConceptDS.QUANTITY_TYPE).isEmpty()) {
+                    return true;
                 }
                 return false;
             }
@@ -265,6 +299,17 @@ public class BaseQuantityForm extends GroupDynamicForm {
                 }
                 return false;
             }
+        };
+    }
+    
+    protected CustomLinkItemNavigationClickHandler getCustomLinkItemNavigationClickHandler() {
+        return new CustomLinkItemNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
+            }
+
         };
     }
 

@@ -21,4 +21,14 @@ public interface ConceptUiHandlers extends BaseConceptUiHandlers {
 
     void retrieveVariables(int firstResult, int maxResults, String criteria, String variableFamilyUrn);
     void retrieveVariableFamilies(int firstResult, int maxResults, String criteria);
+    
+    //Relations
+    void retrieveCodesForQuantityUnit(int firstResult, int maxResults, String codeCriteria, String schemeUrnAsFilter);
+    void retrieveCodeListsForQuantityUnitFilter(int firstResult, int maxResults, String filterListCriteria);
+    void retrieveConceptsForQuantityDenominator(int firstResult, int maxResults, String conceptCriteria, String schemeUrnAsFilter);
+    void retrieveConceptSchemesForQuantityDenominatorFilter(int firstResult, int maxResults, String filterListCriteria);
+    void retrieveConceptsForQuantityNumerator(int firstResult, int maxResults, String conceptCriteria, String schemeUrnAsFilter);
+    void retrieveConceptSchemesForQuantityNumeratorFilter(int firstResult, int maxResults, String filterListCriteria);
+    void retrieveConceptsForQuantityBase(int firstResult, int maxResults, String conceptCriteria, String schemeUrnAsFilter);
+    void retrieveConceptSchemesForQuantityBaseFilter(int firstResult, int maxResults, String filterListCriteria);
 }
