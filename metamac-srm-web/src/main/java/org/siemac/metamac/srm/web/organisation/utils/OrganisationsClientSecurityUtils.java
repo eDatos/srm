@@ -52,12 +52,25 @@ public class OrganisationsClientSecurityUtils {
         return SharedOrganisationsSecurityUtils.canPublishOrganisationSchemeExternally(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canVersioningOrganisationScheme() {
-        return SharedOrganisationsSecurityUtils.canVersioningOrganisationScheme(MetamacSrmWeb.getCurrentUser());
+    public static boolean canVersioningOrganisationScheme(String urn, RelatedResourceDto maintainer, OrganisationSchemeTypeEnum organisationSchemeType) {
+
+        // Resources from other maintainers can not be version
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainerOrIsAgencySchemeSdmxResource(urn, maintainer)) {
+
+            // Agency schemes, data consumer schemes and data provider schemes can not be version
+
+            if (!org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isDataConsumerScheme(organisationSchemeType)
+                    && !org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isDataProviderScheme(organisationSchemeType)
+                    & !org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isAgencyScheme(organisationSchemeType)) {
+                return SharedOrganisationsSecurityUtils.canVersioningOrganisationScheme(MetamacSrmWeb.getCurrentUser());
+            }
+        }
+
+        return false;
     }
 
     public static boolean canCreateOrganisationSchemeTemporalVersion() {
-        return canVersioningOrganisationScheme();
+        return SharedOrganisationsSecurityUtils.canVersioningOrganisationScheme(MetamacSrmWeb.getCurrentUser());
     }
 
     public static boolean canAnnounceOrganisationScheme() {
@@ -65,17 +78,23 @@ public class OrganisationsClientSecurityUtils {
     }
 
     public static boolean canCancelOrganisationSchemeValidity(OrganisationSchemeMetamacBasicDto organisationSchemeMetamacBasicDto) {
-        return canCancelOrganisationSchemeValidity(organisationSchemeMetamacBasicDto.getMaintainer(), organisationSchemeMetamacBasicDto.getVersionLogic(), organisationSchemeMetamacBasicDto.getType());
+        return canCancelOrganisationSchemeValidity(organisationSchemeMetamacBasicDto.getUrn(), organisationSchemeMetamacBasicDto.getMaintainer(), organisationSchemeMetamacBasicDto.getVersionLogic(),
+                organisationSchemeMetamacBasicDto.getType());
     }
 
-    public static boolean canCancelOrganisationSchemeValidity(RelatedResourceDto maintainer, String versionLogic, OrganisationSchemeTypeEnum organisationSchemeType) {
-        // Agency schemes, data consumer schemes and data provider schemes can not be canceled
+    public static boolean canCancelOrganisationSchemeValidity(String urn, RelatedResourceDto maintainer, String versionLogic, OrganisationSchemeTypeEnum organisationSchemeType) {
+
+        // AGENCY SCHEMES, DATA CONSUMER SCHEMES and DATA PROVIDER SCHEMES can not be canceled
+
         if (org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isDataConsumerScheme(organisationSchemeType)
                 || org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isDataProviderScheme(organisationSchemeType)
                 || org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isAgencyScheme(organisationSchemeType)) {
             return false;
         }
-        return SharedOrganisationsSecurityUtils.canEndOrganisationSchemeValidity(MetamacSrmWeb.getCurrentUser()) && CommonUtils.canSdmxMetadataAndStructureBeModified(maintainer, versionLogic);
+
+        // ORGANISATION UNIT SCHEMES
+
+        return SharedOrganisationsSecurityUtils.canEndOrganisationSchemeValidity(MetamacSrmWeb.getCurrentUser()) && CommonUtils.canSdmxMetadataAndStructureBeModified(urn, maintainer, versionLogic);
     }
 
     public static boolean canCreateCategorisationFromOrganisationScheme(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type) {
@@ -96,13 +115,13 @@ public class OrganisationsClientSecurityUtils {
 
     public static boolean canCopyOrganisationScheme(RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
-        return SharedOrganisationsSecurityUtils.canCopyOrganisationScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultOrRootMaintainer(maintainer);
+        return SharedOrganisationsSecurityUtils.canCopyOrganisationScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
     }
 
     // ORGANISATIONS
 
     public static boolean canCreateOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(organisationSchemeMetamacDto.getMaintainer())) {
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainerOrIsAgencySchemeSdmxResource(organisationSchemeMetamacDto)) {
             return false;
 
         } else if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(organisationSchemeMetamacDto.getUrn())
@@ -128,7 +147,7 @@ public class OrganisationsClientSecurityUtils {
     }
 
     public static boolean canDeleteOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, Boolean hasOrganisationBeenPublished) {
-        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(organisationSchemeMetamacDto.getMaintainer())) {
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainerOrIsAgencySchemeSdmxResource(organisationSchemeMetamacDto)) {
             return false;
         }
 

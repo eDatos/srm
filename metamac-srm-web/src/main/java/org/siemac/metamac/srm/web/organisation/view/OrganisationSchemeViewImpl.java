@@ -828,7 +828,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     }
 
     private void publishOrganisationSchemeInternally() {
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(organisationSchemeDto.getMaintainer()) || CommonUtils.isAgencyScheme(organisationSchemeDto)
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainerOrIsAgencySchemeSdmxResource(organisationSchemeDto) || CommonUtils.isAgencyScheme(organisationSchemeDto)
                 || CommonUtils.isDataProviderScheme(organisationSchemeDto) || CommonUtils.isDataConsumenScheme(organisationSchemeDto)) {
             getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus(), null);
         } else {

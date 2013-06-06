@@ -4,7 +4,6 @@ import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
-import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -86,7 +85,7 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCancelValidityButton() {
-        if (OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity(maintainer, versionLogic, organisationSchemeType)) {
+        if (OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity(urn, maintainer, versionLogic, organisationSchemeType)) {
             cancelValidity.show();
         }
     }
@@ -120,15 +119,6 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
     // }
 
     private boolean canVersionOrganisationScheme() {
-        // Resources from other maintainers can not be version
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(maintainer)) {
-            // Agency schemes, data consumer schemes and data provider schemes can not be version
-            if (!CommonUtils.isDataConsumerScheme(organisationSchemeType) && !CommonUtils.isDataProviderScheme(organisationSchemeType) & !CommonUtils.isAgencyScheme(organisationSchemeType)) {
-                if (OrganisationsClientSecurityUtils.canVersioningOrganisationScheme()) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return OrganisationsClientSecurityUtils.canVersioningOrganisationScheme(urn, maintainer, organisationSchemeType);
     }
 }
