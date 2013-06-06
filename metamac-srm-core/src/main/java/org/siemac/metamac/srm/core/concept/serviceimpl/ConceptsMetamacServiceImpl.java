@@ -286,28 +286,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
         conditions.add(secondPart);
 
-        // // Add restrictions to be extended
-        // // concept scheme must be MEASURE
-        // ConditionalCriteria measureCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
-        // //
-        // .withProperty(ConceptSchemeVersionMetamacProperties.type()).eq(ConceptSchemeTypeEnum.MEASURE)
-        // //
-        // .and()
-        // //
-        // .lbrace().withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation()).isNull()
-        // //
-        // .or()
-        // //
-        // .lbrace()
-        // //
-        // .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation()).isNotNull()//
-        // .and()//
-        // .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation().urn())//
-        // .eq(conceptSchemeRelatedOperationUrn)//
-        // .rbrace() //
-        // .rbrace()//
-        // .buildSingle();
-
         // concept scheme externally published
         ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
                 .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
@@ -317,6 +295,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return pagedResultConceptSchemeVersionToMetamac(conceptsPagedResult);
 
     }
+
     @Override
     public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ServiceContext ctx, String conceptSchemeUrn,
             List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
