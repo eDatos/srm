@@ -327,6 +327,19 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         } else {
             // Add items is not supported in temporal version for another types.
+
+            // Add Categorisations
+            boolean thereAreNewCategorisations = false;
+            thereAreNewCategorisations = CategorisationsUtils.addCategorisationsTemporalToItemScheme(organisationSchemeTemporalVersion, organisationSchemeVersion);
+            if (thereAreNewCategorisations) {
+                // ===============================================================
+                // DANGEROUS CODE: In spite of to remove item from temporal scheme and then associate to another scheme, hibernate delete this item when delete item scheme. For this, we need to clear
+                // the
+                // context to avoid delete the temporary scheme with the previous temporary item when delete the temporary item scheme.
+                entityManager.flush();
+                entityManager.clear();
+                // ===============================================================
+            }
         }
 
         // Delete temporal version

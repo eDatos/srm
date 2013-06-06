@@ -520,6 +520,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Delete temporal version
         deleteCodelist(ctx, codelistTemporalVersion, Boolean.FALSE);
 
+        codelistVersion = retrieveCodelistByCodeUrn(ctx, codelistVersion.getMaintainableArtefact().getUrn());
         return codelistVersion;
     }
 

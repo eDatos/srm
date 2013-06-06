@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -29,6 +32,7 @@ import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
+import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisationRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -161,6 +165,9 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
     @Autowired
     private ExternalItemRepository                  externalItemRepository;
+
+    @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
+    protected EntityManager                         entityManager;
 
     public DataStructureDefinitionMetamacServiceImpl() {
     }
@@ -502,9 +509,22 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         dataStructureDefinitionVersion.removeAllDimensionVisualisationInfos();
         dataStructureDefinitionVersion = versioningDimensionVisualisationInfo(ctx, dataStructureTemporalVersion, dataStructureDefinitionVersion);
 
+        // Add Categorisations
+        boolean thereAreNewCategorisations = false;
+        thereAreNewCategorisations = CategorisationsUtils.addCategorisationsTemporalToStructure(dataStructureTemporalVersion, dataStructureDefinitionVersion);
+        if (thereAreNewCategorisations) {
+            // ===============================================================
+            // DANGEROUS CODE: In spite of to remove item from temporal scheme and then associate to another scheme, hibernate delete this item when delete item scheme. For this, we need to clear the
+            // context to avoid delete the temporary scheme with the previous temporary item when delete the temporary item scheme.
+            entityManager.flush();
+            entityManager.clear();
+            // ===============================================================
+        }
+
         // Delete temporal version
         deleteDataStructureDefinition(ctx, dataStructureTemporalVersion.getMaintainableArtefact().getUrn());
 
+        dataStructureDefinitionVersion = retrieveDataStructureDefinitionByUrn(ctx, dataStructureDefinitionVersion.getMaintainableArtefact().getUrn());
         return dataStructureDefinitionVersion;
     }
 
