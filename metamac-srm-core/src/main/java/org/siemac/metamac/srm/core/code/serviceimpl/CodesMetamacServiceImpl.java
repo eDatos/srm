@@ -43,6 +43,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
+import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
@@ -525,16 +526,28 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
-        // Validation
-        CodesMetamacInvocationValidator.checkEndValidity(urn, null);
+    public CodelistVersionMetamac startCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
 
-        // Retrieve version in specific procStatus
-        CodelistVersionMetamac codelistVersion = getCodelistVersionMetamacRepository().retrieveCodelistVersionByProcStatus(urn, new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
+        // Validation
+        CategoriesMetamacInvocationValidator.checkStartValidity(urn, null);
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, urn);
+        srmValidation.checkStartValidity(ctx, codelistVersion.getMaintainableArtefact(), codelistVersion.getLifeCycleMetadata());
+
+        // Start validity
+        codelistVersion = (CodelistVersionMetamac) codesService.startCodelistValidity(ctx, urn, null);
+        return codelistVersion;
+    }
+    
+    @Override
+    public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        CategoriesMetamacInvocationValidator.checkEndValidity(urn, null);
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, urn);
+        srmValidation.checkEndValidity(ctx, codelistVersion.getMaintainableArtefact(), codelistVersion.getLifeCycleMetadata());
 
         // End validity
         codelistVersion = (CodelistVersionMetamac) codesService.endCodelistValidity(ctx, urn, null);
-
         return codelistVersion;
     }
 

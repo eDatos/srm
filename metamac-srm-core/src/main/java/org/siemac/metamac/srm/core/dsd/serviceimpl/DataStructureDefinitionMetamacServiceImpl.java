@@ -559,17 +559,28 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     }
 
     @Override
+    public DataStructureDefinitionVersionMetamac startDataStructureDefinitionValidity(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        DsdsMetamacInvocationValidator.checkStartValidity(urn, null);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = retrieveDataStructureDefinitionVersionByUrn(urn);
+        srmValidation.checkStartValidity(ctx, dataStructureDefinitionVersionMetamac.getMaintainableArtefact(), dataStructureDefinitionVersionMetamac.getLifeCycleMetadata());
+
+        // End validity
+        dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.startDataStructureDefinitionValidity(ctx, urn, null);
+        return dataStructureDefinitionVersionMetamac;
+    }
+
+    @Override
     public DataStructureDefinitionVersionMetamac endDataStructureDefinitionValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
         DsdsMetamacInvocationValidator.checkEndValidity(urn, null);
-
-        // Retrieve version in specific procStatus
-        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = retrieveDataStructureDefinitionVersionByProcStatus(ctx, urn, ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = retrieveDataStructureDefinitionVersionByUrn(urn);
+        srmValidation.checkEndValidity(ctx, dataStructureDefinitionVersionMetamac.getMaintainableArtefact(), dataStructureDefinitionVersionMetamac.getLifeCycleMetadata());
 
         // End validity
         dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.endDataStructureDefinitionValidity(ctx, urn, null);
-
         return dataStructureDefinitionVersionMetamac;
     }
 

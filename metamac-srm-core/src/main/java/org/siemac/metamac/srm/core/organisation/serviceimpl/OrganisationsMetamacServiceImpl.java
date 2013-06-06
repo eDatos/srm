@@ -22,6 +22,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
+import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
@@ -350,18 +351,28 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     }
 
     @Override
+    public OrganisationSchemeVersionMetamac startOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        CategoriesMetamacInvocationValidator.checkStartValidity(urn, null);
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, urn);
+        srmValidation.checkStartValidity(ctx, organisationSchemeVersion.getMaintainableArtefact(), organisationSchemeVersion.getLifeCycleMetadata());
+
+        // Start validity
+        organisationSchemeVersion = (OrganisationSchemeVersionMetamac) organisationsService.startOrganisationSchemeValidity(ctx, urn, null);
+        return organisationSchemeVersion;
+    }
+
+    @Override
     public OrganisationSchemeVersionMetamac endOrganisationSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        OrganisationsMetamacInvocationValidator.checkEndValidity(urn, null);
-
-        // Retrieve version in specific procStatus
-        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamacRepository().retrieveOrganisationSchemeVersionByProcStatus(urn,
-                new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
+        CategoriesMetamacInvocationValidator.checkEndValidity(urn, null);
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, urn);
+        srmValidation.checkEndValidity(ctx, organisationSchemeVersion.getMaintainableArtefact(), organisationSchemeVersion.getLifeCycleMetadata());
 
         // End validity
         organisationSchemeVersion = (OrganisationSchemeVersionMetamac) organisationsService.endOrganisationSchemeValidity(ctx, urn, null);
-
         return organisationSchemeVersion;
     }
 

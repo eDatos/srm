@@ -719,6 +719,11 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
             }
         }
     }
+    @Test
+    @Override
+    public void testStartDataStructureDefinitionValidity() throws Exception {
+        // TODO Test dsd
+    }
 
     @Test
     @Override

@@ -19,8 +19,16 @@ import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUt
 
 public class SrmValidationUtils extends SdmxSrmValidationUtils {
 
+    public static void checkArtefactDiffusionValidation(String urn, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
+        checkArtefactProcStatus(lifeCycle, urn, ProcStatusEnum.DIFFUSION_VALIDATION);
+    }
+
     public static void checkArtefactInternallyOrExternallyPublished(String urn, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
         checkArtefactProcStatus(lifeCycle, urn, ProcStatusEnum.INTERNALLY_PUBLISHED, ProcStatusEnum.EXTERNALLY_PUBLISHED);
+    }
+
+    public static void checkArtefactInternallyPublished(String urn, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
+        checkArtefactProcStatus(lifeCycle, urn, ProcStatusEnum.INTERNALLY_PUBLISHED);
     }
 
     public static void checkArtefactExternallyPublished(String urn, SrmLifeCycleMetadata lifeCycle) throws MetamacException {

@@ -4,6 +4,7 @@ import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
@@ -77,6 +78,24 @@ public class SrmValidationImpl implements SrmValidation {
     @Override
     public void checkItemsStructureCanBeModified(ServiceContext ctx, StructureVersion structureVersion) throws MetamacException {
         checkItemsStructureCanBeModified(ctx, structureVersion.getMaintainableArtefact());
+    }
+
+    @Override
+    public void checkStartValidity(ServiceContext ctx, MaintainableArtefact maintainableArtefact, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
+        SrmValidationUtils.checkArtefactInternallyPublished(maintainableArtefact.getUrn(), lifeCycle);
+        checkMaintainerIsDefault(ctx, maintainableArtefact.getMaintainer().getNameableArtefact().getUrn());
+    }
+
+    @Override
+    public void checkEndValidity(ServiceContext ctx, MaintainableArtefact maintainableArtefact, SrmLifeCycleMetadata lifeCycle) throws MetamacException {
+        SrmValidationUtils.checkArtefactExternallyPublished(maintainableArtefact.getUrn(), lifeCycle);
+        checkMaintainerIsDefault(ctx, maintainableArtefact.getMaintainer().getNameableArtefact().getUrn());
+    }
+
+    @Override
+    public void checkModifyCategorisationValidity(ServiceContext ctx, MaintainableArtefact maintainableArtefact) throws MetamacException {
+        checkMaintainerIsDefault(ctx, maintainableArtefact.getMaintainer().getNameableArtefact().getUrn());
+        // any proc status
     }
 
     private boolean isMaintainerIsDefault(ServiceContext ctx, String maintainerUrn) throws MetamacException {

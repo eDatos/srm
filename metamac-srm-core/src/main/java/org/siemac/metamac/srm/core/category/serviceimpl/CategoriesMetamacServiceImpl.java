@@ -323,18 +323,28 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     }
 
     @Override
+    public CategorySchemeVersionMetamac startCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        CategoriesMetamacInvocationValidator.checkStartValidity(urn, null);
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, urn);
+        srmValidation.checkStartValidity(ctx, categorySchemeVersion.getMaintainableArtefact(), categorySchemeVersion.getLifeCycleMetadata());
+
+        // Start validity
+        categorySchemeVersion = (CategorySchemeVersionMetamac) categoriesService.startCategorySchemeValidity(ctx, urn, null);
+        return categorySchemeVersion;
+    }
+
+    @Override
     public CategorySchemeVersionMetamac endCategorySchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
         CategoriesMetamacInvocationValidator.checkEndValidity(urn, null);
-
-        // Retrieve version in specific procStatus
-        CategorySchemeVersionMetamac categorySchemeVersion = getCategorySchemeVersionMetamacRepository().retrieveCategorySchemeVersionByProcStatus(urn,
-                new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, urn);
+        srmValidation.checkEndValidity(ctx, categorySchemeVersion.getMaintainableArtefact(), categorySchemeVersion.getLifeCycleMetadata());
 
         // End validity
         categorySchemeVersion = (CategorySchemeVersionMetamac) categoriesService.endCategorySchemeValidity(ctx, urn, null);
-
         return categorySchemeVersion;
     }
 
@@ -514,11 +524,21 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Override
     public Categorisation startCategorisationValidity(ServiceContext ctx, String urn, DateTime validFrom) throws MetamacException {
+        // Validation
+        CategoriesMetamacInvocationValidator.checkEndValidity(urn, null);
+        Categorisation categorisation = retrieveCategorisationByUrn(ctx, urn);
+        srmValidation.checkModifyCategorisationValidity(ctx, categorisation.getMaintainableArtefact());
+
         return categoriesService.startCategorisationValidity(ctx, urn, validFrom);
     }
 
     @Override
     public Categorisation endCategorisationValidity(ServiceContext ctx, String urn, DateTime validTo) throws MetamacException {
+        // Validation
+        CategoriesMetamacInvocationValidator.checkEndValidity(urn, null);
+        Categorisation categorisation = retrieveCategorisationByUrn(ctx, urn);
+        srmValidation.checkModifyCategorisationValidity(ctx, categorisation.getMaintainableArtefact());
+
         return categoriesService.endCategorisationValidity(ctx, urn, validTo);
     }
 

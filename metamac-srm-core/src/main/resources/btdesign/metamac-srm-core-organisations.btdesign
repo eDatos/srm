@@ -55,6 +55,8 @@ Application OrganisationsMetamac {
     		TaskInfo createVersionFromTemporalOrganisationScheme(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
     		"Merge temporal version into published version"
     		@OrganisationSchemeVersionMetamac mergeTemporalVersion(@OrganisationSchemeVersionMetamac organisationSchemeTemporalVersion) throws MetamacException;
+    		"Starts the organisation scheme validity"
+    		@OrganisationSchemeVersionMetamac startOrganisationSchemeValidity(String urn) throws MetamacException;
     		"Ends the organisation scheme validity"
     		@OrganisationSchemeVersionMetamac endOrganisationSchemeValidity(String urn) throws MetamacException;
     		"Retrieves organisations scheme by organisation urn"

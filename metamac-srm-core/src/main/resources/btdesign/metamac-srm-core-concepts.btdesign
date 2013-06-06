@@ -78,6 +78,8 @@ Application ConceptsMetamac {
     		versioningRelatedConcepts(@ConceptSchemeVersionMetamac conceptSchemeVersionToCopy, @ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException;
     		"Versioning quantity. Note: other relations are copied in copy callback"
     		versioningConceptsQuantity(@ConceptSchemeVersionMetamac conceptSchemeVersionToCopy, @ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException;
+    		"Starts the concept scheme validity"
+    		@ConceptSchemeVersionMetamac startConceptSchemeValidity(String urn) throws MetamacException;
     		"Ends the concept scheme validity"
     		@ConceptSchemeVersionMetamac endConceptSchemeValidity(String urn) throws MetamacException;
     		"Retrieves concepts scheme by concept urn"

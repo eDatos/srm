@@ -202,12 +202,12 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return conceptsService.startConceptSchemeValidity(ctx, getConceptSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
+            return conceptsMetamacService.startConceptSchemeValidity(ctx, getConceptSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
         }
 
         @Override
         public Object endSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return conceptsService.endConceptSchemeValidity(ctx, getConceptSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
+            return conceptsMetamacService.endConceptSchemeValidity(ctx, getConceptSchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
         }
 
         @Override

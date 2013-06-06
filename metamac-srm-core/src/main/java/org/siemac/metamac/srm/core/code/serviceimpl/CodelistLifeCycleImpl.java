@@ -175,12 +175,12 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return codesService.startCodelistValidity(ctx, getCodelistVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
+            return codesMetamacService.startCodelistValidity(ctx, getCodelistVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
         }
 
         @Override
         public Object endSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return codesService.endCodelistValidity(ctx, getCodelistVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
+            return codesMetamacService.endCodelistValidity(ctx, getCodelistVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
         }
 
         @Override

@@ -1717,6 +1717,33 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
     @Override
     @Test
+    public void testStartOrganisationSchemeValidity() throws Exception {
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.startOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V2);
+
+        assertNotNull(organisationSchemeVersion);
+        assertNotNull(organisationSchemeVersion.getMaintainableArtefact().getValidFrom());
+        assertNull(organisationSchemeVersion.getMaintainableArtefact().getValidTo());
+    }
+
+    @Test
+    public void testStartOrganisationSchemeValidityErrorWrongProcStatus() throws Exception {
+        String[] urns = {ORGANISATION_SCHEME_6_V1};
+        for (String urn : urns) {
+            try {
+                organisationsService.startOrganisationSchemeValidity(getServiceContextAdministrador(), urn);
+                fail("wrong procStatus");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            }
+        }
+    }
+
+    @Override
+    @Test
     public void testEndOrganisationSchemeValidity() throws Exception {
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.endOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V1);
 

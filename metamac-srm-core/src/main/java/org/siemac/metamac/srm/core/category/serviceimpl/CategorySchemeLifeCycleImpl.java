@@ -151,12 +151,12 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return categoriesService.startCategorySchemeValidity(ctx, getCategorySchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
+            return categoriesMetamacService.startCategorySchemeValidity(ctx, getCategorySchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
         }
 
         @Override
         public Object endSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return categoriesService.endCategorySchemeValidity(ctx, getCategorySchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), null);
+            return categoriesMetamacService.endCategorySchemeValidity(ctx, getCategorySchemeVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
         }
 
         @Override

@@ -57,6 +57,8 @@ Application CategoriesMetamac {
     		TaskInfo createVersionFromTemporalCategoryScheme(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
     		"Merge temporal version into published version"
     		@CategorySchemeVersionMetamac mergeTemporalVersion(@CategorySchemeVersionMetamac categorySchemeTemporalVersion) throws MetamacException;
+    		"Starts the category scheme validity"
+    		@CategorySchemeVersionMetamac startCategorySchemeValidity(String urn) throws MetamacException;
     		"Ends the category scheme validity"
     		@CategorySchemeVersionMetamac endCategorySchemeValidity(String urn) throws MetamacException;
     		"Retrieves categories scheme by category urn"

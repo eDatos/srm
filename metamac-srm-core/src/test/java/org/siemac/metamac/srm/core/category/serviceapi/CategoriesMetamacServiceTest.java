@@ -1473,10 +1473,35 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
     @Override
     @Test
+    public void testStartCategorySchemeValidity() throws Exception {
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.startCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_6_V1);
+
+        assertNotNull(categorySchemeVersion.getMaintainableArtefact().getValidFrom());
+        assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
+    }
+
+    @Test
+    public void testStartCategorySchemeValidityErrorWrongProcStatus() throws Exception {
+        String[] urns = {CATEGORY_SCHEME_6_V1};
+        for (String urn : urns) {
+            try {
+                categoriesService.startCategorySchemeValidity(getServiceContextAdministrador(), urn);
+                fail("wrong procStatus");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            }
+        }
+    }
+
+    @Override
+    @Test
     public void testEndCategorySchemeValidity() throws Exception {
         CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.endCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V1);
 
-        assertNotNull(categorySchemeVersion);
         assertNotNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());
     }
 

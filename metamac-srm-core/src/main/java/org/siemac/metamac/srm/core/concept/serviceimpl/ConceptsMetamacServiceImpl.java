@@ -27,6 +27,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
+import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
@@ -558,18 +559,28 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
+    public ConceptSchemeVersionMetamac startConceptSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
+
+        // Validation
+        CategoriesMetamacInvocationValidator.checkStartValidity(urn, null);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, urn);
+        srmValidation.checkStartValidity(ctx, conceptSchemeVersion.getMaintainableArtefact(), conceptSchemeVersion.getLifeCycleMetadata());
+
+        // Start validity
+        conceptSchemeVersion = (ConceptSchemeVersionMetamac) conceptsService.startConceptSchemeValidity(ctx, urn, null);
+        return conceptSchemeVersion;
+    }
+
+    @Override
     public ConceptSchemeVersionMetamac endConceptSchemeValidity(ServiceContext ctx, String urn) throws MetamacException {
 
         // Validation
-        ConceptsMetamacInvocationValidator.checkEndValidity(urn, null);
-
-        // Retrieve version in specific procStatus
-        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamacRepository().retrieveConceptSchemeVersionByProcStatus(urn,
-                new ProcStatusEnum[]{ProcStatusEnum.EXTERNALLY_PUBLISHED});
+        CategoriesMetamacInvocationValidator.checkEndValidity(urn, null);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, urn);
+        srmValidation.checkEndValidity(ctx, conceptSchemeVersion.getMaintainableArtefact(), conceptSchemeVersion.getLifeCycleMetadata());
 
         // End validity
         conceptSchemeVersion = (ConceptSchemeVersionMetamac) conceptsService.endConceptSchemeValidity(ctx, urn, null);
-
         return conceptSchemeVersion;
     }
 

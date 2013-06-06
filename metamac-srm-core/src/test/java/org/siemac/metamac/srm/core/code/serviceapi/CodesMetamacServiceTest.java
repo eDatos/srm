@@ -2011,6 +2011,33 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     @Test
+    public void testStartCodelistValidity() throws Exception {
+        CodelistVersionMetamac codelistVersion = codesService.startCodelistValidity(getServiceContextAdministrador(), CODELIST_7_V2);
+
+        assertNotNull(codelistVersion);
+        assertNotNull(codelistVersion.getMaintainableArtefact().getValidFrom());
+        assertNull(codelistVersion.getMaintainableArtefact().getValidTo());
+    }
+
+    @Test
+    public void testStartCodelistValidityErrorWrongProcStatus() throws Exception {
+        String[] urns = {CODELIST_6_V1};
+        for (String urn : urns) {
+            try {
+                codesService.startCodelistValidity(getServiceContextAdministrador(), urn);
+                fail("wrong procStatus");
+            } catch (MetamacException e) {
+                assertEquals(1, e.getExceptionItems().size());
+                assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            }
+        }
+    }
+
+    @Override
+    @Test
     public void testEndCodelistValidity() throws Exception {
         CodelistVersionMetamac codelistVersion = codesService.endCodelistValidity(getServiceContextAdministrador(), CODELIST_7_V1);
 
