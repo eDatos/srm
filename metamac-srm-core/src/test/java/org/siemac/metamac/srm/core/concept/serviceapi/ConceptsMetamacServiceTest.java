@@ -2446,23 +2446,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         // Create
         ConceptMetamac conceptCreated = conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
-        String urn = conceptCreated.getNameableArtefact().getUrn();
         assertEquals(ctx.getUserId(), conceptCreated.getCreatedBy());
         assertEquals(ctx.getUserId(), conceptCreated.getLastUpdatedBy());
 
-        // // Validate (only metadata in SRM Metamac; the others are checked in sdmx project)
-        // ConceptMetamac conceptRetrieved = conceptsService.retrieveConceptByUrn(ctx, urn);
-        // ConceptsMetamacAsserts.assertEqualsConcept(concept, conceptRetrieved);
-        //
-        // // Validate new structure
-        // ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
-        // assertEquals(5, conceptSchemeVersion.getItemsFirstLevel().size());
-        // assertEquals(9, conceptSchemeVersion.getItems().size());
-        // assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
-        // assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
-        // assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
-        // assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
-        // assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), conceptRetrieved.getNameableArtefact().getUrn());
+        // Validate
+        ConceptMetamac conceptRetrieved = conceptsService.retrieveConceptByUrn(ctx, conceptCreated.getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_15_V1, conceptRetrieved.getCoreRepresentation().getEnumerationConceptScheme().getMaintainableArtefact().getUrn());
     }
 
     @Test
