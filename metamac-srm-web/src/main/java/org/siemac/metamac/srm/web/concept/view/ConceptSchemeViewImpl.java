@@ -811,7 +811,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     }
 
     private void publishConceptSchemeInternally() {
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(conceptSchemeDto.getMaintainer())) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer())) {
             getUiHandlers().publishInternally(conceptSchemeDto, null);
         } else {
             // If the concept scheme is imported, ask the user if this resource should be the latest one.

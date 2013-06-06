@@ -90,7 +90,7 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCancelValidityButton() {
-        if (ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(type, relatedOperationCode, maintainer, versionLogic)) {
+        if (ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(urn, type, relatedOperationCode, maintainer, versionLogic)) {
             cancelValidity.show();
         }
     }
@@ -125,6 +125,6 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     private boolean canConceptSchemeBeVersion() {
         // Resources from other maintainers can not be version
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(maintainer) && ConceptsClientSecurityUtils.canVersioningConceptScheme(type, relatedOperationCode);
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && ConceptsClientSecurityUtils.canVersioningConceptScheme(type, relatedOperationCode);
     }
 }

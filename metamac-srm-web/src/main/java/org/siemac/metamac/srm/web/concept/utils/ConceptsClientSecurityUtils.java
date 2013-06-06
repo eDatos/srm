@@ -66,13 +66,14 @@ public class ConceptsClientSecurityUtils {
     }
 
     public static boolean canCancelConceptSchemeValidity(ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto) {
-        return canCancelConceptSchemeValidity(conceptSchemeMetamacDto.getType(), org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto),
-                conceptSchemeMetamacDto.getMaintainer(), conceptSchemeMetamacDto.getVersionLogic());
+        return canCancelConceptSchemeValidity(conceptSchemeMetamacDto.getUrn(), conceptSchemeMetamacDto.getType(),
+                org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto), conceptSchemeMetamacDto.getMaintainer(),
+                conceptSchemeMetamacDto.getVersionLogic());
     }
 
-    public static boolean canCancelConceptSchemeValidity(ConceptSchemeTypeEnum type, String relatedOperationCode, RelatedResourceDto maintainer, String versionLogic) {
+    public static boolean canCancelConceptSchemeValidity(String urn, ConceptSchemeTypeEnum type, String relatedOperationCode, RelatedResourceDto maintainer, String versionLogic) {
         return SharedConceptsSecurityUtils.canEndConceptSchemeValidity(MetamacSrmWeb.getCurrentUser(), type, relatedOperationCode)
-                && CommonUtils.canSdmxMetadataAndStructureBeModified(maintainer, versionLogic);
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(urn, maintainer, versionLogic);
     }
 
     public static boolean canCreateCategorisation(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
@@ -95,7 +96,7 @@ public class ConceptsClientSecurityUtils {
 
     public static boolean canCopyConceptScheme(ConceptSchemeTypeEnum type, String operationCode, RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
-        return SharedConceptsSecurityUtils.canCopyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode) && !CommonUtils.isDefaultOrRootMaintainer(maintainer);
+        return SharedConceptsSecurityUtils.canCopyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode) && !CommonUtils.isDefaultMaintainer(maintainer);
     }
 
     // Concepts
