@@ -166,9 +166,9 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrnExpected);
         assertEquals(3, conceptSchemeVersion.getItems().size());
-        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), urnExpectedConcept1);
-        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), urnExpectedConcept2);
-        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), urnExpectedConcept3);
+        assertListContainsItemMetamacBasicDto(conceptSchemeVersion.getItems(), urnExpectedConcept1);
+        assertListContainsItemMetamacBasicDto(conceptSchemeVersion.getItems(), urnExpectedConcept2);
+        assertListContainsItemMetamacBasicDto(conceptSchemeVersion.getItems(), urnExpectedConcept3);
 
         // Validate quantity
         {

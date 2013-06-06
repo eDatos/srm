@@ -12,6 +12,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
+import org.siemac.metamac.srm.core.base.dto.ItemMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
@@ -511,6 +512,18 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
             }
         }
         fail("code not found");
+        return null;
+    }
+
+    @SuppressWarnings("rawtypes")
+    protected ItemMetamacBasicDto assertListContainsItemMetamacBasicDto(List items, String urn) {
+        for (Iterator iterator = items.iterator(); iterator.hasNext();) {
+            ItemMetamacBasicDto item = (ItemMetamacBasicDto) iterator.next();
+            if (item.getUrn().equals(urn)) {
+                return item;
+            }
+        }
+        fail("List does not contain item with urn " + urn);
         return null;
     }
 

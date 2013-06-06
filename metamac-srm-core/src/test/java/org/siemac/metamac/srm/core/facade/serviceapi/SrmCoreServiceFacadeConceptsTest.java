@@ -1775,9 +1775,9 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
             // Validate
             assertEquals(3, relatedConcepts.size());
-            assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
-            assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
-            assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_3);
+            assertListContainsItemMetamacBasicDto(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
+            assertListContainsItemMetamacBasicDto(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
+            assertListContainsItemMetamacBasicDto(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_3);
         }
         {
             // Retrieve
@@ -1785,7 +1785,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
             // Validate
             assertEquals(1, relatedConcepts.size());
-            assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_1);
+            assertListContainsItemMetamacBasicDto(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_1);
         }
         {
             // Retrieve
@@ -1793,8 +1793,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
             // Validate
             assertEquals(2, relatedConcepts.size());
-            assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_1);
-            assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_3);
+            assertListContainsItemMetamacBasicDto(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_1);
+            assertListContainsItemMetamacBasicDto(relatedConcepts, CONCEPT_SCHEME_1_V2_CONCEPT_3);
         }
     }
 
@@ -1806,8 +1806,8 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         // Validate
         assertEquals(2, relatedConcepts.size());
-        assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_13_V1_CONCEPT_1);
-        assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_13_V1_CONCEPT_3);
+        assertListContainsItemMetamacBasicDto(relatedConcepts, CONCEPT_SCHEME_13_V1_CONCEPT_1);
+        assertListContainsItemMetamacBasicDto(relatedConcepts, CONCEPT_SCHEME_13_V1_CONCEPT_3);
     }
 
     @Test

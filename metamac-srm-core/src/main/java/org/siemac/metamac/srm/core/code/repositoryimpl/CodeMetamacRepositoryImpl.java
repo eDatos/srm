@@ -521,7 +521,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             Object[] resultOrderArray = (Object[]) resultOrder;
             Long codeId = getLong(resultOrderArray[0]);
             ItemResult code = mapCodeByItemId.get(codeId);
-            Long order = getLong(resultOrderArray[1]);
+            Object order = resultOrderArray[1];
             if (order != null) {
                 ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).setOrder(order.toString());
             }
