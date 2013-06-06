@@ -82,6 +82,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.DataStructureDefinitionsCopyCallback;
+import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.DataStructureInvocationValidator;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
@@ -221,7 +222,12 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
     @Override
     public DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        return (DataStructureDefinitionVersionMetamac) dataStructureDefinitionService.retrieveDataStructureDefinitionByUrn(ctx, urn);
+        // Validation
+        DataStructureInvocationValidator.checkRetrieveByUrn(urn);
+
+        // Retrieve
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = retrieveDataStructureDefinitionVersionByUrn(urn);
+        return dataStructureDefinitionVersion;
     }
 
     @Override
@@ -1207,6 +1213,15 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         return new LeafProperty<ConceptSchemeVersionMetamac>(ConceptSchemeVersionMetamacProperties.items().getName(), ConceptMetamacProperties.sdmxRelatedArtefact().getName(), false,
                 ConceptSchemeVersionMetamac.class);
 
+    }
+
+    private DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByUrn(String urn) throws MetamacException {
+        DataStructureInvocationValidator.checkRetrieveByUrn(urn);
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = getDataStructureDefinitionVersionMetamacRepository().findByUrn(urn);
+        if (dataStructureDefinitionVersion == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
+        }
+        return dataStructureDefinitionVersion;
     }
 
 }

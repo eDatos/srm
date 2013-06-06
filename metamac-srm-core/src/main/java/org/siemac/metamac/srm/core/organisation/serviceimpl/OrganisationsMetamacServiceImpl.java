@@ -55,6 +55,7 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
+import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsInvocationValidator;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 /**
@@ -140,7 +141,12 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Override
     public OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        return (OrganisationSchemeVersionMetamac) organisationsService.retrieveOrganisationSchemeByUrn(ctx, urn);
+        // Validation
+        OrganisationsInvocationValidator.checkRetrieveByUrn(urn);
+
+        // Retrieve
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeVersionByUrn(urn);
+        return organisationSchemeVersion;
     }
 
     @Override
@@ -297,7 +303,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
             // Add Organisations
             Map<String, Item> currentItemMap = SrmServiceUtils.createMapOfItemsByUrn(organisationSchemeVersion.getItems());
-            for (Item itemTemp : new ArrayList<Item>(organisationSchemeTemporalVersion.getItems())) {
+            for (Organisation itemTemp : new ArrayList<Organisation>(organisationSchemeTemporalVersion.getItems())) {
                 String urnFromTemporal = GeneratorUrnUtils.makeUrnFromTemporal(itemTemp.getNameableArtefact().getUrn());
                 if (!currentItemMap.containsKey(urnFromTemporal)) {
                     // Add
@@ -449,7 +455,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     }
 
     @Override
-    public List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) {
+    public List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         getOrganisationSchemeVersionMetamacRepository().checkOrganisationSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
         getOrganisationMetamacRepository().checkOrganisationTranslations(itemSchemeVersionId, locale, exceptionItems);
@@ -584,6 +590,15 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         } else {
             throw new IllegalArgumentException("Unexpected organisation type: " + organisationSchemeVersion.getOrganisationSchemeType());
         }
+    }
+
+    private OrganisationSchemeVersionMetamac retrieveOrganisationSchemeVersionByUrn(String urn) throws MetamacException {
+        OrganisationsInvocationValidator.checkRetrieveByUrn(urn);
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamacRepository().findByUrn(urn);
+        if (organisationSchemeVersion == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
+        }
+        return organisationSchemeVersion;
     }
 
 }

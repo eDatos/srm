@@ -58,7 +58,7 @@ public class ConceptsCopyCallbackMetamacImpl extends ConceptsCopyCallbackImpl {
     }
 
     @Override
-    public List<ItemResult> findItemsEfficiently(Long itemSchemeId) {
+    public List<ItemResult> findItemsEfficiently(Long itemSchemeId) throws MetamacException {
         return conceptMetamacRepository.findConceptsByConceptSchemeUnordered(itemSchemeId, SrmServiceUtils.getItemResultSelection(getCopyOperationType()));
     }
 

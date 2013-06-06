@@ -72,21 +72,20 @@ public class MockitoVerify {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindItems(String agencyID, String resourceID, String version, String itemID, String query, String orderBy,
-            Class entityClass, RestOperationEnum restOperation) {
+            Class entityClass, MaintainableArtefactProperty itemSchemeVersionMaintainableArtefactProperty, RestOperationEnum restOperation) {
         List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
         if (RestOperationEnum.FIND.equals(restOperation)) {
             expected.addAll(buildFindItemsExpectedOrderBy(orderBy, entityClass));
             expected.addAll(buildFindItemsExpectedQuery(query, entityClass));
         }
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).distinctRoot().buildSingle());
-        expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle());
+        expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(itemSchemeVersionMaintainableArtefactProperty.finalLogicClient()).eq(Boolean.TRUE).buildSingle());
         if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
-            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().maintainer().idAsMaintainer()).eq(agencyID)
-                    .buildSingle());
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(itemSchemeVersionMaintainableArtefactProperty.maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
         }
         if (resourceID != null && !RestInternalConstants.WILDCARD.equals(resourceID)) {
-            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().code()).eq(resourceID).or()
-                    .withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().codeFull()).eq(resourceID).rbrace().buildSingle());
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(itemSchemeVersionMaintainableArtefactProperty.code()).eq(resourceID).or()
+                    .withProperty(itemSchemeVersionMaintainableArtefactProperty.codeFull()).eq(resourceID).rbrace().buildSingle());
         }
         if (RestInternalConstants.LATEST.equals(version)) {
             if (OrganisationMetamac.class.equals(entityClass)) {
@@ -94,10 +93,10 @@ public class MockitoVerify {
                         .in(OrganisationTypeEnum.AGENCY, OrganisationTypeEnum.DATA_CONSUMER, OrganisationTypeEnum.DATA_PROVIDER).or()
                         .withProperty(ItemSchemeVersionProperties.maintainableArtefact().latestFinal()).eq(Boolean.TRUE).rbrace().buildSingle());
             } else {
-                expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().latestFinal()).eq(Boolean.TRUE).buildSingle());
+                expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(itemSchemeVersionMaintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).buildSingle());
             }
         } else if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
-            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.itemSchemeVersion().maintainableArtefact().versionLogic()).eq(version).buildSingle());
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(itemSchemeVersionMaintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
         }
         if (itemID != null) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(ItemProperties.nameableArtefact().code()).eq(itemID).or()

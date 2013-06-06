@@ -64,7 +64,7 @@ public class CodesCopyCallbackMetamacImpl extends CodesCopyCallbackImpl {
     }
 
     @Override
-    public List<ItemResult> findItemsEfficiently(Long codelistId) {
+    public List<ItemResult> findItemsEfficiently(Long codelistId) throws MetamacException {
         return codeMetamacRepository.findCodesByCodelistUnordered(codelistId, SrmServiceUtils.getItemResultSelection(getCopyOperationType()));
     }
 

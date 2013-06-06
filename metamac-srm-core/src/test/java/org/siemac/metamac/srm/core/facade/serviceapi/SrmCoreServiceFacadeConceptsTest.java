@@ -1884,13 +1884,4 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         return "dbunit/SrmConceptsTest.xml";
     }
 
-    private void assertListConceptsContainsConcept(List<ConceptMetamacBasicDto> items, String urn) {
-        for (ConceptMetamacBasicDto item : items) {
-            if (item.getUrn().equals(urn)) {
-                return;
-            }
-        }
-        fail("List does not contain item with urn " + urn);
-    }
-
 }

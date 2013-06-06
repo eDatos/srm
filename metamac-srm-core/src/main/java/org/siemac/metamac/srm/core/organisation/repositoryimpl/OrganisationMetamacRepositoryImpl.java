@@ -23,6 +23,7 @@ import org.springframework.stereotype.Repository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationRepository;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -54,7 +55,7 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
     }
 
     @Override
-    public List<ItemResult> findOrganisationsByOrganisationSchemeUnordered(Long itemSchemeVersionId, ItemMetamacResultSelection resultSelection) {
+    public List<ItemResult> findOrganisationsByOrganisationSchemeUnordered(Long itemSchemeVersionId, ItemMetamacResultSelection resultSelection) throws MetamacException {
         // Find items
         List<ItemResult> items = organisationRepository.findOrganisationsByOrganisationSchemeUnordered(itemSchemeVersionId, resultSelection);
         // no extension point
@@ -66,13 +67,13 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
     public List<OrganisationMetamacVisualisationResult> findOrganisationsByOrganisationSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException {
         // Find items. Returns only one row by item. NOTE: this query return null label if locale not exits for a code.
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT i.ID as ITEM_ID, i.CREATED_DATE, i.CREATED_DATE_TZ, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, o.ORGANISATION_TYPE, om.SPECIAL_ORG_HAS_BEEN_PUBLISHED ");
+        sb.append("SELECT i.ID as ITEM_ID, i.CREATED_DATE, i.CREATED_DATE_TZ, a.URN, a.CODE, o.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, o.ORGANISATION_TYPE, om.SPECIAL_ORG_HAS_BEEN_PUBLISHED ");
         sb.append("FROM TB_M_ORGANISATIONS om ");
         sb.append("INNER JOIN TB_ORGANISATIONS o on om.TB_ORGANISATIONS = o.TB_ITEMS_BASE ");
         sb.append("INNER JOIN TB_ITEMS_BASE i on o.TB_ITEMS_BASE = i.ID ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale ");
-        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId");
+        sb.append("WHERE o.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId");
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
         query.setParameter("locale", locale);
@@ -89,7 +90,7 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
         }
 
         // Add description. Execute one independent query to retrieve it is more efficient than do a global query
-        itemRepository.executeQueryFillItemDescription(itemSchemeVersionId, locale, mapItemByItemId);
+        itemRepository.executeQueryFillItemDescription(itemSchemeVersionId, Organisation.class, locale, mapItemByItemId);
 
         // Parent: fill manually with java code
         for (OrganisationMetamacVisualisationResult target : targets) {
@@ -102,7 +103,7 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
     }
 
     @Override
-    public void checkOrganisationTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+    public void checkOrganisationTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException {
         organisationRepository.checkOrganisationTranslations(itemSchemeVersionId, locale, exceptionItems);
         // no metadata specific in metamac
     }
@@ -111,7 +112,7 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
     public void updateHasBeenPublishedEfficiently(Long itemSchemeVersionId) {
         Query queryUpdate = getEntityManager()
                 .createNativeQuery(
-                        "UPDATE TB_M_ORGANISATIONS SET SPECIAL_ORG_HAS_BEEN_PUBLISHED = :hasBeenPublished WHERE TB_ORGANISATIONS IN (SELECT ID FROM TB_ITEMS_BASE WHERE ITEM_SCHEME_VERSION_FK = :itemSchemeVersion)");
+                        "UPDATE TB_M_ORGANISATIONS SET SPECIAL_ORG_HAS_BEEN_PUBLISHED = :hasBeenPublished WHERE TB_ORGANISATIONS IN (SELECT TB_ITEMS_BASE FROM TB_ORGANISATIONS WHERE ITEM_SCHEME_VERSION_FK = :itemSchemeVersion)");
         queryUpdate.setParameter("itemSchemeVersion", itemSchemeVersionId);
         queryUpdate.setParameter("hasBeenPublished", true);
         queryUpdate.executeUpdate();

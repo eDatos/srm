@@ -76,7 +76,7 @@ Application DsdsMetamac {
     		"Ends the data structure definition validity"
     		@DataStructureDefinitionVersionMetamac endDataStructureDefinitionValidity(String urn) throws MetamacException;
 			"Checks translations for data structure definition"
-    		List<MetamacExceptionItem> checkDataStructureDefinitionTranslations(Long structureVersionId, String locale);
+    		List<MetamacExceptionItem> checkDataStructureDefinitionTranslations(Long structureVersionId, String locale) throws MetamacException;
    		
     		"Find concept schemes with concepts can be primary measure"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;

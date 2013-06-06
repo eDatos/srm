@@ -24,11 +24,11 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
+import com.arte.statistic.sdmx.srm.core.category.domain.CategoryRepository;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 
 @Service("categorySchemeLifeCycle")
@@ -41,7 +41,7 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
     private CategorySchemeVersionMetamacRepository categorySchemeVersionMetamacRepository;
 
     @Autowired
-    private ItemRepository                         itemRepository;
+    private CategoryRepository                     categoryRepository;
 
     @Autowired
     private CategoriesService                      categoriesService;
@@ -97,7 +97,7 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
             ValidationUtils.checkMetadataRequired(categorySchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
 
             // One category at least
-            Long itemsCount = itemRepository.countItems(categorySchemeVersion.getId());
+            Long itemsCount = categoryRepository.countItems(categorySchemeVersion.getId());
             if (itemsCount == 0) {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, categorySchemeVersion.getMaintainableArtefact().getUrn()));
             }
@@ -124,7 +124,7 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) {
+        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
             return categoriesMetamacService.checkCategorySchemeVersionTranslations(ctx, getCategorySchemeVersionMetamac(srmResourceVersion).getId(), locale);
         }
 

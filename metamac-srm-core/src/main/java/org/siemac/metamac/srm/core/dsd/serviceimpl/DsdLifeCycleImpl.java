@@ -230,7 +230,7 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) {
+        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
             return dataStructureDefinitionMetamacService.checkDataStructureDefinitionTranslations(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getId(), locale);
         }
 

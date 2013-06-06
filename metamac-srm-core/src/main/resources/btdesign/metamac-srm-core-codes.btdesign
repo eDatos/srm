@@ -76,7 +76,7 @@ Application CodesMetamac {
     		"Retrieves codelist by code urn"
     		@CodelistVersionMetamac retrieveCodelistByCodeUrn(String codeUrn) throws MetamacException;
 			"Checks translations for codelist"
-    		List<MetamacExceptionItem> checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale);
+    		List<MetamacExceptionItem> checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale) throws MetamacException;
     		
 			// CODES
 
@@ -148,7 +148,7 @@ Application CodesMetamac {
     		@CodelistVersionMetamac versioningCodelistOpennessVisualisations(@CodelistVersionMetamac source, @CodelistVersionMetamac target) throws MetamacException;
 
 			"Recalculates all visualisations: order and openness, when new codes are added in codelist"
-    		recalculateCodesVisualisations(List<@Item> items, List<@CodelistOrderVisualisation> orderVisualisations, List<@CodelistOpennessVisualisation> opennessVisualisations, boolean executeSave);
+    		recalculateCodesVisualisations(List<@Code> items, List<@CodelistOrderVisualisation> orderVisualisations, List<@CodelistOpennessVisualisation> opennessVisualisations, boolean executeSave);
 
 			// CODELIST FAMILIES
 			
@@ -279,7 +279,7 @@ Application CodesMetamac {
 				@CodelistVersionMetamac findByUrn(String urn);
 				@CodelistVersionMetamac retrieveCodelistVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 				@CodelistVersionMetamac findByCode(String urn);
-				checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
+				checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException;
 			}			
 		}
 
@@ -342,9 +342,9 @@ Application CodesMetamac {
 				@CodeMetamac findByCodeWithoutFlushing(Long codelistVersionId, String code);
 				findByCondition(PagingParameter pagingParameter);
 				List<CodeMetamacVisualisationResult> findCodesByCodelistUnorderedToVisualisation(Long codelistId, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) throws MetamacException;
-				List<ItemResult> findCodesByCodelistUnordered(Long codelistId, ItemMetamacResultSelection resultSelection);
+				List<ItemResult> findCodesByCodelistUnordered(Long codelistId, ItemMetamacResultSelection resultSelection) throws MetamacException;
 				List<ItemResult> findCodesByCodelistOrderedInDepth(Long codelistId, Integer orderColumnIndex, ItemMetamacResultSelection resultSelection) throws MetamacException;
-				checkCodeTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
+				checkCodeTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException;
 				
 				clearCodesVariableElementByCodelist(@CodelistVersionMetamac codelistVersion);
 				updateCodesVariableElements(Map<Long,Long> variableElementsByCodes, Long codelistVersionId, Long variableId) throws MetamacException;

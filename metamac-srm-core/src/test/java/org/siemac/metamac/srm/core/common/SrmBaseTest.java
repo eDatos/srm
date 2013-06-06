@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +12,13 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.sso.client.MetamacPrincipalAccess;
 import org.siemac.metamac.sso.client.SsoClientConstants;
@@ -506,6 +511,54 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
             }
         }
         fail("code not found");
+        return null;
+    }
+
+    @SuppressWarnings("rawtypes")
+    protected ConceptMetamac assertListConceptsContainsConcept(List items, String urn) {
+        for (Iterator iterator = items.iterator(); iterator.hasNext();) {
+            ConceptMetamac concept = (ConceptMetamac) iterator.next();
+            if (concept.getNameableArtefact().getUrn().equals(urn)) {
+                return concept;
+            }
+        }
+        fail("List does not contain item with urn " + urn);
+        return null;
+    }
+
+    @SuppressWarnings("rawtypes")
+    protected CodeMetamac assertListCodesContainsCode(List items, String urn) {
+        for (Iterator iterator = items.iterator(); iterator.hasNext();) {
+            CodeMetamac concept = (CodeMetamac) iterator.next();
+            if (concept.getNameableArtefact().getUrn().equals(urn)) {
+                return concept;
+            }
+        }
+        fail("List does not contain item with urn " + urn);
+        return null;
+    }
+
+    @SuppressWarnings("rawtypes")
+    protected OrganisationMetamac assertListOrganisationsContainsOrganisation(List items, String urn) {
+        for (Iterator iterator = items.iterator(); iterator.hasNext();) {
+            OrganisationMetamac concept = (OrganisationMetamac) iterator.next();
+            if (concept.getNameableArtefact().getUrn().equals(urn)) {
+                return concept;
+            }
+        }
+        fail("List does not contain item with urn " + urn);
+        return null;
+    }
+
+    @SuppressWarnings("rawtypes")
+    protected CategoryMetamac assertListCategoriesContainsCategory(List items, String urn) {
+        for (Iterator iterator = items.iterator(); iterator.hasNext();) {
+            CategoryMetamac category = (CategoryMetamac) iterator.next();
+            if (category.getNameableArtefact().getUrn().equals(urn)) {
+                return category;
+            }
+        }
+        fail("List does not contain item with urn " + urn);
         return null;
     }
 }

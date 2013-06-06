@@ -25,12 +25,12 @@ import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacS
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUtils;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationRepository;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 
 @Service("organisationSchemeLifeCycle")
@@ -40,7 +40,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
     private ItemSchemeVersionRepository                itemSchemeVersionRepository;
 
     @Autowired
-    private ItemRepository                             itemRepository;
+    private OrganisationRepository                     organisationRepository;
 
     @Autowired
     private OrganisationMetamacRepository              organisationMetamacRepository;
@@ -102,7 +102,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
             ValidationUtils.checkMetadataRequired(organisationSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
 
             // One organisation at least
-            Long itemsCount = itemRepository.countItems(organisationSchemeVersion.getId());
+            Long itemsCount = organisationRepository.countItems(organisationSchemeVersion.getId());
             if (itemsCount == 0) {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, organisationSchemeVersion.getMaintainableArtefact().getUrn()));
             }
@@ -129,7 +129,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) {
+        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
             Long itemSchemeVersionId = getOrganisationSchemeVersionMetamac(srmResourceVersion).getId();
             return organisationsMetamacService.checkOrganisationSchemeVersionTranslations(ctx, itemSchemeVersionId, locale);
         }

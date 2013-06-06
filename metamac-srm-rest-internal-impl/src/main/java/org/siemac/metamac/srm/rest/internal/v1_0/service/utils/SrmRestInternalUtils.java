@@ -32,9 +32,9 @@ public class SrmRestInternalUtils {
     }
 
     @SuppressWarnings({"rawtypes"})
-    public static List<ConditionalCriteria> buildConditionalCriteriaItems(String agencyID, String resourceID, String version, String itemID, List<ConditionalCriteria> conditionalCriteriaQuery,
-            Class entity) throws MetamacException {
-        return buildConditionalCriteriaNameableArtefacts(agencyID, resourceID, version, itemID, conditionalCriteriaQuery, entity, ItemProperties.itemSchemeVersion().maintainableArtefact(),
+    public static List<ConditionalCriteria> buildConditionalCriteriaItems(String agencyID, String resourceID, String version, String itemID,
+            MaintainableArtefactProperty itemSchemeVersionMaintainableArtefactProperty, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity) throws MetamacException {
+        return buildConditionalCriteriaNameableArtefacts(agencyID, resourceID, version, itemID, conditionalCriteriaQuery, entity, itemSchemeVersionMaintainableArtefactProperty,
                 ItemProperties.nameableArtefact());
     }
 

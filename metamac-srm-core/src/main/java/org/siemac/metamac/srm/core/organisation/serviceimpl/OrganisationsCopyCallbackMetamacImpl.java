@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.organisation.serviceimpl;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -65,7 +66,7 @@ public class OrganisationsCopyCallbackMetamacImpl extends OrganisationsCopyCallb
     }
 
     @Override
-    public List<ItemResult> findItemsEfficiently(Long itemSchemeId) {
+    public List<ItemResult> findItemsEfficiently(Long itemSchemeId) throws MetamacException {
         return organisationMetamacRepository.findOrganisationsByOrganisationSchemeUnordered(itemSchemeId, SrmServiceUtils.getItemResultSelection(getCopyOperationType()));
     }
 }

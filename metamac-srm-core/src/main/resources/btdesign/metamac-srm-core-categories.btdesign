@@ -62,7 +62,7 @@ Application CategoriesMetamac {
     		"Retrieves categories scheme by category urn"
     		@CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(String categoryUrn) throws MetamacException;
 			"Checks translations for category scheme"
-    		List<MetamacExceptionItem> checkCategorySchemeVersionTranslations(Long itemSchemeVersionId, String locale);
+    		List<MetamacExceptionItem> checkCategorySchemeVersionTranslations(Long itemSchemeVersionId, String locale) throws MetamacException;
     		
 			"Creates category"
 			@CategoryMetamac createCategory(String categorySchemeUrn, @CategoryMetamac category) throws MetamacException;
@@ -122,7 +122,7 @@ Application CategoriesMetamac {
 				@CategorySchemeVersionMetamac findByUrn(String urn);
 				@CategorySchemeVersionMetamac retrieveCategorySchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 				@CategorySchemeVersionMetamac findByCategory(String urn);
-				checkCategorySchemeVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
+				checkCategorySchemeVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException;
 			}			
 		}
 		
@@ -135,9 +135,9 @@ Application CategoriesMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@CategoryMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
-				List<ItemResult> findCategoriesByCategorySchemeUnordered(Long itemSchemeVersionId, ItemMetamacResultSelection resultSelection);
+				List<ItemResult> findCategoriesByCategorySchemeUnordered(Long itemSchemeVersionId, ItemMetamacResultSelection resultSelection) throws MetamacException;
 				List<ItemVisualisationResult> findCategoriesByCategorySchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException;
-				checkCategoryTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
+				checkCategoryTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException;
 			}
 		}
 	}

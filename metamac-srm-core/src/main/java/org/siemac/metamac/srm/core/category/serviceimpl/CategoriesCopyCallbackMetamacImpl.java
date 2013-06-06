@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.category.serviceimpl;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamacRepository;
@@ -51,7 +52,7 @@ public class CategoriesCopyCallbackMetamacImpl extends CategoriesCopyCallbackImp
     }
 
     @Override
-    public List<ItemResult> findItemsEfficiently(Long itemSchemeId) {
+    public List<ItemResult> findItemsEfficiently(Long itemSchemeId) throws MetamacException {
         return categoryMetamacRepository.findCategoriesByCategorySchemeUnordered(itemSchemeId, SrmServiceUtils.getItemResultSelection(getCopyOperationType()));
     }
 }

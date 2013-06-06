@@ -10,7 +10,6 @@ import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDa
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -64,7 +63,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
@@ -1468,10 +1466,10 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         // Concepts
         assertEquals(4, conceptSchemeVersionNewArtefact.getItems().size());
-        assertListItemsContainsItem(conceptSchemeVersionNewArtefact.getItems(), urnExpectedConcept1);
-        assertListItemsContainsItem(conceptSchemeVersionNewArtefact.getItems(), urnExpectedConcept11);
-        assertListItemsContainsItem(conceptSchemeVersionNewArtefact.getItems(), urnExpectedConcept2);
-        assertListItemsContainsItem(conceptSchemeVersionNewArtefact.getItems(), urnExpectedConcept3);
+        assertListConceptsContainsConcept(conceptSchemeVersionNewArtefact.getItems(), urnExpectedConcept1);
+        assertListConceptsContainsConcept(conceptSchemeVersionNewArtefact.getItems(), urnExpectedConcept11);
+        assertListConceptsContainsConcept(conceptSchemeVersionNewArtefact.getItems(), urnExpectedConcept2);
+        assertListConceptsContainsConcept(conceptSchemeVersionNewArtefact.getItems(), urnExpectedConcept3);
 
         assertEquals(3, conceptSchemeVersionNewArtefact.getItemsFirstLevel().size());
         {
@@ -1635,11 +1633,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
             // Concepts
             assertEquals(5, conceptSchemeVersionNewVersion.getItems().size());
-            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept1);
-            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept2);
-            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept21);
-            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept211);
-            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept22);
+            assertListConceptsContainsConcept(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept1);
+            assertListConceptsContainsConcept(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept2);
+            assertListConceptsContainsConcept(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept21);
+            assertListConceptsContainsConcept(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept211);
+            assertListConceptsContainsConcept(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept22);
 
             assertEquals(2, conceptSchemeVersionNewVersion.getItemsFirstLevel().size());
             {
@@ -2020,11 +2018,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
             // Concepts
             assertEquals(5, conceptSchemeVersionNewVersion.getItems().size());
-            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept1);
-            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept2);
-            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept21);
-            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept211);
-            assertListItemsContainsItem(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept22);
+            assertListConceptsContainsConcept(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept1);
+            assertListConceptsContainsConcept(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept2);
+            assertListConceptsContainsConcept(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept21);
+            assertListConceptsContainsConcept(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept211);
+            assertListConceptsContainsConcept(conceptSchemeVersionNewVersion.getItems(), urnExpectedConcept22);
 
             assertEquals(2, conceptSchemeVersionNewVersion.getItemsFirstLevel().size());
             {
@@ -2420,11 +2418,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
         assertEquals(5, conceptSchemeVersion.getItemsFirstLevel().size());
         assertEquals(9, conceptSchemeVersion.getItems().size());
-        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
-        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
-        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
-        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
-        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), conceptRetrieved.getNameableArtefact().getUrn());
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), conceptRetrieved.getNameableArtefact().getUrn());
     }
 
     @Test
@@ -2460,11 +2458,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         // ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
         // assertEquals(5, conceptSchemeVersion.getItemsFirstLevel().size());
         // assertEquals(9, conceptSchemeVersion.getItems().size());
-        // assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
-        // assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
-        // assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
-        // assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
-        // assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), conceptRetrieved.getNameableArtefact().getUrn());
+        // assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        // assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
+        // assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
+        // assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
+        // assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), conceptRetrieved.getNameableArtefact().getUrn());
     }
 
     @Test
@@ -2490,8 +2488,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(4, conceptSchemeVersion.getItemsFirstLevel().size());
         assertEquals(9, conceptSchemeVersion.getItems().size());
 
-        Item concept1 = assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
-        assertListItemsContainsItem(concept1.getChildren(), conceptRetrieved.getNameableArtefact().getUrn());
+        Concept concept1 = assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        assertListConceptsContainsConcept(concept1.getChildren(), conceptRetrieved.getNameableArtefact().getUrn());
     }
 
     @Test
@@ -3268,17 +3266,17 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         // Check hierarchy
         conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
         assertEquals(3, conceptSchemeVersion.getItemsFirstLevel().size());
-        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
-        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
-        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
         assertEquals(7, conceptSchemeVersion.getItems().size());
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1);
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1);
     }
 
     @Test
@@ -3307,17 +3305,17 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
         assertEquals(4, conceptSchemeVersion.getItemsFirstLevel().size());
-        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
-        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
-        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
-        assertListItemsContainsItem(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
         assertEquals(6, conceptSchemeVersion.getItems().size());
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
-        assertListItemsContainsItem(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
+        assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
     }
 
     @Test
@@ -4276,18 +4274,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     public void testPreCreateConcept() throws Exception {
         // TODO testPreCreateConcept
 
-    }
-
-    @SuppressWarnings("rawtypes")
-    private ConceptMetamac assertListConceptsContainsConcept(List items, String urn) {
-        for (Iterator iterator = items.iterator(); iterator.hasNext();) {
-            ConceptMetamac concept = (ConceptMetamac) iterator.next();
-            if (concept.getNameableArtefact().getUrn().equals(urn)) {
-                return concept;
-            }
-        }
-        fail("List does not contain item with urn " + urn);
-        return null;
     }
 
     private ConceptMetamacVisualisationResult getConceptMetamacVisualisationResult(List<ConceptMetamacVisualisationResult> actuals, String codeUrn) {

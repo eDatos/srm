@@ -33,6 +33,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
 
 @Service("conceptSchemeLifeCycle")
@@ -43,6 +44,9 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
 
     @Autowired
     private ItemRepository                        itemRepository;
+
+    @Autowired
+    private ConceptRepository                     conceptRepository;
 
     @Autowired
     private ConceptSchemeVersionMetamacRepository conceptSchemeVersionMetamacRepository;
@@ -110,7 +114,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
             ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
 
             // One concept at least
-            Long itemsCount = itemRepository.countItems(conceptSchemeVersion.getId());
+            Long itemsCount = conceptRepository.countItems(conceptSchemeVersion.getId());
             if (itemsCount == 0) {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, conceptSchemeVersion.getMaintainableArtefact().getUrn()));
             }
@@ -170,7 +174,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) {
+        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
             return conceptsMetamacService.checkConceptSchemeVersionTranslations(ctx, getConceptSchemeVersionMetamac(srmResourceVersion).getId(), locale);
         }
 

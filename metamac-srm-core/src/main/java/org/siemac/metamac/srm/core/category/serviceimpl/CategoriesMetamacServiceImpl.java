@@ -147,7 +147,12 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Override
     public CategorySchemeVersionMetamac retrieveCategorySchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        return (CategorySchemeVersionMetamac) categoriesService.retrieveCategorySchemeByUrn(ctx, urn);
+        // Validation
+        CategoriesInvocationValidator.checkRetrieveByUrn(urn);
+
+        // Retrieve
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeVersionByUrn(urn);
+        return categorySchemeVersion;
     }
 
     @Override
@@ -414,7 +419,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     }
 
     @Override
-    public List<MetamacExceptionItem> checkCategorySchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) {
+    public List<MetamacExceptionItem> checkCategorySchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         getCategorySchemeVersionMetamacRepository().checkCategorySchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
         getCategoryMetamacRepository().checkCategoryTranslations(itemSchemeVersionId, locale, exceptionItems);
@@ -628,6 +633,15 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     private void checkCategorySchemeCanBeModified(CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(categorySchemeVersion.getLifeCycleMetadata(), categorySchemeVersion.getMaintainableArtefact().getUrn());
         SrmValidationUtils.checkArtefactWithoutTaskInBackground(categorySchemeVersion);
+    }
+
+    private CategorySchemeVersionMetamac retrieveCategorySchemeVersionByUrn(String urn) throws MetamacException {
+        CategoriesInvocationValidator.checkRetrieveByUrn(urn);
+        CategorySchemeVersionMetamac categorySchemeVersion = getCategorySchemeVersionMetamacRepository().findByUrn(urn);
+        if (categorySchemeVersion == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
+        }
+        return categorySchemeVersion;
     }
 
 }

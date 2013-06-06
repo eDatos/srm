@@ -61,7 +61,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
@@ -77,6 +76,7 @@ import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
+import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsInvocationValidator;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 /**
@@ -99,9 +99,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Autowired
     private ItemSchemeVersionRepository      itemSchemeVersionRepository;
-
-    @Autowired
-    private ItemRepository                   itemRepository;
 
     @Autowired
     private ConceptRepository                conceptRepository;
@@ -179,7 +176,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public ConceptSchemeVersionMetamac retrieveConceptSchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        return (ConceptSchemeVersionMetamac) conceptsService.retrieveConceptSchemeByUrn(ctx, urn);
+        // Validation
+        ConceptsInvocationValidator.checkRetrieveByUrn(urn);
+
+        // Retrieve
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeVersionByUrn(urn);
+        return conceptSchemeVersion;
     }
 
     @Override
@@ -796,7 +798,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public List<MetamacExceptionItem> checkConceptSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) {
+    public List<MetamacExceptionItem> checkConceptSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         getConceptSchemeVersionMetamacRepository().checkConceptSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
         getConceptMetamacRepository().checkConceptTranslations(itemSchemeVersionId, locale, exceptionItems);
@@ -1243,7 +1245,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // If the scheme has items (concepts), type cannot be modified
         if (conceptSchemeVersion.getId() != null) {
             if (conceptSchemeVersion.getIsTypeUpdated() && !conceptSchemeVersion.getMaintainableArtefact().getIsImported()) {
-                Long itemsCount = itemRepository.countItems(conceptSchemeVersion.getId());
+                Long itemsCount = conceptRepository.countItems(conceptSchemeVersion.getId());
                 if (itemsCount != 0) {
                     throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE)
                             .build();
@@ -1424,6 +1426,15 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         PagedResult<ConceptSchemeVersion> conceptSchemeVersionsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
         return pagedResultConceptSchemeVersionToMetamac(conceptSchemeVersionsPagedResult);
+    }
+
+    private ConceptSchemeVersionMetamac retrieveConceptSchemeVersionByUrn(String urn) throws MetamacException {
+        ConceptsInvocationValidator.checkRetrieveByUrn(urn);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamacRepository().findByUrn(urn);
+        if (conceptSchemeVersion == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
+        }
+        return conceptSchemeVersion;
     }
 
 }

@@ -10,7 +10,6 @@ import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDa
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -52,7 +51,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
@@ -1189,10 +1187,10 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Organisations
         assertEquals(4, organisationSchemeVersionNewArtefact.getItems().size());
-        assertListItemsContainsItem(organisationSchemeVersionNewArtefact.getItems(), urnExpectedOrganisation1);
-        assertListItemsContainsItem(organisationSchemeVersionNewArtefact.getItems(), urnExpectedOrganisation11);
-        assertListItemsContainsItem(organisationSchemeVersionNewArtefact.getItems(), urnExpectedOrganisation2);
-        assertListItemsContainsItem(organisationSchemeVersionNewArtefact.getItems(), urnExpectedOrganisation3);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewArtefact.getItems(), urnExpectedOrganisation1);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewArtefact.getItems(), urnExpectedOrganisation11);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewArtefact.getItems(), urnExpectedOrganisation2);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersionNewArtefact.getItems(), urnExpectedOrganisation3);
 
         assertEquals(3, organisationSchemeVersionNewArtefact.getItemsFirstLevel().size());
         {
@@ -1748,11 +1746,11 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
         assertEquals(5, organisationSchemeVersion.getItemsFirstLevel().size());
         assertEquals(9, organisationSchemeVersion.getItems().size());
-        assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-        assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
-        assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
-        assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
-        assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), organisationRetrieved.getNameableArtefact().getUrn());
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), organisationRetrieved.getNameableArtefact().getUrn());
     }
 
     @Test
@@ -1776,8 +1774,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         assertEquals(4, organisationSchemeVersion.getItemsFirstLevel().size());
         assertEquals(9, organisationSchemeVersion.getItems().size());
 
-        Item organisation1 = assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-        assertListItemsContainsItem(organisation1.getChildren(), organisationRetrieved.getNameableArtefact().getUrn());
+        Organisation organisation1 = assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        assertListOrganisationsContainsOrganisation(organisation1.getChildren(), organisationRetrieved.getNameableArtefact().getUrn());
     }
 
     @Test
@@ -2046,17 +2044,17 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         // Check hierarchy
         organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
         assertEquals(3, organisationSchemeVersion.getItemsFirstLevel().size());
-        assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-        assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
-        assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
         assertEquals(7, organisationSchemeVersion.getItems().size());
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1);
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1);
     }
 
     @Test
@@ -2103,17 +2101,17 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
         assertEquals(4, organisationSchemeVersion.getItemsFirstLevel().size());
-        assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-        assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
-        assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
-        assertListItemsContainsItem(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItemsFirstLevel(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
         assertEquals(6, organisationSchemeVersion.getItems().size());
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
-        assertListItemsContainsItem(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
+        assertListOrganisationsContainsOrganisation(organisationSchemeVersion.getItems(), ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
     }
 
     @Test
@@ -2505,18 +2503,6 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     public void testPreCreateOrganisation() throws Exception {
         // TODO testPreCreateOrganisation
 
-    }
-
-    @SuppressWarnings("rawtypes")
-    private OrganisationMetamac assertListOrganisationsContainsOrganisation(List items, String urn) {
-        for (Iterator iterator = items.iterator(); iterator.hasNext();) {
-            OrganisationMetamac concept = (OrganisationMetamac) iterator.next();
-            if (concept.getNameableArtefact().getUrn().equals(urn)) {
-                return concept;
-            }
-        }
-        fail("List does not contain item with urn " + urn);
-        return null;
     }
 
     protected OrganisationMetamacVisualisationResult getOrganisationVisualisationResult(List<OrganisationMetamacVisualisationResult> actuals, String codeUrn) {

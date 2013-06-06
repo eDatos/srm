@@ -60,7 +60,7 @@ Application OrganisationsMetamac {
     		"Retrieves organisations scheme by organisation urn"
     		@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByOrganisationUrn(String organisationUrn) throws MetamacException;
     		"Checks translations for organisation scheme"
-    		List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslations(Long itemSchemeVersionId, String locale);
+    		List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslations(Long itemSchemeVersionId, String locale) throws MetamacException;
     		
 			"Creates organisation"
 			@OrganisationMetamac createOrganisation(String organisationSchemeUrn, @OrganisationMetamac organisation) throws MetamacException;
@@ -99,7 +99,7 @@ Application OrganisationsMetamac {
 				@OrganisationSchemeVersionMetamac findByUrn(String urn);
 				@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 				@OrganisationSchemeVersionMetamac findByOrganisation(String urn);
-				checkOrganisationSchemeVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
+				checkOrganisationSchemeVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException;
 			}			
 		}
 		
@@ -115,9 +115,9 @@ Application OrganisationsMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@OrganisationMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
-				List<ItemResult> findOrganisationsByOrganisationSchemeUnordered(Long itemSchemeVersionId, ItemMetamacResultSelection resultSelection);
+				List<ItemResult> findOrganisationsByOrganisationSchemeUnordered(Long itemSchemeVersionId, ItemMetamacResultSelection resultSelection) throws MetamacException;
 				List<OrganisationMetamacVisualisationResult> findOrganisationsByOrganisationSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException;
-				checkOrganisationTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems);
+				checkOrganisationTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException;
 				updateHasBeenPublishedEfficiently(Long itemSchemeVersionId);
 			}
 		}

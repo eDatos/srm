@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
+import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategoryRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
@@ -44,7 +45,7 @@ public class CategoryMetamacRepositoryImpl extends CategoryMetamacRepositoryBase
     }
 
     @Override
-    public List<ItemResult> findCategoriesByCategorySchemeUnordered(Long categorySchemeVersionId, ItemMetamacResultSelection resultSelection) {
+    public List<ItemResult> findCategoriesByCategorySchemeUnordered(Long categorySchemeVersionId, ItemMetamacResultSelection resultSelection) throws MetamacException {
         // Find items
         List<ItemResult> items = categoryRepository.findCategoriesByCategorySchemeUnordered(categorySchemeVersionId, resultSelection);
         // no extension point
@@ -53,11 +54,11 @@ public class CategoryMetamacRepositoryImpl extends CategoryMetamacRepositoryBase
 
     @Override
     public List<ItemVisualisationResult> findCategoriesByCategorySchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException {
-        return itemRepository.findItemsByItemSchemeUnorderedToVisualisation(itemSchemeVersionId, locale);
+        return itemRepository.findItemsByItemSchemeUnorderedToVisualisation(itemSchemeVersionId, Category.class, locale);
     }
 
     @Override
-    public void checkCategoryTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+    public void checkCategoryTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException {
         categoryRepository.checkCategoryTranslations(itemSchemeVersionId, locale, exceptionItems);
         // no metadata specific in metamac
     }

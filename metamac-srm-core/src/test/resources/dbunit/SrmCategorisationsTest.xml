@@ -154,13 +154,13 @@
                 TB_ITEMS_BASE="10011"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX01"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="1001"
+                ITEM_SCHEME_VERSION_FIRST_FK="1001"
             />
         
             <TB_ITEMS_BASE
                 ID="10011"
-                PARENT_FK="[null]"
-                ITEM_SCHEME_VERSION_FK="1001"
-                ITEM_SCHEME_VERSION_FIRST_FK="1001"
                 NAMEABLE_ARTEFACT_FK="10011"
                       
                 UUID="organisationScheme-1001-v1-org-0"
@@ -208,13 +208,13 @@
                 TB_ITEMS_BASE="10012"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX02"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="1001"
+                ITEM_SCHEME_VERSION_FIRST_FK="1001"
             />
         
             <TB_ITEMS_BASE
                 ID="10012"
-                PARENT_FK="[null]"
-                ITEM_SCHEME_VERSION_FK="1001"
-                ITEM_SCHEME_VERSION_FIRST_FK="1001"
                 NAMEABLE_ARTEFACT_FK="10012"
                       
                 UUID="organisationScheme-1001-v1-org-1"
@@ -362,13 +362,13 @@
             
             <TB_CATEGORIES
                 TB_ITEMS_BASE="111"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="11"
+                ITEM_SCHEME_VERSION_FIRST_FK="11"
             />
         
             <TB_ITEMS_BASE
                 ID="111"
-                PARENT_FK="[null]"
-                ITEM_SCHEME_VERSION_FK="11"
-                ITEM_SCHEME_VERSION_FIRST_FK="11"
                 NAMEABLE_ARTEFACT_FK="111"
                       
                 UUID="categoryScheme-1-v1-cat-1"
@@ -515,6 +515,9 @@
             <TB_CONCEPTS
                 TB_ITEMS_BASE="211"
                 CORE_REPRESENTATION_FK="[null]"    
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="21"
+                ITEM_SCHEME_VERSION_FIRST_FK="21"
             />
             
             <TB_M_CONCEPTS
@@ -534,9 +537,6 @@
         
             <TB_ITEMS_BASE
                 ID="211"
-                PARENT_FK="[null]"
-                ITEM_SCHEME_VERSION_FK="21"
-                ITEM_SCHEME_VERSION_FIRST_FK="21"
                 NAMEABLE_ARTEFACT_FK="211"
                       
                 UUID="conceptScheme-1-v1-concept-1"
@@ -806,13 +806,13 @@
                         
             <TB_CATEGORIES
                 TB_ITEMS_BASE="511"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="51"
+                ITEM_SCHEME_VERSION_FIRST_FK="51"
             />
         
             <TB_ITEMS_BASE
                 ID="511"
-                PARENT_FK="[null]"
-                ITEM_SCHEME_VERSION_FK="51"
-                ITEM_SCHEME_VERSION_FIRST_FK="51"
                 NAMEABLE_ARTEFACT_FK="511"
                       
                 UUID="categoryScheme-5-v1-cat-1"
@@ -1020,6 +1020,9 @@
             <TB_CONCEPTS
                 TB_ITEMS_BASE="711"
                 CORE_REPRESENTATION_FK="[null]"    
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="71"
+                ITEM_SCHEME_VERSION_FIRST_FK="71"
             />
             
             <TB_M_CONCEPTS
@@ -1039,9 +1042,6 @@
         
             <TB_ITEMS_BASE
                 ID="711"
-                PARENT_FK="[null]"
-                ITEM_SCHEME_VERSION_FK="71"
-                ITEM_SCHEME_VERSION_FIRST_FK="71"
                 NAMEABLE_ARTEFACT_FK="711"
                       
                 UUID="conceptScheme-2-v1-concept-1"

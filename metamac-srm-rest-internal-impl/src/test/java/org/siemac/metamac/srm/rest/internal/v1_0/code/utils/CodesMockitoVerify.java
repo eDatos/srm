@@ -101,7 +101,8 @@ public class CodesMockitoVerify extends MockitoVerify {
         verify(codesService).findCodesByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
 
         // Validate
-        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItems(agencyID, resourceID, version, itemID, query, orderBy, CodeMetamac.class, restOperation);
+        List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItems(agencyID, resourceID, version, itemID, query, orderBy, CodeMetamac.class,
+                CodeMetamacProperties.itemSchemeVersion().maintainableArtefact(), restOperation);
         conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
                 .withProperty(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.accessType().getName(), false, CodeMetamac.class))
                 .eq(AccessTypeEnum.PUBLIC).buildSingle());

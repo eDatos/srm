@@ -36,6 +36,7 @@ import org.springframework.stereotype.Repository;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
+import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
@@ -59,8 +60,8 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     @Autowired
     private SrmConfiguration              srmConfiguration;
 
-    private final static String           NATIVE_SQL_QUERY_CODES_VARIABLE_ELEMENT_SHORT_NAME_BY_CODELIST = "select c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_M_CODES c INNER JOIN TB_ITEMS_BASE i on i.ID = c.TB_CODES INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK WHERE c.VARIABLE_ELEMENT_FK is not null AND  i.ITEM_SCHEME_VERSION_FK = :codelistVersion";
-    private final static String           NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST                  = "select c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_M_CODES c INNER JOIN TB_ITEMS_BASE i on i.ID = c.TB_CODES LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = c.SHORT_NAME_FK WHERE c.VARIABLE_ELEMENT_FK is null AND  i.ITEM_SCHEME_VERSION_FK = :codelistVersion and c.SHORT_NAME_FK is not null";
+    private final static String           NATIVE_SQL_QUERY_CODES_VARIABLE_ELEMENT_SHORT_NAME_BY_CODELIST = "select c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_M_CODES c INNER JOIN TB_CODES cb on cb.TB_ITEMS_BASE = c.TB_CODES INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK WHERE c.VARIABLE_ELEMENT_FK is not null AND  cb.ITEM_SCHEME_VERSION_FK = :codelistVersion";
+    private final static String           NATIVE_SQL_QUERY_CODES_SHORT_NAME_BY_CODELIST                  = "select c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL from TB_M_CODES c INNER JOIN TB_CODES cb on cb.TB_ITEMS_BASE = c.TB_CODES LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = c.SHORT_NAME_FK WHERE c.VARIABLE_ELEMENT_FK is null AND cb.ITEM_SCHEME_VERSION_FK = :codelistVersion and c.SHORT_NAME_FK is not null";
 
     public CodeMetamacRepositoryImpl() {
     }
@@ -94,7 +95,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     public void clearCodesVariableElementByCodelist(CodelistVersionMetamac codelistVersion) {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set VARIABLE_ELEMENT_FK = null ");
-        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        sb.append("WHERE TB_CODES in (SELECT cb.TB_ITEMS_BASE FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
@@ -150,10 +151,10 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         sb.append("   AND ");
         // Check code belongs to codelist
         sb.append("    TB_CODES = ");
-        sb.append("   (SELECT i.ID ");
-        sb.append("    FROM TB_ITEMS_BASE i ");
-        sb.append("    WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersionId ");
-        sb.append("    AND i.ID = :codeId) ");
+        sb.append("   (SELECT cb.TB_ITEMS_BASE ");
+        sb.append("    FROM TB_CODES cb ");
+        sb.append("    WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersionId ");
+        sb.append("    AND cb.TB_ITEMS_BASE = :codeId) ");
         // Check variable element belongs to variable of codelist
         if (variableElementNotNull) {
             sb.append("   AND ");
@@ -173,13 +174,13 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + orderColumn + " = " + orderColumn + " - 1 ");
         sb.append("WHERE TB_CODES in ");
-        sb.append("(SELECT i.ID ");
-        sb.append("FROM TB_ITEMS_BASE i ");
-        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+        sb.append("(SELECT cb.TB_ITEMS_BASE ");
+        sb.append("FROM TB_CODES cb ");
+        sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
         if (parent == null) {
-            sb.append("AND i.PARENT_FK is null");
+            sb.append("AND cb.PARENT_FK is null");
         } else {
-            sb.append("AND i.PARENT_FK = :parent");
+            sb.append("AND cb.PARENT_FK = :parent");
         }
         sb.append(") AND " + orderColumn + " > :order");
 
@@ -198,13 +199,13 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + orderColumn + " = " + orderColumn + " + 1 ");
         sb.append("WHERE TB_CODES in (");
-        sb.append("SELECT i.ID ");
-        sb.append("FROM TB_ITEMS_BASE i ");
-        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+        sb.append("SELECT cb.TB_ITEMS_BASE ");
+        sb.append("FROM TB_CODES cb ");
+        sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
         if (code.getParent() == null) {
-            sb.append("AND i.PARENT_FK is null");
+            sb.append("AND cb.PARENT_FK is null");
         } else {
-            sb.append("AND i.PARENT_FK = :parent");
+            sb.append("AND cb.PARENT_FK = :parent");
         }
         sb.append(") AND " + orderColumn + " >= :order");
 
@@ -222,7 +223,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         String orderColumn = getOrderColumnName(orderColumnIndex);
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + orderColumn + " = null ");
-        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        sb.append("WHERE TB_CODES in (SELECT cb.TB_ITEMS_BASE FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
@@ -235,7 +236,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + columnTarget + " = " + columnSource + " ");
-        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        sb.append("WHERE TB_CODES in (SELECT cb.TB_ITEMS_BASE FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
@@ -246,7 +247,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         String opennessColumn = getOpennessColumnName(opennessColumnIndex);
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = null ");
-        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        sb.append("WHERE TB_CODES in (SELECT cb.TB_ITEMS_BASE FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
@@ -259,7 +260,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + columnTarget + " = " + columnSource + " ");
-        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        sb.append("WHERE TB_CODES in (SELECT cb.TB_ITEMS_BASE FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
@@ -270,7 +271,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         String opennessColumn = getOpennessColumnName(opennessColumnIndex);
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValue(expanded) + " ");
-        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        sb.append("WHERE TB_CODES in (SELECT cb.TB_ITEMS_BASE FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
@@ -281,7 +282,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         String opennessColumn = getOpennessColumnName(opennessColumnIndex);
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValue(expanded) + " ");
-        sb.append("WHERE TB_CODES in (SELECT i.ID FROM TB_ITEMS_BASE i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID WHERE a.URN = :codeUrn AND i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        sb.append("WHERE TB_CODES in (SELECT cb.TB_ITEMS_BASE FROM TB_CODES cb INNER JOIN TB_ITEMS_BASE i on i.ID = cb.TB_ITEMS_BASE INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID WHERE a.URN = :codeUrn AND cb.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codeUrn", codeUrn);
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
@@ -294,9 +295,9 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValue(expanded) + " ");
         sb.append("WHERE ");
-        sb.append("TB_CODES IN (SELECT i.ID FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
+        sb.append("TB_CODES IN (SELECT cb.TB_ITEMS_BASE FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion) ");
         sb.append("AND ");
-        sb.append("TB_CODES NOT IN (SELECT DISTINCT(i.PARENT_FK) FROM TB_ITEMS_BASE i WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion AND i.PARENT_FK IS NOT NULL) ");
+        sb.append("TB_CODES NOT IN (SELECT DISTINCT(cb.PARENT_FK) FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion AND cb.PARENT_FK IS NOT NULL) ");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("codelistVersion", codelistVersion.getId());
         queryUpdate.executeUpdate();
@@ -308,11 +309,11 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         String orderColumn = getOrderColumnName(orderColumnIndex);
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT max(" + orderColumn + ") ");
-        sb.append("FROM TB_M_CODES c INNER JOIN TB_ITEMS_BASE i on i.ID = c.TB_CODES WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+        sb.append("FROM TB_M_CODES c INNER JOIN TB_CODES cb on cb.TB_ITEMS_BASE = c.TB_CODES WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
         if (parent == null) {
-            sb.append("AND i.PARENT_FK is null");
+            sb.append("AND cb.PARENT_FK is null");
         } else {
-            sb.append("AND i.PARENT_FK = :parent");
+            sb.append("AND cb.PARENT_FK = :parent");
         }
         Query query = getEntityManager().createNativeQuery(sb.toString());
         if (parent != null) {
@@ -332,13 +333,15 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     public Integer getCodeAlphabeticPositionInLevel(CodelistVersionMetamac codelistVersion, Item parent, Item code) {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT COUNT(1) ");
-        sb.append("FROM TB_ITEMS_BASE i INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
-        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+        sb.append("FROM TB_CODES cb ");
+        sb.append("INNER JOIN TB_ITEMS_BASE i on i.ID = cb.TB_ITEMS_BASE ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
         sb.append("AND lower(a.CODE) < lower('" + code.getNameableArtefact().getCode() + "') ");
         if (parent == null) {
-            sb.append("AND i.PARENT_FK is null");
+            sb.append("AND cb.PARENT_FK is null");
         } else {
-            sb.append("AND i.PARENT_FK = :parent");
+            sb.append("AND cb.PARENT_FK = :parent");
         }
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("codelistVersion", codelistVersion.getId());
@@ -369,12 +372,13 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
         // Find. NOTE: this query return null label if locale not exits for a code
         StringBuilder sbCodes = new StringBuilder();
-        sbCodes.append("SELECT i.ID as ITEM_ID, i.CREATED_DATE, i.CREATED_DATE_TZ, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, c." + orderColumn + ", c." + opennessColumn + " ");
+        sbCodes.append("SELECT i.ID as ITEM_ID, i.CREATED_DATE, i.CREATED_DATE_TZ, a.URN, a.CODE, cb.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, c." + orderColumn + ", c." + opennessColumn + " ");
         sbCodes.append("FROM TB_M_CODES c ");
+        sbCodes.append("INNER JOIN TB_CODES cb on cb.TB_ITEMS_BASE = c.TB_CODES ");
         sbCodes.append("INNER JOIN TB_ITEMS_BASE i on c.TB_CODES = i.ID ");
         sbCodes.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
         sbCodes.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale ");
-        sbCodes.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion");
+        sbCodes.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion");
         Query queryCodes = getEntityManager().createNativeQuery(sbCodes.toString());
         queryCodes.setParameter("codelistVersion", idCodelist);
         queryCodes.setParameter("locale", locale);
@@ -391,17 +395,18 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         }
 
         // Add description. Execute one independent query to retrieve it is more efficient than do a global query
-        itemRepository.executeQueryFillItemDescription(idCodelist, locale, mapCodeByItemId);
+        itemRepository.executeQueryFillItemDescription(idCodelist, Code.class, locale, mapCodeByItemId);
 
         // Variable element. Execute one independent query to retrieve variable elements is more efficient than do a global query
         StringBuilder sbVariableElements = new StringBuilder();
         sbVariableElements.append("SELECT i.ID as ITEM_ID, ve.ID as VE_ID, ave.URN as VE_URN, ave.CODE as VE_CODE, ls.LABEL as VE_SHORT_NAME_FK ");
         sbVariableElements.append("FROM TB_M_CODES c ");
+        sbVariableElements.append("INNER JOIN TB_CODES cb on c.TB_CODES = cb.TB_ITEMS_BASE ");
         sbVariableElements.append("INNER JOIN TB_ITEMS_BASE i on c.TB_CODES = i.ID ");
         sbVariableElements.append("INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK ");
         sbVariableElements.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS ave on ve.IDENTIFIABLE_ARTEFACT_FK = ave.ID ");
         sbVariableElements.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK and ls.locale = :locale ");
-        sbVariableElements.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+        sbVariableElements.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
         Query queryVariableElements = getEntityManager().createNativeQuery(sbVariableElements.toString());
         queryVariableElements.setParameter("codelistVersion", idCodelist);
         queryVariableElements.setParameter("locale", locale);
@@ -425,7 +430,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public List<ItemResult> findCodesByCodelistUnordered(Long idCodelist, ItemMetamacResultSelection resultSelection) {
+    public List<ItemResult> findCodesByCodelistUnordered(Long idCodelist, ItemMetamacResultSelection resultSelection) throws MetamacException {
 
         // Find codes
         List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, resultSelection);
@@ -483,9 +488,9 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             sb.append("SELECT ITEM_ID, SYS_CONNECT_BY_PATH(lpad(COD_ORDER, " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + ", '0'), '.') ORDER_PATH ");
             sb.append("FROM ");
             sb.append("(");
-            sb.append("SELECT c." + orderColumn + " AS COD_ORDER, i.ID AS ITEM_ID, i.PARENT_FK AS ITEM_PARENT_FK ");
-            sb.append("FROM TB_M_CODES c JOIN TB_ITEMS_BASE i on i.ID = c.TB_CODES ");
-            sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion");
+            sb.append("SELECT c." + orderColumn + " AS COD_ORDER, c.TB_CODES AS ITEM_ID, cb.PARENT_FK AS ITEM_PARENT_FK ");
+            sb.append("FROM TB_M_CODES c JOIN TB_CODES cb on cb.TB_ITEMS_BASE = c.TB_CODES ");
+            sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion");
             sb.append(")");
             sb.append("START WITH ITEM_PARENT_FK is null ");
             sb.append("CONNECT BY PRIOR ITEM_ID = ITEM_PARENT_FK ");
@@ -493,15 +498,15 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         } else if (srmConfiguration.isDatabaseSqlServer()) {
             sb.append("WITH Parents(R_ID, R_SORT, R_ITEM_SCHEME_VERSION_FK, R_SORT_STRING) AS ");
             sb.append("( ");
-            sb.append("SELECT i1.ID AS R_ID, c1." + orderColumn + " AS R_SORT, i1.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
+            sb.append("SELECT c1.TB_CODES AS R_ID, c1." + orderColumn + " AS R_SORT, cb1.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
             sb.append("'/' + REPLICATE(0, " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + " - LEN(c1." + orderColumn + ")) + CAST(c1." + orderColumn + " AS varchar(4000)) AS R_SORT_STRING ");
-            sb.append("FROM TB_M_CODES AS c1 INNER JOIN TB_ITEMS_BASE AS i1 ON i1.ID = c1.TB_CODES ");
-            sb.append("WHERE i1.PARENT_FK IS NULL and i1.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+            sb.append("FROM TB_M_CODES AS c1 INNER JOIN TB_CODES AS cb1 ON cb1.TB_ITEMS_BASE = c1.TB_CODES ");
+            sb.append("WHERE cb1.PARENT_FK IS NULL and cb1.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
             sb.append("UNION ALL ");
-            sb.append("SELECT i2.ID, c2." + orderColumn + ", i2.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
+            sb.append("SELECT c2.TB_CODES, c2." + orderColumn + ", cb2.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
             sb.append("p.R_SORT_STRING + '/' + REPLICATE(0, " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + " - LEN(c2." + orderColumn + ")) + CAST(c2." + orderColumn
                     + " AS varchar(4000)) AS R_SORT_STRING ");
-            sb.append("FROM TB_M_CODES AS c2 INNER JOIN TB_ITEMS_BASE AS i2 ON i2.ID = c2.TB_CODES INNER JOIN Parents AS p ON p.R_ID = i2.PARENT_FK ) ");
+            sb.append("FROM TB_M_CODES AS c2 INNER JOIN TB_CODES AS cb2 ON cb2.TB_ITEMS_BASE = c2.TB_CODES INNER JOIN Parents AS p ON p.R_ID = cb2.PARENT_FK ) ");
             sb.append("SELECT * FROM Parents ORDER BY R_SORT_STRING");
         } else {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN).withMessageParameters("Database unsupported").build();
@@ -516,14 +521,17 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             Object[] resultOrderArray = (Object[]) resultOrder;
             Long codeId = getLong(resultOrderArray[0]);
             ItemResult code = mapCodeByItemId.get(codeId);
-            ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).setOrder(getString(resultOrderArray[1]));
+            Long order = getLong(resultOrderArray[1]);
+            if (order != null) {
+                ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).setOrder(order.toString());
+            }
             ordered.add(code);
         }
         return ordered;
     }
 
     @Override
-    public void checkCodeTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+    public void checkCodeTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException {
         // item common metadata
         codeRepository.checkCodeTranslations(itemSchemeVersionId, locale, exceptionItems);
         // concrete metadata
@@ -549,12 +557,12 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     @SuppressWarnings("rawtypes")
     private void executeQueryCodeVariableElementAndUpdateCodeMetamacResult(Long idCodelist, Map<Long, ItemResult> mapCodeByItemId) {
         StringBuilder sbVariableElements = new StringBuilder();
-        sbVariableElements.append("SELECT i.ID as ITEM_ID, ave.CODE as VE_CODE ");
+        sbVariableElements.append("SELECT c.TB_CODES as ITEM_ID, ave.CODE as VE_CODE ");
         sbVariableElements.append("FROM TB_M_CODES c ");
-        sbVariableElements.append("INNER JOIN TB_ITEMS_BASE i on c.TB_CODES = i.ID ");
+        sbVariableElements.append("INNER JOIN TB_CODES cb on c.TB_CODES = cb.TB_ITEMS_BASE ");
         sbVariableElements.append("INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK ");
         sbVariableElements.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS ave on ve.IDENTIFIABLE_ARTEFACT_FK = ave.ID ");
-        sbVariableElements.append("WHERE i.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+        sbVariableElements.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
         Query queryVariableElements = getEntityManager().createNativeQuery(sbVariableElements.toString());
         queryVariableElements.setParameter("codelistVersion", idCodelist);
         List variableElementsResultSql = queryVariableElements.getResultList();
@@ -632,12 +640,13 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     private void checkCodeMetamacTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT distinct(a.CODE) ");
-        sb.append("FROM TB_ITEMS_BASE i ");
-        sb.append("INNER JOIN TB_M_CODES c on TB_CODES = i.ID ");
+        sb.append("FROM TB_CODES cb ");
+        sb.append("INNER JOIN TB_ITEMS_BASE i on cb.TB_ITEMS_BASE = i.ID ");
+        sb.append("INNER JOIN TB_M_CODES c on cb.TB_ITEMS_BASE = c.TB_CODES ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = c.SHORT_NAME_FK and ls.LOCALE = :locale ");
         sb.append("WHERE ");
-        sb.append("i.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
+        sb.append("cb.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
         sb.append("AND c.SHORT_NAME_FK IS NOT NULL AND ls.LABEL IS NULL ");
         sb.append("ORDER BY a.CODE ASC");
 

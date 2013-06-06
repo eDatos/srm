@@ -396,18 +396,22 @@ public class SrmServiceUtils {
         return new PagedResult(new ArrayList(), pagingParameter.getStartRow(), pagingParameter.getRowCount(), pagingParameter.getPageSize(), 0, 0);
     }
 
-    public static Map<String, Item> createMapOfItemsByOriginalUrn(List<Item> items) {
+    @SuppressWarnings("rawtypes")
+    public static Map<String, Item> createMapOfItemsByOriginalUrn(List items) {
         Map<String, Item> result = new HashMap<String, Item>(items.size());
-        for (Item item : items) {
+        for (Object itemObject : items) {
+            Item item = (Item) itemObject;
             String originalUrn = GeneratorUrnUtils.makeUrnFromTemporal(item.getNameableArtefact().getUrn());
             result.put(originalUrn, item);
         }
         return result;
     }
 
-    public static Map<String, Item> createMapOfItemsByUrn(List<Item> items) {
+    @SuppressWarnings("rawtypes")
+    public static Map<String, Item> createMapOfItemsByUrn(List items) {
         Map<String, Item> result = new HashMap<String, Item>(items.size());
-        for (Item item : items) {
+        for (Object itemObject : items) {
+            Item item = (Item) itemObject;
             result.put(item.getNameableArtefact().getUrn(), item);
         }
         return result;

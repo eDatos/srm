@@ -28,6 +28,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.RelatedResourceVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
+import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 
 /**
@@ -69,13 +70,14 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     public List<ConceptMetamacVisualisationResult> findConceptsByConceptSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException {
         // Find items. Returns only one row by item. NOTE: this query return null label if locale not exits for a code.
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT i.ID as ITEM_ID, i.CREATED_DATE, i.CREATED_DATE_TZ, a.URN, a.CODE, i.PARENT_FK as ITEM_PARENT_ID, lsName.LABEL as NAME, lsAcronym.LABEL as ACRONYM, c.SDMX_RELATED_ARTEFACT ");
+        sb.append("SELECT i.ID as ITEM_ID, i.CREATED_DATE, i.CREATED_DATE_TZ, a.URN, a.CODE, cb.PARENT_FK as ITEM_PARENT_ID, lsName.LABEL as NAME, lsAcronym.LABEL as ACRONYM, c.SDMX_RELATED_ARTEFACT ");
         sb.append("FROM TB_M_CONCEPTS c ");
+        sb.append("INNER JOIN TB_CONCEPTS cb on c.TB_CONCEPTS = cb.TB_ITEMS_BASE ");
         sb.append("INNER JOIN TB_ITEMS_BASE i on c.TB_CONCEPTS = i.ID ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsName on lsName.INTERNATIONAL_STRING_FK = a.NAME_FK and lsName.locale = :locale ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsAcronym on lsAcronym.INTERNATIONAL_STRING_FK = c.ACRONYM_FK and lsAcronym.locale = :locale ");
-        sb.append("WHERE i.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId");
+        sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId");
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
         query.setParameter("locale", locale);
@@ -92,17 +94,17 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         }
 
         // Add description. Execute one independent query to retrieve it is more efficient than do a global query
-        itemRepository.executeQueryFillItemDescription(itemSchemeVersionId, locale, mapItemByItemId);
+        itemRepository.executeQueryFillItemDescription(itemSchemeVersionId, Concept.class, locale, mapItemByItemId);
 
         // Variable . Execute one independent query to retrieve variable s is more efficient than do a global query
         StringBuilder sbVariables = new StringBuilder();
-        sbVariables.append("SELECT i.ID as ITEM_ID, v.ID as V_ID, av.URN as V_URN, av.URN_PROVIDER as V_URN_PROVIDER, av.CODE as V_CODE, ls.LABEL as V_NAME ");
+        sbVariables.append("SELECT c.TB_CONCEPTS as ITEM_ID, v.ID as V_ID, av.URN as V_URN, av.URN_PROVIDER as V_URN_PROVIDER, av.CODE as V_CODE, ls.LABEL as V_NAME ");
         sbVariables.append("FROM TB_M_CONCEPTS c ");
-        sbVariables.append("INNER JOIN TB_ITEMS_BASE i on c.TB_CONCEPTS = i.ID ");
+        sbVariables.append("INNER JOIN TB_CONCEPTS cb on c.TB_CONCEPTS = cb.TB_ITEMS_BASE ");
         sbVariables.append("INNER JOIN TB_M_VARIABLES v on v.ID = c.VARIABLE_FK ");
         sbVariables.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS av on v.NAMEABLE_ARTEFACT_FK = av.ID ");
         sbVariables.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = av.NAME_FK and ls.locale = :locale ");
-        sbVariables.append("WHERE i.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
+        sbVariables.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
         Query queryVariables = getEntityManager().createNativeQuery(sbVariables.toString());
         queryVariables.setParameter("itemSchemeVersionId", itemSchemeVersionId);
         queryVariables.setParameter("locale", locale);
@@ -126,7 +128,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     }
 
     @Override
-    public List<ItemResult> findConceptsByConceptSchemeUnordered(Long conceptSchemeVersionId, ItemMetamacResultSelection resultSelection) {
+    public List<ItemResult> findConceptsByConceptSchemeUnordered(Long conceptSchemeVersionId, ItemMetamacResultSelection resultSelection) throws MetamacException {
         // Find items
         List<ItemResult> items = conceptRepository.findConceptsByConceptSchemeUnordered(conceptSchemeVersionId, resultSelection);
 
@@ -150,7 +152,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     }
 
     @Override
-    public void checkConceptTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+    public void checkConceptTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException {
         conceptRepository.checkConceptTranslations(itemSchemeVersionId, locale, exceptionItems);
         checkConceptMetamacTranslations(itemSchemeVersionId, locale, exceptionItems);
     }
@@ -181,7 +183,8 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         sb.append("c." + COLUMN_NAME_DOC_METHOD + " as DOC_METHOD_IS, lsdocme.LABEL as DOC_METHOD_LABEL, ");
         sb.append("c." + COLUMN_NAME_DERIVATION + " as DERIVARION_IS, lsderiv.LABEL as DERIVARION_LABEL, ");
         sb.append("c." + COLUMN_NAME_LEGAL_ACTS + " as LEGAL_ACTS_IS, lslegal.LABEL as LEGAL_ACTS_LABEL ");
-        sb.append("FROM TB_ITEMS_BASE i ");
+        sb.append("FROM TB_CONCEPTS cb ");
+        sb.append("INNER JOIN TB_ITEMS_BASE i on cb.TB_ITEMS_BASE = i.ID ");
         sb.append("INNER JOIN TB_M_CONCEPTS c on c.TB_CONCEPTS = i.ID ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsplurn on lsplurn.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_PLURAL_NAME + " AND lsplurn.LOCALE = :locale ");
@@ -192,7 +195,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsderiv on lsderiv.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_DERIVATION + " AND lsderiv.LOCALE = :locale ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lslegal on lslegal.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_LEGAL_ACTS + " AND lslegal.LOCALE = :locale ");
         sb.append("WHERE ");
-        sb.append("i.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
+        sb.append("cb.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
         sb.append("AND (");
         sb.append("       (c." + COLUMN_NAME_PLURAL_NAME + " IS NOT NULL AND lsplurn.LABEL IS NULL) ");
         sb.append("    OR (c." + COLUMN_NAME_ACRONYM + " IS NOT NULL AND lsacron.LABEL IS NULL) ");
@@ -235,10 +238,10 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     @SuppressWarnings("rawtypes")
     private void executeQueryRetrieveConceptInternationalString(Long itemSchemVersionId, Map<Long, ItemResult> mapItemByItemId, ConceptExtensionPointUtility extractor) {
         StringBuilder sqlQuery = new StringBuilder();
-        sqlQuery.append("SELECT i.ID, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL ");
-        sqlQuery.append("FROM TB_M_CONCEPTS c INNER JOIN TB_ITEMS_BASE i on i.ID = c.TB_CONCEPTS ");
+        sqlQuery.append("SELECT c.TB_CONCEPTS, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL ");
+        sqlQuery.append("FROM TB_M_CONCEPTS c INNER JOIN TB_CONCEPTS cb on cb.TB_ITEMS_BASE = c.TB_CONCEPTS ");
         sqlQuery.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = c." + extractor.getColumnName() + " ");
-        sqlQuery.append("WHERE i.ITEM_SCHEME_VERSION_FK = :itemSchemVersionId and c." + extractor.getColumnName() + " IS NOT NULL");
+        sqlQuery.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :itemSchemVersionId and c." + extractor.getColumnName() + " IS NOT NULL");
 
         Query query = getEntityManager().createNativeQuery(sqlQuery.toString());
         query.setParameter("itemSchemVersionId", itemSchemVersionId);

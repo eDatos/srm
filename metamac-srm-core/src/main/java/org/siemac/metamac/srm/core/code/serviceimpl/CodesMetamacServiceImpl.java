@@ -91,7 +91,6 @@ import org.springframework.stereotype.Service;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefactRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemScheme;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
@@ -102,8 +101,10 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseMergeAssert;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
+import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
+import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesInvocationValidator;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
@@ -129,7 +130,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private ItemSchemeVersionRepository    itemSchemeVersionRepository;
 
     @Autowired
-    private ItemRepository                 itemRepository;
+    private CodeRepository                 codeRepository;
 
     @Autowired
     private ItemSchemeRepository           itemSchemeRepository;
@@ -274,7 +275,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodelistVersionMetamac retrieveCodelistByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        return (CodelistVersionMetamac) codesService.retrieveCodelistByUrn(ctx, urn);
+        // Validation
+        CodesInvocationValidator.checkRetrieveByUrn(urn);
+
+        // Retrieve
+        CodelistVersionMetamac codelistVersion = retrieveCodelistVersionByUrn(urn);
+        return codelistVersion;
     }
 
     @Override
@@ -580,7 +586,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         checkCodelistCanBeModified(codelistVersionTarget);
         srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersionTarget);
         // TARGET: actual codes in codelist
-        List<Item> codesInCodelistTargetBeforeCopy = codelistVersionTarget.getItems();
+        List<Code> codesInCodelistTargetBeforeCopy = codelistVersionTarget.getItems();
         Map<String, CodeMetamac> codesInCodelistTargetBeforeCopyByCode = new HashMap<String, CodeMetamac>(codesInCodelistTargetBeforeCopy.size());
         for (Item item : codesInCodelistTargetBeforeCopy) {
             codesInCodelistTargetBeforeCopyByCode.put(item.getNameableArtefact().getCode(), (CodeMetamac) item);
@@ -589,7 +595,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // SOURCE: Get codelist source
         CodelistVersionMetamac codelistVersionSource = retrieveCodelistByUrn(ctx, codelistSourceUrn);
         // SOURCE: Retrieve all codes of codelist source together (although all codes wont be copied, it is prefered obtain in x single queries than x * numCodesToCopy queries)
-        List<Item> codesInCodelistSource = codelistVersionSource.getItems();
+        List<Code> codesInCodelistSource = codelistVersionSource.getItems();
         Map<String, CodeMetamac> codesInCodelistSourceByUrn = new HashMap<String, CodeMetamac>(codesInCodelistSource.size());
         for (Item item : codesInCodelistSource) {
             codesInCodelistSourceByUrn.put(item.getNameableArtefact().getUrn(), (CodeMetamac) item);
@@ -618,8 +624,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Re-calculate all visualisations with new codes
-        List<Item> allItemsToUpdateVisualisations = new ArrayList<Item>(codesInCodelistTargetBeforeCopy);
-        for (Item item : codesToPersist) {
+        List<Code> allItemsToUpdateVisualisations = new ArrayList<Code>(codesInCodelistTargetBeforeCopy);
+        for (Code item : codesToPersist) {
             if (!codesInCodelistTargetBeforeCopyByCode.containsKey(item.getNameableArtefact().getCode())) {
                 allItemsToUpdateVisualisations.add(item);
             }
@@ -705,8 +711,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Re-calculate all visualisations with new codes
-        List<Item> allItemsToUpdateVisualisations = new ArrayList<Item>(codelistVersion.getItems());
-        for (Item item : codesToPersist) {
+        List<Code> allItemsToUpdateVisualisations = new ArrayList<Code>(codelistVersion.getItems());
+        for (Code item : codesToPersist) {
             if (!codesPreviousInCodelistByCode.containsKey(item.getNameableArtefact().getCode())) {
                 allItemsToUpdateVisualisations.add(item);
             }
@@ -731,7 +737,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         BufferedReader bufferedReader = null;
 
         // Codes in codelist
-        List<Item> codesInCodelist = codelistVersion.getItems();
+        List<Code> codesInCodelist = codelistVersion.getItems();
         Map<String, CodeMetamac> codesInCodelistByCode = new HashMap<String, CodeMetamac>();
         for (Item item : codesInCodelist) {
             codesInCodelistByCode.put(item.getNameableArtefact().getCode(), (CodeMetamac) item);
@@ -913,7 +919,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Retrieve items in depth
         List<ItemResult> itemsResult = getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, CodeMetamacResultSelection.EXPORT_ORDERS);
         // Retrieve all items to retrieve all orders
-        List<Item> codes = codelistVersion.getItems();
+        List<Code> codes = codelistVersion.getItems();
         Map<Long, CodeMetamac> codesById = new HashMap<Long, CodeMetamac>(codes.size());
         for (Item code : codes) {
             codesById.put(code.getId(), (CodeMetamac) code);
@@ -975,7 +981,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void recalculateCodesVisualisations(ServiceContext ctx, List<Item> items, List<CodelistOrderVisualisation> orderVisualisations, List<CodelistOpennessVisualisation> opennessVisualisations,
+    public void recalculateCodesVisualisations(ServiceContext ctx, List<Code> items, List<CodelistOrderVisualisation> orderVisualisations, List<CodelistOpennessVisualisation> opennessVisualisations,
             boolean executeSave) {
 
         // Recalculate all order codes
@@ -1275,7 +1281,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public List<MetamacExceptionItem> checkCodelistVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) {
+    public List<MetamacExceptionItem> checkCodelistVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         getCodelistVersionMetamacRepository().checkCodelistVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
         getCodeMetamacRepository().checkCodeTranslations(itemSchemeVersionId, locale, exceptionItems);
@@ -2436,26 +2442,26 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     /**
      * Sorts all codes, ordered by semantic identifier
      */
-    private void sortCodesInAlphabeticalOrder(List<Item> items, CodelistOrderVisualisation alphabeticalOrderVisualisation, boolean executeSave) {
+    private void sortCodesInAlphabeticalOrder(List<Code> items, CodelistOrderVisualisation alphabeticalOrderVisualisation, boolean executeSave) {
         sortCodes(items, alphabeticalOrderVisualisation, new AlphabeticalByLevelComparator(), executeSave);
     }
 
     /**
      * Sorts all codes, ordered by index. Put codes with null index at the end off level
      */
-    private void sortCodesByOrder(List<Item> items, final CodelistOrderVisualisation orderVisualisation, boolean executeSave) {
+    private void sortCodesByOrder(List<Code> items, final CodelistOrderVisualisation orderVisualisation, boolean executeSave) {
         sortCodes(items, orderVisualisation, new OrderIndexByLevelComparator(orderVisualisation), executeSave);
     }
 
     /**
      * Sorts all codes by level, sorting codes by comparator
      */
-    private void sortCodes(List<Item> items, CodelistOrderVisualisation orderVisualisation, Comparator<Item> comparator, boolean executeSave) {
+    private void sortCodes(List<Code> items, CodelistOrderVisualisation orderVisualisation, Comparator<Code> comparator, boolean executeSave) {
         if (CollectionUtils.isEmpty(items)) {
             return;
         }
 
-        List<Item> codesOrdered = new ArrayList<Item>(items);
+        List<Code> codesOrdered = new ArrayList<Code>(items);
         Collections.sort(codesOrdered, comparator);
 
         String previousParentUrn = null;
@@ -2499,7 +2505,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return codelistVersion;
     }
 
-    private void fillCodelistOpennessVisualisationToCodesWithEmptyOpenness(ServiceContext ctx, List<Item> items, CodelistOpennessVisualisation opennessVisualisation, Boolean value) {
+    private void fillCodelistOpennessVisualisationToCodesWithEmptyOpenness(ServiceContext ctx, List<Code> items, CodelistOpennessVisualisation opennessVisualisation, Boolean value) {
         for (Item item : items) {
             CodeMetamac code = (CodeMetamac) item;
             if (SrmServiceUtils.getCodeOpenness(code, opennessVisualisation.getColumnIndex()) == null) {
@@ -3026,10 +3032,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return Integer.valueOf(index);
     }
 
-    private class AlphabeticalByLevelComparator implements Comparator<Item> {
+    private class AlphabeticalByLevelComparator implements Comparator<Code> {
 
         @Override
-        public int compare(Item i1, Item i2) {
+        public int compare(Code i1, Code i2) {
             if (isCodesSiblings(i1, i2)) {
                 return calculeOrderCodeSiblingsAlphabetical(i1, i2);
             } else if (i1.getParent() == null) {
@@ -3043,7 +3049,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
-    private class OrderIndexByLevelComparator implements Comparator<Item> {
+    private class OrderIndexByLevelComparator implements Comparator<Code> {
 
         private final int columnIndex;
 
@@ -3052,7 +3058,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         @Override
-        public int compare(Item i1, Item i2) {
+        public int compare(Code i1, Code i2) {
             CodeMetamac c1 = (CodeMetamac) i1;
             CodeMetamac c2 = (CodeMetamac) i2;
             if (isCodesSiblings(i1, i2)) {
@@ -3126,7 +3132,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
      */
     private boolean mustExecuteTaskInBackground(boolean satisfyAdditionalConditions, ItemSchemeVersion itemSchemeVersion, Boolean canBeBackground) {
         if (satisfyAdditionalConditions && BooleanUtils.isTrue(canBeBackground)) {
-            Long itemsCount = itemRepository.countItems(itemSchemeVersion.getId());
+            Long itemsCount = codeRepository.countItems(itemSchemeVersion.getId());
             if (itemsCount > SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND) {
                 return true;
             }
@@ -3134,4 +3140,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return false;
     }
 
+    private CodelistVersionMetamac retrieveCodelistVersionByUrn(String urn) throws MetamacException {
+        CodesInvocationValidator.checkRetrieveByUrn(urn);
+        CodelistVersionMetamac codelistVersion = getCodelistVersionMetamacRepository().findByUrn(urn);
+        if (codelistVersion == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
+        }
+        return codelistVersion;
+    }
 }

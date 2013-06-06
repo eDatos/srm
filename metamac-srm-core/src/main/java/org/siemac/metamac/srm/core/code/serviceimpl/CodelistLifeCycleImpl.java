@@ -27,11 +27,11 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
+import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
 
 @Service("codelistLifeCycle")
@@ -44,7 +44,7 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
     private CodelistVersionMetamacRepository codelistVersionMetamacRepository;
 
     @Autowired
-    private ItemRepository                   itemRepository;
+    private CodeRepository                   codeRepository;
 
     @Autowired
     private CodeMetamacRepository            codeMetamacRepository;
@@ -105,7 +105,7 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
             ValidationUtils.checkMetadataRequired(codelistVersion.getVariable(), ServiceExceptionParameters.CODELIST_VARIABLE, exceptions);
 
             // One code at least
-            Long itemsCount = itemRepository.countItems(codelistVersion.getId());
+            Long itemsCount = codeRepository.countItems(codelistVersion.getId());
             if (itemsCount == 0) {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, codelistVersion.getMaintainableArtefact().getUrn()));
             }
@@ -147,7 +147,7 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) {
+        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
             return codesMetamacService.checkCodelistVersionTranslations(ctx, getCodelistVersionMetamac(srmResourceVersion).getId(), locale);
         }
 
