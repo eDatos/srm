@@ -55,7 +55,7 @@ public class OrganisationsClientSecurityUtils {
     public static boolean canVersioningOrganisationScheme(String urn, RelatedResourceDto maintainer, OrganisationSchemeTypeEnum organisationSchemeType) {
 
         // Resources from other maintainers can not be version
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainerOrIsAgencySchemeSdmxResource(urn, maintainer)) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.hasDefaultMaintainerOrIsAgencySchemeSdmxResource(urn, maintainer)) {
 
             // Agency schemes, data consumer schemes and data provider schemes can not be version
 
@@ -121,7 +121,7 @@ public class OrganisationsClientSecurityUtils {
     // ORGANISATIONS
 
     public static boolean canCreateOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainerOrIsAgencySchemeSdmxResource(organisationSchemeMetamacDto)) {
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.hasDefaultMaintainerOrIsAgencySchemeSdmxResource(organisationSchemeMetamacDto)) {
             return false;
 
         } else if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(organisationSchemeMetamacDto.getUrn())
@@ -147,7 +147,7 @@ public class OrganisationsClientSecurityUtils {
     }
 
     public static boolean canDeleteOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, Boolean hasOrganisationBeenPublished) {
-        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainerOrIsAgencySchemeSdmxResource(organisationSchemeMetamacDto)) {
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.hasDefaultMaintainerOrIsAgencySchemeSdmxResource(organisationSchemeMetamacDto)) {
             return false;
         }
 

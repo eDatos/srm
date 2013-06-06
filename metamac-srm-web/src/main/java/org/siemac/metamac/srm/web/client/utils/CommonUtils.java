@@ -156,11 +156,11 @@ public class CommonUtils {
         return false;
     }
 
-    public static boolean isDefaultMaintainerOrIsAgencySchemeSdmxResource(MaintainableArtefactDto maintainableArtefactDto) {
-        return isDefaultMaintainerOrIsAgencySchemeSdmxResource(maintainableArtefactDto.getUrn(), maintainableArtefactDto.getMaintainer());
+    public static boolean hasDefaultMaintainerOrIsAgencySchemeSdmxResource(MaintainableArtefactDto maintainableArtefactDto) {
+        return hasDefaultMaintainerOrIsAgencySchemeSdmxResource(maintainableArtefactDto.getUrn(), maintainableArtefactDto.getMaintainer());
     }
 
-    public static boolean isDefaultMaintainerOrIsAgencySchemeSdmxResource(String urn, RelatedResourceDto maintainer) {
+    public static boolean hasDefaultMaintainerOrIsAgencySchemeSdmxResource(String urn, RelatedResourceDto maintainer) {
         if (SdmxSrmSharedUtils.isAgencySchemeSdmx(urn)) {
             return true;
         }
@@ -178,7 +178,7 @@ public class CommonUtils {
     }
 
     public static boolean canSdmxMetadataAndStructureBeModified(String urn, RelatedResourceDto maintainer, String versionLogic) {
-        return isDefaultMaintainerOrIsAgencySchemeSdmxResource(urn, maintainer) && !VersionUtil.isTemporalVersion(versionLogic);
+        return hasDefaultMaintainerOrIsAgencySchemeSdmxResource(urn, maintainer) && !VersionUtil.isTemporalVersion(versionLogic);
     }
 
     // EXPORTATION UTILS

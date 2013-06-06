@@ -45,7 +45,7 @@ public class OrganisationsFormUtils {
         if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(organisationSchemeDto.getLifeCycle().getProcStatus())) {
             return false;
         }
-        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainerOrIsAgencySchemeSdmxResource(organisationSchemeDto)) {
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.hasDefaultMaintainerOrIsAgencySchemeSdmxResource(organisationSchemeDto)) {
             return false;
         }
 
