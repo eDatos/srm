@@ -1134,6 +1134,35 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     }
 
     @Override
+    public void testCheckPrimaryMeasure() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void testCheckTimeDimension() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void testCheckMeasureDimension() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void testCheckDimension() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void testCheckAttribute() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+    @Override
     protected String getDataSetFile() {
         return "dbunit/SrmDsdTest.xml";
     }
