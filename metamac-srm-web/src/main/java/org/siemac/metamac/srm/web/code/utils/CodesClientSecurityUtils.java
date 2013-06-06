@@ -164,7 +164,7 @@ public class CodesClientSecurityUtils {
             return false;
         }
         // Only resources from other organisations can be copied
-        return SharedCodesSecurityUtils.canCopyCodelist(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
+        return SharedCodesSecurityUtils.canCopyCodelist(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultOrRootMaintainer(maintainer);
     }
 
     // CODES

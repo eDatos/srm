@@ -89,7 +89,7 @@ public class CategoriesClientSecurityUtils {
 
     public static boolean canCopyCategoryScheme(RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
-        return SharedCategoriesSecurityUtils.canCopyCategoryScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
+        return SharedCategoriesSecurityUtils.canCopyCategoryScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultOrRootMaintainer(maintainer);
     }
 
     // CATEGORIES

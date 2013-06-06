@@ -151,6 +151,13 @@ public class CommonUtils {
     }
 
     public static boolean isDefaultMaintainer(RelatedResourceDto maintainer) {
+        if (maintainer != null) {
+            return isDefaultMaintainer(maintainer.getUrn());
+        }
+        return false;
+    }
+
+    public static boolean isDefaultOrRootMaintainer(RelatedResourceDto maintainer) {
         if (isRootAgency(maintainer)) {
             return true; // If the maintainer is ROOT, the resource can be modified by anybody
         }
@@ -185,7 +192,7 @@ public class CommonUtils {
     }
 
     public static boolean canSdmxMetadataAndStructureBeModified(RelatedResourceDto maintainer, String versionLogic) {
-        return isDefaultMaintainer(maintainer) && !VersionUtil.isTemporalVersion(versionLogic);
+        return isDefaultOrRootMaintainer(maintainer) && !VersionUtil.isTemporalVersion(versionLogic);
     }
 
     // EXPORTATION UTILS

@@ -70,7 +70,7 @@ public class DsdClientSecurityUtils {
 
     public static boolean canCopyDsd(RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
-        return SharedDsdSecurityUtils.canCopyDataStructureDefinition(MetamacSrmWeb.getCurrentUser()) && !org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer);
+        return SharedDsdSecurityUtils.canCopyDataStructureDefinition(MetamacSrmWeb.getCurrentUser()) && !org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(maintainer);
     }
 
     // PRIMARY MEASURE

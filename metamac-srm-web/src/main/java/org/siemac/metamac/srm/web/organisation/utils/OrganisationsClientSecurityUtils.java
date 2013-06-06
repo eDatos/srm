@@ -96,13 +96,13 @@ public class OrganisationsClientSecurityUtils {
 
     public static boolean canCopyOrganisationScheme(RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
-        return SharedOrganisationsSecurityUtils.canCopyOrganisationScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
+        return SharedOrganisationsSecurityUtils.canCopyOrganisationScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultOrRootMaintainer(maintainer);
     }
 
     // ORGANISATIONS
 
     public static boolean canCreateOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer())) {
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(organisationSchemeMetamacDto.getMaintainer())) {
             return false;
 
         } else if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(organisationSchemeMetamacDto.getUrn())
@@ -128,7 +128,7 @@ public class OrganisationsClientSecurityUtils {
     }
 
     public static boolean canDeleteOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, Boolean hasOrganisationBeenPublished) {
-        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(organisationSchemeMetamacDto.getMaintainer())) {
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(organisationSchemeMetamacDto.getMaintainer())) {
             return false;
         }
 

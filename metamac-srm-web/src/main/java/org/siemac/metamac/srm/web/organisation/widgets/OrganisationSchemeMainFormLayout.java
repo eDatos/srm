@@ -121,7 +121,7 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     private boolean canVersionOrganisationScheme() {
         // Resources from other maintainers can not be version
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer)) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(maintainer)) {
             // Agency schemes, data consumer schemes and data provider schemes can not be version
             if (!CommonUtils.isDataConsumerScheme(organisationSchemeType) && !CommonUtils.isDataProviderScheme(organisationSchemeType) & !CommonUtils.isAgencyScheme(organisationSchemeType)) {
                 if (OrganisationsClientSecurityUtils.canVersioningOrganisationScheme()) {

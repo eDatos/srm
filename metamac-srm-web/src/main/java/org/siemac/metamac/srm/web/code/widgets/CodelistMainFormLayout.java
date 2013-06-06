@@ -151,6 +151,6 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     private boolean canVersionCodelist() {
         // Resources from other maintainers can not be version
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CodesClientSecurityUtils.canVersioningCodelist(isTaskInBackground);
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(maintainer) && CodesClientSecurityUtils.canVersioningCodelist(isTaskInBackground);
     }
 }

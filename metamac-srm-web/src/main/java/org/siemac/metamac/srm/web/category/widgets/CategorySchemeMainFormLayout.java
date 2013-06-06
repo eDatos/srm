@@ -111,6 +111,6 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     private boolean canCategorySchemeBeVersion() {
         // Resources from other maintainers can not be version
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CategoriesClientSecurityUtils.canVersioningCategoryScheme();
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(maintainer) && CategoriesClientSecurityUtils.canVersioningCategoryScheme();
     }
 }

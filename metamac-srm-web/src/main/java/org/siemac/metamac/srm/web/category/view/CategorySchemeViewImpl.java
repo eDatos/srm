@@ -658,7 +658,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     }
 
     private void publishCategorySchemeInternally() {
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(categorySchemeDto.getMaintainer())) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(categorySchemeDto.getMaintainer())) {
             getUiHandlers().publishInternally(categorySchemeDto.getUrn(), categorySchemeDto.getLifeCycle().getProcStatus(), null);
         } else {
             // If the category scheme is imported, ask the user if this resource should be the latest one.
