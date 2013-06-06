@@ -39,7 +39,7 @@ public class ConceptDS extends ItemDS {
     public static String       QUANTITY_IS_PERCENTAGE_TEXT   = "q-is-perc-text";      // Not mapped in DTO
 
     public static String       QUANTITY_INDEX_BASE_TYPE      = "q-base-type";         // Not mapped in DTO
-    public static String       QUANTITY_INDEX_BASE_TYPE_TEXT = "q-base-type-text";         // Not mapped in DTO
+    public static String       QUANTITY_INDEX_BASE_TYPE_TEXT = "q-base-type-text";    // Not mapped in DTO
     public static String       QUANTITY_BASE_VALUE           = "q-value";
     public static String       QUANTITY_BASE_TIME            = "q-time";
     public static String       QUANTITY_BASE_LOCATION        = "q-loc";

@@ -303,9 +303,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ConceptsListItem relatedConcepts = new ConceptsListItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts(), false, getListRecordNavigationClickHandler());
         relationBetweenConceptsForm.setFields(extendsConcept, relatedConcepts);
 
-        //Quantity
+        // Quantity
         quantityForm = new ViewQuantityForm(getConstants().conceptQuantity());
-        
+
         // Legal acts
         legalActsForm = new GroupDynamicForm(getConstants().conceptLegalActs());
         ViewMultiLanguageTextItem legalActs = new ViewMultiLanguageTextItem(ConceptDS.LEGAL_ACTS, getConstants().conceptLegalActs());
@@ -417,9 +417,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         SearchRelatedResourceLinkItem extendsConcept = createExtendsItem(ConceptDS.EXTENDS, getConstants().conceptExtends());
         ConceptsListItem relatedConcepts = createRelatedConceptsItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts());
         relationBetweenConceptsEditionForm.setFields(extendsConcept, relatedConcepts);
-        
+
         quantityEditionForm = new QuantityForm(getConstants().conceptQuantity());
-        
+
         // LEGAL ACTS
 
         legalActsEditionForm = new GroupDynamicForm(getConstants().conceptLegalActs());
@@ -566,10 +566,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ((RelatedResourceLinkItem) relationBetweenConceptsForm.getItem(ConceptDS.EXTENDS)).setRelatedResource(conceptDto.getConceptExtends());
         ((ConceptsListItem) relationBetweenConceptsForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
-        //Quantity Form
+        // Quantity Form
         quantityForm.setValue(conceptDto.getQuantity());
         quantityForm.setVisible(conceptSchemeMetamacDto != null && ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeMetamacDto.getType()));
-        
+
         // Legal acts
         legalActsForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
 
@@ -630,10 +630,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).setDataConcepts(relatedConcepts);
 
-        //Quantity
+        // Quantity
         quantityEditionForm.setValue(conceptDto.getQuantity());
         quantityEditionForm.setVisible(conceptSchemeMetamacDto != null && ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeMetamacDto.getType()));
-        
+
         // LEGAL ACTS
         legalActsEditionForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
 
@@ -686,7 +686,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // Related concepts get in getRelatedConcepts method
 
         conceptDto.setQuantity(quantityEditionForm.getValue(conceptDto.getQuantity()));
-        
+
         // Legal acts
         conceptDto.setLegalActs((InternationalStringDto) legalActsEditionForm.getValue(ConceptDS.LEGAL_ACTS));
 
@@ -761,21 +761,21 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             quantityEditionForm.setCodelistsForQuantityUnitFilter(codeListDtos, firstResult, totalResults);
         }
     }
-    
+
     @Override
     public void setCodeThatCanBeQuantityUnit(List<RelatedResourceDto> codesDtos, int firstResult, int totalResults) {
         if (quantityEditionForm != null) {
             quantityEditionForm.setCodesForQuantityUnit(codesDtos, firstResult, totalResults);
         }
     }
-    
+
     @Override
     public void setConceptSchemesForQuantityBaseFilter(List<RelatedResourceDto> conceptSchemesDtos, int firstResult, int totalResults) {
         if (quantityEditionForm != null) {
             quantityEditionForm.setConceptSchemesForQuantityBaseFilter(conceptSchemesDtos, firstResult, totalResults);
         }
     }
-    
+
     @Override
     public void setConceptThatCanBeQuantityBase(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults) {
         if (quantityEditionForm != null) {
@@ -788,7 +788,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             quantityEditionForm.setConceptSchemesForQuantityNumeratorFilter(conceptSchemesDtos, firstResult, totalResults);
         }
     }
-    
+
     @Override
     public void setConceptThatCanBeQuantityNumerator(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults) {
         if (quantityEditionForm != null) {
@@ -801,14 +801,14 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             quantityEditionForm.setConceptSchemesForQuantityDenominatorFilter(conceptSchemesDtos, firstResult, totalResults);
         }
     }
-    
+
     @Override
     public void setConceptThatCanBeQuantityDenominator(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults) {
         if (quantityEditionForm != null) {
             quantityEditionForm.setConceptsForQuantityDenominator(conceptDtos, firstResult, totalResults);
         }
     }
-    
+
     private List<String> getRelatedConcepts() {
         return ((ConceptsListItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.RELATED_CONCEPTS)).getConceptUrns();
     }
@@ -1156,7 +1156,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         relationBetweenConceptsForm.markForRedraw();
         relationBetweenConceptsEditionForm.markForRedraw();
-        
+
         quantityEditionForm.markForRedraw();
         quantityForm.markForRedraw();
 

@@ -32,7 +32,7 @@ public class BaseQuantityForm extends GroupDynamicForm {
     public void setUiHandlers(ConceptUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
     }
-    
+
     public ConceptUiHandlers getUiHandlers() {
         return uiHandlers;
     }
@@ -62,14 +62,14 @@ public class BaseQuantityForm extends GroupDynamicForm {
     protected LinkedHashMap<String, String> getQuantityIndexBaseTypeValueMap() {
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         for (QuantityIndexBaseTypeEnum type : QuantityIndexBaseTypeEnum.values()) {
-            //FIXME: ENABLED LOCATION when its done
+            // FIXME: ENABLED LOCATION when its done
             if (!QuantityIndexBaseTypeEnum.BASE_LOCATION.equals(type)) {
                 valueMap.put(type.toString(), getCoreMessages().getString(getCoreMessages().quantityIndexBaseTypeEnum() + type.getName()));
             }
         }
         return valueMap;
     }
-    
+
     protected LinkedHashMap<String, String> getQuantityUnitSymbolValueMap() {
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         for (QuantityUnitSymbolPositionEnum position : QuantityUnitSymbolPositionEnum.values()) {
@@ -118,8 +118,6 @@ public class BaseQuantityForm extends GroupDynamicForm {
         return false;
     }
 
-
-    
     protected FormItemIfFunction getDenominatorIfFunction() {
         return new FormItemIfFunction() {
 
@@ -195,7 +193,7 @@ public class BaseQuantityForm extends GroupDynamicForm {
             QuantityTypeEnum type = QuantityTypeEnum.valueOf(form.getValueAsString(ConceptDS.QUANTITY_TYPE));
             if (QuantityUtils.isRatioOrExtension(type)) {
                 Object isPercentageValue = form.getValue(ConceptDS.QUANTITY_IS_PERCENTAGE);
-                if (isPercentageValue != null && (Boolean)isPercentageValue) {
+                if (isPercentageValue != null && (Boolean) isPercentageValue) {
                     return true;
                 }
             }
@@ -218,10 +216,10 @@ public class BaseQuantityForm extends GroupDynamicForm {
             }
         };
     }
-    
+
     protected FormItemIfFunction getShowIfAnyQuantityType() {
         return new FormItemIfFunction() {
-            
+
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
                 if (form.getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !form.getValueAsString(ConceptDS.QUANTITY_TYPE).isEmpty()) {
@@ -301,7 +299,7 @@ public class BaseQuantityForm extends GroupDynamicForm {
             }
         };
     }
-    
+
     protected CustomLinkItemNavigationClickHandler getCustomLinkItemNavigationClickHandler() {
         return new CustomLinkItemNavigationClickHandler() {
 

@@ -33,14 +33,14 @@ import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.form.validator.RequiredIfFunction;
 import com.smartgwt.client.widgets.form.validator.RequiredIfValidator;
 
-public class QuantityForm extends BaseQuantityForm  {
+public class QuantityForm extends BaseQuantityForm {
 
-    //private QuantityDto  quantityDto;
+    // private QuantityDto quantityDto;
 
     private SearchConceptForQuantityDenominatorItem searchDenominatorItem;
-    private SearchConceptForQuantityNumeratorItem searchNumeratorItem;
-    private SearchConceptForQuantityBaseItem searchBaseItem;
-    private SearchCodeForQuantityUnitItem searchUnitItem;
+    private SearchConceptForQuantityNumeratorItem   searchNumeratorItem;
+    private SearchConceptForQuantityBaseItem        searchBaseItem;
+    private SearchCodeForQuantityUnitItem           searchUnitItem;
 
     public QuantityForm(String groupTitle) {
         super(groupTitle);
@@ -59,7 +59,7 @@ public class QuantityForm extends BaseQuantityForm  {
         searchUnitItem = createQuantityUnitItem(ConceptDS.QUANTITY_UNIT, getConstants().conceptQuantityUnit());
         searchUnitItem.setValidators(getQuantityRequiredIfValidator());
         searchUnitItem.setShowIfCondition(getShowIfAnyQuantityType());
-        
+
         CustomSelectItem unitSymbol = new CustomSelectItem(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION, getConstants().conceptQuantityUnitSymbolPosition());
         unitSymbol.setValueMap(getQuantityUnitSymbolValueMap());
         unitSymbol.setValidators(getQuantityRequiredIfValidator());
@@ -118,11 +118,11 @@ public class QuantityForm extends BaseQuantityForm  {
         CustomIntegerItem baseValue = new CustomIntegerItem(ConceptDS.QUANTITY_BASE_VALUE, getConstants().conceptQuantityBaseValue());
         baseValue.setRequired(true);
         baseValue.setShowIfCondition(getBaseValueIfFunction());
-        
-         RequiredTextItem baseTime = new RequiredTextItem(ConceptDS.QUANTITY_BASE_TIME, getConstants().conceptQuantityBaseTime());
-         baseTime.setRequired(true);
-         baseTime.setShowIfCondition(getBaseTimeIfFunction());
-         baseTime.setValidators(TimeVariableWebUtils.getTimeCustomValidator());
+
+        RequiredTextItem baseTime = new RequiredTextItem(ConceptDS.QUANTITY_BASE_TIME, getConstants().conceptQuantityBaseTime());
+        baseTime.setRequired(true);
+        baseTime.setShowIfCondition(getBaseTimeIfFunction());
+        baseTime.setValidators(TimeVariableWebUtils.getTimeCustomValidator());
 
         // final GeographicalSelectItem baseLocation = new GeographicalSelectItem(ConceptDS.QUANTITY_BASE_LOCATION, getConstants().conceptQuantityBaseLocation());
         // baseLocation.setRequired(true);
@@ -145,12 +145,12 @@ public class QuantityForm extends BaseQuantityForm  {
 
         // Search indicator base
         searchBaseItem = createQuantityBaseItem(ConceptDS.QUANTITY_BASE_QUANTITY, getConstants().conceptQuantityBaseQuantity());
-        //FIXME
+        // FIXME
         searchBaseItem.setRequired(true);
         searchBaseItem.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
 
-        setFields(type, searchUnitItem, unitSymbol, unitMultiplier, sigDigits, decPlaces, min, max, searchDenominatorItem, searchNumeratorItem, isPercentange,
-                percentageOf, indexBaseType, baseValue,  baseTime, /*baseLocation, */searchBaseItem);
+        setFields(type, searchUnitItem, unitSymbol, unitMultiplier, sigDigits, decPlaces, min, max, searchDenominatorItem, searchNumeratorItem, isPercentange, percentageOf, indexBaseType, baseValue,
+                baseTime, /* baseLocation, */searchBaseItem);
     }
 
     public void setCodelistsForQuantityUnitFilter(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
@@ -159,64 +159,64 @@ public class QuantityForm extends BaseQuantityForm  {
             searchUnitItem.getSearchWindow().refreshFilterListPaginationInfo(firstResult, resources.size(), totalResults);
         }
     }
-    
+
     public void setCodesForQuantityUnit(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
         if (searchUnitItem != null && searchUnitItem.getSearchWindow() != null) {
             searchUnitItem.getSearchWindow().setRelatedResources(resources);
             searchUnitItem.getSearchWindow().refreshListPaginationInfo(firstResult, resources.size(), totalResults);
         }
     }
-    
+
     public void setConceptSchemesForQuantityBaseFilter(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
         if (searchBaseItem != null && searchBaseItem.getSearchWindow() != null) {
             searchBaseItem.getSearchWindow().setFilterRelatedResources(resources);
             searchBaseItem.getSearchWindow().refreshFilterListPaginationInfo(firstResult, resources.size(), totalResults);
         }
     }
-    
+
     public void setConceptsForQuantityBase(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
         if (searchBaseItem != null && searchBaseItem.getSearchWindow() != null) {
             searchBaseItem.getSearchWindow().setRelatedResources(resources);
             searchBaseItem.getSearchWindow().refreshListPaginationInfo(firstResult, resources.size(), totalResults);
         }
     }
-    
+
     public void setConceptSchemesForQuantityNumeratorFilter(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
         if (searchNumeratorItem != null && searchNumeratorItem.getSearchWindow() != null) {
             searchNumeratorItem.getSearchWindow().setFilterRelatedResources(resources);
             searchNumeratorItem.getSearchWindow().refreshFilterListPaginationInfo(firstResult, resources.size(), totalResults);
         }
     }
-    
+
     public void setConceptsForQuantityNumerator(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
         if (searchNumeratorItem != null && searchNumeratorItem.getSearchWindow() != null) {
             searchNumeratorItem.getSearchWindow().setRelatedResources(resources);
             searchNumeratorItem.getSearchWindow().refreshListPaginationInfo(firstResult, resources.size(), totalResults);
         }
     }
-    
+
     public void setConceptSchemesForQuantityDenominatorFilter(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
         if (searchDenominatorItem != null && searchDenominatorItem.getSearchWindow() != null) {
             searchDenominatorItem.getSearchWindow().setFilterRelatedResources(resources);
             searchDenominatorItem.getSearchWindow().refreshFilterListPaginationInfo(firstResult, resources.size(), totalResults);
         }
     }
-    
+
     public void setConceptsForQuantityDenominator(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
         if (searchDenominatorItem != null && searchDenominatorItem.getSearchWindow() != null) {
             searchDenominatorItem.getSearchWindow().setRelatedResources(resources);
             searchDenominatorItem.getSearchWindow().refreshListPaginationInfo(firstResult, resources.size(), totalResults);
         }
     }
-    
+
     public void setValue(QuantityDto quantityDto) {
         clearValues();
         if (quantityDto != null) {
-            setValue(ConceptDS.QUANTITY_TYPE, quantityDto.getQuantityType() != null? quantityDto.getQuantityType().toString() : "");
+            setValue(ConceptDS.QUANTITY_TYPE, quantityDto.getQuantityType() != null ? quantityDto.getQuantityType().toString() : "");
             if (quantityDto.getUnitCode() != null) {
                 setRelatedResourceDtoValue(ConceptDS.QUANTITY_UNIT, quantityDto.getUnitCode());
             }
-            setValue(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION, quantityDto.getUnitSymbolPosition() != null? quantityDto.getUnitSymbolPosition().toString() : "");
+            setValue(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION, quantityDto.getUnitSymbolPosition() != null ? quantityDto.getUnitSymbolPosition().toString() : "");
             setValue(ConceptDS.QUANTITY_UNIT_MULTIPLIER, quantityDto.getUnitMultiplier());
             if (quantityDto.getSignificantDigits() != null) {
                 setValue(ConceptDS.QUANTITY_SIGNIFICANT_DIGITS, quantityDto.getSignificantDigits());
@@ -239,26 +239,26 @@ public class QuantityForm extends BaseQuantityForm  {
 
             setValue(ConceptDS.QUANTITY_IS_PERCENTAGE, quantityDto.getIsPercentage() != null ? quantityDto.getIsPercentage().booleanValue() : true);
             setValue(ConceptDS.QUANTITY_PERCENTAGE_OF, RecordUtils.getInternationalStringRecord(quantityDto.getPercentageOf()));
-            
+
             setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE, getIndexBaseTypeEnum(quantityDto) != null ? getIndexBaseTypeEnum(quantityDto).toString() : "");
 
             if (quantityDto.getBaseValue() != null) {
                 setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE, QuantityIndexBaseTypeEnum.BASE_VALUE.toString());
                 setValue(ConceptDS.QUANTITY_BASE_VALUE, quantityDto.getBaseValue());
             }
-            
+
             if (quantityDto.getBaseTime() != null) {
                 setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE, QuantityIndexBaseTypeEnum.BASE_TIME.toString());
                 setValue(ConceptDS.QUANTITY_BASE_TIME, quantityDto.getBaseTime());
             }
 
-            //FIXME: baseLocation
-//            if (quantityDto.getBaseLocation() != null) {
-//                setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE, QuantityIndexBaseTypeEnum.BASE_LOCATION.toString());
-//                 Base location granularity set in setGeographicalGranularity method
-//                ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoGranularity(new String());
-//                ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoValue(quantityDto.getBaseLocationUuid());
-//            }
+            // FIXME: baseLocation
+            // if (quantityDto.getBaseLocation() != null) {
+            // setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE, QuantityIndexBaseTypeEnum.BASE_LOCATION.toString());
+            // Base location granularity set in setGeographicalGranularity method
+            // ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoGranularity(new String());
+            // ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoValue(quantityDto.getBaseLocationUuid());
+            // }
 
             if (quantityDto.getBaseQuantity() != null) {
                 setRelatedResourceDtoValue(ConceptDS.QUANTITY_BASE_QUANTITY, quantityDto.getBaseQuantity());
@@ -267,7 +267,7 @@ public class QuantityForm extends BaseQuantityForm  {
             setValue(ConceptDS.QUANTITY_IS_PERCENTAGE, true);
         }
     }
-    
+
     public QuantityDto getValue(QuantityDto quantityDto) {
         if (!isVisible()) {
             return null;
@@ -276,9 +276,12 @@ public class QuantityForm extends BaseQuantityForm  {
             if (quantityDto == null) {
                 quantityDto = new QuantityDto();
             }
-            quantityDto.setQuantityType((getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !getValueAsString(ConceptDS.QUANTITY_TYPE).isEmpty()) ? QuantityTypeEnum.valueOf(getValueAsString(ConceptDS.QUANTITY_TYPE)) : null);
-            quantityDto.setUnitSymbolPosition((getValueAsString(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION) != null && !getValueAsString(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION).isEmpty()) ? QuantityUnitSymbolPositionEnum.valueOf(getValueAsString(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION)) : null);
-            
+            quantityDto.setQuantityType((getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !getValueAsString(ConceptDS.QUANTITY_TYPE).isEmpty()) ? QuantityTypeEnum
+                    .valueOf(getValueAsString(ConceptDS.QUANTITY_TYPE)) : null);
+            quantityDto.setUnitSymbolPosition((getValueAsString(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION) != null && !getValueAsString(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION).isEmpty())
+                    ? QuantityUnitSymbolPositionEnum.valueOf(getValueAsString(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION))
+                    : null);
+
             quantityDto.setUnitCode(getRelatedResourceDtoValue(ConceptDS.QUANTITY_UNIT));
             quantityDto.setUnitMultiplier(getValueAsInteger(ConceptDS.QUANTITY_UNIT_MULTIPLIER));
             quantityDto.setSignificantDigits(getValueAsInteger(ConceptDS.QUANTITY_SIGNIFICANT_DIGITS));
@@ -286,51 +289,52 @@ public class QuantityForm extends BaseQuantityForm  {
             // Only set value if item is visible (these item are quantity type dependent)
             quantityDto.setMinimum(getItem(ConceptDS.QUANTITY_MINIMUM).isVisible() ? getValueAsInteger(ConceptDS.QUANTITY_MINIMUM) : null);
             quantityDto.setMaximum(getItem(ConceptDS.QUANTITY_MAXIMUM).isVisible() ? getValueAsInteger(ConceptDS.QUANTITY_MAXIMUM) : null);
-            
+
             quantityDto.setDenominator(getRelatedResourceDtoValue(ConceptDS.QUANTITY_DENOMINATOR));
             quantityDto.setNumerator(getRelatedResourceDtoValue(ConceptDS.QUANTITY_NUMERATOR));
-            
+
             quantityDto.setIsPercentage(getItem(ConceptDS.QUANTITY_IS_PERCENTAGE).isVisible() ? (getValue(ConceptDS.QUANTITY_IS_PERCENTAGE) != null ? Boolean
                     .valueOf((Boolean) getValue(ConceptDS.QUANTITY_IS_PERCENTAGE)) : false) : null);
             quantityDto.setPercentageOf(getItem(ConceptDS.QUANTITY_PERCENTAGE_OF).isVisible() ? ((MultiLanguageTextItem) getItem(ConceptDS.QUANTITY_PERCENTAGE_OF)).getValue() : null);
-            quantityDto.setBaseValue(getItem(ConceptDS.QUANTITY_BASE_VALUE).isVisible() ? (getValue(ConceptDS.QUANTITY_BASE_VALUE) != null ? (Integer) getValue(ConceptDS.QUANTITY_BASE_VALUE) : null) : null);
+            quantityDto.setBaseValue(getItem(ConceptDS.QUANTITY_BASE_VALUE).isVisible()
+                    ? (getValue(ConceptDS.QUANTITY_BASE_VALUE) != null ? (Integer) getValue(ConceptDS.QUANTITY_BASE_VALUE) : null)
+                    : null);
             quantityDto.setBaseTime(getItem(ConceptDS.QUANTITY_BASE_TIME).isVisible() ? getValueAsString(ConceptDS.QUANTITY_BASE_TIME) : null);
-            //FIXME:
-            //quantityDto.setBaseLocation();
+            // FIXME:
+            // quantityDto.setBaseLocation();
             quantityDto.setBaseQuantity(getRelatedResourceDtoValue(ConceptDS.QUANTITY_BASE_QUANTITY));
             return quantityDto;
         }
         return null;
     }
 
-    
     private SearchCodeForQuantityUnitItem createQuantityUnitItem(final String name, String title) {
         final SearchCodeForQuantityUnitItem item = new SearchCodeForQuantityUnitItem(name, title, getCustomLinkItemNavigationClickHandler());
         item.setSaveClickHandler(getSearchItemSaveClickHandler(item, name));
         return item;
     }
-    
+
     private SearchConceptForQuantityNumeratorItem createQuantityNumeratorItem(final String name, String title) {
         final SearchConceptForQuantityNumeratorItem item = new SearchConceptForQuantityNumeratorItem(name, title, getCustomLinkItemNavigationClickHandler());
         item.setSaveClickHandler(getSearchItemSaveClickHandler(item, name));
         return item;
     }
-    
+
     private SearchConceptForQuantityDenominatorItem createQuantityDenominatorItem(final String name, String title) {
         final SearchConceptForQuantityDenominatorItem item = new SearchConceptForQuantityDenominatorItem(name, title, getCustomLinkItemNavigationClickHandler());
         item.setSaveClickHandler(getSearchItemSaveClickHandler(item, name));
         return item;
     }
-    
+
     private SearchConceptForQuantityBaseItem createQuantityBaseItem(final String name, String title) {
         final SearchConceptForQuantityBaseItem item = new SearchConceptForQuantityBaseItem(name, title, getCustomLinkItemNavigationClickHandler());
         item.setSaveClickHandler(getSearchItemSaveClickHandler(item, name));
         return item;
     }
-    
+
     private ClickHandler getSearchItemSaveClickHandler(final SearchItemItem searchItem, final String itemName) {
         com.smartgwt.client.widgets.form.fields.events.ClickHandler clickHandler = new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-            
+
             @Override
             public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                 RelatedResourceDto code = searchItem.getSelectedItem();
@@ -341,7 +345,7 @@ public class QuantityForm extends BaseQuantityForm  {
         };
         return clickHandler;
     }
-  
+
     public RequiredIfValidator getQuantityRequiredIfValidator() {
         return new RequiredIfValidator(new RequiredIfFunction() {
 
@@ -354,10 +358,10 @@ public class QuantityForm extends BaseQuantityForm  {
             }
         });
     }
-    
+
     public RequiredIfValidator getQuantityIndexBaseTypeRequiredIfValidator() {
         return new RequiredIfValidator(new RequiredIfFunction() {
-            
+
             @Override
             public boolean execute(FormItem formItem, Object value) {
                 if (QuantityForm.this.getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !QuantityForm.this.getValueAsString(ConceptDS.QUANTITY_TYPE).isEmpty()) {
@@ -370,20 +374,21 @@ public class QuantityForm extends BaseQuantityForm  {
             }
         });
     }
-    
+
     protected CustomValidator getUnitMultiplierValidator() {
-        CustomValidator validator =  new CustomValidator() {
-            
+        CustomValidator validator = new CustomValidator() {
+
             @Override
             protected boolean condition(Object value) {
                 if (value != null) {
                     Integer intValue = null;
                     if (value instanceof Integer) {
-                        intValue = (Integer)value;
+                        intValue = (Integer) value;
                     } else if (value instanceof String) {
                         try {
                             intValue = Integer.parseInt(value.toString());
-                        } catch (Exception e) {}
+                        } catch (Exception e) {
+                        }
                     }
                     if (intValue != null) {
                         if (intValue > 0) {
@@ -391,7 +396,7 @@ public class QuantityForm extends BaseQuantityForm  {
                             if (Math.pow(10, log) == Double.valueOf(intValue)) {
                                 return true;
                             }
-                        } 
+                        }
                         return false;
                     }
                     return false;
@@ -402,7 +407,7 @@ public class QuantityForm extends BaseQuantityForm  {
         validator.setErrorMessage(MetamacSrmWeb.getMessages().errorConceptQuantityUnitMultiplier());
         return validator;
     }
-    
+
     @Override
     public void setUiHandlers(ConceptUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
@@ -411,20 +416,19 @@ public class QuantityForm extends BaseQuantityForm  {
         searchDenominatorItem.setUiHandlers(uiHandlers);
         searchBaseItem.setUiHandlers(uiHandlers);
     }
-    
-    @SuppressWarnings("unchecked")
+
     private void setRelatedResourceDtoValue(String name, RelatedResourceDto relatedResourceDto) {
-        ((SearchItemItem)getField(name)).setRelatedResource(relatedResourceDto);
+        ((SearchItemItem) getField(name)).setRelatedResource(relatedResourceDto);
     }
-    
+
     private RelatedResourceDto getRelatedResourceDtoValue(String name) {
         if (getItem(name).isVisible()) {
-            return ((SearchItemItem)getField(name)).getRelatedResourceDto();
+            return ((SearchItemItem) getField(name)).getRelatedResourceDto();
         }
         return null;
     }
-    
+
     private Integer getValueAsInteger(String fieldName) {
-        return FormItemUtils.getValueAsInteger((CustomIntegerItem)getItem(fieldName));
+        return FormItemUtils.getValueAsInteger((CustomIntegerItem) getItem(fieldName));
     }
 }

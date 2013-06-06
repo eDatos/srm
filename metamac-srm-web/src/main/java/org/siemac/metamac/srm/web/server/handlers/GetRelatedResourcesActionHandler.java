@@ -194,7 +194,8 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CONCEPT_SCHEME_WITH_QUANTITY_NUMERATOR: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getRelatedConceptSchemeUrn(), criteria);
+                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(ServiceContextHolder.getCurrentServiceContext(),
+                            conceptSchemeWebCriteria.getRelatedConceptSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_WITH_QUANTITY_NUMERATOR: {
@@ -206,7 +207,8 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CONCEPT_SCHEME_WITH_QUANTITY_DENOMINATOR: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getRelatedConceptSchemeUrn(), criteria);
+                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(ServiceContextHolder.getCurrentServiceContext(),
+                            conceptSchemeWebCriteria.getRelatedConceptSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_WITH_QUANTITY_DENOMINATOR: {
@@ -218,7 +220,8 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CONCEPT_SCHEME_WITH_QUANTITY_BASE_QUANTITY: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getRelatedConceptSchemeUrn(), criteria);
+                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ServiceContextHolder.getCurrentServiceContext(),
+                            conceptSchemeWebCriteria.getRelatedConceptSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_WITH_QUANTITY_BASE_QUANTITY: {
@@ -230,7 +233,8 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CONCEPT_SCHEME_WITH_CONCEPT_ENUMERATED_REPRESENTATION: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getConceptUrn(), criteria);
+                    result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getConceptUrn(),
+                            criteria);
                     break;
                 }
                 default:

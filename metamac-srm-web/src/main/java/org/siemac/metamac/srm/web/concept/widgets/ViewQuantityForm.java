@@ -26,7 +26,7 @@ public class ViewQuantityForm extends BaseQuantityForm {
 
         RelatedResourceLinkItem unit = new RelatedResourceLinkItem(ConceptDS.QUANTITY_UNIT, getConstants().conceptQuantityUnit(), getCustomLinkItemNavigationClickHandler());
         unit.setShowIfCondition(getShowIfAnyQuantityType());
-        
+
         ViewTextItem unitSymbol = new ViewTextItem(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION, getConstants().conceptQuantityUnitSymbolPosition());
         unitSymbol.setShowIfCondition(getShowIfAnyQuantityType());
 
@@ -53,7 +53,7 @@ public class ViewQuantityForm extends BaseQuantityForm {
 
         ViewTextItem isPercentage = new ViewTextItem(ConceptDS.QUANTITY_IS_PERCENTAGE, getConstants().conceptQuantityIsPercentage());
         isPercentage.setVisible(false);
-        
+
         ViewTextItem isPercentageText = new ViewTextItem(ConceptDS.QUANTITY_IS_PERCENTAGE_TEXT, getConstants().conceptQuantityIsPercentage());
         isPercentageText.setShowIfCondition(getIsPercentageIfFunction());
 
@@ -62,7 +62,7 @@ public class ViewQuantityForm extends BaseQuantityForm {
 
         ViewTextItem indexBaseType = new ViewTextItem(ConceptDS.QUANTITY_INDEX_BASE_TYPE, getConstants().conceptQuantityIndexMetadata());
         indexBaseType.setVisible(false);
-        
+
         ViewTextItem indexBaseTypeText = new ViewTextItem(ConceptDS.QUANTITY_INDEX_BASE_TYPE_TEXT, getConstants().conceptQuantityIndexMetadata());
         indexBaseTypeText.setShowIfCondition(getIndexBaseTypeIfFunction());
 
@@ -78,17 +78,20 @@ public class ViewQuantityForm extends BaseQuantityForm {
         RelatedResourceLinkItem baseQuantity = new RelatedResourceLinkItem(ConceptDS.QUANTITY_BASE_QUANTITY, getConstants().conceptQuantityBaseQuantity(), getCustomLinkItemNavigationClickHandler());
         baseQuantity.setShowIfCondition(getBaseQuantityIfFunction());
 
-        setFields(type, typeText, unit, unitSymbol, unitMultiplier, sigDigits, decPlaces, min, max, denominator, numerator, isPercentage, isPercentageText, percentageOf, indexBaseType, indexBaseTypeText, baseValue,
-         baseTime, /*baseLocation, */baseQuantity);
+        setFields(type, typeText, unit, unitSymbol, unitMultiplier, sigDigits, decPlaces, min, max, denominator, numerator, isPercentage, isPercentageText, percentageOf, indexBaseType,
+                indexBaseTypeText, baseValue, baseTime, /* baseLocation, */baseQuantity);
     }
-    
+
     public void setValue(QuantityDto quantityDto) {
         clearValues();
         if (quantityDto != null) {
             setValue(ConceptDS.QUANTITY_TYPE, quantityDto.getQuantityType() != null ? quantityDto.getQuantityType().toString() : "");
-            setValue(ConceptDS.QUANTITY_TYPE_TEXT, quantityDto.getQuantityType() != null ? getCoreMessages().getString(getCoreMessages().quantityTypeEnum() + quantityDto.getQuantityType().toString()) : "");
+            setValue(ConceptDS.QUANTITY_TYPE_TEXT, quantityDto.getQuantityType() != null
+                    ? getCoreMessages().getString(getCoreMessages().quantityTypeEnum() + quantityDto.getQuantityType().toString())
+                    : "");
             setRelatedResourceDtoValue(ConceptDS.QUANTITY_UNIT, quantityDto.getUnitCode());
-            setValue(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION, quantityDto.getUnitSymbolPosition() != null ? getCoreMessages().getString(getCoreMessages().quantityUnitSymbolPositionEnum() + quantityDto.getUnitSymbolPosition().toString()) : "");
+            setValue(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION,
+                    quantityDto.getUnitSymbolPosition() != null ? getCoreMessages().getString(getCoreMessages().quantityUnitSymbolPositionEnum() + quantityDto.getUnitSymbolPosition().toString()) : "");
             setValue(ConceptDS.QUANTITY_UNIT_MULTIPLIER, quantityDto.getUnitMultiplier() != null ? quantityDto.getUnitMultiplier().toString() : "");
             setValue(ConceptDS.QUANTITY_SIGNIFICANT_DIGITS, quantityDto.getSignificantDigits() != null ? quantityDto.getSignificantDigits().toString() : "");
             setValue(ConceptDS.QUANTITY_DECIMAL_PLACES, quantityDto.getDecimalPlaces() != null ? quantityDto.getDecimalPlaces().toString() : "");
@@ -99,27 +102,25 @@ public class ViewQuantityForm extends BaseQuantityForm {
             setRelatedResourceDtoValue(ConceptDS.QUANTITY_NUMERATOR, quantityDto.getNumerator());
 
             setValue(ConceptDS.QUANTITY_IS_PERCENTAGE, quantityDto.getIsPercentage() != null ? quantityDto.getIsPercentage() : false);
-            setValue(ConceptDS.QUANTITY_IS_PERCENTAGE_TEXT, quantityDto.getIsPercentage() != null ? (quantityDto.getIsPercentage() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants()
-                    .no()) : "");
+            setValue(ConceptDS.QUANTITY_IS_PERCENTAGE_TEXT, quantityDto.getIsPercentage() != null ? (quantityDto.getIsPercentage() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
+                    .getConstants().no()) : "");
             QuantityIndexBaseTypeEnum baseType = getIndexBaseTypeEnum(quantityDto);
             setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE, baseType != null ? baseType.toString() : null);
             setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE_TEXT, getIndexBaseType(quantityDto));
             setValue(ConceptDS.QUANTITY_BASE_VALUE, quantityDto.getBaseValue() != null ? quantityDto.getBaseValue().toString() : "");
             setValue(ConceptDS.QUANTITY_BASE_TIME, quantityDto.getBaseTime());
 
-            //FIXME: base_location
-            //setValue(ConceptDS.QUANTITY_BASE_LOCATION, ""); // 
-            
+            // FIXME: base_location
+            // setValue(ConceptDS.QUANTITY_BASE_LOCATION, ""); //
 
             setRelatedResourceDtoValue(ConceptDS.QUANTITY_BASE_QUANTITY, quantityDto.getBaseQuantity());
 
             setValue(ConceptDS.QUANTITY_PERCENTAGE_OF, RecordUtils.getInternationalStringRecord(quantityDto.getPercentageOf()));
         }
     }
-    
-    @SuppressWarnings("unchecked")
+
     private void setRelatedResourceDtoValue(String name, RelatedResourceDto relatedResourceDto) {
-        ((RelatedResourceLinkItem)getField(name)).setRelatedResource(relatedResourceDto);
+        ((RelatedResourceLinkItem) getField(name)).setRelatedResource(relatedResourceDto);
     }
-    
+
 }

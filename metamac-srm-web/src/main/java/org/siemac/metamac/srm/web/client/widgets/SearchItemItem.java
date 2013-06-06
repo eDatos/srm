@@ -19,8 +19,8 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
 
     private ClickHandler                                                    saveClickHandler;
 
-    public SearchItemItem(final String name, String title, final String windowTitle,
-            final String windowFilterListTitle, final String windowFilterTextTitle, final String windowSelectionListTitle, CustomLinkItemNavigationClickHandler itemNavigationHandler) {
+    public SearchItemItem(final String name, String title, final String windowTitle, final String windowFilterListTitle, final String windowFilterTextTitle, final String windowSelectionListTitle,
+            CustomLinkItemNavigationClickHandler itemNavigationHandler) {
         super(name, title, itemNavigationHandler);
 
         getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
@@ -37,7 +37,6 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
                         retrieveItemSchemes(firstResult, maxResults, searchItemWindow.getFilterListCriteria());
                     }
 
-      
                 };
                 PaginatedAction selectionListAction = new PaginatedAction() {
 
@@ -128,5 +127,5 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
 
     protected abstract void retrieveItemSchemes(int firstResult, int maxResults, String filterListCriteria);
     protected abstract void retrieveItems(int firstResult, int maxResults, String selectionListCriteria, String selectedRelatedResourceUrnAsFilter);
-    
+
 }

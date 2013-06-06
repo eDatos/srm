@@ -112,7 +112,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         void setConceptList(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ConceptMetamacVisualisationResult> itemVisualisationResults);
 
         void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos);
-        
+
         void setCodelistsOrConceptSchemesForEnumeratedRepresentation(GetRelatedResourcesResult result);
         void setCodelistsForQuantityUnitFilter(List<RelatedResourceDto> codeListDtos, int firstResult, int totalResults);
         void setConceptSchemesForQuantityNumeratorFilter(List<RelatedResourceDto> conceptSchemesDtos, int firstResult, int totalResults);
@@ -130,8 +130,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
         void setVariables(GetVariablesResult result);
         void setVariableFamilies(GetVariableFamiliesResult result);
-        
-        
+
     }
 
     @ContentSlot
@@ -461,147 +460,163 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             }
         });
     }
-    
+
     @Override
     public void retrieveCodeListsForQuantityUnitFilter(int firstResult, int maxResults, String filterListCriteria) {
         CodelistWebCriteria criteria = new CodelistWebCriteria(filterListCriteria);
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_QUANTITY_UNIT, firstResult, maxResults, criteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setCodelistsForQuantityUnitFilter(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
-            }
-        });
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_QUANTITY_UNIT, firstResult, maxResults, criteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCodelistsForQuantityUnitFilter(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
+                    }
+                });
     }
-    
+
     @Override
     public void retrieveCodesForQuantityUnit(int firstResult, int maxResults, String codeCriteria, String schemeUrnAsFilter) {
         CodeWebCriteria criteria = new CodeWebCriteria(codeCriteria);
         criteria.setItemSchemeUrn(schemeUrnAsFilter);
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODE_WITH_QUANTITY_UNIT, firstResult, maxResults, criteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setCodeThatCanBeQuantityUnit(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
-            }
-        });
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODE_WITH_QUANTITY_UNIT, firstResult, maxResults, criteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCodeThatCanBeQuantityUnit(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
+                    }
+                });
     }
-    
+
     @Override
     public void retrieveConceptSchemesForQuantityBaseFilter(int firstResult, int maxResults, String filterListCriteria) {
         ConceptSchemeWebCriteria criteria = new ConceptSchemeWebCriteria(filterListCriteria);
         criteria.setRelatedConceptSchemeUrn(conceptSchemeUrn);
-        
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_BASE_QUANTITY, firstResult, maxResults, criteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setConceptSchemesForQuantityBaseFilter(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
-            }
-        });
+
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_BASE_QUANTITY, firstResult, maxResults, criteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptSchemesForQuantityBaseFilter(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
+                    }
+                });
     }
-    
+
     @Override
     public void retrieveConceptsForQuantityBase(int firstResult, int maxResults, String conceptCriteria, String schemeUrnAsFilter) {
         ConceptWebCriteria criteria = new ConceptWebCriteria(conceptCriteria);
         criteria.setItemSchemeUrn(schemeUrnAsFilter);
-        
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_BASE_QUANTITY, firstResult, maxResults, criteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setConceptThatCanBeQuantityBase(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
-            }
-        });
+
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_BASE_QUANTITY, firstResult, maxResults, criteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptThatCanBeQuantityBase(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
+                    }
+                });
     }
-    
+
     @Override
     public void retrieveConceptSchemesForQuantityNumeratorFilter(int firstResult, int maxResults, String filterListCriteria) {
         ConceptSchemeWebCriteria criteria = new ConceptSchemeWebCriteria(filterListCriteria);
         criteria.setRelatedConceptSchemeUrn(conceptSchemeUrn);
-        
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_NUMERATOR, firstResult, maxResults, criteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setConceptSchemesForQuantityNumeratorFilter(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
-            }
-        });
-        
+
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_NUMERATOR, firstResult, maxResults, criteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptSchemesForQuantityNumeratorFilter(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
+                    }
+                });
+
     }
     @Override
     public void retrieveConceptsForQuantityNumerator(int firstResult, int maxResults, String conceptCriteria, String schemeUrnAsFilter) {
         ConceptWebCriteria criteria = new ConceptWebCriteria(conceptCriteria);
         criteria.setItemSchemeUrn(schemeUrnAsFilter);
-        
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_NUMERATOR, firstResult, maxResults, criteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setConceptThatCanBeQuantityNumerator(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
-            }
-        });
+
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_NUMERATOR, firstResult, maxResults, criteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptThatCanBeQuantityNumerator(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
+                    }
+                });
     }
-    
+
     @Override
     public void retrieveConceptSchemesForQuantityDenominatorFilter(int firstResult, int maxResults, String filterListCriteria) {
         ConceptSchemeWebCriteria criteria = new ConceptSchemeWebCriteria(filterListCriteria);
         criteria.setRelatedConceptSchemeUrn(conceptSchemeUrn);
-        
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_DENOMINATOR, firstResult, maxResults, criteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setConceptSchemesForQuantityDenominatorFilter(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
-            }
-        });
-        
+
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_DENOMINATOR, firstResult, maxResults, criteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptSchemesForQuantityDenominatorFilter(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
+                    }
+                });
+
     }
-    
+
     @Override
     public void retrieveConceptsForQuantityDenominator(int firstResult, int maxResults, String conceptCriteria, String schemeUrnAsFilter) {
         ConceptWebCriteria criteria = new ConceptWebCriteria(conceptCriteria);
         criteria.setItemSchemeUrn(schemeUrnAsFilter);
-        
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_DENOMINATOR, firstResult, maxResults, criteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
-            }
-            
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setConceptThatCanBeQuantityDenominator(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
-            }
-        });
+
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_DENOMINATOR, firstResult, maxResults, criteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                    }
+
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptThatCanBeQuantityDenominator(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
+                    }
+                });
     }
 
     @Override
@@ -633,7 +648,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
         throw new UnsupportedOperationException();
     }
-    
+
     //
     // NAVIGATION
     //

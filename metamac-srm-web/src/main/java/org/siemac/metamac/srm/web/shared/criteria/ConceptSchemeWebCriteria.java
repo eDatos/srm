@@ -56,15 +56,12 @@ public class ConceptSchemeWebCriteria extends VersionableResourceWebCriteria {
         this.conceptUrn = conceptUrn;
     }
 
-    
     public String getRelatedConceptSchemeUrn() {
         return relatedConceptSchemeUrn;
     }
 
-    
     public void setRelatedConceptSchemeUrn(String relatedConceptSchemeUrn) {
         this.relatedConceptSchemeUrn = relatedConceptSchemeUrn;
     }
-    
-    
+
 }

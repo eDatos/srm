@@ -118,16 +118,16 @@ public class ImportResourceWindow extends Window {
     }
 
     private native void initComplete(ImportResourceWindow upload) /*-{
-		$wnd.uploadComplete = function(fileName) {
-			upload.@org.siemac.metamac.srm.web.client.widgets.ImportResourceWindow::uploadComplete(Ljava/lang/String;)(fileName);
-		};
-    }-*/;
+                                                                  $wnd.uploadComplete = function(fileName) {
+                                                                  upload.@org.siemac.metamac.srm.web.client.widgets.ImportResourceWindow::uploadComplete(Ljava/lang/String;)(fileName);
+                                                                  };
+                                                                  }-*/;
 
     private native void initUploadFailed(ImportResourceWindow upload) /*-{
-		$wnd.uploadFailed = function(fileName) {
-			upload.@org.siemac.metamac.srm.web.client.widgets.ImportResourceWindow::uploadFailed(Ljava/lang/String;)(fileName);
-		}
-    }-*/;
+                                                                      $wnd.uploadFailed = function(fileName) {
+                                                                      upload.@org.siemac.metamac.srm.web.client.widgets.ImportResourceWindow::uploadFailed(Ljava/lang/String;)(fileName);
+                                                                      }
+                                                                      }-*/;
 
     protected class UploadForm extends CustomDynamicForm {
 
