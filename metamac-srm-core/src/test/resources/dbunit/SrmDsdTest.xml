@@ -4373,7 +4373,7 @@
             LAST_UPDATED="2011-01-22 01:02:03"
             LAST_UPDATED_TZ="Europe/London"
         
-            CONCEPT_IDENTITY_FK="10311"
+            CONCEPT_IDENTITY_FK="10211"
             REPRESENTATION_FK="71"
         />
         
@@ -4501,7 +4501,7 @@
             LAST_UPDATED="2011-01-22 01:02:03"
             LAST_UPDATED_TZ="Europe/London"
             
-            CONCEPT_IDENTITY_FK="10311"
+            CONCEPT_IDENTITY_FK="10212"
             REPRESENTATION_FK="72"
         />
             
@@ -4519,12 +4519,8 @@
     
         <TB_DIMENSIONS_EI_ROLES
             TB_DIMENSIONS="714"
-            ROLE_FK="10312"/>
+            ROLE_FK="10611"/>
             
-        <TB_DIMENSIONS_EI_ROLES 
-            TB_DIMENSIONS="714" 
-            ROLE_FK="103121"/>
-    
         <TB_ANNOTABLE_ARTEFACTS 
             ID="715"
             ANNOTABLE_ARTEFACT_TYPE="TIME_DIMENSION"
@@ -4691,11 +4687,7 @@
  
         <TB_DATA_ATTRIBUTES_EI_ROLES
             TB_DATA_ATTRIBUTES="717"
-            ROLE_FK="10312"/>
-            
-        <TB_DATA_ATTRIBUTES_EI_ROLES 
-            TB_DATA_ATTRIBUTES="717" 
-            ROLE_FK="103121"/>
+            ROLE_FK="10611"/>
  
         <TB_ANNOTABLE_ARTEFACTS 
             ID="718"
@@ -4787,7 +4779,7 @@
             LAST_UPDATED="2011-01-22 01:02:03"
             LAST_UPDATED_TZ="Europe/London"
             
-            CONCEPT_IDENTITY_FK="10311"
+            CONCEPT_IDENTITY_FK="10411"
             REPRESENTATION_FK="74"
         />   
         
@@ -5240,18 +5232,40 @@
             VERSION="0"
             REPRESENTATION_TYPE="ENUMERATION"
             CODELIST_FK="[null]"
-            CONCEPT_SCHEME_FK="1021"
+            CONCEPT_SCHEME_FK="1071"
             TEXT_FORMAT_FK="[null]"
         />
         
+         <TB_FACETS
+    	ID="72"
+    	IS_SEQUENCE_FT="[null]"
+    	INTERVAL_FT="[null]"
+    	START_VALUE_FT="[null]"
+    	END_VALUE_FT="[null]"
+    	TIME_INTERVAL_FT="[null]"
+    	START_TIME_FT="[null]"
+    	END_TIME_FT="[null]"
+    	MIN_LENGTH_FT="[null]"
+    	MAX_LENGTH_FT="[null]"
+    	MIN_VALUE_FT="[null]"
+    	MAX_VALUE_FT="[null]"
+    	DECIMALS_FT="[null]"
+    	PATTERN_FT="[null]"
+    	XHTML_EFT="[null]"
+    	IS_MULTI_LINGUAL="[null]"
+    	UUID="tb_facets-72"
+    	VERSION="0"
+    	FACET_VALUE="Boolean"
+    />
+    
         <TB_REPRESENTATIONS
             ID="72"
             UUID="tb_representations-72"
             VERSION="0"
-            REPRESENTATION_TYPE="ENUMERATION"
-            CODELIST_FK="2011"
+            REPRESENTATION_TYPE="TEXT_FORMAT"
+            CODELIST_FK="[null]"
             CONCEPT_SCHEME_FK="[null]"
-            TEXT_FORMAT_FK="[null]"
+            TEXT_FORMAT_FK="72"
         />
         
         <TB_REPRESENTATIONS
