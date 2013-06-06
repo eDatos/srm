@@ -319,13 +319,13 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             }
             @Override
             public void onWaitSuccess(SaveCodelistResult result) {
+                codelistMetamacDto = result.getSavedCodelistDto();
 
                 // If the variable has been changed, reload codes (variable elements associated with the codes have changed)
                 if (RelatedResourceUtils.representsTheSameResource(codelistToSave.getVariable(), codelistMetamacDto.getVariable())) {
                     retrieveCodes();
                 }
 
-                codelistMetamacDto = result.getSavedCodelistDto();
                 ShowMessageEvent.fire(CodelistPresenter.this, ErrorUtils.getMessageList(getMessages().codelistSaved()), MessageTypeEnum.SUCCESS);
                 getView().setCodelist(codelistMetamacDto);
 
