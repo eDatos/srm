@@ -31,12 +31,21 @@ public class ConceptsFormUtils {
         if (conceptSchemeDto == null) {
             return false;
         }
-        if (CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer())) {
-            // TYPE cannot be modified if status is INTERNALLY_PUBLISHED or EXTERNALLY_PUBLISHED, or if version is greater than VERSION_INITIAL_VERSION (01.000)
-            return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(conceptSchemeDto.getLifeCycle().getProcStatus())
-                    && org.siemac.metamac.srm.web.client.utils.CommonUtils.isInitialVersion(conceptSchemeDto.getVersionLogic());
+
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(conceptSchemeDto.getLifeCycle().getProcStatus())) {
+
+            // If it is published, cannot be edited
+            return false;
+
+        } else if (CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer()) && !org.siemac.metamac.srm.web.client.utils.CommonUtils.isInitialVersion(conceptSchemeDto.getVersionLogic())) {
+
+            // If it is a created artefact and the version is greater than 01.000, cannot be edited
+            return false;
+
         } else {
-            return !org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(conceptSchemeDto.getLifeCycle().getProcStatus());
+
+            // There are more situations when the type cannot be edited, but will be check in the service (CORE)
+            return true;
         }
     }
 
