@@ -1032,12 +1032,16 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     private void checkComponentRoles(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, Component component, List<MetamacExceptionItem> exceptions)
             throws MetamacException {
         String serviceExceptionParameter = null;
+        Set<Concept> roles = null;
         if (component instanceof Dimension) {
             serviceExceptionParameter = ServiceExceptionParameters.DIMENSION_ROLE;
+            roles = ((Dimension) component).getRole();
         } else if (component instanceof MeasureDimension) {
             serviceExceptionParameter = ServiceExceptionParameters.MEASURE_DIMENSION_ROLE;
+            roles = ((MeasureDimension) component).getRole();
         } else if (component instanceof DataAttribute && !(component instanceof ReportingYearStartDay)) {
             serviceExceptionParameter = ServiceExceptionParameters.DATA_ATTRIBUTE_ROLE;
+            roles = ((DataAttribute) component).getRole();
         } else {
             return;
         }
@@ -1048,7 +1052,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
         // Role
         Set<Long> conceptRolesId = new HashSet<Long>();
-        for (Concept concept : ((MeasureDimension) component).getRole()) {
+        for (Concept concept : roles) {
             conceptRolesId.add(concept.getId());
         }
 
@@ -1063,7 +1067,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                 conceptRolesResultId.add(concept.getId());
             }
 
-            for (Concept concept : ((MeasureDimension) component).getRole()) {
+            for (Concept concept : roles) {
                 if (!conceptRolesResultId.contains(concept.getId())) {
                     exceptions.add(MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.METADATA_INCORRECT)
                             .withMessageParameters(serviceExceptionParameter).build());
