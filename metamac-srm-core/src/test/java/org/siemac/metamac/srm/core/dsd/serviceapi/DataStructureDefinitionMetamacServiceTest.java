@@ -19,7 +19,6 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -633,11 +632,9 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
     @Override
     @Test
-    @Ignore
-    // TODO testMergeTemporalVersion: arreglar loxzs cabritos dbunit
     public void testMergeTemporalVersion() throws Exception {
         {
-            String urn = DSD_7_V1;
+            String urn = DSD_6_V1;
             TaskInfo versioningResult = dataStructureDefinitionMetamacService.createTemporalDataStructureDefinition(getServiceContextAdministrador(), urn);
 
             entityManager.clear();

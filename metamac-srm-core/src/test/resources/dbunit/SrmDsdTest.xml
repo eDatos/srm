@@ -999,7 +999,7 @@
               SDMX_RELATED_ARTEFACT="ATTRIBUTE_OR_DIMENSION"
               CONCEPT_TYPE_FK="2"
               EXTENDS_FK="[null]"
-              VARIABLE_FK="[null]"              
+              VARIABLE_FK="1"              
               TB_CONCEPTS="10311"
              />            
         
@@ -3469,7 +3469,7 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
         
-        CONCEPT_IDENTITY_FK="10311"
+        CONCEPT_IDENTITY_FK="10211"
         REPRESENTATION_FK="61"
     />
     
@@ -3662,12 +3662,8 @@
                     
     <TB_MEASURE_DIMEN_EI_ROLES 
     	TB_MEASURE_DIMENSIONS="612" 
-    	ROLE_FK="10312"/>
+    	ROLE_FK="10611"/>
     	
-    <TB_MEASURE_DIMEN_EI_ROLES 
-    	TB_MEASURE_DIMENSIONS="612" 
-    	ROLE_FK="103121"/>
-    
     <TB_ANNOTABLE_ARTEFACTS 
         ID="613"
         ANNOTABLE_ARTEFACT_TYPE="DIMENSION_DESCRIPTOR"
@@ -3753,12 +3749,8 @@
     
     <TB_DIMENSIONS_EI_ROLES
     	TB_DIMENSIONS="614"
-    	ROLE_FK="10312"/>
+    	ROLE_FK="10611"/>
     	
-    <TB_DIMENSIONS_EI_ROLES 
-    	TB_DIMENSIONS="614" 
-    	ROLE_FK="103121"/>
-    
     <TB_ANNOTABLE_ARTEFACTS 
         ID="615"
         ANNOTABLE_ARTEFACT_TYPE="TIME_DIMENSION"
@@ -3883,18 +3875,14 @@
         RELATE_TO="61"
         USAGE_STATUS="CONDITIONAL"
         
-        CONCEPT_IDENTITY_FK="10312"
+        CONCEPT_IDENTITY_FK="10212"
         REPRESENTATION_FK="[NULL]"
     />
  
     <TB_DATA_ATTRIBUTES_EI_ROLES
     	TB_DATA_ATTRIBUTES="617"
-    	ROLE_FK="10312"/>
+    	ROLE_FK="10611"/>
     	
-    <TB_DATA_ATTRIBUTES_EI_ROLES 
-    	TB_DATA_ATTRIBUTES="617" 
-    	ROLE_FK="103121"/>
- 
  	<TB_ANNOTABLE_ARTEFACTS 
         ID="618"
         ANNOTABLE_ARTEFACT_TYPE="ATTRIBUTE_DESCRIPTOR"
@@ -3973,7 +3961,7 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
         
-        CONCEPT_IDENTITY_FK="10311"
+        CONCEPT_IDENTITY_FK="10411"
         REPRESENTATION_FK="64"
     />   
     
@@ -4117,7 +4105,7 @@
     	VERSION="0"
         REPRESENTATION_TYPE="ENUMERATION"
         CODELIST_FK="[null]"
-        CONCEPT_SCHEME_FK="1021"
+        CONCEPT_SCHEME_FK="1071"
         TEXT_FORMAT_FK="[null]"
     />
     
@@ -4130,6 +4118,37 @@
         CONCEPT_SCHEME_FK="[null]"
         TEXT_FORMAT_FK="[null]"
     />
+<!--     <TB_FACETS -->
+<!--     	ID="62" -->
+<!--     	IS_SEQUENCE_FT="[null]" -->
+<!--     	INTERVAL_FT="[null]" -->
+<!--     	START_VALUE_FT="[null]" -->
+<!--     	END_VALUE_FT="[null]" -->
+<!--     	TIME_INTERVAL_FT="[null]" -->
+<!--     	START_TIME_FT="[null]" -->
+<!--     	END_TIME_FT="[null]" -->
+<!--     	MIN_LENGTH_FT="[null]" -->
+<!--     	MAX_LENGTH_FT="[null]" -->
+<!--     	MIN_VALUE_FT="[null]" -->
+<!--     	MAX_VALUE_FT="[null]" -->
+<!--     	DECIMALS_FT="[null]" -->
+<!--     	PATTERN_FT="[null]" -->
+<!--     	XHTML_EFT="[null]" -->
+<!--     	IS_MULTI_LINGUAL="[null]" -->
+<!--     	UUID="tb_facets-62" -->
+<!--     	VERSION="0" -->
+<!--     	FACET_VALUE="Boolean" -->
+<!--    	/> -->
+    
+<!--     <TB_REPRESENTATIONS -->
+<!--     	ID="62" -->
+<!--     	UUID="tb_representations-62" -->
+<!--     	VERSION="0" -->
+<!--         REPRESENTATION_TYPE="TEXT_FORMAT" -->
+<!--         CODELIST_FK="[null]" -->
+<!--         CONCEPT_SCHEME_FK="[null]" -->
+<!--         TEXT_FORMAT_FK="62" -->
+<!--     /> -->
     
      <TB_REPRESENTATIONS
     	ID="63"
@@ -5236,27 +5255,28 @@
             TEXT_FORMAT_FK="[null]"
         />
         
-         <TB_FACETS
-    	ID="72"
-    	IS_SEQUENCE_FT="[null]"
-    	INTERVAL_FT="[null]"
-    	START_VALUE_FT="[null]"
-    	END_VALUE_FT="[null]"
-    	TIME_INTERVAL_FT="[null]"
-    	START_TIME_FT="[null]"
-    	END_TIME_FT="[null]"
-    	MIN_LENGTH_FT="[null]"
-    	MAX_LENGTH_FT="[null]"
-    	MIN_VALUE_FT="[null]"
-    	MAX_VALUE_FT="[null]"
-    	DECIMALS_FT="[null]"
-    	PATTERN_FT="[null]"
-    	XHTML_EFT="[null]"
-    	IS_MULTI_LINGUAL="[null]"
-    	UUID="tb_facets-72"
-    	VERSION="0"
-    	FACET_VALUE="Boolean"
-    />
+        <TB_FACETS
+	    	ID="72"
+	    	IS_SEQUENCE_FT="[null]"
+	    	INTERVAL_FT="[null]"
+	    	START_VALUE_FT="[null]"
+	    	END_VALUE_FT="[null]"
+	    	TIME_INTERVAL_FT="[null]"
+	    	START_TIME_FT="[null]"
+	    	END_TIME_FT="[null]"
+	    	MIN_LENGTH_FT="[null]"
+	    	MAX_LENGTH_FT="[null]"
+	    	MIN_VALUE_FT="[null]"
+	    	MAX_VALUE_FT="[null]"
+	    	DECIMALS_FT="[null]"
+	    	PATTERN_FT="[null]"
+	    	XHTML_EFT="[null]"
+	    	IS_MULTI_LINGUAL="[null]"
+	    	UUID="tb_facets-72"
+	    	VERSION="0"
+	    	FACET_VALUE="Boolean"
+    	/>
+    
     
         <TB_REPRESENTATIONS
             ID="72"
