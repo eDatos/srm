@@ -81,7 +81,7 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCancelValidityButton() {
-        if (DsdClientSecurityUtils.canCancelDsdValidity(operationCode, maintainer, versionLogic)) {
+        if (DsdClientSecurityUtils.canCancelDsdValidity(urn, operationCode, maintainer, versionLogic)) {
             cancelValidity.show();
         }
     }
@@ -116,6 +116,6 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
 
     private boolean canVersionDsd() {
         // Resources from other maintainers can not be version
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(maintainer) && DsdClientSecurityUtils.canVersioningDsd(operationCode);
+        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && DsdClientSecurityUtils.canVersioningDsd(operationCode);
     }
 }

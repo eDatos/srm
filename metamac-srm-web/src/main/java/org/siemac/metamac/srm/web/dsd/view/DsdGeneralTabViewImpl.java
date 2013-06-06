@@ -672,7 +672,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     private void publishDsdInternally() {
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(dataStructureDefinitionMetamacDto.getMaintainer())) {
+        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(dataStructureDefinitionMetamacDto.getMaintainer())) {
             getUiHandlers().publishInternally(dataStructureDefinitionMetamacDto, null);
         } else {
             // If the DSD is imported, ask the user if this resource should be the latest one.

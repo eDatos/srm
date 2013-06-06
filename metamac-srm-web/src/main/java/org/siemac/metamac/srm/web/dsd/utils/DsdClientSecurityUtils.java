@@ -35,13 +35,13 @@ public class DsdClientSecurityUtils {
     }
 
     public static boolean canCancelDsdValidity(DataStructureDefinitionMetamacBasicDto dataStructureDefinitionMetamacBasicDto) {
-        return canCancelDsdValidity(CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacBasicDto), dataStructureDefinitionMetamacBasicDto.getMaintainer(),
-                dataStructureDefinitionMetamacBasicDto.getVersionLogic());
+        return canCancelDsdValidity(dataStructureDefinitionMetamacBasicDto.getUrn(), CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacBasicDto),
+                dataStructureDefinitionMetamacBasicDto.getMaintainer(), dataStructureDefinitionMetamacBasicDto.getVersionLogic());
     }
 
-    public static boolean canCancelDsdValidity(String operationCode, RelatedResourceDto maintainer, String versionLogic) {
+    public static boolean canCancelDsdValidity(String urn, String operationCode, RelatedResourceDto maintainer, String versionLogic) {
         return SharedDsdSecurityUtils.canEndDsdValidity(MetamacSrmWeb.getCurrentUser(), operationCode)
-                && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(maintainer, versionLogic);
+                && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(urn, maintainer, versionLogic);
     }
 
     public static boolean canAnnounceDsd(String operationCode) {
@@ -70,7 +70,7 @@ public class DsdClientSecurityUtils {
 
     public static boolean canCopyDsd(RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
-        return SharedDsdSecurityUtils.canCopyDataStructureDefinition(MetamacSrmWeb.getCurrentUser()) && !org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultOrRootMaintainer(maintainer);
+        return SharedDsdSecurityUtils.canCopyDataStructureDefinition(MetamacSrmWeb.getCurrentUser()) && !org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer);
     }
 
     // PRIMARY MEASURE
