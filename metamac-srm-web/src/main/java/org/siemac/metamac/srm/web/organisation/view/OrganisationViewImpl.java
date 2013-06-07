@@ -488,7 +488,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         mainFormLayout.setOrganisationScheme(organisationSchemeMetamacDto, organisationDto);
         contactMainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateContact(organisationSchemeMetamacDto));
         contactNewButton.setVisible(OrganisationsClientSecurityUtils.canCreateContact(organisationSchemeMetamacDto));
-        
+
         markFormsForRedraw();
     }
 

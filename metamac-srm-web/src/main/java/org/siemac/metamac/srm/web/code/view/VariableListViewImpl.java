@@ -85,7 +85,7 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
             }
         });
         newVariableButton.setVisible(CodesClientSecurityUtils.canCreateVariable());
-        
+
         deleteVariableButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteVariableButton.setVisible(false);
         deleteVariableButton.addClickHandler(new ClickHandler() {
