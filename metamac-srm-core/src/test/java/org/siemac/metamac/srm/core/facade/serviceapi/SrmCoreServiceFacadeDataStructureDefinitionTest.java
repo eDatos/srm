@@ -96,12 +96,11 @@ public class SrmCoreServiceFacadeDataStructureDefinitionTest extends SrmBaseTest
     public void testFindDataStructureDefinitionsByCondition() throws Exception {
         MetamacCriteriaResult<DataStructureDefinitionMetamacBasicDto> result = null;
 
-        srmCoreServiceFacade.createDataStructureDefinition(getServiceContextAdministrador(), DataStructureDefinitionMetamacDtoMocks.mockDataStructureDefinitionMetamacDto());
-
         // By Name
         {
             MetamacCriteria metamacCriteria = new MetamacCriteria();
-            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), "DSD_01", OperationType.EQ));
+            metamacCriteria
+                    .setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.CODE.name(), "DATASTRUCTUREDEFINITION04", OperationType.EQ));
 
             result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(1, result.getResults().size());
@@ -143,7 +142,7 @@ public class SrmCoreServiceFacadeDataStructureDefinitionTest extends SrmBaseTest
 
             // Concept 2
             metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.ATTRIBUTE_CONCEPT_URN.name(),
-                    CONCEPT_SCHEME_3_V1_CONCEPT_2, OperationType.EQ));
+                    CONCEPT_SCHEME_2_V1_CONCEPT_2, OperationType.EQ));
             result = srmCoreServiceFacade.findDataStructureDefinitionsByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(1, result.getResults().size());
             assertEquals(DSD_6_V1, result.getResults().get(0).getUrn());
@@ -154,7 +153,7 @@ public class SrmCoreServiceFacadeDataStructureDefinitionTest extends SrmBaseTest
 
             MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
             conjunctionRestriction.getRestrictions().add(
-                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.ATTRIBUTE_CONCEPT_URN.name(), CONCEPT_SCHEME_3_V1_CONCEPT_2, OperationType.EQ));
+                    new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.ATTRIBUTE_CONCEPT_URN.name(), CONCEPT_SCHEME_2_V1_CONCEPT_2, OperationType.EQ));
             conjunctionRestriction.getRestrictions().add(
                     new MetamacCriteriaPropertyRestriction(DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.NAME.name(), "name-101 en Español", OperationType.EQ));
             metamacCriteria.setRestriction(conjunctionRestriction);
