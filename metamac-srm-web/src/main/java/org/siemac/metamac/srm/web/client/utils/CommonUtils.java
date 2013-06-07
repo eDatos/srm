@@ -128,6 +128,11 @@ public class CommonUtils {
         return ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus) || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus);
     }
 
+    public static boolean isMaintainableArtefactInProductionValidationOrGreaterProcStatus(ProcStatusEnum procStatus) {
+        return ProcStatusEnum.PRODUCTION_VALIDATION.equals(procStatus) || ProcStatusEnum.DIFFUSION_VALIDATION.equals(procStatus) || ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus)
+                || ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus);
+    }
+
     public static boolean isInitialVersion(String versionLogic) {
         return SdmxVersionUtils.PATTERN_XX_YYY_INITIAL_VERSION.equals(versionLogic);
     }
