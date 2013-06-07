@@ -20,6 +20,7 @@
         <module>metamac-srm-soap-external-api</module>
         <module>metamac-srm-soap-external-impl</module>
         <module>metamac-srm-external-web</module>
+	<module>metamac-registry-web</module>
         <module>metamac-srm-web</module>
     </modules>
 
