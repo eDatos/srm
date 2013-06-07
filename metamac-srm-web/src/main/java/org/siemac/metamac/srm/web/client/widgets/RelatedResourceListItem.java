@@ -23,6 +23,7 @@ public class RelatedResourceListItem extends RelatedResourceBaseListItem<Related
         return PlaceRequestUtils.buildAbsoluteResourcePlaceRequest(relatedResourceDto);
     }
 
+    @SuppressWarnings("rawtypes")
     public List<String> getSelectedRelatedResourceUrns() {
         List<String> urns = new ArrayList<String>();
         ListGridRecord[] records = listGrid.getRecords();
