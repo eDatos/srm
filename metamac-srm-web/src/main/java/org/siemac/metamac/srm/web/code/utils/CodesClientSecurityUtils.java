@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.code.utils;
 
+import java.util.Date;
+
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -96,10 +98,22 @@ public class CodesClientSecurityUtils {
     // }
 
     public static boolean canCancelCodelistValidity(CodelistMetamacBasicDto codelistMetamacDto) {
-        return canCancelCodelistValidity(codelistMetamacDto.getUrn(), codelistMetamacDto.getIsTaskInBackground(), codelistMetamacDto.getMaintainer(), codelistMetamacDto.getVersionLogic());
+        return canCancelCodelistValidity(codelistMetamacDto.getUrn(), codelistMetamacDto.getIsTaskInBackground(), codelistMetamacDto.getMaintainer(), codelistMetamacDto.getVersionLogic(),
+                codelistMetamacDto.getLifeCycle().getProcStatus(), codelistMetamacDto.getValidTo());
     }
 
-    public static boolean canCancelCodelistValidity(String urn, Boolean isTaskInBackground, RelatedResourceDto maintainer, String versionLogic) {
+    public static boolean canCancelCodelistValidity(String urn, Boolean isTaskInBackground, RelatedResourceDto maintainer, String versionLogic, ProcStatusEnum procStatus, Date validTo) {
+
+        // validity was already ended
+        if (validTo != null) {
+            return false;
+        }
+
+        // only externally published resources can be canceled
+        if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
+            return false;
+        }
+
         if (isTaskInBackground(isTaskInBackground)) {
             return false;
         }
@@ -110,7 +124,7 @@ public class CodesClientSecurityUtils {
         if (isTaskInBackground(isTaskInBackground)) {
             return false;
         }
-        return SharedCodesSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus); // TODO canModifyCategorisationFromCodelist
+        return SharedCodesSecurityUtils.canModifyCategorisation(MetamacSrmWeb.getCurrentUser(), procStatus);
     }
 
     public static boolean canDeleteCategorisation(ProcStatusEnum procStatus, Boolean isTaskInBackground, CategorisationDto categorisationDto) {

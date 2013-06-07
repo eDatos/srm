@@ -6,7 +6,6 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
@@ -251,8 +250,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         for (ListGridRecord record : records) {
             CodelistMetamacBasicDto codelistMetamacDto = ((CodelistRecord) record).getCodelistMetamacBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(codelistMetamacDto.getLifeCycle().getProcStatus()) || codelistMetamacDto.getValidTo() != null
-                    || !CodesClientSecurityUtils.canCancelCodelistValidity(codelistMetamacDto)) {
+            if (!CodesClientSecurityUtils.canCancelCodelistValidity(codelistMetamacDto)) {
                 allSelectedCodelistValidityCanBeCanceled = false;
             }
         }
