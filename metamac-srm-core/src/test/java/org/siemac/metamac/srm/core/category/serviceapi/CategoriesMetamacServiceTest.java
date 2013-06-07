@@ -1474,7 +1474,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     @Override
     @Test
     public void testStartCategorySchemeValidity() throws Exception {
-        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.startCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_6_V1);
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.startCategorySchemeValidity(getServiceContextAdministrador(), CATEGORY_SCHEME_7_V2);
 
         assertNotNull(categorySchemeVersion.getMaintainableArtefact().getValidFrom());
         assertNull(categorySchemeVersion.getMaintainableArtefact().getValidTo());

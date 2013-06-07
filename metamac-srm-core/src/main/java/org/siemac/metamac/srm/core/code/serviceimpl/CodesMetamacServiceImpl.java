@@ -521,7 +521,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Delete temporal version
         deleteCodelist(ctx, codelistTemporalVersion, Boolean.FALSE);
 
-        codelistVersion = retrieveCodelistByCodeUrn(ctx, codelistVersion.getMaintainableArtefact().getUrn());
+        codelistVersion = retrieveCodelistByUrn(ctx, codelistVersion.getMaintainableArtefact().getUrn());
         return codelistVersion;
     }
 
@@ -537,7 +537,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion = (CodelistVersionMetamac) codesService.startCodelistValidity(ctx, urn, null);
         return codelistVersion;
     }
-    
+
     @Override
     public CodelistVersionMetamac endCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
 
