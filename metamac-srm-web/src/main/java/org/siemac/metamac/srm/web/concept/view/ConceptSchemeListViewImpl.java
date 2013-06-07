@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
@@ -274,9 +273,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         boolean allSelectedSchemesValidityCanBeCanceled = true;
         for (ListGridRecord record : records) {
             ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto = ((ConceptSchemeRecord) record).getConceptSchemeBasicDto();
-            // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(conceptSchemeMetamacDto.getLifeCycle().getProcStatus()) || conceptSchemeMetamacDto.getValidTo() != null
-                    || !ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(conceptSchemeMetamacDto)) {
+            if (!ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(conceptSchemeMetamacDto)) {
                 allSelectedSchemesValidityCanBeCanceled = false;
             }
         }

@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.concept.utils;
 
+import java.util.Date;
+
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -69,10 +71,22 @@ public class ConceptsClientSecurityUtils {
     public static boolean canCancelConceptSchemeValidity(ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto) {
         return canCancelConceptSchemeValidity(conceptSchemeMetamacDto.getUrn(), conceptSchemeMetamacDto.getType(),
                 org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto), conceptSchemeMetamacDto.getMaintainer(),
-                conceptSchemeMetamacDto.getVersionLogic());
+                conceptSchemeMetamacDto.getVersionLogic(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getValidTo());
     }
 
-    public static boolean canCancelConceptSchemeValidity(String urn, ConceptSchemeTypeEnum type, String relatedOperationCode, RelatedResourceDto maintainer, String versionLogic) {
+    public static boolean canCancelConceptSchemeValidity(String urn, ConceptSchemeTypeEnum type, String relatedOperationCode, RelatedResourceDto maintainer, String versionLogic,
+            ProcStatusEnum procStatus, Date validTo) {
+
+        // validity was already ended
+        if (validTo != null) {
+            return false;
+        }
+
+        // only externally published resources can be canceled
+        if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
+            return false;
+        }
+
         return SharedConceptsSecurityUtils.canEndConceptSchemeValidity(MetamacSrmWeb.getCurrentUser(), type, relatedOperationCode)
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(urn, maintainer, versionLogic);
     }

@@ -90,7 +90,7 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCancelValidityButton() {
-        if (ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(urn, type, relatedOperationCode, maintainer, versionLogic)) {
+        if (ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(urn, type, relatedOperationCode, maintainer, versionLogic, procStatus, validTo)) {
             cancelValidity.show();
         }
     }
