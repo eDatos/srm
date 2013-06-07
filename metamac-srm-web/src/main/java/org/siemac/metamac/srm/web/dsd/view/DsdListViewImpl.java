@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
@@ -299,7 +298,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         for (ListGridRecord record : records) {
             DataStructureDefinitionMetamacBasicDto dsd = ((DsdRecord) record).getDsdBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dsd.getLifeCycle().getProcStatus()) || dsd.getValidTo() != null || !DsdClientSecurityUtils.canCancelDsdValidity(dsd)) {
+            if (!DsdClientSecurityUtils.canCancelDsdValidity(dsd)) {
                 allSelectedDsdsExternallyPublished = false;
             }
         }

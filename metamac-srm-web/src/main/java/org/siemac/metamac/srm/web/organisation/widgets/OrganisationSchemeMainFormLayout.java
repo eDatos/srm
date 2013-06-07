@@ -85,7 +85,7 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCancelValidityButton() {
-        if (OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity(urn, maintainer, versionLogic, organisationSchemeType)) {
+        if (OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity(urn, maintainer, versionLogic, organisationSchemeType, procStatus, validTo)) {
             cancelValidity.show();
         }
     }

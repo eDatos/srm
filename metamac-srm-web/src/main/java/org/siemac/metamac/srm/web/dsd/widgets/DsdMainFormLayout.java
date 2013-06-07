@@ -81,7 +81,7 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showCancelValidityButton() {
-        if (DsdClientSecurityUtils.canCancelDsdValidity(urn, operationCode, maintainer, versionLogic)) {
+        if (DsdClientSecurityUtils.canCancelDsdValidity(urn, operationCode, maintainer, versionLogic, procStatus, validTo)) {
             cancelValidity.show();
         }
     }

@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.utils;
 
+import java.util.Date;
+
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
@@ -37,10 +39,22 @@ public class DsdClientSecurityUtils {
 
     public static boolean canCancelDsdValidity(DataStructureDefinitionMetamacBasicDto dataStructureDefinitionMetamacBasicDto) {
         return canCancelDsdValidity(dataStructureDefinitionMetamacBasicDto.getUrn(), CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacBasicDto),
-                dataStructureDefinitionMetamacBasicDto.getMaintainer(), dataStructureDefinitionMetamacBasicDto.getVersionLogic());
+                dataStructureDefinitionMetamacBasicDto.getMaintainer(), dataStructureDefinitionMetamacBasicDto.getVersionLogic(),
+                dataStructureDefinitionMetamacBasicDto.getLifeCycle().getProcStatus(), dataStructureDefinitionMetamacBasicDto.getValidTo());
     }
 
-    public static boolean canCancelDsdValidity(String urn, String operationCode, RelatedResourceDto maintainer, String versionLogic) {
+    public static boolean canCancelDsdValidity(String urn, String operationCode, RelatedResourceDto maintainer, String versionLogic, ProcStatusEnum procStatus, Date validTo) {
+
+        // validity was already ended
+        if (validTo != null) {
+            return false;
+        }
+
+        // only externally published resources can be canceled
+        if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
+            return false;
+        }
+
         return SharedDsdSecurityUtils.canEndDsdValidity(MetamacSrmWeb.getCurrentUser(), operationCode)
                 && org.siemac.metamac.srm.web.client.utils.CommonUtils.canSdmxMetadataAndStructureBeModified(urn, maintainer, versionLogic);
     }

@@ -6,7 +6,6 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
@@ -243,8 +242,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         for (ListGridRecord record : records) {
             OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDto = ((OrganisationSchemeRecord) record).getOrganisationSchemeBasicDto();
             // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(organisationSchemeMetamacDto.getLifeCycle().getProcStatus()) || organisationSchemeMetamacDto.getValidTo() != null
-                    || !OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity(organisationSchemeMetamacDto)) {
+            if (!OrganisationsClientSecurityUtils.canCancelOrganisationSchemeValidity(organisationSchemeMetamacDto)) {
                 allSelectedSchemesValidityCanBeCanceled = false;
             }
         }

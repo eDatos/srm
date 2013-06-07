@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.category.utils;
 
+import java.util.Date;
+
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
@@ -63,10 +65,22 @@ public class CategoriesClientSecurityUtils {
     }
 
     public static boolean canCancelCategorySchemeValidity(CategorySchemeMetamacBasicDto categorySchemeMetamacBasicDto) {
-        return canCancelCategorySchemeValidity(categorySchemeMetamacBasicDto.getUrn(), categorySchemeMetamacBasicDto.getMaintainer(), categorySchemeMetamacBasicDto.getVersionLogic());
+        return canCancelCategorySchemeValidity(categorySchemeMetamacBasicDto.getUrn(), categorySchemeMetamacBasicDto.getMaintainer(), categorySchemeMetamacBasicDto.getVersionLogic(),
+                categorySchemeMetamacBasicDto.getLifeCycle().getProcStatus(), categorySchemeMetamacBasicDto.getValidTo());
     }
 
-    public static boolean canCancelCategorySchemeValidity(String urn, RelatedResourceDto maintainer, String versionLogic) {
+    public static boolean canCancelCategorySchemeValidity(String urn, RelatedResourceDto maintainer, String versionLogic, ProcStatusEnum procStatus, Date validTo) {
+
+        // validity was already ended
+        if (validTo != null) {
+            return false;
+        }
+
+        // only externally published resources can be canceled
+        if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
+            return false;
+        }
+
         return SharedCategoriesSecurityUtils.canEndCategorySchemeValidity(MetamacSrmWeb.getCurrentUser()) && CommonUtils.canSdmxMetadataAndStructureBeModified(urn, maintainer, versionLogic);
     }
 

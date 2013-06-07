@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.organisation.utils;
 
+import java.util.Date;
+
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
@@ -79,10 +81,21 @@ public class OrganisationsClientSecurityUtils {
 
     public static boolean canCancelOrganisationSchemeValidity(OrganisationSchemeMetamacBasicDto organisationSchemeMetamacBasicDto) {
         return canCancelOrganisationSchemeValidity(organisationSchemeMetamacBasicDto.getUrn(), organisationSchemeMetamacBasicDto.getMaintainer(), organisationSchemeMetamacBasicDto.getVersionLogic(),
-                organisationSchemeMetamacBasicDto.getType());
+                organisationSchemeMetamacBasicDto.getType(), organisationSchemeMetamacBasicDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacBasicDto.getValidTo());
     }
 
-    public static boolean canCancelOrganisationSchemeValidity(String urn, RelatedResourceDto maintainer, String versionLogic, OrganisationSchemeTypeEnum organisationSchemeType) {
+    public static boolean canCancelOrganisationSchemeValidity(String urn, RelatedResourceDto maintainer, String versionLogic, OrganisationSchemeTypeEnum organisationSchemeType,
+            ProcStatusEnum procStatus, Date validTo) {
+
+        // validity was already ended
+        if (validTo != null) {
+            return false;
+        }
+
+        // only externally published resources can be canceled
+        if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
+            return false;
+        }
 
         // AGENCY SCHEMES, DATA CONSUMER SCHEMES and DATA PROVIDER SCHEMES can not be canceled
 
