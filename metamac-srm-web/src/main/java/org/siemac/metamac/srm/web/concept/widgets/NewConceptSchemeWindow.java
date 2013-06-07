@@ -68,6 +68,7 @@ public class NewConceptSchemeWindow extends CustomWindow {
                 }
             }
         });
+        type.setIcons(CommonUtils.getConceptSchemeTypeInfoIcon());
 
         searchOperationItem = new SearchExternalPaginatedItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation(), FormItemUtils.FORM_ITEM_WIDTH, OPERATION_LIST_MAX_RESULTS,
                 new PaginatedAction() {

@@ -535,8 +535,12 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         ViewTextItem isFinal = new ViewTextItem(ConceptSchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         contentDescriptorsEditionForm.setFields(description, partial, isExternalReference, isFinal);
 
-        // Class descriptors
+        // CLASS DESCRIPTORS
+
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
+
+        // Type
+
         final RequiredSelectItem type = new RequiredSelectItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
         type.setValueMap(CommonUtils.getConceptSchemeTypeHashMap());
         type.addChangedHandler(new ChangedHandler() {
@@ -551,8 +555,13 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             }
         });
         type.setShowIfCondition(getTypeFormItemIfFunction());
+        type.setIcons(CommonUtils.getConceptSchemeTypeInfoIcon());
+
         ViewTextItem typeView = new ViewTextItem(ConceptSchemeDS.TYPE_VIEW, getConstants().conceptSchemeType());
         typeView.setShowIfCondition(getStaticTypeFormItemIfFunction());
+
+        // Operation
+
         final SearchExternalItemLinkItem operation = createRelatedOperationItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
         operation.setShowIfCondition(new FormItemIfFunction() {
 

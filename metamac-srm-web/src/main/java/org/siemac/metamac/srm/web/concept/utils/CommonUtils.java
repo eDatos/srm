@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.concept.utils;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
+import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 
 public class CommonUtils {
 
@@ -117,5 +120,18 @@ public class CommonUtils {
 
     public static boolean isMetadataVariableVisible(ConceptSchemeTypeEnum type) {
         return ConceptSchemeTypeEnum.OPERATION.equals(type) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(type);
+    }
+
+    //
+    // ICONS
+    //
+
+    public static FormItemIcon getConceptSchemeTypeInfoIcon() {
+        FormItemIcon conceptSchemeTypeInfo = new FormItemIcon();
+        conceptSchemeTypeInfo.setSrc(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.info().getURL());
+        conceptSchemeTypeInfo.setHeight(14);
+        conceptSchemeTypeInfo.setWidth(14);
+        conceptSchemeTypeInfo.setPrompt(getConstants().conceptSchemeTypeInfoEdition());
+        return conceptSchemeTypeInfo;
     }
 }
