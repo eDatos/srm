@@ -225,8 +225,8 @@ public abstract class LifeCycleImpl implements LifeCycle {
         // Validate to publish externally
         checkResourceInExternallyPublished(ctx, urn, srmResourceVersion, targetStatus);
 
-        // Start validity and mark as public. Note: is imported, validFrom can not be override
-        if (!callback.getMaintainableArtefact(srmResourceVersion).getIsImported()) {
+        // Start validity and mark as public. Note: if imported or dummy, validFrom can not be override
+        if (!callback.getMaintainableArtefact(srmResourceVersion).getIsImported() && callback.getMaintainableArtefact(srmResourceVersion).getValidFrom() == null) {
             srmResourceVersion = callback.startSrmResourceValidity(ctx, srmResourceVersion);
         }
         srmResourceVersion = callback.markSrmResourceAsPublic(ctx, srmResourceVersion);
