@@ -830,7 +830,7 @@
               SDMX_RELATED_ARTEFACT="DIMENSION"
               CONCEPT_TYPE_FK="2"
               EXTENDS_FK="[null]"
-              VARIABLE_FK="[null]"              
+              VARIABLE_FK="1"              
               TB_CONCEPTS="10212"
              /> 
                          
