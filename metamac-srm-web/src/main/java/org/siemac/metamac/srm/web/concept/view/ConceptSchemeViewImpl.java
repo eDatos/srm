@@ -110,6 +110,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     private ConceptSchemeCategorisationsPanel categorisationsPanel;
 
     private ConceptSchemeMetamacDto           conceptSchemeDto;
+    private ConceptSchemeTypeEnum             conceptSchemeType;               // this field stores the initial type of the concept scheme
 
     @Inject
     public ConceptSchemeViewImpl() {
@@ -370,6 +371,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     @Override
     public void setConceptScheme(ConceptSchemeMetamacDto conceptScheme) {
         this.conceptSchemeDto = conceptScheme;
+        this.conceptSchemeType = conceptScheme.getType();
 
         // Set title
         titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(conceptScheme));
@@ -903,7 +905,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return ConceptsFormUtils.canConceptSchemeTypeBeEdited(conceptSchemeDto);
+                return ConceptsFormUtils.canConceptSchemeTypeBeEdited(conceptSchemeType); // Do not call with conceptSchemeDto (may have been modified by the user)
             }
         };
     }
@@ -913,7 +915,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
-                return !ConceptsFormUtils.canConceptSchemeTypeBeEdited(conceptSchemeDto);
+                return !ConceptsFormUtils.canConceptSchemeTypeBeEdited(conceptSchemeType); // Do not call with conceptSchemeDto (may have been modified by the user)
             }
         };
     }

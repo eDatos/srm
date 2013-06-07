@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.concept.utils;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
 /**
@@ -27,15 +28,9 @@ public class ConceptsFormUtils {
 
     // TYPE
 
-    public static boolean canConceptSchemeTypeBeEdited(ConceptSchemeMetamacDto conceptSchemeDto) {
-        if (conceptSchemeDto == null) {
-            return false;
-        }
+    public static boolean canConceptSchemeTypeBeEdited(ConceptSchemeTypeEnum type) {
         // Only edit type if it is null (this will happen only when the concept scheme has been imported)
-        if (conceptSchemeDto.getType() == null) {
-            return true;
-        }
-        return false;
+        return type == null;
     }
 
     // ---------------------------------------------------------------------------------------------
