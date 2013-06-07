@@ -689,11 +689,11 @@ Application SrmFacadeCore {
        		> @TasksMetamacService
 
     		"Imports codes in tsv format"
-    		importCodesTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+    		processImportCodesTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
 			"Imports code orders in tsv format"
-    		importCodeOrdersTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey) throws MetamacException;
+    		processImportCodeOrdersTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey) throws MetamacException;
     		"Imports variable elements in tsv format"
-    		importVariableElementsTsv(String variableUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+    		processImportVariableElementsTsv(String variableUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
     		"Perform a merge with temporal codelist"
 			processPublishInternallyCodelist(String urnToCopy, boolean forceLatestFinal, String jobKey) throws MetamacException;
     		

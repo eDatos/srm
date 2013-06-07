@@ -1181,7 +1181,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         CodesSecurityUtils.canImportCodes(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Import in background
-        getTasksMetamacService().importCodesTsvInBackground(ctx, codelistUrn, tsvStream, fileName, updateAlreadyExisting);
+        getCodesMetamacService().importCodesTsv(ctx, codelistUrn, tsvStream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
     }
 
     @Override
@@ -1191,7 +1191,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         CodesSecurityUtils.canImportCodelistOrderVisualisations(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
         // Import in background
-        getTasksMetamacService().importCodeOrdersTsvInBackground(ctx, codelistUrn, tsvStream, fileName);
+        getCodesMetamacService().importCodeOrdersTsv(ctx, codelistUrn, tsvStream, null, fileName, null, Boolean.TRUE);
     }
 
     @Override
@@ -1796,7 +1796,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         CodesSecurityUtils.canImportVariableElements(ctx);
 
         // Import in background
-        getTasksMetamacService().importVariableElementsTsvInBackground(ctx, variableUrn, tsvStream, fileName, updateAlreadyExisting);
+        getCodesMetamacService().importVariableElementsTsv(ctx, variableUrn, tsvStream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
     }
 
     @Override

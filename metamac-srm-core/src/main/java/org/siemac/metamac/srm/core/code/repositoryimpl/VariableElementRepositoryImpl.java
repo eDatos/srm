@@ -35,19 +35,6 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
         }
     }
 
-    @Override
-    public VariableElement findByCodeWithoutFlushing(Long variableId, String code) {
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("variableId", variableId);
-        parameters.put("code", code);
-        List<VariableElement> result = findByQuery("from VariableElement where identifiableArtefact.code = :code and variable.id = :variableId", parameters, 1);
-        if (result == null || result.isEmpty()) {
-            return null;
-        } else {
-            return result.get(0);
-        }
-    }
-
     @SuppressWarnings("rawtypes")
     @Override
     public List<VariableElementResult> retrieveVariableElementsByVariableEfficiently(Long variableId, String locale) {

@@ -24,30 +24,35 @@ public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImpl
     public TasksMetamacServiceFacadeImpl() {
     }
 
+    private final Boolean CAN_NOT_BE_BACKGROUND = Boolean.FALSE;
+
     @Override
-    public void importCodesTsv(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException {
+    public void processImportCodesTsv(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting)
+            throws MetamacException {
         // Import
         List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
-        getCodesMetamacService().importCodesTsv(ctx, codelistUrn, tsvStream, charset, fileName, updateAlreadyExisting, informationItems);
+        getCodesMetamacService().importCodesTsv(ctx, codelistUrn, tsvStream, charset, fileName, updateAlreadyExisting, informationItems, CAN_NOT_BE_BACKGROUND);
         // Mark job as completed
         // TODO sistema de avisos
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
     }
 
     @Override
-    public void importCodeOrdersTsv(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey) throws MetamacException {
-        getCodesMetamacService().importCodeOrdersTsv(ctx, codelistUrn, tsvStream, charset, fileName);
+    public void processImportCodeOrdersTsv(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey) throws MetamacException {
+        // Import
+        List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
+        getCodesMetamacService().importCodeOrdersTsv(ctx, codelistUrn, tsvStream, charset, fileName, informationItems, CAN_NOT_BE_BACKGROUND);
         // Mark job as completed
         // TODO sistema de avisos
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, null);
     }
 
     @Override
-    public void importVariableElementsTsv(ServiceContext ctx, String variableUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting)
+    public void processImportVariableElementsTsv(ServiceContext ctx, String variableUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting)
             throws MetamacException {
         // Import
         List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
-        getCodesMetamacService().importVariableElementsTsv(ctx, variableUrn, tsvStream, charset, fileName, updateAlreadyExisting, informationItems);
+        getCodesMetamacService().importVariableElementsTsv(ctx, variableUrn, tsvStream, charset, fileName, updateAlreadyExisting, informationItems, CAN_NOT_BE_BACKGROUND);
         // Mark job as completed
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
     }
@@ -55,7 +60,7 @@ public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImpl
     @Override
     public void processPublishInternallyCodelist(ServiceContext ctx, String urn, boolean forceLatestFinal, String jobKey) throws MetamacException {
         // Publish
-        getCodesMetamacService().publishInternallyCodelist(ctx, urn, forceLatestFinal, Boolean.FALSE);
+        getCodesMetamacService().publishInternallyCodelist(ctx, urn, forceLatestFinal, CAN_NOT_BE_BACKGROUND);
 
         // Mark job as completed
         // TODO sistema de avisos

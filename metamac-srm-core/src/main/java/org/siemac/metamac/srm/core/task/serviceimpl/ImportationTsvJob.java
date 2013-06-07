@@ -43,7 +43,7 @@ public class ImportationTsvJob implements Job {
 
     private final ServiceContext      serviceContextDefault              = new ServiceContext("importationTsvJob", "importationTsvJob", "metamac-srm");
 
-    public TasksMetamacServiceFacade getImportationMetamacServiceFacade() {
+    public TasksMetamacServiceFacade getTaskMetamacServiceFacade() {
         if (tasksMetamacServiceFacade == null) {
             tasksMetamacServiceFacade = (TasksMetamacServiceFacade) ApplicationContextProvider.getApplicationContext().getBean(TasksMetamacServiceFacade.BEAN_ID);
         }
@@ -55,10 +55,10 @@ public class ImportationTsvJob implements Job {
 
         JobKey jobKey = context.getJobDetail().getKey();
         ServiceContext serviceContext = null;
+        JobDataMap data = context.getJobDetail().getJobDataMap();
         try {
 
             // Parameters
-            JobDataMap data = context.getJobDetail().getJobDataMap();
             String user = data.getString(USER);
             serviceContext = new ServiceContext(user, context.getFireInstanceId(), "sdmx-srm-core");
             serviceContext.setProperty(SdmxConstants.SERVICE_CONTEXT_PROP_IS_JOB_INVOCATION, Boolean.TRUE);
@@ -78,8 +78,13 @@ public class ImportationTsvJob implements Job {
                 if (serviceContext == null) {
                     serviceContext = serviceContextDefault;
                 }
-                getImportationMetamacServiceFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);
+                getTaskMetamacServiceFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);
                 // TODO sistema de avisos
+
+                String codelistUrn = data.getString(CODELIST_URN);
+                if (codelistUrn != null) {
+                    getTaskMetamacServiceFacade().markTaskItemSchemeAsFailed(serviceContext, codelistUrn);
+                }
             } catch (MetamacException e1) {
                 logger.error("ImportationJob: the importation with key " + jobKey.getName() + " has failed and it can't marked as error", e1);
             }
@@ -100,9 +105,10 @@ public class ImportationTsvJob implements Job {
 
         // Execution
         logger.info("ImportationJob [importVariableElements]: " + jobKey + " starting at " + new Date());
-        getImportationMetamacServiceFacade().importVariableElementsTsv(serviceContext, variableUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
+        getTaskMetamacServiceFacade().processImportVariableElementsTsv(serviceContext, variableUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
         logger.info("ImportationJob [importVariableElements]: " + jobKey + " finished at " + new Date());
     }
+
     private void importCodes(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws Exception {
 
         // Parameters
@@ -117,7 +123,7 @@ public class ImportationTsvJob implements Job {
 
         // Execution
         logger.info("ImportationJob [importCodes]: " + jobKey + " starting at " + new Date());
-        getImportationMetamacServiceFacade().importCodesTsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
+        getTaskMetamacServiceFacade().processImportCodesTsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
         logger.info("ImportationJob [importCodes]: " + jobKey + " finished at " + new Date());
     }
 
@@ -134,7 +140,7 @@ public class ImportationTsvJob implements Job {
 
         // Execution
         logger.info("ImportationJob [importCodeOrders]: " + jobKey + " starting at " + new Date());
-        getImportationMetamacServiceFacade().importCodeOrdersTsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName());
+        getTaskMetamacServiceFacade().processImportCodeOrdersTsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName());
         logger.info("ImportationJob [importCodeOrders]: " + jobKey + " finished at " + new Date());
     }
 

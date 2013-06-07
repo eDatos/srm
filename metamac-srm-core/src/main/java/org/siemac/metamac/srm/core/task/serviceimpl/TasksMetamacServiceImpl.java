@@ -32,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.task.domain.Task;
 import com.arte.statistic.sdmx.srm.core.task.serviceapi.TasksService;
 import com.arte.statistic.sdmx.srm.core.task.serviceimpl.utils.ImportationJaxb2DoCallback;
@@ -48,9 +47,6 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
     private TasksService               tasksService;
 
     @Autowired
-    private BaseService                baseService;
-
-    @Autowired
     @Qualifier("importationMetamacJaxb2DoCallback")
     private ImportationJaxb2DoCallback importationJaxb2DoCallback;
 
@@ -63,7 +59,7 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
     }
 
     @Override
-    public String importCodesTsvInBackground(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+    public String plannifyImportCodesTsvInBackground(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
         // Validation
         TasksMetamacInvocationValidator.checkImportCodesTsvInBackground(codelistUrn, tsvStream, updateAlreadyExisting, null);
 
@@ -76,7 +72,7 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
     }
 
     @Override
-    public String importCodeOrdersTsvInBackground(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String fileName) throws MetamacException {
+    public String plannifyImportCodeOrdersTsvInBackground(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String fileName) throws MetamacException {
         // Validation
         TasksMetamacInvocationValidator.checkImportCodeOrdersTsvInBackground(codelistUrn, tsvStream, null);
 
@@ -88,7 +84,7 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
     }
 
     @Override
-    public String importVariableElementsTsvInBackground(ServiceContext ctx, String variableUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+    public String plannifyImportVariableElementsTsvInBackground(ServiceContext ctx, String variableUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
 
         // Validation
         TasksMetamacInvocationValidator.checkImportVariableElementsTsvInBackground(variableUrn, tsvStream, updateAlreadyExisting, null);

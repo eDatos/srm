@@ -60,6 +60,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
+import org.siemac.metamac.srm.core.code.domain.shared.TaskImportTsvInfo;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
@@ -652,25 +653,42 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void importCodesTsv(ServiceContext ctx, String codelistUrn, InputStream stream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems)
-            throws MetamacException {
+    public TaskImportTsvInfo importCodesTsv(ServiceContext ctx, String codelistUrn, InputStream stream, String charset, String fileName, boolean updateAlreadyExisting,
+            List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException {
 
         // Validation
-        CodesMetamacInvocationValidator.checkImportCodesTsv(codelistUrn, stream, updateAlreadyExisting, null);
+        CodesMetamacInvocationValidator.checkImportCodesTsv(codelistUrn, stream, charset, fileName, updateAlreadyExisting, informationItems, canBeBackground, null);
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
-        checkCodelistCanBeModified(codelistVersion);
+        checkCodelistCanExecuteImportation(codelistVersion, canBeBackground);
         srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersion);
 
-        // Import
-        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
-        InputStreamReader inputStreamReader = null;
-        BufferedReader bufferedReader = null;
+        // Plannify task if can be in background
+        if (canBeBackground) {
+            codelistVersion.getItemScheme().setIsTaskInBackground(Boolean.TRUE);
+            itemSchemeRepository.save(codelistVersion.getItemScheme());
+
+            // execute in background
+            String jobKey = tasksMetamacService.plannifyImportCodesTsvInBackground(ctx, codelistUrn, stream, fileName, updateAlreadyExisting);
+            return new TaskImportTsvInfo(Boolean.TRUE, jobKey);
+        }
+
+        // Execute importation now
+        // Retrieve actual codes in codelist
         List<CodeMetamac> codesToPersist = new ArrayList<CodeMetamac>();
         Map<String, CodeMetamac> codesPreviousInCodelistByCode = new HashMap<String, CodeMetamac>();
         for (Item item : codelistVersion.getItems()) {
             codesPreviousInCodelistByCode.put(item.getNameableArtefact().getCode(), (CodeMetamac) item);
         }
+        // Retrieve variable elements. It is more efficient retrieve all variable element in one query than execute one query by variable element
+        Map<String, VariableElement> variableElementsInVariableByCode = new HashMap<String, VariableElement>();
+        for (VariableElement variableElement : codelistVersion.getVariable().getVariableElements()) {
+            variableElementsInVariableByCode.put(variableElement.getIdentifiableArtefact().getCode(), variableElement);
+        }
 
+        // Import
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         Map<String, CodeMetamac> codesToPersistByCode = new HashMap<String, CodeMetamac>();
         try {
             inputStreamReader = new InputStreamReader(stream, charset);
@@ -695,8 +713,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                         continue;
                     }
                     // Transform code and add to list to persist
-                    CodeMetamac code = tsvLineToCode(header, columns, lineNumber, codelistVersion, updateAlreadyExisting, codesPreviousInCodelistByCode, codesToPersistByCode, exceptionItems,
-                            informationItems);
+                    CodeMetamac code = tsvLineToCode(header, columns, lineNumber, codelistVersion, variableElementsInVariableByCode, updateAlreadyExisting, codesPreviousInCodelistByCode,
+                            codesToPersistByCode, exceptionItems, informationItems);
                     if (code != null) {
                         codesToPersist.add(code);
                         codesToPersistByCode.put(code.getNameableArtefact().getCode(), code);
@@ -733,22 +751,34 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         recalculateCodesVisualisations(ctx, allItemsToUpdateVisualisations, codelistVersion.getOrderVisualisations(), codelistVersion.getOpennessVisualisations(), false);
 
-        // Save codes
+        // Save codes and scheme
         saveCodesEfficiently(codesToPersist, codesToPersistByCode);
         baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
+        codelistVersion.getItemScheme().setIsTaskInBackground(Boolean.FALSE);
+        itemSchemeRepository.save(codelistVersion.getItemScheme());
+
+        return new TaskImportTsvInfo(Boolean.FALSE, null);
     }
 
     @Override
-    public void importCodeOrdersTsv(ServiceContext ctx, String codelistUrn, InputStream stream, String charset, String fileName) throws MetamacException {
+    public TaskImportTsvInfo importCodeOrdersTsv(ServiceContext ctx, String codelistUrn, InputStream stream, String charset, String fileName, List<MetamacExceptionItem> informationItems,
+            Boolean canBeBackground) throws MetamacException {
 
         // Validation
-        CodesMetamacInvocationValidator.checkImportCodeOrdersTsv(codelistUrn, stream, null);
+        CodesMetamacInvocationValidator.checkImportCodeOrdersTsv(codelistUrn, stream, charset, fileName, informationItems, canBeBackground, null);
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
-        checkCodelistCanBeModified(codelistVersion);
+        checkCodelistCanExecuteImportation(codelistVersion, canBeBackground);
 
-        // Import
-        InputStreamReader inputStreamReader = null;
-        BufferedReader bufferedReader = null;
+        // Plannify task if background
+        if (canBeBackground) {
+            codelistVersion.getItemScheme().setIsTaskInBackground(Boolean.TRUE);
+            itemSchemeRepository.save(codelistVersion.getItemScheme());
+
+            // execute in background
+            String jobKey = tasksMetamacService.plannifyImportCodeOrdersTsvInBackground(ctx, codelistUrn, stream, fileName);
+
+            return new TaskImportTsvInfo(Boolean.TRUE, jobKey);
+        }
 
         // Codes in codelist
         List<Code> codesInCodelist = codelistVersion.getItems();
@@ -758,7 +788,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         Set<String> codesInTsvToCheckAllCodesAreUpdated = new HashSet<String>();
         List<CodelistOrderVisualisation> orderVisualisations = null;
+
+        // Import
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
         try {
             inputStreamReader = new InputStreamReader(stream, charset);
             bufferedReader = new BufferedReader(inputStreamReader);
@@ -831,6 +865,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             getCodeMetamacRepository().save(codeMetamac);
         }
         baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
+        codelistVersion.getItemScheme().setIsTaskInBackground(Boolean.FALSE);
+        itemSchemeRepository.save(codelistVersion.getItemScheme());
+
+        return new TaskImportTsvInfo(Boolean.FALSE, null);
     }
 
     @Override
@@ -1837,23 +1875,30 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public void importVariableElementsTsv(ServiceContext ctx, String variableUrn, InputStream stream, String charset, String fileName, boolean updateAlreadyExisting,
-            List<MetamacExceptionItem> informationItems) throws MetamacException {
+    public TaskImportTsvInfo importVariableElementsTsv(ServiceContext ctx, String variableUrn, InputStream stream, String charset, String fileName, boolean updateAlreadyExisting,
+            List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException {
 
         // Validation
-        CodesMetamacInvocationValidator.checkImportVariableElementsTsv(variableUrn, stream, updateAlreadyExisting, null);
+        CodesMetamacInvocationValidator.checkImportVariableElementsTsv(variableUrn, stream, charset, fileName, updateAlreadyExisting, informationItems, canBeBackground, null);
 
-        // Import
+        // Plannify task if can be in background
+        if (canBeBackground) {
+            String jobKey = tasksMetamacService.plannifyImportVariableElementsTsvInBackground(ctx, variableUrn, stream, fileName, updateAlreadyExisting);
+            return new TaskImportTsvInfo(Boolean.TRUE, jobKey);
+        }
+
+        // Retrieve actual variable elements
         Variable variable = retrieveVariableByUrn(variableUrn);
-        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
-        InputStreamReader inputStreamReader = null;
-        BufferedReader bufferedReader = null;
         List<VariableElement> variableElementsToPersist = new ArrayList<VariableElement>();
         Map<String, VariableElement> variableElementsPreviousInVariableByCode = new HashMap<String, VariableElement>();
         for (VariableElement variableElement : variable.getVariableElements()) {
             variableElementsPreviousInVariableByCode.put(variableElement.getIdentifiableArtefact().getCode(), variableElement);
         }
 
+        // Import
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
         Map<String, VariableElement> variableElementsToPersistByCode = new HashMap<String, VariableElement>();
         try {
             inputStreamReader = new InputStreamReader(stream, charset);
@@ -1910,6 +1955,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         for (VariableElement variableElement : variableElementsToPersist) {
             getVariableElementRepository().save(variableElement);
         }
+
+        return new TaskImportTsvInfo(Boolean.FALSE, null);
     }
 
     // ------------------------------------------------------------------------------------
@@ -2276,6 +2323,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private void checkCodelistCanBeModified(CodelistVersionMetamac codelistVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(codelistVersion.getLifeCycleMetadata(), codelistVersion.getMaintainableArtefact().getUrn());
         SrmValidationUtils.checkArtefactWithoutTaskInBackground(codelistVersion);
+    }
+
+    private void checkCodelistCanExecuteImportation(CodelistVersionMetamac codelistVersion, Boolean canBeBackground) throws MetamacException {
+        SrmValidationUtils.checkArtefactCanBeModified(codelistVersion.getLifeCycleMetadata(), codelistVersion.getMaintainableArtefact().getUrn());
+        if (BooleanUtils.isTrue(canBeBackground)) {
+            SrmValidationUtils.checkArtefactWithoutTaskInBackground(codelistVersion);
+        }
     }
 
     /**
@@ -2783,9 +2837,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     /**
      * Transforms tsv line to Code. IMPORTANT: Do not execute save or update operation
      */
-    private CodeMetamac tsvLineToCode(ImportationCodesTsvHeader header, String[] columns, int lineNumber, CodelistVersionMetamac codelistVersion, boolean updateAlreadyExisting,
-            Map<String, CodeMetamac> codesPreviousInCodelist, Map<String, CodeMetamac> codesToPersistByCode, List<MetamacExceptionItem> exceptionItems, List<MetamacExceptionItem> infoItems)
-            throws MetamacException {
+    private CodeMetamac tsvLineToCode(ImportationCodesTsvHeader header, String[] columns, int lineNumber, CodelistVersionMetamac codelistVersion,
+            Map<String, VariableElement> variableElementsInVariableByCode, boolean updateAlreadyExisting, Map<String, CodeMetamac> codesPreviousInCodelist,
+            Map<String, CodeMetamac> codesToPersistByCode, List<MetamacExceptionItem> exceptionItems, List<MetamacExceptionItem> infoItems) throws MetamacException {
 
         // semantic identifier
         String codeIdentifier = columns[header.getCodePosition()];
@@ -2821,7 +2875,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         VariableElement variableElement = null;
         boolean updateVariableElement = true;
         if (!StringUtils.isBlank(variableElementIdentifier)) {
-            variableElement = getVariableElementRepository().findByCodeWithoutFlushing(codelistVersion.getVariable().getId(), variableElementIdentifier);
+            variableElement = variableElementsInVariableByCode.get(variableElementIdentifier);
             if (variableElement == null) {
                 // do not abort importation. Only inform about this
                 infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, variableElementIdentifier, codeIdentifier));

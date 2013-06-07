@@ -120,4 +120,9 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
 
     // MISC
     public static final String STREAM                                                     = "stream";
+    public static final String FILE_NAME                                                  = "fileName";
+    // MISC internal
+    public static final String CHARSET                                                    = "charset";
+    public static final String CAN_BE_BACKGROUND                                          = "canBeBackground";
+    public static final String INFORMATION_ITEMS                                          = "informationItems";
 }
