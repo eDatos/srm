@@ -1262,9 +1262,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             }
         } else {
             // Type can be modified if type was never established previously or if the scheme has not items (concepts)
-            if (conceptSchemeVersion.getId() != null && BooleanUtils.isTrue(conceptSchemeVersion.getIsTypeUpdated())) {
+            if (conceptSchemeVersion.getId() != null && conceptSchemeVersion.getIsTypeUpdated()) {
                 boolean canModifyType = false;
-                if (conceptSchemeVersion.getIsTypeEmptyPreviously()) {
+                if (BooleanUtils.isTrue(conceptSchemeVersion.getIsTypeEmptyPreviously())) {
                     canModifyType = true;
                 } else {
                     Long itemsCount = conceptRepository.countItems(conceptSchemeVersion.getId());
