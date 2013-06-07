@@ -15,7 +15,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomDateItem;
 
-import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;

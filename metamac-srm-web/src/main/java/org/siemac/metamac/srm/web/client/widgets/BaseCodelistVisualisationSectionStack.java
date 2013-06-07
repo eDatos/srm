@@ -16,7 +16,6 @@ import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
-import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
