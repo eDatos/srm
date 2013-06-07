@@ -31,22 +31,11 @@ public class ConceptsFormUtils {
         if (conceptSchemeDto == null) {
             return false;
         }
-
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(conceptSchemeDto.getLifeCycle().getProcStatus())) {
-
-            // If it is published, cannot be edited
-            return false;
-
-        } else if (CommonUtils.isDefaultMaintainer(conceptSchemeDto.getMaintainer()) && !org.siemac.metamac.srm.web.client.utils.CommonUtils.isInitialVersion(conceptSchemeDto.getVersionLogic())) {
-
-            // If it is a created artefact and the version is greater than 01.000, cannot be edited
-            return false;
-
-        } else {
-
-            // There are more situations when the type cannot be edited, but will be check in the service (CORE)
+        // Only edit type if it is null (this will happen only when the concept scheme has been imported)
+        if (conceptSchemeDto.getType() == null) {
             return true;
         }
+        return false;
     }
 
     // ---------------------------------------------------------------------------------------------
