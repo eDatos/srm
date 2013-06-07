@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -1240,7 +1241,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
      */
     private void checkConceptSchemeToCreateOrUpdate(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
 
-        // When updating
         if (conceptSchemeVersion.getId() != null) {
             // Proc status
             checkConceptSchemeCanBeModified(conceptSchemeVersion);
@@ -1252,28 +1252,34 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Maintainer
         srmValidation.checkMaintainer(ctx, conceptSchemeVersion.getMaintainableArtefact(), conceptSchemeVersion.getMaintainableArtefact().getIsImported());
 
-        // When updating
-        // If the scheme has items (concepts), type cannot be modified
-        if (conceptSchemeVersion.getId() != null) {
-            if (conceptSchemeVersion.getIsTypeUpdated() && !conceptSchemeVersion.getMaintainableArtefact().getIsImported()) {
-                Long itemsCount = conceptRepository.countItems(conceptSchemeVersion.getId());
-                if (itemsCount != 0) {
-                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE)
-                            .build();
-                }
-            }
-        }
-
-        // When updating
-        // if this version is not the first one, check not modify 'type'
+        // Type
+        // if this version is not the first one, check not modify 'type' respect previous version
         if (!SrmServiceUtils.isItemSchemeFirstVersion(conceptSchemeVersion)) {
             ConceptSchemeVersionMetamac conceptSchemePreviousVersion = (ConceptSchemeVersionMetamac) itemSchemeVersionRepository.retrieveByVersion(conceptSchemeVersion.getItemScheme().getId(),
                     conceptSchemeVersion.getMaintainableArtefact().getReplaceToVersion());
             if (!conceptSchemePreviousVersion.getType().equals(conceptSchemeVersion.getType())) {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE).build();
             }
+        } else {
+            // Type can be modified if type was never established previously or if the scheme has not items (concepts)
+            if (conceptSchemeVersion.getId() != null && BooleanUtils.isTrue(conceptSchemeVersion.getIsTypeUpdated())) {
+                boolean canModifyType = false;
+                if (conceptSchemeVersion.getIsTypeEmptyPreviously()) {
+                    canModifyType = true;
+                } else {
+                    Long itemsCount = conceptRepository.countItems(conceptSchemeVersion.getId());
+                    if (itemsCount == 0) {
+                        canModifyType = true;
+                    }
+                }
+                if (!canModifyType) {
+                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE)
+                            .build();
+                }
+            }
         }
     }
+
     /**
      * Common validations to create or update a concept
      */

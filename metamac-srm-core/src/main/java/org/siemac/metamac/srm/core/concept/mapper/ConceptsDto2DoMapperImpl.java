@@ -76,6 +76,7 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
 
         // Modifiable attributes
         target.setIsTypeUpdated(!ObjectUtils.equals(source.getType(), target.getType()));
+        target.setIsTypeEmptyPreviously(target.getType() == null);
         target.setType(source.getType());
         target.setRelatedOperation(externalItemDtoStatisticalOperationsToExternalItemDo(source.getRelatedOperation(), target.getRelatedOperation(),
                 ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
