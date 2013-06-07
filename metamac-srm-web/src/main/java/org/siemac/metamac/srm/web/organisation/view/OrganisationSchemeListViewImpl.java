@@ -83,10 +83,10 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
                 });
             }
         });
-        newButton.setVisibility(OrganisationsClientSecurityUtils.canCreateOrganisationScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newButton.setVisible(OrganisationsClientSecurityUtils.canCreateOrganisationScheme());
 
         deleteButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteButton.setVisibility(Visibility.HIDDEN);
+        deleteButton.setVisible(false);
         deleteButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -96,7 +96,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         });
 
         cancelValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
-        cancelValidityButton.setVisibility(Visibility.HIDDEN);
+        cancelValidityButton.setVisible(false);
         cancelValidityButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -155,7 +155,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         organisationSchemeList.getListGrid().setFields(ResourceFieldUtils.getOrganisationSchemeListGridFields());
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().organisationSchemeDeleteConfirmationTitle(), getConstants().organisationSchemeDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 
             @Override

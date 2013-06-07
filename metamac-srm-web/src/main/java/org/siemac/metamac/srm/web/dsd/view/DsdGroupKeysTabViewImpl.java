@@ -98,10 +98,10 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         });
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(MetamacSrmWeb.getConstants().dsdDeleteConfirmationTitle(), MetamacSrmWeb.getConstants().dsdGroupKeysDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
 
         deleteToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionDelete(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
-        deleteToolStripButton.setVisibility(Visibility.HIDDEN);
+        deleteToolStripButton.setVisible(false);
         deleteToolStripButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -200,7 +200,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
         selectedDescriptorLayout = new VLayout(10);
         selectedDescriptorLayout.addMember(mainFormLayout);
-        selectedDescriptorLayout.setVisibility(Visibility.HIDDEN);
+        selectedDescriptorLayout.setVisible(false);
 
         panel.addMember(gridLayout);
         panel.addMember(selectedDescriptorLayout);
@@ -278,7 +278,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         deselectGroupKeys();
 
         // Security
-        newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateGroupKeys(dataStructureDefinitionMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newToolStripButton.setVisible(DsdClientSecurityUtils.canCreateGroupKeys(dataStructureDefinitionMetamacDto));
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateGroupKeys(dataStructureDefinitionMetamacDto));
 
         this.dimensionComponentDtos = dimensionComponentDtos;

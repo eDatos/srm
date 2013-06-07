@@ -39,7 +39,7 @@ public abstract class VersionableResourceSearchSectionStack extends BaseAdvanced
         advancedSearchForm = new GroupDynamicForm(StringUtils.EMPTY);
         advancedSearchForm.setPadding(5);
         advancedSearchForm.setMargin(5);
-        advancedSearchForm.setVisibility(Visibility.HIDDEN);
+        advancedSearchForm.setVisible(false);
         TextItem code = new TextItem(VersionableResourceDS.CODE, getConstants().identifiableArtefactCode());
         TextItem name = new TextItem(VersionableResourceDS.NAME, getConstants().nameableArtefactName());
         TextItem urn = new TextItem(VersionableResourceDS.URN, getConstants().identifiableArtefactUrn());

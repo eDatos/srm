@@ -85,10 +85,10 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
                 });
             }
         });
-        newConceptSchemeButton.setVisibility(ConceptsClientSecurityUtils.canCreateConceptScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newConceptSchemeButton.setVisible(ConceptsClientSecurityUtils.canCreateConceptScheme());
 
         deleteConceptSchemeButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteConceptSchemeButton.setVisibility(Visibility.HIDDEN);
+        deleteConceptSchemeButton.setVisible(false);
         deleteConceptSchemeButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -98,7 +98,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         });
 
         cancelConceptSchemeValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
-        cancelConceptSchemeValidityButton.setVisibility(Visibility.HIDDEN);
+        cancelConceptSchemeValidityButton.setVisible(false);
         cancelConceptSchemeValidityButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -157,7 +157,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         conceptSchemesList.getListGrid().setFields(ResourceFieldUtils.getConceptSchemeListGridFields());
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().conceptSchemeDeleteConfirmationTitle(), getConstants().conceptSchemeDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 
             @Override

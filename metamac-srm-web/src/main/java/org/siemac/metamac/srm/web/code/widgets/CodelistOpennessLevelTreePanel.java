@@ -18,7 +18,6 @@ import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 
-import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -101,7 +100,7 @@ public class CodelistOpennessLevelTreePanel extends VLayout {
         codesOpennessLevelVisualisationTreeGrid.setItems(codelistMetamacDto, codes, codelistVisualisationDto);
 
         // Security
-        editButton.setVisibility(canCodeOpennessLevelBeModified(codelistMetamacDto, codelistVisualisationDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        editButton.setVisible(canCodeOpennessLevelBeModified(codelistMetamacDto, codelistVisualisationDto));
     }
 
     private boolean canCodeOpennessLevelBeModified(CodelistMetamacDto codelistMetamacDto, CodelistVisualisationDto codelistVisualisationDto) {

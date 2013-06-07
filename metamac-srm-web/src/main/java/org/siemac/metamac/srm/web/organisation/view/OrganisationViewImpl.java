@@ -152,7 +152,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         });
 
         contactDeleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().organisationContactDeleteConfirmationTitle(), getConstants().organisationContactDeleteConfirmation());
-        contactDeleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        contactDeleteConfirmationWindow.setVisible(false);
         contactDeleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 
             @Override
@@ -166,7 +166,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         });
 
         contactDeleteButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        contactDeleteButton.setVisibility(Visibility.HIDDEN);
+        contactDeleteButton.setVisible(false);
         contactDeleteButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -217,7 +217,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         // Contact form
 
         contactMainFormLayout = new ContactMainFormLayout();
-        contactMainFormLayout.setVisibility(Visibility.HIDDEN);
+        contactMainFormLayout.setVisible(false);
         contactMainFormLayout.getSave().addClickHandler(new ClickHandler() {
 
             @Override
@@ -487,8 +487,8 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         // Security
         mainFormLayout.setOrganisationScheme(organisationSchemeMetamacDto, organisationDto);
         contactMainFormLayout.setCanEdit(OrganisationsClientSecurityUtils.canUpdateContact(organisationSchemeMetamacDto));
-        contactNewButton.setVisibility(OrganisationsClientSecurityUtils.canCreateContact(organisationSchemeMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
-
+        contactNewButton.setVisible(OrganisationsClientSecurityUtils.canCreateContact(organisationSchemeMetamacDto));
+        
         markFormsForRedraw();
     }
 

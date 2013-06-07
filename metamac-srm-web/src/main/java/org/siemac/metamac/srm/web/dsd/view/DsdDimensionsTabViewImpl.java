@@ -143,10 +143,10 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         });
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().dsdDeleteConfirmationTitle(), getConstants().dsdDimensionDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
 
         deleteToolStripButton = new ToolStripButton(getConstants().actionDelete(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
-        deleteToolStripButton.setVisibility(Visibility.HIDDEN);
+        deleteToolStripButton.setVisible(false);
         deleteToolStripButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -267,7 +267,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         selectedComponentLayout = new VLayout(10);
         selectedComponentLayout.addMember(mainFormLayout);
-        selectedComponentLayout.setVisibility(Visibility.HIDDEN);
+        selectedComponentLayout.setVisible(false);
 
         panel.addMember(gridLayout);
         panel.addMember(selectedComponentLayout);
@@ -395,7 +395,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // FACET
 
         facetEditionForm = new DsdFacetForm();
-        facetEditionForm.setVisibility(Visibility.HIDDEN);
+        facetEditionForm.setVisible(false);
         // TextType applicable to TimeDimension is restricted to those that represent time
         CustomValidator timeValidator = new CustomValidator() {
 
@@ -416,7 +416,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         facetEditionForm.getTextType().setValidators(timeValidator);
 
         facetStaticEditionForm = new StaticFacetForm();
-        facetStaticEditionForm.setVisibility(Visibility.HIDDEN);
+        facetStaticEditionForm.setVisible(false);
 
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
@@ -438,7 +438,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         deselectDimension();
 
         // Security
-        newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateDimension(dataStructureDefinitionMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newToolStripButton.setVisible(DsdClientSecurityUtils.canCreateDimension(dataStructureDefinitionMetamacDto));
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDimension(dataStructureDefinitionMetamacDto));
 
         dimensionsGrid.setData(RecordUtils.getDimensionRecords(dimensionComponentDtos));
@@ -773,7 +773,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     @Override
     public boolean validate() {
-        return Visibility.HIDDEN.equals(facetEditionForm.getVisibility()) ? editionForm.validate(false) : (editionForm.validate(false) && facetEditionForm.validate(false));
+        return !facetEditionForm.isVisible() ? editionForm.validate(false) : (editionForm.validate(false) && facetEditionForm.validate(false));
     }
 
     @Override

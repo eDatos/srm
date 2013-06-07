@@ -33,7 +33,7 @@ public abstract class ItemSearchSectionStack extends BaseAdvancedSearchSectionSt
         advancedSearchForm = new GroupDynamicForm(StringUtils.EMPTY);
         advancedSearchForm.setPadding(5);
         advancedSearchForm.setMargin(5);
-        advancedSearchForm.setVisibility(Visibility.HIDDEN);
+        advancedSearchForm.setVisible(false);
         TextItem code = new TextItem(ItemDS.CODE, getConstants().identifiableArtefactCode());
         TextItem name = new TextItem(ItemDS.NAME, getConstants().nameableArtefactName());
         TextItem urn = new TextItem(ItemDS.URN, getConstants().identifiableArtefactUrn());

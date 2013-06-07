@@ -198,7 +198,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         subPanel.addMember(versionsSectionStack);
         titleLabel = new TitleLabel();
         informationLabel = new InformationLabel(StringUtils.EMPTY);
-        informationLabel.setVisibility(Visibility.HIDDEN);
+        informationLabel.setVisible(false);
         TabSet tabSet = new TabSet();
         tabSet.setStyleName("marginTop15");
 

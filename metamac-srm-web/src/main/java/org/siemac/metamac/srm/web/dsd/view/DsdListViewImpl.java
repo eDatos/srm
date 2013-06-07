@@ -89,10 +89,10 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
                 });
             }
         });
-        newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateDsd() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newToolStripButton.setVisible(DsdClientSecurityUtils.canCreateDsd());
 
         exportToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), GlobalResources.RESOURCE.exportResource().getURL());
-        exportToolStripButton.setVisibility(Visibility.HIDDEN);
+        exportToolStripButton.setVisible(false);
         exportToolStripButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -105,10 +105,10 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         });
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(MetamacSrmWeb.getConstants().dsdDeleteConfirmationTitle(), MetamacSrmWeb.getConstants().dsdDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
 
         deleteToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionDelete(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
-        deleteToolStripButton.setVisibility(Visibility.HIDDEN);
+        deleteToolStripButton.setVisible(false);
         deleteToolStripButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -118,7 +118,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         });
 
         cancelValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.disable().getURL());
-        cancelValidityButton.setVisibility(Visibility.HIDDEN);
+        cancelValidityButton.setVisible(false);
         cancelValidityButton.addClickHandler(new ClickHandler() {
 
             @Override

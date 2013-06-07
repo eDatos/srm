@@ -31,7 +31,7 @@ public class OrganisationContactSearchSectionStack extends BaseAdvancedSearchSec
         advancedSearchForm = new GroupDynamicForm(StringUtils.EMPTY);
         advancedSearchForm.setPadding(5);
         advancedSearchForm.setMargin(5);
-        advancedSearchForm.setVisibility(Visibility.HIDDEN);
+        advancedSearchForm.setVisible(false);
 
         TextItem name = new TextItem(ContactDS.NAME, getConstants().organisationContactName());
         name.setWidth("*");

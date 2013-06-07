@@ -294,7 +294,7 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         final int MAX_RESULTS = 8;
 
         ToolStripButton button = new ToolStripButton(MetamacWebCommon.getConstants().add(), RESOURCE.newListGrid().getURL());
-        button.setVisibility(CodesClientSecurityUtils.canAddCodelistToCodelistFamily() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        button.setVisible(CodesClientSecurityUtils.canAddCodelistToCodelistFamily());
         button.addClickHandler(new ClickHandler() {
 
             @Override
@@ -335,7 +335,7 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
 
     private ToolStripButton createRemoveCodelistToFamilyButton() {
         ToolStripButton button = new ToolStripButton(getConstants().codelistRemoveFromFamily(), RESOURCE.deleteListGrid().getURL());
-        button.setVisibility(Visibility.HIDDEN);
+        button.setVisible(false);
         button.addClickHandler(new ClickHandler() {
 
             @Override

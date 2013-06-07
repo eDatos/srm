@@ -148,7 +148,7 @@ public class VariableElementOperationLayout extends VLayout {
 
     private CustomToolStripButton createDeleteOperationButton() {
         CustomToolStripButton deleteButton = new CustomToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteButton.setVisibility(Visibility.HIDDEN);
+        deleteButton.setVisible(false);
         deleteButton.addClickHandler(new ClickHandler() {
 
             @Override

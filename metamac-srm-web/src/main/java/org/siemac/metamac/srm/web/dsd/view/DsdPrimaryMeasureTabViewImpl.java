@@ -176,9 +176,9 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
         // FACET
 
         facetEditionForm = new DsdFacetForm();
-        facetEditionForm.setVisibility(Visibility.HIDDEN);
+        facetEditionForm.setVisible(false);
         facetStaticEditionForm = new StaticFacetForm();
-        facetStaticEditionForm.setVisibility(Visibility.HIDDEN);
+        facetStaticEditionForm.setVisible(false);
 
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
@@ -368,7 +368,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
     }
 
     private boolean validate() {
-        return Visibility.HIDDEN.equals(facetEditionForm.getVisibility()) ? editionForm.validate(false) : (editionForm.validate(false) && facetEditionForm.validate(false));
+        return !facetEditionForm.isVisible() ? editionForm.validate(false) : (editionForm.validate(false) && facetEditionForm.validate(false));
     }
 
     private CustomSelectItem createRepresentationTypeItem(String name, String title) {

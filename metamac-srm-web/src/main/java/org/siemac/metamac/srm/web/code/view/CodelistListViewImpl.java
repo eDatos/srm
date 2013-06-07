@@ -82,10 +82,10 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
                 });
             }
         });
-        newCodelistButton.setVisibility(CodesClientSecurityUtils.canCreateCodelist() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newCodelistButton.setVisible(CodesClientSecurityUtils.canCreateCodelist());
 
         deleteCodelistButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteCodelistButton.setVisibility(Visibility.HIDDEN);
+        deleteCodelistButton.setVisible(false);
         deleteCodelistButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -95,7 +95,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         });
 
         cancelCodelistValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
-        cancelCodelistValidityButton.setVisibility(Visibility.HIDDEN);
+        cancelCodelistValidityButton.setVisible(false);
         cancelCodelistValidityButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -154,7 +154,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         codelistsList.getListGrid().setFields(ResourceFieldUtils.getCodelistListGridFields());
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistDeleteConfirmationTitle(), getConstants().codelistDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 
             @Override

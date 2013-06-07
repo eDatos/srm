@@ -95,7 +95,7 @@ public class InternationalAnnotationsPanel extends VLayout {
         annotationImg.setTooltip(MetamacSrmWeb.getConstants().annotations());
 
         addAnnotationImg = new Img();
-        addAnnotationImg.setVisibility(Visibility.HIDDEN);
+        addAnnotationImg.setVisible(false);
         addAnnotationImg.setSize(32);
         addAnnotationImg.setAlign(Alignment.LEFT);
         addAnnotationImg.setSrc(GlobalResources.RESOURCE.addAnnotation().getURL());

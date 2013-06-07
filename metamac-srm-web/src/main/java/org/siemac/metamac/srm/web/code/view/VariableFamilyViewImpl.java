@@ -330,13 +330,13 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
                 });
             }
         });
-        button.setVisibility(CodesClientSecurityUtils.canAddVariablesToVariableFamily() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        button.setVisible(CodesClientSecurityUtils.canAddVariablesToVariableFamily());
         return button;
     }
 
     private ToolStripButton createRemoveVariableToFamilyButton() {
         ToolStripButton button = new ToolStripButton(getConstants().variableRemoveFromFamily(), RESOURCE.deleteListGrid().getURL());
-        button.setVisibility(Visibility.HIDDEN);
+        button.setVisible(false);
         button.addClickHandler(new ClickHandler() {
 
             @Override

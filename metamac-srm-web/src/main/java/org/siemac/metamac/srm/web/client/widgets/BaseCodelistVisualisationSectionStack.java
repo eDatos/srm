@@ -85,10 +85,10 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomListGr
         newCodelistVisualisationButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
 
         editCodelistVisualisationButton = new ToolStripButton(getConstants().actionEdit(), RESOURCE.editListGrid().getURL());
-        editCodelistVisualisationButton.setVisibility(Visibility.HIDDEN);
+        editCodelistVisualisationButton.setVisible(false);
 
         deleteCodelistVisualisationButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteCodelistVisualisationButton.setVisibility(Visibility.HIDDEN);
+        deleteCodelistVisualisationButton.setVisible(false);
 
         importCodelistVisualisationButton = new ToolStripButton(getConstants().actionImportCodeOrders(), GlobalResources.RESOURCE.importResource().getURL());
 
@@ -101,7 +101,7 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomListGr
         toolStrip.addButton(exportCodelistVisualisationButton);
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistVisualisationDeleteConfirmationTitle(), getConstants().codelistVisualisationDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
 
         listGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
 

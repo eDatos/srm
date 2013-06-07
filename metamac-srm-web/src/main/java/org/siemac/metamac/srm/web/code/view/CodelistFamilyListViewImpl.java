@@ -81,10 +81,9 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
                 });
             }
         });
-        newCodelistFamilyButton.setVisibility(CodesClientSecurityUtils.canCreateCodelistFamily() ? Visibility.VISIBLE : Visibility.HIDDEN);
-
+        newCodelistFamilyButton.setVisible(CodesClientSecurityUtils.canCreateCodelistFamily());
         deleteCodelistFamilyButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteCodelistFamilyButton.setVisibility(Visibility.HIDDEN);
+        deleteCodelistFamilyButton.setVisible(false);
         deleteCodelistFamilyButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -152,7 +151,7 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
         codelistFamilyList.getListGrid().setFields(fieldCode, fieldName, urn);
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistFamilyDeleteConfirmationTitle(), getConstants().codelistFamilyDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 
             @Override

@@ -73,7 +73,7 @@ public abstract class CategorisationsPanel extends VLayout {
         });
 
         deleteCategorisationButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteCategorisationButton.setVisibility(Visibility.HIDDEN);
+        deleteCategorisationButton.setVisible(false);
         deleteCategorisationButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -83,7 +83,7 @@ public abstract class CategorisationsPanel extends VLayout {
         });
 
         cancelCategorisationValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), RESOURCE.disable().getURL());
-        cancelCategorisationValidityButton.setVisibility(Visibility.HIDDEN);
+        cancelCategorisationValidityButton.setVisible(false);
         cancelCategorisationValidityButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -111,7 +111,7 @@ public abstract class CategorisationsPanel extends VLayout {
         // Deletion window
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().categorisationDeleteConfirmationTitle(), getConstants().categorisationDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 
             @Override

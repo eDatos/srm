@@ -82,10 +82,10 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
                 });
             }
         });
-        newVariableFamilyButton.setVisibility(CodesClientSecurityUtils.canCreateVariableFamily() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newVariableFamilyButton.setVisible(CodesClientSecurityUtils.canCreateVariableFamily());
 
         deleteVariableFamilyButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteVariableFamilyButton.setVisibility(Visibility.HIDDEN);
+        deleteVariableFamilyButton.setVisible(false);
         deleteVariableFamilyButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -153,7 +153,7 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
         variableFamilyList.getListGrid().setFields(fieldCode, fieldName, urn);
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().variableFamilyDeleteConfirmationTitle(), getConstants().variableFamilyDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 
             @Override

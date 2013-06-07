@@ -81,10 +81,10 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
                 });
             }
         });
-        newCategorySchemeButton.setVisibility(CategoriesClientSecurityUtils.canCreateCategoryScheme() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newCategorySchemeButton.setVisible(CategoriesClientSecurityUtils.canCreateCategoryScheme());
 
         deleteCategorySchemeButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteCategorySchemeButton.setVisibility(Visibility.HIDDEN);
+        deleteCategorySchemeButton.setVisible(false);
         deleteCategorySchemeButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -94,7 +94,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
         });
 
         cancelCategorySchemeValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
-        cancelCategorySchemeValidityButton.setVisibility(Visibility.HIDDEN);
+        cancelCategorySchemeValidityButton.setVisible(false);
         cancelCategorySchemeValidityButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -152,7 +152,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
         categorySchemesList.getListGrid().setFields(ResourceFieldUtils.getCategorySchemeListGridFields());
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().categorySchemeDeleteConfirmationTitle(), getConstants().categorySchemeDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 
             @Override

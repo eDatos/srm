@@ -146,10 +146,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         });
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(MetamacSrmWeb.getConstants().dsdDeleteConfirmationTitle(), MetamacSrmWeb.getConstants().dsdAttributeDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
 
         deleteToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionDelete(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.deleteListGrid().getURL());
-        deleteToolStripButton.setVisibility(Visibility.HIDDEN);
+        deleteToolStripButton.setVisible(false);
         deleteToolStripButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -268,7 +268,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         selectedComponentLayout = new VLayout(10);
         selectedComponentLayout.addMember(mainFormLayout);
-        selectedComponentLayout.setVisibility(Visibility.HIDDEN);
+        selectedComponentLayout.setVisible(false);
 
         panel.addMember(gridLayout);
         panel.addMember(selectedComponentLayout);
@@ -438,10 +438,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // Facet Form
 
         facetEditionForm = new DsdFacetForm();
-        facetEditionForm.setVisibility(Visibility.HIDDEN);
+        facetEditionForm.setVisible(false);
 
         facetStaticEditionForm = new StaticFacetForm();
-        facetStaticEditionForm.setVisibility(Visibility.HIDDEN);
+        facetStaticEditionForm.setVisible(false);
 
         // Annotations
         editionAnnotationsPanel = new AnnotationsPanel(false);
@@ -477,7 +477,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         deselectAttribute();
 
         // Security
-        newToolStripButton.setVisibility(DsdClientSecurityUtils.canCreateAttribute(dataStructureDefinitionMetamacDto) ? Visibility.VISIBLE : Visibility.HIDDEN);
+        newToolStripButton.setVisible(DsdClientSecurityUtils.canCreateAttribute(dataStructureDefinitionMetamacDto));
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateAttribute(dataStructureDefinitionMetamacDto));
 
         attributesGrid.setData(RecordUtils.getAttributeRecords(dataAttributeDtos));
@@ -819,7 +819,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     @Override
     public boolean validate() {
-        return Visibility.HIDDEN.equals(facetEditionForm.getVisibility()) ? editionForm.validate(false) : (editionForm.validate(false) && facetEditionForm.validate(false));
+        return !facetEditionForm.isVisible() ? editionForm.validate(false) : (editionForm.validate(false) && facetEditionForm.validate(false));
     }
 
     @Override

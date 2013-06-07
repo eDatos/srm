@@ -84,10 +84,10 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
                 });
             }
         });
-        newVariableButton.setVisibility(CodesClientSecurityUtils.canCreateVariable() ? Visibility.VISIBLE : Visibility.HIDDEN);
-
+        newVariableButton.setVisible(CodesClientSecurityUtils.canCreateVariable());
+        
         deleteVariableButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteVariableButton.setVisibility(Visibility.HIDDEN);
+        deleteVariableButton.setVisible(false);
         deleteVariableButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -153,7 +153,7 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
         variablesList.getListGrid().setFields(fieldCode, fieldName);
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().variableDeleteConfirmationTitle(), getConstants().variableDeleteConfirmation());
-        deleteConfirmationWindow.setVisibility(Visibility.HIDDEN);
+        deleteConfirmationWindow.setVisible(false);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
 
             @Override

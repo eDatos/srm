@@ -575,7 +575,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     private CustomToolStripButton createCreateVariableElementButton() {
         CustomToolStripButton createButton = new CustomToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
-        createButton.setVisibility(CodesClientSecurityUtils.canCreateVariableElement() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        createButton.setVisible(CodesClientSecurityUtils.canCreateVariableElement());
         createButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -600,7 +600,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     private CustomToolStripButton createImportVariableElementsButton() {
         CustomToolStripButton importButton = new CustomToolStripButton(getConstants().actionImportVariableElements(), GlobalResources.RESOURCE.importResource().getURL());
-        importButton.setVisibility(CodesClientSecurityUtils.canImportVariableElements() ? Visibility.VISIBLE : Visibility.HIDDEN);
+        importButton.setVisible(CodesClientSecurityUtils.canImportVariableElements());
         importButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -613,7 +613,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     private CustomToolStripButton createDeleteVariableElementButton() {
         CustomToolStripButton deleteButton = new CustomToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteButton.setVisibility(Visibility.HIDDEN);
+        deleteButton.setVisible(false);
         deleteButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -628,7 +628,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
         CustomToolStripButton fusionButton = new CustomToolStripButton(getConstants().actionFusion(), GlobalResources.RESOURCE.fusion().getURL());
-        fusionButton.setVisibility(Visibility.HIDDEN);
+        fusionButton.setVisible(false);
         fusionButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -676,7 +676,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         final int MAX_RESULTS = 8;
         CustomToolStripButton segregateButton = new CustomToolStripButton(getConstants().actionSegregate(), GlobalResources.RESOURCE.segregate().getURL());
         segregateButton.setValign(VerticalAlignment.CENTER);
-        segregateButton.setVisibility(Visibility.HIDDEN);
+        segregateButton.setVisible(false);
         segregateButton.addClickHandler(new ClickHandler() {
 
             @Override
