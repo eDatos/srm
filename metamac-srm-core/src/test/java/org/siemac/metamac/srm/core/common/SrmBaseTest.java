@@ -12,6 +12,9 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder.OrderTypeEnum;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
+import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.dto.ItemMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
@@ -572,6 +575,17 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
             }
         }
         fail("List does not contain item with urn " + urn);
+        return null;
+    }
+
+    protected MetamacExceptionItem assertListContainsExceptionItemOneParameter(MetamacException e, CommonServiceExceptionType serviceExceptionType, String parameter) {
+        for (MetamacExceptionItem metamacExceptionItem : e.getExceptionItems()) {
+            if (serviceExceptionType.getCode().equals(metamacExceptionItem.getCode()) && metamacExceptionItem.getMessageParameters().length == 1
+                    && parameter.equals(metamacExceptionItem.getMessageParameters()[0])) {
+                return metamacExceptionItem;
+            }
+        }
+        fail("Exception item not found");
         return null;
     }
 }

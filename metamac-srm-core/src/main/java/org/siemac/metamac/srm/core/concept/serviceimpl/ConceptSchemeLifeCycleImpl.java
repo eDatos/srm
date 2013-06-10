@@ -119,7 +119,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, conceptSchemeVersion.getMaintainableArtefact().getUrn()));
             }
 
-            // Check some metadata that can be empty or incorrect when importing
+            // Check some metadata that can be empty or incorrect when importing. In not imported, metadata is checked in create/update operations
             // Note: this is a unefficient operation, so only check when send to production and not in next status.
             // In another status, if metadata is already changed to wrong value, they will be checked in create/update concept operations
             if (conceptSchemeVersion.getMaintainableArtefact().getIsImported() && ProcStatusEnum.PRODUCTION_VALIDATION.equals(targetStatus)) {
@@ -129,22 +129,24 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                 if (exceptionsConceptScheme.size() != 0) {
                     exceptions.addAll(exceptionsConceptScheme);
                 } else {
-                    // only check concept if concept scheme is complete
+                    // only check concepts if concept scheme is complete
                     for (Item item : conceptSchemeVersion.getItems()) {
                         ConceptMetamac concept = (ConceptMetamac) item;
                         List<MetamacExceptionItem> exceptionsConcepts = new ArrayList<MetamacExceptionItem>();
-
+                        // Check misc metadata
+                        ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, concept, false, false, false, exceptionsConcepts);
                         // Check core representation
                         MetamacExceptionItem exceptionItem = conceptsMetamacService.checkConceptEnumeratedRepresentation(ctx, concept, false, conceptSchemeVersion.getMaintainableArtefact()
                                 .getIsImported());
                         if (exceptionItem != null) {
                             exceptionsConcepts.add(exceptionItem);
-                        } else {
-                            // Check another metadata
-                            ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, concept, false, false, false, exceptionsConcepts);
                         }
+                        // Group exceptions by concept
                         if (exceptionsConcepts.size() != 0) {
-                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, item.getNameableArtefact().getUrn()));
+                            MetamacExceptionItem exceptionItemConcept = MetamacExceptionItemBuilder.metamacExceptionItem()
+                                    .withCommonServiceExceptionType(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA).withMessageParameters(item.getNameableArtefact().getUrn())
+                                    .withExceptionItems(exceptionsConcepts).build();
+                            exceptions.add(exceptionItemConcept);
                         }
                     }
                 }
