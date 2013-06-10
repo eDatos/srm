@@ -75,7 +75,7 @@ public class CategoriesMockitoVerify extends MockitoVerify {
 
         // Validate
         List<ConditionalCriteria> conditionalCriteriaExpected = buildExpectedConditionalCriteriaToFindItems(agencyID, resourceID, version, itemID, query, orderBy, CategoryMetamac.class,
-                CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact(), restOperation);
+                CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact(), CategoryMetamacProperties.nameableArtefact(), restOperation);
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
 
         MetamacRestAsserts.assertEqualsPagingParameter(pagingParameterExpected, pagingParameter.getValue());

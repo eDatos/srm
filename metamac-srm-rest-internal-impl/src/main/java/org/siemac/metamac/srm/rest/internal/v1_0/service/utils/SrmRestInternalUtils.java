@@ -11,7 +11,6 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
@@ -33,9 +32,10 @@ public class SrmRestInternalUtils {
 
     @SuppressWarnings({"rawtypes"})
     public static List<ConditionalCriteria> buildConditionalCriteriaItems(String agencyID, String resourceID, String version, String itemID,
-            MaintainableArtefactProperty itemSchemeVersionMaintainableArtefactProperty, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity) throws MetamacException {
+            MaintainableArtefactProperty itemSchemeVersionMaintainableArtefactProperty, NameableArtefactProperty itemNameableArtefactProperty, List<ConditionalCriteria> conditionalCriteriaQuery,
+            Class entity) throws MetamacException {
         return buildConditionalCriteriaNameableArtefacts(agencyID, resourceID, version, itemID, conditionalCriteriaQuery, entity, itemSchemeVersionMaintainableArtefactProperty,
-                ItemProperties.nameableArtefact());
+                itemNameableArtefactProperty);
     }
 
     @SuppressWarnings({"rawtypes"})

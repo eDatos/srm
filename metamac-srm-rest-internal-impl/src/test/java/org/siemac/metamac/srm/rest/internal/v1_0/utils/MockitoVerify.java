@@ -17,7 +17,6 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
@@ -72,11 +71,11 @@ public class MockitoVerify {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindItems(String agencyID, String resourceID, String version, String itemID, String query, String orderBy,
-            Class entityClass, MaintainableArtefactProperty itemSchemeVersionMaintainableArtefactProperty, RestOperationEnum restOperation) {
+            Class entityClass, MaintainableArtefactProperty itemSchemeVersionMaintainableArtefactProperty, NameableArtefactProperty itemNameableArtefactProperty, RestOperationEnum restOperation) {
         List<ConditionalCriteria> expected = new ArrayList<ConditionalCriteria>();
         if (RestOperationEnum.FIND.equals(restOperation)) {
-            expected.addAll(buildFindItemsExpectedOrderBy(orderBy, entityClass));
-            expected.addAll(buildFindItemsExpectedQuery(query, entityClass));
+            expected.addAll(buildFindItemsExpectedOrderBy(orderBy, entityClass, itemNameableArtefactProperty));
+            expected.addAll(buildFindItemsExpectedQuery(query, entityClass, itemNameableArtefactProperty));
         }
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).distinctRoot().buildSingle());
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(itemSchemeVersionMaintainableArtefactProperty.finalLogicClient()).eq(Boolean.TRUE).buildSingle());
@@ -99,8 +98,8 @@ public class MockitoVerify {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(itemSchemeVersionMaintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
         }
         if (itemID != null) {
-            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(ItemProperties.nameableArtefact().code()).eq(itemID).or()
-                    .withProperty(ItemProperties.nameableArtefact().codeFull()).eq(itemID).rbrace().buildSingle());
+            expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(itemNameableArtefactProperty.code()).eq(itemID).or()
+                    .withProperty(itemNameableArtefactProperty.codeFull()).eq(itemID).rbrace().buildSingle());
         }
         return expected;
     }
@@ -162,19 +161,19 @@ public class MockitoVerify {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static List<ConditionalCriteria> buildFindItemsExpectedOrderBy(String orderBy, Class entityClass) {
+    private static List<ConditionalCriteria> buildFindItemsExpectedOrderBy(String orderBy, Class entityClass, NameableArtefactProperty itemNameableArtefactProperty) {
         if (orderBy == null) {
             if (entityClass.equals(CategoryMetamac.class)) {
-                return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemProperties.nameableArtefact().codeFull()).ascending().build();
+                return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(itemNameableArtefactProperty.codeFull()).ascending().build();
             } else {
-                return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemProperties.nameableArtefact().code()).ascending().build();
+                return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(itemNameableArtefactProperty.code()).ascending().build();
             }
         }
         if (ORDER_BY_ID_DESC.equals(orderBy)) {
             if (entityClass.equals(CategoryMetamac.class)) {
-                return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemProperties.nameableArtefact().codeFull()).descending().build();
+                return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(itemNameableArtefactProperty.codeFull()).descending().build();
             } else {
-                return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemProperties.nameableArtefact().code()).descending().build();
+                return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(itemNameableArtefactProperty.code()).descending().build();
             }
         }
         fail();
@@ -214,17 +213,17 @@ public class MockitoVerify {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static List<ConditionalCriteria> buildFindItemsExpectedQuery(String query, Class entityClass) {
+    private static List<ConditionalCriteria> buildFindItemsExpectedQuery(String query, Class entityClass, NameableArtefactProperty itemNameableArtefactProperty) {
         if (query == null) {
             return new ArrayList<ConditionalCriteria>();
         }
         if (QUERY_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
             if (entityClass.equals(CategoryMetamac.class)) {
-                return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.nameableArtefact().codeFull()).like("%1%")
-                        .withProperty(ItemProperties.nameableArtefact().name().texts().label()).like("%2%").build();
+                return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(itemNameableArtefactProperty.codeFull()).like("%1%")
+                        .withProperty(itemNameableArtefactProperty.name().texts().label()).like("%2%").build();
             } else {
-                return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(ItemProperties.nameableArtefact().code()).like("%1%")
-                        .withProperty(ItemProperties.nameableArtefact().name().texts().label()).like("%2%").build();
+                return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(itemNameableArtefactProperty.code()).like("%1%")
+                        .withProperty(itemNameableArtefactProperty.name().texts().label()).like("%2%").build();
             }
         }
         fail();

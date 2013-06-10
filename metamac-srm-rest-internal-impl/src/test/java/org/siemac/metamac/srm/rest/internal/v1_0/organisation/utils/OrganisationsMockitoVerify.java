@@ -88,7 +88,7 @@ public class OrganisationsMockitoVerify extends MockitoVerify {
     private static List<ConditionalCriteria> buildExpectedConditionalCriteriaToFindOrganisations(String agencyID, String resourceID, String version, String itemID, String query, String orderBy,
             OrganisationTypeEnum type, RestOperationEnum restOperation) {
         List<ConditionalCriteria> expected = buildExpectedConditionalCriteriaToFindItems(agencyID, resourceID, version, itemID, query, orderBy, OrganisationMetamac.class,
-                OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact(), restOperation);
+                OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact(), OrganisationMetamacProperties.nameableArtefact(), restOperation);
         if (type != null) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).withProperty(OrganisationMetamacProperties.organisationType()).eq(type).buildSingle());
         }
