@@ -663,14 +663,13 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsByConditionWithCodesCanBeQuantityUnit(getServiceContextAdministrador(), metamacCriteria);
 
         // Validate
-        assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
+        assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
 
         int i = 0;
         assertEquals(CODELIST_7_V1, result.getResults().get(i++).getUrn());
         assertEquals(CODELIST_8_V1, result.getResults().get(i++).getUrn());
-        assertEquals(CODELIST_9_V1, result.getResults().get(i++).getUrn());
+        // assertEquals(CODELIST_9_V1, result.getResults().get(i++).getUrn()); // restricted
         assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
-
     }
 
     @Test
@@ -1859,10 +1858,10 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
                     conceptUrn, null);
 
             // Validate
-            assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
             int i = 0;
             assertEquals(CODELIST_7_V1, result.getResults().get(i++).getUrn());
-            assertEquals(CODELIST_9_V1, result.getResults().get(i++).getUrn());
+            // assertEquals(CODELIST_9_V1, result.getResults().get(i++).getUrn()); // restricted
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
         }
         {

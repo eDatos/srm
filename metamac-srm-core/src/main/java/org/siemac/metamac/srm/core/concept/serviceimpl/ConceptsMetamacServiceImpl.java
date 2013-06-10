@@ -36,6 +36,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
@@ -329,6 +330,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
                 .withProperty(CodelistVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
         conditions.add(externallyPublishedCondition);
+        // Codelist with access type = PUBLIC
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
 
         return codesMetamacService.findCodelistsByCondition(ctx, conditions, pagingParameter);
     }
@@ -778,6 +781,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
                 .withProperty(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
         conditions.add(externallyPublishedCondition);
+        // Only codelists with access == public
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
+                .withProperty(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.accessType().getName(), false, CodeMetamac.class))
+                .eq(AccessTypeEnum.PUBLIC).buildSingle());
+
         return codesMetamacService.findCodesByCondition(ctx, conditions, pagingParameter);
     }
 
@@ -999,7 +1007,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     public PagedResult<CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter, String conceptUrn, String variableUrn) throws MetamacException {
 
@@ -1020,15 +1028,16 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             return SrmServiceUtils.pagedResultZeroResults(pagingParameter);
         }
         // Prepare conditions
-        Class entitySearchedClass = CodelistVersionMetamac.class;
         if (conditions == null) {
             conditions = new ArrayList<ConditionalCriteria>();
         }
         // Codelist internally or externally published
-        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE)
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE)
                 .buildSingle());
+        // Codelist with access type = PUBLIC
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
         // Same variable
-        conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(CodelistVersionMetamacProperties.variable().nameableArtefact().urn())
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.variable().nameableArtefact().urn())
                 .eq(variable.getNameableArtefact().getUrn()).buildSingle());
 
         // Find

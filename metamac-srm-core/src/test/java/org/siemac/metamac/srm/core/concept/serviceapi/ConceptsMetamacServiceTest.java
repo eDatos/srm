@@ -603,13 +603,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         PagedResult<CodelistVersionMetamac> codelistsPagedResult = conceptsService.findCodelistsByConditionWithCodesCanBeQuantityUnit(getServiceContextAdministrador(), conditions, pagingParameter);
 
         // Validate
-        assertEquals(3, codelistsPagedResult.getTotalRows());
-        assertEquals(3, codelistsPagedResult.getValues().size());
+        assertEquals(2, codelistsPagedResult.getTotalRows());
+        assertEquals(2, codelistsPagedResult.getValues().size());
 
         int i = 0;
         assertEquals(CODELIST_7_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         assertEquals(CODELIST_8_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
-        assertEquals(CODELIST_9_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        // assertEquals(CODELIST_9_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn()); // restricted
         assertEquals(codelistsPagedResult.getValues().size(), i);
     }
 
@@ -4260,12 +4260,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                     conceptUrn, null);
 
             // Validate
-            assertEquals(2, result.getTotalRows());
+            assertEquals(1, result.getTotalRows());
             int i = 0;
             assertEquals(VARIABLE_1, result.getValues().get(i).getVariable().getNameableArtefact().getUrn());
             assertEquals(CODELIST_7_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
-            assertEquals(VARIABLE_1, result.getValues().get(i).getVariable().getNameableArtefact().getUrn());
-            assertEquals(CODELIST_9_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn());
+            // assertEquals(VARIABLE_1, result.getValues().get(i).getVariable().getNameableArtefact().getUrn());
+            // assertEquals(CODELIST_9_V1, result.getValues().get(i++).getMaintainableArtefact().getUrn()); // access restricted
             assertEquals(result.getTotalRows(), i);
         }
         {
