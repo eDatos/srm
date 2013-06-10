@@ -17,10 +17,7 @@ import com.smartgwt.client.widgets.form.fields.FormItem;
 
 public class FacetFormUtils {
 
-    public static final String            TEXT_TYPE_FIELD_NAME = "repr-no-enum-text-type";
-
-    public static Set<FacetValueTypeEnum> dsdFacetValueTypeEnums;
-    public static Set<FacetValueTypeEnum> conceptFacetValueTypeEnums;
+    public static final String TEXT_TYPE_FIELD_NAME = "repr-no-enum-text-type";
 
     /**
      * Shows or hides facetForm and staticFacetForm depending on whether representationType is TEXT_FORMAT or not, and on the maintainer of the resource.
@@ -44,11 +41,9 @@ public class FacetFormUtils {
      */
     public static Set<FacetValueTypeEnum> getDsdFacetValueTypeEnums() {
         // SimpleDataType values
-        if (dsdFacetValueTypeEnums == null) {
-            dsdFacetValueTypeEnums = new HashSet<FacetValueTypeEnum>();
-            for (FacetValueTypeEnum f : RepresentationConstraintSharedValidator.simpleDataTypeValues) {
-                dsdFacetValueTypeEnums.add(f);
-            }
+        Set<FacetValueTypeEnum> dsdFacetValueTypeEnums = new HashSet<FacetValueTypeEnum>();
+        for (FacetValueTypeEnum f : RepresentationConstraintSharedValidator.simpleDataTypeValues) {
+            dsdFacetValueTypeEnums.add(f);
         }
         return dsdFacetValueTypeEnums;
     }
@@ -60,11 +55,9 @@ public class FacetFormUtils {
      */
     public static Set<FacetValueTypeEnum> getConceptFacetValueTypeEnums() {
         // BasicComponentDataType values
-        if (conceptFacetValueTypeEnums == null) {
-            conceptFacetValueTypeEnums = new HashSet<FacetValueTypeEnum>();
-            for (FacetValueTypeEnum f : RepresentationConstraintSharedValidator.basicComponentDataTypeValues) {
-                conceptFacetValueTypeEnums.add(f);
-            }
+        Set<FacetValueTypeEnum> conceptFacetValueTypeEnums = new HashSet<FacetValueTypeEnum>();
+        for (FacetValueTypeEnum f : RepresentationConstraintSharedValidator.basicComponentDataTypeValues) {
+            conceptFacetValueTypeEnums.add(f);
         }
         return conceptFacetValueTypeEnums;
     }

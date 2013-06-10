@@ -18,15 +18,10 @@ public class CommonUtils {
     // HASH MAPS
     //
 
-    private static LinkedHashMap<String, String> organisationSchemeTypeHashMap = null;
-    private static LinkedHashMap<String, String> organisationTypeHashMap       = null;
-
     public static LinkedHashMap<String, String> getOrganisationSchemeTypeHashMap() {
-        if (organisationSchemeTypeHashMap == null) {
-            organisationSchemeTypeHashMap = new LinkedHashMap<String, String>();
-            for (OrganisationSchemeTypeEnum type : OrganisationSchemeTypeEnum.values()) {
-                organisationSchemeTypeHashMap.put(type.name(), getOrganisationSchemeTypeName(type));
-            }
+        LinkedHashMap<String, String> organisationSchemeTypeHashMap = new LinkedHashMap<String, String>();
+        for (OrganisationSchemeTypeEnum type : OrganisationSchemeTypeEnum.values()) {
+            organisationSchemeTypeHashMap.put(type.name(), getOrganisationSchemeTypeName(type));
         }
         return organisationSchemeTypeHashMap;
     }
@@ -36,12 +31,10 @@ public class CommonUtils {
     }
 
     public static LinkedHashMap<String, String> getOrganisationTypeHashMap() {
-        if (organisationTypeHashMap == null) {
-            organisationTypeHashMap = new LinkedHashMap<String, String>();
-            organisationTypeHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
-            for (OrganisationTypeEnum type : OrganisationTypeEnum.values()) {
-                organisationTypeHashMap.put(type.name(), getOrganisationTypeName(type));
-            }
+        LinkedHashMap<String, String> organisationTypeHashMap = new LinkedHashMap<String, String>();
+        organisationTypeHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+        for (OrganisationTypeEnum type : OrganisationTypeEnum.values()) {
+            organisationTypeHashMap.put(type.name(), getOrganisationTypeName(type));
         }
         return organisationTypeHashMap;
     }

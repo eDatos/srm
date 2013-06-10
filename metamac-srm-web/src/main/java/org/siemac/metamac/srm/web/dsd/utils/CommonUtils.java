@@ -28,22 +28,13 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.UsageStatus;
 
 public class CommonUtils extends CommonSharedUtils {
 
-    private static LinkedHashMap<String, String> usageStatusHashMap            = null;
-    private static LinkedHashMap<String, String> typeRelationShipHashMap       = null;
-    private static LinkedHashMap<String, String> typeDimensionComponentHashMap = null;
-    private static LinkedHashMap<String, String> dataAttributeTypeHasMap       = null;
-    private static LinkedHashMap<String, String> facetValueTypeHashMap         = null;
-    private static LinkedHashMap<String, String> dsdShowDecimalsHashMap        = null;
-
     // USAGE STATUS
 
     public static LinkedHashMap<String, String> getUsageStatusHashMap() {
-        if (usageStatusHashMap == null) {
-            usageStatusHashMap = new LinkedHashMap<String, String>();
-            usageStatusHashMap.put(new String(), new String());
-            for (UsageStatus u : UsageStatus.values()) {
-                usageStatusHashMap.put(u.toString(), getUsageStatusName(u));
-            }
+        LinkedHashMap<String, String> usageStatusHashMap = new LinkedHashMap<String, String>();
+        usageStatusHashMap.put(new String(), new String());
+        for (UsageStatus u : UsageStatus.values()) {
+            usageStatusHashMap.put(u.toString(), getUsageStatusName(u));
         }
         return usageStatusHashMap;
     }
@@ -55,12 +46,10 @@ public class CommonUtils extends CommonSharedUtils {
     // TYPE RELATIONSHIP
 
     public static LinkedHashMap<String, String> getTypeRelationshipHashMap() {
-        if (typeRelationShipHashMap == null) {
-            typeRelationShipHashMap = new LinkedHashMap<String, String>();
-            typeRelationShipHashMap.put(new String(), new String());
-            for (TypeRelathionship t : TypeRelathionship.values()) {
-                typeRelationShipHashMap.put(t.toString(), getTypeRelationshipName(t));
-            }
+        LinkedHashMap<String, String> typeRelationShipHashMap = new LinkedHashMap<String, String>();
+        typeRelationShipHashMap.put(new String(), new String());
+        for (TypeRelathionship t : TypeRelathionship.values()) {
+            typeRelationShipHashMap.put(t.toString(), getTypeRelationshipName(t));
         }
         return typeRelationShipHashMap;
     }
@@ -80,15 +69,13 @@ public class CommonUtils extends CommonSharedUtils {
     // TYPE DIMENSION COMPONENT
 
     public static LinkedHashMap<String, String> getTypeDimensionComponentHashMap() {
-        if (typeDimensionComponentHashMap == null) {
-            typeDimensionComponentHashMap = new LinkedHashMap<String, String>();
-            typeDimensionComponentHashMap.put(new String(), new String());
-            for (TypeDimensionComponent t : TypeDimensionComponent.values()) {
-                typeDimensionComponentHashMap.put(t.name(), getTypeDimensionComponentName(t));
-            }
-            // Add special dimension type: SPATIAL
-            typeDimensionComponentHashMap.put(SpecialDimensionTypeEnum.SPATIAL.name(), getSpecialDimensionTypeName(SpecialDimensionTypeEnum.SPATIAL));
+        LinkedHashMap<String, String> typeDimensionComponentHashMap = new LinkedHashMap<String, String>();
+        typeDimensionComponentHashMap.put(new String(), new String());
+        for (TypeDimensionComponent t : TypeDimensionComponent.values()) {
+            typeDimensionComponentHashMap.put(t.name(), getTypeDimensionComponentName(t));
         }
+        // Add special dimension type: SPATIAL
+        typeDimensionComponentHashMap.put(SpecialDimensionTypeEnum.SPATIAL.name(), getSpecialDimensionTypeName(SpecialDimensionTypeEnum.SPATIAL));
         return typeDimensionComponentHashMap;
     }
 
@@ -134,12 +121,10 @@ public class CommonUtils extends CommonSharedUtils {
     // DATA ATTRIBUTE TYPE
 
     public static LinkedHashMap<String, String> getDataAttributeTypeHashMap() {
-        if (dataAttributeTypeHasMap == null) {
-            dataAttributeTypeHasMap = new LinkedHashMap<String, String>();
-            dataAttributeTypeHasMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
-            for (SpecialAttributeTypeEnum type : SpecialAttributeTypeEnum.values()) {
-                dataAttributeTypeHasMap.put(type.name(), getSpecialAttributeTypeName(type));
-            }
+        LinkedHashMap<String, String> dataAttributeTypeHasMap = new LinkedHashMap<String, String>();
+        dataAttributeTypeHasMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+        for (SpecialAttributeTypeEnum type : SpecialAttributeTypeEnum.values()) {
+            dataAttributeTypeHasMap.put(type.name(), getSpecialAttributeTypeName(type));
         }
         return dataAttributeTypeHasMap;
     }
@@ -151,13 +136,11 @@ public class CommonUtils extends CommonSharedUtils {
     // FACET VALUE TYPE
 
     public static LinkedHashMap<String, String> getDsdFacetValueTypeHashMap() {
-        if (facetValueTypeHashMap == null) {
-            facetValueTypeHashMap = new LinkedHashMap<String, String>();
-            facetValueTypeHashMap.put(new String(), new String());
-            for (FacetValueTypeEnum f : FacetFormUtils.getDsdFacetValueTypeEnums()) {
-                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().facetValueTypeEnum() + f.getName());
-                facetValueTypeHashMap.put(f.toString(), value);
-            }
+        LinkedHashMap<String, String> facetValueTypeHashMap = new LinkedHashMap<String, String>();
+        facetValueTypeHashMap.put(new String(), new String());
+        for (FacetValueTypeEnum f : FacetFormUtils.getDsdFacetValueTypeEnums()) {
+            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().facetValueTypeEnum() + f.getName());
+            facetValueTypeHashMap.put(f.toString(), value);
         }
         return facetValueTypeHashMap;
     }
@@ -188,12 +171,10 @@ public class CommonUtils extends CommonSharedUtils {
      * Decimals between 0 and 6
      */
     public static LinkedHashMap<String, String> getDsdShowDecimalsHashMap() {
-        if (dsdShowDecimalsHashMap == null) {
-            dsdShowDecimalsHashMap = new LinkedHashMap<String, String>();
-            dsdShowDecimalsHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
-            for (int i = 0; i < 7; i++) {
-                dsdShowDecimalsHashMap.put(String.valueOf(i), String.valueOf(i));
-            }
+        LinkedHashMap<String, String> dsdShowDecimalsHashMap = new LinkedHashMap<String, String>();
+        dsdShowDecimalsHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+        for (int i = 0; i < 7; i++) {
+            dsdShowDecimalsHashMap.put(String.valueOf(i), String.valueOf(i));
         }
         return dsdShowDecimalsHashMap;
     }

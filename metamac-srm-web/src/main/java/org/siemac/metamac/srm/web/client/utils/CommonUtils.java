@@ -26,20 +26,13 @@ import com.google.gwt.user.client.Window;
 
 public class CommonUtils {
 
-    private static LinkedHashMap<String, String> procStatusHashMap         = null;
-    private static LinkedHashMap<String, String> versionTypeHashMap        = null;
-    private static LinkedHashMap<String, String> typeRepresentationHashMap = null;
-    private static LinkedHashMap<String, String> booleanItemHashMap        = null;
-
     // LIFE CYCLE
 
     public static LinkedHashMap<String, String> getProcStatusHashMap() {
-        if (procStatusHashMap == null) {
-            procStatusHashMap = new LinkedHashMap<String, String>();
-            procStatusHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
-            for (ProcStatusEnum p : ProcStatusEnum.values()) {
-                procStatusHashMap.put(p.name(), getProcStatusName(p));
-            }
+        LinkedHashMap<String, String> procStatusHashMap = new LinkedHashMap<String, String>();
+        procStatusHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+        for (ProcStatusEnum p : ProcStatusEnum.values()) {
+            procStatusHashMap.put(p.name(), getProcStatusName(p));
         }
         return procStatusHashMap;
     }
@@ -49,13 +42,11 @@ public class CommonUtils {
     }
 
     public static LinkedHashMap<String, String> getVersionTypeHashMap() {
-        if (versionTypeHashMap == null) {
-            versionTypeHashMap = new LinkedHashMap<String, String>();
-            versionTypeHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
-            for (VersionTypeEnum v : VersionTypeEnum.values()) {
-                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().versionTypeEnum() + v.getName());
-                versionTypeHashMap.put(v.toString(), value);
-            }
+        LinkedHashMap<String, String> versionTypeHashMap = new LinkedHashMap<String, String>();
+        versionTypeHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+        for (VersionTypeEnum v : VersionTypeEnum.values()) {
+            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().versionTypeEnum() + v.getName());
+            versionTypeHashMap.put(v.toString(), value);
         }
         return versionTypeHashMap;
     }
@@ -63,13 +54,11 @@ public class CommonUtils {
     // REPRESENTATION
 
     public static LinkedHashMap<String, String> getTypeRepresentationEnumHashMap() {
-        if (typeRepresentationHashMap == null) {
-            typeRepresentationHashMap = new LinkedHashMap<String, String>();
-            typeRepresentationHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
-            for (RepresentationTypeEnum r : RepresentationTypeEnum.values()) {
-                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().representationTypeEnum() + r.getName());
-                typeRepresentationHashMap.put(r.toString(), value);
-            }
+        LinkedHashMap<String, String> typeRepresentationHashMap = new LinkedHashMap<String, String>();
+        typeRepresentationHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+        for (RepresentationTypeEnum r : RepresentationTypeEnum.values()) {
+            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().representationTypeEnum() + r.getName());
+            typeRepresentationHashMap.put(r.toString(), value);
         }
         return typeRepresentationHashMap;
     }
@@ -81,12 +70,10 @@ public class CommonUtils {
     // BOOLEAN
 
     public static LinkedHashMap<String, String> getBooleanHashMap() {
-        if (booleanItemHashMap == null) {
-            booleanItemHashMap = new LinkedHashMap<String, String>();
-            booleanItemHashMap.put(BooleanItemEnum.NULL_VALUE.toString(), StringUtils.EMPTY);
-            booleanItemHashMap.put(BooleanItemEnum.TRUE_VALUE.toString(), MetamacWebCommon.getConstants().yes());
-            booleanItemHashMap.put(BooleanItemEnum.FALSE_VALUE.toString(), MetamacWebCommon.getConstants().no());
-        }
+        LinkedHashMap<String, String> booleanItemHashMap = new LinkedHashMap<String, String>();
+        booleanItemHashMap.put(BooleanItemEnum.NULL_VALUE.toString(), StringUtils.EMPTY);
+        booleanItemHashMap.put(BooleanItemEnum.TRUE_VALUE.toString(), MetamacWebCommon.getConstants().yes());
+        booleanItemHashMap.put(BooleanItemEnum.FALSE_VALUE.toString(), MetamacWebCommon.getConstants().no());
         return booleanItemHashMap;
     }
 

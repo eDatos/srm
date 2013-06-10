@@ -21,16 +21,12 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class CommonUtils {
 
-    private static LinkedHashMap<String, String> accessTypeHashMap = null;
-
     public static LinkedHashMap<String, String> getAccessTypeHashMap() {
-        if (accessTypeHashMap == null) {
-            accessTypeHashMap = new LinkedHashMap<String, String>();
-            accessTypeHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
-            for (AccessTypeEnum a : AccessTypeEnum.values()) {
-                String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().accessTypeEnum() + a.getName());
-                accessTypeHashMap.put(a.name(), value);
-            }
+        LinkedHashMap<String, String> accessTypeHashMap = new LinkedHashMap<String, String>();
+        accessTypeHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+        for (AccessTypeEnum a : AccessTypeEnum.values()) {
+            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().accessTypeEnum() + a.getName());
+            accessTypeHashMap.put(a.name(), value);
         }
         return accessTypeHashMap;
     }
