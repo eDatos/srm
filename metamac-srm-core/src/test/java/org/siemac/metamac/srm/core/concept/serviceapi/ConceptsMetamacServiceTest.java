@@ -30,11 +30,13 @@ import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
+import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -838,17 +840,37 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         conceptSchemeVersion.setIsPartial(Boolean.FALSE);
         itemSchemeRepository.save(conceptSchemeVersion);
 
-        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
-        concept.setSdmxRelatedArtefact(null);
-        // save to force incorrect metadata
-        itemRepository.save(concept);
+        // change concepts to force incorrect metadata
+        ConceptMetamac concept1 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        concept1.setSdmxRelatedArtefact(null);
+        itemRepository.save(concept1);
+
+        ConceptMetamac concept211 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
+        concept211.setSdmxRelatedArtefact(null);
+        concept211.setCoreRepresentation(CodesMetamacDoMocks.mockRepresentationEnumerated(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_9_V1))); // restricted
+        itemRepository.save(concept211);
 
         try {
             conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
             fail("metadata required");
         } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            MetamacAsserts.assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, 1, new String[]{concept.getNameableArtefact().getUrn()}, e.getExceptionItems().get(0));
+            assertEquals(2, e.getExceptionItems().size());
+            {
+                MetamacExceptionItem exceptionItemConcept = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, concept1.getNameableArtefact().getUrn());
+                // children
+                assertEquals(1, exceptionItemConcept.getExceptionItems().size());
+                MetamacAsserts.assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT}, exceptionItemConcept
+                        .getExceptionItems().get(0));
+            }
+            {
+                MetamacExceptionItem exceptionItemConcept = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA, concept211.getNameableArtefact().getUrn());
+                // children
+                assertEquals(2, exceptionItemConcept.getExceptionItems().size());
+                MetamacAsserts.assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT}, exceptionItemConcept
+                        .getExceptionItems().get(0));
+                MetamacAsserts.assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.CONCEPT_REPRESENTATION_ENUMERATED},
+                        exceptionItemConcept.getExceptionItems().get(1));
+            }
         }
     }
 
@@ -2760,10 +2782,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 fail("wrong enumerated representation");
             } catch (MetamacException e) {
                 assertEquals(1, e.getExceptionItems().size());
-                assertEquals(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-                assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-                assertEquals(concept.getNameableArtefact().getCode(), e.getExceptionItems().get(0).getMessageParameters()[0]);
-                assertEquals(codelistVersion.getMaintainableArtefact().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[1]);
+                assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+                assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                assertEquals(ServiceExceptionParameters.CONCEPT_REPRESENTATION_ENUMERATED, e.getExceptionItems().get(0).getMessageParameters()[0]);
             }
         }
     }
@@ -3173,10 +3194,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("wrong enumerated representation");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_DIFFERENT_VARIABLE.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(concept.getNameableArtefact().getCode(), e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(codelistVersion.getMaintainableArtefact().getUrn(), e.getExceptionItems().get(0).getMessageParameters()[1]);
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_REPRESENTATION_ENUMERATED, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
