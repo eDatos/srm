@@ -10,7 +10,6 @@
     <TB_SEQUENCES SEQUENCE_NAME="ANNOTATIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ITEM_SCHEMES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ITEM_SCHEMES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
-    <TB_SEQUENCES SEQUENCE_NAME="ITEMS_BASE" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="STRUCTURES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="STRUCTURES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="REPRESENTATIONS" SEQUENCE_NEXT_VALUE="100000000" />
@@ -152,16 +151,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="10011"
+                ID="10011"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX01"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="1001"
                 ITEM_SCHEME_VERSION_FIRST_FK="1001"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="10011"
                 NAMEABLE_ARTEFACT_FK="10011"
                       
                 UUID="organisationScheme-1001-v1-org-0"
@@ -206,16 +201,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="10012"
+                ID="10012"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX02"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="1001"
                 ITEM_SCHEME_VERSION_FIRST_FK="1001"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="10012"
                 NAMEABLE_ARTEFACT_FK="10012"
                       
                 UUID="organisationScheme-1001-v1-org-1"
@@ -362,14 +353,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="111"
+                ID="111"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="11"
                 ITEM_SCHEME_VERSION_FIRST_FK="11"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="111"
                 NAMEABLE_ARTEFACT_FK="111"
                       
                 UUID="categoryScheme-1-v1-cat-1"
@@ -514,11 +501,21 @@
             
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS_BASE="211"
+                ID="211"
                 CORE_REPRESENTATION_FK="[null]"    
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="21"
                 ITEM_SCHEME_VERSION_FIRST_FK="21"
+                NAMEABLE_ARTEFACT_FK="211"
+                      
+                UUID="conceptScheme-1-v1-concept-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
             
             <TB_M_CONCEPTS
@@ -535,20 +532,6 @@
               VARIABLE_FK="[null]"
               TB_CONCEPTS="211"
              />            
-        
-            <TB_ITEMS_BASE
-                ID="211"
-                NAMEABLE_ARTEFACT_FK="211"
-                      
-                UUID="conceptScheme-1-v1-concept-1"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
-            />
         
             <TB_ANNOTABLE_ARTEFACTS 
                 ID="211"
@@ -806,14 +789,10 @@
             />
                         
             <TB_CATEGORIES
-                TB_ITEMS_BASE="511"
+                ID="511"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="51"
                 ITEM_SCHEME_VERSION_FIRST_FK="51"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="511"
                 NAMEABLE_ARTEFACT_FK="511"
                       
                 UUID="categoryScheme-5-v1-cat-1"
@@ -1019,11 +998,21 @@
             
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS_BASE="711"
+                ID="711"
                 CORE_REPRESENTATION_FK="[null]"    
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="71"
                 ITEM_SCHEME_VERSION_FIRST_FK="71"
+                NAMEABLE_ARTEFACT_FK="711"
+                      
+                UUID="conceptScheme-2-v1-concept-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
             
             <TB_M_CONCEPTS
@@ -1040,20 +1029,6 @@
               VARIABLE_FK="[null]"
               TB_CONCEPTS="711"
              />            
-        
-            <TB_ITEMS_BASE
-                ID="711"
-                NAMEABLE_ARTEFACT_FK="711"
-                      
-                UUID="conceptScheme-2-v1-concept-1"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
-            />
         
             <TB_ANNOTABLE_ARTEFACTS 
                 ID="711"

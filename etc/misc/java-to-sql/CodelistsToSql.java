@@ -20,7 +20,7 @@ public class CodelistsToSql {
      * 4) Número de códigos en "numCodes"
      * 5) Para muchos códigos, es mejor poner 'separateFiles' a true para que separe el resultado en varios ficheros.
      */
-    private static long                   firstId                         = 300000000;
+    private static long                   firstId                         = 200000000;
     private static int                    numCodes                        = 15000;
     private static Boolean                withAnnotations                 = Boolean.TRUE;
     private static Boolean                publishCodelist                 = Boolean.FALSE;
@@ -148,8 +148,7 @@ public class CodelistsToSql {
         String code = "code" + idCode;
         String urn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:" + codeCodelist + "(1.0)." + code;
         long idNameableArtefact = insertNameableArtefact(urn, code, withAnnotations);
-        insertItem(idNameableArtefact, idCode);
-        insertCode(idCode, idCodelist, idParent);
+        insertCode(idCode, idCodelist, idParent, idNameableArtefact);
         long variableElement = insertVariableElement(codeVariable, idVariable);
         insertCodeMetamac(idParent, idCode, variableElement);
 
@@ -580,8 +579,11 @@ public class CodelistsToSql {
     }
 
     /**
-     * CREATE TABLE TB_ITEMS_BASE (
+     * CREATE TABLE TB_CODES (
      * ID NUMBER(19) NOT NULL,
+     * PARENT_FK NUMBER(19), TODO
+     * ITEM_SCHEME_VERSION_FK NUMBER(19) NOT NULL,
+     * ITEM_SCHEME_VERSION_FIRST_FK NUMBER(19)
      * UPDATE_DATE_TZ VARCHAR2(50),
      * UPDATE_DATE TIMESTAMP, TODO
      * UUID VARCHAR2(36) NOT NULL,
@@ -595,23 +597,13 @@ public class CodelistsToSql {
      * NAMEABLE_ARTEFACT_FK NUMBER(19) NOT NULL,
      * );
      */
-    private static void insertItem(long idNameableArtefact, long idCode) {
-        insertSentences.add("INSERT INTO TB_ITEMS_BASE (ID, UUID, VERSION, NAMEABLE_ARTEFACT_FK) values (" + idCode + ", " + idCode + ", 1," + idNameableArtefact + ");");
-    }
-
-    /**
-     * CREATE TABLE TB_CODES (
-     * TB_ITEMS_BASE NUMBER(19) NOT NULL
-     * PARENT_FK NUMBER(19), TODO
-     * ITEM_SCHEME_VERSION_FK NUMBER(19) NOT NULL,
-     * ITEM_SCHEME_VERSION_FIRST_FK NUMBER(19)
-     * );
-     */
-    private static void insertCode(Long idCode, long idCodelist, Long idParent) {
+    private static void insertCode(Long idCode, long idCodelist, Long idParent, long idNameableArtefact) {
         if (idParent == null) {
-            insertSentences.add("INSERT INTO TB_CODES (TB_ITEMS_BASE, ITEM_SCHEME_VERSION_FK, ITEM_SCHEME_VERSION_FIRST_FK) values (" + idCode + ", " + idCodelist + ", " + idCodelist + ");");
+            insertSentences.add("INSERT INTO TB_CODES (ID, UUID, VERSION, NAMEABLE_ARTEFACT_FK, ITEM_SCHEME_VERSION_FK, ITEM_SCHEME_VERSION_FIRST_FK) values (" + idCode + ", " + idCode + ", 1,"
+                    + idNameableArtefact + ", " + idCodelist + ", " + idCodelist + ");");
         } else {
-            insertSentences.add("INSERT INTO TB_CODES (TB_ITEMS_BASE, ITEM_SCHEME_VERSION_FK, PARENT_FK) values (" + idCode + ", " + idCodelist + ", " + idParent + ");");
+            insertSentences.add("INSERT INTO TB_CODES (ID, UUID, VERSION, NAMEABLE_ARTEFACT_FK, ITEM_SCHEME_VERSION_FK, PARENT_FK) values (" + idCode + ", " + idCode + ", 1," + idNameableArtefact
+                    + ", " + idCodelist + ", " + idParent + ");");
         }
     }
 

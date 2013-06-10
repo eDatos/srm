@@ -351,12 +351,12 @@ Application CodesMetamac {
 				clearCodesVariableElementByCodelist(@CodelistVersionMetamac codelistVersion);
 				updateCodesVariableElements(Map<Long,Long> variableElementsByCodes, Long codelistVersionId, Long variableId) throws MetamacException;
 				
-				reorderCodesDeletingOneCode(@CodelistVersionMetamac codelistVersion, @Item parent, @CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToDelete);
+				reorderCodesDeletingOneCode(@CodelistVersionMetamac codelistVersion, @Code parent, @CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToDelete);
 				reorderCodesAddingOneCodeInMiddle(@CodelistVersionMetamac codelistVersion, @CodeMetamac code, Integer orderColumnIndex, Integer orderCodeToAdd);
 				clearCodesOrderColumn(@CodelistVersionMetamac codelistVersion, Integer orderColumnIndex);
 				copyCodesOrderColumn(@CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget);
-				Integer getCodeMaximumOrderInLevel(@CodelistVersionMetamac codelistVersion, @Item parent, Integer orderColumnIndex);
-				Integer getCodeAlphabeticPositionInLevel(@CodelistVersionMetamac codelistVersion, @Item parent, @Item code);
+				Integer getCodeMaximumOrderInLevel(@CodelistVersionMetamac codelistVersion, @Code parent, Integer orderColumnIndex);
+				Integer getCodeAlphabeticPositionInLevel(@CodelistVersionMetamac codelistVersion, @Code parent, @Code code);
 
 				clearCodesOpennessColumnByCodelist(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex);
 				copyCodesOpennessColumnByCodelist(@CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget);

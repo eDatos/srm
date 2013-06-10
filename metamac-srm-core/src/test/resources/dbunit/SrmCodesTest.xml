@@ -10,7 +10,6 @@
     <TB_SEQUENCES SEQUENCE_NAME="ANNOTATIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ITEM_SCHEMES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ITEM_SCHEMES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
-    <TB_SEQUENCES SEQUENCE_NAME="ITEMS_BASE" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="STRUCTURES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="STRUCTURES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="REPRESENTATIONS" SEQUENCE_NEXT_VALUE="100000000" />
@@ -161,16 +160,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="10011"
+                ID="10011"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX01"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="1001"
                 ITEM_SCHEME_VERSION_FIRST_FK="1001"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="10011"
                 NAMEABLE_ARTEFACT_FK="10011"
                       
                 UUID="organisationScheme-1001-v1-org-0"
@@ -215,16 +210,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="10012"
+                ID="10012"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX02"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="1001"
                 ITEM_SCHEME_VERSION_FIRST_FK="1001"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="10012"
                 NAMEABLE_ARTEFACT_FK="10012"
                       
                 UUID="organisationScheme-1001-v1-org-1"
@@ -377,10 +368,20 @@
             
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="111"
+                ID="111"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="11"
                 ITEM_SCHEME_VERSION_FIRST_FK="11"
+                NAMEABLE_ARTEFACT_FK="99111"
+                      
+                UUID="codelist-1-v1-code-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
 
             <TB_M_CODES
@@ -429,20 +430,6 @@
               OPENNESS18="[null]"
               OPENNESS19="[null]"
               OPENNESS20="[null]"              
-             />
-            
-            <TB_ITEMS_BASE
-                ID="111"
-                NAMEABLE_ARTEFACT_FK="99111"
-                      
-                UUID="codelist-1-v1-code-1"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -664,10 +651,20 @@
             
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="121"
+                ID="121"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
+                NAMEABLE_ARTEFACT_FK="99121"
+                      
+                UUID="codelist-1-v2-code-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
             
             <TB_M_CODES
@@ -680,20 +677,6 @@
               OPENNESS1="1"
               OPENNESS2="0"
               OPENNESS3="1"              
-             />
-            
-            <TB_ITEMS_BASE
-                ID="121"
-                NAMEABLE_ARTEFACT_FK="99121"
-                      
-                UUID="codelist-1-v2-code-1"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -748,10 +731,20 @@
             
             <!-- CODE02 -->
             <TB_CODES
-                TB_ITEMS_BASE="122"
+                ID="122"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
+                NAMEABLE_ARTEFACT_FK="99122"
+                      
+                UUID="codelist-1-v2-code-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-03-02 04:05:06"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
             
             <TB_M_CODES
@@ -764,20 +757,6 @@
                 OPENNESS1="1"
                 OPENNESS2="1"
                 OPENNESS3="0"                   
-             />
-                     
-            <TB_ITEMS_BASE
-                ID="122"
-                NAMEABLE_ARTEFACT_FK="99122"
-                      
-                UUID="codelist-1-v2-code-2"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-03-02 04:05:06"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -807,10 +786,20 @@
             
             <!-- CODE0201 -->
             <TB_CODES
-                TB_ITEMS_BASE="1221"
+                ID="1221"
                 PARENT_FK="122"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                NAMEABLE_ARTEFACT_FK="991221"
+                      
+                UUID="codelist-1-v2-code-2-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
 
             <TB_M_CODES
@@ -823,20 +812,6 @@
               OPENNESS1="1"
               OPENNESS2="1"
               OPENNESS3="1"                 
-             />
-        
-            <TB_ITEMS_BASE
-                ID="1221"
-                NAMEABLE_ARTEFACT_FK="991221"
-                      
-                UUID="codelist-1-v2-code-2-1"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -891,10 +866,20 @@
         
             <!-- CODE020101 -->
             <TB_CODES
-                TB_ITEMS_BASE="12211"
+                ID="12211"
                 PARENT_FK="1221"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                NAMEABLE_ARTEFACT_FK="9912211"
+                      
+                UUID="codelist-1-v2-code-2-1-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
             
             <TB_M_CODES
@@ -907,20 +892,6 @@
               OPENNESS1="1"
               OPENNESS2="0"
               OPENNESS3="0"                 
-             />
-        
-            <TB_ITEMS_BASE
-                ID="12211"
-                NAMEABLE_ARTEFACT_FK="9912211"
-                      
-                UUID="codelist-1-v2-code-2-1-1"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -950,10 +921,20 @@
             
             <!-- CODE0202 -->
             <TB_CODES
-                TB_ITEMS_BASE="1222"
+                ID="1222"
                 PARENT_FK="122"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                NAMEABLE_ARTEFACT_FK="991222"
+                      
+                UUID="codelist-1-v2-code-2-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
 
             <TB_M_CODES
@@ -966,20 +947,6 @@
               OPENNESS1="1"
               OPENNESS2="1"
               OPENNESS3="1"                 
-             />
-        
-            <TB_ITEMS_BASE
-                ID="1222"
-                NAMEABLE_ARTEFACT_FK="991222"
-                      
-                UUID="codelist-1-v2-code-2-2"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -1009,10 +976,20 @@
                                 
             <!-- CODE03 -->
             <TB_CODES
-                TB_ITEMS_BASE="123"
+                ID="123"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
+                NAMEABLE_ARTEFACT_FK="99123"
+                      
+                UUID="codelist-1-v2-code-3"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
             
             <TB_M_CODES
@@ -1025,20 +1002,6 @@
               OPENNESS1="1"
               OPENNESS2="1"
               OPENNESS3="0"                 
-             />
-            
-            <TB_ITEMS_BASE
-                ID="123"
-                NAMEABLE_ARTEFACT_FK="99123"
-                      
-                UUID="codelist-1-v2-code-3"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -1068,10 +1031,20 @@
 
             <!-- CODE04 -->
             <TB_CODES
-                TB_ITEMS_BASE="124"
+                ID="124"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
+                NAMEABLE_ARTEFACT_FK="99124"
+                      
+                UUID="codelist-1-v2-code-4"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2012-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
             
             <TB_M_CODES
@@ -1084,20 +1057,6 @@
               OPENNESS1="1"
               OPENNESS2="0"
               OPENNESS3="0"                 
-             />
-                     
-            <TB_ITEMS_BASE
-                ID="124"
-                NAMEABLE_ARTEFACT_FK="99124"
-                      
-                UUID="codelist-1-v2-code-4"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2012-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -1127,10 +1086,20 @@
             
             <!-- CODE0401 -->
             <TB_CODES
-                TB_ITEMS_BASE="1241"
+                ID="1241"
                 PARENT_FK="124"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                NAMEABLE_ARTEFACT_FK="991241"
+                      
+                UUID="codelist-1-v2-code-4-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
 
             <TB_M_CODES
@@ -1143,20 +1112,6 @@
               OPENNESS1="1"
               OPENNESS2="1"
               OPENNESS3="1"                 
-             />
-        
-            <TB_ITEMS_BASE
-                ID="1241"
-                NAMEABLE_ARTEFACT_FK="991241"
-                      
-                UUID="codelist-1-v2-code-4-1"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -1186,10 +1141,20 @@
         
             <!-- CODE040101 -->
             <TB_CODES
-                TB_ITEMS_BASE="12411"
+                ID="12411"
                 PARENT_FK="1241"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
+                NAMEABLE_ARTEFACT_FK="9912411"
+                      
+                UUID="codelist-1-v2-code-4-1-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
             
             <TB_M_CODES
@@ -1202,20 +1167,6 @@
               OPENNESS1="1"
               OPENNESS2="0"
               OPENNESS3="1"                 
-             />
-        
-            <TB_ITEMS_BASE
-                ID="12411"
-                NAMEABLE_ARTEFACT_FK="9912411"
-                      
-                UUID="codelist-1-v2-code-4-1-1"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -1650,24 +1601,10 @@
             
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="211"
+                ID="211"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="21"
                 ITEM_SCHEME_VERSION_FIRST_FK="21"
-            />
- 
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="211"
-              ORDER1="0"
-              ORDER2="1"
-              OPENNESS1="1"
-              OPENNESS2="0"
-             />            
-        
-            <TB_ITEMS_BASE
-                ID="211"
                 NAMEABLE_ARTEFACT_FK="211"
                       
                 UUID="codelist-2-v1-code-1"
@@ -1678,6 +1615,16 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+ 
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="211"
+              ORDER1="0"
+              ORDER2="1"
+              OPENNESS1="1"
+              OPENNESS2="0"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -1707,24 +1654,10 @@
             
             <!-- CODE02 -->
             <TB_CODES
-                TB_ITEMS_BASE="212"
+                ID="212"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="21"
                 ITEM_SCHEME_VERSION_FIRST_FK="21"
-            />
-        
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="212"
-              ORDER1="1"
-              ORDER2="0"
-              OPENNESS1="1"
-              OPENNESS2="1"              
-             />        
-                     
-            <TB_ITEMS_BASE
-                ID="212"
                 NAMEABLE_ARTEFACT_FK="212"
                       
                 UUID="codelist-2-v1-code-2"
@@ -1735,6 +1668,16 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="212"
+              ORDER1="1"
+              ORDER2="0"
+              OPENNESS1="1"
+              OPENNESS2="1"              
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -2062,24 +2005,10 @@
             <!--    -> CODE0202 -->
 
             <TB_CODES
-                TB_ITEMS_BASE="311"
+                ID="311"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="31"
                 ITEM_SCHEME_VERSION_FIRST_FK="31"
-            />
-            
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="311"
-              ORDER1="0"
-              ORDER2="1"
-              OPENNESS1="1"
-              OPENNESS2="1"
-             />
-            
-            <TB_ITEMS_BASE
-                ID="311"
                 NAMEABLE_ARTEFACT_FK="99311"
                       
                 UUID="codelist-3-v1-code-1"
@@ -2090,6 +2019,16 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+            
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="311"
+              ORDER1="0"
+              ORDER2="1"
+              OPENNESS1="1"
+              OPENNESS2="1"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -2119,24 +2058,10 @@
             
             <!-- CODE02 -->
             <TB_CODES
-                TB_ITEMS_BASE="312"
+                ID="312"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="31"
                 ITEM_SCHEME_VERSION_FIRST_FK="31"
-            />
-            
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="137"
-              TB_CODES="312"
-              ORDER1="1"
-              ORDER2="0"
-              OPENNESS1="1"
-              OPENNESS2="0"
-             />            
-        
-            <TB_ITEMS_BASE
-                ID="312"
                 NAMEABLE_ARTEFACT_FK="99312"
                       
                 UUID="codelist-3-v1-code-2"
@@ -2147,6 +2072,16 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+            
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="137"
+              TB_CODES="312"
+              ORDER1="1"
+              ORDER2="0"
+              OPENNESS1="1"
+              OPENNESS2="0"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -2176,24 +2111,10 @@
             
             <!-- CODE0201 -->
             <TB_CODES
-                TB_ITEMS_BASE="3121"
+                ID="3121"
                 PARENT_FK="312"
                 ITEM_SCHEME_VERSION_FK="31"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-            />
-            
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="138"
-              TB_CODES="3121"
-              ORDER1="0"
-              ORDER2="1"
-              OPENNESS1="1"
-              OPENNESS2="1"
-             />            
-        
-            <TB_ITEMS_BASE
-                ID="3121"
                 NAMEABLE_ARTEFACT_FK="993121"
                       
                 UUID="codelist-3-v1-code-2-1"
@@ -2204,6 +2125,16 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+            
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="138"
+              TB_CODES="3121"
+              ORDER1="0"
+              ORDER2="1"
+              OPENNESS1="1"
+              OPENNESS2="1"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -2233,24 +2164,10 @@
             
                     <!-- CODE020101 -->
                     <TB_CODES
-                        TB_ITEMS_BASE="31211"
+                        ID="31211"
                         PARENT_FK="3121"
                         ITEM_SCHEME_VERSION_FK="31"
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                    />
-                    
-                    <TB_M_CODES
-                      VARIABLE_ELEMENT_FK="[null]"
-                      SHORT_NAME_FK="[null]"
-                      TB_CODES="31211"
-                      ORDER1="0"
-                      ORDER2="0"
-                      OPENNESS1="1"
-                      OPENNESS2="0"
-                     />                    
-                
-                    <TB_ITEMS_BASE
-                        ID="31211"
                         NAMEABLE_ARTEFACT_FK="9931211"
                               
                         UUID="codelist-3-v1-code-2-1-1"
@@ -2261,6 +2178,16 @@
                         LAST_UPDATED_BY="user2"
                         LAST_UPDATED="2011-01-22 01:02:03"
                         LAST_UPDATED_TZ="Europe/London"  
+                    />
+                    
+                    <TB_M_CODES
+                      VARIABLE_ELEMENT_FK="[null]"
+                      SHORT_NAME_FK="[null]"
+                      TB_CODES="31211"
+                      ORDER1="0"
+                      ORDER2="0"
+                      OPENNESS1="1"
+                      OPENNESS2="0"
                     />
                 
                     <TB_ANNOTABLE_ARTEFACTS 
@@ -2290,24 +2217,10 @@
                     
             <!-- CODE0202 -->
             <TB_CODES
-                TB_ITEMS_BASE="3122"
+                ID="3122"
                 PARENT_FK="312"
                 ITEM_SCHEME_VERSION_FK="31"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-            />
-        
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="3122"
-              ORDER1="1"
-              ORDER2="0"
-              OPENNESS1="1"
-              OPENNESS2="0"
-             />
-                     
-            <TB_ITEMS_BASE
-                ID="3122"
                 NAMEABLE_ARTEFACT_FK="993122"
                       
                 UUID="codelist-3-v1-code-2-2"
@@ -2318,6 +2231,16 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+        
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="3122"
+              ORDER1="1"
+              ORDER2="0"
+              OPENNESS1="1"
+              OPENNESS2="0"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -2624,20 +2547,10 @@
     
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="411"
+                ID="411"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="41"
                 ITEM_SCHEME_VERSION_FIRST_FK="41"
-            />
-
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="411"
-             />
-            
-            <TB_ITEMS_BASE
-                ID="411"
                 NAMEABLE_ARTEFACT_FK="99411"
                       
                 UUID="codelist-4-v1-code-1"
@@ -2648,6 +2561,12 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="411"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -2781,20 +2700,10 @@
     
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="511"
+                ID="511"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="51"
                 ITEM_SCHEME_VERSION_FIRST_FK="51"
-            />
-
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="511"
-             />
-            
-            <TB_ITEMS_BASE
-                ID="511"
                 NAMEABLE_ARTEFACT_FK="99511"
                       
                 UUID="codelist-5-v1-code-1"
@@ -2805,6 +2714,12 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="511"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -2938,22 +2853,10 @@
     
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="611"
+                ID="611"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="61"
                 ITEM_SCHEME_VERSION_FIRST_FK="61"
-            />
-
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="611"
-              ORDER1="0"
-              OPENNESS1="1"
-             />
-            
-            <TB_ITEMS_BASE
-                ID="611"
                 NAMEABLE_ARTEFACT_FK="99611"
                       
                 UUID="codelist-6-v1-code-1"
@@ -2964,6 +2867,14 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="611"
+              ORDER1="0"
+              OPENNESS1="1"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -3281,22 +3192,10 @@
     
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="721"
+                ID="721"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="72"
                 ITEM_SCHEME_VERSION_FIRST_FK="72"
-            />
-
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="721"
-              ORDER1="0"
-              OPENNESS1="1"
-             />
-            
-            <TB_ITEMS_BASE
-                ID="721"
                 NAMEABLE_ARTEFACT_FK="99721"
                       
                 UUID="codelist-7-v2-code-1"
@@ -3307,6 +3206,14 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="721"
+              ORDER1="0"
+              OPENNESS1="1"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -3532,20 +3439,10 @@
 
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="811"
+                ID="811"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="81"
                 ITEM_SCHEME_VERSION_FIRST_FK="81"
-            />
- 
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="811"
-             />            
-        
-            <TB_ITEMS_BASE
-                ID="811"
                 NAMEABLE_ARTEFACT_FK="811"
                       
                 UUID="codelist-8-v1-code-1"
@@ -3556,6 +3453,12 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+ 
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="811"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -3887,20 +3790,10 @@
     
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="1021"
+                ID="1021"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="102"
                 ITEM_SCHEME_VERSION_FIRST_FK="102"
-            />
- 
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="1021"
-             />            
-        
-            <TB_ITEMS_BASE
-                ID="1021"
                 NAMEABLE_ARTEFACT_FK="1021"
                       
                 UUID="codelist-10-v2-code-1"
@@ -3911,6 +3804,12 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+ 
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="1021"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -4030,20 +3929,10 @@
     
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="1031"
+                ID="1031"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="103"
                 ITEM_SCHEME_VERSION_FIRST_FK="103"
-            />
- 
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="1031"
-             />            
-        
-            <TB_ITEMS_BASE
-                ID="1031"
                 NAMEABLE_ARTEFACT_FK="1031"
                       
                 UUID="codelist-10-v3-code-1"
@@ -4054,6 +3943,12 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+ 
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="1031"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -4189,20 +4084,10 @@
     
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="1111"
+                ID="1111"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="111"
                 ITEM_SCHEME_VERSION_FIRST_FK="111"
-            />
- 
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="1111"
-             />            
-        
-            <TB_ITEMS_BASE
-                ID="1111"
                 NAMEABLE_ARTEFACT_FK="1111"
                       
                 UUID="codelist-11-v1-code-1"
@@ -4213,6 +4098,12 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+ 
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="1111"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -4349,20 +4240,10 @@
     
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="1211"
+                ID="1211"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="121"
                 ITEM_SCHEME_VERSION_FIRST_FK="121"
-            />
- 
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="1211"
-             />            
-        
-            <TB_ITEMS_BASE
-                ID="1211"
                 NAMEABLE_ARTEFACT_FK="1211"
                       
                 UUID="codelist-12-v1-code-1"
@@ -4373,6 +4254,12 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+ 
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="1211"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -4508,20 +4395,10 @@
     
             <!-- CODE01 -->
             <TB_CODES
-                TB_ITEMS_BASE="1311"
+                ID="1311"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="131"
                 ITEM_SCHEME_VERSION_FIRST_FK="131"
-            />
- 
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="1311"
-             />            
-        
-            <TB_ITEMS_BASE
-                ID="1311"
                 NAMEABLE_ARTEFACT_FK="1311"
                       
                 UUID="codelist-13-v1-code-1"
@@ -4532,6 +4409,12 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+ 
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="1311"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -4561,20 +4444,10 @@
             
            <!-- CODE02 -->
             <TB_CODES
-                TB_ITEMS_BASE="1312"
+                ID="1312"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="131"
                 ITEM_SCHEME_VERSION_FIRST_FK="131"
-            />
- 
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="1312"
-             />            
-        
-            <TB_ITEMS_BASE
-                ID="1312"
                 NAMEABLE_ARTEFACT_FK="1312"
                       
                 UUID="codelist-13-v1-code-2"
@@ -4585,6 +4458,12 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+ 
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="1312"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -4614,20 +4493,10 @@
             
            <!-- CODE03 -->
             <TB_CODES
-                TB_ITEMS_BASE="1313"
+                ID="1313"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="131"
                 ITEM_SCHEME_VERSION_FIRST_FK="131"
-            />
- 
-            <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
-              SHORT_NAME_FK="[null]"
-              TB_CODES="1313"
-             />            
-        
-            <TB_ITEMS_BASE
-                ID="1313"
                 NAMEABLE_ARTEFACT_FK="1313"
                       
                 UUID="codelist-13-v1-code-3"
@@ -4638,6 +4507,12 @@
                 LAST_UPDATED_BY="user2"
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"  
+            />
+ 
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="1313"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -4898,14 +4773,10 @@
             />
             
             <TB_CODES
-                TB_ITEMS_BASE="1411"
+                ID="1411"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="141"
                 ITEM_SCHEME_VERSION_FIRST_FK="141"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="1411"
                 NAMEABLE_ARTEFACT_FK="991411"
                       
                 UUID="codelist14-v1-code-1"
@@ -4952,14 +4823,10 @@
                     />
                     
                     <TB_CODES
-                        TB_ITEMS_BASE="14111"
+                        ID="14111"
                         PARENT_FK="1411"
                         ITEM_SCHEME_VERSION_FK="141"
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                    />
-                
-                    <TB_ITEMS_BASE
-                        ID="14111"
                         NAMEABLE_ARTEFACT_FK="9914111"
                               
                         UUID="codelist14-v1-code-14"
@@ -5006,14 +4873,10 @@
             />
             
             <TB_CODES
-                TB_ITEMS_BASE="1412"
+                ID="1412"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="141"
                 ITEM_SCHEME_VERSION_FIRST_FK="141"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="1412"
                 NAMEABLE_ARTEFACT_FK="991412"
                       
                 UUID="codelist14-v1-code-2"
@@ -5084,14 +4947,10 @@
             />
             
             <TB_CODES
-                TB_ITEMS_BASE="1413"
+                ID="1413"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="141"
                 ITEM_SCHEME_VERSION_FIRST_FK="141"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="1413"
                 NAMEABLE_ARTEFACT_FK="991413"
                       
                 UUID="codelist14-v1-code-3"
@@ -6398,11 +6257,21 @@
             
             <!-- CONCEPT01 -->
             <TB_CONCEPTS
-                TB_ITEMS_BASE="999802"
+                ID="999802"
                 CORE_REPRESENTATION_FK="[null]"    
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="9998011"
                 ITEM_SCHEME_VERSION_FIRST_FK="9998011"
+                NAMEABLE_ARTEFACT_FK="999802"
+                      
+                UUID="conceptScheme-1-v1-concept-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
             />
 
             <TB_M_CONCEPTS
@@ -6418,20 +6287,6 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="3"
               TB_CONCEPTS="999802"
-             />
-            
-            <TB_ITEMS_BASE
-                ID="999802"
-                NAMEABLE_ARTEFACT_FK="999802"
-                      
-                UUID="conceptScheme-1-v1-concept-1"
-                VERSION="1"
-                CREATED_BY="user1"
-                CREATED_DATE="2011-01-01 01:02:03"
-                CREATED_DATE_TZ="Europe/London"
-                LAST_UPDATED_BY="user2"
-                LAST_UPDATED="2011-01-22 01:02:03"
-                LAST_UPDATED_TZ="Europe/London"  
             />
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -6552,14 +6407,10 @@
             />
                         
             <TB_CATEGORIES
-                TB_ITEMS_BASE="999111"
+                ID="999111"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="99911"
                 ITEM_SCHEME_VERSION_FIRST_FK="99911"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="999111"
                 NAMEABLE_ARTEFACT_FK="999111"
                       
                 UUID="categoryScheme-1-v1-cat-1"
@@ -6605,14 +6456,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="999112"
+                ID="999112"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="99911"
                 ITEM_SCHEME_VERSION_FIRST_FK="99911"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="999112"
                 NAMEABLE_ARTEFACT_FK="999112"
                       
                 UUID="categoryScheme-1-v1-cat-2"

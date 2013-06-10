@@ -10,7 +10,6 @@
     <TB_SEQUENCES SEQUENCE_NAME="ANNOTATIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ITEM_SCHEMES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ITEM_SCHEMES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
-    <TB_SEQUENCES SEQUENCE_NAME="ITEMS_BASE" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="STRUCTURES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="STRUCTURES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="REPRESENTATIONS" SEQUENCE_NEXT_VALUE="100000000" />
@@ -152,16 +151,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="10011"
+                ID="10011"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX01"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="1001"
                 ITEM_SCHEME_VERSION_FIRST_FK="1001"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="10011"
                 NAMEABLE_ARTEFACT_FK="10011"
                       
                 UUID="organisationScheme-1001-v1-org-0"
@@ -206,16 +201,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="10012"
+                ID="10012"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX02"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="1001"
                 ITEM_SCHEME_VERSION_FIRST_FK="1001"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="10012"
                 NAMEABLE_ARTEFACT_FK="10012"
                       
                 UUID="organisationScheme-1001-v1-org-1"
@@ -364,14 +355,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="111"
+                ID="111"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="11"
                 ITEM_SCHEME_VERSION_FIRST_FK="11"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="111"
                 NAMEABLE_ARTEFACT_FK="111"
                       
                 UUID="categoryScheme-1-v1-cat-1"
@@ -511,14 +498,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="121"    
+                ID="121"    
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
-            />
-            
-            <TB_ITEMS_BASE
-                ID="121"
                 NAMEABLE_ARTEFACT_FK="121"
                       
                 UUID="categoryScheme-1-v2-cat-1"
@@ -564,14 +547,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="122"
+                ID="122"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="122"
                 NAMEABLE_ARTEFACT_FK="122"
                       
                 UUID="categoryScheme-1-v2-cat-2"
@@ -617,14 +596,10 @@
                 />
                 
                 <TB_CATEGORIES
-                    TB_ITEMS_BASE="1221"
+                    ID="1221"
                     PARENT_FK="122"
                     ITEM_SCHEME_VERSION_FK="12"
                     ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                />
-            
-                <TB_ITEMS_BASE
-                    ID="1221"
                     NAMEABLE_ARTEFACT_FK="1221"
                           
                     UUID="categoryScheme-1-v2-cat-2-1"
@@ -671,14 +646,10 @@
                     />
                     
                     <TB_CATEGORIES
-                        TB_ITEMS_BASE="12211"
+                        ID="12211"
                         PARENT_FK="1221"
                         ITEM_SCHEME_VERSION_FK="12"
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                    />
-                
-                    <TB_ITEMS_BASE
-                        ID="12211"
                         NAMEABLE_ARTEFACT_FK="12211"
                               
                         UUID="categoryScheme-1-v2-cat-2-1-1"
@@ -724,14 +695,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="123"
+                ID="123"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
-            />
-            
-            <TB_ITEMS_BASE
-                ID="123"
                 NAMEABLE_ARTEFACT_FK="99123"
                       
                 UUID="categoryScheme-1-v2-cat-3"
@@ -777,14 +744,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="124"
+                ID="124"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
-            />
-                     
-            <TB_ITEMS_BASE
-                ID="124"
                 NAMEABLE_ARTEFACT_FK="99124"
                       
                 UUID="categoryScheme-1-v2-cat-4"
@@ -830,14 +793,10 @@
                 />
                 
                 <TB_CATEGORIES
-                    TB_ITEMS_BASE="1241"
+                    ID="1241"
                     PARENT_FK="124"
                     ITEM_SCHEME_VERSION_FK="12"
                     ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                />
-            
-                <TB_ITEMS_BASE
-                    ID="1241"
                     NAMEABLE_ARTEFACT_FK="991241"
                           
                     UUID="categoryScheme-1-v2-cat-4-1"
@@ -883,14 +842,10 @@
                     />
                     
                     <TB_CATEGORIES
-                        TB_ITEMS_BASE="12411"
+                        ID="12411"
                         PARENT_FK="1241"
                         ITEM_SCHEME_VERSION_FK="12"
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                    />
-                    
-                    <TB_ITEMS_BASE
-                        ID="12411"
                         NAMEABLE_ARTEFACT_FK="9912411"
                               
                         UUID="categoryScheme-1-v2-cat-4-1-1"
@@ -1038,14 +993,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="211"
+                ID="211"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="21"
                 ITEM_SCHEME_VERSION_FIRST_FK="21"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="211"
                 NAMEABLE_ARTEFACT_FK="211"
                       
                 UUID="categoryScheme-2-v1-cat-1"
@@ -1091,14 +1042,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="212"
+                ID="212"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="21"
                 ITEM_SCHEME_VERSION_FIRST_FK="21"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="212"
                 NAMEABLE_ARTEFACT_FK="212"
                       
                 UUID="categoryScheme-2-v1-cat-2"
@@ -1434,14 +1381,10 @@
             />
 
             <TB_CATEGORIES
-                TB_ITEMS_BASE="311"
+                ID="311"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="31"
                 ITEM_SCHEME_VERSION_FIRST_FK="31"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="311"
                 NAMEABLE_ARTEFACT_FK="311"
                       
                 UUID="categoryScheme-3-v1-cat-1"
@@ -1487,14 +1430,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="312"
+                ID="312"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="31"
                 ITEM_SCHEME_VERSION_FIRST_FK="31"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="312"
                 NAMEABLE_ARTEFACT_FK="312"
                       
                 UUID="categoryScheme-3-v1-cat-2"
@@ -1540,14 +1479,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="3121"
+                ID="3121"
                 PARENT_FK="312"
                 ITEM_SCHEME_VERSION_FK="31"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="3121"
                 NAMEABLE_ARTEFACT_FK="3121"
                       
                 UUID="categoryScheme-3-v1-cat-2-1"
@@ -1593,14 +1528,10 @@
                     />
                     
                     <TB_CATEGORIES
-                        TB_ITEMS_BASE="31211"
+                        ID="31211"
                         PARENT_FK="3121"
                         ITEM_SCHEME_VERSION_FK="31"
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                    />
-                
-                    <TB_ITEMS_BASE
-                        ID="31211"
                         NAMEABLE_ARTEFACT_FK="31211"
                               
                         UUID="categoryScheme-3-v1-cat-2-1-1"
@@ -1645,14 +1576,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="3122"
+                ID="3122"
                 PARENT_FK="312"
                 ITEM_SCHEME_VERSION_FK="31"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="3122"
                 NAMEABLE_ARTEFACT_FK="3122"
                       
                 UUID="categoryScheme-3-v1-cat-2-2"
@@ -1799,14 +1726,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="411"
+                ID="411"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="41"
                 ITEM_SCHEME_VERSION_FIRST_FK="41"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="411"
                 NAMEABLE_ARTEFACT_FK="411"
                       
                 UUID="categoryScheme-4-v1-cat-1"
@@ -1954,14 +1877,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="511"
+                ID="511"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="51"
                 ITEM_SCHEME_VERSION_FIRST_FK="51"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="511"
                 NAMEABLE_ARTEFACT_FK="511"
                       
                 UUID="categoryScheme-5-v1-cat-1"
@@ -2108,14 +2027,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="611"
+                ID="611"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="61"
                 ITEM_SCHEME_VERSION_FIRST_FK="61"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="611"
                 NAMEABLE_ARTEFACT_FK="611"
                       
                 UUID="categoryScheme-6-v1-cat-1"
@@ -2345,14 +2260,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="721"
+                ID="721"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="72"
                 ITEM_SCHEME_VERSION_FIRST_FK="72"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="721"
                 NAMEABLE_ARTEFACT_FK="721"
                       
                 UUID="categoryScheme-7-v2-cat-1"
@@ -2527,14 +2438,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="811"
+                ID="811"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="81"
                 ITEM_SCHEME_VERSION_FIRST_FK="81"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="811"
                 NAMEABLE_ARTEFACT_FK="811"
                       
                 UUID="categoryScheme-8-v1-cat-1"
@@ -2579,14 +2486,10 @@
                     />
                     
                     <TB_CATEGORIES
-                        TB_ITEMS_BASE="8111"
+                        ID="8111"
                         PARENT_FK="811"
                         ITEM_SCHEME_VERSION_FK="81"
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                    />
-                
-                    <TB_ITEMS_BASE
-                        ID="8111"
                         NAMEABLE_ARTEFACT_FK="8111"
                               
                         UUID="categoryScheme-8-v1-cat-1-1"
@@ -2644,14 +2547,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="812"
+                ID="812"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="81"
                 ITEM_SCHEME_VERSION_FIRST_FK="81"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="812"
                 NAMEABLE_ARTEFACT_FK="812"
                       
                 UUID="categoryScheme-8-v1-cat-2"
@@ -2720,14 +2619,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="813"
+                ID="813"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="81"
                 ITEM_SCHEME_VERSION_FIRST_FK="81"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="813"
                 NAMEABLE_ARTEFACT_FK="813"
                       
                 UUID="categoryScheme-8-v1-cat-3"

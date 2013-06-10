@@ -10,7 +10,6 @@
     <TB_SEQUENCES SEQUENCE_NAME="ANNOTATIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ITEM_SCHEMES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="ITEM_SCHEMES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
-    <TB_SEQUENCES SEQUENCE_NAME="ITEMS_BASE" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="STRUCTURES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="STRUCTURES_VERSIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="REPRESENTATIONS" SEQUENCE_NEXT_VALUE="100000000" />
@@ -153,16 +152,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="10011"
+                ID="10011"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX01"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="1001"
                 ITEM_SCHEME_VERSION_FIRST_FK="1001"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="10011"
                 NAMEABLE_ARTEFACT_FK="10011"
                       
                 UUID="organisationScheme-1001-v1-org-0"
@@ -208,16 +203,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="10012"
+                ID="10012"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX02"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="1001"
                 ITEM_SCHEME_VERSION_FIRST_FK="1001"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="10012"
                 NAMEABLE_ARTEFACT_FK="10012"
                       
                 UUID="organisationScheme-1001-v1-org-1"
@@ -368,16 +359,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="111"
+                ID="111"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="11"
                 ITEM_SCHEME_VERSION_FIRST_FK="11"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="111"
                 NAMEABLE_ARTEFACT_FK="111"
                       
                 UUID="organisationScheme-1-v1-org-1"
@@ -518,16 +505,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="121"    
+                ID="121"    
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
-            />
-            
-            <TB_ITEMS_BASE
-                ID="121"
                 NAMEABLE_ARTEFACT_FK="121"
                       
                 UUID="organisationScheme-1-v2-org-1"
@@ -573,16 +556,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="122"
+                ID="122"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="122"
                 NAMEABLE_ARTEFACT_FK="122"
                       
                 UUID="organisationScheme-1-v2-org-2"
@@ -627,16 +606,12 @@
                 />
                 
                 <TB_ORGANISATIONS
-                    TB_ITEMS_BASE="1221"
+                    ID="1221"
                     ORGANISATION_TYPE="ORGANISATION_UNIT"
                     ID_AS_MAINTAINER="[null]"   
                     PARENT_FK="122"
                     ITEM_SCHEME_VERSION_FK="12"
                     ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                />
-            
-                <TB_ITEMS_BASE
-                    ID="1221"
                     NAMEABLE_ARTEFACT_FK="1221"
                           
                     UUID="organisationScheme-1-v2-org-2-1"
@@ -682,16 +657,12 @@
                     />
                     
                     <TB_ORGANISATIONS
-                        TB_ITEMS_BASE="12211"
+                        ID="12211"
                         ORGANISATION_TYPE="ORGANISATION_UNIT"
                         ID_AS_MAINTAINER="[null]"
                         PARENT_FK="1221"
                         ITEM_SCHEME_VERSION_FK="12"
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                    />
-                
-                    <TB_ITEMS_BASE
-                        ID="12211"
                         NAMEABLE_ARTEFACT_FK="12211"
                               
                         UUID="organisationScheme-1-v2-org-2-1-1"
@@ -736,16 +707,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="123"
+                ID="123"
                  ORGANISATION_TYPE="ORGANISATION_UNIT"
                  ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
-            />
-            
-            <TB_ITEMS_BASE
-                ID="123"
                 NAMEABLE_ARTEFACT_FK="99123"
                       
                 UUID="organisationScheme-1-v2-org-3"
@@ -790,16 +757,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="124"
+                ID="124"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="12"
                 ITEM_SCHEME_VERSION_FIRST_FK="12"
-            />
-                     
-            <TB_ITEMS_BASE
-                ID="124"
                 NAMEABLE_ARTEFACT_FK="99124"
                       
                 UUID="organisationScheme-1-v2-org-4"
@@ -844,16 +807,12 @@
                 />
                 
                 <TB_ORGANISATIONS
-                    TB_ITEMS_BASE="1241"
+                    ID="1241"
                     ORGANISATION_TYPE="ORGANISATION_UNIT"
                     ID_AS_MAINTAINER="[null]"
                     PARENT_FK="124"
                     ITEM_SCHEME_VERSION_FK="12"
                     ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                />
-            
-                <TB_ITEMS_BASE
-                    ID="1241"
                     NAMEABLE_ARTEFACT_FK="991241"
                           
                     UUID="organisationScheme-1-v2-org-4-1"
@@ -898,16 +857,12 @@
                     />
                     
                     <TB_ORGANISATIONS
-                        TB_ITEMS_BASE="12411"
+                        ID="12411"
                         ORGANISATION_TYPE="ORGANISATION_UNIT"
                         ID_AS_MAINTAINER="[null]"  
                         PARENT_FK="1241"
                         ITEM_SCHEME_VERSION_FK="12"
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                    />
-                    
-                    <TB_ITEMS_BASE
-                        ID="12411"
                         NAMEABLE_ARTEFACT_FK="9912411"
                               
                         UUID="organisationScheme-1-v2-org-4-1-1"
@@ -1056,16 +1011,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="211"
+                ID="211"
                 ORGANISATION_TYPE="DATA_CONSUMER"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="21"
                 ITEM_SCHEME_VERSION_FIRST_FK="21"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="211"
                 NAMEABLE_ARTEFACT_FK="211"
                       
                 UUID="organisationScheme-2-v1-org-1"
@@ -1110,16 +1061,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="212"
+                ID="212"
                 ORGANISATION_TYPE="DATA_CONSUMER"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="21"
                 ITEM_SCHEME_VERSION_FIRST_FK="21"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="212"
                 NAMEABLE_ARTEFACT_FK="212"
                       
                 UUID="organisationScheme-2-v1-org-2"
@@ -1456,16 +1403,12 @@
             />
 
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="311"
+                ID="311"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="31"
                 ITEM_SCHEME_VERSION_FIRST_FK="31"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="311"
                 NAMEABLE_ARTEFACT_FK="311"
                       
                 UUID="organisationScheme-3-v1-org-1"
@@ -1604,16 +1547,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="312"
+                ID="312"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"  
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="31"
                 ITEM_SCHEME_VERSION_FIRST_FK="31"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="312"
                 NAMEABLE_ARTEFACT_FK="312"
                       
                 UUID="organisationScheme-3-v1-org-2"
@@ -1659,16 +1598,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="3121"
+                ID="3121"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="312"
                 ITEM_SCHEME_VERSION_FK="31"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="3121"
                 NAMEABLE_ARTEFACT_FK="3121"
                       
                 UUID="organisationScheme-3-v1-org-2-1"
@@ -1714,16 +1649,12 @@
                     />
                     
                     <TB_ORGANISATIONS
-                        TB_ITEMS_BASE="31211"
+                        ID="31211"
                         ORGANISATION_TYPE="ORGANISATION_UNIT"
                         ID_AS_MAINTAINER="[null]"
                         PARENT_FK="3121"
                         ITEM_SCHEME_VERSION_FK="31"
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                    />
-                
-                    <TB_ITEMS_BASE
-                        ID="31211"
                         NAMEABLE_ARTEFACT_FK="31211"
                               
                         UUID="organisationScheme-3-v1-org-2-1-1"
@@ -1768,16 +1699,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="3122"
+                ID="3122"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="312"
                 ITEM_SCHEME_VERSION_FK="31"
                 ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="3122"
                 NAMEABLE_ARTEFACT_FK="3122"
                       
                 UUID="organisationScheme-3-v1-org-2-2"
@@ -1925,16 +1852,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="411"
+                ID="411"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="41"
                 ITEM_SCHEME_VERSION_FIRST_FK="41"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="411"
                 NAMEABLE_ARTEFACT_FK="411"
                       
                 UUID="organisationScheme-4-v1-org-1"
@@ -2101,16 +2024,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="511"
+                ID="511"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="51"
                 ITEM_SCHEME_VERSION_FIRST_FK="51"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="511"
                 NAMEABLE_ARTEFACT_FK="511"
                       
                 UUID="organisationScheme-5-v1-org-1"
@@ -2260,16 +2179,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="611"
+                ID="611"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="61"
                 ITEM_SCHEME_VERSION_FIRST_FK="61"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="611"
                 NAMEABLE_ARTEFACT_FK="611"
                       
                 UUID="organisationScheme-6-v1-org-1"
@@ -2501,16 +2416,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="721"
+                ID="721"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="72"
                 ITEM_SCHEME_VERSION_FIRST_FK="72"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="721"
                 NAMEABLE_ARTEFACT_FK="721"
                       
                 UUID="organisationScheme-7-v2-org-1"
@@ -2659,16 +2570,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="811"
+                ID="811"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="SDMX02.ORGANISATION01"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="81"
                 ITEM_SCHEME_VERSION_FIRST_FK="81"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="811"
                 NAMEABLE_ARTEFACT_FK="811"
                       
                 UUID="organisationScheme-8-v1-org-1"
@@ -2817,16 +2724,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="911"
+                ID="911"
                 ORGANISATION_TYPE="DATA_PROVIDER"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="91"
                 ITEM_SCHEME_VERSION_FIRST_FK="91"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="911"
                 NAMEABLE_ARTEFACT_FK="911"
                       
                 UUID="organisationScheme-9-v1-org-1"
@@ -2871,16 +2774,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="912"
+                ID="912"
                 ORGANISATION_TYPE="DATA_PROVIDER"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="91"
                 ITEM_SCHEME_VERSION_FIRST_FK="91"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="912"
                 NAMEABLE_ARTEFACT_FK="912"
                       
                 UUID="organisationScheme-9-v1-org-2"
@@ -3029,16 +2928,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="1011"
+                ID="1011"
                 ORGANISATION_TYPE="AGENCY"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="101"
                 ITEM_SCHEME_VERSION_FIRST_FK="101"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="1011"
                 NAMEABLE_ARTEFACT_FK="1011"
                       
                 UUID="organisationScheme-10-v1-org-1"
@@ -3213,16 +3108,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="1111"
+                ID="1111"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="111"
                 ITEM_SCHEME_VERSION_FIRST_FK="111"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="1111"
                 NAMEABLE_ARTEFACT_FK="991111"
                       
                 UUID="organisationScheme-11-v1-org-1"
@@ -3301,16 +3192,12 @@
                     />
                     
                     <TB_ORGANISATIONS
-                        TB_ITEMS_BASE="11111"
+                        ID="11111"
                         ORGANISATION_TYPE="ORGANISATION_UNIT"
                         ID_AS_MAINTAINER="[null]"
                         PARENT_FK="1111"
                         ITEM_SCHEME_VERSION_FK="111"
                         ITEM_SCHEME_VERSION_FIRST_FK="[null]"
-                    />
-                
-                    <TB_ITEMS_BASE
-                        ID="11111"
                         NAMEABLE_ARTEFACT_FK="9911111"
                               
                         UUID="organisationScheme-11-v1-org-11"
@@ -3389,16 +3276,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="1112"
+                ID="1112"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="111"
                 ITEM_SCHEME_VERSION_FIRST_FK="111"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="1112"
                 NAMEABLE_ARTEFACT_FK="991112"
                       
                 UUID="organisationScheme-11-v1-org-2"
@@ -3484,16 +3367,12 @@
             />
             
             <TB_ORGANISATIONS
-                TB_ITEMS_BASE="1113"
+                ID="1113"
                 ORGANISATION_TYPE="ORGANISATION_UNIT"
                 ID_AS_MAINTAINER="[null]"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="111"
                 ITEM_SCHEME_VERSION_FIRST_FK="111"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="1113"
                 NAMEABLE_ARTEFACT_FK="991113"
                       
                 UUID="organisationScheme-11-v1-org-3"
@@ -3650,14 +3529,10 @@
             />
                         
             <TB_CATEGORIES
-                TB_ITEMS_BASE="999111"
+                ID="999111"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="99911"
                 ITEM_SCHEME_VERSION_FIRST_FK="99911"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="999111"
                 NAMEABLE_ARTEFACT_FK="999111"
                       
                 UUID="categoryScheme-1-v1-cat-1"
@@ -3703,14 +3578,10 @@
             />
             
             <TB_CATEGORIES
-                TB_ITEMS_BASE="999112"
+                ID="999112"
                 PARENT_FK="[null]"
                 ITEM_SCHEME_VERSION_FK="99911"
                 ITEM_SCHEME_VERSION_FIRST_FK="99911"
-            />
-        
-            <TB_ITEMS_BASE
-                ID="999112"
                 NAMEABLE_ARTEFACT_FK="999112"
                       
                 UUID="categoryScheme-1-v1-cat-2"

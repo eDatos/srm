@@ -1143,7 +1143,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersion);
 
         CodeMetamac code = retrieveCodeByUrn(ctx, codeUrn);
-        Item parentActual = code.getParent() != null ? code.getParent() : null;
+        Code parentActual = code.getParent() != null ? code.getParent() : null;
         CodeMetamac parentTarget = parentTargetUrn != null ? retrieveCodeByUrn(ctx, parentTargetUrn) : null;
         if (!SdmxSrmUtils.isItemParentChanged(parentActual, parentTarget)) {
             // nothing
@@ -1241,7 +1241,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersion);
 
         CodeMetamac code = retrieveCodeByUrn(ctx, urn);
-        Item parent = code.getParent();
+        Code parent = code.getParent();
         // Before delete code, update order of other codes in level
         for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersion.getOrderVisualisations()) {
             reorderCodesDeletingOneCode(codelistVersion, codelistOrderVisualisation, parent, code);
@@ -2628,7 +2628,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return variableElementOperation;
     }
 
-    private void reorderCodesDeletingOneCode(CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation codelistOrderVisualisation, Item parent, CodeMetamac code) throws MetamacException {
+    private void reorderCodesDeletingOneCode(CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation codelistOrderVisualisation, Code parent, CodeMetamac code) throws MetamacException {
         Integer columnIndex = codelistOrderVisualisation.getColumnIndex();
         Integer previousOrder = SrmServiceUtils.getCodeOrder(code, columnIndex);
         getCodeMetamacRepository().reorderCodesDeletingOneCode(codelistVersion, parent, code, columnIndex, previousOrder);
@@ -2640,7 +2640,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         getCodeMetamacRepository().reorderCodesAddingOneCodeInMiddle(codelistVersion, code, columnIndex, order);
     }
 
-    private void setCodeOrderInAlphabeticalPositionAndReorderCodesInLevel(CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation codelistOrderVisualisation, Item parent, CodeMetamac code)
+    private void setCodeOrderInAlphabeticalPositionAndReorderCodesInLevel(CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation codelistOrderVisualisation, Code parent, CodeMetamac code)
             throws MetamacException {
         if (!SrmServiceUtils.isAlphabeticalOrderVisualisation(codelistOrderVisualisation)) {
             return;
@@ -2654,7 +2654,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         SrmServiceUtils.setCodeOrder(code, columnIndex, alphabeticalPosition);
     }
 
-    private Integer setCodeOrderInLastPositionInLevel(CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation codelistOrderVisualisation, Item parent, CodeMetamac code,
+    private Integer setCodeOrderInLastPositionInLevel(CodelistVersionMetamac codelistVersion, CodelistOrderVisualisation codelistOrderVisualisation, Code parent, CodeMetamac code,
             Integer precalculateOrder) throws MetamacException {
         Integer columnIndex = codelistOrderVisualisation.getColumnIndex();
         Integer orderInNewLevel = null;

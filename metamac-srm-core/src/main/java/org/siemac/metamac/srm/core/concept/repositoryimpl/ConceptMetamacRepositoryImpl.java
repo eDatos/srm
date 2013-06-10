@@ -70,11 +70,10 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     public List<ConceptMetamacVisualisationResult> findConceptsByConceptSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException {
         // Find items. Returns only one row by item. NOTE: this query return null label if locale not exits for a code.
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT i.ID as ITEM_ID, i.CREATED_DATE, i.CREATED_DATE_TZ, a.URN, a.CODE, cb.PARENT_FK as ITEM_PARENT_ID, lsName.LABEL as NAME, lsAcronym.LABEL as ACRONYM, c.SDMX_RELATED_ARTEFACT ");
+        sb.append("SELECT cb.ID as ITEM_ID, cb.CREATED_DATE, cb.CREATED_DATE_TZ, a.URN, a.CODE, cb.PARENT_FK as ITEM_PARENT_ID, lsName.LABEL as NAME, lsAcronym.LABEL as ACRONYM, c.SDMX_RELATED_ARTEFACT ");
         sb.append("FROM TB_M_CONCEPTS c ");
-        sb.append("INNER JOIN TB_CONCEPTS cb on c.TB_CONCEPTS = cb.TB_ITEMS_BASE ");
-        sb.append("INNER JOIN TB_ITEMS_BASE i on c.TB_CONCEPTS = i.ID ");
-        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("INNER JOIN TB_CONCEPTS cb on c.TB_CONCEPTS = cb.ID ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on cb.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsName on lsName.INTERNATIONAL_STRING_FK = a.NAME_FK and lsName.locale = :locale ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsAcronym on lsAcronym.INTERNATIONAL_STRING_FK = c.ACRONYM_FK and lsAcronym.locale = :locale ");
         sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId");
@@ -100,7 +99,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         StringBuilder sbVariables = new StringBuilder();
         sbVariables.append("SELECT c.TB_CONCEPTS as ITEM_ID, v.ID as V_ID, av.URN as V_URN, av.URN_PROVIDER as V_URN_PROVIDER, av.CODE as V_CODE, ls.LABEL as V_NAME ");
         sbVariables.append("FROM TB_M_CONCEPTS c ");
-        sbVariables.append("INNER JOIN TB_CONCEPTS cb on c.TB_CONCEPTS = cb.TB_ITEMS_BASE ");
+        sbVariables.append("INNER JOIN TB_CONCEPTS cb on c.TB_CONCEPTS = cb.ID ");
         sbVariables.append("INNER JOIN TB_M_VARIABLES v on v.ID = c.VARIABLE_FK ");
         sbVariables.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS av on v.NAMEABLE_ARTEFACT_FK = av.ID ");
         sbVariables.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = av.NAME_FK and ls.locale = :locale ");
@@ -184,9 +183,8 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         sb.append("c." + COLUMN_NAME_DERIVATION + " as DERIVARION_IS, lsderiv.LABEL as DERIVARION_LABEL, ");
         sb.append("c." + COLUMN_NAME_LEGAL_ACTS + " as LEGAL_ACTS_IS, lslegal.LABEL as LEGAL_ACTS_LABEL ");
         sb.append("FROM TB_CONCEPTS cb ");
-        sb.append("INNER JOIN TB_ITEMS_BASE i on cb.TB_ITEMS_BASE = i.ID ");
-        sb.append("INNER JOIN TB_M_CONCEPTS c on c.TB_CONCEPTS = i.ID ");
-        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("INNER JOIN TB_M_CONCEPTS c on c.TB_CONCEPTS = cb.ID ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on cb.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsplurn on lsplurn.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_PLURAL_NAME + " AND lsplurn.LOCALE = :locale ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsacron on lsacron.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_ACRONYM + " AND lsacron.LOCALE = :locale ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsdescs on lsdescs.INTERNATIONAL_STRING_FK = c." + COLUMN_NAME_DESCRIPTION_SOURCE + " AND lsdescs.LOCALE = :locale ");
@@ -239,7 +237,8 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     private void executeQueryRetrieveConceptInternationalString(Long itemSchemVersionId, Map<Long, ItemResult> mapItemByItemId, ConceptExtensionPointUtility extractor) {
         StringBuilder sqlQuery = new StringBuilder();
         sqlQuery.append("SELECT c.TB_CONCEPTS, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL ");
-        sqlQuery.append("FROM TB_M_CONCEPTS c INNER JOIN TB_CONCEPTS cb on cb.TB_ITEMS_BASE = c.TB_CONCEPTS ");
+        sqlQuery.append("FROM TB_M_CONCEPTS c ");
+        sqlQuery.append("INNER JOIN TB_CONCEPTS cb on cb.ID = c.TB_CONCEPTS ");
         sqlQuery.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = c." + extractor.getColumnName() + " ");
         sqlQuery.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :itemSchemVersionId and c." + extractor.getColumnName() + " IS NOT NULL");
 

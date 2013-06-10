@@ -67,13 +67,12 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
     public List<OrganisationMetamacVisualisationResult> findOrganisationsByOrganisationSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException {
         // Find items. Returns only one row by item. NOTE: this query return null label if locale not exits for a code.
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT i.ID as ITEM_ID, i.CREATED_DATE, i.CREATED_DATE_TZ, a.URN, a.CODE, o.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, o.ORGANISATION_TYPE, om.SPECIAL_ORG_HAS_BEEN_PUBLISHED ");
-        sb.append("FROM TB_M_ORGANISATIONS om ");
-        sb.append("INNER JOIN TB_ORGANISATIONS o on om.TB_ORGANISATIONS = o.TB_ITEMS_BASE ");
-        sb.append("INNER JOIN TB_ITEMS_BASE i on o.TB_ITEMS_BASE = i.ID ");
-        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on i.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("SELECT ob.ID as ITEM_ID, ob.CREATED_DATE, ob.CREATED_DATE_TZ, a.URN, a.CODE, ob.PARENT_FK as ITEM_PARENT_ID, ls.LABEL, ob.ORGANISATION_TYPE, o.SPECIAL_ORG_HAS_BEEN_PUBLISHED ");
+        sb.append("FROM TB_M_ORGANISATIONS o ");
+        sb.append("INNER JOIN TB_ORGANISATIONS ob on o.TB_ORGANISATIONS = ob.ID ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on ob.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale ");
-        sb.append("WHERE o.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId");
+        sb.append("WHERE ob.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId");
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
         query.setParameter("locale", locale);
@@ -112,7 +111,7 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
     public void updateHasBeenPublishedEfficiently(Long itemSchemeVersionId) {
         Query queryUpdate = getEntityManager()
                 .createNativeQuery(
-                        "UPDATE TB_M_ORGANISATIONS SET SPECIAL_ORG_HAS_BEEN_PUBLISHED = :hasBeenPublished WHERE TB_ORGANISATIONS IN (SELECT TB_ITEMS_BASE FROM TB_ORGANISATIONS WHERE ITEM_SCHEME_VERSION_FK = :itemSchemeVersion)");
+                        "UPDATE TB_M_ORGANISATIONS SET SPECIAL_ORG_HAS_BEEN_PUBLISHED = :hasBeenPublished WHERE TB_ORGANISATIONS IN (SELECT ID FROM TB_ORGANISATIONS WHERE ITEM_SCHEME_VERSION_FK = :itemSchemeVersion)");
         queryUpdate.setParameter("itemSchemeVersion", itemSchemeVersionId);
         queryUpdate.setParameter("hasBeenPublished", true);
         queryUpdate.executeUpdate();
