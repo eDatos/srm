@@ -1431,9 +1431,6 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             return SrmServiceUtils.pagedResultZeroResults(pagingParameter);
         }
 
-        // Codelist with access type = PUBLIC
-        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
-
         return findCodelistsPublishedByConditions(ctx, conditions, pagingParameter, variable.getNameableArtefact().getUrn());
     }
 
@@ -1457,6 +1454,9 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         // Do not repeat results
         conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build());
 
+        // Codelist with access type = PUBLIC
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
+        
         // Find
         return codelistVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
     }
