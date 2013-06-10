@@ -9,7 +9,7 @@ import org.siemac.metamac.srm.web.client.widgets.NavigablePaginatedListGrid;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationsPresenter;
-import org.siemac.metamac.srm.web.organisation.utils.RecordUtils;
+import org.siemac.metamac.srm.web.organisation.utils.OrganisationsRecordUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationsUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSearchSectionStack;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsResult;
@@ -112,7 +112,7 @@ public class OrganisationsViewImpl extends ViewWithUiHandlers<OrganisationsUiHan
         OrganisationRecord[] records = new OrganisationRecord[organisationDtos.size()];
         int index = 0;
         for (OrganisationMetamacBasicDto scheme : organisationDtos) {
-            records[index++] = RecordUtils.getOrganisationRecord(scheme);
+            records[index++] = OrganisationsRecordUtils.getOrganisationRecord(scheme);
         }
         organisationsListGrid.getListGrid().setData(records);
     }

@@ -6,7 +6,7 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBas
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
-import org.siemac.metamac.srm.web.organisation.utils.RecordUtils;
+import org.siemac.metamac.srm.web.organisation.utils.OrganisationsRecordUtils;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
@@ -21,7 +21,7 @@ public class OrganisationSchemeVersionsSectionStack extends ItemSchemeVersionsSe
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
         for (OrganisationSchemeMetamacBasicDto organisationSchemeDto : organisationSchemeDtos) {
-            listGrid.addData(RecordUtils.getOrganisationSchemeRecord(organisationSchemeDto));
+            listGrid.addData(OrganisationsRecordUtils.getOrganisationSchemeRecord(organisationSchemeDto));
         }
     }
 

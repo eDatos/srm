@@ -628,7 +628,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             OrganisationTypeEnum organisationTypeEnum = CommonUtils.getOrganisationTypeEnum(organisationSchemeDto.getType());
             OrganisationRecord[] records = new OrganisationRecord[organisations.size()];
             for (int i = 0; i < organisations.size(); i++) {
-                records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getOrganisationRecord(organisations.get(i), organisationTypeEnum);
+                records[i] = org.siemac.metamac.srm.web.organisation.utils.OrganisationsRecordUtils.getOrganisationRecord(organisations.get(i), organisationTypeEnum);
             }
             organisationListGrid.setData(records);
         }

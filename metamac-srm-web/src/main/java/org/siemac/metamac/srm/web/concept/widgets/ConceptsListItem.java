@@ -10,7 +10,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
-import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsRecordUtils;
 import org.siemac.metamac.web.common.client.widgets.form.fields.BaseListItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigationClickHandler;
 
@@ -35,7 +35,7 @@ public class ConceptsListItem extends BaseListItem {
     public void setDataConcepts(List<ConceptMetamacBasicDto> conceptMetamacDtos) {
         listGrid.removeAllData();
         for (ConceptMetamacBasicDto conceptMetamacDto : conceptMetamacDtos) {
-            ConceptRecord record = RecordUtils.getConceptRecord(conceptMetamacDto);
+            ConceptRecord record = ConceptsRecordUtils.getConceptRecord(conceptMetamacDto);
             addConceptRecordToListGrid(record);
         }
     }
@@ -43,7 +43,7 @@ public class ConceptsListItem extends BaseListItem {
     public void setDataItems(List<ItemVisualisationResult> itemVisualisationResults) {
         listGrid.removeAllData();
         for (ItemVisualisationResult item : itemVisualisationResults) {
-            ConceptRecord record = RecordUtils.getConceptRecord(item);
+            ConceptRecord record = ConceptsRecordUtils.getConceptRecord(item);
             addConceptRecordToListGrid(record);
         }
     }

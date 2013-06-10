@@ -26,7 +26,7 @@ import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
-import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdDimensionsTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.dsd.widgets.NewDimensionWindow;
@@ -440,7 +440,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         newToolStripButton.setVisible(DsdClientSecurityUtils.canCreateDimension(dataStructureDefinitionMetamacDto));
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateDimension(dataStructureDefinitionMetamacDto));
 
-        dimensionsGrid.setData(RecordUtils.getDimensionRecords(dimensionComponentDtos));
+        dimensionsGrid.setData(DsdRecordUtils.getDimensionRecords(dimensionComponentDtos));
     }
 
     @Override
@@ -789,7 +789,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     public void onDimensionSaved(DimensionComponentDto dimensionComponentDto) {
         this.dimensionComponentDto = dimensionComponentDto;
         dimensionsGrid.removeSelectedData();
-        DimensionRecord record = RecordUtils.getDimensionRecord(dimensionComponentDto);
+        DimensionRecord record = DsdRecordUtils.getDimensionRecord(dimensionComponentDto);
         dimensionsGrid.addData(record);
         dimensionsGrid.selectRecord(record);
         mainFormLayout.setViewMode();

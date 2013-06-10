@@ -463,7 +463,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         VariableElementRecord[] records = new VariableElementRecord[variableElementDtos.size()];
         int index = 0;
         for (VariableElementBasicDto element : variableElementDtos) {
-            records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getVariableElementRecord(element);
+            records[index++] = org.siemac.metamac.srm.web.code.utils.CodesRecordUtils.getVariableElementRecord(element);
         }
         variableElementListGrid.getListGrid().setData(records);
     }

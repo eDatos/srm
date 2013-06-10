@@ -5,7 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.web.client.widgets.ImportResourceWindow;
 import org.siemac.metamac.srm.web.shared.ImportableResourceTypeEnum;
-import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
+import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
 
 import com.smartgwt.client.widgets.form.fields.HiddenItem;
@@ -20,7 +20,7 @@ public class ImportVariableElementsWindow extends ImportResourceWindow {
     }
 
     public void setVariable(VariableDto variableDto) {
-        ((HiddenItem) form.getItem(SharedTokens.UPLOAD_PARAM_VARIABLE_URN)).setDefaultValue(variableDto.getUrn());
+        ((HiddenItem) form.getItem(SrmSharedTokens.UPLOAD_PARAM_VARIABLE_URN)).setDefaultValue(variableDto.getUrn());
     }
 
     private class UploadOrdersForm extends UploadForm {
@@ -28,12 +28,12 @@ public class ImportVariableElementsWindow extends ImportResourceWindow {
         public UploadOrdersForm() {
             super(getConstants().variableElements());
 
-            HiddenItem fileTypeItem = new HiddenItem(SharedTokens.UPLOAD_PARAM_FILE_TYPE);
+            HiddenItem fileTypeItem = new HiddenItem(SrmSharedTokens.UPLOAD_PARAM_FILE_TYPE);
             fileTypeItem.setDefaultValue(ImportableResourceTypeEnum.VARIABLE_ELEMENTS.name());
 
-            HiddenItem variableUrnItem = new HiddenItem(SharedTokens.UPLOAD_PARAM_VARIABLE_URN);
+            HiddenItem variableUrnItem = new HiddenItem(SrmSharedTokens.UPLOAD_PARAM_VARIABLE_URN);
 
-            CustomCheckboxItem updateExistingElementsItem = new CustomCheckboxItem(SharedTokens.UPDATE_PARAM_UPDATE_EXISTING, getConstants().variableElementsUploadUpdateExisting());
+            CustomCheckboxItem updateExistingElementsItem = new CustomCheckboxItem(SrmSharedTokens.UPDATE_PARAM_UPDATE_EXISTING, getConstants().variableElementsUploadUpdateExisting());
 
             addFieldsInThePenultimePosition(fileTypeItem, variableUrnItem, updateExistingElementsItem);
         }

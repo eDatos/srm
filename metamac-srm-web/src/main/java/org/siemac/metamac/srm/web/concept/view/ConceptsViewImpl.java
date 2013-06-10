@@ -9,7 +9,7 @@ import org.siemac.metamac.srm.web.client.widgets.NavigablePaginatedListGrid;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.record.ConceptRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptsPresenter;
-import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsRecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptsUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSearchSectionStack;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsResult;
@@ -110,7 +110,7 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
         ConceptRecord[] records = new ConceptRecord[conceptDtos.size()];
         int index = 0;
         for (ConceptMetamacBasicDto concept : conceptDtos) {
-            records[index++] = RecordUtils.getConceptRecord(concept);
+            records[index++] = ConceptsRecordUtils.getConceptRecord(concept);
         }
         conceptsListGrid.getListGrid().setData(records);
     }

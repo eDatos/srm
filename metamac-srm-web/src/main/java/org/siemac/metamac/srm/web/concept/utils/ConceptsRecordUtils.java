@@ -9,7 +9,7 @@ import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 
-public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
+public class ConceptsRecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
 
     // CONCEPT SCHEMES
 

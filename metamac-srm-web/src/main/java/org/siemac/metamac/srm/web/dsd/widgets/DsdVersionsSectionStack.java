@@ -8,7 +8,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDt
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
-import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
@@ -36,7 +36,7 @@ public class DsdVersionsSectionStack extends ItemSchemeVersionsSectionStack {
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
         for (DataStructureDefinitionMetamacBasicDto dsd : dataStructureDefinitionMetamacDtos) {
-            listGrid.addData(RecordUtils.getDsdRecord(dsd));
+            listGrid.addData(DsdRecordUtils.getDsdRecord(dsd));
         }
     }
 

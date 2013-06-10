@@ -284,7 +284,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         VariableRecord[] records = new VariableRecord[variableDtos.size()];
         int index = 0;
         for (VariableBasicDto scheme : variableDtos) {
-            records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getVariableRecord(scheme);
+            records[index++] = org.siemac.metamac.srm.web.code.utils.CodesRecordUtils.getVariableRecord(scheme);
         }
         variableListGrid.getListGrid().setData(records);
     }

@@ -8,7 +8,7 @@ import java.util.List;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementOperationDS;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
-import org.siemac.metamac.srm.web.code.utils.RecordUtils;
+import org.siemac.metamac.srm.web.code.utils.CodesRecordUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.BaseVariableUiHandlers;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
@@ -131,7 +131,7 @@ public class VariableElementOperationLayout extends VLayout {
 
     public void setVariableElementOperations(List<VariableElementOperationDto> variableElementOperationDtos) {
         // Set the operations in the list grid
-        variableElementOperationsListGrid.setData(RecordUtils.getVariableElementOperationRecords(variableElementOperationDtos));
+        variableElementOperationsListGrid.setData(CodesRecordUtils.getVariableElementOperationRecords(variableElementOperationDtos));
 
         // Do not show the operations is the list is empty
         if (variableElementOperationDtos.isEmpty()) {

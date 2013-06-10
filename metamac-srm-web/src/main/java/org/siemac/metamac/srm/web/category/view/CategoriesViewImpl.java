@@ -6,7 +6,7 @@ import org.siemac.metamac.srm.core.category.dto.CategoryMetamacBasicDto;
 import org.siemac.metamac.srm.web.category.model.ds.CategoryDS;
 import org.siemac.metamac.srm.web.category.model.record.CategoryRecord;
 import org.siemac.metamac.srm.web.category.presenter.CategoriesPresenter;
-import org.siemac.metamac.srm.web.category.utils.RecordUtils;
+import org.siemac.metamac.srm.web.category.utils.CategoriesRecordUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategoriesUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategorySearchSectionStack;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
@@ -110,7 +110,7 @@ public class CategoriesViewImpl extends ViewWithUiHandlers<CategoriesUiHandlers>
         CategoryRecord[] records = new CategoryRecord[categoryDtos.size()];
         int index = 0;
         for (CategoryMetamacBasicDto scheme : categoryDtos) {
-            records[index++] = RecordUtils.getCategoryRecord(scheme);
+            records[index++] = CategoriesRecordUtils.getCategoryRecord(scheme);
         }
         categoriesListGrid.getListGrid().setData(records);
     }

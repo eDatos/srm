@@ -5,7 +5,7 @@ import java.util.List;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
-import org.siemac.metamac.srm.web.category.utils.RecordUtils;
+import org.siemac.metamac.srm.web.category.utils.CategoriesRecordUtils;
 import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 
 import com.smartgwt.client.data.Record;
@@ -21,7 +21,7 @@ public class CategorySchemeVersionsSectionStack extends ItemSchemeVersionsSectio
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
         for (CategorySchemeMetamacBasicDto categorySchemeDto : categorySchemeDtos) {
-            listGrid.addData(RecordUtils.getCategorySchemeRecord(categorySchemeDto));
+            listGrid.addData(CategoriesRecordUtils.getCategorySchemeRecord(categorySchemeDto));
         }
     }
 

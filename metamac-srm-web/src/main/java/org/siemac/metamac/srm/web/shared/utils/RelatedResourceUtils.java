@@ -96,14 +96,12 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
     // -------------------------------------------------------------------------------------------------------------
 
     public static RelatedResourceDto getDefaultMaintainerAsRelatedResourceDto() {
-        if (maintainer == null) {
-            OrganisationMetamacDto organisationMetamacDto = MetamacSrmWeb.getDefaultMaintainer();
-            maintainer = new RelatedResourceDto();
-            if (organisationMetamacDto != null) {
-                maintainer.setCode(organisationMetamacDto.getCode());
-                maintainer.setUrn(organisationMetamacDto.getUrn());
-                maintainer.setType(RelatedResourceTypeEnum.AGENCY);
-            }
+        OrganisationMetamacDto organisationMetamacDto = MetamacSrmWeb.getDefaultMaintainer();
+        maintainer = new RelatedResourceDto();
+        if (organisationMetamacDto != null) {
+            maintainer.setCode(organisationMetamacDto.getCode());
+            maintainer.setUrn(organisationMetamacDto.getUrn());
+            maintainer.setType(RelatedResourceTypeEnum.AGENCY);
         }
         return maintainer;
     }

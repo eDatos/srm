@@ -15,7 +15,7 @@ import org.siemac.metamac.srm.web.concept.model.record.ConceptSchemeRecord;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptSchemeListPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
-import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsRecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeSearchSectionStack;
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
@@ -195,7 +195,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         ConceptSchemeRecord[] records = new ConceptSchemeRecord[conceptSchemesDtos.size()];
         int index = 0;
         for (ConceptSchemeMetamacBasicDto scheme : conceptSchemesDtos) {
-            records[index++] = RecordUtils.getConceptSchemeRecord(scheme);
+            records[index++] = ConceptsRecordUtils.getConceptSchemeRecord(scheme);
         }
         conceptSchemesList.getListGrid().setData(records);
     }

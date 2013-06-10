@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
-import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
+import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
@@ -148,7 +148,7 @@ public class ImportResourceWindow extends Window {
             setMethod(FormMethod.POST);
 
             StringBuilder url = new StringBuilder();
-            url.append(SharedTokens.FILE_UPLOAD_DIR_PATH);
+            url.append(SrmSharedTokens.FILE_UPLOAD_DIR_PATH);
             setAction(MetamacSrmWeb.getRelativeURL(url.toString()));
 
             uploadItem = new UploadItem("file-name");

@@ -6,7 +6,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
-import org.siemac.metamac.srm.web.code.utils.RecordUtils;
+import org.siemac.metamac.srm.web.code.utils.CodesRecordUtils;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
@@ -21,7 +21,7 @@ public class CodelistVersionsSectionStack extends ItemSchemeVersionsSectionStack
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
         for (CodelistMetamacBasicDto codelistDto : codelistDtos) {
-            listGrid.addData(RecordUtils.getCodelistRecord(codelistDto));
+            listGrid.addData(CodesRecordUtils.getCodelistRecord(codelistDto));
         }
     }
 

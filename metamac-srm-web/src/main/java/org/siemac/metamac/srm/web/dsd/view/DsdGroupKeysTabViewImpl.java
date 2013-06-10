@@ -15,7 +15,7 @@ import org.siemac.metamac.srm.web.dsd.presenter.DsdGroupKeysTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
-import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGroupKeysTabUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -283,7 +283,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
         this.dimensionComponentDtos = dimensionComponentDtos;
         editionForm.getItem(GroupKeysDS.DIMENSIONS).setValueMap(CommonUtils.getDimensionComponentDtoHashMap(dimensionComponentDtos));
 
-        groupKeysGrid.setData(RecordUtils.getGroupKeysRecords(descriptorDtos));
+        groupKeysGrid.setData(DsdRecordUtils.getGroupKeysRecords(descriptorDtos));
     }
 
     @Override
@@ -345,7 +345,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
     public void onGroupKeysSaved(DescriptorDto descriptorDto) {
         this.descriptorDto = descriptorDto;
         groupKeysGrid.removeSelectedData();
-        GroupKeysRecord record = RecordUtils.getGroupKeysRecord(descriptorDto);
+        GroupKeysRecord record = DsdRecordUtils.getGroupKeysRecord(descriptorDto);
         groupKeysGrid.addData(record);
         groupKeysGrid.selectRecord(record);
         mainFormLayout.setViewMode();

@@ -152,7 +152,7 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomListGr
     }
 
     public void setCodelistVisualisations(List<CodelistVisualisationDto> codelistVisualisationDtos) {
-        listGrid.setData(org.siemac.metamac.srm.web.code.utils.RecordUtils.getCodelistVisualisationRecords(codelistVisualisationDtos));
+        listGrid.setData(org.siemac.metamac.srm.web.code.utils.CodesRecordUtils.getCodelistVisualisationRecords(codelistVisualisationDtos));
     }
 
     private void updateButtonsVisibility() {

@@ -26,7 +26,7 @@ import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
-import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
@@ -451,7 +451,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         newToolStripButton.setVisible(DsdClientSecurityUtils.canCreateAttribute(dataStructureDefinitionMetamacDto));
         mainFormLayout.setCanEdit(DsdClientSecurityUtils.canUpdateAttribute(dataStructureDefinitionMetamacDto));
 
-        attributesGrid.setData(RecordUtils.getAttributeRecords(dataAttributeDtos));
+        attributesGrid.setData(DsdRecordUtils.getAttributeRecords(dataAttributeDtos));
     }
 
     @Override
@@ -807,7 +807,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     public void onAttributeSaved(DataAttributeDto dataAttributeDto) {
         this.dataAttributeDto = dataAttributeDto;
         attributesGrid.removeSelectedData();
-        AttributeRecord record = RecordUtils.getAttributeRecord(dataAttributeDto);
+        AttributeRecord record = DsdRecordUtils.getAttributeRecord(dataAttributeDto);
         attributesGrid.addData(record);
         attributesGrid.selectRecord(record);
         mainFormLayout.setViewMode();

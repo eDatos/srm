@@ -11,7 +11,7 @@ import org.siemac.metamac.srm.web.client.model.ds.AnnotationDS;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
-import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -244,7 +244,7 @@ public class AnnotationsPanel extends VLayout {
 
         // Set annotations in the selected locale
         for (AnnotationDto annotationDto : annotations) {
-            AnnotationRecord record = RecordUtils.getAnnotationRecord(annotationDto, selectedLocale);
+            AnnotationRecord record = DsdRecordUtils.getAnnotationRecord(annotationDto, selectedLocale);
             listGrid.addData(record);
         }
 

@@ -11,7 +11,7 @@ import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.BooleanItemEnum;
-import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
+import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
@@ -178,8 +178,8 @@ public class CommonUtils {
     public static void downloadFile(String fileName) {
         // TODO Is it better to use com.google.gwt.http.client.RequestBuilder to send the request?
         StringBuffer url = new StringBuffer();
-        url.append(URL.encode(MetamacSrmWeb.getRelativeURL(SharedTokens.FILE_DOWNLOAD_DIR_PATH)));
-        url.append("?").append(URL.encode(SharedTokens.PARAM_FILE_NAME)).append("=").append(URL.encode(fileName));
+        url.append(URL.encode(MetamacSrmWeb.getRelativeURL(SrmSharedTokens.FILE_DOWNLOAD_DIR_PATH)));
+        url.append("?").append(URL.encode(SrmSharedTokens.PARAM_FILE_NAME)).append("=").append(URL.encode(fileName));
         Window.open(url.toString(), "_blank", "");
     }
 }

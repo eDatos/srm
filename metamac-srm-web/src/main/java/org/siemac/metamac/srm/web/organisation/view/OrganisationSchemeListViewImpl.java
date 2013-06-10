@@ -215,7 +215,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
     private void setOrganisationSchemeList(List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDtos) {
         OrganisationSchemeRecord[] records = new OrganisationSchemeRecord[organisationSchemeMetamacDtos.size()];
         for (int i = 0; i < organisationSchemeMetamacDtos.size(); i++) {
-            records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getOrganisationSchemeRecord(organisationSchemeMetamacDtos.get(i));
+            records[i] = org.siemac.metamac.srm.web.organisation.utils.OrganisationsRecordUtils.getOrganisationSchemeRecord(organisationSchemeMetamacDtos.get(i));
         }
         organisationSchemeList.getListGrid().setData(records);
     }

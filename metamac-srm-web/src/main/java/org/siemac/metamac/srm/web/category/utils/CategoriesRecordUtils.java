@@ -5,7 +5,7 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.web.category.model.record.CategoryRecord;
 import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
 
-public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
+public class CategoriesRecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
 
     // CATEGORY SCHEMES
 

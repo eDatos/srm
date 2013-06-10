@@ -28,7 +28,7 @@ import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
+public class CodesRecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
 
     // CODELISTS
 

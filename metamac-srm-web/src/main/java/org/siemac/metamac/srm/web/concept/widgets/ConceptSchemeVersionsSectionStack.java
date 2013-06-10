@@ -6,7 +6,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
-import org.siemac.metamac.srm.web.concept.utils.RecordUtils;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsRecordUtils;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
@@ -21,7 +21,7 @@ public class ConceptSchemeVersionsSectionStack extends ItemSchemeVersionsSection
         listGrid.selectAllRecords();
         listGrid.removeSelectedData();
         for (ConceptSchemeMetamacBasicDto conceptSchemeDto : conceptSchemeDtos) {
-            listGrid.addData(RecordUtils.getConceptSchemeRecord(conceptSchemeDto));
+            listGrid.addData(ConceptsRecordUtils.getConceptSchemeRecord(conceptSchemeDto));
         }
     }
 

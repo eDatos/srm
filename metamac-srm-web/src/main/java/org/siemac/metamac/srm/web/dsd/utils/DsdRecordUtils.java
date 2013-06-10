@@ -21,7 +21,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.google.gwt.resources.client.ImageResource;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
+public class DsdRecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
 
     /**
      * Returns {@link DsdRecord} from {@link DataStructureDefinitionMetamacBasicDto}
@@ -53,7 +53,7 @@ public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordU
     public static ListGridRecord[] getDimensionRecords(List<DimensionComponentDto> dimensionComponentDtos) {
         ListGridRecord[] records = new ListGridRecord[dimensionComponentDtos.size()];
         for (int i = 0; i < dimensionComponentDtos.size(); i++) {
-            records[i] = RecordUtils.getDimensionRecord(dimensionComponentDtos.get(i));
+            records[i] = DsdRecordUtils.getDimensionRecord(dimensionComponentDtos.get(i));
         }
         return records;
     }
@@ -74,7 +74,7 @@ public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordU
     public static ListGridRecord[] getAttributeRecords(List<DataAttributeDto> dataAttributeDtos) {
         ListGridRecord[] records = new ListGridRecord[dataAttributeDtos.size()];
         for (int i = 0; i < dataAttributeDtos.size(); i++) {
-            records[i] = RecordUtils.getAttributeRecord(dataAttributeDtos.get(i));
+            records[i] = DsdRecordUtils.getAttributeRecord(dataAttributeDtos.get(i));
         }
         return records;
     }
@@ -93,7 +93,7 @@ public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordU
     public static ListGridRecord[] getGroupKeysRecords(List<DescriptorDto> groupKeys) {
         ListGridRecord[] records = new ListGridRecord[groupKeys.size()];
         for (int i = 0; i < groupKeys.size(); i++) {
-            records[i] = RecordUtils.getGroupKeysRecord(groupKeys.get(i));
+            records[i] = DsdRecordUtils.getGroupKeysRecord(groupKeys.get(i));
         }
         return records;
     }

@@ -8,7 +8,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.dsd.model.ds.InternationalAnnotationDS;
 import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord;
-import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
@@ -257,7 +257,7 @@ public class InternationalAnnotationsPanel extends VLayout {
         for (AnnotationDto annotationDto : annotations) {
             for (String locale : ApplicationEditionLanguages.getLocales()) {
 
-                InternationalAnnotationRecord record = RecordUtils.getInternationalAnnotationRecord(annotationDto, locale);
+                InternationalAnnotationRecord record = DsdRecordUtils.getInternationalAnnotationRecord(annotationDto, locale);
 
                 System.out.println("------------------------------");
                 System.out.println(record.getId());

@@ -83,7 +83,7 @@ import org.siemac.metamac.srm.web.organisation.view.OrganisationViewImpl;
 import org.siemac.metamac.srm.web.organisation.view.OrganisationsViewImpl;
 import org.siemac.metamac.srm.web.organisation.widgets.presenter.OrganisationsToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.organisation.widgets.view.OrganisationsToolStripViewImpl;
-import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
+import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 
 import com.google.inject.Singleton;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
@@ -106,7 +106,7 @@ public class ClientModule extends AbstractPresenterModule {
         bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.structuralResourcesPage);
 
         // Security cookie to protect against XSRF attacks
-        bindConstant().annotatedWith(SecurityCookie.class).to(SharedTokens.securityCookieName);
+        bindConstant().annotatedWith(SecurityCookie.class).to(SrmSharedTokens.securityCookieName);
 
         // PresenterWidgets
         bindSingletonPresenterWidget(CodesToolStripPresenterWidget.class, CodesToolStripPresenterWidget.CodesToolStripView.class, CodesToolStripViewImpl.class);

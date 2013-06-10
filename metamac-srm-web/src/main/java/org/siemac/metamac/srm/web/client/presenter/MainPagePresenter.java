@@ -15,7 +15,7 @@ import org.siemac.metamac.srm.web.client.view.handlers.MainPageUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.BreadCrumbsPanel;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlAction;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlResult;
-import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
+import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.HideMessageEvent;
@@ -213,7 +213,7 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
             }
             @Override
             public void onWaitSuccess(GetUserGuideUrlResult result) {
-                CommonWebUtils.showDownloadFileWindow(SharedTokens.FILE_DOWNLOAD_DIR_PATH, SharedTokens.PARAM_FILE_NAME, result.getUserGuideUrl());
+                CommonWebUtils.showDownloadFileWindow(SrmSharedTokens.FILE_DOWNLOAD_DIR_PATH, SrmSharedTokens.PARAM_FILE_NAME, result.getUserGuideUrl());
             }
         });
     }

@@ -209,7 +209,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
         CategorySchemeRecord[] records = new CategorySchemeRecord[categorySchemesDtos.size()];
         int index = 0;
         for (CategorySchemeMetamacBasicDto scheme : categorySchemesDtos) {
-            records[index++] = org.siemac.metamac.srm.web.category.utils.RecordUtils.getCategorySchemeRecord(scheme);
+            records[index++] = org.siemac.metamac.srm.web.category.utils.CategoriesRecordUtils.getCategorySchemeRecord(scheme);
         }
         categorySchemesList.getListGrid().setData(records);
     }

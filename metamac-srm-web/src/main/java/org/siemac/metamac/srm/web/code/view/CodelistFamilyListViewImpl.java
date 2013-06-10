@@ -200,7 +200,7 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
         CodelistFamilyRecord[] records = new CodelistFamilyRecord[codelistFamilyDtos.size()];
         int index = 0;
         for (CodelistFamilyBasicDto scheme : codelistFamilyDtos) {
-            records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getCodelistFamilyRecord(scheme);
+            records[index++] = org.siemac.metamac.srm.web.code.utils.CodesRecordUtils.getCodelistFamilyRecord(scheme);
         }
         codelistFamilyList.getListGrid().setData(records);
     }

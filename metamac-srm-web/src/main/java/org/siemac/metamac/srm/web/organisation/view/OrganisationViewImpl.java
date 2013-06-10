@@ -463,7 +463,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         ContactRecord[] records = new ContactRecord[contactDtos.size()];
         for (int i = 0; i < records.length; i++) {
-            records[i] = org.siemac.metamac.srm.web.organisation.utils.RecordUtils.getContactRecord(contactDtos.get(i));
+            records[i] = org.siemac.metamac.srm.web.organisation.utils.OrganisationsRecordUtils.getContactRecord(contactDtos.get(i));
         }
         contactListGrid.setData(records);
 

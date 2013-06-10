@@ -22,7 +22,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.ImportableResourceTypeEnum;
-import org.siemac.metamac.srm.web.shared.utils.SharedTokens;
+import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.task.ContentInputDto;
@@ -96,7 +96,7 @@ public class ResourceImportationServlet extends HttpServlet {
                 }
             }
 
-            if (ImportableResourceTypeEnum.SDMX_STRUCTURE.name().equals(args.get(SharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
+            if (ImportableResourceTypeEnum.SDMX_STRUCTURE.name().equals(args.get(SrmSharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
 
                 ContentInputDto contentInputDto = new ContentInputDto();
                 contentInputDto.setName(fileName);
@@ -104,23 +104,23 @@ public class ResourceImportationServlet extends HttpServlet {
 
                 srmCoreServiceFacade.importSDMXStructureMsgInBackground(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
 
-            } else if (ImportableResourceTypeEnum.CODES.name().equals(args.get(SharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
+            } else if (ImportableResourceTypeEnum.CODES.name().equals(args.get(SrmSharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
 
-                String codelistUrn = args.get(SharedTokens.UPLOAD_PARAM_CODELIST_URN);
-                Boolean updateAlreadyExisting = Boolean.parseBoolean(args.get(SharedTokens.UPDATE_PARAM_UPDATE_EXISTING));
+                String codelistUrn = args.get(SrmSharedTokens.UPLOAD_PARAM_CODELIST_URN);
+                Boolean updateAlreadyExisting = Boolean.parseBoolean(args.get(SrmSharedTokens.UPDATE_PARAM_UPDATE_EXISTING));
 
                 srmCoreServiceFacade.importCodesTsvInBackground(ServiceContextHolder.getCurrentServiceContext(), codelistUrn, inputStream, fileName, updateAlreadyExisting);
 
-            } else if (ImportableResourceTypeEnum.CODES_ORDER.name().equals(args.get(SharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
+            } else if (ImportableResourceTypeEnum.CODES_ORDER.name().equals(args.get(SrmSharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
 
-                String codelistUrn = args.get(SharedTokens.UPLOAD_PARAM_CODELIST_URN);
+                String codelistUrn = args.get(SrmSharedTokens.UPLOAD_PARAM_CODELIST_URN);
 
                 srmCoreServiceFacade.importCodeOrdersTsvInBackground(ServiceContextHolder.getCurrentServiceContext(), codelistUrn, inputStream, fileName);
 
-            } else if (ImportableResourceTypeEnum.VARIABLE_ELEMENTS.name().equals(args.get(SharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
+            } else if (ImportableResourceTypeEnum.VARIABLE_ELEMENTS.name().equals(args.get(SrmSharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
 
-                String variableUrn = args.get(SharedTokens.UPLOAD_PARAM_VARIABLE_URN);
-                Boolean updateAlreadyExisting = Boolean.parseBoolean(args.get(SharedTokens.UPDATE_PARAM_UPDATE_EXISTING));
+                String variableUrn = args.get(SrmSharedTokens.UPLOAD_PARAM_VARIABLE_URN);
+                Boolean updateAlreadyExisting = Boolean.parseBoolean(args.get(SrmSharedTokens.UPDATE_PARAM_UPDATE_EXISTING));
 
                 srmCoreServiceFacade.importVariableElementsTsvInBackground(ServiceContextHolder.getCurrentServiceContext(), variableUrn, inputStream, fileName, updateAlreadyExisting);
             }

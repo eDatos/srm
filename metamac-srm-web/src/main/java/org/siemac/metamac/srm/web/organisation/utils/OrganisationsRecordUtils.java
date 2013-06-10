@@ -11,7 +11,7 @@ import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
-public class RecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
+public class OrganisationsRecordUtils extends org.siemac.metamac.srm.web.client.utils.RecordUtils {
 
     // ORGANISATION SCHEMES
 

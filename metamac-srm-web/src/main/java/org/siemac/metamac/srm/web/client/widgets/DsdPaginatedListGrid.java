@@ -6,7 +6,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDt
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
-import org.siemac.metamac.srm.web.dsd.utils.RecordUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.smartgwt.client.types.Autofit;
@@ -26,7 +26,7 @@ public class DsdPaginatedListGrid extends VersionableResourcePaginatedCheckListG
     public void setDsds(List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDtos, int firstResult, int totalResults) {
         DsdRecord[] dsdRecords = new DsdRecord[dataStructureDefinitionMetamacDtos.size()];
         for (int i = 0; i < dataStructureDefinitionMetamacDtos.size(); i++) {
-            dsdRecords[i] = RecordUtils.getDsdRecord(dataStructureDefinitionMetamacDtos.get(i));
+            dsdRecords[i] = DsdRecordUtils.getDsdRecord(dataStructureDefinitionMetamacDtos.get(i));
         }
         // Populate the List Grid
         getListGrid().setData(dsdRecords);

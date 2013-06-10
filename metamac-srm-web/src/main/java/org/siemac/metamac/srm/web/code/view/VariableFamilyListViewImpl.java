@@ -11,7 +11,7 @@ import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableFamilyRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariableFamilyListPresenter;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
-import org.siemac.metamac.srm.web.code.utils.RecordUtils;
+import org.siemac.metamac.srm.web.code.utils.CodesRecordUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableFamilyListUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.NewVariableFamilyWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
@@ -200,7 +200,7 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
     }
 
     private void setVariableFamilies(List<VariableFamilyBasicDto> variableFamilyDtos) {
-        VariableFamilyRecord[] records = RecordUtils.getVariableFamilyRecords(variableFamilyDtos);
+        VariableFamilyRecord[] records = CodesRecordUtils.getVariableFamilyRecords(variableFamilyDtos);
         variableFamilyList.getListGrid().setData(records);
     }
 

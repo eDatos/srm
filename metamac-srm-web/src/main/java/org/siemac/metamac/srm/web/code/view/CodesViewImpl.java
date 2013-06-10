@@ -109,7 +109,7 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
         CodeRecord[] records = new CodeRecord[codeDtos.size()];
         int index = 0;
         for (CodeMetamacBasicDto scheme : codeDtos) {
-            records[index++] = org.siemac.metamac.srm.web.code.utils.RecordUtils.getCodeRecord(scheme);
+            records[index++] = org.siemac.metamac.srm.web.code.utils.CodesRecordUtils.getCodeRecord(scheme);
         }
         codesListGrid.getListGrid().setData(records);
     }
