@@ -507,6 +507,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
             assertEquals(ProcStatusEnum.DRAFT, dsdNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, dsdNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, dsdNewVersion.getMaintainableArtefact().getUrn());
+            assertTrue(dsdNewVersion.getMaintainableArtefact().getIsTemporal());
         }
 
         // Validate retrieving
@@ -698,6 +699,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
             assertEquals(3, dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
             assertEquals("dsd - text sample", dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
             assertFalse(dataStructureDefinitionVersionMetamac.getAutoOpen());
+            assertNull(dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getIsTemporal());
 
             // ComponentList
             {
@@ -719,6 +721,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
             }
         }
     }
+
     @Test
     @Override
     public void testStartDataStructureDefinitionValidity() throws Exception {

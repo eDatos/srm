@@ -2002,6 +2002,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ProcStatusEnum.DRAFT, conceptSchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, conceptSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertTrue(conceptSchemeVersionNewVersion.getMaintainableArtefact().getIsTemporal());
             ConceptsMetamacAsserts.assertEqualsConceptScheme(conceptSchemeVersionToCopy, conceptSchemeVersionNewVersion);
         }
 
@@ -2135,6 +2136,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(ProcStatusEnum.DRAFT, conceptSchemeNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, conceptSchemeNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, conceptSchemeNewVersion.getMaintainableArtefact().getUrn());
+            assertTrue(conceptSchemeNewVersion.getMaintainableArtefact().getIsTemporal());
 
             assertEquals(null, conceptSchemeNewVersion.getMaintainableArtefact().getReplacedByVersion());
             assertTrue(conceptSchemeNewVersion.getMaintainableArtefact().getIsLastVersion());
@@ -2240,6 +2242,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = conceptsService.mergeTemporalVersion(getServiceContextAdministrador(), conceptSchemeVersionTemporal);
 
             assertFalse(conceptSchemeVersionMetamac.getMaintainableArtefact().getIsLastVersion());
+            assertNull(conceptSchemeVersionMetamac.getMaintainableArtefact().getIsTemporal());
         }
     }
 

@@ -7298,6 +7298,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, codelistVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, codelistVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertTrue(codelistVersionNewVersion.getMaintainableArtefact().getIsTemporal());
             assertEqualsCodelistWithoutLifeCycleMetadata(codelistVersionToCopy, codelistVersionNewVersion);
         }
 
@@ -7610,6 +7611,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             // entityManager.clear();
             // CodelistVersionMetamac codelistVersionMetamac = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistVersionMetamacUrn);
             assertFalse(codelistVersionMetamac.getMaintainableArtefact().getIsLastVersion());
+            assertNull(codelistVersionMetamac.getMaintainableArtefact().getIsTemporal());
         }
     }
 

@@ -1303,6 +1303,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(ProcStatusEnum.DRAFT, categorySchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, categorySchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertTrue(categorySchemeVersionNewVersion.getMaintainableArtefact().getIsTemporal());
             CategoriesMetamacAsserts.assertEqualsCategorySchemeWithoutLifeCycleMetadata(categorySchemeVersionToCopy, categorySchemeVersionNewVersion);
         }
 
@@ -1461,6 +1462,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             // Item Scheme
             assertEquals(3, categorySchemeVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
             assertEquals("its - text sample", categorySchemeVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
+            assertNull(categorySchemeVersionMetamac.getMaintainableArtefact().getIsTemporal());
 
             // Item
             {

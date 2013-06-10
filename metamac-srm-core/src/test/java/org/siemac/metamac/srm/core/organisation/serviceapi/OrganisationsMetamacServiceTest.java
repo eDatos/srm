@@ -1477,6 +1477,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ProcStatusEnum.DRAFT, organisationSchemeVersionNewVersion.getLifeCycleMetadata().getProcStatus());
             assertEquals(versionExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getVersionLogic());
             assertEquals(urnExpected, organisationSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
+            assertTrue(organisationSchemeVersionNewVersion.getMaintainableArtefact().getIsTemporal());
             OrganisationsMetamacAsserts.assertEqualsOrganisationSchemeWithoutLifeCycleMetadata(organisationSchemeVersionToCopy, organisationSchemeVersionNewVersion);
         }
 
@@ -1705,6 +1706,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             // Item Scheme
             assertEquals(3, organisationSchemeVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
             assertEquals("its - text sample", organisationSchemeVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
+            assertNull(organisationSchemeVersionMetamac.getMaintainableArtefact().getIsTemporal());
 
             // Item
             {
