@@ -1348,6 +1348,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public CodelistFamily createCodelistFamily(ServiceContext ctx, CodelistFamily codelistFamily) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkCreateCodelistFamily(codelistFamily, null);
+        checkCodelistFamilyToCreateOrUpdate(codelistFamily);
 
         // Create
         setCodelistFamilyUrnUnique(codelistFamily);
@@ -1358,6 +1359,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public CodelistFamily updateCodelistFamily(ServiceContext ctx, CodelistFamily codelistFamily) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCodelistFamily(codelistFamily, null);
+        checkCodelistFamilyToCreateOrUpdate(codelistFamily);
 
         // If code has been changed, update URN
         if (codelistFamily.getNameableArtefact().getIsCodeUpdated()) {
@@ -1463,6 +1465,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Validation
         CodesMetamacInvocationValidator.checkCreateVariableFamily(variableFamily, null);
         setVariableFamilyUrnUnique(variableFamily);
+        checkVariableFamilyToCreateOrUpdate(variableFamily);
 
         // Create
         return getVariableFamilyRepository().save(variableFamily);
@@ -1472,7 +1475,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public VariableFamily updateVariableFamily(ServiceContext ctx, VariableFamily variableFamily) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateVariableFamily(variableFamily, null);
-
+        checkVariableFamilyToCreateOrUpdate(variableFamily);
         // If code has been changed, update URN
         if (variableFamily.getNameableArtefact().getIsCodeUpdated()) {
             // setVariableFamilyUrnUnique(variableFamily);
@@ -2238,6 +2241,32 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     /**
+     * Common validations to create or update a variable family
+     */
+    private void checkVariableFamilyToCreateOrUpdate(VariableFamily variableFamily) throws MetamacException {
+        // Check translations
+        String locale = srmConfiguration.retrieveLanguageDefault();
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        SrmServiceUtils.checkNameableArtefactTranslationsWithoutSql(variableFamily.getNameableArtefact(), locale, exceptionItems);
+        if (exceptionItems.size() != 0) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(exceptionItems).build();
+        }
+    }
+
+    /**
+     * Common validations to create or update a codelist family
+     */
+    private void checkCodelistFamilyToCreateOrUpdate(CodelistFamily codelistFamily) throws MetamacException {
+        // Check translations
+        String locale = srmConfiguration.retrieveLanguageDefault();
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        SrmServiceUtils.checkNameableArtefactTranslationsWithoutSql(codelistFamily.getNameableArtefact(), locale, exceptionItems);
+        if (exceptionItems.size() != 0) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(exceptionItems).build();
+        }
+    }
+
+    /**
      * Checks variable element belongs to same variable of codelist
      */
     private void checkCodeVariableElement(CodelistVersionMetamac codelistVersion, VariableElement variableElement) throws MetamacException {
@@ -2346,6 +2375,15 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             if (replaceTo.getReplacedByVariable() != null && !replaceTo.getReplacedByVariable().getNameableArtefact().getUrn().equals(variable.getNameableArtefact().getUrn())) {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED).withMessageParameters(replaceTo.getNameableArtefact().getUrn()).build();
             }
+        }
+
+        // Check translations
+        String locale = srmConfiguration.retrieveLanguageDefault();
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        SrmServiceUtils.checkNameableArtefactTranslationsWithoutSql(variable.getNameableArtefact(), locale, exceptionItems);
+        SrmServiceUtils.checkInternationalStringTranslationsWithoutSql(variable.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME, locale, exceptionItems);
+        if (exceptionItems.size() != 0) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(exceptionItems).build();
         }
     }
 

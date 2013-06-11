@@ -32,10 +32,11 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.enume.domain.CopyOperationTypeEnum;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
-public class SrmServiceUtils {
+public class SrmServiceUtils extends SdmxSrmUtils {
 
     public static String[] procStatusEnumToString(ProcStatusEnum... procStatus) {
         String[] procStatusString = new String[procStatus.length];

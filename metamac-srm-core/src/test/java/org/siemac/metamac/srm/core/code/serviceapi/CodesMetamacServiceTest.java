@@ -4878,6 +4878,21 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Test
+    public void testCreateCodelistFamilyErrorMetadataTranslations() throws Exception {
+        CodelistFamily codelistFamily = CodesMetamacDoMocks.mockCodelistFamily();
+        codelistFamily.getNameableArtefact().setName(new InternationalString());
+        codelistFamily.getNameableArtefact().getName().addText(new LocalisedString("aa", "Label"));
+        try {
+            codesService.createCodelistFamily(getServiceContextAdministrador(), codelistFamily);
+            fail("translations");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e
+                    .getExceptionItems().get(0));
+        }
+    }
+
     @Override
     @Test
     public void testUpdateCodelistFamily() throws Exception {
@@ -5170,6 +5185,21 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Test
+    public void testCreateVariableFamilyErrorMetadataTranslations() throws Exception {
+        VariableFamily variableFamily = CodesMetamacDoMocks.mockVariableFamily();
+        variableFamily.getNameableArtefact().setName(new InternationalString());
+        variableFamily.getNameableArtefact().getName().addText(new LocalisedString("aa", "Label"));
+        try {
+            codesService.createVariableFamily(getServiceContextAdministrador(), variableFamily);
+            fail("translations");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e
+                    .getExceptionItems().get(0));
+        }
+    }
+
     @Override
     @Test
     public void testUpdateVariableFamily() throws Exception {
@@ -5436,6 +5466,26 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(1, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_MAXIMUM_LENGTH, 2,
                     new Serializable[]{ServiceExceptionParameters.VARIABLE_SHORT_NAME, Integer.valueOf(SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH)}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testCreateVariableErrorMetadataTranslations() throws Exception {
+        Variable variable = CodesMetamacDoMocks.mockVariable();
+        variable.addFamily(codesService.retrieveVariableFamilyByUrn(getServiceContextAdministrador(), VARIABLE_FAMILY_1));
+        variable.getNameableArtefact().setName(new InternationalString());
+        variable.getNameableArtefact().getName().addText(new LocalisedString("aa", "Label"));
+        variable.setShortName(new InternationalString());
+        variable.getShortName().addText(new LocalisedString("aa2", "Label"));
+        try {
+            codesService.createVariable(getServiceContextAdministrador(), variable);
+            fail("translations");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, e
+                    .getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.VARIABLE_SHORT_NAME}, e.getExceptionItems()
+                    .get(1));
         }
     }
 
