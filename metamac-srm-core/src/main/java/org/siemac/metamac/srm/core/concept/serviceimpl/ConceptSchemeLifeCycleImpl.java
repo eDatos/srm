@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.concept.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -144,7 +145,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                         // Group exceptions by concept
                         if (exceptionsConcepts.size() != 0) {
                             MetamacExceptionItem exceptionItemConcept = MetamacExceptionItemBuilder.metamacExceptionItem()
-                                    .withCommonServiceExceptionType(ServiceExceptionType.ITEM_WITH_INCORRECT_METADATA).withMessageParameters(item.getNameableArtefact().getUrn())
+                                    .withCommonServiceExceptionType(ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA).withMessageParameters(item.getNameableArtefact().getUrn())
                                     .withExceptionItems(exceptionsConcepts).build();
                             exceptions.add(exceptionItemConcept);
                         }
@@ -176,7 +177,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
+        public Map<String, MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
             return conceptsMetamacService.checkConceptSchemeVersionTranslations(ctx, getConceptSchemeVersionMetamac(srmResourceVersion).getId(), locale);
         }
 

@@ -1333,11 +1333,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public List<MetamacExceptionItem> checkCodelistVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
-        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
-        getCodelistVersionMetamacRepository().checkCodelistVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
-        getCodeMetamacRepository().checkCodeTranslations(itemSchemeVersionId, locale, exceptionItems);
-        return exceptionItems;
+    public Map<String, MetamacExceptionItem> checkCodelistVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
+        Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
+        getCodelistVersionMetamacRepository().checkCodelistVersionTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
+        getCodeMetamacRepository().checkCodeTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
+        return exceptionItemsByResourceUrn;
     }
 
     // ------------------------------------------------------------------------------------

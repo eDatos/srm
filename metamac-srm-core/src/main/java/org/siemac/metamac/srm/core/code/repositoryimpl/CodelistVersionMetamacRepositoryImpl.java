@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.code.repositoryimpl;
 
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
+import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils.addTranslationExceptionToExceptionItemsByResource;
 
 import java.util.HashMap;
 import java.util.List;
@@ -81,21 +82,21 @@ public class CodelistVersionMetamacRepositoryImpl extends CodelistVersionMetamac
     }
 
     @Override
-    public void checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+    public void checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
         // item scheme common metadata
-        codelistVersionRepository.checkCodelistVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
+        codelistVersionRepository.checkCodelistVersionTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
         // concrete metadata
-        checkCodelistVersionMetamacTranslations(itemSchemeVersionId, locale, exceptionItems);
+        checkCodelistVersionMetamacTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
     }
 
     /**
      * Checks text of Codelist Metamac concrete metadata
      */
     @SuppressWarnings("rawtypes")
-    private void checkCodelistVersionMetamacTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+    private void checkCodelistVersionMetamacTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT distinct(a.CODE) ");
+        sb.append("SELECT distinct(a.URN) ");
         sb.append("FROM TB_ITEM_SCHEMES_VERSIONS iv ");
         sb.append("INNER JOIN TB_M_CODELISTS_VERSIONS cv on TB_CODELISTS_VERSIONS = iv.ID ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on iv.MAINTAINABLE_ARTEFACT_FK = a.ID ");
@@ -103,16 +104,14 @@ public class CodelistVersionMetamacRepositoryImpl extends CodelistVersionMetamac
         sb.append("WHERE ");
         sb.append("iv.ID = :itemSchemeVersionId ");
         sb.append("AND cv.SHORT_NAME_FK IS NOT NULL AND ls.LABEL IS NULL ");
-        sb.append("ORDER BY a.CODE ASC");
 
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
         query.setParameter("locale", locale);
         List resultsSql = query.getResultList();
         for (Object resultSql : resultsSql) {
-            String code = getString(resultSql);
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.CODELIST_SHORT_NAME,
-                    code));
+            String urn = getString(resultSql);
+            addTranslationExceptionToExceptionItemsByResource(exceptionItemsByUrn, urn, ServiceExceptionParameters.CODELIST_SHORT_NAME);
         }
     }
 }

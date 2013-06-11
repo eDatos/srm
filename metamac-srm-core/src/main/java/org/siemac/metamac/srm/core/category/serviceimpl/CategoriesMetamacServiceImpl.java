@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.category.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -429,11 +430,11 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     }
 
     @Override
-    public List<MetamacExceptionItem> checkCategorySchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
-        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
-        getCategorySchemeVersionMetamacRepository().checkCategorySchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
-        getCategoryMetamacRepository().checkCategoryTranslations(itemSchemeVersionId, locale, exceptionItems);
-        return exceptionItems;
+    public Map<String, MetamacExceptionItem> checkCategorySchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
+        Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
+        getCategorySchemeVersionMetamacRepository().checkCategorySchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
+        getCategoryMetamacRepository().checkCategoryTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
+        return exceptionItemsByResourceUrn;
     }
 
     @Override

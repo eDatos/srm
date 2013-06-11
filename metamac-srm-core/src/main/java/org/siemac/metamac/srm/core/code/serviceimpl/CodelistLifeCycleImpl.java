@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.code.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -147,7 +148,7 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
+        public Map<String, MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
             return codesMetamacService.checkCodelistVersionTranslations(ctx, getCodelistVersionMetamac(srmResourceVersion).getId(), locale);
         }
 

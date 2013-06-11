@@ -58,8 +58,8 @@ public class CategoryMetamacRepositoryImpl extends CategoryMetamacRepositoryBase
     }
 
     @Override
-    public void checkCategoryTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException {
-        categoryRepository.checkCategoryTranslations(itemSchemeVersionId, locale, exceptionItems);
+    public void checkCategoryTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException {
+        categoryRepository.checkCategoryTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
         // no metadata specific in metamac
     }
 

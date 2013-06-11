@@ -63,8 +63,8 @@ public class DataStructureDefinitionVersionMetamacRepositoryImpl extends DataStr
     }
 
     @Override
-    public void checkDataStructureDefinitionVersionTranslations(Long structureVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
-        dataStructureDefinitionVersionRepository.checkDataStructureDefinitionVersionTranslations(structureVersionId, locale, exceptionItems);
+    public void checkDataStructureDefinitionVersionTranslations(Long structureVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+        dataStructureDefinitionVersionRepository.checkDataStructureDefinitionVersionTranslations(structureVersionId, locale, exceptionItemsByUrn);
     }
 
 }

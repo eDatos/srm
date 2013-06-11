@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.concept.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -805,11 +806,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public List<MetamacExceptionItem> checkConceptSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
-        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
-        getConceptSchemeVersionMetamacRepository().checkConceptSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
-        getConceptMetamacRepository().checkConceptTranslations(itemSchemeVersionId, locale, exceptionItems);
-        return exceptionItems;
+    public Map<String, MetamacExceptionItem> checkConceptSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
+        Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
+        getConceptSchemeVersionMetamacRepository().checkConceptSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
+        getConceptMetamacRepository().checkConceptTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
+        return exceptionItemsByResourceUrn;
     }
 
     @Override

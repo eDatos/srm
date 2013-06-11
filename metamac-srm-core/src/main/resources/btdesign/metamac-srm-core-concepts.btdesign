@@ -85,7 +85,7 @@ Application ConceptsMetamac {
     		"Retrieves concepts scheme by concept urn"
     		@ConceptSchemeVersionMetamac retrieveConceptSchemeByConceptUrn(String conceptUrn) throws MetamacException;
 			"Checks translations for concept scheme"
-    		List<MetamacExceptionItem> checkConceptSchemeVersionTranslations(Long itemSchemeVersionId, String locale) throws MetamacException;
+    		Map<String, MetamacExceptionItem> checkConceptSchemeVersionTranslations(Long itemSchemeVersionId, String locale) throws MetamacException;
     		
 			"Creates concept"
 			@ConceptMetamac createConcept(String conceptSchemeUrn, @ConceptMetamac concept) throws MetamacException;
@@ -162,7 +162,7 @@ Application ConceptsMetamac {
 				@ConceptSchemeVersionMetamac findByUrn(String urn);
 				@ConceptSchemeVersionMetamac retrieveConceptSchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 				@ConceptSchemeVersionMetamac findByConcept(String urn);
-				checkConceptSchemeVersionTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException;
+				checkConceptSchemeVersionTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
 			}			
 		}
 		
@@ -207,7 +207,7 @@ Application ConceptsMetamac {
 				findByCondition(PagingParameter pagingParameter);
 				List<ItemResult> findConceptsByConceptSchemeUnordered(Long conceptSchemeVersionId, ItemMetamacResultSelection resultSelection) throws MetamacException;
 				List<ConceptMetamacVisualisationResult> findConceptsByConceptSchemeUnorderedToVisualisation(Long conceptSchemeVersionId, String locale) throws MetamacException;
-				checkConceptTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException;
+				checkConceptTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
 				@ConceptMetamac retrieveConceptWithQuantityId(Long quantityId);
 			}
 		}

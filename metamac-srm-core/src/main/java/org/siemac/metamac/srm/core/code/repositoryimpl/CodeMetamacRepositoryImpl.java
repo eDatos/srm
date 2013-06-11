@@ -6,6 +6,7 @@ import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRe
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getInteger;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getLong;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
+import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils.addTranslationExceptionToExceptionItemsByResource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -548,11 +549,11 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public void checkCodeTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException {
+    public void checkCodeTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException {
         // item common metadata
-        codeRepository.checkCodeTranslations(itemSchemeVersionId, locale, exceptionItems);
+        codeRepository.checkCodeTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
         // concrete metadata
-        checkCodeMetamacTranslations(itemSchemeVersionId, locale, exceptionItems);
+        checkCodeMetamacTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
     }
 
     @SuppressWarnings("rawtypes")
@@ -651,12 +652,12 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     /**
-     * Checks text of Annotations
+     * Checks text of Code
      */
     @SuppressWarnings("rawtypes")
-    private void checkCodeMetamacTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+    private void checkCodeMetamacTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT distinct(a.CODE) ");
+        sb.append("SELECT distinct(a.URN) ");
         sb.append("FROM TB_CODES cb ");
         sb.append("INNER JOIN TB_M_CODES c on cb.ID = c.TB_CODES ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on cb.NAMEABLE_ARTEFACT_FK = a.ID ");
@@ -664,15 +665,14 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         sb.append("WHERE ");
         sb.append("cb.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
         sb.append("AND c.SHORT_NAME_FK IS NOT NULL AND ls.LABEL IS NULL ");
-        sb.append("ORDER BY a.CODE ASC");
 
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
         query.setParameter("locale", locale);
         List resultsSql = query.getResultList();
         for (Object resultSql : resultsSql) {
-            String code = getString(resultSql);
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, ServiceExceptionParameters.CODE_SHORT_NAME, code));
+            String urn = getString(resultSql);
+            addTranslationExceptionToExceptionItemsByResource(exceptionItemsByUrn, urn, ServiceExceptionParameters.CODE_SHORT_NAME);
         }
     }
 

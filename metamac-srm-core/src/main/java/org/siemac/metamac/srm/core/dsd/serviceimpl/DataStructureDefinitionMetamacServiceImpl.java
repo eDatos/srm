@@ -586,12 +586,12 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     }
 
     @Override
-    public List<MetamacExceptionItem> checkDataStructureDefinitionTranslations(ServiceContext ctx, Long structureVersionId, String locale) {
-        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
-        getDataStructureDefinitionVersionMetamacRepository().checkDataStructureDefinitionVersionTranslations(structureVersionId, locale, exceptionItems);
-        componentListRepository.checkComponentListTranslations(structureVersionId, locale, exceptionItems);
-        componentRepository.checkComponentTranslations(structureVersionId, locale, exceptionItems);
-        return exceptionItems;
+    public Map<String, MetamacExceptionItem> checkDataStructureDefinitionTranslations(ServiceContext ctx, Long structureVersionId, String locale) {
+        Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
+        getDataStructureDefinitionVersionMetamacRepository().checkDataStructureDefinitionVersionTranslations(structureVersionId, locale, exceptionItemsByResourceUrn);
+        componentListRepository.checkComponentListTranslations(structureVersionId, locale, exceptionItemsByResourceUrn);
+        componentRepository.checkComponentTranslations(structureVersionId, locale, exceptionItemsByResourceUrn);
+        return exceptionItemsByResourceUrn;
     }
 
     @Override
@@ -1456,7 +1456,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
         // Codelist with access type = PUBLIC
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
-        
+
         // Find
         return codelistVersionMetamacRepository.findByCondition(conditions, pagingParameter); // call to Metamac Repository to avoid ClassCastException
     }

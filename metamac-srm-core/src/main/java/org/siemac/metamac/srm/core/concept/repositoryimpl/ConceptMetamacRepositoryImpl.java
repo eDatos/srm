@@ -4,6 +4,7 @@ import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRe
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getLong;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.withoutTranslation;
+import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils.addTranslationExceptionToExceptionItemsByResource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +28,6 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.RelatedResourceVisualisationResult;
-import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 
@@ -151,9 +151,9 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     }
 
     @Override
-    public void checkConceptTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException {
-        conceptRepository.checkConceptTranslations(itemSchemeVersionId, locale, exceptionItems);
-        checkConceptMetamacTranslations(itemSchemeVersionId, locale, exceptionItems);
+    public void checkConceptTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException {
+        conceptRepository.checkConceptTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
+        checkConceptMetamacTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
     }
 
     @Override
@@ -171,10 +171,10 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
      * Checks concrete metadata of ConceptMetamac
      */
     @SuppressWarnings("rawtypes")
-    private void checkConceptMetamacTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) {
+    private void checkConceptMetamacTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT a.CODE, ");
+        sb.append("SELECT a.URN, ");
         sb.append("c." + COLUMN_NAME_PLURAL_NAME + " as PLURAL_NAME_IS, lsplurn.LABEL as PLURAL_NAME_LABEL, ");
         sb.append("c." + COLUMN_NAME_ACRONYM + " as ACRONYM_IS, lsacron.LABEL as ACRONYM_LABEL, ");
         sb.append("c." + COLUMN_NAME_DESCRIPTION_SOURCE + " as DESCRIPTION_SOURCE_IS, lsdescs.LABEL as DESCRITION_SOURCE_LABEL, ");
@@ -213,23 +213,23 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         for (Object resultSql : resultsSql) {
             Object[] resultArray = (Object[]) resultSql;
             int i = 0;
-            String conceptCode = getString(resultArray[i++]);
-            checkTranslation(conceptCode, ServiceExceptionParameters.CONCEPT_PLURAL_NAME, resultArray, i++, i++, exceptionItems);
-            checkTranslation(conceptCode, ServiceExceptionParameters.CONCEPT_ACRONYM, resultArray, i++, i++, exceptionItems);
-            checkTranslation(conceptCode, ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE, resultArray, i++, i++, exceptionItems);
-            checkTranslation(conceptCode, ServiceExceptionParameters.CONCEPT_CONTEXT, resultArray, i++, i++, exceptionItems);
-            checkTranslation(conceptCode, ServiceExceptionParameters.CONCEPT_DOC_METHOD, resultArray, i++, i++, exceptionItems);
-            checkTranslation(conceptCode, ServiceExceptionParameters.CONCEPT_DERIVATION, resultArray, i++, i++, exceptionItems);
-            checkTranslation(conceptCode, ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, resultArray, i++, i++, exceptionItems);
+            String urn = getString(resultArray[i++]);
+            checkTranslation(urn, ServiceExceptionParameters.CONCEPT_PLURAL_NAME, resultArray, i++, i++, exceptionItemsByUrn);
+            checkTranslation(urn, ServiceExceptionParameters.CONCEPT_ACRONYM, resultArray, i++, i++, exceptionItemsByUrn);
+            checkTranslation(urn, ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE, resultArray, i++, i++, exceptionItemsByUrn);
+            checkTranslation(urn, ServiceExceptionParameters.CONCEPT_CONTEXT, resultArray, i++, i++, exceptionItemsByUrn);
+            checkTranslation(urn, ServiceExceptionParameters.CONCEPT_DOC_METHOD, resultArray, i++, i++, exceptionItemsByUrn);
+            checkTranslation(urn, ServiceExceptionParameters.CONCEPT_DERIVATION, resultArray, i++, i++, exceptionItemsByUrn);
+            checkTranslation(urn, ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, resultArray, i++, i++, exceptionItemsByUrn);
         }
     }
 
-    private void checkTranslation(String conceptCode, String metadataExceptionParameter, Object[] resultArray, int internationalStringIndex, int localisedStringIndex,
-            List<MetamacExceptionItem> exceptionItems) {
+    private void checkTranslation(String urn, String metadataExceptionParameter, Object[] resultArray, int internationalStringIndex, int localisedStringIndex,
+            Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
         Long internationalStringName = getLong(resultArray[internationalStringIndex]);
         String localisedStringName = getString(resultArray[localisedStringIndex]);
         if (withoutTranslation(internationalStringName, localisedStringName)) {
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, metadataExceptionParameter, conceptCode));
+            addTranslationExceptionToExceptionItemsByResource(exceptionItemsByUrn, urn, metadataExceptionParameter);
         }
     }
 

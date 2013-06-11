@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.common;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -356,9 +357,9 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
             // Check translations
             String locale = srmConfiguration.retrieveLanguageDefault();
-            List<MetamacExceptionItem> exceptionItems = callback.checkConcreteResourceTranslations(ctx, srmResourceVersion, locale);
+            Map<String, MetamacExceptionItem> exceptionItems = callback.checkConcreteResourceTranslations(ctx, srmResourceVersion, locale);
             if (exceptionItems != null) {
-                exceptions.addAll(exceptionItems);
+                exceptions.addAll(exceptionItems.values());
             }
         }
 
@@ -435,7 +436,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
         public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
         public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
         public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
-        public List<MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException;
+        public Map<String, MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException;
 
         // Validity, final, public, additional actions
         public Object executeBeforeSendProductionValidation(ServiceContext ctx, Object srmResourceVersion);

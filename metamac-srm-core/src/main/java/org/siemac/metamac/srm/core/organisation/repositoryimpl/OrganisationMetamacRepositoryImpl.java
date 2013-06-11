@@ -102,8 +102,8 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
     }
 
     @Override
-    public void checkOrganisationTranslations(Long itemSchemeVersionId, String locale, List<MetamacExceptionItem> exceptionItems) throws MetamacException {
-        organisationRepository.checkOrganisationTranslations(itemSchemeVersionId, locale, exceptionItems);
+    public void checkOrganisationTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException {
+        organisationRepository.checkOrganisationTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
         // no metadata specific in metamac
     }
 

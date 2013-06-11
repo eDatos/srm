@@ -313,6 +313,16 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static String       DSD_6_V1_TIME_DIMENSION_1                            = "urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX02:DATASTRUCTUREDEFINITION06(01.000).timeDimension-01";
     protected static String       DSD_6_V1_MEASURE_DIMENSION_1                         = "urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDimension=SDMX02:DATASTRUCTUREDEFINITION06(01.000).measureDimension-01";
 
+    protected static String       DSD_7_V1_ATTRIBUTE_DESCRIPTOR                        = "urn:sdmx:org.sdmx.infomodel.datastructure.AttributeDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).AttributeDescriptor";
+    protected static String       DSD_7_V1_MEASURE_DESCRIPTOR                          = "urn:sdmx:org.sdmx.infomodel.datastructure.MeasureDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).MeasureDescriptor";
+    protected static String       DSD_7_V1_GROUP_DIMENSION_DESCRIPTOR_2                = "urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).groupDimensionDescriptor02";
+    protected static String       DSD_7_V1_GROUP_DIMENSION_DESCRIPTOR_3                = "urn:sdmx:org.sdmx.infomodel.datastructure.GroupDimensionDescriptor=SDMX01:DATASTRUCTUREDEFINITION07(01.000).groupDimensionDescriptor03";
+    protected static String       DSD_7_V1_DIMENSION_1                                 = "urn:sdmx:org.sdmx.infomodel.datastructure.Dimension=SDMX01:DATASTRUCTUREDEFINITION07(01.000).dim-01";
+    protected static String       DSD_7_V1_TIME_DIMENSION_1                            = "urn:sdmx:org.sdmx.infomodel.datastructure.TimeDimension=SDMX01:DATASTRUCTUREDEFINITION07(01.000).TIME_PERIOD";
+    protected static String       DSD_7_V1_DATA_ATTRIBUTE_1                            = "urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=SDMX01:DATASTRUCTUREDEFINITION07(01.000).dataAttribute-01";
+    protected static String       DSD_7_V1_DATA_ATTRIBUTE_3                            = "urn:sdmx:org.sdmx.infomodel.datastructure.DataAttribute=SDMX01:DATASTRUCTUREDEFINITION07(01.000).dataAttribute-03";
+    protected static String       DSD_7_V1_PRIMARY_MEASURE                             = "urn:sdmx:org.sdmx.infomodel.datastructure.PrimaryMeasure=SDMX01:DATASTRUCTUREDEFINITION07(01.000).OBS_VALUE";
+
     // Other
     protected static final String NOT_EXISTS                                           = "not-exists";
 

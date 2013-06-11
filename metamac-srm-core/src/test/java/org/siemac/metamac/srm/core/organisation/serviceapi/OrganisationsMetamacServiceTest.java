@@ -30,6 +30,7 @@ import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -920,33 +921,70 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     @Test
     public void testPublishInternallyOrganisationSchemeCheckTranslations() throws Exception {
         String urn = ORGANISATION_SCHEME_11_V1;
-        String code = "ORGANISATIONSCHEME11";
 
         try {
             // Note: publishInternallyOrganisationScheme calls to 'checkOrganisationSchemeVersionTranslates'
             organisationsService.publishInternallyOrganisationScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("OrganisationScheme wrong translations");
         } catch (MetamacException e) {
-            assertEquals(10, e.getExceptionItems().size());
+            assertEquals(5, e.getExceptionItems().size());
             int i = 0;
             // OrganisationScheme
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
-                    ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
+            {
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
+                // children
+                assertEquals(2, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(1));
+            }
             // Organisations
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME,
-                    "ORGANISATION01"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT,
-                    "ORGANISATION01"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION,
-                    "ORGANISATION0101"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME,
-                    "ORGANISATION02"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"ORGANISATION02"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"ORGANISATION03"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ORGANISATION_WITH_CONTACT_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"ORGANISATION01"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ORGANISATION_WITH_CONTACT_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"ORGANISATION0101"}, e.getExceptionItems().get(i++));
-
+            {
+                // Organisation01
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, ORGANISATION_SCHEME_11_V1_ORGANISATION_1);
+                // children
+                assertEquals(3, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
+                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT}, exceptionItem
+                        .getExceptionItems().get(1));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ORGANISATION_CONTACT}, exceptionItem
+                        .getExceptionItems().get(2));
+            }
+            {
+                // Organisation0101
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, ORGANISATION_SCHEME_11_V1_ORGANISATION_1_1);
+                // children
+                assertEquals(2, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ORGANISATION_CONTACT}, exceptionItem
+                        .getExceptionItems().get(1));
+            }
+            {
+                // Organisation02
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, ORGANISATION_SCHEME_11_V1_ORGANISATION_2);
+                // children
+                assertEquals(2, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
+                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(1));
+            }
+            {
+                // Organisation03
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, ORGANISATION_SCHEME_11_V1_ORGANISATION_3);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
             assertEquals(e.getExceptionItems().size(), i);
         }
     }

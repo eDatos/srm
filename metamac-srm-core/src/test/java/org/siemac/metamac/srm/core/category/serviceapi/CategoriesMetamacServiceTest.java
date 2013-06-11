@@ -29,6 +29,7 @@ import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
@@ -815,30 +816,62 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     @Test
     public void testPublishInternallyCategorySchemeCheckTranslations() throws Exception {
         String urn = CATEGORY_SCHEME_8_V1;
-        String code = "CATEGORYSCHEME08";
 
         try {
             // Note: publishInternallyCategoryScheme calls to 'checkCategorySchemeVersionTranslates'
             categoriesService.publishInternallyCategoryScheme(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("CategoryScheme wrong translations");
         } catch (MetamacException e) {
-            assertEquals(8, e.getExceptionItems().size());
+            assertEquals(4, e.getExceptionItems().size());
             int i = 0;
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
-                    ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
+            // CategoryScheme
+            {
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
+                // children
+                assertEquals(2, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(1));
+            }
             // Categories
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME,
-                    "CATEGORY01"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT,
-                    "CATEGORY01"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION,
-                    "CATEGORY01.CATEGORY0101"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME,
-                    "CATEGORY02"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"CATEGORY01.CATEGORY0101"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"CATEGORY02"}, e.getExceptionItems().get(i++));
-
+            {
+                // Category01
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CATEGORY_SCHEME_8_V1_CATEGORY_1);
+                // children
+                assertEquals(2, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
+                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT}, exceptionItem
+                        .getExceptionItems().get(1));
+            }
+            {
+                // Category0101
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CATEGORY_SCHEME_8_V1_CATEGORY_1_1);
+                // children
+                assertEquals(2, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(1));
+            }
+            {
+                // Category02
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CATEGORY_SCHEME_8_V1_CATEGORY_2);
+                // children
+                assertEquals(2, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
+                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(1));
+            }
+            {
+                // Category03: no exception
+            }
             assertEquals(e.getExceptionItems().size(), i);
         }
     }

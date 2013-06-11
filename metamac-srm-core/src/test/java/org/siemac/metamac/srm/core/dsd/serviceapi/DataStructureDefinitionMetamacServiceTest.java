@@ -26,6 +26,7 @@ import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisationProperties;
@@ -306,37 +307,108 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Test
     public void testPublishInternallyDataStructureDefinitionCheckTranslations() throws Exception {
         String urn = DSD_7_V1;
-        String code = "DATASTRUCTUREDEFINITION07";
 
         try {
             // Note: publishInternallyDataStructureDefinition calls to 'testCheckDataStructureDefinitionTranslations'
             dataStructureDefinitionMetamacService.publishInternallyDataStructureDefinition(getServiceContextAdministrador(), urn, Boolean.FALSE);
             fail("DataStructureDefinition wrong translations");
         } catch (MetamacException e) {
-            assertEquals(11, e.getExceptionItems().size());
+            assertEquals(10, e.getExceptionItems().size());
             int i = 0;
             // DataStructureDefinition
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
-                    ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
+            {
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
+                // children
+                assertEquals(2, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(1));
+            }
             // Components List
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ATTRIBUTE_DESCRIPTOR_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"AttributeDescriptor"}, e
-                    .getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.MEASURE_DESCRIPTOR_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"MeasureDescriptor"}, e.getExceptionItems()
-                    .get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.GROUP_DIMENSION_DESCRIPTOR_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"groupDimensionDescriptor02"}, e
-                    .getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.GROUP_DIMENSION_DESCRIPTOR_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"groupDimensionDescriptor03"}, e
-                    .getExceptionItems().get(i++));
+            {
+                // AttributeDescriptor
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, DSD_7_V1_ATTRIBUTE_DESCRIPTOR);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            {
+                // MeasureDescriptor
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, DSD_7_V1_MEASURE_DESCRIPTOR);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            {
+                // groupDimensionDescriptor02
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, DSD_7_V1_GROUP_DIMENSION_DESCRIPTOR_2);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            {
+                // groupDimensionDescriptor03
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, DSD_7_V1_GROUP_DIMENSION_DESCRIPTOR_3);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
             // Components
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.DIMENSION_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"dim-01"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.DIMENSION_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"TIME_PERIOD"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.DATA_ATTRIBUTE_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"dataAttribute-01"}, e.getExceptionItems()
-                    .get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.DATA_ATTRIBUTE_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"dataAttribute-03"}, e.getExceptionItems()
-                    .get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.PRIMARY_MEASURE_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"OBS_VALUE"}, e.getExceptionItems().get(i++));
-
+            {
+                // dim-01
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, DSD_7_V1_DIMENSION_1);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            {
+                // TIME_PERIOD
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, DSD_7_V1_TIME_DIMENSION_1);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            {
+                // DataAttribute01
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, DSD_7_V1_DATA_ATTRIBUTE_1);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            {
+                // DataAttribute03
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, DSD_7_V1_DATA_ATTRIBUTE_3);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            {
+                // PrimartyMeasure
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, DSD_7_V1_PRIMARY_MEASURE);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
             assertEquals(e.getExceptionItems().size(), i);
         }
     }

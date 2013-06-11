@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.organisation.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -479,11 +480,11 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     }
 
     @Override
-    public List<MetamacExceptionItem> checkOrganisationSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
-        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
-        getOrganisationSchemeVersionMetamacRepository().checkOrganisationSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItems);
-        getOrganisationMetamacRepository().checkOrganisationTranslations(itemSchemeVersionId, locale, exceptionItems);
-        return exceptionItems;
+    public Map<String, MetamacExceptionItem> checkOrganisationSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
+        Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
+        getOrganisationSchemeVersionMetamacRepository().checkOrganisationSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
+        getOrganisationMetamacRepository().checkOrganisationTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
+        return exceptionItemsByResourceUrn;
     }
 
     /**

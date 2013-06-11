@@ -53,6 +53,7 @@ import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
@@ -1384,36 +1385,72 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testPublishInternallyCodelistCheckTranslations() throws Exception {
         String urn = CODELIST_14_V1;
-        String code = "CODELIST14";
 
         try {
             // Note: publishInternallyCodelist calls to 'checkCodelistVersionTranslates'
             codesService.publishInternallyCodelist(getServiceContextAdministrador(), urn, Boolean.FALSE, Boolean.FALSE);
             fail("Codelist wrong translations");
         } catch (MetamacException e) {
-            assertEquals(11, e.getExceptionItems().size());
+            assertEquals(5, e.getExceptionItems().size());
             int i = 0;
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
-                    ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION, code}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{code}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.MAINTAINABLE_ARTEFACT_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{
-                    ServiceExceptionParameters.CODELIST_SHORT_NAME, code}, e.getExceptionItems().get(i++));
+            // Codelist
+            {
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
+                // children
+                assertEquals(3, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(1));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.CODELIST_SHORT_NAME}, exceptionItem
+                        .getExceptionItems().get(2));
+            }
             // Codes
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, "CODE01"},
-                    e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2,
-                    new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT, "CODE01"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION,
-                    "CODE0101"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME, "CODE02"},
-                    e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"CODE02"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_ANNOTATION_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{"CODE03"}, e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CODE_SHORT_NAME, "CODE0101"}, e
-                    .getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.ITEM_WITH_METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 2, new String[]{ServiceExceptionParameters.CODE_SHORT_NAME, "CODE03"}, e
-                    .getExceptionItems().get(i++));
-
+            {
+                // Code01
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CODELIST_14_V1_CODE_1);
+                // children
+                assertEquals(2, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
+                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT}, exceptionItem
+                        .getExceptionItems().get(1));
+            }
+            {
+                // Code0101
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CODELIST_14_V1_CODE_1_1);
+                // children
+                assertEquals(2, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.CODE_SHORT_NAME}, exceptionItem
+                        .getExceptionItems().get(1));
+            }
+            {
+                // Code02
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CODELIST_14_V1_CODE_2);
+                // children
+                assertEquals(2, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
+                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(1));
+            }
+            {
+                // Code03
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CODELIST_14_V1_CODE_3);
+                // children
+                assertEquals(2, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.ANNOTATION}, exceptionItem
+                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE, 1, new String[]{ServiceExceptionParameters.CODE_SHORT_NAME}, exceptionItem
+                        .getExceptionItems().get(1));
+            }
             assertEquals(e.getExceptionItems().size(), i);
         }
     }
