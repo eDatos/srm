@@ -1433,7 +1433,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
-    public void testPublishExternallyConceptSchemeErrorRelatedResourcesNotExternallyPublished() throws Exception {
+    public void testPublishExternallyConceptSchemeErrorRelatedResourcesExtendsNotExternallyPublished() throws Exception {
 
         String urn = CONCEPT_SCHEME_7_V2;
         ServiceContext ctx = getServiceContextAdministrador();
@@ -1442,20 +1442,123 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         {
             ConceptMetamac concept1 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_1);
             concept1.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V1_CONCEPT_1));
+            itemRepository.save(concept1);
+        }
+        {
+            ConceptMetamac concept2 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_2);
+            concept2.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_3_V1_CONCEPT_1));
+            itemRepository.save(concept2);
+        }
+        {
+            ConceptMetamac concept3 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_3);
+            concept3.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_12_V1_CONCEPT_1)); // ok
+            itemRepository.save(concept3);
+        }
+
+        entityManager.flush();
+
+        try {
+            conceptsService.publishExternallyConceptScheme(getServiceContextAdministrador(), urn);
+            fail("related resources");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_1_V1_CONCEPT_1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_1);
+        }
+
+    }
+
+    @Test
+    public void testPublishExternallyConceptSchemeErrorRelatedResourcesRoleNotExternallyPublished() throws Exception {
+
+        String urn = CONCEPT_SCHEME_7_V2;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Change some metadata to force errors
+        {
+            ConceptMetamac concept1 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_1);
             concept1.addRoleConcept(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_3_V1_CONCEPT_2));
             concept1.addRoleConcept(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_13_V1_CONCEPT_1)); // ok
             itemRepository.save(concept1);
         }
         {
             ConceptMetamac concept2 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_2);
-            concept2.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_3_V1_CONCEPT_1));
             concept2.addRoleConcept(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_13_V1_CONCEPT_1)); // ok
             itemRepository.save(concept2);
         }
         {
             ConceptMetamac concept3 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_3);
-            concept3.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_12_V1_CONCEPT_1)); // ok
             concept3.addRoleConcept(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_3_V1_CONCEPT_2_1));
+            itemRepository.save(concept3);
+        }
+
+        entityManager.flush();
+
+        try {
+            conceptsService.publishExternallyConceptScheme(getServiceContextAdministrador(), urn);
+            fail("related resources");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_2);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_2_1);
+        }
+    }
+
+    @Test
+    public void testPublishExternallyConceptSchemeErrorRelatedResourcesQuantityNotExternallyPublished() throws Exception {
+
+        String urn = CONCEPT_SCHEME_7_V2;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Change some metadata to force errors
+        {
+            ConceptMetamac concept1 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_1);
+            concept1.setQuantity(new Quantity());
+            concept1.getQuantity().setQuantityType(QuantityTypeEnum.FRACTION);
+            concept1.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_7_V2_CODE_1));
+            concept1.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+            concept1.getQuantity().setSignificantDigits(Integer.valueOf(2));
+            concept1.getQuantity().setDecimalPlaces(Integer.valueOf(3));
+            concept1.getQuantity().setUnitMultiplier(Integer.valueOf(100));
+            concept1.getQuantity().setMinimum(Integer.valueOf(1000));
+            concept1.getQuantity().setMaximum(Integer.valueOf(2000));
+            concept1.getQuantity().setNumerator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_2));
+            concept1.getQuantity().setDenominator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V2_CONCEPT_2));
+            itemRepository.save(concept1);
+        }
+        {
+            ConceptMetamac concept2 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_2);
+            concept2.setQuantity(new Quantity());
+            concept2.getQuantity().setQuantityType(QuantityTypeEnum.FRACTION);
+            concept2.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_7_V2_CODE_1));
+            concept2.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+            concept2.getQuantity().setSignificantDigits(Integer.valueOf(2));
+            concept2.getQuantity().setDecimalPlaces(Integer.valueOf(3));
+            concept2.getQuantity().setUnitMultiplier(Integer.valueOf(100));
+            concept2.getQuantity().setMinimum(Integer.valueOf(1000));
+            concept2.getQuantity().setMaximum(Integer.valueOf(2000));
+            concept2.getQuantity().setNumerator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_3_V1_CONCEPT_1));
+            concept2.getQuantity().setDenominator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_3_V1_CONCEPT_2));
+            itemRepository.save(concept2);
+        }
+        {
+            ConceptMetamac concept3 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_3);
+            concept3.setQuantity(new Quantity());
+            concept3.getQuantity().setQuantityType(QuantityTypeEnum.FRACTION);
+            concept3.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_7_V2_CODE_1));
+            concept3.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+            concept3.getQuantity().setSignificantDigits(Integer.valueOf(2));
+            concept3.getQuantity().setDecimalPlaces(Integer.valueOf(3));
+            concept3.getQuantity().setUnitMultiplier(Integer.valueOf(100));
+            concept3.getQuantity().setMinimum(Integer.valueOf(1000));
+            concept3.getQuantity().setMaximum(Integer.valueOf(2000));
+            concept3.getQuantity().setNumerator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_15_V1_CONCEPT_1));
+            concept3.getQuantity().setDenominator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_15_V1_CONCEPT_2));
+            concept3.getQuantity().setIsPercentage(Boolean.FALSE);
+            concept3.getQuantity().setPercentageOf(BaseDoMocks.mockInternationalString());
+            concept3.getQuantity().setBaseQuantity(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_11_V1_CONCEPT_1));
             itemRepository.save(concept3);
         }
 
@@ -1467,12 +1570,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         } catch (MetamacException e) {
             assertEquals(4, e.getExceptionItems().size());
 
-            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_1_V1_CONCEPT_1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_1_V2_CONCEPT_2);
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_1);
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_2);
-            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_2_1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_11_V1_CONCEPT_1);
         }
-
     }
 
     @Override

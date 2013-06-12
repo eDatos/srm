@@ -219,7 +219,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conditions.add(roleCondition);
         // Concept scheme internally or externally published
         ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
-                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle();
+                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
         conditions.add(publishedCondition);
 
         PagedResult<ConceptSchemeVersion> conceptsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
@@ -239,7 +239,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conditions.add(roleCondition);
         // Concept scheme internally or externally published
         ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
-                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle();
+                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
         conditions.add(publishedCondition);
 
         PagedResult<ConceptSchemeVersion> conceptsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
@@ -327,10 +327,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (conditions == null) {
             conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build();
         }
-        // scheme externally published
-        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
-                .withProperty(CodelistVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
-        conditions.add(externallyPublishedCondition);
+        // scheme internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                .withProperty(CodelistVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
         // Codelist with access type = PUBLIC
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
 
@@ -374,6 +374,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Check, adding exceptions
         getConceptMetamacRepository().checkConceptsWithConceptExtendsExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
         getConceptMetamacRepository().checkConceptsWithConceptRoleExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
+        getConceptMetamacRepository().checkConceptsWithQuantityExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
         // TODO resto...
 
         ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
@@ -720,7 +721,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conditions.add(roleCondition);
         // Concept scheme internally or externally published
         ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
-                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle();
+                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
         conditions.add(publishedCondition);
 
         PagedResult<Concept> conceptsPagedResult = conceptsService.findConceptsByCondition(ctx, conditions, pagingParameter);
@@ -743,7 +744,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conditions.add(roleCondition);
         // Concept scheme internally or externally published
         ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
-                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle();
+                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
         conditions.add(publishedCondition);
 
         PagedResult<Concept> conceptsPagedResult = conceptsService.findConceptsByCondition(ctx, conditions, pagingParameter);
@@ -775,10 +776,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (conditions == null) {
             conditions = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).distinctRoot().build();
         }
-        // codelist externally published
-        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
-                .withProperty(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
-        conditions.add(externallyPublishedCondition);
+        // codelist internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
+                .withProperty(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
         // Only codelists with access == public
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
                 .withProperty(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.accessType().getName(), false, CodeMetamac.class))
@@ -1398,7 +1399,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urn())
                 .eq(conceptSchemeUrn)
                 .or()
-                // in another scheme, externally published and specific type
+                // in another scheme, internally or externally published and specific type
                 .lbrace()
                 .withProperty(
                         new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class))
@@ -1406,7 +1407,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 .and()
                 .withProperty(
                         new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.relatedOperation().getName(), true,
-                                ConceptMetamac.class)).isNull().and().withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).rbrace()
+                                ConceptMetamac.class)).isNull().and().withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).rbrace()
                 .buildSingle();
         conditions.add(quantityCondition);
 
@@ -1427,11 +1428,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Add restrictions to be numerated. IMPORTANT! If any condition change, review findConceptsCanBeQuantity
         // concept scheme can be same scheme or another concept scheme type Measure without operation
         ConditionalCriteria quantityCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
-                // same scheme
+        // 1) same scheme
                 .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn()).eq(conceptSchemeUrn).or()
-                // in another scheme, externally published and specific type
-                .lbrace().withProperty(ConceptSchemeVersionMetamacProperties.type()).eq(ConceptSchemeTypeEnum.MEASURE).and().withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation())
-                .isNull().and().withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).rbrace().buildSingle();
+                // 2) or another scheme...
+                .lbrace()
+                // 2a) scheme type
+                .withProperty(ConceptSchemeVersionMetamacProperties.type()).eq(ConceptSchemeTypeEnum.MEASURE).and().withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation()).isNull()
+                // 2b) scheme internally or externally published
+                .and().withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).rbrace().buildSingle();
         conditions.add(quantityCondition);
 
         PagedResult<ConceptSchemeVersion> conceptSchemeVersionsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);

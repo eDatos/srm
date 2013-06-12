@@ -214,6 +214,7 @@ Application ConceptsMetamac {
 				
 				checkConceptsWithConceptExtendsExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 				checkConceptsWithConceptRoleExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
+				checkConceptsWithQuantityExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 			}
 		}
 		
