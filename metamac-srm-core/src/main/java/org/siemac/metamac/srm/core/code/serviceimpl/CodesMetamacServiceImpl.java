@@ -2420,6 +2420,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                         .build();
             }
         }
+
+        // No translation to check
     }
 
     /**
