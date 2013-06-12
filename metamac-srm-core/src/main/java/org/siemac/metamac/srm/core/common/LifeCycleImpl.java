@@ -14,8 +14,8 @@ import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
-import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -386,7 +386,9 @@ public abstract class LifeCycleImpl implements LifeCycle {
         if (!SdmxSrmUtils.isAgencySchemeSdmx(urn)) {
             Organisation maintainer = callback.getMaintainableArtefact(srmResourceVersion).getMaintainer();
             OrganisationSchemeVersionMetamac agencyScheme = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainer.getNameableArtefact().getUrn());
-            SrmValidationUtils.checkArtefactExternallyPublished(agencyScheme.getMaintainableArtefact().getUrn(), agencyScheme.getLifeCycleMetadata());
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(agencyScheme.getLifeCycleMetadata().getProcStatus())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_SCHEME_NOT_EXTERNALLY_PUBLISHED).withMessageParameters(urn).build();
+            }
         }
 
         // Check other conditions
