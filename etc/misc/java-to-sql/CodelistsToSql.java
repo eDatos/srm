@@ -96,7 +96,6 @@ public class CodelistsToSql {
         insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodelists + " WHERE SEQUENCE_NAME = 'ITEM_SCHEMES_VERSIONS';");
         insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodelists + " WHERE SEQUENCE_NAME = 'CODELISTS_VERSIONS';");
         insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodelists + " WHERE SEQUENCE_NAME = 'M_CODELISTS_VERSIONS';");
-        insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodes + " WHERE SEQUENCE_NAME = 'ITEMS_BASE';");
         insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodes + " WHERE SEQUENCE_NAME = 'CODES';");
         insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idCodes + " WHERE SEQUENCE_NAME = 'M_CODES';");
         insertSentences.add("UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = " + idAnnotableArtefact + " WHERE SEQUENCE_NAME = 'ANNOTABLE_ARTEFACTS';");
