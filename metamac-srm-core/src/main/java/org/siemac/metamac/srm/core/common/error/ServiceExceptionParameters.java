@@ -90,7 +90,9 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String VARIABLE_ELEMENT_VALID_TO                                  = VARIABLE_ELEMENT + ".valid_to";
     public static final String VARIABLE_ELEMENT_VARIABLE                                  = VARIABLE_ELEMENT + ".variable";
 
-    // DSD VISUALISATION
+    // DSD
+    public static final String DATA_STRUCTURE_DEFINITION_RELATED_OPERATION                = DATA_STRUCTURE_DEFINITION + ".related_operation";
+    public static final String DATA_STRUCTURE_DEFINITION_RELATED_OPERATION_TITLE          = DATA_STRUCTURE_DEFINITION + ".related_operation.title";
     public static final String DATA_STRUCTURE_DEFINITION_AUTOPEN                          = DATA_STRUCTURE_DEFINITION + ".autopen";
     public static final String DATA_STRUCTURE_DEFINITION_HEADING                          = DATA_STRUCTURE_DEFINITION + ".heading";
     public static final String DATA_STRUCTURE_DEFINITION_STUB                             = DATA_STRUCTURE_DEFINITION + ".stub";

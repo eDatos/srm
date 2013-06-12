@@ -89,7 +89,7 @@ public class DataStructureDefinitionDto2DoMapperImpl extends BaseDto2DoMapperImp
         target.setAutoOpen(source.getAutoOpen());
         target.setShowDecimals(source.getShowDecimals());
         target.setStatisticalOperation(externalItemDtoStatisticalOperationsToExternalItemDo(source.getStatisticalOperation(), target.getStatisticalOperation(),
-                ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION));
+                ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_RELATED_OPERATION));
         headingDto2Do(source.getHeadingDimensions(), target);
         stubDto2Do(source.getStubDimensions(), target);
         showDecimalsPrecisionsDto2Do(source.getShowDecimalsPrecisions(), target);
