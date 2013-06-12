@@ -217,10 +217,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         ConditionalCriteria roleCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.type())
                 .eq(ConceptSchemeTypeEnum.ROLE).buildSingle();
         conditions.add(roleCondition);
-        // concept scheme externally published
-        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
-                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
-        conditions.add(externallyPublishedCondition);
+        // Concept scheme internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
 
         PagedResult<ConceptSchemeVersion> conceptsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
         return pagedResultConceptSchemeVersionToMetamac(conceptsPagedResult);
@@ -373,7 +373,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         Map<String, MetamacExceptionItem> exceptionItemsByUrn = new HashMap<String, MetamacExceptionItem>();
         // Check, adding exceptions
         getConceptMetamacRepository().checkConceptsWithConceptExtendsExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
-
+        getConceptMetamacRepository().checkConceptsWithConceptRoleExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
         // TODO resto...
 
         ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
@@ -718,10 +718,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                         new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class))
                 .eq(ConceptSchemeTypeEnum.ROLE).buildSingle();
         conditions.add(roleCondition);
-        // concept scheme externally published
-        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
-                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
-        conditions.add(externallyPublishedCondition);
+        // Concept scheme internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
+                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
 
         PagedResult<Concept> conceptsPagedResult = conceptsService.findConceptsByCondition(ctx, conditions, pagingParameter);
         return pagedResultConceptToMetamac(conceptsPagedResult);
@@ -897,38 +897,33 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Validation
         ConceptsMetamacInvocationValidator.checkAddRoleConcept(urn, conceptRoleUrn, null);
-
         ConceptMetamac concept = retrieveConceptByUrn(ctx, urn);
-        ConceptMetamac conceptRole = retrieveConceptByUrn(ctx, conceptRoleUrn);
-        // Check concept scheme of concept 'urn' can be modified and it is Operation, Transversal or Measure (it is retrieved instead navigate across relation to avoid ClassCastException)
-        ConceptSchemeVersionMetamac conceptSchemeVersionOfConcept = retrieveConceptSchemeVersionCanBeModified(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+        ItemSchemeVersion conceptSchemeVersion = concept.getItemSchemeVersion();
+        ConceptSchemeVersionMetamac conceptSchemeVersionOfConcept = retrieveConceptSchemeVersionCanBeModified(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn());
+
+        // Check type of concept scheme source
         if (!ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersionOfConcept.getType()) && !ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersionOfConcept.getType())
                 && !ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersionOfConcept.getType())) {
-            throw MetamacExceptionBuilder
-                    .builder()
-                    .withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
-                    .withMessageParameters(
-                            conceptSchemeVersionOfConcept.getMaintainableArtefact().getUrn(),
-                            new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_TRANSVERSAL,
-                                    ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_MEASURE}).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNEXPECTED).withMessageParameters(ServiceExceptionParameters.CONCEPT_ROLE).build();
         }
-        // Check concept scheme of concept 'conceptRoleUrn' is Role
-        ConceptSchemeVersionMetamac conceptSchemeVersionOfRole = retrieveConceptSchemeByUrn(ctx, conceptRole.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-        if (!ConceptSchemeTypeEnum.ROLE.equals(conceptSchemeVersionOfRole.getType())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
-                    .withMessageParameters(conceptSchemeVersionOfRole.getMaintainableArtefact().getUrn(), new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_ROLE}).build();
-        }
-        // Check concept scheme of Role is externally published
-        SrmValidationUtils.checkArtefactProcStatus(conceptSchemeVersionOfRole.getLifeCycleMetadata(), conceptSchemeVersionOfRole.getMaintainableArtefact().getUrn(),
-                ProcStatusEnum.EXTERNALLY_PUBLISHED);
-        // Not add relation if Role is already added
-        for (Concept conceptRoleActual : concept.getRoleConcepts()) {
-            if (conceptRoleActual.getNameableArtefact().getUrn().equals(conceptRole.getNameableArtefact().getUrn())) {
-                return;
-            }
+
+        // Check role
+        PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+        ConceptMetamac conceptRole = retrieveConceptByUrn(ctx, conceptRoleUrn);
+        Long conceptRoleId = conceptRole.getId();
+        List<ConditionalCriteria> criteriaToVerifyConceptRole = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id()).eq(conceptRoleId).build();
+        PagedResult<ConceptMetamac> result = findConceptsCanBeRoleByCondition(ctx, criteriaToVerifyConceptRole, pagingParameter);
+        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptRoleId)) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.CONCEPT_ROLE).build();
         }
 
         // Add Role
+        // Not add relation if Role is already added
+        for (Concept conceptRoleActual : concept.getRoleConcepts()) {
+            if (conceptRoleActual.getId().equals(conceptRole.getId())) {
+                return;
+            }
+        }
         concept.addRoleConcept(conceptRole);
         getConceptMetamacRepository().save(concept);
 
@@ -941,13 +936,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Validation
         ConceptsMetamacInvocationValidator.checkDeleteRoleConcept(urn, conceptRoleUrn, null);
-
-        // Check concept scheme of concept 'urn' can be modified
         ConceptMetamac concept = retrieveConceptByUrn(ctx, urn);
         ItemSchemeVersion conceptSchemeVersion = concept.getItemSchemeVersion();
         retrieveConceptSchemeVersionCanBeModified(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn());
 
-        // Delete
+        // Delete role
         ConceptMetamac conceptRole = retrieveConceptByUrn(ctx, conceptRoleUrn);
         concept.removeRoleConcept(conceptRole);
         getConceptMetamacRepository().save(concept);

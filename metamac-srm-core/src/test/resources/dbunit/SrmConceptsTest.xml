@@ -3668,7 +3668,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
-        FINAL_LOGIC_CLIENT="0"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"
@@ -3825,7 +3825,7 @@
         
         VERSION_LOGIC="01.000"
         FINAL_LOGIC="1"
-        FINAL_LOGIC_CLIENT="0"
+        FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="1"
         PUBLIC_LOGIC="1"
         LATEST_PUBLIC="1"

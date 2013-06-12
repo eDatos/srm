@@ -213,6 +213,7 @@ Application ConceptsMetamac {
 				@ConceptMetamac retrieveConceptWithQuantityId(Long quantityId);
 				
 				checkConceptsWithConceptExtendsExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
+				checkConceptsWithConceptRoleExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 			}
 		}
 		

@@ -193,6 +193,29 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         }
     }
 
+    @SuppressWarnings("rawtypes")
+    @Override
+    public void checkConceptsWithConceptRoleExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT DISTINCT(acb2.URN) ");
+        sb.append("FROM TB_M_CONCEPT_ROLES cr ");
+        sb.append("INNER JOIN TB_CONCEPTS cb1 ON cb1.ID = cr.CONCEPT_FK ");
+        sb.append("INNER JOIN TB_CONCEPTS cb2 ON cb2.ID = cr.CONCEPT_ROLE_FK ");
+        sb.append("INNER JOIN TB_ITEM_SCHEMES_VERSIONS isv2 ON isv2.ID = cb2.ITEM_SCHEME_VERSION_FK ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS aisv2 ON aisv2.ID = isv2.MAINTAINABLE_ARTEFACT_FK ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS acb2 ON acb2.ID = cb2.NAMEABLE_ARTEFACT_FK ");
+        sb.append("WHERE cb1.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
+        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(true));
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            String urnRelatedResource = getString(resultSql);
+            addExceptionToExceptionItemsByResource(exceptionItemsByUrn, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, urnRelatedResource);
+        }
+    }
+
     /**
      * Checks concrete metadata of ConceptMetamac
      */

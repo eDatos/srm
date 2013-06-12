@@ -497,9 +497,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 pagingParameter);
 
         // Validate
-        assertEquals(1, conceptSchemeVersionPagedResult.getTotalRows());
+        assertEquals(2, conceptSchemeVersionPagedResult.getTotalRows());
         int i = 0;
+        assertEquals(CONCEPT_SCHEME_3_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         assertEquals(CONCEPT_SCHEME_13_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(conceptSchemeVersionPagedResult.getValues().size(), i);
     }
 
     @Test
@@ -1440,16 +1442,20 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         {
             ConceptMetamac concept1 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_1);
             concept1.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V1_CONCEPT_1));
+            concept1.addRoleConcept(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_3_V1_CONCEPT_2));
+            concept1.addRoleConcept(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_13_V1_CONCEPT_1)); // ok
             itemRepository.save(concept1);
         }
         {
             ConceptMetamac concept2 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_2);
             concept2.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_3_V1_CONCEPT_1));
+            concept2.addRoleConcept(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_13_V1_CONCEPT_1)); // ok
             itemRepository.save(concept2);
         }
         {
             ConceptMetamac concept3 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_3);
             concept3.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_12_V1_CONCEPT_1)); // ok
+            concept3.addRoleConcept(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_3_V1_CONCEPT_2_1));
             itemRepository.save(concept3);
         }
 
@@ -1459,10 +1465,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             conceptsService.publishExternallyConceptScheme(getServiceContextAdministrador(), urn);
             fail("related resources");
         } catch (MetamacException e) {
-            assertEquals(2, e.getExceptionItems().size());
+            assertEquals(4, e.getExceptionItems().size());
 
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_1_V1_CONCEPT_1);
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_2);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_2_1);
         }
 
     }
@@ -3865,11 +3873,16 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(3, conceptsPagedResult.getTotalRows());
-            assertEquals(3, conceptsPagedResult.getValues().size());
+            assertEquals(8, conceptsPagedResult.getTotalRows());
+            assertEquals(8, conceptsPagedResult.getValues().size());
             assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
 
             int i = 0;
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
@@ -3878,55 +3891,58 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         // Find by code (like)
         {
-            String code = "CONCEPT02";
+            String code = "CONCEPT01";
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).withProperty(ConceptProperties.nameableArtefact().code()).like(code + "%")
                     .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(1, conceptsPagedResult.getTotalRows());
-            assertEquals(1, conceptsPagedResult.getValues().size());
+            assertEquals(2, conceptsPagedResult.getTotalRows());
+            assertEquals(2, conceptsPagedResult.getValues().size());
             assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
 
             int i = 0;
-            assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(conceptsPagedResult.getValues().size(), i);
         }
 
         // Find by code (like) paginated
         {
-            String code = "CONCEPT0";
+            String code = "CONCEPT02";
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).withProperty(ConceptProperties.nameableArtefact().code()).like(code + "%")
-                    .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
+                    .orderBy(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending().orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
 
             // First page
             {
-                PagingParameter pagingParameter = PagingParameter.pageAccess(2, 1, true);
+                PagingParameter pagingParameter = PagingParameter.pageAccess(3, 1, true);
                 PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
                 // Validate
-                assertEquals(3, conceptsPagedResult.getTotalRows());
-                assertEquals(2, conceptsPagedResult.getValues().size());
+                assertEquals(5, conceptsPagedResult.getTotalRows());
+                assertEquals(3, conceptsPagedResult.getValues().size());
                 assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
 
                 int i = 0;
-                assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-                assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
                 assertEquals(conceptsPagedResult.getValues().size(), i);
             }
             // Second page
             {
-                PagingParameter pagingParameter = PagingParameter.pageAccess(2, 2, true);
+                PagingParameter pagingParameter = PagingParameter.pageAccess(3, 2, true);
                 PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeRoleByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
                 // Validate
-                assertEquals(3, conceptsPagedResult.getTotalRows());
-                assertEquals(1, conceptsPagedResult.getValues().size());
+                assertEquals(5, conceptsPagedResult.getTotalRows());
+                assertEquals(2, conceptsPagedResult.getValues().size());
                 assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
 
                 int i = 0;
-                assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_3_V1_CONCEPT_2_1_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+                assertEquals(CONCEPT_SCHEME_13_V1_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
                 assertEquals(conceptsPagedResult.getValues().size(), i);
             }
         }
@@ -4191,19 +4207,22 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     public void testAddRoleConcept() throws Exception {
 
         String urn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
-        List<ConceptMetamac> relatedConcepts = conceptsService.retrieveRoleConcepts(getServiceContextAdministrador(), urn);
-        assertEquals(2, relatedConcepts.size());
+        List<ConceptMetamac> roleConcepts = conceptsService.retrieveRoleConcepts(getServiceContextAdministrador(), urn);
+        assertEquals(2, roleConcepts.size());
 
         // Add relation
-        String urnNewRelation = CONCEPT_SCHEME_13_V1_CONCEPT_2;
-        conceptsService.addRoleConcept(getServiceContextAdministrador(), urn, urnNewRelation);
+        String roleNew1 = CONCEPT_SCHEME_13_V1_CONCEPT_2;
+        String roleNew2 = CONCEPT_SCHEME_3_V1_CONCEPT_2;
+        conceptsService.addRoleConcept(getServiceContextAdministrador(), urn, roleNew1); // externally
+        conceptsService.addRoleConcept(getServiceContextAdministrador(), urn, roleNew2); // internally
 
         // Validate
-        relatedConcepts = conceptsService.retrieveRoleConcepts(getServiceContextAdministrador(), urn);
-        assertEquals(3, relatedConcepts.size());
-        assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_13_V1_CONCEPT_1);
-        assertListConceptsContainsConcept(relatedConcepts, CONCEPT_SCHEME_13_V1_CONCEPT_3);
-        assertListConceptsContainsConcept(relatedConcepts, urnNewRelation);
+        roleConcepts = conceptsService.retrieveRoleConcepts(getServiceContextAdministrador(), urn);
+        assertEquals(4, roleConcepts.size());
+        assertListConceptsContainsConcept(roleConcepts, CONCEPT_SCHEME_13_V1_CONCEPT_1);
+        assertListConceptsContainsConcept(roleConcepts, CONCEPT_SCHEME_13_V1_CONCEPT_3);
+        assertListConceptsContainsConcept(roleConcepts, roleNew1);
+        assertListConceptsContainsConcept(roleConcepts, roleNew2);
     }
 
     @Test
@@ -4217,12 +4236,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("wrong type");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(CONCEPT_SCHEME_2_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_TRANSVERSAL, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
-            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_MEASURE, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
+            assertEquals(ServiceExceptionType.METADATA_UNEXPECTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_ROLE, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -4237,10 +4253,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("wrong type");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(CONCEPT_SCHEME_2_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_ROLE, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_ROLE, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -4248,17 +4263,16 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     public void testAddRoleConceptErrorConceptRoleWrongProcStatus() throws Exception {
 
         String urn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
-        String urnNewRelation = CONCEPT_SCHEME_3_V1_CONCEPT_1;
+        String urnNewRelation = CONCEPT_SCHEME_4_V1_CONCEPT_1;
 
         try {
             conceptsService.addRoleConcept(getServiceContextAdministrador(), urn, urnNewRelation);
             fail("not published");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(CONCEPT_SCHEME_3_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_ROLE, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 

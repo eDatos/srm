@@ -31,6 +31,7 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String CONCEPT_DERIVATION                                         = CONCEPT + ".derivation";
     public static final String CONCEPT_LEGAL_ACTS                                         = CONCEPT + ".legal_acts";
     public static final String CONCEPT_EXTENDS                                            = CONCEPT + ".extends";
+    public static final String CONCEPT_ROLE                                               = CONCEPT + ".role";
     public static final String CONCEPT_VARIABLE                                           = CONCEPT + ".variable";
 
     // CONCEPT QUANTITY
