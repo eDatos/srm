@@ -1,10 +1,12 @@
 package org.siemac.metamac.srm.core.concept.repositoryimpl;
 
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.booleanToBooleanDatabase;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getDate;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getLong;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.withoutTranslation;
 import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils.addTranslationExceptionToExceptionItemsByResource;
+import static org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils.addExceptionToExceptionItemsByResource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +19,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
@@ -165,6 +168,29 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
             return result.get(0);
         }
         return null;
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public void checkConceptsWithConceptExtendsExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT DISTINCT(acb2.URN) ");
+        sb.append("FROM TB_M_CONCEPTS c1 ");
+        sb.append("INNER JOIN TB_CONCEPTS cb1 ON cb1.ID = c1.TB_CONCEPTS ");
+        sb.append("INNER JOIN TB_CONCEPTS cb2 ON cb2.ID = c1.EXTENDS_FK ");
+        sb.append("INNER JOIN TB_ITEM_SCHEMES_VERSIONS isv2 ON isv2.ID = cb2.ITEM_SCHEME_VERSION_FK ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS aisv2 ON aisv2.ID = isv2.MAINTAINABLE_ARTEFACT_FK ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS acb2 ON acb2.ID = cb2.NAMEABLE_ARTEFACT_FK ");
+        sb.append("WHERE cb1.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
+        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(true));
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            String urnRelatedResource = getString(resultSql);
+            addExceptionToExceptionItemsByResource(exceptionItemsByUrn, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, urnRelatedResource);
+        }
     }
 
     /**

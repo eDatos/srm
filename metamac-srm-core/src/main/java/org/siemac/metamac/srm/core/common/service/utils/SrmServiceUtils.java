@@ -9,6 +9,9 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
+import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
@@ -488,5 +491,16 @@ public class SrmServiceUtils extends SdmxSrmUtils {
         }
         concept.setVariable(((CodelistVersionMetamac) concept.getCoreRepresentation().getEnumerationCodelist()).getVariable());
         return true;
+    }
+
+    /**
+     * Add exception to map of exception. If exception by resource doesnt exist, add to map
+     */
+    public static void addExceptionToExceptionItemsByResource(Map<String, MetamacExceptionItem> exceptionItemsByUrn, CommonServiceExceptionType exceptionType,
+            String urnRelatedResource) {
+        if (exceptionItemsByUrn.get(urnRelatedResource) == null) {
+            exceptionItemsByUrn.put(urnRelatedResource, MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(exceptionType).withMessageParameters(urnRelatedResource)
+                    .build());
+        }
     }
 }

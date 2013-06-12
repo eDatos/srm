@@ -26,6 +26,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
+import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
@@ -232,15 +233,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (conditions == null) {
             conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).distinctRoot().build();
         }
-        // Add restrictions to be extended
-        // concept scheme must be Glossary
+        // Concept scheme must be Glossary
         ConditionalCriteria roleCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(ConceptSchemeVersionMetamacProperties.type())
                 .eq(ConceptSchemeTypeEnum.GLOSSARY).buildSingle();
         conditions.add(roleCondition);
-        // concept scheme externally published
-        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
-                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
-        conditions.add(externallyPublishedCondition);
+        // Concept scheme internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
 
         PagedResult<ConceptSchemeVersion> conceptsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
         return pagedResultConceptSchemeVersionToMetamac(conceptsPagedResult);
@@ -365,6 +365,18 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public ConceptSchemeVersionMetamac publishExternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
         return (ConceptSchemeVersionMetamac) conceptSchemeLifeCycle.publishExternally(ctx, urn);
+    }
+
+    @Override
+    public void checkConceptSchemeWithRelatedResourcesExternallyPublished(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
+        Long itemSchemeVersionId = conceptSchemeVersion.getId();
+        Map<String, MetamacExceptionItem> exceptionItemsByUrn = new HashMap<String, MetamacExceptionItem>();
+        // Check, adding exceptions
+        getConceptMetamacRepository().checkConceptsWithConceptExtendsExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
+
+        // TODO resto...
+
+        ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
     }
 
     @Override
@@ -662,7 +674,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistId)) {
                 return returnOrThrowExceptionForCheckConceptEnumeratedRepresentation(throwException);
             }
-
         } else if (concept.getCoreRepresentation().getEnumerationConceptScheme() != null) {
             if (!ConceptRoleEnum.MEASURE_DIMENSION.equals(concept.getSdmxRelatedArtefact())) {
                 return returnOrThrowExceptionForCheckConceptEnumeratedRepresentation(throwException);
@@ -723,7 +734,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (conditions == null) {
             conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).distinctRoot().build();
         }
-        // Add restrictions to be extended
         // concept scheme must be Glossary
         ConditionalCriteria roleCondition = ConditionalCriteriaBuilder
                 .criteriaFor(ConceptMetamac.class)
@@ -731,10 +741,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                         new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class))
                 .eq(ConceptSchemeTypeEnum.GLOSSARY).buildSingle();
         conditions.add(roleCondition);
-        // concept scheme externally published
-        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
-                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
-        conditions.add(externallyPublishedCondition);
+        // Concept scheme internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
+                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogic()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
 
         PagedResult<Concept> conceptsPagedResult = conceptsService.findConceptsByCondition(ctx, conditions, pagingParameter);
         return pagedResultConceptToMetamac(conceptsPagedResult);
@@ -789,7 +799,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Delete bidirectional relations of concepts relate this concept and its children (will be removed in cascade)
         removeRelatedConceptsBidirectional(concept);
 
-        // note: do not check if it is role or extends of another concept, because one concept must be published to be role or extends
+        // note: do not check if it is role, extends or quantity of another concept, because one concept must be published to be related to another resource
 
         conceptsService.deleteConcept(ctx, urn);
     }
@@ -1296,33 +1306,22 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             return;
         }
 
-        // Not same concept scheme
-        if (concept.getConceptExtends() != null) {
-            if (conceptSchemeVersionSource.getItemScheme().getId().equals(concept.getConceptExtends().getItemSchemeVersion().getItemScheme().getId())) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.CONCEPT_EXTENDS).build();
-            }
-        }
-
-        // Check concept scheme source: type
+        // Check type of concept scheme source
         if (!ConceptSchemeTypeEnum.GLOSSARY.equals(conceptSchemeVersionSource.getType()) && !ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersionSource.getType())
                 && !ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersionSource.getType()) && !ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersionSource.getType())) {
-            throw MetamacExceptionBuilder
-                    .builder()
-                    .withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
-                    .withMessageParameters(
-                            conceptSchemeVersionSource.getMaintainableArtefact().getUrn(),
-                            new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_GLOSSARY, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION,
-                                    ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_TRANSVERSAL, ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_MEASURE}).build();
-
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNEXPECTED).withMessageParameters(ServiceExceptionParameters.CONCEPT_EXTENDS).build();
         }
 
-        // Check concept scheme target (of extends concept): procStatus and type
-        ConceptSchemeVersionMetamac conceptSchemeVersionTarget = retrieveConceptSchemeByUrn(ctx, concept.getConceptExtends().getItemSchemeVersion().getMaintainableArtefact().getUrn());
-        SrmValidationUtils.checkArtefactProcStatus(conceptSchemeVersionTarget.getLifeCycleMetadata(), conceptSchemeVersionTarget.getMaintainableArtefact().getUrn(),
-                ProcStatusEnum.EXTERNALLY_PUBLISHED);
-        if (!ConceptSchemeTypeEnum.GLOSSARY.equals(conceptSchemeVersionTarget.getType())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE)
-                    .withMessageParameters(conceptSchemeVersionTarget.getMaintainableArtefact().getUrn(), new String[]{ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_GLOSSARY}).build();
+        PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+        Long conceptExtendId = concept.getConceptExtends().getId();
+        List<ConditionalCriteria> criteriaToVerifyConceptExtends = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
+        // concept extends select must be in result
+                .withProperty(ConceptMetamacProperties.id()).eq(conceptExtendId)
+                // must belong to different schemes
+                .not().withProperty(ConceptMetamacProperties.itemSchemeVersion().itemScheme().id()).eq(conceptSchemeVersionSource.getItemScheme().getId()).build();
+        PagedResult<ConceptMetamac> result = findConceptsCanBeExtendedByCondition(ctx, criteriaToVerifyConceptExtends, pagingParameter);
+        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptExtendId)) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.CONCEPT_EXTENDS).build();
         }
     }
 

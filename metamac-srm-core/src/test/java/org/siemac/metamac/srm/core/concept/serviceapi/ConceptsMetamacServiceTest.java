@@ -512,9 +512,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 pagingParameter);
 
         // Validate
-        assertEquals(1, conceptSchemeVersionPagedResult.getTotalRows());
+        assertEquals(2, conceptSchemeVersionPagedResult.getTotalRows());
         int i = 0;
         assertEquals(CONCEPT_SCHEME_7_V1, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_7_V2, conceptSchemeVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(conceptSchemeVersionPagedResult.getValues().size(), i);
     }
 
     @Test
@@ -1426,6 +1428,48 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
         }
+    }
+
+    @Test
+    public void testPublishExternallyConceptSchemeErrorRelatedResourcesNotExternallyPublished() throws Exception {
+
+        String urn = CONCEPT_SCHEME_7_V2;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Change some metadata to force errors
+        {
+            ConceptMetamac concept1 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_1);
+            concept1.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_1_V1_CONCEPT_1));
+            itemRepository.save(concept1);
+        }
+        {
+            ConceptMetamac concept2 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_2);
+            concept2.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_3_V1_CONCEPT_1));
+            itemRepository.save(concept2);
+        }
+        {
+            ConceptMetamac concept3 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_3);
+            concept3.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_12_V1_CONCEPT_1)); // ok
+            itemRepository.save(concept3);
+        }
+
+        entityManager.flush();
+
+        try {
+            conceptsService.publishExternallyConceptScheme(getServiceContextAdministrador(), urn);
+            fail("related resources");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_1_V1_CONCEPT_1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_1);
+        }
+
+    }
+
+    @Override
+    public void testCheckConceptSchemeWithRelatedResourcesExternallyPublished() throws Exception {
+        // tested in testPublishExternallyConceptSchemeErrorRelatedResourcesNotExternallyPublished
     }
 
     @Override
@@ -2986,7 +3030,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
         ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, null);
         concept.setParent(null);
-        ConceptMetamac conceptExtends = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_1);
+        ConceptMetamac conceptExtends = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_2_V1_CONCEPT_1);
         concept.setConceptExtends(conceptExtends);
 
         String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
@@ -2997,10 +3041,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("not published");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(CONCEPT_SCHEME_7_V2, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_EXTENDS, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -3024,14 +3067,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("not published");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-
-            assertEquals(ServiceExceptionType.CONCEPT_SCHEME_WRONG_TYPE.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(conceptSchemeUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_GLOSSARY, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
-            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_OPERATION, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[1]);
-            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_TRANSVERSAL, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[2]);
-            assertEquals(ServiceExceptionParameters.CONCEPT_SCHEME_TYPE_MEASURE, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[3]);
+            assertEquals(ServiceExceptionType.METADATA_UNEXPECTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_EXTENDS, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -3243,7 +3281,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
         concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
         concept.getNameableArtefact().setName(ConceptsDoMocks.mockInternationalString());
-        concept.setConceptExtends(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V2_CONCEPT_1));
+        concept.setConceptExtends(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_2_V1_CONCEPT_1));
 
         // Create
         try {
@@ -3251,10 +3289,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             fail("not published");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(CONCEPT_SCHEME_7_V2, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_EXTENDS, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -3688,8 +3725,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(40, conceptsPagedResult.getTotalRows());
-            assertEquals(40, conceptsPagedResult.getValues().size());
+            assertEquals(42, conceptsPagedResult.getTotalRows());
+            assertEquals(42, conceptsPagedResult.getValues().size());
             assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
 
             int i = 0;
@@ -3714,6 +3751,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(CONCEPT_SCHEME_6_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_7_V2_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_7_V2_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CONCEPT_SCHEME_7_V2_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_8_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_10_V2_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CONCEPT_SCHEME_10_V3_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
@@ -3902,12 +3941,15 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeExtendedByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
         // Validate
-        assertEquals(1, conceptsPagedResult.getTotalRows());
-        assertEquals(1, conceptsPagedResult.getValues().size());
+        assertEquals(4, conceptsPagedResult.getTotalRows());
+        assertEquals(4, conceptsPagedResult.getValues().size());
         assertTrue(conceptsPagedResult.getValues().get(0) instanceof ConceptMetamac);
 
         int i = 0;
         assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_7_V2_CONCEPT_1, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_7_V2_CONCEPT_2, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_7_V2_CONCEPT_3, conceptsPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(conceptsPagedResult.getValues().size(), i);
     }
 

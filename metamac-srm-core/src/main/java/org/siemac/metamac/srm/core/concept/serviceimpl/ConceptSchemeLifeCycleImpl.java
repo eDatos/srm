@@ -172,7 +172,8 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         @Override
         public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
-            // note: role and extends concepts are already externally published when they are added
+
+            // note: role, extends and quantity concepts are already internally published when they are added
             // note: enumerated representation is checked in statistic module, in markAsFinal operation
         }
 
@@ -188,9 +189,9 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
-            // nothing
-            // note: role and extends concepts are already externally published when they are added
+        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
+                throws MetamacException {
+            conceptsMetamacService.checkConceptSchemeWithRelatedResourcesExternallyPublished(ctx, getConceptSchemeVersionMetamac(srmResourceVersion));
         }
 
         @Override

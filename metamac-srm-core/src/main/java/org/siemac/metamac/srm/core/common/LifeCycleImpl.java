@@ -391,7 +391,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Check other conditions
         checkResourceInInternallyPublished(ctx, urn, srmResourceVersion, targetStatus);
-        callback.checkConcreteResourceInExternallyPublished(srmResourceVersion, targetStatus, exceptions);
+        callback.checkConcreteResourceInExternallyPublished(ctx, srmResourceVersion, targetStatus, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
@@ -435,7 +435,8 @@ public abstract class LifeCycleImpl implements LifeCycle {
         public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
         public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
         public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
-        public void checkConcreteResourceInExternallyPublished(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
+        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
+                throws MetamacException;
         public Map<String, MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException;
 
         // Validity, final, public, additional actions

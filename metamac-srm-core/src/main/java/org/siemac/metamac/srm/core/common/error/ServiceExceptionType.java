@@ -10,6 +10,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_IMPORTED                                = create("exception.srm.structure_modifications.operation_not_supported.imported");
     public static final CommonServiceExceptionType STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_MAINTAINER_IS_NOT_DEFAULT_NOR_SDMX      = create("exception.srm.structure_modifications.operation_not_supported.maintainer_not_default_nor_sdmx");
     public static final CommonServiceExceptionType MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED_VERSION_NOT_PUBLISHED          = create("exception.srm.maintainable_artefact.versioning_not_supported.version_unpublished_found");
+    public static final CommonServiceExceptionType CONCEPT_NOT_EXTERNALLY_PUBLISHED                                              = create("exception.srm.concept_not_externally_published");
 
     // Concepts
     public static final CommonServiceExceptionType CONCEPT_SCHEME_WRONG_TYPE                                                     = create("exception.srm.concepts.concept_scheme.wrong_type");

@@ -86,6 +86,8 @@ Application ConceptsMetamac {
     		@ConceptSchemeVersionMetamac retrieveConceptSchemeByConceptUrn(String conceptUrn) throws MetamacException;
 			"Checks translations for concept scheme"
     		Map<String, MetamacExceptionItem> checkConceptSchemeVersionTranslations(Long itemSchemeVersionId, String locale) throws MetamacException;
+			"Checks related resources are externally published"
+    		checkConceptSchemeWithRelatedResourcesExternallyPublished(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
     		
 			"Creates concept"
 			@ConceptMetamac createConcept(String conceptSchemeUrn, @ConceptMetamac concept) throws MetamacException;
@@ -209,6 +211,8 @@ Application ConceptsMetamac {
 				List<ConceptMetamacVisualisationResult> findConceptsByConceptSchemeUnorderedToVisualisation(Long conceptSchemeVersionId, String locale) throws MetamacException;
 				checkConceptTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
 				@ConceptMetamac retrieveConceptWithQuantityId(Long quantityId);
+				
+				checkConceptsWithConceptExtendsExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 			}
 		}
 		
