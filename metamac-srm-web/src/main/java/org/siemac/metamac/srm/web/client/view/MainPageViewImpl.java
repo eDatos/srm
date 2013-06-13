@@ -203,7 +203,11 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
             };
             timer.schedule(6000);
         } else if (MessageTypeEnum.ERROR.equals(type)) {
-            errorMessagePanel.showMessage(throwable);
+            if (throwable != null) {
+                errorMessagePanel.showMessage(throwable);
+            } else {
+                errorMessagePanel.showMessage(message);
+            }
         }
     }
 

@@ -8,7 +8,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent.SelectMenuButtonHandler;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.MainPageUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.BreadCrumbsPanel;
@@ -222,7 +221,7 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
 
     @Override
     public void sDMXResourceImportationFailed(String fileName) {
-        ShowMessageEvent.fire(MainPagePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().resourceErrorImport()), MessageTypeEnum.ERROR);
+        ShowMessageEvent.fireErrorMessage(MainPagePresenter.this, MetamacSrmWeb.getMessages().resourceErrorImport());
     }
 
     @Override

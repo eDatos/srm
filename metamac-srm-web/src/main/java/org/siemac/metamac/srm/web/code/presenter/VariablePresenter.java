@@ -43,7 +43,6 @@ import org.siemac.metamac.srm.web.shared.code.SaveVariableElementAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableElementResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableResult;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -371,7 +370,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
     @Override
     public void resourceImportationFailed(String fileName) {
-        ShowMessageEvent.fire(VariablePresenter.this, getMessages().resourceErrorImport(), MessageTypeEnum.ERROR);
+        ShowMessageEvent.fireErrorMessage(VariablePresenter.this, getMessages().resourceErrorImport());
     }
 
     //
