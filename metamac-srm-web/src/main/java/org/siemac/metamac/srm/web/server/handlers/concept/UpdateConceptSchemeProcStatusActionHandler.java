@@ -1,12 +1,15 @@
 package org.siemac.metamac.srm.web.server.handlers.concept;
 
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.lang.shared.LocaleConstants;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operation;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.server.rest.StatisticalOperationsRestInternalFacade;
+import org.siemac.metamac.srm.web.server.utils.WebTranslateExceptions;
 import org.siemac.metamac.srm.web.shared.WebMessageExceptionsConstants;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusResult;
@@ -28,6 +31,9 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
     @Autowired
     private StatisticalOperationsRestInternalFacade statisticalOperationsRestInternalFacade;
 
+    @Autowired
+    private WebTranslateExceptions                  webTranslateExceptions;
+
     public UpdateConceptSchemeProcStatusActionHandler() {
         super(UpdateConceptSchemeProcStatusAction.class);
     }
@@ -35,6 +41,9 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
     @Override
     public UpdateConceptSchemeProcStatusResult executeSecurityAction(UpdateConceptSchemeProcStatusAction action) throws ActionException {
         try {
+
+            ServiceContext serviceContext = ServiceContextHolder.getCurrentServiceContext();
+
             ConceptSchemeMetamacDto conceptSchemeToUpdateStatus = action.getConceptSchemeMetamacDto();
 
             ConceptSchemeMetamacDto scheme = null;
@@ -55,8 +64,7 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
                 if (conceptSchemeToUpdateStatus.getRelatedOperation() != null) {
                     Operation operation = statisticalOperationsRestInternalFacade.retrieveOperation(conceptSchemeToUpdateStatus.getRelatedOperation().getCode());
                     if (!ProcStatus.PUBLISH_EXTERNALLY.equals(operation.getProcStatus())) {
-                        throw new MetamacWebException(WebMessageExceptionsConstants.MAINTAINABLE_ARTEFACT_ERROR_RELATED_OPERATION_NOT_EXTERNALLY_PUBLISHED,
-                                "Concept scheme cannot be externally published because the related operation is not externally published");
+                        throwStatisticalOperationNotExternallyPublishedException(serviceContext);
                     }
                 }
                 scheme = srmCoreServiceFacade.publishConceptSchemeExternally(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeToUpdateStatus.getUrn());
@@ -65,5 +73,16 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
+    }
+
+    private void throwStatisticalOperationNotExternallyPublishedException(ServiceContext serviceContext) throws MetamacWebException {
+        throwMetamacWebException(serviceContext, WebMessageExceptionsConstants.MAINTAINABLE_ARTEFACT_ERROR_RELATED_OPERATION_NOT_EXTERNALLY_PUBLISHED);
+    }
+
+    private void throwMetamacWebException(ServiceContext serviceContext, String exceptionCode) throws MetamacWebException {
+        String locale = (String) serviceContext.getProperty(LocaleConstants.locale);
+        String exceptionnMessage = webTranslateExceptions.getTranslatedMessage(exceptionCode, locale);
+
+        throw new MetamacWebException(exceptionCode, exceptionnMessage);
     }
 }
