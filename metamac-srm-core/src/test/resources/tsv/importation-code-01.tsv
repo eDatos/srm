@@ -1,4 +1,4 @@
-code	parent	variableElement	name#es	name#en	name#it	description#en	description#es
+code	parent	variable_element	name#es	name#en	name#it	description#en	description#es
 CODE01			nombre nuevo 1	new name 1		description new 1	
 code1		VARIABLE_ELEMENT_01	Nombre 1	Name 1	Nombre it 1	Description 1	Descripción 1
 CODE02		VARIABLE_ELEMENT_03	nombre nuevo con ácéntós 2	new name 2	nombre nuevo it 2	description new 2	descripción nueva 2

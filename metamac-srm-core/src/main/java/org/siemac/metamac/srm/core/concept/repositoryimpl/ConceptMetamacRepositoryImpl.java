@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
@@ -33,6 +34,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationRe
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.RelatedResourceVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 /**
  * Repository implementation for ConceptMetamac
@@ -225,6 +227,12 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         // TODO baseLocation
     }
 
+    @Override
+    public void checkConceptsWithRepresentationExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+        checkConceptsWithRepresentationExternallyPublished(itemSchemeVersionId, "CODELIST_FK", exceptionItemsByUrn, ServiceExceptionType.CODELIST_NOT_EXTERNALLY_PUBLISHED);
+        checkConceptsWithRepresentationExternallyPublished(itemSchemeVersionId, "CONCEPT_SCHEME_FK", exceptionItemsByUrn, ServiceExceptionType.CONCEPT_SCHEME_NOT_EXTERNALLY_PUBLISHED);
+    }
+
     @SuppressWarnings("rawtypes")
     private void checkConceptsWithQuantityConceptMetadataExternallyPublished(Long itemSchemeVersionId, String columnName, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
         StringBuilder sb = new StringBuilder();
@@ -268,6 +276,30 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         for (Object resultSql : resultsSql) {
             String urnRelatedResource = getString(resultSql);
             addExceptionToExceptionItemsByResource(exceptionItemsByUrn, ServiceExceptionType.CODE_NOT_EXTERNALLY_PUBLISHED, urnRelatedResource);
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    private void checkConceptsWithRepresentationExternallyPublished(Long itemSchemeVersionId, String columnName, Map<String, MetamacExceptionItem> exceptionItemsByUrn,
+            CommonServiceExceptionType serviceExceptionType) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT DISTINCT(aisv2.URN) ");
+        sb.append("FROM TB_CONCEPTS cb1 ");
+        sb.append("INNER JOIN TB_REPRESENTATIONS r1 ON r1.ID = cb1.CORE_REPRESENTATION_FK ");
+        sb.append("INNER JOIN TB_ITEM_SCHEMES_VERSIONS isv2 ON isv2.ID = r1." + columnName + " ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS aisv2 ON aisv2.ID = isv2.MAINTAINABLE_ARTEFACT_FK ");
+        sb.append("WHERE cb1.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
+        sb.append("AND r1.REPRESENTATION_TYPE = :representationType ");
+        sb.append("AND r1." + columnName + " IS NOT NULL ");
+        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(true));
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        query.setParameter("representationType", RepresentationTypeEnum.ENUMERATION.getName());
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            String urnRelatedResource = getString(resultSql);
+            addExceptionToExceptionItemsByResource(exceptionItemsByUrn, serviceExceptionType, urnRelatedResource);
         }
     }
 

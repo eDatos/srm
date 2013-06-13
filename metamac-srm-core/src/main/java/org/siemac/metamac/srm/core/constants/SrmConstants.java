@@ -25,8 +25,8 @@ public class SrmConstants {
     public static final String             TSV_HEADER_PARENT                                         = "parent";
     public static final String             TSV_HEADER_NAME                                           = "name";
     public static final String             TSV_HEADER_DESCRIPTION                                    = "description";
-    public static final String             TSV_HEADER_SHORT_NAME                                     = "shortName";
-    public static final String             TSV_HEADER_VARIABLE_ELEMENT                               = "variableElement";
+    public static final String             TSV_HEADER_SHORT_NAME                                     = "short_name";
+    public static final String             TSV_HEADER_VARIABLE_ELEMENT                               = "variable_element";
     public static final String             TSV_HEADER_LABEL                                          = "label";
     public static final String             TSV_HEADER_LEVEL                                          = "level";
     public static final String             TSV_HEADER_ORDER                                          = "order";

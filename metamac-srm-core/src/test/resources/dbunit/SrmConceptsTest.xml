@@ -5710,7 +5710,7 @@
     
     <!-- ************************************************************************************** -->
     <!-- CODELIST 9                                                                             -->
-    <!--        - Version 1: externally published                                               -->
+    <!--        - Version 1: internally published                                               -->
     <!-- *************************************************************************************  -->
 
     <TB_ITEM_SCHEMES
@@ -5748,7 +5748,7 @@
     
     <TB_M_CODELISTS_VERSIONS
         TB_CODELISTS_VERSIONS="2031"
-        PROC_STATUS="EXTERNALLY_PUBLISHED"
+        PROC_STATUS="INTERNALLY_PUBLISHED"
         
         ACCESS_TYPE="RESTRICTED"
         IS_RECOMMENDED="1"
@@ -5768,8 +5768,8 @@
         INTERNAL_PUBLICATION_DATE="2031-01-03 03:02:03"
         INTERNAL_PUBLICATION_USER="user3"
         EXTERNAL_PUBLICATION_DATE_TZ="Europe/London"
-        EXTERNAL_PUBLICATION_DATE="2031-01-01 01:02:03"
-        EXTERNAL_PUBLICATION_USER="user4"
+        EXTERNAL_PUBLICATION_DATE="[null]"
+        EXTERNAL_PUBLICATION_USER="[null]"
     />
     
     <TB_ANNOTABLE_ARTEFACTS 
@@ -5789,8 +5789,8 @@
         FINAL_LOGIC="1"
         FINAL_LOGIC_CLIENT="1"
         LATEST_FINAL="0"
-        PUBLIC_LOGIC="1"
-        LATEST_PUBLIC="1"
+        PUBLIC_LOGIC="0"
+        LATEST_PUBLIC="0"
         VALID_FROM_TZ="Europe/London"
         VALID_FROM="2031-01-02 02:02:04" 
         VALID_TO_TZ="[null]"

@@ -173,8 +173,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
 
-            // note: role, extends and quantity concepts are already internally published when they are added
-            // note: enumerated representation is checked in statistic module, in markAsFinal operation
+            // note: role, extends, quantity concepts, representation... are already internally published when they are added
         }
 
         @Override

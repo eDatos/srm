@@ -1,4 +1,4 @@
-code	parent	variableElement	name#es	name#en	name#it	description#en	description#es
+code	parent	variable_element	name#es	name#en	name#it	description#en	description#es
 %code1			Nombre				
 codeParentNotExists	parentNotExists		nombre				
 codeWithoutName							

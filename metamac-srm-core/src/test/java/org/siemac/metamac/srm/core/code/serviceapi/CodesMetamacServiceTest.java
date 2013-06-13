@@ -8562,7 +8562,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), "3", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "variableElement4WithoutShortName#@#parameter.srm.importation.shortName", Boolean.FALSE, type, task
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "variableElement4WithoutShortName#@#parameter.srm.importation.short_name", Boolean.FALSE, type, task
                 .getTaskResults().get(i++));
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "#variableNotSemanticCode#@#parameter.srm.importation.code", Boolean.FALSE, type,
                 task.getTaskResults().get(i++));

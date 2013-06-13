@@ -1578,6 +1578,51 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Test
+    public void testPublishExternallyConceptSchemeErrorRelatedResourcesCoreRepresentationNotExternallyPublished() throws Exception {
+
+        String urn = CONCEPT_SCHEME_7_V2;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Change some metadata to force errors
+        {
+            ConceptMetamac concept1 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_1);
+            Representation enumeratedRepresentation = new Representation();
+            enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+            enumeratedRepresentation.setEnumerationConceptScheme(conceptsService.retrieveConceptSchemeByUrn(ctx, CONCEPT_SCHEME_1_V1));
+            concept1.setCoreRepresentation(enumeratedRepresentation);
+            itemRepository.save(concept1);
+        }
+        {
+            ConceptMetamac concept2 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_2);
+            Representation enumeratedRepresentation = new Representation();
+            enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+            enumeratedRepresentation.setEnumerationCodelist(codesService.retrieveCodelistByUrn(ctx, CODELIST_9_V1));
+            concept2.setCoreRepresentation(enumeratedRepresentation);
+            itemRepository.save(concept2);
+        }
+        {
+            ConceptMetamac concept3 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_3);
+            Representation enumeratedRepresentation = new Representation();
+            enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+            enumeratedRepresentation.setEnumerationCodelist(codesService.retrieveCodelistByUrn(ctx, CODELIST_8_V1)); // ok
+            concept3.setCoreRepresentation(enumeratedRepresentation);
+            itemRepository.save(concept3);
+        }
+
+        entityManager.flush();
+
+        try {
+            conceptsService.publishExternallyConceptScheme(getServiceContextAdministrador(), urn);
+            fail("related resources");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_SCHEME_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_1_V1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CODELIST_NOT_EXTERNALLY_PUBLISHED, CODELIST_9_V1);
+        }
+    }
+
     @Override
     public void testCheckConceptSchemeWithRelatedResourcesExternallyPublished() throws Exception {
         // tested in testPublishExternallyConceptSchemeErrorRelatedResourcesNotExternallyPublished
@@ -2654,7 +2699,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ServiceContext ctx = getServiceContextAdministrador();
 
         ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
-        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1));
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_9_V1));
         concept.setParent(null);
         concept.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V1_CONCEPT_1));
         concept.setVariable(codesService.retrieveVariableByUrn(ctx, VARIABLE_1));

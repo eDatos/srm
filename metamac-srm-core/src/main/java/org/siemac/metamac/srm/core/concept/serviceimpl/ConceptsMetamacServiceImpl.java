@@ -257,11 +257,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         String conceptSchemeRelatedOperationUrn = null;
         if (StringUtils.isNotEmpty(conceptUrn)) {
-            ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
-            ConceptSchemeVersionMetamac conceptScheme = retrieveConceptSchemeByUrn(ctx, concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
+            ConceptSchemeVersionMetamac conceptScheme = retrieveConceptSchemeByConceptUrn(ctx, conceptUrn);
             ExternalItem relatedOperation = conceptScheme.getRelatedOperation();
             if (relatedOperation != null) {
-                conceptSchemeRelatedOperationUrn = (relatedOperation.getUrn() != null) ? relatedOperation.getUrn() : conceptSchemeRelatedOperationUrn;
+                conceptSchemeRelatedOperationUrn = relatedOperation.getUrn();
             }
         }
 
@@ -269,14 +268,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 .eq(ConceptSchemeTypeEnum.MEASURE).buildSingle();
         conditions.add(measureCondition);
 
-        ConditionalCriteria secondPart = null;
+        ConditionalCriteria relatedOperationCondition = null;
         if (conceptSchemeRelatedOperationUrn == null) {
-            secondPart = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)//
+            relatedOperationCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)//
                     .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation())//
                     .isNull()//
                     .buildSingle();
         } else {
-            secondPart = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)//
+            relatedOperationCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)//
                     .lbrace()//
                     .withProperty(ConceptSchemeVersionMetamacProperties.relatedOperation())//
                     .isNull()//
@@ -290,12 +289,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                     .rbrace()//
                     .buildSingle();
         }
-        conditions.add(secondPart);
+        conditions.add(relatedOperationCondition);
 
-        // concept scheme externally published
-        ConditionalCriteria externallyPublishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
-                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle();
-        conditions.add(externallyPublishedCondition);
+        // concept scheme internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
 
         PagedResult<ConceptSchemeVersion> conceptsPagedResult = conceptsService.findConceptSchemesByCondition(ctx, conditions, pagingParameter);
         return pagedResultConceptSchemeVersionToMetamac(conceptsPagedResult);
@@ -371,12 +370,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     public void checkConceptSchemeWithRelatedResourcesExternallyPublished(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         Long itemSchemeVersionId = conceptSchemeVersion.getId();
         Map<String, MetamacExceptionItem> exceptionItemsByUrn = new HashMap<String, MetamacExceptionItem>();
-        // Check, adding exceptions
         getConceptMetamacRepository().checkConceptsWithConceptExtendsExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
         getConceptMetamacRepository().checkConceptsWithConceptRoleExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
         getConceptMetamacRepository().checkConceptsWithQuantityExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
-        // TODO resto...
-
+        getConceptMetamacRepository().checkConceptsWithRepresentationExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
         ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
     }
 
@@ -1013,8 +1010,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         } else if (variableUrn != null) {
             variable = codesMetamacService.retrieveVariableByUrn(ctx, variableUrn);
         }
-
-        return findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ctx, conditions, pagingParameter, variable.getId());
+        Long variableId = variable != null ? variable.getId() : null;
+        return findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ctx, conditions, pagingParameter, variableId);
     }
 
     @SuppressWarnings({"unchecked"})

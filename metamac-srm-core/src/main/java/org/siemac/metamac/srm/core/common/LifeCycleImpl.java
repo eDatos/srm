@@ -382,14 +382,8 @@ public abstract class LifeCycleImpl implements LifeCycle {
             checkProcStatus(srmResourceVersion, procStatusToPublishExternally);
         }
 
-        // Check maintainer is externally published
-        if (!SdmxSrmUtils.isAgencySchemeSdmx(urn)) {
-            Organisation maintainer = callback.getMaintainableArtefact(srmResourceVersion).getMaintainer();
-            OrganisationSchemeVersionMetamac agencyScheme = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainer.getNameableArtefact().getUrn());
-            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(agencyScheme.getLifeCycleMetadata().getProcStatus())) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_SCHEME_NOT_EXTERNALLY_PUBLISHED).withMessageParameters(urn).build();
-            }
-        }
+        // Check maintainer
+        checkMaintainerExternallyPublished(ctx, urn, srmResourceVersion);
 
         // Check other conditions
         checkResourceInInternallyPublished(ctx, urn, srmResourceVersion, targetStatus);
@@ -416,6 +410,17 @@ public abstract class LifeCycleImpl implements LifeCycle {
         List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
         ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
         ExceptionUtils.throwIfException(exceptions);
+    }
+
+    private void checkMaintainerExternallyPublished(ServiceContext ctx, String urn, Object srmResourceVersion) throws MetamacException {
+        if (!SdmxSrmUtils.isAgencySchemeSdmx(urn)) {
+            Organisation maintainer = callback.getMaintainableArtefact(srmResourceVersion).getMaintainer();
+            OrganisationSchemeVersionMetamac agencyScheme = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainer.getNameableArtefact().getUrn());
+            if (!ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(agencyScheme.getLifeCycleMetadata().getProcStatus())) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ORGANISATION_SCHEME_NOT_EXTERNALLY_PUBLISHED)
+                        .withMessageParameters(agencyScheme.getMaintainableArtefact().getUrn()).build();
+            }
+        }
     }
 
     /**
