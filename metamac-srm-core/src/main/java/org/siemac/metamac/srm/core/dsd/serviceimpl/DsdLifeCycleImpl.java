@@ -208,49 +208,30 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                 }
             }
 
+            // Related resources constraints
             for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
                 for (Component component : componentList.getComponents()) {
 
                     List<MetamacExceptionItem> relatedResourceExceptions = new LinkedList<MetamacExceptionItem>();
+
                     dataStructureDefinitionMetamacService.checkPrimaryMeasure(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    if (!relatedResourceExceptions.isEmpty()) {
-                        exceptions.add(MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA)
-                                .withMessageParameters(component.getUrn()).build());
-                        relatedResourceExceptions.clear();
-                    }
-
                     dataStructureDefinitionMetamacService.checkTimeDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    if (!relatedResourceExceptions.isEmpty()) {
-                        exceptions.add(MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA)
-                                .withMessageParameters(component.getUrn()).build());
-                        relatedResourceExceptions.clear();
-                    }
-
                     dataStructureDefinitionMetamacService.checkMeasureDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    if (!relatedResourceExceptions.isEmpty()) {
-                        exceptions.add(MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA)
-                                .withMessageParameters(component.getUrn()).build());
-                        relatedResourceExceptions.clear();
-                    }
-
                     dataStructureDefinitionMetamacService.checkDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    if (!relatedResourceExceptions.isEmpty()) {
-                        exceptions.add(MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA)
-                                .withMessageParameters(component.getUrn()).build());
-                        relatedResourceExceptions.clear();
-                    }
-
                     dataStructureDefinitionMetamacService.checkAttribute(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    if (!relatedResourceExceptions.isEmpty()) {
-                        exceptions.add(MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA)
-                                .withMessageParameters(component.getUrn()).build());
-                        relatedResourceExceptions.clear();
-                    }
 
+                    // Group exceptions by component
+                    if (relatedResourceExceptions.size() != 0) {
+                        MetamacExceptionItem exceptionItemComponent = MetamacExceptionItemBuilder.metamacExceptionItem()
+                                .withCommonServiceExceptionType(ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA).withMessageParameters(component.getUrn())
+                                .withExceptionItems(relatedResourceExceptions).build();
+                        exceptions.add(exceptionItemComponent);
+                    }
                 }
             }
 
         }
+
         @Override
         public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
             // nothing
