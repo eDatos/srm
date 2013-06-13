@@ -50,7 +50,6 @@ import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
-import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -1095,50 +1094,42 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                 // check concept role is not null (may be null when a concept has been imported)
 
-                if (conceptRole == null) {
-                    // If a concept has not been selected, show a message and do not let the user to select a codelist
-                    InformationWindow conceptRoleRequiredWindow = new InformationWindow(getConstants().codelistSelection(), getConstants()
-                            .conceptSdmxRelatedArtefactRequiredForEnumeratedRepresentation());
-                    conceptRoleRequiredWindow.show();
+                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().enumeratedRepresentationSelection(), MAX_RESULTS,
+                        new PaginatedAction() {
 
-                } else {
+                            @Override
+                            public void retrieveResultSet(int firstResult, int maxResults) {
+                                getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, variableUrn, firstResult, maxResults,
+                                        searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn);
+                            }
+                        });
+                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.setInfoMessage(getConstants().conceptEnumeratedRepresentationInfoMessage());
+                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.showInfoMessage();
 
-                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().enumeratedRepresentationSelection(), MAX_RESULTS,
-                            new PaginatedAction() {
+                // Load codelists (to populate the selection window)
+                getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, variableUrn, FIRST_RESULST, MAX_RESULTS, null, conceptUrn);
 
-                                @Override
-                                public void retrieveResultSet(int firstResult, int maxResults) {
-                                    getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, variableUrn, firstResult, maxResults,
-                                            searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn);
-                                }
-                            });
-                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.setInfoMessage(getConstants().conceptEnumeratedRepresentationInfoMessage());
-                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.showInfoMessage();
+                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
-                    // Load codelists (to populate the selection window)
-                    getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, variableUrn, FIRST_RESULST, MAX_RESULTS, null, conceptUrn);
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                        getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, variableUrn, firstResult, maxResults, criteria, conceptUrn);
+                    }
+                });
 
-                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
-                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
-                        @Override
-                        public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                            getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, variableUrn, firstResult, maxResults, criteria, conceptUrn);
-                        }
-                    });
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        RelatedResourceDto selectedItemScheme = searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getSelectedRelatedResource();
+                        searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.markForDestroy();
+                        // Set selected itemScheme in form
+                        ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED)).setRelatedResource(selectedItemScheme);
+                        contentDescriptorsEditionForm.validate(false);
+                    }
+                });
 
-                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                        @Override
-                        public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                            RelatedResourceDto selectedItemScheme = searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getSelectedRelatedResource();
-                            searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.markForDestroy();
-                            // Set selected itemScheme in form
-                            ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED)).setRelatedResource(selectedItemScheme);
-                            contentDescriptorsEditionForm.validate(false);
-                        }
-                    });
-                }
             }
         });
         return searchItem;
