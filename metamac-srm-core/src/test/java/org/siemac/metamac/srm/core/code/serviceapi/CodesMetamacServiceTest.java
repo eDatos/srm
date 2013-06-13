@@ -4285,9 +4285,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         int i = 0;
         TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "%code1#@#code", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "%code1#@#parameter.srm.importation.code", Boolean.FALSE, type, task
+                .getTaskResults().get(i++));
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR_PARENT_NOT_FOUND.getCode(), "parentNotExists#@#codeParentNotExists", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "codeWithoutName#@#name", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "codeWithoutName#@#parameter.srm.importation.name", Boolean.FALSE, type, task.getTaskResults()
+                .get(i++));
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), "5", Boolean.FALSE, type, task.getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
     }
@@ -4627,8 +4629,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         int i = 0;
         TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "CODE0201#@#order", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "CODE04#@#order", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "CODE0201#@#parameter.srm.importation.order", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "CODE04#@#parameter.srm.importation.order", Boolean.FALSE, type, task.getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
     }
 
@@ -8560,9 +8562,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), "3", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "variableElement4WithoutShortName#@#shortName", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "#variableNotSemanticCode#@#code", Boolean.FALSE, type, task.getTaskResults()
-                .get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "variableElement4WithoutShortName#@#parameter.srm.importation.shortName", Boolean.FALSE, type, task
+                .getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "#variableNotSemanticCode#@#parameter.srm.importation.code", Boolean.FALSE, type,
+                task.getTaskResults().get(i++));
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), "7", Boolean.FALSE, type, task.getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
     }

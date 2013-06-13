@@ -119,6 +119,7 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     // IMPORTATION
     private static final String IMPORTATION_PREFIX                                         = "importation";
     public static final String  IMPORTATION_TSV_UPDATE_ALREADY_EXISTING                    = createCode(IMPORTATION_PREFIX, "updateAlreadyExisting");
+    // Note: name of columns must be identical to SrmContants.TSV_HEADER_*
     public static final String  IMPORTATION_TSV_COLUMN_CODE                                = createCode(IMPORTATION_PREFIX, "code");
     public static final String  IMPORTATION_TSV_COLUMN_PARENT                              = createCode(IMPORTATION_PREFIX, "parent");
     public static final String  IMPORTATION_TSV_COLUMN_VARIABLE_ELEMENT                    = createCode(IMPORTATION_PREFIX, "variableElement");
@@ -145,5 +146,9 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
         } else {
             return PREFIX_PARAMETER_SRM + "." + classCode + "." + fieldCode;
         }
+    }
+
+    public static String createCodeImportation(String fieldCode) {
+        return createCode(IMPORTATION_PREFIX, fieldCode);
     }
 }
