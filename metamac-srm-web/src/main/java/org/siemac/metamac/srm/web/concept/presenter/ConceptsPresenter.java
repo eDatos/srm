@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.concept.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.concept.enums.ConceptsToolStripButtonEnum;
@@ -22,7 +20,6 @@ import org.siemac.metamac.srm.web.concept.widgets.presenter.ConceptsToolStripPre
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsResult;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -117,7 +114,7 @@ public class ConceptsPresenter extends Presenter<ConceptsPresenter.ConceptsView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptsPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptsPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetConceptsResult result) {

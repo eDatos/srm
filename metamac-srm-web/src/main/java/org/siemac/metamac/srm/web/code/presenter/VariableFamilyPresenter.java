@@ -15,7 +15,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableFamilyUiHandlers;
@@ -30,7 +29,6 @@ import org.siemac.metamac.srm.web.shared.code.RemoveVariablesFromVariableFamilyA
 import org.siemac.metamac.srm.web.shared.code.RemoveVariablesFromVariableFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyResult;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -138,7 +136,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableFamilyErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableFamilyPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableFamilyResult result) {
@@ -153,7 +151,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableFamilyPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariablesResult result) {
@@ -168,7 +166,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableFamilyPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariablesResult result) {
@@ -190,11 +188,11 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableFamilyErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableFamilyPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveVariableFamilyResult result) {
-                ShowMessageEvent.fire(VariableFamilyPresenter.this, ErrorUtils.getMessageList(getMessages().variableFamilySaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(VariableFamilyPresenter.this, getMessages().variableFamilySaved());
                 getView().setVariableFamily(result.getSavedVariableFamilyDto());
 
                 // Update URL
@@ -210,11 +208,11 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorAddingToFamily()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableFamilyPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(AddVariablesToVariableFamilyResult result) {
-                ShowMessageEvent.fire(VariableFamilyPresenter.this, ErrorUtils.getMessageList(getMessages().variablesAddedToFamily()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(VariableFamilyPresenter.this, getMessages().variablesAddedToFamily());
                 retrieveVariablesByFamily(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null, familyUrn);
             }
         });
@@ -226,11 +224,11 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorRemovingFromFamily()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableFamilyPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(RemoveVariablesFromVariableFamilyResult result) {
-                ShowMessageEvent.fire(VariableFamilyPresenter.this, ErrorUtils.getMessageList(getMessages().variablesRemovedFromFamily()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(VariableFamilyPresenter.this, getMessages().variablesRemovedFromFamily());
                 retrieveVariablesByFamily(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null, familyUrn);
             }
         });

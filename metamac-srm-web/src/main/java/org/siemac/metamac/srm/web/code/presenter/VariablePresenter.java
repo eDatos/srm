@@ -18,7 +18,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableUiHandlers;
@@ -159,7 +158,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableResult result) {
@@ -175,7 +174,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableFamilyErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableFamiliesResult result) {
@@ -190,12 +189,12 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveVariableResult result) {
                 VariablePresenter.this.variableDto = result.getSavedVariableDto();
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(getMessages().variableSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, getMessages().variableSaved());
                 getView().setVariable(result.getSavedVariableDto());
 
                 // Update URL
@@ -211,7 +210,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariablesResult result) {
@@ -228,7 +227,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableElementsResult result) {
@@ -245,7 +244,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableElementsResult result) {
@@ -262,7 +261,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableElementsResult result) {
@@ -277,12 +276,12 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveVariableElementResult result) {
                 retrieveVariableElementsByVariable(ELEMENT_LIST_FIRST_RESULT, ELEMENT_LIST_MAX_RESULTS, null, variableDto.getUrn());
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().variableElementSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, MetamacSrmWeb.getMessages().variableElementSaved());
             }
         });
     }
@@ -293,12 +292,12 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteVariableElementsResult result) {
                 retrieveVariableElementsByVariable(ELEMENT_LIST_FIRST_RESULT, ELEMENT_LIST_MAX_RESULTS, null, variableDto.getUrn());
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().variableElementDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, MetamacSrmWeb.getMessages().variableElementDeleted());
             }
         });
     }
@@ -319,7 +318,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementOperationErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteVariableElementOperationsResult result) {
@@ -333,7 +332,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementOperationErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableElementOperationsByVariableResult result) {
@@ -347,19 +346,14 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                if (VariableElementOperationTypeEnum.FUSION.equals(type)) {
-                    ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementFusionError()), MessageTypeEnum.ERROR);
-                } else {
-                    ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementSegregationError()), MessageTypeEnum.ERROR);
-                }
-
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(CreateVariableElementOperationResult result) {
                 if (VariableElementOperationTypeEnum.FUSION.equals(type)) {
-                    ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().variableElementFusioned()), MessageTypeEnum.SUCCESS);
+                    ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, MetamacSrmWeb.getMessages().variableElementFusioned());
                 } else {
-                    ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().variableElementSegregated()), MessageTypeEnum.SUCCESS);
+                    ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, MetamacSrmWeb.getMessages().variableElementSegregated());
                 }
                 retrieveVariableElementOperations(variableDto.getUrn());
             }
@@ -372,12 +366,12 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
     @Override
     public void resourceImportationSucceed(String fileName) {
-        ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(getMessages().resourceImportationPlanned()), MessageTypeEnum.SUCCESS);
+        ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, getMessages().resourceImportationPlanned());
     }
 
     @Override
     public void resourceImportationFailed(String fileName) {
-        ShowMessageEvent.fire(VariablePresenter.this, ErrorUtils.getMessageList(getMessages().resourceErrorImport()), MessageTypeEnum.ERROR);
+        ShowMessageEvent.fire(VariablePresenter.this, getMessages().resourceErrorImport(), MessageTypeEnum.ERROR);
     }
 
     //

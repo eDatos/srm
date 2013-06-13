@@ -12,7 +12,6 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
@@ -30,7 +29,6 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdResult;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
@@ -164,12 +162,12 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdAttributeErrorSave()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
                     }
 
                     @Override
                     public void onWaitSuccess(SaveComponentForDsdResult result) {
-                        ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeSaved()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(DsdAttributesTabPresenter.this, MetamacSrmWeb.getMessages().dsdAttributeSaved());
                         dataStructureDefinitionDto = result.getDataStructureDefinitionMetamacDto();
                         updateAttributeList(false);
                         getView().onAttributeSaved((DataAttributeDto) result.getComponentDtoSaved());
@@ -184,12 +182,12 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
             @Override
             public void onWaitFailure(Throwable caught) {
                 updateAttributeList(true);
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteAttributesForDsdResult result) {
                 updateAttributeList(true);
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdAttributeDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(DsdAttributesTabPresenter.this, MetamacSrmWeb.getMessages().dsdAttributeDeleted());
             }
         });
     }
@@ -203,7 +201,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
@@ -224,7 +222,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -243,7 +241,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -259,7 +257,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -278,8 +276,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingConceptsAsRole()),
-                                MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -295,7 +292,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -313,7 +310,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdAttributesTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {

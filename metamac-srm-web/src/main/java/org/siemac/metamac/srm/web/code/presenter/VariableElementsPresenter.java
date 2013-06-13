@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.code.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
@@ -10,7 +9,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableElementsUiHandlers;
@@ -18,7 +16,6 @@ import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenter
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -116,7 +113,7 @@ public class VariableElementsPresenter extends Presenter<VariableElementsPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableElementsPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableElementsPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableElementsResult result) {

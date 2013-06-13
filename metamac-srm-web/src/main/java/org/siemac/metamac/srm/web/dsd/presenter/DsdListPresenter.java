@@ -17,7 +17,6 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
@@ -38,7 +37,6 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdResult;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -174,13 +172,13 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveDsdResult result) {
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(new DataStructureDefinitionWebCriteria()));
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(DsdListPresenter.this, MetamacSrmWeb.getMessages().dsdSaved());
             }
         });
     }
@@ -193,13 +191,13 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             public void onWaitFailure(Throwable caught) {
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(new DataStructureDefinitionWebCriteria()));
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteDsdsResult result) {
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(new DataStructureDefinitionWebCriteria()));
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(DsdListPresenter.this, MetamacSrmWeb.getMessages().dsdDeleted());
             }
         });
     }
@@ -213,7 +211,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetDsdsResult result) {
@@ -228,7 +226,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().resourceErrorExport()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {
@@ -243,13 +241,13 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().dsdErrorCancelValidity()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(new DataStructureDefinitionWebCriteria()));
             }
             @Override
             public void onWaitSuccess(CancelDsdValidityResult result) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getMessageList(getMessages().dsdCanceledValidity()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(DsdListPresenter.this, getMessages().dsdCanceledValidity());
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(new DataStructureDefinitionWebCriteria()));
             }
@@ -263,7 +261,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().dsdErrorRetrievingOperations()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {
@@ -286,7 +284,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().dsdErrorRetrievingOperations()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {
@@ -302,7 +300,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetConceptsResult result) {
@@ -318,7 +316,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetConceptsResult result) {

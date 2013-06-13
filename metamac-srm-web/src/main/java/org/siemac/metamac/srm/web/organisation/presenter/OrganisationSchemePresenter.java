@@ -22,7 +22,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.organisation.enums.OrganisationsToolStripButtonEnum;
@@ -73,7 +72,6 @@ import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemePr
 import org.siemac.metamac.srm.web.shared.organisation.VersionOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.VersionOrganisationSchemeResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -234,7 +232,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetOrganisationSchemeResult result) {
@@ -257,7 +255,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRetrievingVersions()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetOrganisationSchemeVersionsResult result) {
@@ -276,7 +274,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetOrganisationSchemesResult result) {
@@ -291,12 +289,12 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveOrganisationSchemeResult result) {
                 organisationSchemeMetamacDto = result.getOrganisationSchemeSaved();
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeSaved());
                 getView().setOrganisationScheme(organisationSchemeMetamacDto);
 
                 updateUrl();
@@ -310,11 +308,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteOrganisationSchemeListResult result) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeDeleted());
                 goTo(PlaceRequestUtils.buildAbsoluteOrganisationSchemesPlaceRequest());
             }
         });
@@ -326,7 +324,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().resourceErrorExport()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {
@@ -341,11 +339,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().maintainableArtefactErrorCopy()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(CopyOrganisationSchemeResult result) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().maintainableArtefactCopied()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().maintainableArtefactCopied());
             }
         });
     }
@@ -362,11 +360,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorCancelValidity()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(CancelOrganisationSchemeValidityResult result) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeCanceledValidity());
                 retrieveOrganisationSchemeByUrn(urn);
             }
         });
@@ -379,12 +377,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorSendingToProductionValidation()),
-                                MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSentToProductionValidation()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeSentToProductionValidation());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
                     }
@@ -398,12 +395,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorSendingToDiffusionValidation()),
-                                MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSentToDiffusionValidation()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeSentToDiffusionValidation());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
                     }
@@ -417,11 +413,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRejecting()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeRejected()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeRejected());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
                     }
@@ -435,11 +431,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorPublishingInternally()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemePublishedInternally()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemePublishedInternally());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
 
@@ -460,11 +456,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorPublishingExternally()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemePublishedExternally()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemePublishedExternally());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
                     }
@@ -477,11 +473,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorVersioning()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(VersionOrganisationSchemeResult result) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeVersioned()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeVersioned());
                 organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
                 retrieveCompleteOrganisationSchemeByUrn(result.getOrganisationSchemeMetamacDto().getUrn());
 
@@ -496,7 +492,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().resourceErrorEditingPublishedResource()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(CreateOrganisationSchemeTemporalVersionResult result) {
@@ -516,7 +512,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetOrganisationsBySchemeResult result) {
@@ -531,11 +527,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveOrganisationResult result) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSaved());
                 retrieveOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
             }
         });
@@ -554,11 +550,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteOrganisationsResult result) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().organisationDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationDeleted());
                 retrieveOrganisationsByScheme(organisationSchemeMetamacDto.getUrn());
             }
         });
@@ -574,7 +570,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategorisationsByArtefactResult result) {
@@ -590,11 +586,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorCreate()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(CreateCategorisationResult result) {
-                        ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationCreated()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().categorisationCreated());
                         retrieveCategorisations(organisationSchemeMetamacDto.getUrn());
                     }
                 });
@@ -606,11 +602,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteCategorisationsResult result) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().categorisationDeleted());
                 retrieveCategorisations(organisationSchemeMetamacDto.getUrn());
             }
         });
@@ -622,11 +618,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorCancelValidity()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(CancelCategorisationValidityResult result) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().categorisationDeleted());
                 retrieveCategorisations(organisationSchemeMetamacDto.getUrn());
             }
         });
@@ -641,7 +637,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategorySchemesResult result) {
@@ -660,7 +656,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationSchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategoriesResult result) {

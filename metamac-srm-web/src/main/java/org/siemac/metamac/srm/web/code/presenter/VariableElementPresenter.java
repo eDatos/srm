@@ -16,7 +16,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableElementUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
@@ -33,7 +32,6 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableElementAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableElementResult;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -142,7 +140,7 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableElementPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableElementPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableElementResult result) {
@@ -158,12 +156,12 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableElementPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableElementPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveVariableElementResult result) {
                 VariableElementPresenter.this.variableElementDto = result.getSavedVariableElementDto();
-                ShowMessageEvent.fire(VariableElementPresenter.this, ErrorUtils.getMessageList(getMessages().variableElementSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(VariableElementPresenter.this, getMessages().variableElementSaved());
                 VariableElementDto variableElementDto = result.getSavedVariableElementDto();
                 getView().setVariableElement(variableElementDto);
 
@@ -182,7 +180,7 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableElementPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableElementPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableElementsResult result) {
@@ -199,7 +197,7 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableElementPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableElementPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableElementsResult result) {
@@ -215,11 +213,11 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(VariableElementPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementSegregationError()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(VariableElementPresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(CreateVariableElementOperationResult result) {
-                        ShowMessageEvent.fire(VariableElementPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().variableElementSegregated()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(VariableElementPresenter.this, MetamacSrmWeb.getMessages().variableElementSegregated());
                         retrieveVariableElementOperations(variableElementDto.getUrn());
                     }
                 });
@@ -236,7 +234,7 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableElementPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementOperationErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableElementPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteVariableElementOperationsResult result) {
@@ -250,7 +248,7 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableElementPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableElementPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableElementOperationsByVariableElementResult result) {

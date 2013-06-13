@@ -20,7 +20,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.concept.enums.ConceptsToolStripButtonEnum;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
@@ -56,7 +55,6 @@ import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -189,7 +187,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetConceptResult result) {
@@ -204,7 +202,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingConceptList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetConceptsBySchemeResult result) {
@@ -213,7 +211,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieve()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(GetConceptSchemeResult result) {
@@ -239,11 +237,11 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveConceptResult result) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(ConceptPresenter.this, getMessages().conceptSaved());
                 getView().setConcept(result.getConceptDto(), result.getRoles(), result.getRelatedConcepts());
 
                 // Update URL
@@ -259,7 +257,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteConceptResult result) {
@@ -279,7 +277,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteConceptResult result) {
@@ -300,7 +298,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
                 @Override
                 public void onWaitFailure(Throwable caught) {
-                    ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrievingConceptTypeList()), MessageTypeEnum.ERROR);
+                    ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                 }
                 @Override
                 public void onWaitSuccess(FindAllConceptTypesResult result) {
@@ -328,7 +326,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
                         @Override
                         public void onWaitFailure(Throwable caught) {
-                            ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                            ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                         }
                         @Override
                         public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -357,7 +355,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
                         @Override
                         public void onWaitFailure(Throwable caught) {
-                            ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+                            ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                         }
                         @Override
                         public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -375,7 +373,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetConceptsCanBeRoleResult result) {
@@ -392,7 +390,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetConceptsCanBeExtendedResult result) {
@@ -407,7 +405,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetConceptSchemesWithConceptsCanBeRoleResult result) {
@@ -422,7 +420,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetConceptSchemesWithConceptsCanBeExtendedResult result) {
@@ -437,7 +435,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().variableErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariablesResult result) {
@@ -452,7 +450,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableFamilyErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableFamiliesResult result) {
@@ -469,7 +467,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                     }
 
                     @Override
@@ -488,7 +486,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                     }
 
                     @Override
@@ -508,7 +506,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                     }
 
                     @Override
@@ -528,7 +526,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                     }
 
                     @Override
@@ -548,7 +546,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                     }
 
                     @Override
@@ -568,7 +566,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                     }
 
                     @Override
@@ -588,7 +586,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                     }
 
                     @Override
@@ -609,7 +607,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(ConceptPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                     }
 
                     @Override

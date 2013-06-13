@@ -17,7 +17,6 @@ import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
@@ -29,7 +28,6 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -130,7 +128,7 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemeListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategorySchemesResult result) {
@@ -145,11 +143,11 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemeListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveCategorySchemeResult result) {
-                ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategorySchemeListPresenter.this, getMessages().categorySchemeSaved());
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(new CategorySchemeWebCriteria()));
             }
@@ -162,13 +160,13 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemeListPresenter.this, caught);
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(new CategorySchemeWebCriteria()));
             }
             @Override
             public void onWaitSuccess(DeleteCategorySchemesResult result) {
-                ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategorySchemeListPresenter.this, getMessages().categorySchemeDeleted());
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(new CategorySchemeWebCriteria()));
             }
@@ -181,13 +179,13 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorCancelValidity()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemeListPresenter.this, caught);
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(new CategorySchemeWebCriteria()));
             }
             @Override
             public void onWaitSuccess(CancelCategorySchemeValidityResult result) {
-                ShowMessageEvent.fire(CategorySchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategorySchemeListPresenter.this, getMessages().categorySchemeCanceledValidity());
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(new CategorySchemeWebCriteria()));
             }

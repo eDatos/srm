@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.code.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
@@ -22,7 +20,6 @@ import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenter
 import org.siemac.metamac.srm.web.shared.code.GetCodesAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -116,7 +113,7 @@ public class CodesPresenter extends Presenter<CodesPresenter.CodesView, CodesPre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodesPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodesPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCodesResult result) {

@@ -14,7 +14,6 @@ import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
@@ -31,7 +30,6 @@ import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -129,11 +127,11 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveCodelistResult result) {
-                ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CodelistListPresenter.this, getMessages().codelistSaved());
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
             }
@@ -146,13 +144,13 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistListPresenter.this, caught);
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
             }
             @Override
             public void onWaitSuccess(DeleteCodelistsResult result) {
-                ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CodelistListPresenter.this, getMessages().codelistDeleted());
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
             }
@@ -165,7 +163,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCodelistsResult result) {
@@ -180,13 +178,13 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorCancelValidity()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistListPresenter.this, caught);
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
             }
             @Override
             public void onWaitSuccess(CancelCodelistValidityResult result) {
-                ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistCanceledValidity()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CodelistListPresenter.this, getMessages().codelistCanceledValidity());
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
             }
@@ -199,7 +197,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariablesResult result) {

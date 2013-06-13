@@ -14,7 +14,6 @@ import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.concept.enums.ConceptsToolStripButtonEnum;
@@ -32,7 +31,6 @@ import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.StatisticalOperationWebCriteria;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -132,7 +130,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptSchemeListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetConceptSchemesResult result) {
@@ -147,11 +145,11 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptSchemeListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveConceptSchemeResult result) {
-                ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(ConceptSchemeListPresenter.this, getMessages().conceptSchemeSaved());
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(new ConceptSchemeWebCriteria()));
             }
@@ -164,13 +162,13 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptSchemeListPresenter.this, caught);
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(new ConceptSchemeWebCriteria()));
             }
             @Override
             public void onWaitSuccess(DeleteConceptSchemesResult result) {
-                ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(ConceptSchemeListPresenter.this, getMessages().conceptSchemeDeleted());
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(new ConceptSchemeWebCriteria()));
             }
@@ -183,13 +181,13 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorCancelValidity()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptSchemeListPresenter.this, caught);
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(new ConceptSchemeWebCriteria()));
             }
             @Override
             public void onWaitSuccess(CancelConceptSchemeValidityResult result) {
-                ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getMessageList(getMessages().conceptSchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(ConceptSchemeListPresenter.this, getMessages().conceptSchemeCanceledValidity());
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(new ConceptSchemeWebCriteria()));
             }
@@ -203,7 +201,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingOperations()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptSchemeListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {
@@ -226,7 +224,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(ConceptSchemeListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().conceptSchemeErrorRetrievingOperations()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(ConceptSchemeListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {

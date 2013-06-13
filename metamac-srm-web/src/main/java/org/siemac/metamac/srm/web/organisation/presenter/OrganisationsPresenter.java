@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.organisation.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.organisation.enums.OrganisationsToolStripButtonEnum;
@@ -23,7 +21,6 @@ import org.siemac.metamac.srm.web.organisation.widgets.presenter.OrganisationsTo
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationWebCriteria;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsResult;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -120,7 +117,7 @@ public class OrganisationsPresenter extends Presenter<OrganisationsPresenter.Org
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationsPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationsPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetOrganisationsResult result) {

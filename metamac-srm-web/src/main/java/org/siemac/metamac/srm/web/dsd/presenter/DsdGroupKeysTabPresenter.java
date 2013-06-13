@@ -12,7 +12,6 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
@@ -24,7 +23,6 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDescriptorForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDescriptorForDsdResult;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
@@ -140,11 +138,11 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdGrouKeysErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdGroupKeysTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveDescriptorForDsdResult result) {
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdGroupKeysSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(DsdGroupKeysTabPresenter.this, MetamacSrmWeb.getMessages().dsdGroupKeysSaved());
                 dataStructureDefinitionDto = result.getDataStructureDefinitionMetamacDto();
                 updateGroupKeysList(false); // Do no update the view!! The method onDimensionSaved updates the dimension list in the view
                 getView().onGroupKeysSaved(result.getDescriptorDtoSaved());
@@ -159,12 +157,12 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
             @Override
             public void onWaitFailure(Throwable caught) {
                 updateGroupKeysList(true);
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdGroupKeysErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdGroupKeysTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteDescriptorListForDsdResult result) {
                 updateGroupKeysList(true);
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdGroupKeysDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(DsdGroupKeysTabPresenter.this, MetamacSrmWeb.getMessages().dsdGroupKeysDeleted());
             }
         });
     }
@@ -177,7 +175,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdGroupKeysTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
@@ -198,7 +196,7 @@ public class DsdGroupKeysTabPresenter extends Presenter<DsdGroupKeysTabPresenter
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdGroupKeysTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdGroupKeysTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {

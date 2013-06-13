@@ -26,7 +26,6 @@ import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
@@ -70,7 +69,6 @@ import org.siemac.metamac.srm.web.shared.concept.CopyCategorySchemeResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -204,7 +202,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategorySchemeResult result) {
@@ -227,7 +225,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrievingVersions()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategorySchemeVersionsResult result) {
@@ -246,7 +244,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategorySchemesResult result) {
@@ -261,12 +259,12 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveCategorySchemeResult result) {
                 categorySchemeMetamacDto = result.getCategorySchemeSaved();
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeSaved());
                 getView().setCategoryScheme(categorySchemeMetamacDto);
 
                 updateUrl();
@@ -280,11 +278,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteCategorySchemesResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeDeleted());
                 goTo(PlaceRequestUtils.buildAbsoluteCategorySchemesPlaceRequest());
             }
         });
@@ -296,11 +294,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorCancelValidity()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(CancelCategorisationValidityResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorisationDeleted());
                 retrieveCategorisations(categorySchemeMetamacDto.getUrn());
             }
         });
@@ -312,7 +310,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().resourceErrorExport()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {
@@ -327,11 +325,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().maintainableArtefactErrorCopy()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(CopyCategorySchemeResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().maintainableArtefactCopied()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().maintainableArtefactCopied());
             }
         });
     }
@@ -348,11 +346,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorCancelValidity()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(CancelCategorySchemeValidityResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeCanceledValidity()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeCanceledValidity());
                 retrieveCategorySchemeByUrn(urn);
             }
         });
@@ -365,12 +363,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorSendingToProductionValidation()),
-                                MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeSentToProductionValidation()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeSentToProductionValidation());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         getView().setCategoryScheme(categorySchemeMetamacDto);
                     }
@@ -384,11 +381,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorSendingToDiffusionValidation()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeSentToDiffusionValidation()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeSentToDiffusionValidation());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         getView().setCategoryScheme(categorySchemeMetamacDto);
                     }
@@ -402,11 +399,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRejecting()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeRejected()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeRejected());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         getView().setCategoryScheme(categorySchemeMetamacDto);
                     }
@@ -420,11 +417,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorPublishingInternally()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemePublishedInternally()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemePublishedInternally());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         getView().setCategoryScheme(categorySchemeMetamacDto);
 
@@ -445,11 +442,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorPublishingExternally()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemePublishedExternally()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemePublishedExternally());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         getView().setCategoryScheme(categorySchemeMetamacDto);
                     }
@@ -462,11 +459,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorVersioning()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(VersionCategorySchemeResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeVersioned()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeVersioned());
                 categorySchemeMetamacDto = result.getCategorySchemeMetamacDto();
                 retrieveCompleteCategorySchemeByUrn(categorySchemeMetamacDto.getUrn());
                 updateUrl();
@@ -480,7 +477,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().resourceErrorEditingPublishedResource()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(CreateCategorySchemeTemporalVersionResult result) {
@@ -500,7 +497,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategoriesBySchemeResult result) {
@@ -515,11 +512,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveCategoryResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorySaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySaved());
                 retrieveCategorySchemeByUrn(categorySchemeMetamacDto.getUrn());
             }
         });
@@ -531,11 +528,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteCategoryResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categoryDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categoryDeleted());
                 retrieveCategoriesByScheme(categorySchemeMetamacDto.getUrn());
             }
         });
@@ -549,7 +546,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategorisationsByArtefactResult result) {
@@ -565,11 +562,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorCreate()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(CreateCategorisationResult result) {
-                        ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationCreated()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorisationCreated());
                         retrieveCategorisations(categorySchemeMetamacDto.getUrn());
                     }
                 });
@@ -581,11 +578,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteCategorisationsResult result) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorisationDeleted());
                 retrieveCategorisations(categorySchemeMetamacDto.getUrn());
             }
         });
@@ -600,7 +597,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategorySchemesResult result) {
@@ -619,7 +616,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategorySchemePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategoriesResult result) {

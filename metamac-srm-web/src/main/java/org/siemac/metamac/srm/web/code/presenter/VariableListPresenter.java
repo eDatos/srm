@@ -13,7 +13,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableListUiHandlers;
@@ -27,7 +26,6 @@ import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -133,11 +131,11 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveVariableResult result) {
-                ShowMessageEvent.fire(VariableListPresenter.this, ErrorUtils.getMessageList(getMessages().variableSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(VariableListPresenter.this, getMessages().variableSaved());
                 retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null);
             }
         });
@@ -149,12 +147,12 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableListPresenter.this, caught);
                 retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null);
             }
             @Override
             public void onWaitSuccess(DeleteVariablesResult result) {
-                ShowMessageEvent.fire(VariableListPresenter.this, ErrorUtils.getMessageList(getMessages().variableDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(VariableListPresenter.this, getMessages().variableDeleted());
                 retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null);
             }
         });
@@ -166,7 +164,7 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariablesResult result) {
@@ -184,7 +182,7 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(VariableListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableFamilyErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(VariableListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetVariableFamiliesResult result) {

@@ -172,12 +172,12 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionErrorSave()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
                     }
 
                     @Override
                     public void onWaitSuccess(SaveComponentForDsdResult result) {
-                        ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDimensionSaved()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(DsdDimensionsTabPresenter.this, MetamacSrmWeb.getMessages().dsdDimensionSaved());
                         dataStructureDefinitionDto = result.getDataStructureDefinitionMetamacDto();
                         updateDimensionList(false); // Do no update the view!! The method onDimensionSaved updates the dimension list in the view
                         getView().onDimensionSaved((DimensionComponentDto) result.getComponentDtoSaved());
@@ -192,12 +192,12 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
             @Override
             public void onWaitFailure(Throwable caught) {
                 updateDimensionList(true);
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionErrorDeleteDetails()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteDimensionListForDsdResult result) {
                 updateDimensionList(true);
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdDimensionDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(DsdDimensionsTabPresenter.this, MetamacSrmWeb.getMessages().dsdDimensionDeleted());
             }
         });
     }
@@ -209,7 +209,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
@@ -230,7 +230,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
@@ -251,7 +251,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -270,7 +270,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -286,7 +286,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -302,7 +302,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -318,7 +318,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -337,8 +337,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingConceptsAsRole()),
-                                MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -353,7 +352,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetConceptResult result) {
@@ -378,8 +377,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdDimensionsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdDimensionErrorRetrievingDefaultConcept()),
-                        MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetDefaultDimensionForDsdResult result) {

@@ -12,7 +12,6 @@ import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.StructuralResourcesUiHandlers;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
@@ -30,7 +29,6 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -143,7 +141,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(StructuralResourcesPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetDsdsResult result) {
@@ -159,7 +157,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(StructuralResourcesPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetConceptSchemesResult result) {
@@ -176,8 +174,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().organisationSchemeErrorRetrieveList()),
-                                MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(StructuralResourcesPresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(GetOrganisationSchemesResult result) {
@@ -193,7 +190,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().categorySchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(StructuralResourcesPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategorySchemesResult result) {
@@ -209,7 +206,7 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(StructuralResourcesPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(StructuralResourcesPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCodelistsResult result) {

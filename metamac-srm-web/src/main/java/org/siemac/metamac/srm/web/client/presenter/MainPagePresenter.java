@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.client.presenter;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,7 +15,6 @@ import org.siemac.metamac.srm.web.client.widgets.BreadCrumbsPanel;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlAction;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlResult;
 import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
-import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.HideMessageEvent;
 import org.siemac.metamac.web.common.client.events.HideMessageEvent.HideMessageHandler;
@@ -84,7 +82,7 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
         void clearBreadcrumbs(int size, PlaceManager placeManager);
         void setBreadcrumbs(int index, String title);
 
-        void showMessage(List<String> messages, MessageTypeEnum type);
+        void showMessage(Throwable throwable, String message, MessageTypeEnum type);
         void hideMessages();
 
         void selectStructuralResourceMenuButton(ToolStripButtonEnum type);
@@ -159,7 +157,7 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
     @ProxyEvent
     @Override
     public void onShowMessage(ShowMessageEvent event) {
-        getView().showMessage(event.getMessages(), event.getMessageType());
+        getView().showMessage(event.getThrowable(), event.getMessage(), event.getMessageType());
     }
 
     @ProxyEvent
@@ -209,7 +207,7 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(MainPagePresenter.this, ErrorUtils.getErrorMessages(caught, MetamacWebCommon.getMessages().errorDownloadingUserGuide()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(MainPagePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetUserGuideUrlResult result) {
@@ -229,7 +227,7 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
 
     @Override
     public void sDMXResourceImportationSucceed(String fileName) {
-        ShowMessageEvent.fire(MainPagePresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().resourceImportationPlanned()), MessageTypeEnum.SUCCESS);
+        ShowMessageEvent.fireSuccessMessage(MainPagePresenter.this, MetamacSrmWeb.getMessages().resourceImportationPlanned());
     }
 
     //

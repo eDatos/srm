@@ -18,7 +18,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.CodeUiHandlers;
@@ -46,7 +45,6 @@ import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementAction
 import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -151,7 +149,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCodeResult result) {
@@ -166,7 +164,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCodelistResult result) {
@@ -177,7 +175,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
                             @Override
                             public void onWaitFailure(Throwable caught) {
-                                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrievingCodeList()), MessageTypeEnum.ERROR);
+                                ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
                             }
                             @Override
                             public void onWaitSuccess(GetCodesByCodelistResult result) {
@@ -194,11 +192,11 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveCodeResult result) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getMessageList(getMessages().codeSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CodePresenter.this, getMessages().codeSaved());
                 getView().setCode(result.getCodeDto());
 
                 // Update URL
@@ -214,11 +212,11 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codesErrorCopyingInCodelist()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(CopyCodesInCodelistResult result) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getMessageList(getMessages().codesCopiedInCodelist()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CodePresenter.this, getMessages().codesCopiedInCodelist());
                 retrieveCodesByCodelist(codelistTargetUrn);
             }
         });
@@ -230,7 +228,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteCodeResult result) {
@@ -250,7 +248,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteCodeResult result) {
@@ -273,7 +271,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().variableElementErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -293,7 +291,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeErrorUpdatingPosition()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(UpdateCodeParentResult result) {
@@ -308,11 +306,11 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codeVariableElementErrorUpdate()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(UpdateCodeVariableElementResult result) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getMessageList(getMessages().codeVariableElementUpdated()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CodePresenter.this, getMessages().codeVariableElementUpdated());
                 retrieveCode(codeUrn);
             }
         });
@@ -324,7 +322,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCodelistsResult result) {
@@ -339,7 +337,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
             }
 
             @Override
@@ -351,7 +349,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
                             @Override
                             public void onWaitFailure(Throwable caught) {
-                                ShowMessageEvent.fire(CodePresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrievingCodeList()), MessageTypeEnum.ERROR);
+                                ShowMessageEvent.fireErrorMessage(CodePresenter.this, caught);
                             }
                             @Override
                             public void onWaitSuccess(GetCodesByCodelistResult result) {

@@ -19,7 +19,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryResult;
@@ -31,7 +30,6 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryResult;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -136,7 +134,7 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategoryPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategoryResult result) {
@@ -151,12 +149,12 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategoryPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveCategoryResult result) {
                 categoryMetamacDto = result.getCategorySaved();
-                ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getMessageList(getMessages().categorySchemeSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategoryPresenter.this, getMessages().categorySchemeSaved());
                 getView().setCategory(result.getCategorySaved());
 
                 // Update URL
@@ -172,11 +170,11 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategoryPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteCategoryResult result) {
-                ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getMessageList(getMessages().categoryDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategoryPresenter.this, getMessages().categoryDeleted());
                 // If deleted category had a category parent, go to this category parent. If not, go to the category scheme.
                 if (itemVisualisationResult.getParent() != null && itemVisualisationResult.getParent().getUrn() != null) {
                     goToCategory(itemVisualisationResult.getParent().getUrn());
@@ -193,11 +191,11 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategoryPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteCategoryResult result) {
-                ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getMessageList(getMessages().categoryDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CategoryPresenter.this, getMessages().categoryDeleted());
                 // If deleted category had a category parent, go to this category parent. If not, go to the category scheme.
                 if (categoryMetamacDto.getItemParentUrn() != null) {
                     goToCategory(categoryMetamacDto.getItemParentUrn());
@@ -214,7 +212,7 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrievingCategoryList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategoryPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategoriesBySchemeResult result) {
@@ -223,7 +221,7 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(CategoryPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrieve()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(CategoryPresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(GetCategorySchemeResult result) {

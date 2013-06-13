@@ -18,7 +18,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.organisation.enums.OrganisationsToolStripButtonEnum;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
@@ -37,7 +36,6 @@ import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeAc
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationResult;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -151,7 +149,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetOrganisationResult result) {
@@ -178,7 +176,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationContactErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetOrganisationContactsResult result) {
@@ -203,12 +201,12 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveOrganisationResult result) {
                 organisationMetamacDto = result.getOrganisationSaved();
-                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationSchemeSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(OrganisationPresenter.this, getMessages().organisationSchemeSaved());
                 getView().setOrganisation(result.getOrganisationSaved(), contactToUpdateId);
 
                 // Update URL
@@ -231,11 +229,11 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteOrganisationsResult result) {
-                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(OrganisationPresenter.this, getMessages().organisationDeleted());
                 // If deleted organisation had a organisation parent, go to this organisation parent. If not, go to the organisation scheme.
                 if (itemVisualisationResult.getParent() != null && itemVisualisationResult.getParent().getUrn() != null) {
                     goToOrganisation(itemVisualisationResult.getParent().getUrn());
@@ -252,11 +250,11 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteOrganisationsResult result) {
-                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getMessageList(getMessages().organisationDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(OrganisationPresenter.this, getMessages().organisationDeleted());
                 // If deleted organisation had a organisation parent, go to this organisation parent. If not, go to the organisation scheme.
                 if (organisationMetamacDto.getItemParentUrn() != null) {
                     goToOrganisation(organisationMetamacDto.getItemParentUrn());
@@ -273,7 +271,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRetrievingOrganisationList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(OrganisationPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetOrganisationsBySchemeResult result) {
@@ -282,7 +280,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(OrganisationPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().organisationSchemeErrorRetrieve()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(OrganisationPresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(GetOrganisationSchemeResult result) {

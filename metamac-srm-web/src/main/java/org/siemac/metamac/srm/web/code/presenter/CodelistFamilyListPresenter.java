@@ -13,7 +13,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistFamilyListUiHandlers;
@@ -24,7 +23,6 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyResult;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -119,7 +117,7 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistFamilyListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistFamilyErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistFamilyListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCodelistFamiliesResult result) {
@@ -137,11 +135,11 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistFamilyListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistFamilyErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistFamilyListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveCodelistFamilyResult result) {
-                ShowMessageEvent.fire(CodelistFamilyListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistFamilySaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CodelistFamilyListPresenter.this, getMessages().codelistFamilySaved());
                 retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
             }
         });
@@ -153,12 +151,12 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistFamilyListPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistFamilyErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistFamilyListPresenter.this, caught);
                 retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
             }
             @Override
             public void onWaitSuccess(DeleteCodelistFamiliesResult result) {
-                ShowMessageEvent.fire(CodelistFamilyListPresenter.this, ErrorUtils.getMessageList(getMessages().codelistFamilyDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CodelistFamilyListPresenter.this, getMessages().codelistFamilyDeleted());
                 retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
             }
         });

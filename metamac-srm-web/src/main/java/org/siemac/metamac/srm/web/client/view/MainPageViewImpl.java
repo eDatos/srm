@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.web.client.view;
 
-import java.util.List;
-
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
@@ -191,11 +189,11 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
     }
 
     @Override
-    public void showMessage(List<String> messages, MessageTypeEnum type) {
+    public void showMessage(Throwable throwable, String message, MessageTypeEnum type) {
         // Hide messages before showing the new ones
         hideMessages();
         if (MessageTypeEnum.SUCCESS.equals(type)) {
-            successMessagePanel.showMessage(messages);
+            successMessagePanel.showMessage(message);
             Timer timer = new Timer() {
 
                 @Override
@@ -205,7 +203,7 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
             };
             timer.schedule(6000);
         } else if (MessageTypeEnum.ERROR.equals(type)) {
-            errorMessagePanel.showMessage(messages);
+            errorMessagePanel.showMessage(throwable);
         }
     }
 

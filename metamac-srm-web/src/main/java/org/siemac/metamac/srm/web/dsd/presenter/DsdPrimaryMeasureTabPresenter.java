@@ -11,7 +11,6 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
 import org.siemac.metamac.srm.web.dsd.events.SelectViewDsdDescriptorEvent;
@@ -26,7 +25,6 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdResult;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
@@ -123,11 +121,11 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdPrimaryMeasureErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdPrimaryMeasureTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveComponentForDsdResult result) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getMessageList(MetamacSrmWeb.getMessages().dsdPrimaryMeasureSaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(DsdPrimaryMeasureTabPresenter.this, MetamacSrmWeb.getMessages().dsdPrimaryMeasureSaved());
                 primaryMeasure = result.getComponentDtoSaved();
                 dataStructureDefinitionDto = result.getDataStructureDefinitionMetamacDto();
                 getView().onPrimaryMeasureSaved(dataStructureDefinitionDto, primaryMeasure);
@@ -142,7 +140,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdPrimaryMeasureTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
@@ -162,7 +160,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptSchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdPrimaryMeasureTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -181,7 +179,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().conceptErrorRetrieveList()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(DsdPrimaryMeasureTabPresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
@@ -197,7 +195,7 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdPrimaryMeasureTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdPrimaryMeasureTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetRelatedResourcesResult result) {

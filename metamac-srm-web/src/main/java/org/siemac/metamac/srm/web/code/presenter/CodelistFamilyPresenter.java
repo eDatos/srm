@@ -15,7 +15,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistFamilyUiHandlers;
@@ -31,7 +30,6 @@ import org.siemac.metamac.srm.web.shared.code.RemoveCodelistsFromCodelistFamilyR
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -139,7 +137,7 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistFamilyErrorRetrieve()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistFamilyPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCodelistFamilyResult result) {
@@ -156,7 +154,7 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistFamilyPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCodelistsResult result) {
@@ -174,7 +172,7 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistFamilyPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCodelistsResult result) {
@@ -196,11 +194,11 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistFamilyErrorSave()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistFamilyPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(SaveCodelistFamilyResult result) {
-                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getMessageList(getMessages().codelistFamilySaved()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CodelistFamilyPresenter.this, getMessages().codelistFamilySaved());
                 getView().setCodelistFamily(result.getSavedCodelistFamilyDto());
 
                 // Update URL
@@ -216,11 +214,11 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorAddingToFamily()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistFamilyPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(AddCodelistsToCodelistFamilyResult result) {
-                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getMessageList(getMessages().codelistsAddedToFamily()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CodelistFamilyPresenter.this, getMessages().codelistsAddedToFamily());
                 retrieveCodelistsByFamily(CODELIST_LIST_FIRST_RESULT, CODELIST_LIST_MAX_RESULTS, null, familyUrn);
             }
         });
@@ -232,12 +230,12 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().codelistErrorRemovingFromFamily()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CodelistFamilyPresenter.this, caught);
                 retrieveCodelistsByFamily(CODELIST_LIST_FIRST_RESULT, CODELIST_LIST_MAX_RESULTS, null, familyUrn);
             }
             @Override
             public void onWaitSuccess(RemoveCodelistsFromCodelistFamilyResult result) {
-                ShowMessageEvent.fire(CodelistFamilyPresenter.this, ErrorUtils.getMessageList(getMessages().codelistsRemovedFromFamily()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(CodelistFamilyPresenter.this, getMessages().codelistsRemovedFromFamily());
                 retrieveCodelistsByFamily(CODELIST_LIST_FIRST_RESULT, CODELIST_LIST_MAX_RESULTS, null, familyUrn);
             }
         });

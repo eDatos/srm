@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.category.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
-import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
@@ -16,13 +15,11 @@ import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
@@ -117,7 +114,7 @@ public class CategoriesPresenter extends Presenter<CategoriesPresenter.Categorie
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(CategoriesPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(CategoriesPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategoriesResult result) {

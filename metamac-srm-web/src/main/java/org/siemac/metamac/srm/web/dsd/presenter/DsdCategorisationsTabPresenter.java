@@ -12,7 +12,6 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
-import org.siemac.metamac.srm.web.client.utils.ErrorUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.dsd.enums.DsdTabTypeEnum;
@@ -35,7 +34,6 @@ import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
-import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
@@ -119,7 +117,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getErrorMessages(caught, MetamacSrmWeb.getMessages().dsdErrorRetrievingData()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdCategorisationsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetDsdResult result) {
@@ -135,7 +133,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdCategorisationsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategorisationsByArtefactResult result) {
@@ -151,11 +149,11 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorCreate()), MessageTypeEnum.ERROR);
+                        ShowMessageEvent.fireErrorMessage(DsdCategorisationsTabPresenter.this, caught);
                     }
                     @Override
                     public void onWaitSuccess(CreateCategorisationResult result) {
-                        ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getMessageList(getMessages().categorisationCreated()), MessageTypeEnum.SUCCESS);
+                        ShowMessageEvent.fireSuccessMessage(DsdCategorisationsTabPresenter.this, getMessages().categorisationCreated());
                         retrieveCategorisations(dataStructureDefinitionDto.getUrn());
                     }
                 });
@@ -167,11 +165,11 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorDelete()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdCategorisationsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteCategorisationsResult result) {
-                ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(DsdCategorisationsTabPresenter.this, getMessages().categorisationDeleted());
                 retrieveCategorisations(dataStructureDefinitionDto.getUrn());
             }
         });
@@ -183,11 +181,11 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorisationErrorCancelValidity()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdCategorisationsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(CancelCategorisationValidityResult result) {
-                ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getMessageList(getMessages().categorisationDeleted()), MessageTypeEnum.SUCCESS);
+                ShowMessageEvent.fireSuccessMessage(DsdCategorisationsTabPresenter.this, getMessages().categorisationDeleted());
                 retrieveCategorisations(dataStructureDefinitionDto.getUrn());
             }
         });
@@ -202,7 +200,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categorySchemeErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdCategorisationsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategorySchemesResult result) {
@@ -221,7 +219,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
 
             @Override
             public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fire(DsdCategorisationsTabPresenter.this, ErrorUtils.getErrorMessages(caught, getMessages().categoryErrorRetrieveList()), MessageTypeEnum.ERROR);
+                ShowMessageEvent.fireErrorMessage(DsdCategorisationsTabPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(GetCategoriesResult result) {
