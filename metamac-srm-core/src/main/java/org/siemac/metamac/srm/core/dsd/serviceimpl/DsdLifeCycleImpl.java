@@ -283,8 +283,9 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
-            // nothing TODO comprobar recursos relacionados están publicados externamente
+        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
+                throws MetamacException {
+            dataStructureDefinitionMetamacService.checkDataStructureDefinitionWithRelatedResourcesExternallyPublished(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion));
         }
 
         @Override

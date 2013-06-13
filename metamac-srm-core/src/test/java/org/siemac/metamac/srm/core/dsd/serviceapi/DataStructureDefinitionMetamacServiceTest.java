@@ -304,6 +304,11 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
         // Tested in testPublishInternallyDataStructureDefinitionCheckTranslations
     }
 
+    @Override
+    public void testCheckDataStructureDefinitionWithRelatedResourcesExternallyPublished() throws Exception {
+        // TODO testCheckDataStructureDefinitionWithRelatedResourcesExternallyPublished
+    }
+
     @Test
     public void testPublishInternallyDataStructureDefinitionCheckTranslations() throws Exception {
         String urn = DSD_7_V1;

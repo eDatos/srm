@@ -487,6 +487,11 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         return exceptionItemsByResourceUrn;
     }
 
+    @Override
+    public void checkOrganisationSchemeWithRelatedResourcesExternallyPublished(ServiceContext ctx, OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
+        // TODO categorizaciones
+    }
+
     /**
      * Typecast to Metamac type
      */

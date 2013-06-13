@@ -595,6 +595,12 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     }
 
     @Override
+    public void checkDataStructureDefinitionWithRelatedResourcesExternallyPublished(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
+        // TODO categorizaciones
+        // TODO resto de relaciones
+    }
+
+    @Override
     public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdPrimaryMeasureByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter, String dsdUrn) throws MetamacException {
         return findConceptSchemesWithConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.PRIMARY_MEASURE);

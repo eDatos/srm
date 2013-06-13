@@ -512,7 +512,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     private ReplaceToCodelist toCodelistReplaceTo(CodelistVersionMetamac source) {
         ReplaceToCodelist target = null;
         for (CodelistVersionMetamac replaceToCodelist : source.getReplaceToCodelists()) {
-            if (canResourceBeProvidedByApi(replaceToCodelist)) { // note: this check is not necessary really, because in core is checked. It is added to avoid future problems
+            if (canResourceBeProvidedByApi(replaceToCodelist)) {
                 if (target == null) {
                     target = new ReplaceToCodelist();
 

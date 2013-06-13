@@ -145,8 +145,9 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
-            // nothing
+        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
+                throws MetamacException {
+            organisationsMetamacService.checkOrganisationSchemeWithRelatedResourcesExternallyPublished(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion));
         }
 
         @Override

@@ -369,6 +369,11 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkFindCodelistsByConditionCanReplaceTo(String codelistUrn, boolean includeReplacedBySelectedCodelist, List<ConditionalCriteria> conditions, PagingParameter pagingParameter,
+            List<MetamacExceptionItem> exceptions) throws MetamacException {
+        // all optional
+    }
+
     private static void checkCodelistFamily(CodelistFamily codelistFamily, List<MetamacExceptionItem> exceptions) {
         ValidationUtils.checkParameterRequired(codelistFamily, ServiceExceptionParameters.CODELIST_FAMILY, exceptions);
         if (codelistFamily == null) {

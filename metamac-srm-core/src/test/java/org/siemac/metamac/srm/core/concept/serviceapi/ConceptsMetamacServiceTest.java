@@ -1466,7 +1466,6 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_1_V1_CONCEPT_1);
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_1);
         }
-
     }
 
     @Test

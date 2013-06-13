@@ -136,8 +136,9 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
-            // nothing
+        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
+                throws MetamacException {
+            categoriesMetamacService.checkCategorySchemeWithRelatedResourcesExternallyPublished(ctx, getCategorySchemeVersionMetamac(srmResourceVersion));
         }
 
         @Override

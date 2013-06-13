@@ -47,6 +47,8 @@ Application CodesMetamac {
 			List<@CodelistVersionMetamac> retrieveCodelistVersions(String urn) throws MetamacException;
 			"Finds codelists by criteria"
     		PagedResult<@CodelistVersionMetamac> findCodelistsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Find codelists can replace another one"
+    		PagedResult<@CodelistVersionMetamac> findCodelistsByConditionCanReplaceTo(String codelistUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Sends codelist to production validation"
     		@CodelistVersionMetamac sendCodelistToProductionValidation(String urn) throws MetamacException;
     		"Sends codelist to diffusion validation"
@@ -79,6 +81,8 @@ Application CodesMetamac {
     		@CodelistVersionMetamac retrieveCodelistByCodeUrn(String codeUrn) throws MetamacException;
 			"Checks translations for codelist"
     		Map<String, MetamacExceptionItem> checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale) throws MetamacException;
+			"Checks related resources are externally published"
+    		checkCodelistWithRelatedResourcesExternallyPublished(@CodelistVersionMetamac codelistVersion) throws MetamacException;
     		
 			// CODES
 
@@ -346,7 +350,9 @@ Application CodesMetamac {
 				List<CodeMetamacVisualisationResult> findCodesByCodelistUnorderedToVisualisation(Long codelistId, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) throws MetamacException;
 				List<ItemResult> findCodesByCodelistUnordered(Long codelistId, ItemMetamacResultSelection resultSelection) throws MetamacException;
 				List<ItemResult> findCodesByCodelistOrderedInDepth(Long codelistId, Integer orderColumnIndex, ItemMetamacResultSelection resultSelection) throws MetamacException;
+				
 				checkCodeTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
+				checkCodelistWithReplaceToExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 				
 				clearCodesVariableElementByCodelist(@CodelistVersionMetamac codelistVersion);
 				updateCodesVariableElements(Map<Long,Long> variableElementsByCodes, Long codelistVersionId, Long variableId) throws MetamacException;

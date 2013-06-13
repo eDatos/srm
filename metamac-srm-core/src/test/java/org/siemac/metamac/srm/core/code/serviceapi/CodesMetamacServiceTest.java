@@ -294,10 +294,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             codesService.createCodelist(ctx, codelistVersion);
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(CODELIST_1_V2, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CODELIST_REPLACE_TO, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -309,7 +308,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         // Replace to
-        String codelistReplacedUrn = CODELIST_12_V1;
         CodelistVersionMetamac codelistReplaced1 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_12_V1);
         codelistVersion.getReplaceToCodelists().add(codelistReplaced1);
 
@@ -318,9 +316,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             codesService.createCodelist(ctx, codelistVersion);
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(codelistReplacedUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.CODELIST_REPLACE_TO, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -397,7 +395,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // New 'Replace to'
         String replaceTo1New = CODELIST_7_V1;
         String replaceTo2New = CODELIST_10_V1;
-        codelistVersion.removeAllReplaceToCodelists();
         codelistVersion.getReplaceToCodelists().add(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), replaceTo1New));
         codelistVersion.getReplaceToCodelists().add(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), replaceTo2New));
         codesService.updateCodelist(ctx, codelistVersion);
@@ -408,7 +405,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         CodelistVersionMetamac codelistReplaced2 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), replaceTo2New);
         assertEquals(urn, codelistReplaced2.getReplacedByCodelist().getMaintainableArtefact().getUrn());
         CodelistVersionMetamac codelistNotReplaced3 = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), replaceTo1Old);
-        assertEquals(null, codelistNotReplaced3.getReplacedByCodelist());
+        assertEquals(urn, codelistNotReplaced3.getReplacedByCodelist().getMaintainableArtefact().getUrn());
     }
 
     @Test
@@ -790,6 +787,84 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(CODELIST_12_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CODELIST_13_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(CODELIST_14_V1, codelistVersionPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        }
+    }
+
+    @Test
+    @Override
+    public void testFindCodelistsByConditionCanReplaceTo() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // New codelist
+        {
+            String codelistUrn = null;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.id()).ascending().distinctRoot()
+                    .build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsByConditionCanReplaceTo(ctx, codelistUrn, conditions, pagingParameter);
+
+            // Validate
+            assertEquals(7, codelistsPagedResult.getTotalRows());
+            assertEquals(7, codelistsPagedResult.getValues().size());
+
+            int i = 0;
+            assertEquals(CODELIST_1_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_3_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_7_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_7_V2, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_10_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_10_V2, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            // assertEquals(CODELIST_12_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn()); // replacedBy filled
+            assertEquals(CODELIST_13_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(codelistsPagedResult.getValues().size(), i);
+        }
+
+        // Existing codelist
+        {
+            String codelistUrn = CODELIST_1_V2;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.id()).ascending().distinctRoot()
+                    .build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsByConditionCanReplaceTo(ctx, codelistUrn, conditions, pagingParameter);
+
+            // Validate
+            assertEquals(6, codelistsPagedResult.getTotalRows());
+            assertEquals(6, codelistsPagedResult.getValues().size());
+
+            int i = 0;
+            // assertEquals(CODELIST_1_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn()); // same scheme
+            assertEquals(CODELIST_3_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_7_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_7_V2, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_10_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_10_V2, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            // assertEquals(CODELIST_12_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn()); // replacedBy filled
+            assertEquals(CODELIST_13_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(codelistsPagedResult.getValues().size(), i);
+        }
+
+        // Existing codelist with replaceTo already filled
+        {
+            String codelistUrn = CODELIST_2_V1;
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.id()).ascending().distinctRoot()
+                    .build();
+            PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+            PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsByConditionCanReplaceTo(ctx, codelistUrn, conditions, pagingParameter);
+
+            // Validate
+            assertEquals(7, codelistsPagedResult.getTotalRows());
+            assertEquals(7, codelistsPagedResult.getValues().size());
+
+            int i = 0;
+            assertEquals(CODELIST_1_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_3_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_7_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_7_V2, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_10_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(CODELIST_10_V2, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            // assertEquals(CODELIST_12_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn()); // replacedBy filled
+            assertEquals(CODELIST_13_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+            assertEquals(codelistsPagedResult.getValues().size(), i);
         }
     }
 
@@ -1382,6 +1457,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Tested in testPublishInternallyCodelistCheckTranslations
     }
 
+    @Override
+    public void testCheckCodelistWithRelatedResourcesExternallyPublished() throws Exception {
+        // TODO testCheckCodelistWithRelatedResourcesExternallyPublished
+    }
+
     @Test
     public void testPublishInternallyCodelistCheckTranslations() throws Exception {
         String urn = CODELIST_14_V1;
@@ -1620,6 +1700,31 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+        }
+    }
+
+    @Test
+    public void testPublishExternallyCodelistErrorRelatedResourcesReplaceToNotExternallyPublished() throws Exception {
+
+        String urn = CODELIST_7_V2;
+
+        // Change some metadata to force errors
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+        codelistVersion.addReplaceToCodelist(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_1_V1));
+        codelistVersion.addReplaceToCodelist(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_3_V1));
+        codelistVersion.addReplaceToCodelist(codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_10_V1)); // ok
+        itemSchemeRepository.save(codelistVersion);
+
+        entityManager.flush();
+
+        try {
+            codesService.publishExternallyCodelist(getServiceContextAdministrador(), urn);
+            fail("related resources");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CODELIST_NOT_EXTERNALLY_PUBLISHED, CODELIST_1_V1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CODELIST_NOT_EXTERNALLY_PUBLISHED, CODELIST_3_V1);
         }
     }
 

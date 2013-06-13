@@ -374,6 +374,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         getConceptMetamacRepository().checkConceptsWithConceptRoleExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
         getConceptMetamacRepository().checkConceptsWithQuantityExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
         getConceptMetamacRepository().checkConceptsWithRepresentationExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
+        // TODO categorizaciones
         ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
     }
 

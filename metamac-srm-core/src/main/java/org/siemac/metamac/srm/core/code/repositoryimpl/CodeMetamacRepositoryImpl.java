@@ -7,6 +7,7 @@ import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRe
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getLong;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
 import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils.addTranslationExceptionToExceptionItemsByResource;
+import static org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils.addExceptionToExceptionItemsByResource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationRe
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,6 @@ import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
-import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 
 /**
  * Repository implementation for CodeMetamac
@@ -554,6 +555,26 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         codeRepository.checkCodeTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
         // concrete metadata
         checkCodeMetamacTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
+    }
+
+    @Override
+    @SuppressWarnings("rawtypes")
+    public void checkCodelistWithReplaceToExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT DISTINCT(aisv.URN) ");
+        sb.append("FROM TB_M_CODELISTS_VERSIONS c ");
+        sb.append("INNER JOIN TB_ITEM_SCHEMES_VERSIONS isvb ON isvb.ID = c.TB_CODELISTS_VERSIONS ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS aisv ON aisv.ID = isvb.MAINTAINABLE_ARTEFACT_FK ");
+        sb.append("WHERE c.REPLACED_BY_CODELIST_FK = :itemSchemeVersionId ");
+        sb.append("AND aisv.PUBLIC_LOGIC != " + booleanToBooleanDatabase(true));
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            String urnRelatedResource = getString(resultSql);
+            addExceptionToExceptionItemsByResource(exceptionItemsByUrn, ServiceExceptionType.CODELIST_NOT_EXTERNALLY_PUBLISHED, urnRelatedResource);
+        }
     }
 
     @SuppressWarnings("rawtypes")

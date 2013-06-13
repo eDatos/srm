@@ -1005,6 +1005,25 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public MetamacCriteriaResult<CodelistMetamacBasicDto> findCodelistsByConditionCanReplaceTo(ServiceContext ctx, String codelistUrn, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canFindCodelistsByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CodelistVersionMetamac> result = getCodesMetamacService().findCodelistsByConditionCanReplaceTo(ctx, codelistUrn, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<CodelistMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCodelistVersion(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
     public List<CodelistMetamacBasicDto> retrieveCodelistVersions(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CodesSecurityUtils.canRetrieveCodelistVersions(ctx);

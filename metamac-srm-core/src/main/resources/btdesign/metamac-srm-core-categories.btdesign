@@ -65,6 +65,8 @@ Application CategoriesMetamac {
     		@CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(String categoryUrn) throws MetamacException;
 			"Checks translations for category scheme"
     		Map<String, MetamacExceptionItem> checkCategorySchemeVersionTranslations(Long itemSchemeVersionId, String locale) throws MetamacException;
+			"Checks related resources are externally published"
+    		checkCategorySchemeWithRelatedResourcesExternallyPublished(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException;
     		
 			"Creates category"
 			@CategoryMetamac createCategory(String categorySchemeUrn, @CategoryMetamac category) throws MetamacException;

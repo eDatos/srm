@@ -153,8 +153,9 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
-            // nothing
+        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
+                throws MetamacException {
+            codesMetamacService.checkCodelistWithRelatedResourcesExternallyPublished(ctx, getCodelistVersionMetamac(srmResourceVersion));
         }
 
         @Override

@@ -40,6 +40,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
@@ -52,6 +53,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
@@ -1340,6 +1342,15 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return exceptionItemsByResourceUrn;
     }
 
+    @Override
+    public void checkCodelistWithRelatedResourcesExternallyPublished(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
+        Long itemSchemeVersionId = codelistVersion.getId();
+        Map<String, MetamacExceptionItem> exceptionItemsByUrn = new HashMap<String, MetamacExceptionItem>();
+        getCodeMetamacRepository().checkCodelistWithReplaceToExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
+        // TODO categorizaciones
+        ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
+    }
+
     // ------------------------------------------------------------------------------------
     // CODELIST FAMILIES
     // ------------------------------------------------------------------------------------
@@ -2193,21 +2204,63 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                     .withMessageParameters(ServiceExceptionParameters.CODELIST_DEFAULT_OPENNESS_VISUALISATION).build();
         }
 
-        // Check codelist doesnt replace self
-        if (SrmServiceUtils.isCodelistInList(codelist.getMaintainableArtefact().getUrn(), codelist.getReplaceToCodelists())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_CAN_NOT_REPLACE_ITSELF).withMessageParameters(codelist.getMaintainableArtefact().getUrn()).build();
-        }
-
         // Check replaceTo metadata
         for (CodelistVersionMetamac replaceTo : codelist.getReplaceToCodelists()) {
-            // Check codelist is externally published
-            SrmValidationUtils.checkArtefactProcStatus(replaceTo.getLifeCycleMetadata(), replaceTo.getMaintainableArtefact().getUrn(), ProcStatusEnum.EXTERNALLY_PUBLISHED);
-            // Check any codelist was not already replaced by another codelist
-            if (replaceTo.getReplacedByCodelist() != null && !replaceTo.getReplacedByCodelist().getMaintainableArtefact().getUrn().equals(codelist.getMaintainableArtefact().getUrn())) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED).withMessageParameters(replaceTo.getMaintainableArtefact().getUrn())
-                        .build();
+            PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+            Long codelistReplaceToId = replaceTo.getId();
+            List<ConditionalCriteria> criteriaToVerifyCodelistReplaceTo = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.id())
+                    .eq(codelistReplaceToId).build();
+            PagedResult<CodelistVersionMetamac> result = findCodelistsByConditionCanReplaceTo(ctx, codelist.getMaintainableArtefact().getUrn(), true, criteriaToVerifyCodelistReplaceTo,
+                    pagingParameter);
+            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistReplaceToId)) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.CODELIST_REPLACE_TO).build();
             }
         }
+    }
+
+    @Override
+    public PagedResult<CodelistVersionMetamac> findCodelistsByConditionCanReplaceTo(ServiceContext ctx, String codelistUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        return findCodelistsByConditionCanReplaceTo(ctx, codelistUrn, false, conditions, pagingParameter);
+    }
+
+    private PagedResult<CodelistVersionMetamac> findCodelistsByConditionCanReplaceTo(ServiceContext ctx, String codelistUrn, boolean retrieveCodelistsReplacedBySelectedCodelist,
+            List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+
+        // Validation
+        CodesMetamacInvocationValidator.checkFindCodelistsByConditionCanReplaceTo(codelistUrn, retrieveCodelistsReplacedBySelectedCodelist, conditions, pagingParameter, null);
+
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build();
+        }
+        CodelistVersionMetamac codelistVersion = null;
+        if (codelistUrn != null) {
+            codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+        }
+        if (codelistVersion != null) {
+            // Check it belong to another scheme
+            ConditionalCriteria noReplaceSelfSchemeCondition = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).not()
+                    .withProperty(CodelistVersionMetamacProperties.itemScheme().id()).eq(codelistVersion.getItemScheme().getId()).buildSingle();
+            conditions.add(noReplaceSelfSchemeCondition);
+        }
+        // scheme internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                .withProperty(CodelistVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
+        // Codelist not already replaced by another codelist. If requested, already include codelists are actually replaced by selected codelist
+        if (codelistVersion == null || !retrieveCodelistsReplacedBySelectedCodelist) {
+            ConditionalCriteria onlyNotReplaced = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.replacedByCodelist()).isNull()
+                    .buildSingle();
+            conditions.add(onlyNotReplaced);
+        } else {
+            ConditionalCriteria notAndAlreadyReplaced = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).lbrace()
+                    .withProperty(CodelistVersionMetamacProperties.replacedByCodelist()).isNull().or().withProperty(CodelistVersionMetamacProperties.replacedByCodelist().id())
+                    .eq(codelistVersion.getId()).rbrace().buildSingle();
+            conditions.add(notAndAlreadyReplaced);
+        }
+
+        return findCodelistsByCondition(ctx, conditions, pagingParameter);
     }
 
     private TaskInfo createVersionOfCodelist(ServiceContext ctx, String urnToCopy, ItemSchemesCopyCallback itemSchemesCopyCallback, VersionTypeEnum versionType, boolean isTemporal)

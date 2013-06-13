@@ -813,6 +813,11 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         // Tested in testPublishInternallyCategorySchemeCheckTranslations
     }
 
+    @Override
+    public void testCheckCategorySchemeWithRelatedResourcesExternallyPublished() throws Exception {
+        // TODO testCheckCategorySchemeWithRelatedResourcesExternallyPublished
+    }
+
     @Test
     public void testPublishInternallyCategorySchemeCheckTranslations() throws Exception {
         String urn = CATEGORY_SCHEME_8_V1;

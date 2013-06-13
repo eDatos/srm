@@ -438,6 +438,11 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     }
 
     @Override
+    public void checkCategorySchemeWithRelatedResourcesExternallyPublished(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
+        // TODO categorizaciones
+    }
+
+    @Override
     public Categorisation createCategorisation(ServiceContext ctx, String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException {
 
         preCreateCategorisation(ctx, categoryUrn, artefactCategorisedUrn, maintainerUrn);
