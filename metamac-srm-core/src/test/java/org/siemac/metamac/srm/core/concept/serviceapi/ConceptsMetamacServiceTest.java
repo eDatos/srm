@@ -1547,7 +1547,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             ConceptMetamac concept3 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_3);
             concept3.setQuantity(new Quantity());
             concept3.getQuantity().setQuantityType(QuantityTypeEnum.FRACTION);
-            concept3.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_7_V2_CODE_1));
+            concept3.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_10_V1_CODE_1));
             concept3.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
             concept3.getQuantity().setSignificantDigits(Integer.valueOf(2));
             concept3.getQuantity().setDecimalPlaces(Integer.valueOf(3));
@@ -1568,12 +1568,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             conceptsService.publishExternallyConceptScheme(getServiceContextAdministrador(), urn);
             fail("related resources");
         } catch (MetamacException e) {
-            assertEquals(4, e.getExceptionItems().size());
+            assertEquals(5, e.getExceptionItems().size());
 
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_1_V2_CONCEPT_2);
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_1);
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_2);
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_11_V1_CONCEPT_1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CODE_NOT_EXTERNALLY_PUBLISHED, CODELIST_10_V1_CODE_1);
         }
     }
 

@@ -3698,6 +3698,55 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
+            <!-- CODE01 -->
+            <TB_CODES
+                ID="1011"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="101"
+                ITEM_SCHEME_VERSION_FIRST_FK="101"
+                NAMEABLE_ARTEFACT_FK="1011"
+                      
+                UUID="codelist-10-v1-code-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+ 
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="1011"
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="1011"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CODE01"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(01.000).CODE01"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(01.000).CODE01"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+                
+                UUID="annotableArtefact-1011"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />     
+    
     <!-- Version 2 -->
     
     <TB_ITEM_SCHEMES_VERSIONS

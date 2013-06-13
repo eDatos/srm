@@ -221,7 +221,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         checkConceptsWithQuantityConceptMetadataExternallyPublished(itemSchemeVersionId, "NUMERATOR_FK", exceptionItemsByUrn);
         checkConceptsWithQuantityConceptMetadataExternallyPublished(itemSchemeVersionId, "DENOMINATOR_FK", exceptionItemsByUrn);
         checkConceptsWithQuantityConceptMetadataExternallyPublished(itemSchemeVersionId, "BASE_QUANTITY_FK", exceptionItemsByUrn);
-        // TODO code
+        checkConceptsWithQuantityCodeMetadataExternallyPublished(itemSchemeVersionId, "UNIT_CODE_FK", exceptionItemsByUrn);
         // TODO baseLocation
     }
 
@@ -245,6 +245,29 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         for (Object resultSql : resultsSql) {
             String urnRelatedResource = getString(resultSql);
             addExceptionToExceptionItemsByResource(exceptionItemsByUrn, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, urnRelatedResource);
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    private void checkConceptsWithQuantityCodeMetadataExternallyPublished(Long itemSchemeVersionId, String columnName, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT DISTINCT(acb2.URN) ");
+        sb.append("FROM TB_M_CONCEPTS c1 ");
+        sb.append("INNER JOIN TB_CONCEPTS cb1 ON cb1.ID = c1.TB_CONCEPTS ");
+        sb.append("INNER JOIN TB_M_QUANTITIES q1 ON q1.ID = c1.QUANTITY_FK ");
+        sb.append("INNER JOIN TB_CODES cb2 ON cb2.ID = q1." + columnName + " ");
+        sb.append("INNER JOIN TB_ITEM_SCHEMES_VERSIONS isv2 ON isv2.ID = cb2.ITEM_SCHEME_VERSION_FK AND isv2.ID != :itemSchemeVersionId ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS aisv2 ON aisv2.ID = isv2.MAINTAINABLE_ARTEFACT_FK ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS acb2 ON acb2.ID = cb2.NAMEABLE_ARTEFACT_FK ");
+        sb.append("WHERE cb1.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
+        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(true));
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            String urnRelatedResource = getString(resultSql);
+            addExceptionToExceptionItemsByResource(exceptionItemsByUrn, ServiceExceptionType.CODE_NOT_EXTERNALLY_PUBLISHED, urnRelatedResource);
         }
     }
 

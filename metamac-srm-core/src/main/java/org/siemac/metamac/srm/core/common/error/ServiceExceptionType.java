@@ -10,19 +10,19 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_IMPORTED                                = create("exception.srm.structure_modifications.operation_not_supported.imported");
     public static final CommonServiceExceptionType STRUCTURE_MODIFICATIONS_NOT_SUPPORTED_MAINTAINER_IS_NOT_DEFAULT_NOR_SDMX      = create("exception.srm.structure_modifications.operation_not_supported.maintainer_not_default_nor_sdmx");
     public static final CommonServiceExceptionType MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED_VERSION_NOT_PUBLISHED          = create("exception.srm.maintainable_artefact.versioning_not_supported.version_unpublished_found");
-    public static final CommonServiceExceptionType CONCEPT_NOT_EXTERNALLY_PUBLISHED                                              = create("exception.srm.concept_not_externally_published");
-    public static final CommonServiceExceptionType ORGANISATION_SCHEME_NOT_EXTERNALLY_PUBLISHED                                  = create("exception.srm.organisation_scheme_not_externally_published");
 
     // Concepts
     public static final CommonServiceExceptionType CONCEPT_SCHEME_WRONG_TYPE                                                     = create("exception.srm.concepts.concept_scheme.wrong_type");
     public static final CommonServiceExceptionType CONCEPT_TYPE_NOT_FOUND                                                        = create("exception.srm.concepts.concept_type.not_found");
     public static final CommonServiceExceptionType CONCEPT_DELETE_NOT_SUPPORTED_CONCEPT_IN_QUANTITY                              = create("exception.srm.concepts.delete_not_supported.concept_in_quantity");
+    public static final CommonServiceExceptionType CONCEPT_NOT_EXTERNALLY_PUBLISHED                                              = create("exception.srm.concepts.concept_not_externally_published");
 
     // Organisations
     public static final CommonServiceExceptionType ORGANISATION_SCHEME_WRONG_TYPE                                                = create("exception.srm.organisations.organisation_scheme.wrong_type");
     public static final CommonServiceExceptionType MAINTAINER_MUST_BE_DEFAULT                                                    = create("exception.srm.organisations.maintainer.not_default");
     public static final CommonServiceExceptionType ORGANISATION_DELETING_NOT_SUPPORTED_ORGANISATION_SCHEME_WAS_EVER_PUBLISHED    = create("exception.srm.organisations.delete_not_supported.belonged_to_organisation_scheme_was_published");
     public static final CommonServiceExceptionType ORGANISATION_UPDATE_CODE_NOT_SUPPORTED_ORGANISATION_SCHEME_WAS_EVER_PUBLISHED = create("exception.srm.organisations.update_code_not_supported.belonged_to_organisation_scheme_was_published");
+    public static final CommonServiceExceptionType ORGANISATION_SCHEME_NOT_EXTERNALLY_PUBLISHED                                  = create("exception.srm.organisations.organisation_scheme_not_externally_published");
 
     // Codelists
     public static final CommonServiceExceptionType VARIABLE_ONLY_IN_ONE_FAMILY                                                   = create("exception.srm.codelists.variable.variable_only_one_family");
@@ -33,6 +33,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType CODELIST_ORDER_VISUALISATION_MAXIMUM_REACHED                                  = create("exception.srm.codelists.order_visualisation.maximum_reached");
     public static final CommonServiceExceptionType CODELIST_ALL_EXPANDED_OPENNESS_VISUALISATION_OPERATION_NOT_SUPPORTED          = create("exception.srm.codelists.openness_visualisation.all_expanded.operation_not_supported");
     public static final CommonServiceExceptionType CODELIST_OPENNESS_VISUALISATION_MAXIMUM_REACHED                               = create("exception.srm.codelists.openness_visualisation.maximum_reached");
+    public static final CommonServiceExceptionType CODE_NOT_EXTERNALLY_PUBLISHED                                                 = create("exception.srm.codelists.code_not_externally_published");
 
     // Variable elements
     public static final CommonServiceExceptionType VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE                                = create("exception.srm.codelists.variable_element.must_belong_to_same_variable");
