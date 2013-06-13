@@ -16,9 +16,10 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType CONCEPT_TYPE_NOT_FOUND                                                        = create("exception.srm.concepts.concept_type.not_found");
     public static final CommonServiceExceptionType CONCEPT_DELETE_NOT_SUPPORTED_CONCEPT_IN_QUANTITY                              = create("exception.srm.concepts.delete_not_supported.concept_in_quantity");
     public static final CommonServiceExceptionType CONCEPT_NOT_EXTERNALLY_PUBLISHED                                              = create("exception.srm.concepts.concept_not_externally_published");
+    public static final CommonServiceExceptionType CONCEPT_SCHEME_NOT_EXTERNALLY_PUBLISHED                                       = create("exception.srm.concepts.concept_scheme_not_externally_published");
 
     // Organisations
-    // public static final CommonServiceExceptionType ORGANISATION_SCHEME_WRONG_TYPE = create("exception.srm.organisations.organisation_scheme.wrong_type");
+    public static final CommonServiceExceptionType ORGANISATION_SCHEME_WRONG_TYPE                                                = create("exception.srm.organisations.organisation_scheme.wrong_type");
     public static final CommonServiceExceptionType MAINTAINER_MUST_BE_DEFAULT                                                    = create("exception.srm.organisations.maintainer.not_default");
     public static final CommonServiceExceptionType ORGANISATION_DELETING_NOT_SUPPORTED_ORGANISATION_SCHEME_WAS_EVER_PUBLISHED    = create("exception.srm.organisations.delete_not_supported.belonged_to_organisation_scheme_was_published");
     public static final CommonServiceExceptionType ORGANISATION_UPDATE_CODE_NOT_SUPPORTED_ORGANISATION_SCHEME_WAS_EVER_PUBLISHED = create("exception.srm.organisations.update_code_not_supported.belonged_to_organisation_scheme_was_published");
@@ -34,6 +35,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType CODELIST_ALL_EXPANDED_OPENNESS_VISUALISATION_OPERATION_NOT_SUPPORTED          = create("exception.srm.codelists.openness_visualisation.all_expanded.operation_not_supported");
     public static final CommonServiceExceptionType CODELIST_OPENNESS_VISUALISATION_MAXIMUM_REACHED                               = create("exception.srm.codelists.openness_visualisation.maximum_reached");
     public static final CommonServiceExceptionType CODE_NOT_EXTERNALLY_PUBLISHED                                                 = create("exception.srm.codelists.code_not_externally_published");
+    public static final CommonServiceExceptionType CODELIST_NOT_EXTERNALLY_PUBLISHED                                             = create("exception.srm.codelists.codelist_not_externally_published");
 
     // Variable elements
     public static final CommonServiceExceptionType VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE                                = create("exception.srm.codelists.variable_element.must_belong_to_same_variable");
@@ -62,7 +64,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType IMPORTATION_TSV_HEADER_INCORRECT_COLUMN                                       = create("exception.srm.importation.tsv.error.header.incorrect_column");
     public static final CommonServiceExceptionType IMPORTATION_TSV_LINE_INCORRECT                                                = create("exception.srm.importation.tsv.error.line.incorrect");
     public static final CommonServiceExceptionType IMPORTATION_TSV_METADATA_REQUIRED                                             = create("exception.srm.importation.tsv.error.metadata_required");
-    // public static final CommonServiceExceptionType IMPORTATION_TSV_METADATA_INCORRECT = create("exception.srm.importation.tsv.error.metadata_incorrect");
+    public static final CommonServiceExceptionType IMPORTATION_TSV_METADATA_INCORRECT                                            = create("exception.srm.importation.tsv.error.metadata_incorrect");
     public static final CommonServiceExceptionType IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER                        = create("exception.srm.importation.tsv.error.metadata_incorrect_semantic_identifier");
     public static final CommonServiceExceptionType IMPORTATION_TSV_ERROR_PARENT_NOT_FOUND                                        = create("exception.srm.importation.tsv.error.parent.not_found");
     public static final CommonServiceExceptionType IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED                                     = create("info.srm.importation.tsv.resource_not_updated");

@@ -108,33 +108,33 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String  DATA_STRUCTURE_DEFINITION_STATISTICAL_OPERATION            = createCode(DATA_STRUCTURE_DEFINITION_PREFIX, "statistical_operation");
 
     // LIFECYCLE
-    private static final String PROC_STATUS_PREFIX                                         = "proc_Status";
+    private static final String PROC_STATUS_PREFIX                                         = "proc_status";
     public static final String  PROC_STATUS_DRAFT                                          = createCode(PROC_STATUS_PREFIX, "draft");
     public static final String  PROC_STATUS_PRODUCTION_VALIDATION                          = createCode(PROC_STATUS_PREFIX, "production_validation");
-    public static final String  PROC_STATUS_DIFFUSION_VALIDATION                           = createCode(PROC_STATUS_PREFIX, "difussion_validation");
+    public static final String  PROC_STATUS_DIFFUSION_VALIDATION                           = createCode(PROC_STATUS_PREFIX, "diffusion_validation");
     public static final String  PROC_STATUS_VALIDATION_REJECTED                            = createCode(PROC_STATUS_PREFIX, "validation_rejected");
     public static final String  PROC_STATUS_INTERNALLY_PUBLISHED                           = createCode(PROC_STATUS_PREFIX, "internally_published");
     public static final String  PROC_STATUS_EXTERNALLY_PUBLISHED                           = createCode(PROC_STATUS_PREFIX, "externally_published");
 
     // IMPORTATION
     private static final String IMPORTATION_PREFIX                                         = "importation";
-    public static final String  IMPORTATION_TSV_UPDATE_ALREADY_EXISTING                    = createCode(IMPORTATION_PREFIX, "updateAlreadyExisting");
+    public static final String  IMPORTATION_TSV_UPDATE_ALREADY_EXISTING                    = createCode(IMPORTATION_PREFIX, "update_already_existing");
     // Note: name of columns must be identical to SrmContants.TSV_HEADER_*
     public static final String  IMPORTATION_TSV_COLUMN_CODE                                = createCode(IMPORTATION_PREFIX, "code");
     public static final String  IMPORTATION_TSV_COLUMN_PARENT                              = createCode(IMPORTATION_PREFIX, "parent");
-    public static final String  IMPORTATION_TSV_COLUMN_VARIABLE_ELEMENT                    = createCode(IMPORTATION_PREFIX, "variableElement");
-    public static final String  IMPORTATION_TSV_COLUMN_SHORT_NAME                          = createCode(IMPORTATION_PREFIX, "shortName");
+    public static final String  IMPORTATION_TSV_COLUMN_VARIABLE_ELEMENT                    = createCode(IMPORTATION_PREFIX, "variable_element");
+    public static final String  IMPORTATION_TSV_COLUMN_SHORT_NAME                          = createCode(IMPORTATION_PREFIX, "short_name");
     public static final String  IMPORTATION_TSV_COLUMN_NAME                                = createCode(IMPORTATION_PREFIX, "name");
     public static final String  IMPORTATION_TSV_COLUMN_DESCRIPTION                         = createCode(IMPORTATION_PREFIX, "description");
     public static final String  IMPORTATION_TSV_COLUMN_ORDER                               = createCode(IMPORTATION_PREFIX, "order");
 
     // MISC
     public static final String  STREAM                                                     = createCode("stream");
-    public static final String  FILE_NAME                                                  = createCode("fileName");
+    public static final String  FILE_NAME                                                  = createCode("file_name");
     // MISC internal
     public static final String  CHARSET                                                    = createCode("charset");
-    public static final String  CAN_BE_BACKGROUND                                          = createCode("canBeBackground");
-    public static final String  INFORMATION_ITEMS                                          = createCode("informationItems");
+    public static final String  CAN_BE_BACKGROUND                                          = createCode("can_be_background");
+    public static final String  INFORMATION_ITEMS                                          = createCode("information_items");
 
     private static String createCode(String fieldCode) {
         return PREFIX_PARAMETER_SRM + "." + fieldCode;
