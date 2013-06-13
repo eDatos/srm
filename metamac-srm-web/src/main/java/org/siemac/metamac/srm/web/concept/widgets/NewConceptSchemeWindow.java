@@ -123,7 +123,9 @@ public class NewConceptSchemeWindow extends CustomWindow {
         conceptSchemeDto.setCode(form.getValueAsString(ConceptSchemeDS.CODE));
         conceptSchemeDto.setName(InternationalStringUtils.updateInternationalString(new InternationalStringDto(), form.getValueAsString(ConceptSchemeDS.NAME)));
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.valueOf(form.getValueAsString(ConceptSchemeDS.TYPE)));
-        conceptSchemeDto.setRelatedOperation(ExternalItemUtils.removeTitle(((SearchExternalPaginatedItem) form.getItem(ConceptSchemeDS.RELATED_OPERATION)).getSelectedExternalItem()));
+        if (form.getItem(ConceptSchemeDS.RELATED_OPERATION).isVisible()) {
+            conceptSchemeDto.setRelatedOperation(ExternalItemUtils.removeTitle(((SearchExternalPaginatedItem) form.getItem(ConceptSchemeDS.RELATED_OPERATION)).getSelectedExternalItem()));
+        }
         conceptSchemeDto.setIsPartial(false);
         return conceptSchemeDto;
     }
