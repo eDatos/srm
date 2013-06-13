@@ -4,30 +4,30 @@
         <cdomain:id>categorisation1</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=categorisation1(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#categorisation" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations/agency1/categorisation1/01.000"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="es">name-categorisation1v01.000 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-categorisation1v01.000 in English</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.xxx=categorisation1(01.000)</sr:urnInternal>
     </sr:categorisation>
     <sr:categorisation kind="structuralResources#categorisation">
         <cdomain:id>categorisation2</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=categorisation2(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#categorisation" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations/agency1/categorisation2/01.000"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="en">name-categorisation2v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-categorisation2v01.000 en Español</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.xxx=categorisation1(01.000)</sr:urnInternal>
     </sr:categorisation>
     <sr:categorisation kind="structuralResources#categorisation">
         <cdomain:id>categorisation3</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=categorisation3(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#categorisation" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations/agency2/categorisation3/01.000"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="en">name-categorisation3v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-categorisation3v01.000 en Español</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.xxx=categorisation1(01.000)</sr:urnInternal>
     </sr:categorisation>
 </sr:categorisations>

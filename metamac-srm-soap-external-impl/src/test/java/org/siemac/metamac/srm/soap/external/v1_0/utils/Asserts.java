@@ -58,13 +58,13 @@ public class Asserts {
     public static void assertEqualsResource(ItemSchemeVersion expected, String expectedKind, String expectedSelfLink, Resource actual) {
         assertEquals(expected.getMaintainableArtefact().getCode(), actual.getId());
         assertEquals(expected.getMaintainableArtefact().getUrn(), actual.getUrn());
-        assertEqualsInternationalString(expected.getMaintainableArtefact().getName(), actual.getTitle());
+        assertEqualsInternationalString(expected.getMaintainableArtefact().getName(), actual.getName());
     }
 
     public static void assertEqualsResource(Item expected, String expectedKind, String expectedSelfLink, Resource actual) {
         assertEquals(expected.getNameableArtefact().getCode(), actual.getId());
         assertEquals(expected.getNameableArtefact().getUrn(), actual.getUrn());
-        assertEqualsInternationalString(expected.getNameableArtefact().getName(), actual.getTitle());
+        assertEqualsInternationalString(expected.getNameableArtefact().getName(), actual.getName());
     }
 
     public static void assertEqualsDate(DateTime expected, Date actual) {

@@ -152,10 +152,10 @@
         <cdomain:id>family1</cdomain:id>
         <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=family1</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#codelistFamily" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelistfamilies/family1"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="en">name-family1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-family1 en Español</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=family1</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelistFamilies/codelistFamily;id=family1</sr:managementAppLink>
     </sr:family>
@@ -163,10 +163,10 @@
         <cdomain:id>variable1</cdomain:id>
         <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#variable" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable1"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="es">name-variable1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-variable1 in English</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable1</sr:managementAppLink>
     </sr:variable>
@@ -175,10 +175,10 @@
             <cdomain:id>codelistReplaceTo1</cdomain:id>
             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplaceTo1(01.000)</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/codelistReplaceTo1/01.000"/>
-            <cdomain:title>
+            <cdomain:name>
                 <cdomain:text xml:lang="es">name-codelistReplaceTo1v01.000 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">name-codelistReplaceTo1v01.000 in English</cdomain:text>
-            </cdomain:title>
+            </cdomain:name>
             <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplaceTo1(01.000)</sr:urnInternal>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:codelistReplaceTo1(01.000)</sr:managementAppLink>
         </sr:replaceTo>
@@ -186,10 +186,10 @@
             <cdomain:id>codelistReplaceTo3</cdomain:id>
             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplaceTo3(03.000)</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/codelistReplaceTo3/03.000"/>
-            <cdomain:title>
+            <cdomain:name>
                 <cdomain:text xml:lang="en">name-codelistReplaceTo3v03.000 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-codelistReplaceTo3v03.000 en Español</cdomain:text>
-            </cdomain:title>
+            </cdomain:name>
             <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplaceTo3(03.000)</sr:urnInternal>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:codelistReplaceTo3(03.000)</sr:managementAppLink>
         </sr:replaceTo>
@@ -198,10 +198,10 @@
         <cdomain:id>codelistReplacedBy</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplacedBy(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/codelistReplacedBy/01.000"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="es">name-codelistReplacedByv01.000 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-codelistReplacedByv01.000 in English</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplacedBy(01.000)</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:codelistReplacedBy(01.000)</sr:managementAppLink>
     </sr:replacedBy>

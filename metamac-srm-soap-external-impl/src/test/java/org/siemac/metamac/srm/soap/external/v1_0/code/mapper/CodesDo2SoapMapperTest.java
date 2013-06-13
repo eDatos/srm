@@ -165,13 +165,13 @@ public class CodesDo2SoapMapperTest {
             Resource variableFamily = target.getFamilies().getFamilies().get(0);
             assertEquals("family01", variableFamily.getId());
             assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=family01", variableFamily.getUrn());
-            assertEqualsInternationalString("es", "name-family01 en Español", "en", "name-family01 in English", variableFamily.getTitle());
+            assertEqualsInternationalString("es", "name-family01 en Español", "en", "name-family01 in English", variableFamily.getName());
         }
         {
             Resource variableFamily = target.getFamilies().getFamilies().get(1);
             assertEquals("family02", variableFamily.getId());
             assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=family02", variableFamily.getUrn());
-            assertEqualsInternationalString("es", "name-family02 en Español", "en", "name-family02 in English", variableFamily.getTitle());
+            assertEqualsInternationalString("es", "name-family02 en Español", "en", "name-family02 in English", variableFamily.getName());
         }
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=replacedByVariable01", target.getReplacedBy().getUrn());
         assertEquals(BigInteger.valueOf(2), target.getReplaceTo().getTotal());
@@ -179,13 +179,13 @@ public class CodesDo2SoapMapperTest {
             Resource variable = target.getReplaceTo().getReplaceTos().get(0);
             assertEquals("replaceToVariable01", variable.getId());
             assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=replaceToVariable01", variable.getUrn());
-            assertEqualsInternationalString("es", "name-replaceToVariable01 en Español", "en", "name-replaceToVariable01 in English", variable.getTitle());
+            assertEqualsInternationalString("es", "name-replaceToVariable01 en Español", "en", "name-replaceToVariable01 in English", variable.getName());
         }
         {
             Resource variable = target.getReplaceTo().getReplaceTos().get(1);
             assertEquals("replaceToVariable02", variable.getId());
             assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=replaceToVariable02", variable.getUrn());
-            assertEqualsInternationalString("es", "name-replaceToVariable02 en Español", "en", "name-replaceToVariable02 in English", variable.getTitle());
+            assertEqualsInternationalString("es", "name-replaceToVariable02 en Español", "en", "name-replaceToVariable02 in English", variable.getName());
         }
         assertEqualsInternationalString("es", "shortName-variable01 en Español", "en", "shortName-variable01 in English", target.getShortName());
         MetamacAsserts.assertEqualsDate("2012-10-01 10:12:13", target.getValidFrom());
@@ -279,19 +279,19 @@ public class CodesDo2SoapMapperTest {
             Resource resource = target.getCodelists().get(i++);
             assertEquals("codelist01", resource.getId());
             assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)", resource.getUrn());
-            assertEqualsInternationalString("es", "name-codelist01v01.000 en Español", "en", "name-codelist01v01.000 in English", resource.getTitle());
+            assertEqualsInternationalString("es", "name-codelist01v01.000 en Español", "en", "name-codelist01v01.000 in English", resource.getName());
         }
         {
             Resource resource = target.getCodelists().get(i++);
             assertEquals("codelist02", resource.getId());
             assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency02:codelist02(02.000)", resource.getUrn());
-            assertEqualsInternationalString("es", "name-codelist02v02.000 en Español", "en", "name-codelist02v02.000 in English", resource.getTitle());
+            assertEqualsInternationalString("es", "name-codelist02v02.000 en Español", "en", "name-codelist02v02.000 in English", resource.getName());
         }
         {
             Resource resource = target.getCodelists().get(i++);
             assertEquals("codelist03", resource.getId());
             assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency03:codelist03(01.000)", resource.getUrn());
-            assertEqualsInternationalString("es", "name-codelist03v01.000 en Español", "en", "name-codelist03v01.000 in English", resource.getTitle());
+            assertEqualsInternationalString("es", "name-codelist03v01.000 en Español", "en", "name-codelist03v01.000 in English", resource.getName());
         }
         assertEquals(source.size(), i);
     }
@@ -310,9 +310,9 @@ public class CodesDo2SoapMapperTest {
         assertEqualsInternationalString("es", "descriptionSource-resourceID1v01.123 en Español", "en", "descriptionSource-resourceID1v01.123 in English", target.getDescriptionSource());
         assertTrue(target.getIsRecommended());
         assertEquals("family1", target.getFamily().getId());
-        assertEqualsInternationalString("es", "name-family1 en Español", "en", "name-family1 in English", target.getFamily().getTitle());
+        assertEqualsInternationalString("es", "name-family1 en Español", "en", "name-family1 in English", target.getFamily().getName());
         assertEquals("variable1", target.getVariable().getId());
-        assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getTitle());
+        assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getName());
 
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());

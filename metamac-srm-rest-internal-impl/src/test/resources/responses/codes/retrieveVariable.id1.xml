@@ -19,10 +19,10 @@
         <cdomain:id>variableReplacedBy1</cdomain:id>
         <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplacedBy1</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#variable" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variableReplacedBy1"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="es">name-variableReplacedBy1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-variableReplacedBy1 in English</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplacedBy1</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variableReplacedBy1</sr:managementAppLink>
     </sr:replacedBy>
@@ -31,10 +31,10 @@
             <cdomain:id>variableReplaceTo1</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplaceTo1</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#variable" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variableReplaceTo1"/>
-            <cdomain:title>
+            <cdomain:name>
                 <cdomain:text xml:lang="es">name-variableReplaceTo1 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">name-variableReplaceTo1 in English</cdomain:text>
-            </cdomain:title>
+            </cdomain:name>
             <sr:urnInternal>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplaceTo1</sr:urnInternal>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variableReplaceTo1</sr:managementAppLink>
         </sr:replaceTo>
@@ -42,10 +42,10 @@
             <cdomain:id>variableReplaceTo2</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplaceTo2</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#variable" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variableReplaceTo2"/>
-            <cdomain:title>
+            <cdomain:name>
                 <cdomain:text xml:lang="en">name-variableReplaceTo2 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-variableReplaceTo2 en Español</cdomain:text>
-            </cdomain:title>
+            </cdomain:name>
             <sr:urnInternal>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplaceTo2</sr:urnInternal>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variableReplaceTo2</sr:managementAppLink>
         </sr:replaceTo>
@@ -55,10 +55,10 @@
             <cdomain:id>variableFamily1</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily1</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#variableFamily" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies/variableFamily1"/>
-            <cdomain:title>
+            <cdomain:name>
                 <cdomain:text xml:lang="en">name-variableFamily1 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-variableFamily1 en Español</cdomain:text>
-            </cdomain:title>
+            </cdomain:name>
             <sr:urnInternal>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily1</sr:urnInternal>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variableFamilies/variableFamily;id=variableFamily1</sr:managementAppLink>
         </sr:family>
@@ -66,10 +66,10 @@
             <cdomain:id>variableFamily2</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily2</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#variableFamily" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies/variableFamily2"/>
-            <cdomain:title>
+            <cdomain:name>
                 <cdomain:text xml:lang="en">name-variableFamily2 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-variableFamily2 en Español</cdomain:text>
-            </cdomain:title>
+            </cdomain:name>
             <sr:urnInternal>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily2</sr:urnInternal>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variableFamilies/variableFamily;id=variableFamily2</sr:managementAppLink>
         </sr:family>
@@ -77,10 +77,10 @@
             <cdomain:id>variableFamily3</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily3</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#variableFamily" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies/variableFamily3"/>
-            <cdomain:title>
+            <cdomain:name>
                 <cdomain:text xml:lang="en">name-variableFamily3 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-variableFamily3 en Español</cdomain:text>
-            </cdomain:title>
+            </cdomain:name>
             <sr:urnInternal>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily3</sr:urnInternal>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variableFamilies/variableFamily;id=variableFamily3</sr:managementAppLink>
         </sr:family>

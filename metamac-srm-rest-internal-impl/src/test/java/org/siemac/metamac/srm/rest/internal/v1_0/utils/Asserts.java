@@ -73,7 +73,7 @@ public class Asserts extends MetamacRestAsserts {
         assertEquals(expectedKind, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
         assertEquals(expectedManagementLink, actual.getManagementAppLink());
-        assertEqualsInternationalString(expected.getName(), actual.getTitle());
+        assertEqualsInternationalString(expected.getName(), actual.getName());
     }
 
     public static void assertEqualsResource(Item expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual) {

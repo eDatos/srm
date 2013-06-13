@@ -4,10 +4,10 @@
         <cdomain:id>itemScheme1</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agency1:itemScheme1(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#organisationUnitScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemScheme1/01.000"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="en">name-itemScheme1v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-itemScheme1v01.000 en Español</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agency1:itemScheme1(01.000)</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)</sr:managementAppLink>
     </sr:organisationUnitScheme>
@@ -15,10 +15,10 @@
         <cdomain:id>itemScheme2</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agency1:itemScheme2(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#organisationUnitScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemScheme2/01.000"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="en">name-itemScheme2v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-itemScheme2v01.000 en Español</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agency1:itemScheme2(01.000)</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme2(01.000)</sr:managementAppLink>
     </sr:organisationUnitScheme>
@@ -26,10 +26,10 @@
         <cdomain:id>itemScheme2</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agency1:itemScheme2(02.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#organisationUnitScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemScheme2/02.000"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="es">name-itemScheme2v02.000 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-itemScheme2v02.000 in English</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agency1:itemScheme2(02.000)</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme2(02.000)</sr:managementAppLink>
     </sr:organisationUnitScheme>
@@ -37,10 +37,10 @@
         <cdomain:id>itemScheme3</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agency2:itemScheme3(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#organisationUnitScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency2/itemScheme3/01.000"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="es">name-itemScheme3v01.000 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-itemScheme3v01.000 in English</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agency2:itemScheme3(01.000)</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency2:itemScheme3(01.000)</sr:managementAppLink>
     </sr:organisationUnitScheme>

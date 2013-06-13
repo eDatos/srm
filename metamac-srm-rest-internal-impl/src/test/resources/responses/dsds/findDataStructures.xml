@@ -4,10 +4,10 @@
         <cdomain:id>artefact1</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact1(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#dataStructure" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency1/artefact1/01.000"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="en">name-artefact1v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-artefact1v01.000 en Español</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact1(01.000)</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency1:artefact1(01.000)</sr:managementAppLink>
     </sr:dataStructures>
@@ -15,10 +15,10 @@
         <cdomain:id>artefact2</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact2(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#dataStructure" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency1/artefact2/01.000"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="en">name-artefact2v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-artefact2v01.000 en Español</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact2(01.000)</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency1:artefact2(01.000)</sr:managementAppLink>
     </sr:dataStructures>
@@ -26,10 +26,10 @@
         <cdomain:id>artefact2</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact2(02.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#dataStructure" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency1/artefact2/02.000"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="en">name-artefact2v02.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-artefact2v02.000 en Español</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact2(02.000)</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency1:artefact2(02.000)</sr:managementAppLink>
     </sr:dataStructures>
@@ -37,10 +37,10 @@
         <cdomain:id>artefact3</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency2:artefact3(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#dataStructure" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency2/artefact3/01.000"/>
-        <cdomain:title>
+        <cdomain:name>
             <cdomain:text xml:lang="es">name-artefact3v01.000 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-artefact3v01.000 in English</cdomain:text>
-        </cdomain:title>
+        </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency2:artefact3(01.000)</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency2:artefact3(01.000)</sr:managementAppLink>
     </sr:dataStructures>

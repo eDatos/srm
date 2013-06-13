@@ -46,6 +46,6 @@ public class CategoriesAsserts extends Asserts {
         assertEquals(expected.getMaintainableArtefact().getUrn(), actual.getUrnInternal());
         assertEquals(RestInternalConstants.KIND_CATEGORISATION, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
-        assertEqualsInternationalString(expected.getMaintainableArtefact().getName(), actual.getTitle());
+        assertEqualsInternationalString(expected.getMaintainableArtefact().getName(), actual.getName());
     }
 }

@@ -127,7 +127,7 @@ public class ConceptsDo2RestMapperTest {
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-resourceID1", target.getStatisticalOperation().getUrn());
         assertEquals("statisticalOperations#operation", target.getStatisticalOperation().getKind());
         assertEquals("operation-resourceID1", target.getStatisticalOperation().getId());
-        assertNull(target.getStatisticalOperation().getTitle());
+        assertNull(target.getStatisticalOperation().getName());
         assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
@@ -276,12 +276,12 @@ public class ConceptsDo2RestMapperTest {
 
         assertEquals("variable1", target.getVariable().getId());
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1", target.getVariable().getUrn());
-        assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getTitle());
+        assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getName());
         assertEquals(RestInternalConstants.KIND_VARIABLE, target.getVariable().getSelfLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable1", target.getVariable().getSelfLink().getHref());
 
         assertEquals("conceptType1", target.getType().getId());
-        assertEqualsInternationalString("es", "description-conceptType1 en Español", "en", "description-conceptType1 in English", target.getType().getTitle());
+        assertEqualsInternationalString("es", "description-conceptType1 en Español", "en", "description-conceptType1 in English", target.getType().getName());
         assertEquals("conceptParent1", target.getParent().getRef().getId());
         assertEqualsRoleConcepts(source.getRoleConcepts(), target.getRoles());
         assertEqualsRelatedConcepts(source.getRelatedConcepts(), target.getRelatedConcepts());

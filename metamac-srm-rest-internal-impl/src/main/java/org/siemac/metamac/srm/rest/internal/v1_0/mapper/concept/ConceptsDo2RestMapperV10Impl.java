@@ -250,7 +250,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         }
         Item target = new Item();
         target.setId(source.getIdentifier());
-        target.setTitle(toInternationalString(source.getDescription()));
+        target.setName(toInternationalString(source.getDescription()));
         return target;
     }
 

@@ -122,7 +122,7 @@ public class DataStructuresDo2RestMapperTest {
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-resourceID1", target.getStatisticalOperation().getUrn());
         assertEquals("statisticalOperations#operation", target.getStatisticalOperation().getKind());
         assertEquals("operation-resourceID1", target.getStatisticalOperation().getId());
-        assertNull(target.getStatisticalOperation().getTitle());
+        assertNull(target.getStatisticalOperation().getName());
         // show decimals
         assertEquals(2, target.getShowDecimalsPrecisions().getTotal().intValue());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01", target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(0).getConcept()

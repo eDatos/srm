@@ -336,7 +336,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
         Item target = new Item();
         target.setId(source.getIdentifiableArtefact().getCode());
-        target.setTitle(toInternationalString(source.getShortName()));
+        target.setName(toInternationalString(source.getShortName()));
         return target;
     }
 
