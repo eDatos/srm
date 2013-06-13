@@ -16,7 +16,7 @@ public class ExternalItemUtils {
         externalItemDto.setUri(resource.getSelfLink().getHref());
         externalItemDto.setUrn(resource.getUrn());
         externalItemDto.setType(TypeExternalArtefactsEnum.STATISTICAL_OPERATION);
-        externalItemDto.setTitle(DtoUtils.getInternationalStringDtoFromInternationalString(resource.getTitle()));
+        externalItemDto.setTitle(DtoUtils.getInternationalStringDtoFromInternationalString(resource.getName()));
         externalItemDto.setManagementAppUrl(resource.getManagementAppLink());
         return externalItemDto;
     }
