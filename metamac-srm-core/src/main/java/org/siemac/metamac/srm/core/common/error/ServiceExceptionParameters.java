@@ -62,6 +62,7 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String  CODELIST_VARIABLE                                          = createCode(CODELIST_PREFIX, "variable");
     public static final String  CODELIST_IS_VARIABLE_UPDATED                               = createCode(CODELIST_PREFIX, "is_variable_updated");
     public static final String  CODELIST_DESCRIPTION_SOURCE                                = createCode(CODELIST_PREFIX, "description_source");
+    public static final String  CODELIST_REPLACE_TO                                        = createCode(CODELIST_PREFIX, "replace_to");
 
     // CODELIST VISUALISATION
     public static final String  CODELIST_ORDER_VISUALISATION                               = createCode(CODELIST_PREFIX, "codelist_order_visualisation");
