@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
@@ -44,7 +45,29 @@ public class SrmServiceUtils extends SdmxSrmUtils {
     public static String[] procStatusEnumToString(ProcStatusEnum... procStatus) {
         String[] procStatusString = new String[procStatus.length];
         for (int i = 0; i < procStatus.length; i++) {
-            procStatusString[i] = procStatus[i].name();
+            switch (procStatus[i]) {
+                case DRAFT:
+                    procStatusString[i] = ServiceExceptionParameters.PROC_STATUS_DRAFT;
+                    break;
+                case PRODUCTION_VALIDATION:
+                    procStatusString[i] = ServiceExceptionParameters.PROC_STATUS_PRODUCTION_VALIDATION;
+                    break;
+                case DIFFUSION_VALIDATION:
+                    procStatusString[i] = ServiceExceptionParameters.PROC_STATUS_DIFFUSION_VALIDATION;
+                    break;
+                case VALIDATION_REJECTED:
+                    procStatusString[i] = ServiceExceptionParameters.PROC_STATUS_VALIDATION_REJECTED;
+                    break;
+                case INTERNALLY_PUBLISHED:
+                    procStatusString[i] = ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED;
+                    break;
+                case EXTERNALLY_PUBLISHED:
+                    procStatusString[i] = ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED;
+                    break;
+                default:
+                    procStatusString[i] = procStatus[i].name();
+                    break;
+            }
         }
         return procStatusString;
     }
@@ -496,8 +519,7 @@ public class SrmServiceUtils extends SdmxSrmUtils {
     /**
      * Add exception to map of exception. If exception by resource doesnt exist, add to map
      */
-    public static void addExceptionToExceptionItemsByResource(Map<String, MetamacExceptionItem> exceptionItemsByUrn, CommonServiceExceptionType exceptionType,
-            String urnRelatedResource) {
+    public static void addExceptionToExceptionItemsByResource(Map<String, MetamacExceptionItem> exceptionItemsByUrn, CommonServiceExceptionType exceptionType, String urnRelatedResource) {
         if (exceptionItemsByUrn.get(urnRelatedResource) == null) {
             exceptionItemsByUrn.put(urnRelatedResource, MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(exceptionType).withMessageParameters(urnRelatedResource)
                     .build());
