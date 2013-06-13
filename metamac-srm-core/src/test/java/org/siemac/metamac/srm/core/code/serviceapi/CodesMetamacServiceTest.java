@@ -8582,7 +8582,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         FileInputStream fileInputStream = new FileInputStream(file);
         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        assertEquals("code\tparent\tvariableElement\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca", bufferedReader.readLine());
+        assertEquals("code\tparent\tvariable_element\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca", bufferedReader.readLine());
         assertEquals("CODE01\t\tVARIABLE_ELEMENT_02\tIsla de Tenerife\t\tName codelist-1-v2-code-1\t\tDescripción codelist-1-v2-code-1\t\t\t", bufferedReader.readLine());
         assertEquals("CODE02\t\t\tNombre codelist-1-v2-code-2 Canaria, Gran\t\t\t\t\t\t\t", bufferedReader.readLine());
         assertEquals(
