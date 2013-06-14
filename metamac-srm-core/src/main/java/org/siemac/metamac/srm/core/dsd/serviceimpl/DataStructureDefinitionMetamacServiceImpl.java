@@ -596,8 +596,11 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
     @Override
     public void checkDataStructureDefinitionWithRelatedResourcesExternallyPublished(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion) throws MetamacException {
-        // TODO categorizaciones
+        String itemSchemeVersionUrn = dataStructureDefinitionVersion.getMaintainableArtefact().getUrn();
+        Map<String, MetamacExceptionItem> exceptionItemsByUrn = new HashMap<String, MetamacExceptionItem>();
+        categoriesMetamacService.checkCategorisationsWithRelatedResourcesExternallyPublished(ctx, itemSchemeVersionUrn, exceptionItemsByUrn);
         // TODO resto de relaciones
+        ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
     }
 
     @Override

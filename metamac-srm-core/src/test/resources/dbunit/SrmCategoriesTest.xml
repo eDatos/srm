@@ -347,6 +347,7 @@
     
         <!-- CATEGORIES -->
             <!-- -> CATEGORY01 -->
+            <!-- -> CATEGORY02 -->
             
             <!-- CATEGORY01 -->
             
@@ -397,6 +398,55 @@
                 LAST_UPDATED_TZ="Europe/London"
             />    
     
+            <!-- CATEGORY02 -->
+            
+            <TB_M_CATEGORIES
+                TB_CATEGORIES="112"
+            />
+            
+            <TB_CATEGORIES
+                ID="112"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="11"
+                ITEM_SCHEME_VERSION_FIRST_FK="11"
+                NAMEABLE_ARTEFACT_FK="112"
+                      
+                UUID="categoryScheme-1-v1-cat-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="112"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+
+                CODE="CATEGORY02"
+                CODE_FULL="CATEGORY02"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(01.000).CATEGORY02"
+                URN="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(01.000).CATEGORY02"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+
+                UUID="annotableArtefact-112"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />    
+        
     <!-- **************************************************************************************  -->                
     <!-- VERSION 2                                                                               -->
     <!-- **************************************************************************************  -->
@@ -579,7 +629,7 @@
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
-                UUID="annotableArtefact-112"
+                UUID="annotableArtefact-122"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2012-01-01 01:02:03"

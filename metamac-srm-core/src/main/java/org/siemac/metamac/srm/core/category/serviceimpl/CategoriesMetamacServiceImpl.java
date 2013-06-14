@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.core.category.serviceimpl;
 
+import static org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils.addExceptionToExceptionItemsByResource;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +12,7 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -20,22 +23,26 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamacProperties;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -59,6 +66,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 
 /**
  * Implementation of CategoriesMetamacService.
@@ -385,7 +393,12 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Override
     public CategoryMetamac retrieveCategoryByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        return (CategoryMetamac) categoriesService.retrieveCategoryByUrn(ctx, urn);
+        CategoriesMetamacInvocationValidator.checkRetrieveByUrn(urn);
+        CategoryMetamac category = getCategoryMetamacRepository().findByUrn(urn);
+        if (category == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
+        }
+        return category;
     }
 
     @Override
@@ -439,7 +452,10 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Override
     public void checkCategorySchemeWithRelatedResourcesExternallyPublished(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
-        // TODO categorizaciones
+        String itemSchemeVersionUrn = categorySchemeVersion.getMaintainableArtefact().getUrn();
+        Map<String, MetamacExceptionItem> exceptionItemsByUrn = new HashMap<String, MetamacExceptionItem>();
+        checkCategorisationsWithRelatedResourcesExternallyPublished(ctx, itemSchemeVersionUrn, exceptionItemsByUrn);
+        ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
     }
 
     @Override
@@ -458,10 +474,22 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     public void preCreateCategorisation(ServiceContext ctx, String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException {
         // Validation
         CategoriesInvocationValidator.checkCreateCategorisation(categoryUrn, artefactCategorisedUrn, maintainerUrn, null);
-        // Category, externally published
-        checkCategoryExternallyPublished(ctx, categoryUrn);
-        // Maintainer, externally published
-        checkMaintainerExternallyPublished(ctx, maintainerUrn);
+        checkCategorisationToCreateOrUpdate(ctx, categoryUrn, artefactCategorisedUrn, maintainerUrn);
+    }
+
+    @Override
+    public PagedResult<CategoryMetamac> findCategoriesCanBeCategorisationCategoryByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(CategoryMetamac.class).distinctRoot().build();
+        }
+        // Category scheme internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(CategoryMetamac.class)
+                .withProperty(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
+
+        return findCategoriesByCondition(ctx, conditions, pagingParameter);
     }
 
     @Override
@@ -564,6 +592,22 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return pagedResults;
     }
 
+    @Override
+    public void checkCategorisationsWithRelatedResourcesExternallyPublished(ServiceContext ctx, String artefactCategorisedUrn, Map<String, MetamacExceptionItem> exceptionItemsByUrn)
+            throws MetamacException {
+        List<Categorisation> categorisations = retrieveCategorisationsByArtefact(ctx, artefactCategorisedUrn);
+        for (Categorisation categorisation : categorisations) {
+            Category category = categorisation.getCategory();
+            if (!category.getItemSchemeVersion().getMaintainableArtefact().getPublicLogic()) {
+                addExceptionToExceptionItemsByResource(exceptionItemsByUrn, ServiceExceptionType.CATEGORY_NOT_EXTERNALLY_PUBLISHED, category.getNameableArtefact().getUrn());
+            }
+            Organisation maintainer = categorisation.getMaintainableArtefact().getMaintainer();
+            if (!maintainer.getItemSchemeVersion().getMaintainableArtefact().getPublicLogic()) {
+                addExceptionToExceptionItemsByResource(exceptionItemsByUrn, ServiceExceptionType.ORGANISATION_SCHEME_NOT_EXTERNALLY_PUBLISHED, maintainer.getNameableArtefact().getUrn());
+            }
+        }
+    }
+
     /**
      * Typecast to Metamac type
      */
@@ -603,14 +647,41 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return new PagedResult<CategoryMetamac>(categoriesMetamac, source.getStartRow(), source.getRowCount(), source.getPageSize(), source.getTotalRows(), source.getAdditionalResultRows());
     }
 
-    private void checkCategoryExternallyPublished(ServiceContext ctx, String categoryUrn) throws MetamacException {
-        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByCategoryUrn(ctx, categoryUrn);
-        SrmValidationUtils.checkArtefactExternallyPublished(categorySchemeVersion.getMaintainableArtefact().getUrn(), categorySchemeVersion.getLifeCycleMetadata());
+    private void checkCategorisationCategory(ServiceContext ctx, String categoryUrn) throws MetamacException {
+        PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+        Category category = retrieveCategoryByUrn(ctx, categoryUrn);
+        Long categoryId = category.getId();
+        List<ConditionalCriteria> criteriaToVerifyCategory = ConditionalCriteriaBuilder.criteriaFor(CategoryMetamac.class).withProperty(CategoryMetamacProperties.id()).eq(categoryId).build();
+        PagedResult<CategoryMetamac> result = findCategoriesCanBeCategorisationCategoryByCondition(ctx, criteriaToVerifyCategory, pagingParameter);
+        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(categoryId)) {
+            throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CATEGORY);
+        }
     }
 
-    private void checkMaintainerExternallyPublished(ServiceContext ctx, String maintainerUrn) throws MetamacException {
-        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByOrganisationUrn(ctx, maintainerUrn);
-        SrmValidationUtils.checkArtefactExternallyPublished(organisationSchemeVersion.getMaintainableArtefact().getUrn(), organisationSchemeVersion.getLifeCycleMetadata());
+    private void checkCategorisationMaintainer(ServiceContext ctx, String maintainerUrn) throws MetamacException {
+        PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+        Organisation organisation = organisationsService.retrieveOrganisationByUrn(ctx, maintainerUrn);
+        Long organisationId = organisation.getId();
+        List<ConditionalCriteria> criteriaToVerifyMaintainer = ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).withProperty(OrganisationMetamacProperties.id()).eq(organisationId)
+                .build();
+        PagedResult<OrganisationMetamac> result = findOrganisationsCanBeCategorisationMaintainerByCondition(ctx, criteriaToVerifyMaintainer, pagingParameter);
+        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(organisationId)) {
+            throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MAINTAINER);
+        }
+    }
+
+    private PagedResult<OrganisationMetamac> findOrganisationsCanBeCategorisationMaintainerByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).distinctRoot().build();
+        }
+        // Organisation scheme internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class)
+                .withProperty(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
+
+        return organisationsService.findOrganisationsByCondition(ctx, conditions, pagingParameter);
     }
 
     /**
@@ -635,6 +706,16 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
      */
     private void checkCategoryToCreateOrUpdate(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion, CategoryMetamac category) throws MetamacException {
         checkCategorySchemeCanBeModified(categorySchemeVersion);
+    }
+
+    /**
+     * Common validations to create or update a categorisation
+     */
+    private void checkCategorisationToCreateOrUpdate(ServiceContext ctx, String categoryUrn, String artefactCategorisedUrn, String maintainerUrn) throws MetamacException {
+        // Category
+        checkCategorisationCategory(ctx, categoryUrn);
+        // Maintainer
+        checkCategorisationMaintainer(ctx, maintainerUrn);
     }
 
     private TaskInfo createVersionOfCategoryScheme(ServiceContext ctx, String urnToCopy, ItemSchemesCopyCallback itemSchemesCopyCallback, VersionTypeEnum versionType, boolean isTemporal)

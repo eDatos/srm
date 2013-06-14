@@ -808,14 +808,16 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Test
     @Override
     public void testCheckCategorySchemeVersionTranslations() throws Exception {
         // Tested in testPublishInternallyCategorySchemeCheckTranslations
     }
 
+    @Test
     @Override
-    public void testCheckCategorySchemeWithRelatedResourcesExternallyPublished() throws Exception {
-        // TODO testCheckCategorySchemeWithRelatedResourcesExternallyPublished
+    public void testCheckCategorisationsWithRelatedResourcesExternallyPublished() throws Exception {
+        // In CategoriesMetamacCategorisationServiceTest
     }
 
     @Test
@@ -988,6 +990,29 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
         }
+    }
+
+    @Test
+    public void testPublishExternallyCategorySchemeErrorRelatedResourcesCategorisationsNotExternallyPublished() throws Exception {
+
+        String urn = CATEGORY_SCHEME_3_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        try {
+            categoriesService.publishExternallyCategoryScheme(ctx, urn);
+            fail("related resources");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CATEGORY_NOT_EXTERNALLY_PUBLISHED, CATEGORY_SCHEME_1_V1_CATEGORY_1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CATEGORY_NOT_EXTERNALLY_PUBLISHED, CATEGORY_SCHEME_7_V2_CATEGORY_1);
+        }
+    }
+
+    @Test
+    @Override
+    public void testCheckCategorySchemeWithRelatedResourcesExternallyPublished() throws Exception {
+        // In testPublishExternally*ErrorRelatedResources
     }
 
     @Override
@@ -1948,12 +1973,13 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             PagedResult<CategoryMetamac> categoriesPagedResult = categoriesService.findCategoriesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(24, categoriesPagedResult.getTotalRows());
-            assertEquals(24, categoriesPagedResult.getValues().size());
+            assertEquals(25, categoriesPagedResult.getTotalRows());
+            assertEquals(25, categoriesPagedResult.getValues().size());
             assertTrue(categoriesPagedResult.getValues().get(0) instanceof CategoryMetamac);
 
             int i = 0;
             assertEquals(CATEGORY_SCHEME_1_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CATEGORY_SCHEME_1_V1_CATEGORY_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
@@ -2057,6 +2083,30 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 assertEquals(categoriesPagedResult.getValues().size(), i);
             }
         }
+    }
+
+    @Override
+    public void testFindCategoriesCanBeCategorisationCategoryByCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Category.class).orderBy(CategoryProperties.itemSchemeVersion().maintainableArtefact().code())
+                .orderBy(CategoryProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending().orderBy(CategoryProperties.id()).ascending().distinctRoot().build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<CategoryMetamac> categoriesPagedResult = categoriesService.findCategoriesCanBeCategorisationCategoryByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
+
+        // Validate
+        assertEquals(7, categoriesPagedResult.getTotalRows());
+        assertEquals(7, categoriesPagedResult.getValues().size());
+        assertTrue(categoriesPagedResult.getValues().get(0) instanceof CategoryMetamac);
+
+        int i = 0;
+        assertEquals(CATEGORY_SCHEME_1_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_2_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_2_2, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_3_V1_CATEGORY_2_1_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_7_V2_CATEGORY_1, categoriesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+
+        assertEquals(categoriesPagedResult.getValues().size(), i);
     }
 
     @Override

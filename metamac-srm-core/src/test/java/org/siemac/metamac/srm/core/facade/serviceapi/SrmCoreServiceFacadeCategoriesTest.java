@@ -603,11 +603,12 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
             MetamacCriteriaResult<CategoryMetamacBasicDto> categoriesPagedResult = srmCoreServiceFacade.findCategoriesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(24, categoriesPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(24, categoriesPagedResult.getResults().size());
+            assertEquals(25, categoriesPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(25, categoriesPagedResult.getResults().size());
 
             int i = 0;
             assertEquals(CATEGORY_SCHEME_1_V1_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CATEGORY_SCHEME_1_V1_CATEGORY_2, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CATEGORY_SCHEME_1_V1, categoriesPagedResult.getResults().get(0).getItemSchemeVersion().getUrn());
             assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, categoriesPagedResult.getResults().get(i++).getUrn());
@@ -676,11 +677,12 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
             MetamacCriteriaResult<CategoryMetamacBasicDto> categoriesPagedResult = srmCoreServiceFacade.findCategoriesByCondition(getServiceContextAdministrador(), metamacCriteria);
 
             // Validate
-            assertEquals(16, categoriesPagedResult.getPaginatorResult().getTotalResults().intValue());
-            assertEquals(16, categoriesPagedResult.getResults().size());
+            assertEquals(17, categoriesPagedResult.getPaginatorResult().getTotalResults().intValue());
+            assertEquals(17, categoriesPagedResult.getResults().size());
 
             int i = 0;
             assertEquals(CATEGORY_SCHEME_1_V1_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CATEGORY_SCHEME_1_V1_CATEGORY_2, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, categoriesPagedResult.getResults().get(i++).getUrn());
             assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, categoriesPagedResult.getResults().get(i++).getUrn());

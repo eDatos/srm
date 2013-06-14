@@ -7,12 +7,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -96,10 +99,18 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
     }
 
     @Test
-    public void testCreateCategorisationErrorCategoryNotExternallyPublished() throws Exception {
+    public void testCreateCategorisationErrorCategoryInternallyPublished() throws Exception {
+        String categoryUrn = CATEGORY_SCHEME_5_V1_CATEGORY_1;
+        String artefactCategorisedUrn = CONCEPT_SCHEME_1_V1;
+        String maintainerUrn = AGENCY_ROOT_1_V1;
+        categoriesService.createCategorisation(getServiceContextAdministrador(), categoryUrn, artefactCategorisedUrn, maintainerUrn);
+    }
+
+    @Test
+    public void testCreateCategorisationErrorCategoryDraft() throws Exception {
 
         // Create
-        String categoryUrn = CATEGORY_SCHEME_5_V1_CATEGORY_1;
+        String categoryUrn = CATEGORY_SCHEME_8_V1_CATEGORY_1;
         String artefactCategorisedUrn = CONCEPT_SCHEME_1_V1;
         String maintainerUrn = AGENCY_ROOT_1_V1;
         try {
@@ -107,10 +118,9 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
             fail("not exists");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(2, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(CATEGORY_SCHEME_5_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
-            assertEquals(ServiceExceptionParameters.PROC_STATUS_EXTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CATEGORY, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -212,6 +222,17 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
             }
             assertEquals(categorisations.size(), i);
         }
+    }
+
+    @Test
+    public void testCheckCategorisationsWithRelatedResourcesExternallyPublished() throws Exception {
+        String artefactCategorisedUrn = CATEGORY_SCHEME_8_V1;
+        Map<String, MetamacExceptionItem> exceptionItemsByUrn = new HashMap<String, MetamacExceptionItem>();
+        categoriesService.checkCategorisationsWithRelatedResourcesExternallyPublished(getServiceContextAdministrador(), artefactCategorisedUrn, exceptionItemsByUrn);
+
+        // Validate
+        assertEquals(1, exceptionItemsByUrn.size());
+        assertListContainsExceptionItemOneParameter(exceptionItemsByUrn.values(), ServiceExceptionType.CATEGORY_NOT_EXTERNALLY_PUBLISHED, CATEGORY_SCHEME_5_V1_CATEGORY_1);
     }
 
     // In SDMX module

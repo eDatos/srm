@@ -1457,11 +1457,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Tested in testPublishInternallyCodelistCheckTranslations
     }
 
-    @Override
-    public void testCheckCodelistWithRelatedResourcesExternallyPublished() throws Exception {
-        // TODO testCheckCodelistWithRelatedResourcesExternallyPublished
-    }
-
     @Test
     public void testPublishInternallyCodelistCheckTranslations() throws Exception {
         String urn = CODELIST_14_V1;
@@ -1726,6 +1721,27 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CODELIST_NOT_EXTERNALLY_PUBLISHED, CODELIST_1_V1);
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CODELIST_NOT_EXTERNALLY_PUBLISHED, CODELIST_3_V1);
         }
+    }
+
+    @Test
+    public void testPublishExternallyCodelistErrorRelatedResourcesCategorisationsNotExternallyPublished() throws Exception {
+
+        String urn = CODELIST_3_V1;
+
+        try {
+            codesService.publishExternallyCodelist(getServiceContextAdministrador(), urn);
+            fail("related resources");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CATEGORY_NOT_EXTERNALLY_PUBLISHED, CATEGORY_SCHEME_1_V1_CATEGORY_1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CATEGORY_NOT_EXTERNALLY_PUBLISHED, CATEGORY_SCHEME_1_V1_CATEGORY_2);
+        }
+    }
+
+    @Override
+    public void testCheckCodelistWithRelatedResourcesExternallyPublished() throws Exception {
+        // tested in testPublishExternallyCodelistErrorRelatedResourcesNotExternallyPublished
     }
 
     @Override

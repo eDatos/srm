@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -172,6 +173,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
     // Categories
     protected String              CATEGORY_SCHEME_1_V1_CATEGORY_1                      = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(01.000).CATEGORY01";
+    protected String              CATEGORY_SCHEME_1_V1_CATEGORY_2                      = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(01.000).CATEGORY02";
     protected String              CATEGORY_SCHEME_1_V2_CATEGORY_1                      = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000).CATEGORY01";
     protected String              CATEGORY_SCHEME_1_V2_CATEGORY_2                      = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000).CATEGORY02";
     protected String              CATEGORY_SCHEME_1_V2_CATEGORY_2_1                    = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000).CATEGORY02.CATEGORY0201";
@@ -592,7 +594,11 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     }
 
     protected MetamacExceptionItem assertListContainsExceptionItemOneParameter(MetamacException e, CommonServiceExceptionType serviceExceptionType, String parameter) {
-        for (MetamacExceptionItem metamacExceptionItem : e.getExceptionItems()) {
+        return assertListContainsExceptionItemOneParameter(e.getExceptionItems(), serviceExceptionType, parameter);
+    }
+
+    protected MetamacExceptionItem assertListContainsExceptionItemOneParameter(Collection<MetamacExceptionItem> exceptionItems, CommonServiceExceptionType serviceExceptionType, String parameter) {
+        for (MetamacExceptionItem metamacExceptionItem : exceptionItems) {
             if (serviceExceptionType.getCode().equals(metamacExceptionItem.getCode()) && metamacExceptionItem.getMessageParameters().length == 1
                     && parameter.equals(metamacExceptionItem.getMessageParameters()[0])) {
                 return metamacExceptionItem;

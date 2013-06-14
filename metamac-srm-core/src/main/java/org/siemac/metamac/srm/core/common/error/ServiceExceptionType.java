@@ -53,6 +53,9 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_WITHOUT_SPATIALDIM_SPECIAL_ATTR                     = create("exception.srm.dsd.validation.spatial_dimension.special_attr.not_found");
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_WITHOUT_TIMEDIM_SPECIAL_ATTR                        = create("exception.srm.dsd.validation.time_dimension.special_attr.not_found");
 
+    // Categories
+    public static final CommonServiceExceptionType CATEGORY_NOT_EXTERNALLY_PUBLISHED                                             = create("exception.srm.categories.category_not_externally_published");
+
     // Codes miscellaneous
     public static final CommonServiceExceptionType CODES_VARIABLE_ELEMENTS_NORMALISATION_ERROR                                   = create("exception.srm.codelists.error.variable_elements_normalisation");
 

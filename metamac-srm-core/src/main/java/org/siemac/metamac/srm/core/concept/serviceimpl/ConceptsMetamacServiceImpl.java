@@ -369,12 +369,13 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public void checkConceptSchemeWithRelatedResourcesExternallyPublished(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
         Long itemSchemeVersionId = conceptSchemeVersion.getId();
+        String itemSchemeVersionUrn = conceptSchemeVersion.getMaintainableArtefact().getUrn();
         Map<String, MetamacExceptionItem> exceptionItemsByUrn = new HashMap<String, MetamacExceptionItem>();
         getConceptMetamacRepository().checkConceptsWithConceptExtendsExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
         getConceptMetamacRepository().checkConceptsWithConceptRoleExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
         getConceptMetamacRepository().checkConceptsWithQuantityExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
         getConceptMetamacRepository().checkConceptsWithRepresentationExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
-        // TODO categorizaciones
+        categoriesMetamacService.checkCategorisationsWithRelatedResourcesExternallyPublished(ctx, itemSchemeVersionUrn, exceptionItemsByUrn);
         ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
     }
 
@@ -693,7 +694,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     @Override
     public ConceptMetamac retrieveConceptByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        return (ConceptMetamac) conceptsService.retrieveConceptByUrn(ctx, urn);
+        ConceptsMetamacInvocationValidator.checkRetrieveByUrn(urn);
+        ConceptMetamac concept = getConceptMetamacRepository().findByUrn(urn);
+        if (concept == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
+        }
+        return concept;
     }
 
     @Override

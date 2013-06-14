@@ -1622,6 +1622,23 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Test
+    public void testPublishExternallyConceptSchemeErrorRelatedResourcesCategorisationsNotExternallyPublished() throws Exception {
+
+        String urn = CONCEPT_SCHEME_3_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        try {
+            conceptsService.publishExternallyConceptScheme(ctx, urn);
+            fail("related resources");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CATEGORY_NOT_EXTERNALLY_PUBLISHED, CATEGORY_SCHEME_1_V1_CATEGORY_1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CATEGORY_NOT_EXTERNALLY_PUBLISHED, CATEGORY_SCHEME_1_V1_CATEGORY_2);
+        }
+    }
+
     @Override
     public void testCheckConceptSchemeWithRelatedResourcesExternallyPublished() throws Exception {
         // tested in testPublishExternallyConceptSchemeErrorRelatedResourcesNotExternallyPublished

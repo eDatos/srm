@@ -78,6 +78,8 @@ Application CategoriesMetamac {
     		@CategoryMetamac retrieveCategoryByUrn(String urn) throws MetamacException;
     		"Finds categories by criteria"
     		PagedResult<@CategoryMetamac> findCategoriesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		"Finds categories can be category in categorisation"
+    		PagedResult<@CategoryMetamac> findCategoriesCanBeCategorisationCategoryByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
 			"Deletes category"
     		deleteCategory(String urn) throws MetamacException;
     		"Retrieves categories by category scheme in locale requested"
@@ -108,6 +110,8 @@ Application CategoriesMetamac {
     		List<@Categorisation> retrieveCategorisationsByArtefact(String urn) throws MetamacException;
 			"Finds categorisations by criteria"
     		PagedResult<@Categorisation> findCategorisationsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Checks categorisations have related resources externally published"
+    		checkCategorisationsWithRelatedResourcesExternallyPublished(String artefactCategorisedUrn, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -141,6 +145,7 @@ Application CategoriesMetamac {
 				findByCondition(PagingParameter pagingParameter);
 				List<ItemResult> findCategoriesByCategorySchemeUnordered(Long itemSchemeVersionId, ItemMetamacResultSelection resultSelection) throws MetamacException;
 				List<ItemVisualisationResult> findCategoriesByCategorySchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException;
+				
 				checkCategoryTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
 			}
 		}

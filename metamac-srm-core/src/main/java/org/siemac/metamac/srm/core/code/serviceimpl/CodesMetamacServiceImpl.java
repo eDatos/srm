@@ -1226,7 +1226,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodeMetamac retrieveCodeByUrn(ServiceContext ctx, String urn) throws MetamacException {
-        return (CodeMetamac) codesService.retrieveCodeByUrn(ctx, urn);
+        CodesInvocationValidator.checkRetrieveByUrn(urn);
+        CodeMetamac code = getCodeMetamacRepository().findByUrn(urn);
+        if (code == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
+        }
+        return code;
     }
 
     @Override
@@ -1345,9 +1350,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public void checkCodelistWithRelatedResourcesExternallyPublished(ServiceContext ctx, CodelistVersionMetamac codelistVersion) throws MetamacException {
         Long itemSchemeVersionId = codelistVersion.getId();
+        String itemSchemeVersionUrn = codelistVersion.getMaintainableArtefact().getUrn();
         Map<String, MetamacExceptionItem> exceptionItemsByUrn = new HashMap<String, MetamacExceptionItem>();
         getCodeMetamacRepository().checkCodelistWithReplaceToExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
-        // TODO categorizaciones
+        categoriesMetamacService.checkCategorisationsWithRelatedResourcesExternallyPublished(ctx, itemSchemeVersionUrn, exceptionItemsByUrn);
         ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
     }
 

@@ -918,11 +918,6 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         // Tested in testPublishInternallyOrganisationSchemeCheckTranslations
     }
 
-    @Override
-    public void testCheckOrganisationSchemeWithRelatedResourcesExternallyPublished() throws Exception {
-        // TODO testCheckOrganisationSchemeWithRelatedResourcesExternallyPublished
-    }
-
     @Test
     public void testPublishInternallyOrganisationSchemeCheckTranslations() throws Exception {
         String urn = ORGANISATION_SCHEME_11_V1;
@@ -1131,6 +1126,26 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
             assertEquals(ServiceExceptionParameters.PROC_STATUS_INTERNALLY_PUBLISHED, ((String[]) e.getExceptionItems().get(0).getMessageParameters()[1])[0]);
         }
+    }
+
+    @Test
+    public void testPublishExternallyOrganisationSchemeErrorRelatedResourcesCategorisationsNotExternallyPublished() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_3_V1;
+        try {
+            organisationsService.publishExternallyOrganisationScheme(getServiceContextAdministrador(), urn);
+            fail("related resources");
+        } catch (MetamacException e) {
+            assertEquals(2, e.getExceptionItems().size());
+
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CATEGORY_NOT_EXTERNALLY_PUBLISHED, CATEGORY_SCHEME_1_V1_CATEGORY_1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CATEGORY_NOT_EXTERNALLY_PUBLISHED, CATEGORY_SCHEME_1_V1_CATEGORY_2);
+        }
+    }
+
+    @Override
+    public void testCheckOrganisationSchemeWithRelatedResourcesExternallyPublished() throws Exception {
+        // tested in testPublishExternallyOrganisationSchemeErrorRelatedResourcesNotExternallyPublished
     }
 
     @Override
