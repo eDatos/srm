@@ -12,7 +12,6 @@ import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.core.common.aop.LoggingInterceptor;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.exception.RestCommonServiceExceptionType;
 import org.siemac.metamac.rest.exception.RestException;
@@ -156,7 +155,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     private DataStructuresDo2RestMapperV10        dataStructuresDo2RestMapperV10;
 
     private final ServiceContext                  ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
-    private final Logger                          logger = LoggerFactory.getLogger(LoggingInterceptor.class);
+    private final Logger                          logger = LoggerFactory.getLogger(SrmRestInternalFacadeV10Impl.class);
 
     @Override
     public ConceptSchemes findConceptSchemes(String query, String orderBy, String limit, String offset) {
