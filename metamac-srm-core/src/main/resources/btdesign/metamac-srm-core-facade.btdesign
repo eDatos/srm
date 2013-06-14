@@ -511,7 +511,7 @@ Application SrmFacadeCore {
             "Finds codelist by criteria"
             MetamacCriteriaResult<@CodelistMetamacBasicDto> findCodelistsByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Find codelists can replace another one"
-    		MetamacCriteriaResult<@CodelistMetamacBasicDto> findCodelistsByConditionCanReplaceTo(String codelistUrn, MetamacCriteria criteria)  throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsByConditionCanReplaceTo(String codelistUrn, MetamacCriteria criteria)  throws MetamacException;
             "Retrieves a codelist by URN"
             @CodelistMetamacDto retrieveCodelistByUrn(String urn) throws MetamacException;
             "Retrieves all codelist versions"

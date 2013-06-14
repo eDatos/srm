@@ -46,7 +46,7 @@ public interface SculptorCriteria2MetamacCriteriaMapper {
 
     public MetamacCriteriaResult<ConceptSchemeMetamacBasicDto> pageResultConceptSchemeVersionToMetamacCriteriaResult(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize)
             throws MetamacException;
-    public MetamacCriteriaResult<RelatedResourceDto> pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize);
+    public MetamacCriteriaResult<RelatedResourceDto> pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(PagedResult<ConceptSchemeVersionMetamac> source, Integer pageSize);
     public MetamacCriteriaResult<ConceptMetamacBasicDto> pageResultConceptToMetamacCriteriaResult(PagedResult<ConceptMetamac> source, Integer pageSize);
     public MetamacCriteriaResult<RelatedResourceDto> pageResultConceptToMetamacCriteriaResultRelatedResource(PagedResult<ConceptMetamac> source, Integer pageSize) throws MetamacException;
 
@@ -56,12 +56,12 @@ public interface SculptorCriteria2MetamacCriteriaMapper {
     public MetamacCriteriaResult<RelatedResourceDto> pageResultOrganisationToMetamacCriteriaResultRelatedResource(PagedResult<OrganisationMetamac> source, Integer pageSize) throws MetamacException;
 
     public MetamacCriteriaResult<CategorySchemeMetamacBasicDto> pageResultCategorySchemeVersionToMetamacCriteriaResult(PagedResult<CategorySchemeVersionMetamac> source, Integer pageSize);
-    public MetamacCriteriaResult<RelatedResourceDto> pageResultCategorySchemeToMetamacCriteriaResultRelatedResource(PagedResult<CategorySchemeVersionMetamac> source, Integer pageSize);
+    public MetamacCriteriaResult<RelatedResourceDto> pageResultCategorySchemeVersionToMetamacCriteriaResultRelatedResource(PagedResult<CategorySchemeVersionMetamac> source, Integer pageSize);
     public MetamacCriteriaResult<CategoryMetamacBasicDto> pageResultCategoryToMetamacCriteriaResult(PagedResult<CategoryMetamac> source, Integer pageSize);
     public MetamacCriteriaResult<RelatedResourceDto> pageResultCategoryToMetamacCriteriaResultRelatedResource(PagedResult<CategoryMetamac> source, Integer pageSize);
 
     public MetamacCriteriaResult<CodelistMetamacBasicDto> pageResultCodelistVersionToMetamacCriteriaResult(PagedResult<CodelistVersionMetamac> source, Integer pageSize);
-    public MetamacCriteriaResult<RelatedResourceDto> pageResultCodelistToMetamacCriteriaResultRelatedResource(PagedResult<CodelistVersionMetamac> source, Integer pageSize);
+    public MetamacCriteriaResult<RelatedResourceDto> pageResultCodelistVersionToMetamacCriteriaResultRelatedResource(PagedResult<CodelistVersionMetamac> source, Integer pageSize);
     public MetamacCriteriaResult<CodeMetamacBasicDto> pageResultCodeToMetamacCriteriaResult(PagedResult<CodeMetamac> source, Integer pageSize);
     public MetamacCriteriaResult<RelatedResourceDto> pageResultCodeToMetamacCriteriaResultRelatedResource(PagedResult<CodeMetamac> source, Integer pageSize) throws MetamacException;
 

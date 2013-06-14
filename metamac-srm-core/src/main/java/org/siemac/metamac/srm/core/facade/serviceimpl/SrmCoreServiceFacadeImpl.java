@@ -608,7 +608,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
@@ -645,7 +645,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
@@ -682,7 +682,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
@@ -718,7 +718,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
@@ -754,7 +754,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
@@ -791,7 +791,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), conceptUrn);
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
@@ -809,7 +809,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
@@ -828,7 +828,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
@@ -846,7 +846,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
@@ -883,7 +883,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), conceptUrn);
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
@@ -1000,12 +1000,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform
         MetamacCriteriaResult<CodelistMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistVersionToMetamacCriteriaResult(result,
                 sculptorCriteria.getPageSize());
-
         return metamacCriteriaResult;
     }
 
     @Override
-    public MetamacCriteriaResult<CodelistMetamacBasicDto> findCodelistsByConditionCanReplaceTo(ServiceContext ctx, String codelistUrn, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsByConditionCanReplaceTo(ServiceContext ctx, String codelistUrn, MetamacCriteria criteria) throws MetamacException {
         // Security
         CodesSecurityUtils.canFindCodelistsByCondition(ctx);
 
@@ -1017,9 +1016,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<CodelistMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistVersionToMetamacCriteriaResult(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
-
         return metamacCriteriaResult;
     }
 
@@ -1035,7 +1033,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // Transform
         List<CodelistMetamacBasicDto> codelistMetamacDtos = codesDo2DtoMapper.codelistMetamacDoListToDtoList(codelistVersionsSortedByCreationDate);
-
         return codelistMetamacDtos;
     }
 
@@ -2421,7 +2418,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -2440,7 +2437,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -2460,7 +2457,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter(), conceptUrn);
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -2480,7 +2477,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -2500,7 +2497,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -2520,7 +2517,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -2539,7 +2536,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
 
         return metamacCriteriaResult;
@@ -2995,7 +2992,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter(), conceptUrn, variableUrn);
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
@@ -3075,7 +3072,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCategorySchemeToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCategorySchemeVersionToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
