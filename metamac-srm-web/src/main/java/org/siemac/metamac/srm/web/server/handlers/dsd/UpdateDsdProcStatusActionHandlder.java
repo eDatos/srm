@@ -65,7 +65,7 @@ public class UpdateDsdProcStatusActionHandlder extends SecurityActionHandler<Upd
             } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 // Check that the associated statistical operation is externally published
                 if (dsdToUpdateStatus.getStatisticalOperation() != null) {
-                    Operation operation = statisticalOperationsRestInternalFacade.retrieveOperation(dsdToUpdateStatus.getStatisticalOperation().getCode());
+                    Operation operation = statisticalOperationsRestInternalFacade.retrieveOperation(serviceContext, dsdToUpdateStatus.getStatisticalOperation().getCode());
                     if (!ProcStatus.PUBLISH_EXTERNALLY.equals(operation.getProcStatus())) {
                         throwStatisticalOperationNotExternallyPublishedException(serviceContext);
                     }

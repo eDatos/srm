@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operations;
@@ -36,6 +37,8 @@ public class GetStatisticalOperationsActionHandler extends SecurityActionHandler
     @Override
     public GetStatisticalOperationsResult executeSecurityAction(GetStatisticalOperationsAction action) throws ActionException {
 
+        ServiceContext serviceContext = ServiceContextHolder.getCurrentServiceContext();
+
         try {
 
             int firstResult = action.getFirstResult();
@@ -51,12 +54,12 @@ public class GetStatisticalOperationsActionHandler extends SecurityActionHandler
             if (noFilterByUserPrincipal || SharedSecurityUtils.isAdministrador(SecurityUtils.getMetamacPrincipal(ServiceContextHolder.getCurrentServiceContext()))
                     || (userOperationCodes == null || userOperationCodes.isEmpty())) {
                 // THE USER CAN ACCESS TO ALL OPERATIONS
-                result = statisticalOperationsRestInternalFacade.findOperations(firstResult, maxResults, null, criteria);
+                result = statisticalOperationsRestInternalFacade.findOperations(serviceContext, firstResult, maxResults, null, criteria);
             } else {
                 // THE USER ONLY HAS ACCESS TO SOME OPERATIONS
                 // If the user only has access to some operations, find these operations.
                 // In this situation, it is necessary to call the API to get the operation names.
-                result = statisticalOperationsRestInternalFacade.findOperations(firstResult, maxResults, userOperationCodes.toArray(new String[userOperationCodes.size()]), criteria);
+                result = statisticalOperationsRestInternalFacade.findOperations(serviceContext, firstResult, maxResults, userOperationCodes.toArray(new String[userOperationCodes.size()]), criteria);
             }
 
             if (result != null && result.getOperations() != null) {

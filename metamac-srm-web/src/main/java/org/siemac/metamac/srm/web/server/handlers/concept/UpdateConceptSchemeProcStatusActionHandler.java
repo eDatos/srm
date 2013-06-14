@@ -62,7 +62,7 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
             } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 // Check that the associated statistical operation is externally published
                 if (conceptSchemeToUpdateStatus.getRelatedOperation() != null) {
-                    Operation operation = statisticalOperationsRestInternalFacade.retrieveOperation(conceptSchemeToUpdateStatus.getRelatedOperation().getCode());
+                    Operation operation = statisticalOperationsRestInternalFacade.retrieveOperation(serviceContext, conceptSchemeToUpdateStatus.getRelatedOperation().getCode());
                     if (!ProcStatus.PUBLISH_EXTERNALLY.equals(operation.getProcStatus())) {
                         throwStatisticalOperationNotExternallyPublishedException(serviceContext);
                     }
