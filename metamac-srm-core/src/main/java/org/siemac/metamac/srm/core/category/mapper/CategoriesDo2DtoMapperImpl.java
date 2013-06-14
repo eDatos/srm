@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 @org.springframework.stereotype.Component("categoriesDo2DtoMapper")
 public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements CategoriesDo2DtoMapper {
@@ -44,6 +45,15 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
     }
 
     @Override
+    public RelatedResourceDto categorySchemeMetamacDoToRelatedResourceDto(CategorySchemeVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = do2DtoMapperSdmxSrm.categorySchemeDoToRelatedResourceDto(source);
+        return target;
+    }
+
+    @Override
     public List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDoListToDtoList(List<CategorySchemeVersionMetamac> categorySchemeVersions) {
         List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDtos = new ArrayList<CategorySchemeMetamacBasicDto>(categorySchemeVersions.size());
         for (CategorySchemeVersionMetamac categorySchemeVersion : categorySchemeVersions) {
@@ -70,6 +80,15 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
         }
         CategoryMetamacBasicDto target = new CategoryMetamacBasicDto();
         itemDoToItemBasicDto(source, target);
+        return target;
+    }
+
+    @Override
+    public RelatedResourceDto categoryMetamacDoToRelatedResourceDto(CategoryMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = do2DtoMapperSdmxSrm.categoryDoToRelatedResourceDto(source);
         return target;
     }
 

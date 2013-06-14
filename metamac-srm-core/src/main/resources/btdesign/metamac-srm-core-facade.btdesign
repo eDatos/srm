@@ -448,7 +448,7 @@ Application SrmFacadeCore {
             "Retrieves all category scheme versions"
             List<@CategorySchemeMetamacBasicDto> retrieveCategorySchemeVersions(String urn) throws MetamacException;
     		"Finds category schemes with categories can be category in categorisation"
-    		MetamacCriteriaResult<@CategorySchemeMetamacBasicDto> findCategorySchemesWithCategoriesCanBeCategorisationCategoryByCondition(MetamacCriteria criteria) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findCategorySchemesWithCategoriesCanBeCategorisationCategoryByCondition(MetamacCriteria criteria) throws MetamacException;
             
             "Sends category scheme to production validation"
 	    	@CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(String urn) throws MetamacException;
@@ -480,7 +480,7 @@ Application SrmFacadeCore {
             "Finds categories by criteria"
             MetamacCriteriaResult<@CategoryMetamacBasicDto> findCategoriesByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Finds categories can be category in categorisation"
-    		MetamacCriteriaResult<@CategoryMetamacBasicDto> findCategoriesCanBeCategorisationCategoryByCondition(MetamacCriteria criteria) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findCategoriesCanBeCategorisationCategoryByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes category"
             deleteCategory(String urn) throws MetamacException;
     		"Retrieves categories by category scheme in locale requested"
