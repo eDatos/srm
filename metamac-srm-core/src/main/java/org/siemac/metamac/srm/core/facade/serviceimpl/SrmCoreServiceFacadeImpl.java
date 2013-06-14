@@ -3063,6 +3063,26 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public MetamacCriteriaResult<CategorySchemeMetamacBasicDto> findCategorySchemesWithCategoriesCanBeCategorisationCategoryByCondition(ServiceContext ctx, MetamacCriteria criteria)
+            throws MetamacException {
+        // Security
+        CategoriesSecurityUtils.canFindCategorySchemesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCategorySchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CategorySchemeVersionMetamac> result = getCategoriesMetamacService().findCategorySchemesWithCategoriesCanBeCategorisationCategoryByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<CategorySchemeMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultToMetamacCriteriaResultCategorySchemeVersion(result,
+                sculptorCriteria.getPageSize());
+
+        return metamacCriteriaResult;
+    }
+
+    @Override
     public CategorySchemeMetamacDto retrieveCategorySchemeByUrn(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CategoriesSecurityUtils.canRetrieveCategorySchemeByUrn(ctx);

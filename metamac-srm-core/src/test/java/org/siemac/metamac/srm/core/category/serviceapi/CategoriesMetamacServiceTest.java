@@ -299,6 +299,29 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
     @Test
     @Override
+    public void testFindCategorySchemesWithCategoriesCanBeCategorisationCategoryByCondition() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CategorySchemeVersionMetamac.class).orderBy(CategorySchemeVersionMetamacProperties.maintainableArtefact().code())
+                .orderBy(CategorySchemeVersionMetamacProperties.maintainableArtefact().urn()).build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<CategorySchemeVersionMetamac> categorySchemesPagedResult = categoriesService.findCategorySchemesWithCategoriesCanBeCategorisationCategoryByCondition(
+                getServiceContextAdministrador(), conditions, pagingParameter);
+
+        // Validate
+        assertEquals(4, categorySchemesPagedResult.getTotalRows());
+        assertEquals(4, categorySchemesPagedResult.getValues().size());
+        assertTrue(categorySchemesPagedResult.getValues().get(0) instanceof CategorySchemeVersionMetamac);
+
+        int i = 0;
+        assertEquals(CATEGORY_SCHEME_1_V1, categorySchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_3_V1, categorySchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_7_V1, categorySchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CATEGORY_SCHEME_7_V2, categorySchemesPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+
+        assertEquals(categorySchemesPagedResult.getValues().size(), i);
+    }
+
+    @Test
+    @Override
     public void testRetrieveCategorySchemeVersions() throws Exception {
 
         // Retrieve all versions

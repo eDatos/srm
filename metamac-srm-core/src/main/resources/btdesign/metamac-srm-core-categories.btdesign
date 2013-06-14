@@ -33,6 +33,8 @@ Application CategoriesMetamac {
 			List<@CategorySchemeVersionMetamac> retrieveCategorySchemeVersions(String urn) throws MetamacException;
 			"Finds category schemes by criteria"
     		PagedResult<@CategorySchemeVersionMetamac> findCategorySchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		"Finds category schemes with categories can be category in categorisation"
+    		PagedResult<@CategorySchemeVersionMetamac> findCategorySchemesWithCategoriesCanBeCategorisationCategoryByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
     		"Sends category scheme to production validation"
     		@CategorySchemeVersionMetamac sendCategorySchemeToProductionValidation(String urn) throws MetamacException;
     		"Sends category scheme to diffusion validation"

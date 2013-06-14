@@ -29,6 +29,7 @@ import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTempora
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamacProperties;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.common.LifeCycle;
@@ -178,6 +179,21 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     public PagedResult<CategorySchemeVersionMetamac> findCategorySchemesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         PagedResult<CategorySchemeVersion> categorySchemeVersionPagedResult = categoriesService.findCategorySchemesByCondition(ctx, conditions, pagingParameter);
         return pagedResultCategorySchemeVersionToMetamac(categorySchemeVersionPagedResult);
+    }
+
+    @Override
+    public PagedResult<CategorySchemeVersionMetamac> findCategorySchemesWithCategoriesCanBeCategorisationCategoryByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter) throws MetamacException {
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(CategoryMetamac.class).distinctRoot().build();
+        }
+        // Category scheme internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(CategorySchemeVersionMetamac.class)
+                .withProperty(CategorySchemeVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
+
+        return findCategorySchemesByCondition(ctx, conditions, pagingParameter);
     }
 
     @Override

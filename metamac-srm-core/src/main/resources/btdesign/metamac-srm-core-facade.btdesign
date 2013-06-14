@@ -447,6 +447,8 @@ Application SrmFacadeCore {
             @CategorySchemeMetamacDto retrieveCategorySchemeByUrn(String urn) throws MetamacException;
             "Retrieves all category scheme versions"
             List<@CategorySchemeMetamacBasicDto> retrieveCategorySchemeVersions(String urn) throws MetamacException;
+    		"Finds category schemes with categories can be category in categorisation"
+    		MetamacCriteriaResult<@CategorySchemeMetamacBasicDto> findCategorySchemesWithCategoriesCanBeCategorisationCategoryByCondition(MetamacCriteria criteria) throws MetamacException;
             
             "Sends category scheme to production validation"
 	    	@CategorySchemeMetamacDto sendCategorySchemeToProductionValidation(String urn) throws MetamacException;
