@@ -5,10 +5,11 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
-import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistOpennessLevelVisualisationWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistOrderVisualisationWebCriteria;
@@ -235,6 +236,24 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
                     result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getConceptUrn(),
                             criteria);
+                    break;
+                }
+                case CODELIST_THAT_CAN_BE_REPLACED: {
+                    CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
+                    result = srmCoreServiceFacade.findCodelistsByConditionCanReplaceTo(ServiceContextHolder.getCurrentServiceContext(), codelistWebCriteria.getCodelisUrnToReplaceCodelist(), criteria);
+                    break;
+                }
+                case CATEGORY_SCHEMES_FOR_CATEGORISATIONS: {
+                    CategorySchemeWebCriteria categorySchemeWebCriteria = (CategorySchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getCategorySchemeCriteriaRestriction(categorySchemeWebCriteria));
+                    result = srmCoreServiceFacade.findCategorySchemesWithCategoriesCanBeCategorisationCategoryByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
+                case CATEGORIES_FOR_CATEGORISATIONS: {
+                    CategoryWebCriteria categoryWebCriteria = (CategoryWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getCategoryCriteriaRestriction(categoryWebCriteria));
+                    result = srmCoreServiceFacade.findCategoriesCanBeCategorisationCategoryByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 default:

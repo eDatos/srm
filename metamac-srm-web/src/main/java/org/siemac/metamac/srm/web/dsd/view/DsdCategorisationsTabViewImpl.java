@@ -6,8 +6,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdCategorisationsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdCategorisationsTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdCategorisationsPanel;
-import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.google.gwt.user.client.ui.Widget;
@@ -49,12 +48,12 @@ public class DsdCategorisationsTabViewImpl extends ViewWithUiHandlers<DsdCategor
     }
 
     @Override
-    public void setCategorySchemesForCategorisations(GetCategorySchemesResult result) {
+    public void setCategorySchemesForCategorisations(GetRelatedResourcesResult result) {
         categorisationsPanel.setCategorySchemes(result);
     }
 
     @Override
-    public void setCategoriesForCategorisations(GetCategoriesResult result) {
+    public void setCategoriesForCategorisations(GetRelatedResourcesResult result) {
         categorisationsPanel.setCategories(result);
     }
 }

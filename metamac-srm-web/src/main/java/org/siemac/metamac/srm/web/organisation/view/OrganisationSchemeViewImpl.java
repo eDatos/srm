@@ -34,8 +34,7 @@ import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeCategor
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
-import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
@@ -645,12 +644,12 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     }
 
     @Override
-    public void setCategorySchemesForCategorisations(GetCategorySchemesResult result) {
+    public void setCategorySchemesForCategorisations(GetRelatedResourcesResult result) {
         categorisationsPanel.setCategorySchemes(result);
     }
 
     @Override
-    public void setCategoriesForCategorisations(GetCategoriesResult result) {
+    public void setCategoriesForCategorisations(GetRelatedResourcesResult result) {
         categorisationsPanel.setCategories(result);
     }
 

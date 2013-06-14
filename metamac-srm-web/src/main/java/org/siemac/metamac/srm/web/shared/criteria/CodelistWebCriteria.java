@@ -11,6 +11,7 @@ public class CodelistWebCriteria extends VersionableResourceWebCriteria {
     private AccessTypeEnum    accessType;
     private String            isNotCodelistUrn;
     private String            variableUrn;
+    private String            codelisUrnToReplaceCodelist;
 
     public CodelistWebCriteria() {
     }
@@ -62,5 +63,13 @@ public class CodelistWebCriteria extends VersionableResourceWebCriteria {
 
     public void setVariableUrn(String variableUrn) {
         this.variableUrn = variableUrn;
+    }
+
+    public String getCodelisUrnToReplaceCodelist() {
+        return codelisUrnToReplaceCodelist;
+    }
+
+    public void setCodelisUrnToReplaceCodelist(String codelisUrnToReplaceCodelist) {
+        this.codelisUrnToReplaceCodelist = codelisUrnToReplaceCodelist;
     }
 }

@@ -30,8 +30,7 @@ import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeCategorisationsPa
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
-import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
@@ -420,12 +419,12 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     }
 
     @Override
-    public void setCategorySchemesForCategorisations(GetCategorySchemesResult result) {
+    public void setCategorySchemesForCategorisations(GetRelatedResourcesResult result) {
         categorisationsPanel.setCategorySchemes(result);
     }
 
     @Override
-    public void setCategoriesForCategorisations(GetCategoriesResult result) {
+    public void setCategoriesForCategorisations(GetRelatedResourcesResult result) {
         categorisationsPanel.setCategories(result);
     }
 
