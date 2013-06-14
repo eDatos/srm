@@ -25,7 +25,7 @@
     </bean>
     
     <!-- METAMAC-CORE-COMMON -->
-    <import resource="classpath:/spring/logging-beans-advice.xml" />
+    <import resource="classpath:/spring/error-beans-advice.xml" />
     <import resource="classpath:/spring/general-beans-advice.xml" />
     <import resource="classpath:/spring/pub-sub.xml"/> 
     <import resource="classpath:/spring/translation-beans-advice.xml" />
