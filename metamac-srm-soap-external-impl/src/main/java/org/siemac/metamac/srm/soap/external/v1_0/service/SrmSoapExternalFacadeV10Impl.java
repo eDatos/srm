@@ -10,7 +10,6 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.core.common.aop.LoggingInterceptor;
 import org.siemac.metamac.core.common.criteria.SculptorCriteria;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteria;
 import org.siemac.metamac.soap.exception.SoapExceptionUtils;
@@ -48,7 +47,7 @@ public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesI
     private CodesDo2SoapMapperV10 codesDo2SoapMapper;
 
     private final ServiceContext  ctx    = new ServiceContext("soapExternal", "soapExternal", "soapExternal");
-    private final Logger          logger = LoggerFactory.getLogger(LoggingInterceptor.class);
+    private final Logger          logger = LoggerFactory.getLogger(SrmSoapExternalFacadeV10Impl.class);
 
     @Override
     public VariableFamilies findVariableFamilies(MetamacCriteria criteria) throws ExceptionFault {
