@@ -55,6 +55,7 @@ import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTyp
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.criteria.CodeMetamacCriteriaOrderEnum;
@@ -133,9 +134,9 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             srmCoreServiceFacade.createCodelist(getServiceContextAdministrador(), codelistDto);
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(CODELIST_12_V1, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals(ServiceExceptionParameters.CODELIST_REPLACE_TO, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
