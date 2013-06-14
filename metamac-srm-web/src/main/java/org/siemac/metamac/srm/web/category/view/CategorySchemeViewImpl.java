@@ -26,7 +26,7 @@ import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
-import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
@@ -500,12 +500,12 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     }
 
     @Override
-    public void setCategorySchemesForCategorisations(GetCategorySchemesResult result) {
+    public void setCategorySchemesForCategorisations(GetRelatedResourcesResult result) {
         categorisationsPanel.setCategorySchemes(result);
     }
 
     @Override
-    public void setCategoriesForCategorisations(GetCategoriesResult result) {
+    public void setCategoriesForCategorisations(GetRelatedResourcesResult result) {
         categorisationsPanel.setCategories(result);
     }
 
