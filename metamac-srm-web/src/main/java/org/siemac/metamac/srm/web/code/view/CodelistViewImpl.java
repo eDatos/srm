@@ -41,8 +41,6 @@ import org.siemac.metamac.srm.web.code.widgets.CodelistOpennesssLevelsPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistOrdersPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistVersionsSectionStack;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
@@ -537,12 +535,12 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     }
 
     @Override
-    public void setCategorySchemesForCategorisations(GetCategorySchemesResult result) {
+    public void setCategorySchemesForCategorisations(GetRelatedResourcesResult result) {
         categorisationsPanel.setCategorySchemes(result);
     }
 
     @Override
-    public void setCategoriesForCategorisations(GetCategoriesResult result) {
+    public void setCategoriesForCategorisations(GetRelatedResourcesResult result) {
         categorisationsPanel.setCategories(result);
     }
 

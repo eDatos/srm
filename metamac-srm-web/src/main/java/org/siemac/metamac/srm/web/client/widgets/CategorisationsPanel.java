@@ -12,8 +12,7 @@ import org.siemac.metamac.srm.web.client.model.ds.CategorisationDS;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.utils.RecordUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.CategorisationUiHandlers;
-import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomLinkListGridField;
@@ -152,17 +151,17 @@ public abstract class CategorisationsPanel extends VLayout {
         categorisationListGrid.setData(RecordUtils.getCategorisationRecords(categorisationDtos));
     }
 
-    public void setCategorySchemes(GetCategorySchemesResult result) {
+    public void setCategorySchemes(GetRelatedResourcesResult result) {
         if (searchCategoriesWindow != null) {
-            List<RelatedResourceDto> categorySchemes = RelatedResourceUtils.geCategorySchemeMetamacBasicDtosAsRelatedResourceDtos(result.getCategorySchemeList());
+            List<RelatedResourceDto> categorySchemes = result.getRelatedResourceDtos();
             searchCategoriesWindow.setFilterRelatedResources(categorySchemes);
             searchCategoriesWindow.refreshFilterListPaginationInfo(result.getFirstResultOut(), categorySchemes.size(), result.getTotalResults());
         }
     }
 
-    public void setCategories(GetCategoriesResult result) {
+    public void setCategories(GetRelatedResourcesResult result) {
         if (searchCategoriesWindow != null) {
-            List<RelatedResourceDto> categories = RelatedResourceUtils.getCategoryMetamacBasicDtosAsRelatedResourceDtos(result.getCategoryMetamacDtos());
+            List<RelatedResourceDto> categories = result.getRelatedResourceDtos();
             searchCategoriesWindow.setSourceRelatedResources(categories);
             searchCategoriesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), categories.size(), result.getTotalResults());
         }

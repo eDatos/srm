@@ -29,7 +29,6 @@ import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
-import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
@@ -45,12 +44,8 @@ import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorisationsResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategoriesAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorisationsByArtefactAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorisationsByArtefactResult;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
-import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.CancelCodelistValidityAction;
@@ -191,8 +186,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
         // Categorisations
         void setCategorisations(List<CategorisationDto> categorisationDtos);
-        void setCategorySchemesForCategorisations(GetCategorySchemesResult result);
-        void setCategoriesForCategorisations(GetCategoriesResult result);
+        void setCategorySchemesForCategorisations(GetRelatedResourcesResult result);
+        void setCategoriesForCategorisations(GetRelatedResourcesResult result);
 
         // Related resources
         void setFamilies(List<RelatedResourceDto> families, int firstResult, int totalResults);
@@ -1013,39 +1008,37 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
     @Override
     public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, String criteria) {
-        // The categories must be externally published
         CategorySchemeWebCriteria categorySchemeWebCriteria = new CategorySchemeWebCriteria(criteria);
-        categorySchemeWebCriteria = MetamacWebCriteriaClientUtils.addCategorisationConditionToCategorySchemeWebCriteria(categorySchemeWebCriteria);
-        dispatcher.execute(new GetCategorySchemesAction(firstResult, maxResults, categorySchemeWebCriteria), new WaitingAsyncCallback<GetCategorySchemesResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CATEGORY_SCHEMES_FOR_CATEGORISATIONS, firstResult, maxResults, categorySchemeWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CodelistPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetCategorySchemesResult result) {
-                getView().setCategorySchemesForCategorisations(result);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(CodelistPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCategorySchemesForCategorisations(result);
+                    }
+                });
     }
 
     @Override
     public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
-        // The categories must be externally published
         CategoryWebCriteria categoryWebCriteria = new CategoryWebCriteria(criteria);
         categoryWebCriteria.setItemSchemeUrn(categorySchemeUrn);
-        categoryWebCriteria = MetamacWebCriteriaClientUtils.addCategorisationConditionToCategoryWebCriteria(categoryWebCriteria);
-        dispatcher.execute(new GetCategoriesAction(firstResult, maxResults, categoryWebCriteria), new WaitingAsyncCallback<GetCategoriesResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CATEGORIES_FOR_CATEGORISATIONS, firstResult, maxResults, categoryWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CodelistPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetCategoriesResult result) {
-                getView().setCategoriesForCategorisations(result);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(CodelistPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCategoriesForCategorisations(result);
+                    }
+                });
     }
 
     //
@@ -1070,21 +1063,21 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
     @Override
     public void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, String criteria) {
-        // The codelists that can be replaced should be externally published
         CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
-        codelistWebCriteria = MetamacWebCriteriaClientUtils.addCanBeReplacedConditionToCodelistWebCriteria(codelistWebCriteria);
-        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
+        codelistWebCriteria.setCodelisUrnToReplaceCodelist(codelistMetamacDto.getUrn());
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_THAT_CAN_BE_REPLACED, firstResult, maxResults, codelistWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CodelistPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetCodelistsResult result) {
-                List<RelatedResourceDto> codelists = RelatedResourceUtils.getCodelistBasicDtosAsRelatedResourceDtos(result.getCodelists());
-                getView().setCodelistsToReplace(codelists, result.getFirstResultOut(), result.getTotalResults());
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(CodelistPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        List<RelatedResourceDto> codelists = result.getRelatedResourceDtos();
+                        getView().setCodelistsToReplace(codelists, result.getFirstResultOut(), result.getTotalResults());
+                    }
+                });
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.client.utils;
 
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
@@ -35,27 +34,10 @@ public class MetamacWebCriteriaClientUtils {
         return (CategoryWebCriteria) addLastVersionConditionToItemWebCriteria(categoryWebCriteria);
     }
 
-    // To create a categorisation, the category must be externally published
-    public static CategorySchemeWebCriteria addCategorisationConditionToCategorySchemeWebCriteria(CategorySchemeWebCriteria categorySchemeWebCriteria) {
-        categorySchemeWebCriteria.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
-        return categorySchemeWebCriteria;
-    }
-
-    // To create a categorisation, the category must be externally published
-    public static CategoryWebCriteria addCategorisationConditionToCategoryWebCriteria(CategoryWebCriteria categoryWebCriteria) {
-        categoryWebCriteria.setIsExternallyPublished(true);
-        return categoryWebCriteria;
-    }
-
     // CODES
 
     public static CodelistWebCriteria addLastVersionConditionToCodelistWebCriteria(CodelistWebCriteria codelistWebCriteria) {
         return (CodelistWebCriteria) getVersionableResourceWebCriteriaForLastVersion(codelistWebCriteria);
-    }
-
-    public static CodelistWebCriteria addCanBeReplacedConditionToCodelistWebCriteria(CodelistWebCriteria codelistWebCriteria) {
-        codelistWebCriteria.setProcStatus(ProcStatusEnum.EXTERNALLY_PUBLISHED);
-        return codelistWebCriteria;
     }
 
     public static CodeWebCriteria addLastVersionConditionToCodeWebCriteria(CodeWebCriteria codeWebCriteria) {
