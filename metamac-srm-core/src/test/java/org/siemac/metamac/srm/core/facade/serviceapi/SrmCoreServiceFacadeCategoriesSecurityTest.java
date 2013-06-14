@@ -425,12 +425,6 @@ public class SrmCoreServiceFacadeCategoriesSecurityTest extends SrmBaseTest {
     }
 
     @Test
-    public void testPublishExternallyCategorySchemeJefeProduccion() throws Exception {
-        String categorySchemeUrn = CATEGORY_SCHEME_3_V1;
-        srmCoreServiceFacade.publishCategorySchemeExternally(getServiceContextJefeNormalizacion(), categorySchemeUrn);
-    }
-
-    @Test
     public void testPublishExternallyCategorySchemeError() throws Exception {
         String categorySchemeUrn = CATEGORY_SCHEME_3_V1;
 

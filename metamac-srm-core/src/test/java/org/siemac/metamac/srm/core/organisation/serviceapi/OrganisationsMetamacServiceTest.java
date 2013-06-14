@@ -32,6 +32,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
+import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -54,6 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
@@ -74,6 +76,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
     @Autowired
     private OrganisationsMetamacService   organisationsService;
+
+    @Autowired
+    private CategoriesMetamacService      categoriesService;
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
@@ -1132,6 +1137,12 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     public void testPublishExternallyOrganisationSchemeErrorRelatedResourcesCategorisationsNotExternallyPublished() throws Exception {
 
         String urn = ORGANISATION_SCHEME_3_V1;
+
+        // Save category scheme to force error
+        CategorySchemeVersion categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_1_V1);
+        categorySchemeVersion.getMaintainableArtefact().setPublicLogic(false);
+        itemSchemeRepository.save(categorySchemeVersion);
+
         try {
             organisationsService.publishExternallyOrganisationScheme(getServiceContextAdministrador(), urn);
             fail("related resources");

@@ -1649,17 +1649,20 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     public void testPublishExternallyCodelistRestricted() throws Exception {
+
         String urn = CODELIST_3_V1;
         ServiceContext ctx = getServiceContextAdministrador();
 
-        {
-            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-            assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
-            assertEquals(AccessTypeEnum.RESTRICTED, codelistVersion.getAccessType());
-        }
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+        assertEquals(ProcStatusEnum.INTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        assertEquals(AccessTypeEnum.RESTRICTED, codelistVersion.getAccessType());
+
+        // save to avoid categorisations error
+        codelistVersion.getMaintainableArtefact().removeAllCategorisations();
+        itemSchemeRepository.save(codelistVersion);
 
         // Publish externally
-        CodelistVersionMetamac codelistVersion = codesService.publishExternallyCodelist(ctx, urn);
+        codelistVersion = codesService.publishExternallyCodelist(ctx, urn);
         assertEquals(ProcStatusEnum.EXTERNALLY_PUBLISHED, codelistVersion.getLifeCycleMetadata().getProcStatus());
         assertFalse(codelistVersion.getMaintainableArtefact().getPublicLogic());
         assertFalse(codelistVersion.getMaintainableArtefact().getLatestPublic());
