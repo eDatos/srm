@@ -23,6 +23,8 @@ import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedActio
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.smartgwt.client.types.Autofit;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -122,6 +124,9 @@ public abstract class CategorisationsPanel extends VLayout {
         // ListGrid
 
         categorisationListGrid = new NavigableListGrid();
+        categorisationListGrid.setHeight100();
+        categorisationListGrid.setOverflow(Overflow.VISIBLE);
+        categorisationListGrid.setAutoFitData(Autofit.VERTICAL);
         ListGridUtils.setCheckBoxSelectionType(categorisationListGrid);
         CustomListGridField codeField = new CustomListGridField(CategorisationDS.CODE, getConstants().identifiableArtefactCode());
         CustomLinkListGridField categoryField = new CustomLinkListGridField(CategorisationDS.CATEGORY, getConstants().category());
