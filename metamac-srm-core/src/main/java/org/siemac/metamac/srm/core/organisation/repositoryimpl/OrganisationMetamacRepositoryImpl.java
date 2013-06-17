@@ -72,7 +72,8 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
         sb.append("INNER JOIN TB_ORGANISATIONS ob on o.TB_ORGANISATIONS = ob.ID ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on ob.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.locale = :locale ");
-        sb.append("WHERE ob.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId");
+        sb.append("WHERE ob.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
+        sb.append("ORDER BY a.CODE ASC ");
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
         query.setParameter("locale", locale);
