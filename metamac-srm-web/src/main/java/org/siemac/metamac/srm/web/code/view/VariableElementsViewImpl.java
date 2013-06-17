@@ -68,7 +68,7 @@ public class VariableElementsViewImpl extends ViewWithUiHandlers<VariableElement
 
             @Override
             public void onRecordClick(RecordClickEvent event) {
-                String variableCode = ((VariableElementRecord) event.getRecord()).getVariableElementDto().getVariable().getCode();
+                String variableCode = ((VariableElementRecord) event.getRecord()).getVariableElementBasicDto().getVariable().getCode();
                 String variableElementCode = ((VariableElementRecord) event.getRecord()).getCode();
                 getUiHandlers().goToVariableElement(variableCode, variableElementCode);
             }
