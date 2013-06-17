@@ -18,7 +18,7 @@ import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
-import org.siemac.metamac.srm.web.client.widgets.MaintainableArtefactTabSet;
+import org.siemac.metamac.srm.web.client.widgets.CustomTabSet;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
@@ -255,7 +255,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         titleLabel = new TitleLabel();
 
-        MaintainableArtefactTabSet tabSet = new MaintainableArtefactTabSet();
+        CustomTabSet tabSet = new CustomTabSet();
 
         // OrganisationScheme tab
         Tab organisationSchemeTab = new Tab(getConstants().organisationScheme());

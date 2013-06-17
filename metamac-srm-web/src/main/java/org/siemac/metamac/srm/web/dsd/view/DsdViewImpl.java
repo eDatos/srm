@@ -8,7 +8,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDt
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
-import org.siemac.metamac.srm.web.client.widgets.MaintainableArtefactTabSet;
+import org.siemac.metamac.srm.web.client.widgets.CustomTabSet;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter.DsdAttributesTabView;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdCategorisationsTabPresenter.DsdCategorisationsTabView;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter.DsdDimensionsTabView;
@@ -41,7 +41,7 @@ public class DsdViewImpl extends ViewWithUiHandlers<DsdUiHandlers> implements Ds
 
     private TitleLabel                        dsdTitle;
 
-    private MaintainableArtefactTabSet        tabSet;
+    private CustomTabSet        tabSet;
 
     private Tab                               generalTab;
     private Tab                               primaryMeasureTab;
@@ -73,7 +73,7 @@ public class DsdViewImpl extends ViewWithUiHandlers<DsdUiHandlers> implements Ds
         dsdTitle = new TitleLabel();
         dsdTitle.setStyleName("sectionTitleLeftMargin");
 
-        tabSet = new MaintainableArtefactTabSet();
+        tabSet = new CustomTabSet();
 
         generalTab = new Tab(MetamacSrmWeb.getConstants().dsdGeneral());
         generalTab.setPane((Canvas) dsdGeneralTabView.asWidget());

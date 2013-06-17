@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.CustomTabSet;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.srm.web.organisation.model.ds.ContactDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
@@ -59,7 +60,6 @@ import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
@@ -255,10 +255,12 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         //
 
         VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
         subPanel.setMembersMargin(5);
         subPanel.addMember(organisationsTreeGridLayout);
         titleLabel = new TitleLabel();
-        TabSet tabSet = new TabSet();
+
+        CustomTabSet tabSet = new CustomTabSet();
         tabSet.setStyleName("marginTop15");
 
         // Organisation tab

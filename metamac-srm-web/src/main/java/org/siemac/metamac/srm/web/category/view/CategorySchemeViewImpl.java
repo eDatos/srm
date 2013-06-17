@@ -24,7 +24,7 @@ import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
-import org.siemac.metamac.srm.web.client.widgets.MaintainableArtefactTabSet;
+import org.siemac.metamac.srm.web.client.widgets.CustomTabSet;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
@@ -147,7 +147,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         titleLabel = new TitleLabel();
 
-        MaintainableArtefactTabSet tabSet = new MaintainableArtefactTabSet();
+        CustomTabSet tabSet = new CustomTabSet();
 
         // CategoryScheme tab
         Tab categorySchemeTab = new Tab(getConstants().categoryScheme());
