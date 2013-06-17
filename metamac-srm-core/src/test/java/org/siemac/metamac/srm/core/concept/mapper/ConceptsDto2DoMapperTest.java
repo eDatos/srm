@@ -1,10 +1,15 @@
 package org.siemac.metamac.srm.core.concept.mapper;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.siemac.metamac.core.common.dto.InternationalStringDto;
+import org.siemac.metamac.core.common.dto.LocalisedStringDto;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
@@ -19,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
@@ -53,6 +59,24 @@ public class ConceptsDto2DoMapperTest extends SrmBaseTest {
         // transform
         ConceptMetamac entity = conceptsDto2DoMapper.conceptDtoToDo(dto);
         ConceptsMetamacAsserts.assertEqualsConcept(dto, entity);
+    }
+
+    @Test
+    public void testConceptMetamacDtoToDoErrorTranslations() throws MetamacException {
+        ConceptMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptDto(RepresentationTypeEnum.ENUMERATION);
+        dto.setLegalActs(new InternationalStringDto());
+        LocalisedStringDto localeEn = new LocalisedStringDto();
+        localeEn.setLocale("xx");
+        localeEn.setLabel("Label");
+        dto.getLegalActs().addText(localeEn);
+        try {
+            conceptsDto2DoMapper.conceptDtoToDo(dto);
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
     }
 
     @Override
