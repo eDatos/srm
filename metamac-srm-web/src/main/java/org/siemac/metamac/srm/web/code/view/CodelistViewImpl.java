@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
+import org.siemac.metamac.srm.web.client.widgets.MaintainableArtefactTabSet;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
@@ -68,6 +69,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -80,7 +82,6 @@ import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
 
 public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> implements CodelistPresenter.CodelistView {
 
@@ -191,13 +192,15 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // PANEL LAYOUT
 
         VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
         subPanel.setMembersMargin(5);
         subPanel.addMember(versionsSectionStack);
+
         titleLabel = new TitleLabel();
         informationLabel = new InformationLabel(StringUtils.EMPTY);
         informationLabel.setVisible(false);
-        TabSet tabSet = new TabSet();
-        tabSet.setStyleName("marginTop15");
+
+        MaintainableArtefactTabSet tabSet = new MaintainableArtefactTabSet();
 
         // Codelist tab
         Tab codelistTab = new Tab(getConstants().codelist());

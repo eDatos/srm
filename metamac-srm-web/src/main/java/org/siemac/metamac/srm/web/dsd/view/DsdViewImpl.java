@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDt
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
+import org.siemac.metamac.srm.web.client.widgets.MaintainableArtefactTabSet;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter.DsdAttributesTabView;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdCategorisationsTabPresenter.DsdCategorisationsTabView;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter.DsdDimensionsTabView;
@@ -23,6 +24,7 @@ import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -39,7 +41,7 @@ public class DsdViewImpl extends ViewWithUiHandlers<DsdUiHandlers> implements Ds
 
     private TitleLabel                        dsdTitle;
 
-    private TabSet                            tabSet;
+    private MaintainableArtefactTabSet        tabSet;
 
     private Tab                               generalTab;
     private Tab                               primaryMeasureTab;
@@ -71,8 +73,7 @@ public class DsdViewImpl extends ViewWithUiHandlers<DsdUiHandlers> implements Ds
         dsdTitle = new TitleLabel();
         dsdTitle.setStyleName("sectionTitleLeftMargin");
 
-        tabSet = new TabSet();
-        tabSet.setStyleName("marginTop15");
+        tabSet = new MaintainableArtefactTabSet();
 
         generalTab = new Tab(MetamacSrmWeb.getConstants().dsdGeneral());
         generalTab.setPane((Canvas) dsdGeneralTabView.asWidget());
@@ -104,6 +105,7 @@ public class DsdViewImpl extends ViewWithUiHandlers<DsdUiHandlers> implements Ds
         //
 
         VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
         subPanel.setMembersMargin(5);
         subPanel.addMember(versionsSectionStack);
 

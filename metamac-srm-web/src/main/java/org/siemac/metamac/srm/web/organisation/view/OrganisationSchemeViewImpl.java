@@ -18,6 +18,7 @@ import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
+import org.siemac.metamac.srm.web.client.widgets.MaintainableArtefactTabSet;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
@@ -71,7 +72,6 @@ import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
@@ -249,11 +249,13 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         // PANEL LAYOUT
 
         VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
         subPanel.setMembersMargin(5);
         subPanel.addMember(versionsSectionStack);
+
         titleLabel = new TitleLabel();
-        TabSet tabSet = new TabSet();
-        tabSet.setStyleName("marginTop15");
+
+        MaintainableArtefactTabSet tabSet = new MaintainableArtefactTabSet();
 
         // OrganisationScheme tab
         Tab organisationSchemeTab = new Tab(getConstants().organisationScheme());

@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
+import org.siemac.metamac.srm.web.client.widgets.MaintainableArtefactTabSet;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
@@ -46,6 +47,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -55,7 +57,6 @@ import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
 
 public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiHandlers> implements CategorySchemePresenter.CategorySchemeView {
 
@@ -140,11 +141,13 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         // PANEL LAYOUT
 
         VLayout subPanel = new VLayout();
+        subPanel.setOverflow(Overflow.SCROLL);
         subPanel.setMembersMargin(5);
         subPanel.addMember(versionsSectionStack);
+
         titleLabel = new TitleLabel();
-        TabSet tabSet = new TabSet();
-        tabSet.setStyleName("marginTop15");
+
+        MaintainableArtefactTabSet tabSet = new MaintainableArtefactTabSet();
 
         // CategoryScheme tab
         Tab categorySchemeTab = new Tab(getConstants().categoryScheme());
