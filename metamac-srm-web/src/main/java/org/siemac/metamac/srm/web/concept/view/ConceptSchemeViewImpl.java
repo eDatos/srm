@@ -83,6 +83,9 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     private VLayout                           panel;
     private ConceptSchemeMainFormLayout       mainFormLayout;
 
+    private CustomTabSet                      tabSet;
+    private Tab                               conceptSchemeTab;
+
     // View forms
     private GroupDynamicForm                  identifiersForm;
     private GroupDynamicForm                  contentDescriptorsForm;
@@ -172,10 +175,10 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
         titleLabel = new TitleLabel();
 
-        CustomTabSet tabSet = new CustomTabSet();
+        tabSet = new CustomTabSet();
 
         // ConceptScheme tab
-        Tab conceptSchemeTab = new Tab(getConstants().conceptScheme());
+        conceptSchemeTab = new Tab(getConstants().conceptScheme());
         conceptSchemeTab.setPane(mainFormLayout);
         tabSet.addTab(conceptSchemeTab);
 
@@ -369,6 +372,11 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     public void setConceptSchemeVersions(List<ConceptSchemeMetamacBasicDto> conceptSchemeDtos) {
         versionsSectionStack.setConceptSchemes(conceptSchemeDtos);
         versionsSectionStack.selectConceptScheme(conceptSchemeDto);
+    }
+
+    @Override
+    public void selectConceptSchemeTab() {
+        tabSet.selectTab(conceptSchemeTab);
     }
 
     @Override

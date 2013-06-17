@@ -127,6 +127,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         void setOperations(GetStatisticalOperationsResult result);
         void setLatestConceptSchemeForInternalPublication(GetConceptSchemesResult result);
 
+        void selectConceptSchemeTab();
+
         // Categorisations
 
         void setCategorisations(List<CategorisationDto> categorisationDtos);
@@ -172,6 +174,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         if (identifier != null) {
             retrieveCompleteConceptSchemeByIdentifier(identifier);
         }
+        getView().selectConceptSchemeTab();
     }
 
     private void retrieveCompleteConceptSchemeByIdentifier(String identifier) {
