@@ -90,6 +90,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
         void setOrganisation(OrganisationMetamacDto organisationDto, OrganisationSchemeMetamacDto organisationSchemeMetamacDto, Long contactToShowId);
         void setContacts(List<ContactDto> contactDtos, Long contactToShowId);
         void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeMetamacDto, List<OrganisationMetamacVisualisationResult> itemVisualisationResults);
+        void selectOrganisationTab();
     }
 
     @ContentSlot
@@ -141,6 +142,7 @@ public class OrganisationPresenter extends Presenter<OrganisationPresenter.Organ
         } catch (Exception e) {
             MetamacSrmWeb.showErrorPage();
         }
+        getView().selectOrganisationTab();
     }
 
     @Override

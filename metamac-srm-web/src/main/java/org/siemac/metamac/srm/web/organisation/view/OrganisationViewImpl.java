@@ -69,6 +69,9 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     private VLayout                               panel;
     private OrganisationMainFormLayout            mainFormLayout;
 
+    private CustomTabSet                          tabSet;
+    private Tab                                   organisationTab;
+
     private CustomVLayout                         organisationsTreeGridLayout;
     private OrganisationsTreeGrid                 organisationsTreeGrid;
 
@@ -260,11 +263,11 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         subPanel.addMember(organisationsTreeGridLayout);
         titleLabel = new TitleLabel();
 
-        CustomTabSet tabSet = new CustomTabSet();
+        tabSet = new CustomTabSet();
         tabSet.setStyleName("marginTop15");
 
         // Organisation tab
-        Tab organisationTab = new Tab(getConstants().organisation());
+        organisationTab = new Tab(getConstants().organisation());
         organisationTab.setPane(mainFormLayout);
         tabSet.addTab(organisationTab);
 
@@ -426,6 +429,11 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             // Who knows, maybe the parent class knows what to do with this slot.
             super.setInSlot(slot, content);
         }
+    }
+
+    @Override
+    public void selectOrganisationTab() {
+        tabSet.selectTab(organisationTab);
     }
 
     @Override
