@@ -664,7 +664,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             if (ConceptRoleEnum.MEASURE_DIMENSION.equals(concept.getSdmxRelatedArtefact())) {
                 return returnOrThrowExceptionForCheckConceptEnumeratedRepresentation(throwException);
             }
-
+            if (concept.getVariable() == null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CONCEPT_VARIABLE).build();
+            }
             PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
             Long codelistId = concept.getCoreRepresentation().getEnumerationCodelist().getId();
             List<ConditionalCriteria> criteriaToVerifyCodelistRepresentation = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.id())
