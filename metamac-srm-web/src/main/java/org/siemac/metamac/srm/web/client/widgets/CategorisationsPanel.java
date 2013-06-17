@@ -124,7 +124,6 @@ public abstract class CategorisationsPanel extends VLayout {
         // ListGrid
 
         categorisationListGrid = new NavigableListGrid();
-        categorisationListGrid.setHeight100();
         categorisationListGrid.setOverflow(Overflow.VISIBLE);
         categorisationListGrid.setAutoFitData(Autofit.VERTICAL);
         ListGridUtils.setCheckBoxSelectionType(categorisationListGrid);
