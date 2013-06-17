@@ -34,7 +34,13 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralResourcesUiHandlers> implements StructuralResourcesPresenter.StructuralResourcesView {
 
-    private static final String              CONTEXT_AREA_WIDTH = "*";
+    private static final String              CONTEXT_AREA_WIDTH       = "*";
+
+    private static final String              DSDS_SECTION_ID          = "dsds";
+    private static final String              CONCEPTS_SECTION_ID      = "concepts";
+    private static final String              ORGANISATIONS_SECTION_ID = "organisations";
+    private static final String              CATEGORIES_SECTION_ID    = "categories";
+    private static final String              CODELISTS_SECTION_ID     = "codelists";
 
     private final DsdListGrid                dsdListGrid;
     private final ConceptSchemeListGrid      conceptSchemeListGrid;
@@ -42,7 +48,7 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
     private final CategorySchemeListGrid     categorySchemeListGrid;
     private final CodelistListGrid           codelistListGrid;
 
-    private final SectionStack               lastModifiedArtifactsSectionStack;
+    private final SectionStack               lastModifiedArtefactsSectionStack;
 
     private VLayout                          panel;
 
@@ -111,42 +117,47 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
         panel.setWidth(CONTEXT_AREA_WIDTH);
 
         // Section Stack
-        lastModifiedArtifactsSectionStack = new SectionStack();
-        lastModifiedArtifactsSectionStack.setWidth100();
-        lastModifiedArtifactsSectionStack.setVisibilityMode(VisibilityMode.MULTIPLE);
-        lastModifiedArtifactsSectionStack.setAnimateSections(true);
-        lastModifiedArtifactsSectionStack.setOverflow(Overflow.HIDDEN);
+        lastModifiedArtefactsSectionStack = new SectionStack();
+        lastModifiedArtefactsSectionStack.setWidth100();
+        lastModifiedArtefactsSectionStack.setVisibilityMode(VisibilityMode.MULTIPLE);
+        lastModifiedArtefactsSectionStack.setAnimateSections(true);
+        lastModifiedArtefactsSectionStack.setOverflow(Overflow.HIDDEN);
 
         SectionStackSection lastConceptSchemesModifiedSection = new SectionStackSection();
+        lastConceptSchemesModifiedSection.setID(CONCEPTS_SECTION_ID);
         lastConceptSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().conceptSchemeLastModified());
-        lastConceptSchemesModifiedSection.setExpanded(false);
+        lastConceptSchemesModifiedSection.setExpanded(true);
         lastConceptSchemesModifiedSection.setItems(this.conceptSchemeListGrid);
 
         SectionStackSection lastCodelistModifiedSection = new SectionStackSection();
+        lastCodelistModifiedSection.setID(CODELISTS_SECTION_ID);
         lastCodelistModifiedSection.setTitle(MetamacSrmWeb.getConstants().codelistLastModified());
-        lastCodelistModifiedSection.setExpanded(false);
+        lastCodelistModifiedSection.setExpanded(true);
         lastCodelistModifiedSection.setItems(this.codelistListGrid);
 
         SectionStackSection lastDsdModifiedSection = new SectionStackSection();
+        lastDsdModifiedSection.setID(DSDS_SECTION_ID);
         lastDsdModifiedSection.setTitle(MetamacSrmWeb.getConstants().dsdLastModified());
-        lastDsdModifiedSection.setExpanded(false);
+        lastDsdModifiedSection.setExpanded(true);
         lastDsdModifiedSection.setItems(this.dsdListGrid);
 
         SectionStackSection lastOrganisationSchemesModifiedSection = new SectionStackSection();
+        lastOrganisationSchemesModifiedSection.setID(ORGANISATIONS_SECTION_ID);
         lastOrganisationSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().organisationSchemeLastModified());
-        lastOrganisationSchemesModifiedSection.setExpanded(false);
+        lastOrganisationSchemesModifiedSection.setExpanded(true);
         lastOrganisationSchemesModifiedSection.setItems(this.organisationSchemeListGrid);
 
         SectionStackSection lastCatSchemesModifiedSection = new SectionStackSection();
+        lastCatSchemesModifiedSection.setID(CATEGORIES_SECTION_ID);
         lastCatSchemesModifiedSection.setTitle(MetamacSrmWeb.getConstants().categorySchemeLastModified());
-        lastCatSchemesModifiedSection.setExpanded(false);
+        lastCatSchemesModifiedSection.setExpanded(true);
         lastCatSchemesModifiedSection.setItems(this.categorySchemeListGrid);
 
-        lastModifiedArtifactsSectionStack.setSections(lastConceptSchemesModifiedSection, lastCodelistModifiedSection, lastDsdModifiedSection, lastOrganisationSchemesModifiedSection,
+        lastModifiedArtefactsSectionStack.setSections(lastConceptSchemesModifiedSection, lastCodelistModifiedSection, lastDsdModifiedSection, lastOrganisationSchemesModifiedSection,
                 lastCatSchemesModifiedSection);
 
         // Add the ToolStrip to the Operation View layout container
-        panel.addMember(this.lastModifiedArtifactsSectionStack);
+        panel.addMember(this.lastModifiedArtefactsSectionStack);
     }
 
     @Override
@@ -166,33 +177,38 @@ public class StructuralResourcesViewImpl extends ViewWithUiHandlers<StructuralRe
 
     @Override
     public void resetView() {
-        for (int i = 0; i < lastModifiedArtifactsSectionStack.getSections().length; i++) {
-            lastModifiedArtifactsSectionStack.collapseSection(i);
+        for (int i = 0; i < lastModifiedArtefactsSectionStack.getSections().length; i++) {
+            lastModifiedArtefactsSectionStack.collapseSection(i);
         }
     }
 
     @Override
     public void setDsdList(List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDtos) {
         dsdListGrid.setDsds(dataStructureDefinitionMetamacDtos);
+        lastModifiedArtefactsSectionStack.expandSection(DSDS_SECTION_ID);
     }
 
     @Override
     public void setConceptSchemeList(List<ConceptSchemeMetamacBasicDto> conceptSchemeDtos) {
         conceptSchemeListGrid.setConceptSchemes(conceptSchemeDtos);
+        lastModifiedArtefactsSectionStack.expandSection(CONCEPTS_SECTION_ID);
     }
 
     @Override
     public void setOrganisationSchemeList(List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDtos) {
         organisationSchemeListGrid.setOrganisationSchemes(organisationSchemeMetamacDtos);
+        lastModifiedArtefactsSectionStack.expandSection(ORGANISATIONS_SECTION_ID);
     }
 
     @Override
     public void setCategorySchemesList(List<CategorySchemeMetamacBasicDto> categorySchemeMetamacDtos) {
         categorySchemeListGrid.setCategorySchemes(categorySchemeMetamacDtos);
+        lastModifiedArtefactsSectionStack.expandSection(CATEGORIES_SECTION_ID);
     }
 
     @Override
     public void setCodelistList(List<CodelistMetamacBasicDto> codelistMetamacDtos) {
         codelistListGrid.setCodelist(codelistMetamacDtos);
+        lastModifiedArtefactsSectionStack.expandSection(CODELISTS_SECTION_ID);
     }
 }
