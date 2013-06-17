@@ -164,6 +164,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         void setCodelistVersions(List<CodelistMetamacBasicDto> codelistMetamacDtos);
         void startCodelistEdition();
         void setLatestCodelistForInternalPublication(GetCodelistsResult result);
+        void selectCodelistTab();
 
         // Codes
         void setCodes(List<CodeMetamacVisualisationResult> codes);
@@ -236,6 +237,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
         } else {
             MetamacSrmWeb.showErrorPage();
         }
+        getView().selectCodelistTab();
     }
 
     //

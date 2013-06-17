@@ -90,6 +90,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private VLayout                                      panel;
     private CodelistMainFormLayout                       mainFormLayout;
 
+    private CustomTabSet                                 tabSet;
+    private Tab                                          codelistTab;
+
     // View forms
     private GroupDynamicForm                             identifiersForm;
     private GroupDynamicForm                             contentDescriptorsForm;
@@ -200,10 +203,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         informationLabel = new InformationLabel(StringUtils.EMPTY);
         informationLabel.setVisible(false);
 
-        CustomTabSet tabSet = new CustomTabSet();
+        tabSet = new CustomTabSet();
 
         // Codelist tab
-        Tab codelistTab = new Tab(getConstants().codelist());
+        codelistTab = new Tab(getConstants().codelist());
         codelistTab.setPane(mainFormLayout);
         tabSet.addTab(codelistTab);
 
@@ -421,6 +424,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         this.codelistOrdersPanel.setUiHandlers(uiHandlers);
         this.codelistOpennesssLevelsPanel.setUiHandlers(uiHandlers);
         this.categorisationsPanel.setUiHandlers(uiHandlers);
+    }
+
+    @Override
+    public void selectCodelistTab() {
+        tabSet.selectTab(codelistTab);
     }
 
     @Override

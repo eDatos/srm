@@ -64,6 +64,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     private VLayout                            panel;
     private CategorySchemeMainFormLayout       mainFormLayout;
 
+    private CustomTabSet                       tabSet;
+    private Tab                                categorySchemeTab;
+
     // View forms
     private GroupDynamicForm                   identifiersForm;
     private GroupDynamicForm                   contentDescriptorsForm;
@@ -147,10 +150,10 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         titleLabel = new TitleLabel();
 
-        CustomTabSet tabSet = new CustomTabSet();
+        tabSet = new CustomTabSet();
 
         // CategoryScheme tab
-        Tab categorySchemeTab = new Tab(getConstants().categoryScheme());
+        categorySchemeTab = new Tab(getConstants().categoryScheme());
         categorySchemeTab.setPane(mainFormLayout);
         tabSet.addTab(categorySchemeTab);
 
@@ -471,6 +474,11 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
             // Who knows, maybe the parent class knows what to do with this slot.
             super.setInSlot(slot, content);
         }
+    }
+
+    @Override
+    public void selectCategorySchemeTab() {
+        tabSet.selectTab(categorySchemeTab);
     }
 
     @Override

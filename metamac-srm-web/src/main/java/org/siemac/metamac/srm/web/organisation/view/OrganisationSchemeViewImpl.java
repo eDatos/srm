@@ -81,6 +81,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     private VLayout                                panel;
     private OrganisationSchemeMainFormLayout       mainFormLayout;
 
+    private CustomTabSet                           tabSet;
+    private Tab                                    organisationSchemeTab;
+
     // View forms
     private GroupDynamicForm                       identifiersForm;
     private GroupDynamicForm                       contentDescriptorsForm;
@@ -255,10 +258,10 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         titleLabel = new TitleLabel();
 
-        CustomTabSet tabSet = new CustomTabSet();
+        tabSet = new CustomTabSet();
 
         // OrganisationScheme tab
-        Tab organisationSchemeTab = new Tab(getConstants().organisationScheme());
+        organisationSchemeTab = new Tab(getConstants().organisationScheme());
         organisationSchemeTab.setPane(mainFormLayout);
         tabSet.addTab(organisationSchemeTab);
 
@@ -582,6 +585,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             // Who knows, maybe the parent class knows what to do with this slot.
             super.setInSlot(slot, content);
         }
+    }
+
+    @Override
+    public void selectOrganisationSchemeTab() {
+        tabSet.selectTab(organisationSchemeTab);
     }
 
     @Override

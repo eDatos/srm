@@ -122,6 +122,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
         void setCategories(List<ItemVisualisationResult> categoryDtos);
         void startCategorySchemeEdition();
         void setLatestCategorySchemeForInternalPublication(GetCategorySchemesResult result);
+        void selectCategorySchemeTab();
 
         // Categorisations
 
@@ -170,6 +171,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
         } else {
             MetamacSrmWeb.showErrorPage();
         }
+        getView().selectCategorySchemeTab();
     }
 
     //

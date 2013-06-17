@@ -126,6 +126,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         void setOrganisationList(List<OrganisationMetamacVisualisationResult> organisationDtos);
         void startOrganisationSchemeEdition();
         void setLatestOrganisationSchemeForInternalPublication(GetOrganisationSchemesResult result);
+        void selectOrganisationSchemeTab();
 
         // Categorisations
 
@@ -180,6 +181,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         } catch (Exception e) {
             MetamacSrmWeb.showErrorPage();
         }
+        getView().selectOrganisationSchemeTab();
     }
 
     @Override
