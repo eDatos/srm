@@ -48,7 +48,6 @@ public class CategoriesViewImpl extends ViewWithUiHandlers<CategoriesUiHandlers>
                 getUiHandlers().retrieveCategories(firstResult, maxResults, searchSectionStack.getCategoryWebCriteria());
             }
         });
-        categoriesListGrid.getListGrid().setAutoFitMaxRecords(SrmWebConstants.ITEM_LIST_MAX_RESULTS);
         categoriesListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         categoriesListGrid.getListGrid().setDataSource(new CategoryDS());
         categoriesListGrid.getListGrid().setUseAllDataSourceFields(false);
