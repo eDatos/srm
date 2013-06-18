@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.category.utils;
 
 import static org.junit.Assert.assertEquals;
 
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategoryResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
@@ -23,16 +24,17 @@ public class CategoriesAsserts extends Asserts {
         Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CATEGORY_SCHEME, expectedSelfLink, expectedManagementLink, actual);
     }
 
-    public static void assertEqualsResource(CategoryMetamac expected, ResourceInternal actual) {
+    public static void assertEqualsResource(CategoryMetamac expected, CategoryResourceInternal actual) {
         MaintainableArtefact maintainableArtefact = expected.getItemSchemeVersion().getMaintainableArtefact();
         String agency = maintainableArtefact.getMaintainer().getIdAsMaintainer();
         String codeItemScheme = maintainableArtefact.getCode();
         String version = maintainableArtefact.getVersionLogic();
-        String code = expected.getNameableArtefact().getCode();
-        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/" + agency + "/" + codeItemScheme + "/" + version + "/categories/" + code;
+        String codeFull = expected.getNameableArtefact().getCodeFull();
+        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/" + agency + "/" + codeItemScheme + "/" + version + "/categories/" + codeFull;
         String expectedManagementLink = "http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=" + agency + ":" + codeItemScheme + "(" + version
-                + ")/category;id=" + code;
+                + ")/category;id=" + codeFull;
         Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CATEGORY, expectedSelfLink, expectedManagementLink, actual);
+        assertEquals(expected.getNameableArtefact().getCodeFull(), actual.getNestedId());
     }
 
     public static void assertEqualsResource(Categorisation expected, ResourceInternal actual) {

@@ -14,9 +14,6 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.Categorie
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertEqualsInternationalString;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_2_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_3_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_3_CODE;
@@ -147,6 +144,7 @@ public class CategoriesDo2RestMapperTest {
             assertTrue(category instanceof CategoryType);
             assertFalse(category instanceof Category);
             assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).category1", category.getUrn());
+            assertEquals("category1", category.getId());
             assertEquals(0, category.getCategories().size());
         }
         {
@@ -154,18 +152,21 @@ public class CategoriesDo2RestMapperTest {
             assertTrue(category instanceof CategoryType);
             assertFalse(category instanceof Category);
             assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).category2", category.getUrn());
+            assertEquals("category2", category.getId());
             assertEquals(2, category.getCategories().size());
             {
                 CategoryType categoryChild = category.getCategories().get(0);
                 assertTrue(categoryChild instanceof CategoryType);
                 assertFalse(categoryChild instanceof Category);
                 assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).category2.category2A", categoryChild.getUrn());
+                assertEquals("category2A", categoryChild.getId());
             }
             {
                 CategoryType categoryChild = category.getCategories().get(1);
                 assertTrue(categoryChild instanceof CategoryType);
                 assertFalse(categoryChild instanceof Category);
                 assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).category2.category2B", categoryChild.getUrn());
+                assertEquals("category2B", categoryChild.getId());
             }
         }
         assertEquals(i, target.getCategories().size());
@@ -200,12 +201,15 @@ public class CategoriesDo2RestMapperTest {
         Integer offset = Integer.valueOf(4);
 
         CategorySchemeVersionMetamac categoryScheme1 = mockCategoryScheme(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1);
-        CategorySchemeVersionMetamac categoryScheme2 = mockCategoryScheme(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_1);
         List<CategoryMetamac> source = new ArrayList<CategoryMetamac>();
-        source.add(mockCategory(ITEM_1_CODE, categoryScheme1, null));
-        source.add(mockCategory(ITEM_2_CODE, categoryScheme1, null));
-        source.add(mockCategory(ITEM_3_CODE, categoryScheme1, null));
-        source.add(mockCategory(ITEM_1_CODE, categoryScheme2, null));
+        CategoryMetamac category1 = mockCategory("category1", categoryScheme1, null);
+        source.add(category1);
+        CategoryMetamac category2 = mockCategory("category2", categoryScheme1, null);
+        source.add(category2);
+        CategoryMetamac category2A = mockCategory("category2A", categoryScheme1, category2);
+        source.add(category2A);
+        CategoryMetamac category2B = mockCategory("category2B", categoryScheme1, category2);
+        source.add(category2B);
 
         Integer totalRows = source.size() * 5;
         PagedResult<CategoryMetamac> sources = new PagedResult<CategoryMetamac>(source, offset, source.size(), limit, totalRows, 0);
@@ -246,17 +250,19 @@ public class CategoriesDo2RestMapperTest {
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_CATEGORY, target.getKind());
         assertEquals("category2", target.getId());
+        assertEquals("categoryParent1.category2", target.getNestedId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).categoryParent1.category2", target.getUrn());
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).categoryParent1.category2", target.getUrnInternal());
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agencyID1/resourceID1/01.123/categories";
-        String selfLink = parentLink + "/category2";
+        String selfLink = parentLink + "/categoryParent1.category2";
         assertEquals(RestInternalConstants.KIND_CATEGORY, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(RestInternalConstants.KIND_CATEGORIES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
-        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agencyID1:resourceID1(01.123)/category;id=category2", target.getManagementAppLink());
+        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agencyID1:resourceID1(01.123)/category;id=categoryParent1.category2",
+                target.getManagementAppLink());
 
         assertEqualsInternationalString("es", "comment-category2 en Español", "en", "comment-category2 in English", target.getComment());
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).categoryParent1", target.getParent());

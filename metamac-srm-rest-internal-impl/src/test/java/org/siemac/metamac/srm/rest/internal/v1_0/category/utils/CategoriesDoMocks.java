@@ -14,7 +14,13 @@ public class CategoriesDoMocks {
     }
 
     public static CategoryMetamac mockCategory(String resourceID, CategorySchemeVersionMetamac categoryScheme, CategoryMetamac parent) {
-        return CategoriesMetamacDoMocks.mockCategoryFixedValues(resourceID, categoryScheme, parent);
+        CategoryMetamac target = CategoriesMetamacDoMocks.mockCategoryFixedValues(resourceID, categoryScheme, parent);
+        if (parent == null) {
+            target.getNameableArtefact().setCodeFull(resourceID);
+        } else {
+            target.getNameableArtefact().setCodeFull(parent.getNameableArtefact().getCodeFull() + "." + resourceID);
+        }
+        return target;
     }
 
     public static CategorySchemeVersionMetamac mockCategorySchemeWithCategories(String agencyID, String resourceID, String version) {

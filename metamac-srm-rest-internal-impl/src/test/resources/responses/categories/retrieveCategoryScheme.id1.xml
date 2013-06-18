@@ -12,65 +12,65 @@
             <common:AnnotationTitle>title-code1</common:AnnotationTitle>
             <common:AnnotationType>type-code1</common:AnnotationType>
             <common:AnnotationURL>url-code1</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
             <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+            <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
         </common:Annotation>
     </common:Annotations>
-    <common:Name xml:lang="es">name-itemScheme1v01.000 en Español</common:Name>
     <common:Name xml:lang="en">name-itemScheme1v01.000 in English</common:Name>
+    <common:Name xml:lang="es">name-itemScheme1v01.000 en Español</common:Name>
     <common:Description xml:lang="es">description-itemScheme1v01.000 en Español</common:Description>
     <common:Description xml:lang="en">description-itemScheme1v01.000 in English</common:Description>
     <structure:Category id="category1" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/category1">
         <common:Annotations>
+            <common:Annotation id="code2">
+                <common:AnnotationTitle>title-code2</common:AnnotationTitle>
+                <common:AnnotationType>type-code2</common:AnnotationType>
+                <common:AnnotationURL>url-code2</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
+            </common:Annotation>
             <common:Annotation id="code1">
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
                 <common:AnnotationType>type-code1</common:AnnotationType>
                 <common:AnnotationURL>url-code1</common:AnnotationURL>
                 <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
                 <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
-            </common:Annotation>
-            <common:Annotation id="code2">
-                <common:AnnotationTitle>title-code2</common:AnnotationTitle>
-                <common:AnnotationType>type-code2</common:AnnotationType>
-                <common:AnnotationURL>url-code2</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
         <common:Name xml:lang="es">name-category1 en Español</common:Name>
         <common:Name xml:lang="en">name-category1 in English</common:Name>
-        <common:Description xml:lang="en">description-category1 in English</common:Description>
         <common:Description xml:lang="es">description-category1 en Español</common:Description>
+        <common:Description xml:lang="en">description-category1 in English</common:Description>
     </structure:Category>
     <structure:Category id="category2" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/category2">
         <common:Annotations>
-            <common:Annotation id="code1">
-                <common:AnnotationTitle>title-code1</common:AnnotationTitle>
-                <common:AnnotationType>type-code1</common:AnnotationType>
-                <common:AnnotationURL>url-code1</common:AnnotationURL>
-                <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
-                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
-            </common:Annotation>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
                 <common:AnnotationType>type-code2</common:AnnotationType>
                 <common:AnnotationURL>url-code2</common:AnnotationURL>
                 <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
                 <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+            </common:Annotation>
+            <common:Annotation id="code1">
+                <common:AnnotationTitle>title-code1</common:AnnotationTitle>
+                <common:AnnotationType>type-code1</common:AnnotationType>
+                <common:AnnotationURL>url-code1</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
         <common:Name xml:lang="en">name-category2 in English</common:Name>
         <common:Name xml:lang="es">name-category2 en Español</common:Name>
         <common:Description xml:lang="en">description-category2 in English</common:Description>
         <common:Description xml:lang="es">description-category2 en Español</common:Description>
-        <structure:Category id="category2A" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2.category2A" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/category2A">
+        <structure:Category id="category2A" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2.category2A" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/category2.category2A">
             <common:Annotations>
                 <common:Annotation id="code1">
                     <common:AnnotationTitle>title-code1</common:AnnotationTitle>
                     <common:AnnotationType>type-code1</common:AnnotationType>
                     <common:AnnotationURL>url-code1</common:AnnotationURL>
-                    <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
                     <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
+                    <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
                 </common:Annotation>
                 <common:Annotation id="code2">
                     <common:AnnotationTitle>title-code2</common:AnnotationTitle>
@@ -85,14 +85,14 @@
             <common:Description xml:lang="en">description-category2A in English</common:Description>
             <common:Description xml:lang="es">description-category2A en Español</common:Description>
         </structure:Category>
-        <structure:Category id="category2B" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2.category2B" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/category2B">
+        <structure:Category id="category2B" urn="urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2.category2B" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/category2.category2B">
             <common:Annotations>
                 <common:Annotation id="code2">
                     <common:AnnotationTitle>title-code2</common:AnnotationTitle>
                     <common:AnnotationType>type-code2</common:AnnotationType>
                     <common:AnnotationURL>url-code2</common:AnnotationURL>
-                    <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
                     <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
+                    <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
                 </common:Annotation>
                 <common:Annotation id="code1">
                     <common:AnnotationTitle>title-code1</common:AnnotationTitle>
@@ -102,10 +102,10 @@
                     <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
                 </common:Annotation>
             </common:Annotations>
-            <common:Name xml:lang="es">name-category2B en Español</common:Name>
             <common:Name xml:lang="en">name-category2B in English</common:Name>
-            <common:Description xml:lang="en">description-category2B in English</common:Description>
+            <common:Name xml:lang="es">name-category2B en Español</common:Name>
             <common:Description xml:lang="es">description-category2B en Español</common:Description>
+            <common:Description xml:lang="en">description-category2B in English</common:Description>
         </structure:Category>
     </structure:Category>
     <cdomain:selfLink kind="structuralResources#categoryScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000"/>

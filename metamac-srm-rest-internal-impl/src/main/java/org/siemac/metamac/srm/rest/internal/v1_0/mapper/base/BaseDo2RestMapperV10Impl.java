@@ -132,6 +132,14 @@ public abstract class BaseDo2RestMapperV10Impl {
             return null;
         }
         ResourceInternal target = new ResourceInternal();
+        toResource(source, kind, selfLink, managementAppUrl, target);
+        return target;
+    }
+
+    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target) {
+        if (source == null) {
+            return;
+        }
         target.setId(source.getCode());
         target.setUrn(source.getUrnProvider());
         target.setUrnInternal(source.getUrn());
@@ -139,7 +147,6 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setSelfLink(selfLink);
         target.setName(toInternationalString(source.getName()));
         target.setManagementAppLink(managementAppUrl);
-        return target;
     }
 
     protected ResourceInternal toResourceExternalItemStatisticalOperation(ExternalItem source) {

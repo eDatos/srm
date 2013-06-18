@@ -13,7 +13,6 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_2_CODE;
-import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_3_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_3_CODE;
@@ -608,10 +607,10 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
                     CategorySchemeVersionMetamac categoryScheme2 = CategoriesDoMocks.mockCategoryScheme(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_1);
 
                     List<CategoryMetamac> categories = new ArrayList<CategoryMetamac>();
-                    categories.add(CategoriesDoMocks.mockCategory(ITEM_1_CODE, categoryScheme1, null));
-                    categories.add(CategoriesDoMocks.mockCategory(ITEM_2_CODE, categoryScheme1, null));
-                    categories.add(CategoriesDoMocks.mockCategory(ITEM_3_CODE, categoryScheme1, null));
-                    categories.add(CategoriesDoMocks.mockCategory(ITEM_1_CODE, categoryScheme2, null));
+                    categories.add(CategoriesDoMocks.mockCategory("category1", categoryScheme1, null));
+                    categories.add(CategoriesDoMocks.mockCategory("category2", categoryScheme1, null));
+                    categories.add(CategoriesDoMocks.mockCategory("category2A", categoryScheme1, categories.get(0)));
+                    categories.add(CategoriesDoMocks.mockCategory("category1", categoryScheme2, null));
 
                     return new PagedResult<CategoryMetamac>(categories, categories.size(), categories.size(), categories.size(), categories.size() * 10, 0);
                 }
