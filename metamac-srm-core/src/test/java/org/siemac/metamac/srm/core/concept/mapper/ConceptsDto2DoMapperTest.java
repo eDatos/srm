@@ -73,7 +73,7 @@ public class ConceptsDto2DoMapperTest extends SrmBaseTest {
             conceptsDto2DoMapper.conceptDtoToDo(dto);
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEquals(ServiceExceptionType.METADATA_WITHOUT_TRANSLATION_DEFAULT_LOCALE.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(ServiceExceptionParameters.CONCEPT_LEGAL_ACTS, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
