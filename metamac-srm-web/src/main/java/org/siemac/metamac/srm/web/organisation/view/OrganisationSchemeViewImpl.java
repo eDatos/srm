@@ -58,6 +58,7 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -208,6 +209,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         // ListGrid
 
         organisationListGrid = new CustomListGrid();
+        organisationListGrid.setAutoFitData(Autofit.VERTICAL);
         ListGridField codeField = new ListGridField(OrganisationDS.CODE, getConstants().identifiableArtefactCode());
         ListGridField nameField = new ListGridField(OrganisationDS.NAME, getConstants().nameableArtefactName());
         organisationListGrid.setFields(codeField, nameField);
