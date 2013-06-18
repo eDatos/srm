@@ -103,6 +103,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.arte.statistic.sdmx.srm.core.base.domain.Annotation;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
@@ -144,6 +145,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Autowired
     private ItemSchemeVersionRepository   itemSchemeRepository;
+
+    @Autowired
+    private ItemRepository                itemRepository;
 
     @Autowired
     protected PlatformTransactionManager  transactionManager;
@@ -1045,6 +1049,70 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendCodelistToProductionValidationErrorTranslations() throws Exception {
+
+        String urn = CODELIST_2_V1;
+
+        // Update to change metadata to send to production
+
+        {
+            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urn);
+            codelistVersion.getMaintainableArtefact().setName(BaseDoMocks.mockInternationalStringFixedValues("en", "label1", "fr", "label2"));
+            itemSchemeRepository.save(codelistVersion);
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_2_V1_CODE_1);
+            code.getNameableArtefact().setDescription(BaseDoMocks.mockInternationalStringFixedValues("en", "label1", "fr", "label2"));
+            itemRepository.save(code);
+        }
+        {
+            CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_2_V1_CODE_2);
+            code.getNameableArtefact().setComment(BaseDoMocks.mockInternationalStringFixedValues("en", "label1", "fr", "label2"));
+            itemRepository.save(code);
+        }
+
+        entityManager.flush();
+
+        // Send to production validation
+        try {
+            codesService.sendCodelistToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("Codelist metadata required");
+        } catch (MetamacException e) {
+            assertEquals(3, e.getExceptionItems().size());
+            int i = 0;
+            // Codelist
+            {
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            // Codes
+            {
+                // Code01
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CODELIST_2_V1_CODE_1);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            {
+                // Code02
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CODELIST_2_V1_CODE_2);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            assertEquals(e.getExceptionItems().size(), i);
         }
     }
 
@@ -7743,7 +7811,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
             // Item scheme: Change Name
             {
-                LocalisedString localisedString = new LocalisedString("fr", "its - text sample");
+                LocalisedString localisedString = new LocalisedString("fr", "fr - text sample");
                 createTemporalCodelist.getMaintainableArtefact().getName().addText(localisedString);
             }
 
@@ -7753,7 +7821,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 codeTemporal.setVariableElement(null);
 
                 InternationalString internationalString = new InternationalString();
-                internationalString.addText(new LocalisedString("fr", "it - text sample"));
+                internationalString.addText(new LocalisedString("fr", "fr - text sample"));
+                internationalString.addText(new LocalisedString("es", "es - text sample"));
                 codeTemporal.setShortName(internationalString);
                 codeTemporal.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
                 codesService.updateCode(getServiceContextAdministrador(), codeTemporal);
@@ -7780,14 +7849,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
             // Item Scheme
             assertEquals(2, codelistVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
-            assertEquals("its - text sample", codelistVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
+            assertEquals("fr - text sample", codelistVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
 
             // Code 1: change short name
             {
                 CodeMetamac codeTemporal = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_3_V1_CODE_1);
                 assertEquals(null, codeTemporal.getVariableElement());
-                assertEquals(1, codeTemporal.getShortName().getTexts().size());
-                assertEquals("it - text sample", codeTemporal.getShortName().getLocalisedLabel("fr"));
+                assertEquals(2, codeTemporal.getShortName().getTexts().size());
+                assertEquals("fr - text sample", codeTemporal.getShortName().getLocalisedLabel("fr"));
+                assertEquals("es - text sample", codeTemporal.getShortName().getLocalisedLabel("es"));
             }
             // Code 2: change variable element
             {

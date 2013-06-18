@@ -30,6 +30,7 @@ import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
@@ -50,6 +51,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
@@ -74,6 +76,9 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
     @Autowired
     private ItemSchemeVersionRepository   itemSchemeRepository;
+
+    @Autowired
+    private ItemRepository                itemRepository;
 
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
     protected EntityManager               entityManager;
@@ -476,6 +481,70 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendCategorySchemeToProductionValidationErrorTranslations() throws Exception {
+
+        String urn = CATEGORY_SCHEME_2_V1;
+
+        // Update to change metadata to send to production
+
+        {
+            CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), urn);
+            categorySchemeVersion.getMaintainableArtefact().setName(BaseDoMocks.mockInternationalStringFixedValues("en", "label1", "fr", "label2"));
+            itemSchemeRepository.save(categorySchemeVersion);
+        }
+        {
+            CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_2_V1_CATEGORY_1);
+            category.getNameableArtefact().setDescription(BaseDoMocks.mockInternationalStringFixedValues("en", "label1", "fr", "label2"));
+            itemRepository.save(category);
+        }
+        {
+            CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_2_V1_CATEGORY_2);
+            category.getNameableArtefact().setComment(BaseDoMocks.mockInternationalStringFixedValues("en", "label1", "fr", "label2"));
+            itemRepository.save(category);
+        }
+
+        entityManager.flush();
+
+        // Send to production validation
+        try {
+            categoriesService.sendCategorySchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("CategoryScheme metadata required");
+        } catch (MetamacException e) {
+            assertEquals(3, e.getExceptionItems().size());
+            int i = 0;
+            // CategoryScheme
+            {
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            // Categories
+            {
+                // Category01
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CATEGORY_SCHEME_2_V1_CATEGORY_1);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            {
+                // Category02
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CATEGORY_SCHEME_2_V1_CATEGORY_2);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            assertEquals(e.getExceptionItems().size(), i);
         }
     }
 
@@ -1522,7 +1591,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
             // Item scheme: Change Name
             {
-                LocalisedString localisedString = new LocalisedString("fr", "its - text sample");
+                LocalisedString localisedString = new LocalisedString("fr", "fr - text sample");
                 categorySchemeVersionTemporal.getMaintainableArtefact().getName().addText(localisedString);
             }
 
@@ -1530,10 +1599,9 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             {
                 CategoryMetamac categoryTemporal = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CATEGORY_SCHEME_3_V1_CATEGORY_1));
 
-                LocalisedString localisedString = new LocalisedString("fr", "it - text sample");
-                InternationalString internationalString = new InternationalString();
-                internationalString.addText(localisedString);
-                categoryTemporal.getNameableArtefact().setName(internationalString);
+                categoryTemporal.getNameableArtefact().setName(new InternationalString());
+                categoryTemporal.getNameableArtefact().getName().addText(new LocalisedString("fr", "fr - text sample"));
+                categoryTemporal.getNameableArtefact().getName().addText(new LocalisedString("es", "es - text sample"));
             }
 
             // Merge
@@ -1547,14 +1615,15 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
             // Item Scheme
             assertEquals(3, categorySchemeVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
-            assertEquals("its - text sample", categorySchemeVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
+            assertEquals("fr - text sample", categorySchemeVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
             assertNull(categorySchemeVersionMetamac.getMaintainableArtefact().getIsTemporal());
 
             // Item
             {
                 CategoryMetamac categoryTemporal = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_3_V1_CATEGORY_1);
-                assertEquals(1, categoryTemporal.getNameableArtefact().getName().getTexts().size());
-                assertEquals("it - text sample", categoryTemporal.getNameableArtefact().getName().getLocalisedLabel("fr"));
+                assertEquals(2, categoryTemporal.getNameableArtefact().getName().getTexts().size());
+                assertEquals("fr - text sample", categoryTemporal.getNameableArtefact().getName().getLocalisedLabel("fr"));
+                assertEquals("es - text sample", categoryTemporal.getNameableArtefact().getName().getLocalisedLabel("es"));
             }
         }
     }

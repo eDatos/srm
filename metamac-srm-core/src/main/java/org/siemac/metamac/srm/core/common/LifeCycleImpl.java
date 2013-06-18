@@ -284,6 +284,13 @@ public abstract class LifeCycleImpl implements LifeCycle {
         if (srmResourceVersion instanceof ItemSchemeVersion && !isJobInvocation) {
             SdmxSrmValidationUtils.checkArtefactWithoutTaskInBackground((ItemSchemeVersion) srmResourceVersion);
         }
+        // Check translations
+        String locale = srmConfiguration.retrieveLanguageDefault();
+        Map<String, MetamacExceptionItem> exceptionItems = callback.checkConcreteResourceTranslations(ctx, srmResourceVersion, locale);
+        if (exceptionItems != null) {
+            exceptions.addAll(exceptionItems.values());
+        }
+
         // Conditions for concrete resource
         callback.checkConcreteResourceInProductionValidation(ctx, srmResourceVersion, targetStatus, exceptions);
 
@@ -354,13 +361,6 @@ public abstract class LifeCycleImpl implements LifeCycle {
         // Check current proc status if target status is publish internally
         if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(targetStatus)) {
             checkProcStatus(srmResourceVersion, procStatusToPublishInternally);
-
-            // Check translations
-            String locale = srmConfiguration.retrieveLanguageDefault();
-            Map<String, MetamacExceptionItem> exceptionItems = callback.checkConcreteResourceTranslations(ctx, srmResourceVersion, locale);
-            if (exceptionItems != null) {
-                exceptions.addAll(exceptionItems.values());
-            }
         }
 
         // Check other conditions

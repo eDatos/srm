@@ -32,6 +32,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
+import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -53,6 +54,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
@@ -85,6 +87,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
     @Autowired
     private ItemSchemeVersionRepository   itemSchemeRepository;
+
+    @Autowired
+    private ItemRepository                itemRepository;
 
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
     protected EntityManager               entityManager;
@@ -519,6 +524,70 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
             assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
             assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testSendOrganisationSchemeToProductionValidationErrorTranslations() throws Exception {
+
+        String urn = ORGANISATION_SCHEME_2_V1;
+
+        // Update to change metadata to send to production
+
+        {
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), urn);
+            organisationSchemeVersion.getMaintainableArtefact().setName(BaseDoMocks.mockInternationalStringFixedValues("en", "label1", "fr", "label2"));
+            itemSchemeRepository.save(organisationSchemeVersion);
+        }
+        {
+            OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_2_V1_ORGANISATION_1);
+            organisation.getNameableArtefact().setDescription(BaseDoMocks.mockInternationalStringFixedValues("en", "label1", "fr", "label2"));
+            itemRepository.save(organisation);
+        }
+        {
+            OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_2_V1_ORGANISATION_2);
+            organisation.getNameableArtefact().setComment(BaseDoMocks.mockInternationalStringFixedValues("en", "label1", "fr", "label2"));
+            itemRepository.save(organisation);
+        }
+
+        entityManager.flush();
+
+        // Send to production validation
+        try {
+            organisationsService.sendOrganisationSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("OrganisationScheme metadata required");
+        } catch (MetamacException e) {
+            assertEquals(3, e.getExceptionItems().size());
+            int i = 0;
+            // OrganisationScheme
+            {
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            // Organisations
+            {
+                // Organisation01
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, ORGANISATION_SCHEME_2_V1_ORGANISATION_1);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            {
+                // Organisation02
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, ORGANISATION_SCHEME_2_V1_ORGANISATION_2);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            assertEquals(e.getExceptionItems().size(), i);
         }
     }
 
@@ -1748,7 +1817,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
             // Item scheme: Change Name
             {
-                LocalisedString localisedString = new LocalisedString("fr", "its - text sample");
+                LocalisedString localisedString = new LocalisedString("fr", "fr - text sample");
                 organisationSchemeVersionTemporal.getMaintainableArtefact().getName().addText(localisedString);
             }
 
@@ -1757,10 +1826,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 OrganisationMetamac organisationTemporal = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(),
                         GeneratorUrnUtils.makeUrnAsTemporal(ORGANISATION_SCHEME_3_V1_ORGANISATION_1));
 
-                LocalisedString localisedString = new LocalisedString("fr", "it - text sample");
-                InternationalString internationalString = new InternationalString();
-                internationalString.addText(localisedString);
-                organisationTemporal.getNameableArtefact().setName(internationalString);
+                organisationTemporal.getNameableArtefact().setName(new InternationalString());
+                organisationTemporal.getNameableArtefact().getName().addText(new LocalisedString("fr", "fr - text sample"));
+                organisationTemporal.getNameableArtefact().getName().addText(new LocalisedString("es", "es - text sample"));
             }
 
             // Merge
@@ -1774,14 +1842,15 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
             // Item Scheme
             assertEquals(3, organisationSchemeVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
-            assertEquals("its - text sample", organisationSchemeVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
+            assertEquals("fr - text sample", organisationSchemeVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
             assertNull(organisationSchemeVersionMetamac.getMaintainableArtefact().getIsTemporal());
 
             // Item
             {
                 OrganisationMetamac organisationTemporal = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), ORGANISATION_SCHEME_3_V1_ORGANISATION_1);
-                assertEquals(1, organisationTemporal.getNameableArtefact().getName().getTexts().size());
-                assertEquals("it - text sample", organisationTemporal.getNameableArtefact().getName().getLocalisedLabel("fr"));
+                assertEquals(2, organisationTemporal.getNameableArtefact().getName().getTexts().size());
+                assertEquals("fr - text sample", organisationTemporal.getNameableArtefact().getName().getLocalisedLabel("fr"));
+                assertEquals("es - text sample", organisationTemporal.getNameableArtefact().getName().getLocalisedLabel("es"));
             }
         }
     }

@@ -806,6 +806,70 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
+    public void testSendConceptSchemeToProductionValidationErrorTranslations() throws Exception {
+
+        String urn = CONCEPT_SCHEME_2_V1;
+
+        // Update to change metadata to send to production
+
+        {
+            ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), urn);
+            conceptSchemeVersion.getMaintainableArtefact().setName(BaseDoMocks.mockInternationalStringFixedValues("en", "label1", "fr", "label2"));
+            itemSchemeRepository.save(conceptSchemeVersion);
+        }
+        {
+            ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_2_V1_CONCEPT_1);
+            concept.getNameableArtefact().setDescription(BaseDoMocks.mockInternationalStringFixedValues("en", "label1", "fr", "label2"));
+            itemRepository.save(concept);
+        }
+        {
+            ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_2_V1_CONCEPT_2);
+            concept.setAcronym(BaseDoMocks.mockInternationalStringFixedValues("en", "label1", "fr", "label2"));
+            itemRepository.save(concept);
+        }
+
+        entityManager.flush();
+
+        // Send to production validation
+        try {
+            conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), urn);
+            fail("ConceptScheme metadata required");
+        } catch (MetamacException e) {
+            assertEquals(3, e.getExceptionItems().size());
+            int i = 0;
+            // ConceptScheme
+            {
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            // Concepts
+            {
+                // Concept01
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CONCEPT_SCHEME_2_V1_CONCEPT_1);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION}, exceptionItem
+                        .getExceptionItems().get(0));
+            }
+            {
+                // Concept02
+                i++;
+                MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CONCEPT_SCHEME_2_V1_CONCEPT_2);
+                // children
+                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_ACRONYM}, exceptionItem.getExceptionItems()
+                        .get(0));
+            }
+            assertEquals(e.getExceptionItems().size(), i);
+        }
+    }
+
+    @Test
     public void testSendConceptSchemeToProductionValidationErrorToImportedRequiredMetadataInConceptScheme() throws Exception {
 
         String urn = CONCEPT_SCHEME_2_V1;
@@ -2448,7 +2512,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
             // Item scheme: Change Name
             {
-                LocalisedString localisedString = new LocalisedString("fr", "its - text sample");
+                LocalisedString localisedString = new LocalisedString("fr", "fr - text sample");
                 conceptSchemeVersionTemporal.getMaintainableArtefact().getName().addText(localisedString);
             }
 
@@ -2457,7 +2521,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 ConceptMetamac conceptTemporal = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CONCEPT_SCHEME_3_V1_CONCEPT_1));
                 conceptTemporal.setSdmxRelatedArtefact(ConceptRoleEnum.MEASURE_DIMENSION);
 
-                LocalisedString localisedString = new LocalisedString("fr", "it - text sample");
+                LocalisedString localisedString = new LocalisedString("fr", "fr - text sample");
                 conceptTemporal.getPluralName().addText(localisedString);
             }
             // Item 2: Add legal acts
@@ -2465,9 +2529,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 ConceptMetamac conceptTemporal = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CONCEPT_SCHEME_3_V1_CONCEPT_2));
                 conceptTemporal.setSdmxRelatedArtefact(ConceptRoleEnum.MEASURE_DIMENSION);
 
-                LocalisedString localisedString = new LocalisedString("fr", "it - text sample legal acts");
                 conceptTemporal.setLegalActs(new InternationalString());
-                conceptTemporal.getLegalActs().addText(localisedString);
+                conceptTemporal.getLegalActs().addText(new LocalisedString("fr", "fr - text sample legal acts"));
+                conceptTemporal.getLegalActs().addText(new LocalisedString("es", "es - text sample legal acts"));
             }
             // Merge
             conceptSchemeVersionTemporal = conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn());
@@ -2478,20 +2542,21 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
             // Item Scheme
             assertEquals(2, conceptSchemeVersionMetamac.getMaintainableArtefact().getName().getTexts().size());
-            assertEquals("its - text sample", conceptSchemeVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
+            assertEquals("fr - text sample", conceptSchemeVersionMetamac.getMaintainableArtefact().getName().getLocalisedLabel("fr"));
 
             // Item 1: plural name changed
             {
                 ConceptMetamac conceptTemporal = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_3_V1_CONCEPT_1);
                 assertTrue(ConceptRoleEnum.MEASURE_DIMENSION.equals(conceptTemporal.getSdmxRelatedArtefact()));
                 assertEquals(2, conceptTemporal.getPluralName().getTexts().size());
-                assertEquals("it - text sample", conceptTemporal.getPluralName().getLocalisedLabel("fr"));
+                assertEquals("fr - text sample", conceptTemporal.getPluralName().getLocalisedLabel("fr"));
             }
             // Item 2: legal acts changed
             {
                 ConceptMetamac conceptTemporal = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_3_V1_CONCEPT_2);
-                assertEquals(1, conceptTemporal.getLegalActs().getTexts().size());
-                assertEquals("it - text sample legal acts", conceptTemporal.getLegalActs().getLocalisedLabel("fr"));
+                assertEquals(2, conceptTemporal.getLegalActs().getTexts().size());
+                assertEquals("fr - text sample legal acts", conceptTemporal.getLegalActs().getLocalisedLabel("fr"));
+                assertEquals("es - text sample legal acts", conceptTemporal.getLegalActs().getLocalisedLabel("es"));
             }
         }
 

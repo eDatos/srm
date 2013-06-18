@@ -19,6 +19,7 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -259,6 +260,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
     @Test
     @Override
+    @Ignore
     public void testDeleteComponentForDataStructureDefinition() throws Exception {
         // TODO Test dsd
 
@@ -266,6 +268,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
     @Test
     @Override
+    @Ignore
     public void testSendDataStructureDefinitionToProductionValidation() throws Exception {
         // TODO Test dsd
 
@@ -273,6 +276,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
     @Test
     @Override
+    @Ignore
     public void testSendDataStructureDefinitionToDiffusionValidation() throws Exception {
         // TODO Test dsd
 
@@ -280,6 +284,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
     @Test
     @Override
+    @Ignore
     public void testRejectDataStructureDefinitionProductionValidation() throws Exception {
         // TODO Test dsd
 
@@ -287,6 +292,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
     @Test
     @Override
+    @Ignore
     public void testRejectDataStructureDefinitionDiffusionValidation() throws Exception {
         // TODO Test dsd
 
@@ -294,6 +300,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
     @Test
     @Override
+    @Ignore
     public void testPublishInternallyDataStructureDefinition() throws Exception {
         // TODO Test dsd
 
@@ -415,18 +422,22 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
     @Test
     @Override
+    @Ignore
     public void testPublishExternallyDataStructureDefinition() throws Exception {
         // TODO Test dsd
     }
 
     @Override
+    @Ignore
     public void testCheckDataStructureDefinitionWithRelatedResourcesExternallyPublished() throws Exception {
         // TODO Test dsd
     }
 
     @Test
     @Override
+    @Ignore
     public void testDeleteDataStructureDefinition() throws Exception {
+        // TODO Test dsd
     }
 
     @Test
@@ -551,11 +562,13 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     }
 
     @Test
+    @Ignore
     public void testVersioningDataStructureDefinitionErrorAlreadyExistsDraft() throws Exception {
         // TODO Test dsd
     }
 
     @Test
+    @Ignore
     public void testVersioningDataStructureDefinitionErrorNotPublished() throws Exception {
         // TODO Test dsd
     }
@@ -739,23 +752,23 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
                     annotationTemporal.setTitle("title");
                     annotationTemporal.setType("type");
                     annotationTemporal.setUrl("url");
-                    LocalisedString localisedString = new LocalisedString("fr", "cl - text sample");
                     InternationalString internationalString = new InternationalString();
-                    internationalString.addText(localisedString);
+                    internationalString.addText(new LocalisedString("fr", "cl - text sample"));
+                    internationalString.addText(new LocalisedString("es", "es - cl - text sample"));
                     annotationTemporal.setText(internationalString);
                     componentListTemporal.addAnnotation(annotationTemporal);
                 }
 
-                // Component: Change Name
+                // Component
                 Component component = componentListTemporal.getComponents().iterator().next();
                 {
                     Annotation annotationTemporal = new Annotation();
                     annotationTemporal.setTitle("title");
                     annotationTemporal.setType("type");
                     annotationTemporal.setUrl("url");
-                    LocalisedString localisedString = new LocalisedString("fr", "c - text sample");
                     InternationalString internationalString = new InternationalString();
-                    internationalString.addText(localisedString);
+                    internationalString.addText(new LocalisedString("fr", "fr - annotation - text sample"));
+                    internationalString.addText(new LocalisedString("es", "es - annotation - text sample"));
                     annotationTemporal.setText(internationalString);
                     component.addAnnotation(annotationTemporal);
                 }
@@ -783,16 +796,18 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
                 {
                     Annotation annotation = componentList.getAnnotations().iterator().next();
-                    assertEquals(1, annotation.getText().getTexts().size());
+                    assertEquals(2, annotation.getText().getTexts().size());
                     assertEquals("cl - text sample", annotation.getText().getLocalisedLabel("fr"));
+                    assertEquals("es - cl - text sample", annotation.getText().getLocalisedLabel("es"));
                 }
 
                 Component component = componentList.getComponents().iterator().next();
 
                 {
                     Annotation annotation = component.getAnnotations().iterator().next();
-                    assertEquals(1, annotation.getText().getTexts().size());
-                    assertEquals("c - text sample", annotation.getText().getLocalisedLabel("fr"));
+                    assertEquals(2, annotation.getText().getTexts().size());
+                    assertEquals("fr - annotation - text sample", annotation.getText().getLocalisedLabel("fr"));
+                    assertEquals("es - annotation - text sample", annotation.getText().getLocalisedLabel("es"));
                 }
             }
         }
@@ -800,12 +815,14 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
     @Test
     @Override
+    @Ignore
     public void testStartDataStructureDefinitionValidity() throws Exception {
         // TODO Test dsd
     }
 
     @Test
     @Override
+    @Ignore
     public void testEndDataStructureDefinitionValidity() throws Exception {
         // TODO Test dsd
 
@@ -1215,52 +1232,60 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     }
 
     @Override
+    @Ignore
+    @Test
     public void testVersioningHeadingAndStub() throws Exception {
-        // TODO Auto-generated method stub
-
+        // TODO Test dsd
     }
 
     @Override
+    @Ignore
+    @Test
     public void testVersioningShowDecimalsPrecision() throws Exception {
-        // TODO Auto-generated method stub
-
+        // TODO Test dsd
     }
 
     @Override
+    @Ignore
+    @Test
     public void testVersioningDimensionVisualisationInfo() throws Exception {
-        // TODO Auto-generated method stub
-
+        // TODO Test dsd
     }
 
     @Override
+    @Ignore
+    @Test
     public void testCheckPrimaryMeasure() throws Exception {
-        // TODO Auto-generated method stub
-
+        // TODO Test dsd
     }
 
     @Override
+    @Ignore
+    @Test
     public void testCheckTimeDimension() throws Exception {
-        // TODO Auto-generated method stub
-
+        // TODO Test dsd
     }
 
     @Override
+    @Ignore
     public void testCheckMeasureDimension() throws Exception {
-        // TODO Auto-generated method stub
-
+        // TODO Test dsd
     }
 
     @Override
+    @Ignore
+    @Test
     public void testCheckDimension() throws Exception {
-        // TODO Auto-generated method stub
-
+        // TODO Test dsd
     }
 
     @Override
+    @Ignore
+    @Test
     public void testCheckAttribute() throws Exception {
-        // TODO Auto-generated method stub
-
+        // TODO Test dsd
     }
+
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmDsdTest.xml";
