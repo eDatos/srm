@@ -665,7 +665,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 return returnOrThrowExceptionForCheckConceptEnumeratedRepresentation(throwException);
             }
             if (concept.getVariable() == null) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CONCEPT_VARIABLE).build();
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_VARIABLE_REQUIRED).build();
             }
             PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
             Long codelistId = concept.getCoreRepresentation().getEnumerationCodelist().getId();
