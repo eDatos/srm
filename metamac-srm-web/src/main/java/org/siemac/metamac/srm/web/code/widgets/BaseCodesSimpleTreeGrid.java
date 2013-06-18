@@ -16,6 +16,8 @@ public class BaseCodesSimpleTreeGrid extends TreeGrid {
     public BaseCodesSimpleTreeGrid(boolean alwaysShowEditors) {
         super();
 
+        setCanFocus(false); // To avoid scrolling when a record is clicked
+
         setAlwaysShowEditors(alwaysShowEditors);
 
         setHeight(175);

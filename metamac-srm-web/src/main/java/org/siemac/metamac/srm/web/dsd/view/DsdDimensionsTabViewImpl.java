@@ -25,8 +25,8 @@ import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
-import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdDimensionsTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.dsd.widgets.NewDimensionWindow;
@@ -163,6 +163,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // Grid
 
         dimensionsGrid = new ListGrid();
+        dimensionsGrid.setCanFocus(false); // To avoid scrolling when a record is clicked
         dimensionsGrid.setWidth100();
         dimensionsGrid.setHeight(150);
         dimensionsGrid.setSelectionType(SelectionStyle.SIMPLE);

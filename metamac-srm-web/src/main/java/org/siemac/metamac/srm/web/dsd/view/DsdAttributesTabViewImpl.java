@@ -25,8 +25,8 @@ import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
-import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
+import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
@@ -165,6 +165,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         // Grid
 
         attributesGrid = new ListGrid();
+        attributesGrid.setCanFocus(false); // To avoid scrolling when a record is clicked
         attributesGrid.setWidth100();
         attributesGrid.setHeight(150);
         attributesGrid.setSelectionType(SelectionStyle.SIMPLE);
