@@ -48,7 +48,6 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
                 getUiHandlers().retrieveConcepts(firstResult, maxResults, searchSectionStack.getConceptWebCriteria());
             }
         });
-        conceptsListGrid.getListGrid().setAutoFitMaxRecords(SrmWebConstants.ITEM_LIST_MAX_RESULTS);
         conceptsListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         conceptsListGrid.getListGrid().setDataSource(new ConceptDS());
         conceptsListGrid.getListGrid().setUseAllDataSourceFields(false);

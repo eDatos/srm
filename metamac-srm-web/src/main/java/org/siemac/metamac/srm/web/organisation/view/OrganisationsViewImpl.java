@@ -49,7 +49,6 @@ public class OrganisationsViewImpl extends ViewWithUiHandlers<OrganisationsUiHan
                 getUiHandlers().retrieveOrganisations(firstResult, maxResults, searchSectionStack.getOrganisationWebCriteria());
             }
         });
-        organisationsListGrid.getListGrid().setAutoFitMaxRecords(SrmWebConstants.ITEM_LIST_MAX_RESULTS);
         organisationsListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         organisationsListGrid.getListGrid().setDataSource(new OrganisationDS());
         organisationsListGrid.getListGrid().setUseAllDataSourceFields(false);
