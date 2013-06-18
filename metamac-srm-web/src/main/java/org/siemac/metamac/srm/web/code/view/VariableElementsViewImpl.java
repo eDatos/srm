@@ -59,7 +59,6 @@ public class VariableElementsViewImpl extends ViewWithUiHandlers<VariableElement
                 getUiHandlers().retrieveVariableElements(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
-        variableElementsListGrid.getListGrid().setAutoFitMaxRecords(VariableElementsPresenter.ELEMENT_LIST_MAX_RESULTS);
         variableElementsListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         variableElementsListGrid.getListGrid().setDataSource(new VariableElementDS());
         variableElementsListGrid.getListGrid().setUseAllDataSourceFields(false);

@@ -47,7 +47,6 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
                 getUiHandlers().retrieveCodes(firstResult, maxResults, searchSectionStack.getCodeWebCriteria());
             }
         });
-        codesListGrid.getListGrid().setAutoFitMaxRecords(SrmWebConstants.ITEM_LIST_MAX_RESULTS);
         codesListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         codesListGrid.getListGrid().setDataSource(new CodeDS());
         codesListGrid.getListGrid().setUseAllDataSourceFields(false);

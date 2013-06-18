@@ -117,7 +117,6 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
                 getUiHandlers().retrieveVariableFamilies(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
-        variableFamilyList.getListGrid().setAutoFitMaxRecords(VariableFamilyListPresenter.FAMILY_LIST_MAX_RESULTS);
         variableFamilyList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         variableFamilyList.getListGrid().setDataSource(new VariableFamilyDS());
         variableFamilyList.getListGrid().setUseAllDataSourceFields(false);

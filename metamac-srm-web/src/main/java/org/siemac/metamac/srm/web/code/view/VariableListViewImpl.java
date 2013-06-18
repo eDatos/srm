@@ -118,7 +118,6 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
                 getUiHandlers().retrieveVariables(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
-        variablesList.getListGrid().setAutoFitMaxRecords(VariableListPresenter.VARIABLE_LIST_MAX_RESULTS);
         variablesList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         variablesList.getListGrid().setDataSource(new VariableDS());
         variablesList.getListGrid().setUseAllDataSourceFields(false);

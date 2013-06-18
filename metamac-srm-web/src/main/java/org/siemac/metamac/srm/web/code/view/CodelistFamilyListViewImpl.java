@@ -115,7 +115,6 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
                 getUiHandlers().retrieveCodelistFamilies(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
-        codelistFamilyList.getListGrid().setAutoFitMaxRecords(CodelistFamilyListPresenter.FAMILY_LIST_MAX_RESULTS);
         codelistFamilyList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         codelistFamilyList.getListGrid().setDataSource(new CodelistFamilyDS());
         codelistFamilyList.getListGrid().setUseAllDataSourceFields(false);
