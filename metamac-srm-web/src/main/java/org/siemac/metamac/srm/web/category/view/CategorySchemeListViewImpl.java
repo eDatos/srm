@@ -118,7 +118,6 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
                 getUiHandlers().retrieveCategorySchemes(firstResult, maxResults, searchSectionStack.getCategorySchemeWebCriteria());
             }
         });
-        categorySchemesList.getListGrid().setAutoFitMaxRecords(CategorySchemeListPresenter.SCHEME_LIST_MAX_RESULTS);
         categorySchemesList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         categorySchemesList.getListGrid().setDataSource(new CategorySchemeDS());
         categorySchemesList.getListGrid().setUseAllDataSourceFields(false);

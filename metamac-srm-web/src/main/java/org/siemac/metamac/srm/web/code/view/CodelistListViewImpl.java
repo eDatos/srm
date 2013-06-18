@@ -120,7 +120,6 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
                 getUiHandlers().retrieveCodelists(firstResult, maxResults, searchSectionStack.getCodelistWebCriteria());
             }
         });
-        codelistsList.getListGrid().setAutoFitMaxRecords(SrmWebConstants.SCHEME_LIST_MAX_RESULTS);
         codelistsList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         codelistsList.getListGrid().setDataSource(new CodelistDS());
         codelistsList.getListGrid().setUseAllDataSourceFields(false);

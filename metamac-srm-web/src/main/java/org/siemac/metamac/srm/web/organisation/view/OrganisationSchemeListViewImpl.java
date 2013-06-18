@@ -120,7 +120,6 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
                 getUiHandlers().retrieveOrganisationSchemes(firstResult, maxResults, searchSectionStack.getOrganisationSchemeWebCriteria());
             }
         });
-        organisationSchemeList.getListGrid().setAutoFitMaxRecords(SrmWebConstants.SCHEME_LIST_MAX_RESULTS);
         organisationSchemeList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         organisationSchemeList.getListGrid().setDataSource(new OrganisationSchemeDS());
         organisationSchemeList.getListGrid().setUseAllDataSourceFields(false);

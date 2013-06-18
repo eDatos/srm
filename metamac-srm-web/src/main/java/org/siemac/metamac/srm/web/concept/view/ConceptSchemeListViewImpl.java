@@ -123,7 +123,6 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
                 getUiHandlers().retrieveConceptSchemes(firstResult, maxResults, searchSectionStack.getConceptSchemeWebCriteria());
             }
         });
-        conceptSchemesList.getListGrid().setAutoFitMaxRecords(SrmWebConstants.SCHEME_LIST_MAX_RESULTS);
         conceptSchemesList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         conceptSchemesList.getListGrid().setDataSource(new ConceptSchemeDS());
         conceptSchemesList.getListGrid().setUseAllDataSourceFields(false);
