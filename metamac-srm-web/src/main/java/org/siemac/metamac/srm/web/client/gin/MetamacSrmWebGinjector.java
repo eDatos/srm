@@ -37,6 +37,7 @@ import org.siemac.metamac.srm.web.organisation.presenter.OrganisationPresenter;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListPresenter;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemePresenter;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationsPresenter;
+import org.siemac.metamac.web.common.client.gin.MetamacWebGinjector;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.inject.client.AsyncProvider;
@@ -48,11 +49,7 @@ import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 
 @GinModules({DispatchAsyncModule.class, ClientModule.class})
-public interface MetamacSrmWebGinjector extends Ginjector {
-
-    EventBus getEventBus();
-    PlaceManager getPlaceManager();
-    DispatchAsync getDispatcher();
+public interface MetamacSrmWebGinjector extends MetamacWebGinjector {
 
     LoggedInGatekeeper getLoggedInGatekeeper();
 
