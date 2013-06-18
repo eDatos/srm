@@ -69,6 +69,7 @@ public class InternationalAnnotationsPanel extends VLayout {
         imgLayout.setStyleName("annotationPanel");
 
         grid = new ListGrid();
+        grid.setCanFocus(false); // To avoid scrolling when a record is clicked
         grid.setDataSource(new InternationalAnnotationDS());
         grid.setAutoFetchData(true);
         grid.setAutoSaveEdits(true);
