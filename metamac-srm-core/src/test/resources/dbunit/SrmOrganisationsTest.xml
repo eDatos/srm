@@ -4581,6 +4581,14 @@
         VERSION="1"
         INTERNATIONAL_STRING_FK="62"
     />      
+
+    <TB_LOCALISED_STRINGS
+        ID="622"
+        LABEL="Descripción organisationScheme-1-v2-organisation-2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="62"
+    />      
     
    <TB_INTERNATIONAL_STRINGS
         ID="64"

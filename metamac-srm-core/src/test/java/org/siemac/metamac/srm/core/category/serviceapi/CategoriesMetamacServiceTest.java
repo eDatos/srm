@@ -1958,7 +1958,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, category.getUrn());
                 assertEquals("CATEGORY02", category.getParent().getCode());
                 assertEquals("Nombre categoryScheme-1-v2-category-2-1", category.getName());
-                assertEquals(null, category.getDescription());
+                assertEquals("Descripción cat2-1", category.getDescription());
                 assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getParent().getUrn());
                 assertEquals(Long.valueOf("122"), category.getParentIdDatabase());
             }

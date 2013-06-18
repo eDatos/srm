@@ -2401,7 +2401,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 assertEquals(OrganisationTypeEnum.ORGANISATION_UNIT, organisation.getType());
                 assertEquals(null, organisation.getSpecialOrganisationHasBeenPublished());
                 assertEquals("Nombre organisationScheme-1-v2-organisation-2", organisation.getName());
-                assertEquals(null, organisation.getDescription());
+                assertEquals("Descripción organisationScheme-1-v2-organisation-2", organisation.getDescription());
                 MetamacAsserts.assertEqualsDate("2011-03-02 04:05:06", organisation.getCreatedDate());
             }
             {

@@ -3450,7 +3450,15 @@
         LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="56"
-    />     
+    />
+
+    <TB_LOCALISED_STRINGS
+        ID="562"
+        LABEL="Descripción cat2-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="56"
+    />      
     
     <TB_INTERNATIONAL_STRINGS
         ID="57"
