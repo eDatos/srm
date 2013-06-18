@@ -330,7 +330,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ShowDecimalsPrecisionItem showDecimalsPrecision = new ShowDecimalsPrecisionItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getConstants().dsdShowDecimalsPrecision(), false);
         DsdDimensionCodesVisualisationItem dimensionCodesVisualisationItem = new DsdDimensionCodesVisualisationItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION, getConstants()
                 .dsdDimensionCodesVisualisation(), false);
-        visualisationMetadataForm.setFields(autoOpen, showDecimals, dimensionsVisualisationItem, showDecimalsPrecision, dimensionCodesVisualisationItem);
+        visualisationMetadataForm.setFields(autoOpen, showDecimals, dimensionCodesVisualisationItem, showDecimalsPrecision, dimensionsVisualisationItem);
 
         // Comments
         commentsForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
@@ -438,7 +438,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         ShowDecimalsPrecisionItem showDecimalsPrecision = new ShowDecimalsPrecisionItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getConstants().dsdShowDecimalsPrecision(), true);
         DsdDimensionCodesVisualisationItem dimensionCodesVisualisationItem = new DsdDimensionCodesVisualisationItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION, getConstants()
                 .dsdDimensionCodesVisualisation(), true);
-        visualisationMetadataEditionForm.setFields(autoOpen, showDecimals, dimensionsVisualisationItem, showDecimalsPrecision, dimensionCodesVisualisationItem);
+        visualisationMetadataEditionForm.setFields(autoOpen, showDecimals, dimensionCodesVisualisationItem, showDecimalsPrecision, dimensionsVisualisationItem);
 
         // Comments
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
