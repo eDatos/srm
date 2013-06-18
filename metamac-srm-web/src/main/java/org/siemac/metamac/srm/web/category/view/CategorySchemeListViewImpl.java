@@ -215,11 +215,6 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
     }
 
     @Override
-    public void goToCategorySchemeListLastPageAfterCreate() {
-        categorySchemesList.goToLastPageAfterCreate();
-    }
-
-    @Override
     public void clearSearchSection() {
         searchSectionStack.clearSearchSection();
     }

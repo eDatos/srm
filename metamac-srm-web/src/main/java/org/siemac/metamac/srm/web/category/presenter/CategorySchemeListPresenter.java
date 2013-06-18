@@ -82,7 +82,6 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
     public interface CategorySchemeListView extends View, HasUiHandlers<CategorySchemeListUiHandlers> {
 
         void setCategorySchemePaginatedList(GetCategorySchemesResult categorySchemesPaginatedList);
-        void goToCategorySchemeListLastPageAfterCreate();
         void clearSearchSection();
     }
 
