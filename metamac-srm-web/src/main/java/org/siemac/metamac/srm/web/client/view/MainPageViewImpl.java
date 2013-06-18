@@ -4,10 +4,10 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.view.handlers.MainPageUiHandlers;
-import org.siemac.metamac.srm.web.client.widgets.BreadCrumbsPanel;
 import org.siemac.metamac.srm.web.client.widgets.StructuralResourcesMenu;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.widgets.BreadCrumbsPanel;
 import org.siemac.metamac.web.common.client.widgets.ErrorMessagePanel;
 import org.siemac.metamac.web.common.client.widgets.MasterHead;
 import org.siemac.metamac.web.common.client.widgets.MetamacNavBar;
@@ -167,11 +167,6 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
     /****************************************************
      * End code for nested presenters.
      ***************************************************/
-
-    @Override
-    public BreadCrumbsPanel getBreadCrumbsPanel() {
-        return breadCrumbsPanel;
-    }
 
     @Override
     public MasterHead getMasterHead() {

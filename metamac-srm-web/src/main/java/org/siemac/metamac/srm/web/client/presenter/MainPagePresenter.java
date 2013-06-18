@@ -10,7 +10,6 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent.SelectMenuButtonHandler;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.MainPageUiHandlers;
-import org.siemac.metamac.srm.web.client.widgets.BreadCrumbsPanel;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlAction;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlResult;
 import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
@@ -77,7 +76,6 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
 
         MasterHead getMasterHead();
 
-        BreadCrumbsPanel getBreadCrumbsPanel();
         void clearBreadcrumbs(int size, PlaceManager placeManager);
         void setBreadcrumbs(int index, String title);
 
