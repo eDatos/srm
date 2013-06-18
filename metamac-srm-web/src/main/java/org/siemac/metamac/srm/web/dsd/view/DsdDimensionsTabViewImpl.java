@@ -645,11 +645,12 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         if (dimensionComponentDto.getLocalRepresentation() != null) {
             if (RepresentationTypeEnum.ENUMERATION.equals(dimensionComponentDto.getLocalRepresentation().getRepresentationType())) {
 
+                form.getItem(DimensionDS.REPRESENTATION_TYPE).setValue(getCoreMessages().representationTypeEnumENUMERATION());
+
                 if (RelatedResourceTypeEnum.CODELIST.equals(dimensionComponentDto.getLocalRepresentation().getEnumeration().getType())) {
 
                     // CODELIST
 
-                    form.getItem(DimensionDS.REPRESENTATION_TYPE).setValue(getCoreMessages().representationTypeEnumENUMERATION());
                     if (!TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                         ((RelatedResourceLinkItem) form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)).setRelatedResource(dimensionComponentDto.getLocalRepresentation().getEnumeration());
                         form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST).show();
@@ -659,7 +660,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                     // CONCEPTSCHEME
 
-                    form.getItem(DimensionDS.REPRESENTATION_TYPE).setValue(getCoreMessages().representationTypeEnumENUMERATION());
                     if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                         ((RelatedResourceLinkItem) form.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CONCEPT_SCHEME)).setRelatedResource(dimensionComponentDto.getLocalRepresentation()
                                 .getEnumeration());
