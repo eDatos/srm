@@ -599,7 +599,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         String itemSchemeVersionUrn = dataStructureDefinitionVersion.getMaintainableArtefact().getUrn();
         Map<String, MetamacExceptionItem> exceptionItemsByUrn = new HashMap<String, MetamacExceptionItem>();
         categoriesMetamacService.checkCategorisationsWithRelatedResourcesExternallyPublished(ctx, itemSchemeVersionUrn, exceptionItemsByUrn);
-        // TODO resto de relaciones
+        // Other relations like enumerated representations or concept identification relations are checked in statistic-srm module
         ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
     }
 
@@ -905,12 +905,16 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                 if (component.getLocalRepresentation() != null) {
                     Representation representation = component.getLocalRepresentation();
                     if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
-                        Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
-                        List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
-                                .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
-                        PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(ctx, criteriaToVerifyConceptIdentityCode,
-                                pagingParameter);
-                        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
+                        if (representation.getEnumerationCodelist() != null) {
+                            Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
+                            List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                                    .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
+                            PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(ctx, criteriaToVerifyConceptIdentityCode,
+                                    pagingParameter);
+                            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
+                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.PRIMARY_MEASURE_REPRESENTATION_ENUMERATED));
+                            }
+                        } else {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.PRIMARY_MEASURE_REPRESENTATION_ENUMERATED));
                         }
                     }
@@ -969,12 +973,16 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                 if (component.getLocalRepresentation() != null) {
                     Representation representation = component.getLocalRepresentation();
                     if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
-                        Long conceptSchemeRepresentationId = representation.getEnumerationConceptScheme().getId();
-                        List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
-                                .withProperty(CodelistVersionMetamacProperties.id()).eq(conceptSchemeRepresentationId).build();
-                        PagedResult<ConceptSchemeVersionMetamac> result = findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode,
-                                pagingParameter);
-                        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptSchemeRepresentationId)) {
+                        if (representation.getEnumerationConceptScheme() != null) {
+                            Long conceptSchemeRepresentationId = representation.getEnumerationConceptScheme().getId();
+                            List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                                    .withProperty(CodelistVersionMetamacProperties.id()).eq(conceptSchemeRepresentationId).build();
+                            PagedResult<ConceptSchemeVersionMetamac> result = findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(ctx,
+                                    criteriaToVerifyConceptIdentityCode, pagingParameter);
+                            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptSchemeRepresentationId)) {
+                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MEASURE_DIMENSION_REPRESENTATION_ENUMERATED));
+                            }
+                        } else {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MEASURE_DIMENSION_REPRESENTATION_ENUMERATED));
                         }
                     }
@@ -1012,12 +1020,16 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                 if (component.getLocalRepresentation() != null) {
                     Representation representation = component.getLocalRepresentation();
                     if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
-                        Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
-                        List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
-                                .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
-                        PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter,
-                                component.getCptIdRef().getNameableArtefact().getUrn());
-                        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
+                        if (representation.getEnumerationCodelist() != null) {
+                            Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
+                            List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                                    .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
+                            PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode,
+                                    pagingParameter, component.getCptIdRef().getNameableArtefact().getUrn());
+                            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
+                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DIMENSION_REPRESENTATION_ENUMERATED));
+                            }
+                        } else {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DIMENSION_REPRESENTATION_ENUMERATED));
                         }
                     }
@@ -1055,12 +1067,16 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                 if (component.getLocalRepresentation() != null) {
                     Representation representation = component.getLocalRepresentation();
                     if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
-                        Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
-                        List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
-                                .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
-                        PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter,
-                                component.getCptIdRef().getNameableArtefact().getUrn());
-                        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
+                        if (representation.getEnumerationCodelist() != null) {
+                            Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
+                            List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                                    .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
+                            PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(ctx, criteriaToVerifyConceptIdentityCode,
+                                    pagingParameter, component.getCptIdRef().getNameableArtefact().getUrn());
+                            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
+                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DATA_ATTRIBUTE_REPRESENTATION_ENUMERATED));
+                            }
+                        } else {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DATA_ATTRIBUTE_REPRESENTATION_ENUMERATED));
                         }
                     }
