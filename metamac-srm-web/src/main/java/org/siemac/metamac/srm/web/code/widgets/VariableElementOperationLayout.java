@@ -14,7 +14,6 @@ import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
-import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -35,7 +34,7 @@ public class VariableElementOperationLayout extends VLayout {
 
     private BaseVariableUiHandlers   uiHandlers;
 
-    public VariableElementOperationLayout(String title) {
+    public VariableElementOperationLayout() {
 
         // TOOL STRIP
 
@@ -120,7 +119,6 @@ public class VariableElementOperationLayout extends VLayout {
             }
         });
 
-        addMember(new TitleLabel(title));
         addMember(toolStrip);
         addMember(variableElementOperationsListGrid);
     }
@@ -132,13 +130,6 @@ public class VariableElementOperationLayout extends VLayout {
     public void setVariableElementOperations(List<VariableElementOperationDto> variableElementOperationDtos) {
         // Set the operations in the list grid
         variableElementOperationsListGrid.setData(CodesRecordUtils.getVariableElementOperationRecords(variableElementOperationDtos));
-
-        // Do not show the operations is the list is empty
-        if (variableElementOperationDtos.isEmpty()) {
-            hide();
-        } else {
-            show();
-        }
     }
 
     public CustomListGrid getListGrid() {

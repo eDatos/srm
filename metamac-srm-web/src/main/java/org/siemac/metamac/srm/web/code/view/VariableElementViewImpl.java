@@ -25,6 +25,7 @@ import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
+import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -66,6 +67,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     private SearchMultipleRelatedResourcePaginatedWindow createSegregationWindow;
 
     // Variable element operations
+    private CustomSectionStack                           operationsSectionStack;
     private VariableElementOperationLayout               variableElementOperationsLayout;
 
     private VariableElementDto                           variableElementDto;
@@ -94,13 +96,15 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         // VARIABLE ELEMENT OPERATIONS
 
-        variableElementOperationsLayout = new VariableElementOperationLayout(getConstants().variableElementOperations());
-        variableElementOperationsLayout.setMargin(15);
+        variableElementOperationsLayout = new VariableElementOperationLayout();
+        operationsSectionStack = new CustomSectionStack(getConstants().variableOperationsBetweenElements());
+        operationsSectionStack.setMargin(15);
+        operationsSectionStack.getDefaultSection().addItem(variableElementOperationsLayout);
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);
         subPanel.addMember(mainFormLayout);
-        subPanel.addMember(variableElementOperationsLayout);
+        subPanel.addMember(operationsSectionStack);
 
         panel.addMember(subPanel);
     }
@@ -184,6 +188,13 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     @Override
     public void setVariableElementOperations(List<VariableElementOperationDto> variableElementOperationDtos) {
         variableElementOperationsLayout.setVariableElementOperations(variableElementOperationDtos);
+
+        // Do not show the operations is the list if is empty
+        if (variableElementOperationDtos.isEmpty()) {
+            operationsSectionStack.hide();
+        } else {
+            operationsSectionStack.show();
+        }
     }
 
     @Override

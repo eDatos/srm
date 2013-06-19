@@ -22,9 +22,9 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
-import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -150,9 +150,9 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
 
         VLayout codelistsLayout = new VLayout();
         codelistsLayout.setMargin(15);
-        codelistsLayout.addMember(new TitleLabel(getConstants().codelistFamilyCodelists()));
-        codelistsLayout.addMember(toolStrip);
-        codelistsLayout.addMember(codelistListGrid);
+        CustomSectionStack sectionStack = new CustomSectionStack(getConstants().codelistFamilyCodelists());
+        sectionStack.getDefaultSection().setItems(toolStrip, codelistListGrid);
+        codelistsLayout.addMember(sectionStack);
 
         VLayout subpanel = new VLayout();
         subpanel.setOverflow(Overflow.SCROLL);

@@ -22,9 +22,9 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
+import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
-import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -150,9 +150,9 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
 
         VLayout variablesLayout = new VLayout();
         variablesLayout.setMargin(15);
-        variablesLayout.addMember(new TitleLabel(getConstants().variableFamilyVariables()));
-        variablesLayout.addMember(toolStrip);
-        variablesLayout.addMember(variableListGrid);
+        CustomSectionStack sectionStack = new CustomSectionStack(getConstants().variableFamilyVariables());
+        sectionStack.getDefaultSection().setItems(toolStrip, variableListGrid);
+        variablesLayout.addMember(sectionStack);
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);
@@ -160,7 +160,6 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         subPanel.addMember(variablesLayout);
 
         panel.addMember(subPanel);
-
     }
 
     private void bindMainFormLayoutEvents() {

@@ -34,10 +34,10 @@ import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
+import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
-import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -108,6 +108,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     // Variable element operations
 
+    private CustomSectionStack                           operationsSectionStack;
     private VariableElementOperationLayout               variableElementOperationsLayout;
 
     private VariableDto                                  variableDto;
@@ -217,15 +218,21 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         // VARIABLE ELEMENT OPERATIONS
 
-        variableElementOperationsLayout = new VariableElementOperationLayout(getConstants().variableOperationsBetweenElements());
-        variableElementOperationsLayout.setStyleName("marginTop15");
+        variableElementOperationsLayout = new VariableElementOperationLayout();
+
+        // layout
 
         VLayout layout = new VLayout();
         layout.setMargin(15);
-        layout.addMember(new TitleLabel(getConstants().variableVariableElements()));
-        layout.addMember(toolStrip);
-        layout.addMember(variableElementListGrid);
-        layout.addMember(variableElementOperationsLayout);
+        layout.setMembersMargin(15);
+
+        CustomSectionStack elementsSectionStack = new CustomSectionStack(getConstants().variableVariableElements());
+        elementsSectionStack.getDefaultSection().setItems(toolStrip, variableElementListGrid);
+        layout.addMember(elementsSectionStack);
+
+        operationsSectionStack = new CustomSectionStack(getConstants().variableOperationsBetweenElements());
+        operationsSectionStack.getDefaultSection().addItem(variableElementOperationsLayout);
+        layout.addMember(operationsSectionStack);
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);
@@ -466,6 +473,13 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariableElementOperations(List<VariableElementOperationDto> variableElementOperationDtos) {
         variableElementOperationsLayout.setVariableElementOperations(variableElementOperationDtos);
+
+        // Do not show the operations is the list is empty
+        if (variableElementOperationDtos.isEmpty()) {
+            operationsSectionStack.hide();
+        } else {
+            operationsSectionStack.show();
+        }
     }
 
     private void setVariableElements(List<VariableElementBasicDto> variableElementDtos) {
