@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.code.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -23,6 +24,8 @@ import org.siemac.metamac.srm.web.shared.code.CreateVariableElementOperationActi
 import org.siemac.metamac.srm.web.shared.code.CreateVariableElementOperationResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementOperationsAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementOperationsResult;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementOperationsByVariableElementAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementOperationsByVariableElementResult;
@@ -168,6 +171,22 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
                 // Update URL
                 PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeVariableElementPlaceRequest(result.getSavedVariableElementDto().getCode());
                 placeManager.updateHistory(placeRequest, true);
+            }
+        });
+    }
+
+    @Override
+    public void deleteVariableElement(String urn) {
+        dispatcher.execute(new DeleteVariableElementsAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteVariableElementsResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(VariableElementPresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(DeleteVariableElementsResult result) {
+                ShowMessageEvent.fireSuccessMessage(VariableElementPresenter.this, MetamacSrmWeb.getMessages().variableElementDeleted());
+                placeManager.revealRelativePlace(-1);
             }
         });
     }

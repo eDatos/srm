@@ -80,7 +80,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         // VARIABLE FAMILY
         //
 
-        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canUpdateVariableFamily());
+        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canUpdateVariableFamily(), CodesClientSecurityUtils.canDeleteVariableFamily());
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
@@ -182,6 +182,15 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
                 if (identifiersEditionForm.validate(false)) {
                     getUiHandlers().saveVariableFamily(getVariableFamilyDto());
                 }
+            }
+        });
+
+        // Delete
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteVariableFamily(variableFamilyDto.getUrn());
             }
         });
     }

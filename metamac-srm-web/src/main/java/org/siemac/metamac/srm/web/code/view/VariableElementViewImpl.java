@@ -80,7 +80,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // VARIABLE ELEMENT
         //
 
-        mainFormLayout = new VariableElementMainFormLayout(CodesClientSecurityUtils.canUpdateVariableElement());
+        mainFormLayout = new VariableElementMainFormLayout(CodesClientSecurityUtils.canUpdateVariableElement(), CodesClientSecurityUtils.canDeleteVariableElement());
         mainFormLayout.getSegregate().addClickHandler(new ClickHandler() {
 
             @Override
@@ -136,6 +136,15 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
                 if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)) {
                     saveVariableElement();
                 }
+            }
+        });
+
+        // Delete
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteVariableElement(variableElementDto.getUrn());
             }
         });
     }

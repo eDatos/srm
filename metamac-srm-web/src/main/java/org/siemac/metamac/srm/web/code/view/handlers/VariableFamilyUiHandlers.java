@@ -15,4 +15,5 @@ public interface VariableFamilyUiHandlers extends UiHandlers {
     void addVariablesToFamily(List<String> variableUrns, String familyUrn);
     void removeVariablesFromFamily(List<String> variableUrns, String familyUrn);
     void goToVariable(String urn);
+    void deleteVariableFamily(String urn);
 }

@@ -122,7 +122,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // VARIABLE
         //
 
-        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canUpdateVariable());
+        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canUpdateVariable(), CodesClientSecurityUtils.canDeleteVariable());
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
@@ -266,6 +266,15 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
                 if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)) {
                     getUiHandlers().saveVariable(getVariableDto());
                 }
+            }
+        });
+
+        // Delete
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteVariable(variableDto.getUrn());
             }
         });
     }

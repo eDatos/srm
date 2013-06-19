@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.code.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -28,6 +29,8 @@ import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementOperationsAct
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementOperationsResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsResult;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariablesAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementOperationsByVariableAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementOperationsByVariableResult;
@@ -199,6 +202,22 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
                 // Update URL
                 PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeVariablePlaceRequest(result.getSavedVariableDto().getCode());
                 placeManager.updateHistory(placeRequest, true);
+            }
+        });
+    }
+
+    @Override
+    public void deleteVariable(String urn) {
+        dispatcher.execute(new DeleteVariablesAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteVariablesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(DeleteVariablesResult result) {
+                ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, getMessages().variableDeleted());
+                placeManager.revealRelativePlace(-1);
             }
         });
     }

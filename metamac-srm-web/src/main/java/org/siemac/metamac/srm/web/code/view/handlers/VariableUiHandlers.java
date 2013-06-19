@@ -13,6 +13,7 @@ public interface VariableUiHandlers extends BaseVariableUiHandlers {
     void retrieveVariableFamilies(int firstResult, int maxResults, final String criteria);
     void retrieveVariables(int firstResult, int maxResults, final String criteria);
     void saveVariable(VariableDto variableDto);
+    void deleteVariable(String urn);
 
     // Variable elements
 

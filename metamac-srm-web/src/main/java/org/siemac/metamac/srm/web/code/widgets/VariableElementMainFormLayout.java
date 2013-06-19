@@ -18,8 +18,8 @@ public class VariableElementMainFormLayout extends InternationalMainFormLayout {
         common();
     }
 
-    public VariableElementMainFormLayout(boolean canEdit) {
-        super(canEdit);
+    public VariableElementMainFormLayout(boolean canEdit, boolean canDelete) {
+        super(canEdit, canDelete);
         common();
     }
 

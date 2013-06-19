@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.code.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -21,6 +22,8 @@ import org.siemac.metamac.srm.web.code.view.handlers.VariableFamilyUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.code.AddVariablesToVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.AddVariablesToVariableFamilyResult;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariableFamiliesAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
@@ -230,6 +233,22 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
             public void onWaitSuccess(RemoveVariablesFromVariableFamilyResult result) {
                 ShowMessageEvent.fireSuccessMessage(VariableFamilyPresenter.this, getMessages().variablesRemovedFromFamily());
                 retrieveVariablesByFamily(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null, familyUrn);
+            }
+        });
+    }
+
+    @Override
+    public void deleteVariableFamily(String urn) {
+        dispatcher.execute(new DeleteVariableFamiliesAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteVariableFamiliesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(VariableFamilyPresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(DeleteVariableFamiliesResult result) {
+                ShowMessageEvent.fireSuccessMessage(VariableFamilyPresenter.this, getMessages().variableFamilyDeleted());
+                placeManager.revealRelativePlace(-1);
             }
         });
     }
