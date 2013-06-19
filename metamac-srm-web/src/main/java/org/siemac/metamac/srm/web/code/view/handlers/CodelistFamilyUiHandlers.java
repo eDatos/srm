@@ -15,4 +15,5 @@ public interface CodelistFamilyUiHandlers extends UiHandlers {
     void addCodelistsToFamily(List<String> codelists, String familyUrn);
     void removeCodelistsFromFamily(List<String> codelistUrns, String familyUrn);
     void goToCodelist(String urn);
+    void deleteCodelistFamily(String urn);
 }

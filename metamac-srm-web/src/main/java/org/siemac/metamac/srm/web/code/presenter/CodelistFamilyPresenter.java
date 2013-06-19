@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.code.presenter;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
@@ -21,6 +22,8 @@ import org.siemac.metamac.srm.web.code.view.handlers.CodelistFamilyUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.AddCodelistsToCodelistFamilyResult;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistFamiliesAction;
+import org.siemac.metamac.srm.web.shared.code.DeleteCodelistFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
@@ -237,6 +240,22 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
             public void onWaitSuccess(RemoveCodelistsFromCodelistFamilyResult result) {
                 ShowMessageEvent.fireSuccessMessage(CodelistFamilyPresenter.this, getMessages().codelistsRemovedFromFamily());
                 retrieveCodelistsByFamily(CODELIST_LIST_FIRST_RESULT, CODELIST_LIST_MAX_RESULTS, null, familyUrn);
+            }
+        });
+    }
+
+    @Override
+    public void deleteCodelistFamily(String urn) {
+        dispatcher.execute(new DeleteCodelistFamiliesAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteCodelistFamiliesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(CodelistFamilyPresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(DeleteCodelistFamiliesResult result) {
+                ShowMessageEvent.fireSuccessMessage(CodelistFamilyPresenter.this, getMessages().codelistFamilyDeleted());
+                placeManager.revealRelativePlace(-1);
             }
         });
     }

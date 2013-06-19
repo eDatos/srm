@@ -80,7 +80,7 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         // CODELIST FAMILY
         //
 
-        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canUpdateCodelistFamily());
+        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canUpdateCodelistFamily(), CodesClientSecurityUtils.canDeleteCodelistFamily());
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
@@ -181,6 +181,15 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
                 if (identifiersEditionForm.validate(false)) {
                     getUiHandlers().saveCodelistFamily(getCodelistFamilyDto());
                 }
+            }
+        });
+
+        // Delete
+        mainFormLayout.getDeleteConfirmationWindow().getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().deleteCodelistFamily(codelistFamilyDto.getUrn());
             }
         });
     }
