@@ -105,8 +105,8 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     private final CategoriesToolStripPresenterWidget categoriesToolStripPresenterWidget;
 
     @TitleFunction
-    public static String getTranslatedTitle() {
-        return MetamacSrmWeb.getConstants().breadcrumbCategoryScheme();
+    public static String getTranslatedTitle(PlaceRequest placeRequest) {
+        return PlaceRequestUtils.getCategorySchemeBreadCrumbTitle(placeRequest);
     }
 
     @ProxyCodeSplit
