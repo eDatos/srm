@@ -108,8 +108,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     private ConceptsToolStripPresenterWidget conceptsToolStripPresenterWidget;
 
     @TitleFunction
-    public static String getTranslatedTitle() {
-        return MetamacSrmWeb.getConstants().breadcrumbConceptScheme();
+    public static String getTranslatedTitle(PlaceRequest placeRequest) {
+        return PlaceRequestUtils.getConceptSchemeBreadCrumbTitle(placeRequest);
     }
 
     @ProxyCodeSplit

@@ -109,8 +109,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     private OrganisationsToolStripPresenterWidget organisationsToolStripPresenterWidget;
 
     @TitleFunction
-    public static String getTranslatedTitle() {
-        return MetamacSrmWeb.getConstants().breadcrumbOrganisationScheme();
+    public static String getTranslatedTitle(PlaceRequest placeRequest) {
+        return PlaceRequestUtils.getOrganisationSchemeBreadCrumbTitle(placeRequest);
     }
 
     @ProxyCodeSplit
