@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
+import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
@@ -32,6 +33,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTex
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
+import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
 import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigationClickHandler;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -201,7 +203,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         // Content descriptors
         contentDescriptorsForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        ViewTextItem variable = new ViewTextItem(VariableElementDS.VARIABLE, getConstants().variable());
+        RelatedResourceLinkItem variable = new RelatedResourceLinkItem(VariableElementDS.VARIABLE, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
         contentDescriptorsForm.setFields(variable);
 
         // Diffusion descriptors
@@ -230,7 +232,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        ViewTextItem variable = new ViewTextItem(VariableElementDS.VARIABLE, getConstants().variable());
+        RelatedResourceLinkItem variable = new RelatedResourceLinkItem(VariableElementDS.VARIABLE, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
         contentDescriptorsEditionForm.setFields(variable);
 
         // Diffusion descriptors
@@ -257,7 +259,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         identifiersForm.setValue(VariableElementDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getShortName()));
 
         // Content descriptors
-        contentDescriptorsForm.setValue(VariableElementDS.VARIABLE, RelatedResourceUtils.getRelatedResourceName(variableElementDto.getVariable()));
+        ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(VariableElementDS.VARIABLE)).setRelatedResource(variableElementDto.getVariable());
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(VariableElementDS.VALID_FROM, DateUtils.getFormattedDate(variableElementDto.getValidFrom()));
@@ -273,7 +275,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         identifiersEditionForm.setValue(VariableElementDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getShortName()));
 
         // Content descriptors
-        contentDescriptorsEditionForm.setValue(VariableElementDS.VARIABLE, RelatedResourceUtils.getRelatedResourceName(variableElementDto.getVariable()));
+        ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(VariableElementDS.VARIABLE)).setRelatedResource(variableElementDto.getVariable());
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm.setValue(VariableElementDS.VALID_FROM, variableElementDto.getValidFrom());
@@ -390,6 +392,16 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
     private ListRecordNavigationClickHandler getListRecordNavigationClickHandler() {
         return new ListRecordNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
+            }
+        };
+    }
+
+    private CustomLinkItemNavigationClickHandler getCustomLinkItemNavigationClickHandler() {
+        return new CustomLinkItemNavigationClickHandler() {
 
             @Override
             public BaseUiHandlers getBaseUiHandlers() {
