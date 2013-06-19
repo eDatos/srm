@@ -1,8 +1,11 @@
 package org.siemac.metamac.srm.web.client.utils;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.srm.core.common.service.utils.shared.SrmUrnParserUtils;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
@@ -85,6 +88,14 @@ public class PlaceRequestUtils {
         return placeRequests;
     }
 
+    public static String getDsdBreadCrumbTitle(PlaceRequest placeRequest) {
+        String dsdTripletIdentifier = placeRequest.getParameter(PlaceRequestParams.dsdParamId, null);
+        if (!StringUtils.isBlank(dsdTripletIdentifier)) {
+            return UrnUtils.getStructureCodeFromUrnWithoutPrefix(dsdTripletIdentifier);
+        }
+        return getConstants().breadcrumbDSD();
+    }
+
     // ---------------------------------------------------------------------------
     // CONCEPTS
     // ---------------------------------------------------------------------------
@@ -112,6 +123,14 @@ public class PlaceRequestUtils {
         PlaceRequest conceptSchemePlace = buildRelativeConceptSchemePlaceRequest(urn);
         placeRequests.add(conceptSchemePlace);
         return placeRequests;
+    }
+
+    public static String getConceptSchemeBreadCrumbTitle(PlaceRequest placeRequest) {
+        String conceptSchemeTripletIdentifier = placeRequest.getParameter(PlaceRequestParams.conceptSchemeParamId, null);
+        if (!StringUtils.isBlank(conceptSchemeTripletIdentifier)) {
+            return UrnUtils.getItemSchemeCodeFromUrnWithoutPrefix(conceptSchemeTripletIdentifier);
+        }
+        return getConstants().breadcrumbConceptScheme();
     }
 
     // Concepts
@@ -145,6 +164,14 @@ public class PlaceRequestUtils {
         String[] splitUrn = UrnUtils.splitUrnByDots(UrnUtils.removePrefix(conceptUrn));
         PlaceRequest placeRequest = new PlaceRequest(NameTokens.conceptPage).with(PlaceRequestParams.conceptParamId, splitUrn[splitUrn.length - 1]);
         return placeRequest;
+    }
+
+    public static String getConceptBreadCrumbTitle(PlaceRequest placeRequest) {
+        String conceptCode = placeRequest.getParameter(PlaceRequestParams.conceptParamId, null);
+        if (!StringUtils.isBlank(conceptCode)) {
+            return conceptCode;
+        }
+        return getConstants().breadcrumbConcept();
     }
 
     // ---------------------------------------------------------------------------
@@ -181,6 +208,14 @@ public class PlaceRequestUtils {
         return placeRequests;
     }
 
+    public static String getOrganisationSchemeBreadCrumbTitle(PlaceRequest placeRequest) {
+        String organisationTripletIdentifier = placeRequest.getParameter(PlaceRequestParams.organisationSchemeParamId, null);
+        if (!StringUtils.isBlank(organisationTripletIdentifier)) {
+            return UrnUtils.getItemSchemeCodeFromUrnWithoutPrefix(organisationTripletIdentifier);
+        }
+        return getConstants().breadcrumbOrganisationScheme();
+    }
+
     // Organisations
 
     public static String getOrganisationParamFromUrl(PlaceManager placeManager) {
@@ -207,6 +242,14 @@ public class PlaceRequestUtils {
         placeRequests.add(organisationSchemePlace);
         placeRequests.add(organisationPlace);
         return placeRequests;
+    }
+
+    public static String getOrganisationBreadCrumbTitle(PlaceRequest placeRequest) {
+        String organisationCode = placeRequest.getParameter(PlaceRequestParams.organisationParamId, null);
+        if (!StringUtils.isBlank(organisationCode)) {
+            return organisationCode;
+        }
+        return getConstants().breadcrumbOrganisation();
     }
 
     // ---------------------------------------------------------------------------
@@ -236,6 +279,14 @@ public class PlaceRequestUtils {
         PlaceRequest categorySchemePlace = buildRelativeCategorySchemePlaceRequest(urn);
         placeRequests.add(categorySchemePlace);
         return placeRequests;
+    }
+
+    public static String getCategorySchemeBreadCrumbTitle(PlaceRequest placeRequest) {
+        String categorySchemeTripletIdentifier = placeRequest.getParameter(PlaceRequestParams.categorySchemeParamId, null);
+        if (!StringUtils.isBlank(categorySchemeTripletIdentifier)) {
+            return UrnUtils.getItemSchemeCodeFromUrnWithoutPrefix(categorySchemeTripletIdentifier);
+        }
+        return getConstants().breadcrumbCategoryScheme();
     }
 
     // Categories
@@ -275,6 +326,14 @@ public class PlaceRequestUtils {
         return placeRequests;
     }
 
+    public static String getCategoryBreadCrumbTitle(PlaceRequest placeRequest) {
+        String categoryCode = placeRequest.getParameter(PlaceRequestParams.categoryParamId, null);
+        if (!StringUtils.isBlank(categoryCode)) {
+            return categoryCode;
+        }
+        return getConstants().breadcrumbCategory();
+    }
+
     // ---------------------------------------------------------------------------
     // CODES
     // ---------------------------------------------------------------------------
@@ -302,6 +361,14 @@ public class PlaceRequestUtils {
         PlaceRequest codelistPlace = buildRelativeCodelistPlaceRequest(urn);
         placeRequests.add(codelistPlace);
         return placeRequests;
+    }
+
+    public static String getCodelistBreadCrumbTitle(PlaceRequest placeRequest) {
+        String codelistTripletIdentifier = placeRequest.getParameter(PlaceRequestParams.codelistParamId, null);
+        if (!StringUtils.isBlank(codelistTripletIdentifier)) {
+            return UrnUtils.getItemSchemeCodeFromUrnWithoutPrefix(codelistTripletIdentifier);
+        }
+        return getConstants().breadcrumbCodelist();
     }
 
     // Codes
@@ -332,6 +399,14 @@ public class PlaceRequestUtils {
         return placeRequests;
     }
 
+    public static String getCodeBreadCrumbTitle(PlaceRequest placeRequest) {
+        String codeCode = placeRequest.getParameter(PlaceRequestParams.codeParamId, null);
+        if (!StringUtils.isBlank(codeCode)) {
+            return codeCode;
+        }
+        return getConstants().breadcrumbCode();
+    }
+
     // Codelist families
 
     public static String getCodelistFamilyParamFromUrl(PlaceManager placeManager) {
@@ -355,6 +430,14 @@ public class PlaceRequestUtils {
         PlaceRequest codelistPlace = buildRelativeCodelistFamilyPlaceRequest(code);
         placeRequests.add(codelistPlace);
         return placeRequests;
+    }
+
+    public static String getCodelistFamilyBreadCrumbTitle(PlaceRequest placeRequest) {
+        String familyCode = placeRequest.getParameter(PlaceRequestParams.codelistFamilyParamId, null);
+        if (!StringUtils.isBlank(familyCode)) {
+            return familyCode;
+        }
+        return getConstants().breadcrumbCodelistFamily();
     }
 
     // Variable families
@@ -382,6 +465,14 @@ public class PlaceRequestUtils {
         return placeRequestHierarchy;
     }
 
+    public static String getVariableFamilyBreadCrumbTitle(PlaceRequest placeRequest) {
+        String familyCode = placeRequest.getParameter(PlaceRequestParams.variableFamilyParamId, null);
+        if (!StringUtils.isBlank(familyCode)) {
+            return familyCode;
+        }
+        return getConstants().breadcrumbVariableFamily();
+    }
+
     // Variables
 
     public static String getVariableParamFromUrl(PlaceManager placeManager) {
@@ -405,6 +496,14 @@ public class PlaceRequestUtils {
         PlaceRequest variablePlace = buildRelativeVariablePlaceRequest(code);
         placeRequests.add(variablePlace);
         return placeRequests;
+    }
+
+    public static String getVariableBreadCrumbTitle(PlaceRequest placeRequest) {
+        String variableCode = placeRequest.getParameter(PlaceRequestParams.variableParamId, null);
+        if (!StringUtils.isBlank(variableCode)) {
+            return variableCode;
+        }
+        return getConstants().breadcrumbVariable();
     }
 
     // Variable elements
@@ -436,6 +535,14 @@ public class PlaceRequestUtils {
         String variableCode = SrmUrnParserUtils.getVariableCodeFromVariableUrn(variableUrn);
         String variableElementCode = SrmUrnParserUtils.getVariableElementCodeFromVariableElementUrn(variableElementUrn);
         return buildAbsoluteVariableElementPlaceRequest(variableCode, variableElementCode);
+    }
+
+    public static String getVariableElementFamilyBreadCrumbTitle(PlaceRequest placeRequest) {
+        String variableElementCode = placeRequest.getParameter(PlaceRequestParams.variableElementParamId, null);
+        if (!StringUtils.isBlank(variableElementCode)) {
+            return variableElementCode;
+        }
+        return getConstants().breadcrumbVariableElement();
     }
 
     // ---------------------------------------------------------------------------
