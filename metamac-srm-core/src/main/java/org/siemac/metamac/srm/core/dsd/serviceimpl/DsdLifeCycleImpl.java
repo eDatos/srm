@@ -125,18 +125,21 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
             for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getHeadingDimensions()) {
                 if (stubDimensionSet.contains(dimensionOrder.getDimension())) {
                     exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_STUB_AND_HEADING_OCCURRENCE, dimensionOrder.getDimension().getCode()));
+                    break;
                 }
             }
 
             boolean isDsdWithMeasureDimension = false;
             boolean isDsdWithSpatialDimension = false;
             boolean isDsdWithTimeDimension = false;
+            boolean isErrorStubOrHeadingIncomplete = false;
             // Check all dimensions must be appears in stub or heading
             for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
                 if (componentList instanceof DimensionDescriptor) {
                     for (Component component : componentList.getComponents()) {
-                        if (!stubDimensionSet.contains(component) && !headingDimensionSet.contains(component)) {
+                        if (!stubDimensionSet.contains(component) && !headingDimensionSet.contains(component) && !isErrorStubOrHeadingIncomplete) {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_STUB_AND_HEADING_INCOMPLETE));
+                            isErrorStubOrHeadingIncomplete = true;
                         }
                         // Initialize auxiliary data for other constraints
                         if (component instanceof MeasureDimension) {
