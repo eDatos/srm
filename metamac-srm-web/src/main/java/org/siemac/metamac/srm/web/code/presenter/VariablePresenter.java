@@ -79,8 +79,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     private VariableDto                   variableDto;
 
     @TitleFunction
-    public static String getTranslatedTitle() {
-        return MetamacSrmWeb.getConstants().breadcrumbVariable();
+    public static String getTranslatedTitle(PlaceRequest placeRequest) {
+        return PlaceRequestUtils.getVariableBreadCrumbTitle(placeRequest);
     }
 
     @ProxyCodeSplit

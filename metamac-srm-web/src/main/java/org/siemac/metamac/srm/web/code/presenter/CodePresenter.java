@@ -77,8 +77,8 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     private CodesToolStripPresenterWidget codesToolStripPresenterWidget;
 
     @TitleFunction
-    public static String getTranslatedTitle() {
-        return MetamacSrmWeb.getConstants().breadcrumbCode();
+    public static String getTranslatedTitle(PlaceRequest placeRequest) {
+        return PlaceRequestUtils.getCodeBreadCrumbTitle(placeRequest);
     }
 
     @ProxyCodeSplit

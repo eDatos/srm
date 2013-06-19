@@ -537,7 +537,7 @@ public class PlaceRequestUtils {
         return buildAbsoluteVariableElementPlaceRequest(variableCode, variableElementCode);
     }
 
-    public static String getVariableElementFamilyBreadCrumbTitle(PlaceRequest placeRequest) {
+    public static String getVariableElementBreadCrumbTitle(PlaceRequest placeRequest) {
         String variableElementCode = placeRequest.getParameter(PlaceRequestParams.variableElementParamId, null);
         if (!StringUtils.isBlank(variableElementCode)) {
             return variableElementCode;

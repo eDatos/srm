@@ -64,8 +64,8 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
     private CodesToolStripPresenterWidget codesToolStripPresenterWidget;
 
     @TitleFunction
-    public static String getTranslatedTitle() {
-        return MetamacSrmWeb.getConstants().breadcrumbCodelistFamily();
+    public static String getTranslatedTitle(PlaceRequest placeRequest) {
+        return PlaceRequestUtils.getCodelistFamilyBreadCrumbTitle(placeRequest);
     }
 
     @ProxyCodeSplit

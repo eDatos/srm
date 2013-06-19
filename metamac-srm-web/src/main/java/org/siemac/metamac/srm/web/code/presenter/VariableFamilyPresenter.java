@@ -63,8 +63,8 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
     private CodesToolStripPresenterWidget codesToolStripPresenterWidget;
 
     @TitleFunction
-    public static String getTranslatedTitle() {
-        return MetamacSrmWeb.getConstants().breadcrumbVariableFamily();
+    public static String getTranslatedTitle(PlaceRequest placeRequest) {
+        return PlaceRequestUtils.getVariableFamilyBreadCrumbTitle(placeRequest);
     }
 
     @ProxyCodeSplit

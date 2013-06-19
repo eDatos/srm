@@ -79,8 +79,8 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     }
 
     @TitleFunction
-    public static String getTranslatedTitle() {
-        return MetamacSrmWeb.getConstants().breadcrumbDSD();
+    public static String getTranslatedTitle(PlaceRequest placeRequest) {
+        return PlaceRequestUtils.getDsdBreadCrumbTitle(placeRequest);
     }
 
     public interface DsdView extends View, HasUiHandlers<DsdUiHandlers> {

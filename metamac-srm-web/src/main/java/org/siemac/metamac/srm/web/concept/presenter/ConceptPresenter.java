@@ -93,8 +93,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     private List<ConceptTypeDto>             conceptTypeDtos = null;
 
     @TitleFunction
-    public static String getTranslatedTitle() {
-        return MetamacSrmWeb.getConstants().breadcrumbConcept();
+    public static String getTranslatedTitle(PlaceRequest placeRequest) {
+        return PlaceRequestUtils.getConceptBreadCrumbTitle(placeRequest);
     }
 
     @ProxyCodeSplit
