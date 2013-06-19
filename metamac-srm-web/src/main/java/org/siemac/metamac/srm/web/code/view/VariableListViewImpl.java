@@ -5,6 +5,7 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.web.code.model.ds.VariableDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
@@ -14,6 +15,7 @@ import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableListUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.NewVariableWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
+import org.siemac.metamac.web.common.client.constants.CommonWebConstants;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
@@ -30,6 +32,8 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -106,6 +110,15 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
                 getUiHandlers().retrieveVariables(VariableListPresenter.VARIABLE_LIST_FIRST_RESULT, VariableListPresenter.VARIABLE_LIST_MAX_RESULTS, searchSectionStack.getSearchCriteria());
+            }
+        });
+        searchSectionStack.addSearchItemKeyPressHandler(new KeyPressHandler() {
+
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+                if (StringUtils.equalsIgnoreCase(event.getKeyName(), CommonWebConstants.ENTER_KEY)) {
+                    getUiHandlers().retrieveVariables(VariableListPresenter.VARIABLE_LIST_FIRST_RESULT, VariableListPresenter.VARIABLE_LIST_MAX_RESULTS, searchSectionStack.getSearchCriteria());
+                }
             }
         });
 

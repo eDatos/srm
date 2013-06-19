@@ -1,6 +1,8 @@
 package org.siemac.metamac.srm.web.client.widgets;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.constants.CommonWebConstants;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.BaseSearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
@@ -16,6 +18,8 @@ import com.smartgwt.client.widgets.form.fields.events.ClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 
 public abstract class BaseAdvancedSearchSectionStack extends BaseSearchSectionStack {
@@ -77,6 +81,16 @@ public abstract class BaseAdvancedSearchSectionStack extends BaseSearchSectionSt
         CustomTextItem searchItem = new CustomTextItem(SEARCH_ITEM_NAME, "");
         searchItem.setShowTitle(false);
         searchItem.setWidth(300);
+        searchItem.addKeyPressHandler(new KeyPressHandler() {
+
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+                if (StringUtils.equalsIgnoreCase(event.getKeyName(), CommonWebConstants.ENTER_KEY)) {
+                    retrieveResources();
+                }
+            }
+        });
+
         searchIcon = new FormItemIcon();
         searchIcon.setSrc(GlobalResources.RESOURCE.search().getURL());
         searchIcon.addFormItemClickHandler(new FormItemClickHandler() {
