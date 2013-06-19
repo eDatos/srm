@@ -147,8 +147,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     private CodesToolStripPresenterWidget codesToolStripPresenterWidget;
 
     @TitleFunction
-    public static String getTranslatedTitle() {
-        return MetamacSrmWeb.getConstants().breadcrumbCodelist();
+    public static String getTranslatedTitle(PlaceRequest placeRequest) {
+        return PlaceRequestUtils.getCodelistBreadCrumbTitle(placeRequest);
     }
 
     @ProxyCodeSplit
