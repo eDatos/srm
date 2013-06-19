@@ -114,6 +114,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescripto
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.srm.core.task.domain.Task;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategoryRelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
@@ -3319,7 +3320,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCategoriesCanBeCategorisationCategoryByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<CategoryRelatedResourceDto> findCategoriesCanBeCategorisationCategoryByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         CategoriesSecurityUtils.canFindCategoriesByCondition(ctx);
 
@@ -3331,7 +3332,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
                 sculptorCriteria.getPagingParameter());
 
         // Transform
-        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCategoryToMetamacCriteriaResultRelatedResource(result,
+        MetamacCriteriaResult<CategoryRelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCategoryToMetamacCriteriaResultRelatedResource(result,
                 sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
