@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGroupKeysTabUiHandlers;
+import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
@@ -59,7 +60,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
     private VLayout                           panel;
     private VLayout                           selectedDescriptorLayout;
-    private ListGrid                          groupKeysGrid;
+    private BaseCustomListGrid                groupKeysGrid;
 
     private InternationalMainFormLayout       mainFormLayout;
 
@@ -117,8 +118,7 @@ public class DsdGroupKeysTabViewImpl extends ViewWithUiHandlers<DsdGroupKeysTabU
 
         // Grid
 
-        groupKeysGrid = new ListGrid();
-        groupKeysGrid.setCanFocus(false); // To avoid scrolling when a record is clicked
+        groupKeysGrid = new BaseCustomListGrid();
         groupKeysGrid.setWidth100();
         groupKeysGrid.setHeight(150);
         groupKeysGrid.setSelectionType(SelectionStyle.SIMPLE);

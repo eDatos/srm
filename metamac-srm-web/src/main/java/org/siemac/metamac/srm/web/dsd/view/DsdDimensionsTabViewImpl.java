@@ -33,6 +33,7 @@ import org.siemac.metamac.srm.web.dsd.widgets.NewDimensionWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
+import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -74,7 +75,6 @@ import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
-import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -93,7 +93,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     private VLayout                                      panel;
     private VLayout                                      selectedComponentLayout;
-    private ListGrid                                     dimensionsGrid;
+    private BaseCustomListGrid                           dimensionsGrid;
     private InternationalMainFormLayout                  mainFormLayout;
 
     private AnnotationsPanel                             viewAnnotationsPanel;
@@ -162,8 +162,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Grid
 
-        dimensionsGrid = new ListGrid();
-        dimensionsGrid.setCanFocus(false); // To avoid scrolling when a record is clicked
+        dimensionsGrid = new BaseCustomListGrid();
         dimensionsGrid.setWidth100();
         dimensionsGrid.setHeight(150);
         dimensionsGrid.setSelectionType(SelectionStyle.SIMPLE);

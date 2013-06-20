@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
+import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.AnnotationDto;
 import com.google.gwt.resources.client.ImageResource;
@@ -48,7 +49,7 @@ public class InternationalAnnotationsPanel extends VLayout {
 
     private final static String NEW_RECORD_START_CHARACTER = "___";
 
-    private ListGrid            grid;
+    private BaseCustomListGrid  grid;
     private Img                 annotationImg;
     private Img                 addAnnotationImg;
 
@@ -68,8 +69,7 @@ public class InternationalAnnotationsPanel extends VLayout {
         imgLayout.setLayoutMargin(5);
         imgLayout.setStyleName("annotationPanel");
 
-        grid = new ListGrid();
-        grid.setCanFocus(false); // To avoid scrolling when a record is clicked
+        grid = new BaseCustomListGrid();
         grid.setDataSource(new InternationalAnnotationDS());
         grid.setAutoFetchData(true);
         grid.setAutoSaveEdits(true);

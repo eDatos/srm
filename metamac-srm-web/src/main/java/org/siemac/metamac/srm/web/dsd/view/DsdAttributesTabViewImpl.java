@@ -31,6 +31,7 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
+import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
@@ -76,7 +77,6 @@ import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.form.validator.RequiredIfFunction;
 import com.smartgwt.client.widgets.form.validator.RequiredIfValidator;
-import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -96,7 +96,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     private VLayout                                      panel;
     private VLayout                                      selectedComponentLayout;
-    private ListGrid                                     attributesGrid;
+    private BaseCustomListGrid                           attributesGrid;
 
     private InternationalMainFormLayout                  mainFormLayout;
 
@@ -164,8 +164,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // Grid
 
-        attributesGrid = new ListGrid();
-        attributesGrid.setCanFocus(false); // To avoid scrolling when a record is clicked
+        attributesGrid = new BaseCustomListGrid();
         attributesGrid.setWidth100();
         attributesGrid.setHeight(150);
         attributesGrid.setSelectionType(SelectionStyle.SIMPLE);
