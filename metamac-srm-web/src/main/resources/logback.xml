@@ -11,6 +11,9 @@
     <!-- <logger name="org.hibernate.SQL" level="DEBUG" /> -->
     <!-- <logger name="org.hibernate.type" level="TRACE" /> -->
 
+    <!-- Avoid logging warning Unable to proxy method ... -->
+    <logger name="org.springframework.aop.framework.Cglib2AopProxy" level="ERROR"/>
+    
     <root level="INFO">
         <appender-ref ref="STDOUT" />
     </root>
