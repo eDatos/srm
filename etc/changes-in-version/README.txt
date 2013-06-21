@@ -13,6 +13,10 @@ Cuando se cree la RELEASE, añadir estos pasos al manual de instalación:
 	ALTER TABLE TB_M_VARIABLE_ELEMENTS ADD SHAPE VARCHAR2(255 CHAR);
  	ALTER TABLE TB_M_VARIABLE_ELEMENTS ADD GEOGRAPHICAL_GRANULARITY_FK NUMBER(19);
  	ALTER TABLE TB_M_VARIABLE_ELEMENTS ADD CONSTRAINT FK_TB_M_VARIABLE_ELEMENTS_GE77 FOREIGN KEY (GEOGRAPHICAL_GRANULARITY_FK) REFERENCES TB_CODES (ID);
- 	
+
+3. Cambios en DATA
+
+	- Añadida propiedad en DATA: metamac.srm.codelist.variable_element.geographical_granularity.urn (ver descripción en manual de instalación)
+	 	
 99. Reiniciar Tomcat
 

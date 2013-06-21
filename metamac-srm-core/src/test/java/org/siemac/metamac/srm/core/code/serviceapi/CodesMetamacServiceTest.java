@@ -6162,7 +6162,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_5);
-        CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(ctx, CODELIST_1_V2_CODE_1);
+        CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(ctx, CODELIST_10_V1_CODE_1);
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElementGeographical(variable, geographicalGranularity);
         // Replace to
         VariableElement variableElementReplaced1 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_3);
@@ -6254,6 +6254,21 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testCreateVariableElementErrorGeographicalGranularity() throws Exception {
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_5);
+        CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V1_CODE_1);
+        VariableElement variableElement = CodesMetamacDoMocks.mockVariableElementGeographical(variable, geographicalGranularity);
+        try {
+            codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("wrong geographical granularity");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY},
+                    e.getExceptionItems().get(0));
         }
     }
 
@@ -9153,7 +9168,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         FileInputStream fileInputStream = new FileInputStream(file);
         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        assertEquals("code\tlabel\tlevel\tparent\tVISUALISATION02\tVISUALISATION03\tALPHABETICAL", bufferedReader.readLine());
+        String headerExpectedWithoutOrder = "code\tlabel\tlevel\tparent\tVISUALISATION02\tVISUALISATION03\tALPHABETICAL";
+        String header = bufferedReader.readLine();
+        assertEquals(headerExpectedWithoutOrder.length(), header.length());
+        assertTrue(header.startsWith("code\tlabel\tlevel\tparent\t"));
+        assertTrue(header.contains("\tVISUALISATION02"));
+        assertTrue(header.contains("\tVISUALISATION03"));
+        assertTrue(header.contains("\tALPHABETICAL"));
         assertEquals("CODE01\tIsla de Tenerife\t1\t\t1\t2\t1", bufferedReader.readLine());
         assertEquals("CODE02\tNombre codelist-1-v2-code-2 Canaria, Gran\t1\t\t2\t3\t2", bufferedReader.readLine());
         assertEquals("CODE0201\tcodelist-1-v2-code-2- Isla de La Gomera\t2\tCODE02\t1\t2\t1", bufferedReader.readLine());

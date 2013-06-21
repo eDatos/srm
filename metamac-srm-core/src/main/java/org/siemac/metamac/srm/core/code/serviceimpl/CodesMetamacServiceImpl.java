@@ -80,6 +80,8 @@ import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SemanticIdentifierValidationUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -2542,7 +2544,20 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
         }
 
-        // Check geographical information: In CodesMetamacInvocationValidator
+        // Check geographical information
+        // required metadata checked in CodesMetamacInvocationValidator
+        if (variableElement.getGeographicalGranularity() != null) {
+            PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+            CodeMetamac codeGeographicalGranularity = retrieveCodeByUrn(ctx, variableElement.getGeographicalGranularity().getNameableArtefact().getUrn());
+            Long codeGeographicalGranularityId = codeGeographicalGranularity.getId();
+            List<ConditionalCriteria> criteriaToVerifyGeographicalGranularity = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id())
+                    .eq(codeGeographicalGranularityId).build();
+            PagedResult<CodeMetamac> result = findCodesByConditionCanBeVariableElementGeographicalGranularity(ctx, criteriaToVerifyGeographicalGranularity, pagingParameter);
+            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codeGeographicalGranularityId)) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT)
+                        .withMessageParameters(ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY).build();
+            }
+        }
 
         // No translation to check
     }
