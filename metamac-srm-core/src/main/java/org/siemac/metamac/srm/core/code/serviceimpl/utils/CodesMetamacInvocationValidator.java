@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SemanticIdentifierValidationUtils;
@@ -483,6 +484,10 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         if (variable.getNameableArtefact() != null) {
             SemanticIdentifierValidationUtils.checkVariableSemanticIdentifier(variable, exceptions);
         }
+        // can not check previous type as required, because when variable is not geographical metadata type is null
+        // if (variable.getId() != null) {
+        // ValidationUtils.checkMetadataRequired(variable.getPreviousType(), ServiceExceptionParameters.VARIABLE_PREVIOUS_TYPE, exceptions);
+        // }
 
         ValidationUtils.checkMetadataRequired(variable.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME, exceptions);
         ValidationUtils.checkInternationalStringMaximumLength(variable.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME, SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH, exceptions);
@@ -651,7 +656,22 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ValidationUtils.checkInternationalStringMaximumLength(variableElement.getShortName(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME, SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH,
                 exceptions);
 
+        ValidationUtils.checkMetadataOptionalIsValid(variableElement.getComment(), ServiceExceptionParameters.VARIABLE_ELEMENT_COMMENT, exceptions);
+
         // Check dates: validFrom value must be lower than validTo value
         ValidationUtils.checkDateTimeBeforeDateTime(variableElement.getValidFrom(), variableElement.getValidTo(), ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO, exceptions);
+
+        // Check geographical information
+        if (variableElement.getVariable() != null) {
+            if (VariableTypeEnum.GEOGRAPHICAL.equals(variableElement.getVariable().getType())) {
+                ValidationUtils.checkMetadataRequired(variableElement.getGeographicalGranularity(), ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, exceptions);
+            } else {
+                ValidationUtils.checkMetadataEmpty(variableElement.getLatitude(), ServiceExceptionParameters.VARIABLE_ELEMENT_LATITUDE, exceptions);
+                ValidationUtils.checkMetadataEmpty(variableElement.getLongitude(), ServiceExceptionParameters.VARIABLE_ELEMENT_LONGITUDE, exceptions);
+                ValidationUtils.checkMetadataEmpty(variableElement.getShape(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHAPE, exceptions);
+                ValidationUtils.checkMetadataEmpty(variableElement.getGeographicalGranularity(), ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, exceptions);
+            }
+        }
     }
+
 }

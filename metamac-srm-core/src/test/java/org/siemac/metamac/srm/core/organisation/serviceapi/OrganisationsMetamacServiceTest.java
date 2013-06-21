@@ -521,9 +521,9 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
 
-            assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
-            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
-            assertEquals(ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, e.getExceptionItems().get(0).getMessageParameters()[0]);
+            MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
+            assertEquals(1, exceptionItem.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL}, exceptionItem.getExceptionItems().get(0));
         }
     }
 

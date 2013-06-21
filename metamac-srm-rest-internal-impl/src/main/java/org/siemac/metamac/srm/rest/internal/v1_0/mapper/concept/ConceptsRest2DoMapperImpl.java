@@ -13,7 +13,6 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemeCriteriaPropertyOrder;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemeCriteriaPropertyRestriction;
-import org.siemac.metamac.srm.core.category.domain.CategoryMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -145,7 +144,10 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                     return new SculptorPropertyCriteria(new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties
                             .relatedOperation().urn().getName(), false, ConceptMetamac.class), propertyRestriction.getValue(), propertyRestriction.getOperationType());
                 case CONCEPT_SCHEME_EXTERNALLY_PUBLISHED:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), Boolean.valueOf(propertyRestriction.getValue()),
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), Boolean.valueOf(propertyRestriction.getValue()),
+                            propertyRestriction.getOperationType());
+                case CONCEPT_SCHEME_LATEST:
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
                             propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());

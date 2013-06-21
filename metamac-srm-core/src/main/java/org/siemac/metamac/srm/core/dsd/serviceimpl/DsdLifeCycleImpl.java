@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.dsd.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -86,9 +87,9 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
         @Override
         public Object updateSrmResource(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = getDataStructureDefinitionVersionMetamac(srmResourceVersion);
-            // Update item scheme
+            // Update structure
             baseService.updateStructureLastUpdated(ctx, dataStructureDefinitionVersion);
-            // Update item scheme version
+            // Update structure version
             return structureVersionRepository.save(dataStructureDefinitionVersion);
         }
 
@@ -104,10 +105,150 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
-                throws MetamacException {
-            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) srmResourceVersion;
+        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
 
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) srmResourceVersion;
+            String dataStructureDefinitionUrn = dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn();
+            Map<String, MetamacExceptionItem> exceptionsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
+
+            // Check data structure
+            {
+                List<MetamacExceptionItem> exceptionsDataStructureDefinition = new ArrayList<MetamacExceptionItem>();
+                checkDataStructureDefinitionEntityInProductionValidation(ctx, dataStructureDefinitionVersionMetamac, exceptionsDataStructureDefinition);
+                // Group exceptions by data structure
+                addOrUpdateExceptionItemByResourceUrnWhenExceptionsNonZero(exceptionsByResourceUrn, dataStructureDefinitionUrn, exceptionsDataStructureDefinition);
+            }
+            // Check related resources constraints
+            for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
+                for (Component component : componentList.getComponents()) {
+                    List<MetamacExceptionItem> relatedResourceExceptions = new LinkedList<MetamacExceptionItem>();
+
+                    dataStructureDefinitionMetamacService.checkPrimaryMeasure(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                    dataStructureDefinitionMetamacService.checkTimeDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                    dataStructureDefinitionMetamacService.checkMeasureDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                    dataStructureDefinitionMetamacService.checkDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                    dataStructureDefinitionMetamacService.checkAttribute(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+
+                    // Group exceptions by component
+                    addOrUpdateExceptionItemByResourceUrnWhenExceptionsNonZero(exceptionsByResourceUrn, component.getUrn(), relatedResourceExceptions);
+                }
+            }
+            // Check translations
+            {
+                dataStructureDefinitionMetamacService.checkDataStructureDefinitionTranslations(ctx, dataStructureDefinitionVersionMetamac.getId(), getLanguageDefault(), exceptionsByResourceUrn);
+            }
+            // Throw exception if there is any exception
+            throwExceptionsInExceptionsMap(exceptionsByResourceUrn, dataStructureDefinitionUrn);
+        }
+
+        @Override
+        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
+            // nothing
+        }
+
+        @Override
+        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
+            // nothing
+        }
+
+        @Override
+        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
+            // nothing
+        }
+
+        @Override
+        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) {
+            // nothing
+        }
+
+        @Override
+        public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion) {
+            // nothing
+            return srmResourceVersion;
+        }
+
+        @Override
+        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
+            dataStructureDefinitionMetamacService.checkDataStructureDefinitionWithRelatedResourcesExternallyPublished(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion));
+        }
+
+        @Override
+        public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion, Boolean forceLastestFinal) throws MetamacException {
+            return dataStructureDefinitionService.markDataStructureAsFinal(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), forceLastestFinal);
+        }
+
+        @Override
+        public Object markSrmResourceAsPublic(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            return dataStructureDefinitionService.markDataStructureAsPublic(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
+        }
+
+        @Override
+        public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            return dataStructureDefinitionMetamacService.startDataStructureDefinitionValidity(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
+        }
+
+        @Override
+        public Object endSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            return dataStructureDefinitionMetamacService.endDataStructureDefinitionValidity(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
+        }
+
+        @Override
+        public List<Object> findSrmResourceVersionsOfSrmResourceInProcStatus(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum... procStatus) {
+
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
+                    .withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id()).eq(getDataStructureDefinitionVersionMetamac(srmResourceVersion).getStructure().getId())
+                    .withProperty(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
+            PagingParameter pagingParameter = PagingParameter.noLimits();
+            PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamac = dataStructureDefinitionVersionMetamacRepository.findByCondition(conditions, pagingParameter);
+            return dataStructureDefinitionMetamacVersionsToObject(dataStructureDefinitionVersionMetamac.getValues());
+        }
+
+        @Override
+        public MetamacExceptionItem buildExceptionItemWrongProcStatus(Object srmResourceVersion, String[] procStatusExpecteds) {
+            return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS)
+                    .withMessageParameters(getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), procStatusExpecteds).build();
+        }
+
+        @Override
+        public Boolean canHaveCategorisations() {
+            return Boolean.TRUE;
+        }
+
+        @Override
+        public Object mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) srmResourceVersion;
+            if (VersionUtil.isTemporalVersion(dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getVersionLogic())) {
+                return dataStructureDefinitionMetamacService.mergeTemporalVersion(ctx, dataStructureDefinitionVersionMetamac);
+            }
+            return srmResourceVersion;
+        }
+
+        @Override
+        public Boolean isTemporalToPublishExternally(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
+            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) srmResourceVersion;
+            if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dataStructureDefinitionVersionMetamac.getLifeCycleMetadata().getProcStatus())) {
+                return Boolean.TRUE;
+            }
+            return Boolean.FALSE;
+        }
+
+        /**********************************************************************
+         * PRIVATES
+         **********************************************************************/
+        private DataStructureDefinitionVersionMetamac getDataStructureDefinitionVersionMetamac(Object srmResourceVersion) {
+            return (DataStructureDefinitionVersionMetamac) srmResourceVersion;
+        }
+
+        private List<Object> dataStructureDefinitionMetamacVersionsToObject(List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersions) {
+            List<Object> structureVersions = new ArrayList<Object>(dataStructureDefinitionVersions.size());
+            for (DataStructureDefinitionVersionMetamac dataStructureVersion : dataStructureDefinitionVersions) {
+                structureVersions.add(dataStructureVersion);
+            }
+            return structureVersions;
+        }
+
+        private void checkDataStructureDefinitionEntityInProductionValidation(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac,
+                List<MetamacExceptionItem> exceptions) throws MetamacException {
             // Auxiliary data structures
             Set<DimensionComponent> stubDimensionSet = new HashSet<DimensionComponent>();
             for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getStubDimensions()) {
@@ -210,141 +351,6 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                     exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_TIMEDIM_SPECIAL_ATTR));
                 }
             }
-
-            // Related resources constraints
-            for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
-                for (Component component : componentList.getComponents()) {
-
-                    List<MetamacExceptionItem> relatedResourceExceptions = new LinkedList<MetamacExceptionItem>();
-
-                    dataStructureDefinitionMetamacService.checkPrimaryMeasure(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    dataStructureDefinitionMetamacService.checkTimeDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    dataStructureDefinitionMetamacService.checkMeasureDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    dataStructureDefinitionMetamacService.checkDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    dataStructureDefinitionMetamacService.checkAttribute(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-
-                    // Group exceptions by component
-                    if (relatedResourceExceptions.size() != 0) {
-                        MetamacExceptionItem exceptionItemComponent = MetamacExceptionItemBuilder.metamacExceptionItem()
-                                .withCommonServiceExceptionType(ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA).withMessageParameters(component.getUrn())
-                                .withExceptionItems(relatedResourceExceptions).build();
-                        exceptions.add(exceptionItemComponent);
-                    }
-                }
-            }
-
-        }
-
-        @Override
-        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
-            // nothing
-        }
-
-        @Override
-        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
-            // nothing
-        }
-
-        @Override
-        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
-            // nothing
-        }
-
-        @Override
-        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
-            // nothing
-        }
-
-        @Override
-        public Map<String, MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
-            return dataStructureDefinitionMetamacService.checkDataStructureDefinitionTranslations(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getId(), locale);
-        }
-
-        @Override
-        public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion) {
-            // nothing
-            return srmResourceVersion;
-        }
-
-        @Override
-        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
-                throws MetamacException {
-            dataStructureDefinitionMetamacService.checkDataStructureDefinitionWithRelatedResourcesExternallyPublished(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion));
-        }
-
-        @Override
-        public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion, Boolean forceLastestFinal) throws MetamacException {
-            return dataStructureDefinitionService.markDataStructureAsFinal(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), forceLastestFinal);
-        }
-
-        @Override
-        public Object markSrmResourceAsPublic(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return dataStructureDefinitionService.markDataStructureAsPublic(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
-        }
-
-        @Override
-        public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return dataStructureDefinitionMetamacService.startDataStructureDefinitionValidity(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
-        }
-
-        @Override
-        public Object endSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            return dataStructureDefinitionMetamacService.endDataStructureDefinitionValidity(ctx, getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn());
-        }
-
-        @Override
-        public List<Object> findSrmResourceVersionsOfSrmResourceInProcStatus(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum... procStatus) {
-
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
-                    .withProperty(DataStructureDefinitionVersionMetamacProperties.structure().id()).eq(getDataStructureDefinitionVersionMetamac(srmResourceVersion).getStructure().getId())
-                    .withProperty(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
-            PagingParameter pagingParameter = PagingParameter.noLimits();
-            PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamac = dataStructureDefinitionVersionMetamacRepository.findByCondition(conditions, pagingParameter);
-            return dataStructureDefinitionMetamacVersionsToObject(dataStructureDefinitionVersionMetamac.getValues());
-        }
-
-        @Override
-        public MetamacExceptionItem buildExceptionItemWrongProcStatus(Object srmResourceVersion, String[] procStatusExpecteds) {
-            return MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS)
-                    .withMessageParameters(getDataStructureDefinitionVersionMetamac(srmResourceVersion).getMaintainableArtefact().getUrn(), procStatusExpecteds).build();
-        }
-
-        @Override
-        public Boolean canHaveCategorisations() {
-            return Boolean.TRUE;
-        }
-
-        @Override
-        public Object mergeTemporal(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) srmResourceVersion;
-            if (VersionUtil.isTemporalVersion(dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getVersionLogic())) {
-                return dataStructureDefinitionMetamacService.mergeTemporalVersion(ctx, dataStructureDefinitionVersionMetamac);
-            }
-            return srmResourceVersion;
-        }
-
-        @Override
-        public Boolean isTemporalToPublishExternally(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
-            DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac = (DataStructureDefinitionVersionMetamac) srmResourceVersion;
-            if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(dataStructureDefinitionVersionMetamac.getLifeCycleMetadata().getProcStatus())) {
-                return Boolean.TRUE;
-            }
-            return Boolean.FALSE;
-        }
-
-        /**********************************************************************
-         * PRIVATES
-         **********************************************************************/
-        private DataStructureDefinitionVersionMetamac getDataStructureDefinitionVersionMetamac(Object srmResourceVersion) {
-            return (DataStructureDefinitionVersionMetamac) srmResourceVersion;
-        }
-
-        private List<Object> dataStructureDefinitionMetamacVersionsToObject(List<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersions) {
-            List<Object> structureVersions = new ArrayList<Object>(dataStructureDefinitionVersions.size());
-            for (DataStructureDefinitionVersionMetamac dataStructureVersion : dataStructureDefinitionVersions) {
-                structureVersions.add(dataStructureVersion);
-            }
-            return structureVersions;
         }
 
         private void checkMandatoryDimensionVisualizationInfo(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionMetamac, CodelistVersionMetamac codelistTarget,

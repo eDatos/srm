@@ -1,7 +1,9 @@
 package org.siemac.metamac.srm.core.code.repositoryimpl;
 
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.booleanToBooleanDatabase;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
 import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils.addTranslationExceptionToExceptionItemsByResource;
+import static org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils.addExceptionToExceptionItemsByResource;
 
 import java.util.HashMap;
 import java.util.List;
@@ -87,6 +89,26 @@ public class CodelistVersionMetamacRepositoryImpl extends CodelistVersionMetamac
         codelistVersionRepository.checkCodelistVersionTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
         // concrete metadata
         checkCodelistVersionMetamacTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
+    }
+
+    @Override
+    @SuppressWarnings("rawtypes")
+    public void checkCodelistWithReplaceToExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT DISTINCT(aisv.URN) ");
+        sb.append("FROM TB_M_CODELISTS_VERSIONS c ");
+        sb.append("INNER JOIN TB_ITEM_SCHEMES_VERSIONS isvb ON isvb.ID = c.TB_CODELISTS_VERSIONS ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS aisv ON aisv.ID = isvb.MAINTAINABLE_ARTEFACT_FK ");
+        sb.append("WHERE c.REPLACED_BY_CODELIST_FK = :itemSchemeVersionId ");
+        sb.append("AND aisv.PUBLIC_LOGIC != " + booleanToBooleanDatabase(true));
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            String urnRelatedResource = getString(resultSql);
+            addExceptionToExceptionItemsByResource(exceptionItemsByUrn, ServiceExceptionType.CODELIST_NOT_EXTERNALLY_PUBLISHED, urnRelatedResource);
+        }
     }
 
     /**

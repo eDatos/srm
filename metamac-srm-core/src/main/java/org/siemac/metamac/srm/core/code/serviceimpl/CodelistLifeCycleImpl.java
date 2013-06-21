@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.code.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -96,44 +98,74 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
 
             CodelistVersionMetamac codelistVersion = getCodelistVersionMetamac(srmResourceVersion);
+            String codelistUrn = codelistVersion.getMaintainableArtefact().getUrn();
+            Map<String, MetamacExceptionItem> exceptionsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
 
-            // Metadata required
-            ValidationUtils.checkMetadataRequired(codelistVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
-            // following metadata is required to create, but not for import. Check always because it is a simple checking. Codes must not be checked, because variable element is optional
-            ValidationUtils.checkMetadataRequired(codelistVersion.getVariable(), ServiceExceptionParameters.CODELIST_VARIABLE, exceptions);
-
-            // One code at least
-            Long itemsCount = codeRepository.countItems(codelistVersion.getId());
-            if (itemsCount == 0) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, codelistVersion.getMaintainableArtefact().getUrn()));
+            // Check codelist
+            {
+                List<MetamacExceptionItem> exceptionsCodelist = new ArrayList<MetamacExceptionItem>();
+                // Metadata required
+                ValidationUtils.checkMetadataRequired(codelistVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptionsCodelist);
+                // following metadata is required to create, but not for import. Check always because it is a simple checking. Codes must not be checked, because variable element is optional
+                ValidationUtils.checkMetadataRequired(codelistVersion.getVariable(), ServiceExceptionParameters.CODELIST_VARIABLE, exceptionsCodelist);
+                // One code at least
+                Long itemsCount = codeRepository.countItems(codelistVersion.getId());
+                if (itemsCount == 0) {
+                    exceptionsCodelist.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS));
+                }
+                // Group exceptions by codelist
+                addOrUpdateExceptionItemByResourceUrnWhenExceptionsNonZero(exceptionsByResourceUrn, codelistUrn, exceptionsCodelist);
             }
+            // Check codes
+            {
+                if (codelistVersion.getVariable() != null && VariableTypeEnum.GEOGRAPHICAL.equals(codelistVersion.getVariable().getType())) {
+                    codeMetamacRepository.checkCodesWithVariableElements(codelistVersion.getId(), exceptionsByResourceUrn);
+                }
+            }
+            // Check translations
+            {
+                codesMetamacService.checkCodelistVersionTranslations(ctx, codelistVersion.getId(), getLanguageDefault(), exceptionsByResourceUrn);
+            }
+            // Throw exception if there is any exception
+            throwExceptionsInExceptionsMap(exceptionsByResourceUrn, codelistUrn);
         }
 
         @Override
-        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
         }
 
         @Override
-        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
         }
 
         @Override
-        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
         }
 
         @Override
-        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
-            // Metadata required
+        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
             CodelistVersionMetamac codelistVersion = getCodelistVersionMetamac(srmResourceVersion);
-            ValidationUtils.checkMetadataRequired(codelistVersion.getAccessType(), ServiceExceptionParameters.CODELIST_ACCESS_TYPE, exceptions);
-            ValidationUtils.checkMetadataRequired(codelistVersion.getDefaultOrderVisualisation(), ServiceExceptionParameters.CODELIST_DEFAULT_ORDER_VISUALISATION, exceptions);
-            ValidationUtils.checkMetadataRequired(codelistVersion.getDefaultOpennessVisualisation(), ServiceExceptionParameters.CODELIST_DEFAULT_OPENNESS_VISUALISATION, exceptions);
+            String codelistUrn = codelistVersion.getMaintainableArtefact().getUrn();
+            Map<String, MetamacExceptionItem> exceptionsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
+
+            // Check codelist
+            {
+                List<MetamacExceptionItem> exceptionsCodelist = new ArrayList<MetamacExceptionItem>();
+                // Metadata required
+                ValidationUtils.checkMetadataRequired(codelistVersion.getAccessType(), ServiceExceptionParameters.CODELIST_ACCESS_TYPE, exceptionsCodelist);
+                ValidationUtils.checkMetadataRequired(codelistVersion.getDefaultOrderVisualisation(), ServiceExceptionParameters.CODELIST_DEFAULT_ORDER_VISUALISATION, exceptionsCodelist);
+                ValidationUtils.checkMetadataRequired(codelistVersion.getDefaultOpennessVisualisation(), ServiceExceptionParameters.CODELIST_DEFAULT_OPENNESS_VISUALISATION, exceptionsCodelist);
+                // Group exceptions by codelist
+                addOrUpdateExceptionItemByResourceUrnWhenExceptionsNonZero(exceptionsByResourceUrn, codelistUrn, exceptionsCodelist);
+            }
+            // Throw exception if there is any exception
+            throwExceptionsInExceptionsMap(exceptionsByResourceUrn, codelistUrn);
         }
 
         @Override
@@ -148,13 +180,7 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public Map<String, MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
-            return codesMetamacService.checkCodelistVersionTranslations(ctx, getCodelistVersionMetamac(srmResourceVersion).getId(), locale);
-        }
-
-        @Override
-        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
-                throws MetamacException {
+        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
             codesMetamacService.checkCodelistWithRelatedResourcesExternallyPublished(ctx, getCodelistVersionMetamac(srmResourceVersion));
         }
 

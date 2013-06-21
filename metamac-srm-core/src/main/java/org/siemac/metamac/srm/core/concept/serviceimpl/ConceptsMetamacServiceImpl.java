@@ -823,11 +823,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public Map<String, MetamacExceptionItem> checkConceptSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
-        Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
+    public void checkConceptSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn)
+            throws MetamacException {
         getConceptSchemeVersionMetamacRepository().checkConceptSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
         getConceptMetamacRepository().checkConceptTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
-        return exceptionItemsByResourceUrn;
     }
 
     @Override

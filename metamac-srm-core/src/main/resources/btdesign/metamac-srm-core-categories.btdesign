@@ -66,7 +66,7 @@ Application CategoriesMetamac {
     		"Retrieves categories scheme by category urn"
     		@CategorySchemeVersionMetamac retrieveCategorySchemeByCategoryUrn(String categoryUrn) throws MetamacException;
 			"Checks translations for category scheme"
-    		Map<String, MetamacExceptionItem> checkCategorySchemeVersionTranslations(Long itemSchemeVersionId, String locale) throws MetamacException;
+			checkCategorySchemeVersionTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionsByResourceUrn) throws MetamacException;
 			"Checks related resources are externally published"
     		checkCategorySchemeWithRelatedResourcesExternallyPublished(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException;
     		

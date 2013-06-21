@@ -80,7 +80,7 @@ Application CodesMetamac {
     		"Retrieves codelist by code urn"
     		@CodelistVersionMetamac retrieveCodelistByCodeUrn(String codeUrn) throws MetamacException;
 			"Checks translations for codelist"
-    		Map<String, MetamacExceptionItem> checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale) throws MetamacException;
+    		checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionsByResourceUrn) throws MetamacException;
 			"Checks related resources are externally published"
     		checkCodelistWithRelatedResourcesExternallyPublished(@CodelistVersionMetamac codelistVersion) throws MetamacException;
     		
@@ -285,7 +285,9 @@ Application CodesMetamac {
 				@CodelistVersionMetamac findByUrn(String urn);
 				@CodelistVersionMetamac retrieveCodelistVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 				@CodelistVersionMetamac findByCode(String urn);
+				
 				checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
+				checkCodelistWithReplaceToExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 			}			
 		}
 
@@ -352,7 +354,7 @@ Application CodesMetamac {
 				List<ItemResult> findCodesByCodelistOrderedInDepth(Long codelistId, Integer orderColumnIndex, ItemMetamacResultSelection resultSelection) throws MetamacException;
 				
 				checkCodeTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
-				checkCodelistWithReplaceToExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
+				checkCodesWithVariableElements(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
 				
 				clearCodesVariableElementByCodelist(@CodelistVersionMetamac codelistVersion);
 				updateCodesVariableElements(Map<Long,Long> variableElementsByCodes, Long codelistVersionId, Long variableId) throws MetamacException;
@@ -465,6 +467,10 @@ Application CodesMetamac {
 			
 			"Nameable artefact"
 			- @NameableArtefact nameableArtefact databaseColumn="NAMEABLE_ARTEFACT_FK" not nullable cascade="all";
+			"Variable type"
+			- @VariableTypeEnum type databaseColumn="VARIABLE_TYPE" nullable;
+			"Previous variable type"
+			- @VariableTypeEnum previousType nullable transient;
 			"Short name"
 			- @InternationalString shortName not nullable cascade="all" fetch="lazy" databaseColumn="SHORT_NAME_FK";
 			"Date from which the variable is valid"
@@ -507,6 +513,8 @@ Application CodesMetamac {
 			- @IdentifiableArtefact identifiableArtefact databaseColumn="IDENTIFIABLE_ARTEFACT_FK" not nullable cascade="all";
 			"Short name"
 			- @InternationalString shortName not nullable cascade="all" fetch="lazy" databaseColumn="SHORT_NAME_FK";
+			"A multi-lingual comment"
+			- @InternationalString comment nullable cascade="all" fetch="lazy" databaseColumn="COMMENT_FK";
 			"Date from which the variable element is valid"
 			DateTimeTZ validFrom nullable;
 			"Date from which variable element is superceded"
@@ -515,6 +523,12 @@ Application CodesMetamac {
 			- @VariableElement replacedByVariableElement nullable cascade="none" fetch="lazy" databaseColumn="REPLACED_BY_VAR_ELEMENT_FK"  <-> replaceToVariableElements;
 			"Variable elements that are replaced by this one"
 			- Bag<@VariableElement> replaceToVariableElements cascade="none" fetch="lazy" <-> replacedByVariableElement;
+			
+			// Geographical information
+			String latitude nullable;
+			String longitude nullable;
+			String shape nullable;
+			- @CodeMetamac geographicalGranularity nullable cascade="none" fetch="lazy" databaseColumn="GEOGRAPHICAL_GRANULARITY_FK";
 			
 			"Variable"
 			- @Variable variable not nullable cascade="none" fetch="lazy" databaseColumn="VARIABLE_FK"  <-> variableElements;
@@ -530,6 +544,8 @@ Application CodesMetamac {
 				findByCondition(PagingParameter pagingParameter);
 				@VariableElement findByUrn(String urn);
 				List<VariableElementResult> retrieveVariableElementsByVariableEfficiently(Long variableId, String locale);
+				Long countVariableElementsByVariable(Long variableId);
+				clearGeographicalInformationByVariable(Long variableId);
 			}
 		}
 		
@@ -557,6 +573,8 @@ Application CodesMetamac {
 				findByCondition(PagingParameter pagingParameter);
 				@VariableElementOperation findByCode(String code);
 				List<@VariableElementOperation> findByVariableElementUrn(String urn);
+				@VariableElementOperation findVariableElementWithVariableElementAsSource(String urn);
+				@VariableElementOperation findVariableElementWithVariableElementAsTarget(String urn);
 			}
 		}
 	}

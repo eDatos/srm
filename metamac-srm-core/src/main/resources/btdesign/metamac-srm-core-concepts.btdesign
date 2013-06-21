@@ -85,7 +85,7 @@ Application ConceptsMetamac {
     		"Retrieves concepts scheme by concept urn"
     		@ConceptSchemeVersionMetamac retrieveConceptSchemeByConceptUrn(String conceptUrn) throws MetamacException;
 			"Checks translations for concept scheme"
-    		Map<String, MetamacExceptionItem> checkConceptSchemeVersionTranslations(Long itemSchemeVersionId, String locale) throws MetamacException;
+    		checkConceptSchemeVersionTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionsByResourceUrn) throws MetamacException;
 			"Checks related resources are externally published"
     		checkConceptSchemeWithRelatedResourcesExternallyPublished(@ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException;
     		

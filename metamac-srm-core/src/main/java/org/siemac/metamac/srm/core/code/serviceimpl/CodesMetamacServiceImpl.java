@@ -65,6 +65,7 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormali
 import org.siemac.metamac.srm.core.code.domain.shared.TaskImportTsvInfo;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.LifeCycle;
@@ -1340,11 +1341,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public Map<String, MetamacExceptionItem> checkCodelistVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
-        Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
+    public void checkCodelistVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn) throws MetamacException {
         getCodelistVersionMetamacRepository().checkCodelistVersionTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
         getCodeMetamacRepository().checkCodeTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
-        return exceptionItemsByResourceUrn;
     }
 
     @Override
@@ -1352,7 +1351,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         Long itemSchemeVersionId = codelistVersion.getId();
         String itemSchemeVersionUrn = codelistVersion.getMaintainableArtefact().getUrn();
         Map<String, MetamacExceptionItem> exceptionItemsByUrn = new HashMap<String, MetamacExceptionItem>();
-        getCodeMetamacRepository().checkCodelistWithReplaceToExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
+        getCodelistVersionMetamacRepository().checkCodelistWithReplaceToExternallyPublished(itemSchemeVersionId, exceptionItemsByUrn);
         categoriesMetamacService.checkCategorisationsWithRelatedResourcesExternallyPublished(ctx, itemSchemeVersionUrn, exceptionItemsByUrn);
         ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
     }
@@ -1597,6 +1596,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Fill replaceBy metadata
         for (Variable variableReplaceTo : variable.getReplaceToVariables()) {
             variableReplaceTo.setReplacedByVariable(variable);
+        }
+
+        // Clear geographical information if type is changed to non geographical
+        if (variable.getType() == null && VariableTypeEnum.GEOGRAPHICAL.equals(variable.getPreviousType())) {
+            Long variableElementsCount = getVariableElementRepository().countVariableElementsByVariable(variable.getId());
+            if (variableElementsCount != 0) {
+                getVariableElementRepository().clearGeographicalInformationByVariable(variable.getId());
+            }
         }
 
         // Update
@@ -2424,14 +2431,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
      * Common validations to create or update a variable
      */
     private void checkVariableToCreateOrUpdate(ServiceContext ctx, Variable variable) throws MetamacException {
+        String variableUrn = variable.getNameableArtefact().getUrn();
+
         // Check variable doesnt replace self
-        if (SrmServiceUtils.isVariableInList(variable.getNameableArtefact().getUrn(), variable.getReplaceToVariables())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_CAN_NOT_REPLACE_ITSELF).withMessageParameters(variable.getNameableArtefact().getUrn()).build();
+        if (SrmServiceUtils.isVariableInList(variableUrn, variable.getReplaceToVariables())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_CAN_NOT_REPLACE_ITSELF).withMessageParameters(variableUrn).build();
         }
 
         // Check any variable in "replaceTo" was not already replaced by another variable
         for (Variable replaceTo : variable.getReplaceToVariables()) {
-            if (replaceTo.getReplacedByVariable() != null && !replaceTo.getReplacedByVariable().getNameableArtefact().getUrn().equals(variable.getNameableArtefact().getUrn())) {
+            if (replaceTo.getReplacedByVariable() != null && !replaceTo.getReplacedByVariable().getNameableArtefact().getUrn().equals(variableUrn)) {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_IS_ALREADY_REPLACED).withMessageParameters(replaceTo.getNameableArtefact().getUrn()).build();
             }
         }
@@ -2443,6 +2452,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         SrmServiceUtils.checkInternationalStringTranslationsWithoutSql(variable.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME, locale, exceptionItems);
         if (exceptionItems.size() != 0) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(exceptionItems).build();
+        }
+
+        // Check if type can be updated
+        if (variable.getId() != null) {
+            if (variable.getPreviousType() == null && VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType())) {
+                Long variableElementsCount = getVariableElementRepository().countVariableElementsByVariable(variable.getId());
+                if (variableElementsCount != 0) {
+                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_TYPE_UPDATE_TO_GEOGRAPHICAL_UNSUPPORTED).withMessageParameters(variableUrn).build();
+                }
+            }
         }
     }
 
@@ -2479,6 +2498,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                         .build();
             }
         }
+
+        // Check geographical information: In CodesMetamacInvocationValidator
 
         // No translation to check
     }
@@ -2685,7 +2706,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Validation
         CodesMetamacInvocationValidator.checkAddVariableElementOperation(sources, targets, null);
+        checkVariableElementOperationToCreate(sources, targets);
 
+        // Create
         VariableElementOperation variableElementOperation = new VariableElementOperation();
         variableElementOperation.setOperationType(operationType);
         variableElementOperation.setCode(UUID.randomUUID().toString());
@@ -3031,9 +3054,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             } else {
                 CodesMetamacInvocationValidator.checkUpdateCode(codelistVersion, code, null);
             }
-        } catch (Exception metamacException) {
+        } catch (MetamacException metamacException) {
             logger.error("Error importing code from tsv file", metamacException);
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber));
+            MetamacExceptionItem metamacExceptionItem = new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber);
+            metamacExceptionItem.setExceptionItems(metamacException.getExceptionItems());
+            exceptionItems.add(metamacExceptionItem);
         }
 
         code.setItemSchemeVersion(codelistVersion);
@@ -3144,9 +3169,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             } else {
                 CodesMetamacInvocationValidator.checkUpdateVariableElement(variableElement, null);
             }
-        } catch (Exception metamacException) {
+        } catch (MetamacException metamacException) {
             logger.error("Error importing variable element from tsv file", metamacException);
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber));
+            MetamacExceptionItem metamacExceptionItem = new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber);
+            metamacExceptionItem.setExceptionItems(metamacException.getExceptionItems());
+            exceptionItems.add(metamacExceptionItem);
         }
         return variableElement;
     }
@@ -3315,4 +3342,28 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         return codelistVersion;
     }
+
+    private void checkVariableElementOperationToCreate(List<String> sourcesUrn, List<String> targetsUrn) throws MetamacException {
+        // A variable element can not be source and target in same operation
+        for (String source : sourcesUrn) {
+            if (targetsUrn.contains(source)) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_OPERATION_VARIABLE_ELEMENT_IN_SOURCE_AND_TARGET).withMessageParameters(source).build();
+            }
+        }
+        // A variable element can not be as source in two operations
+        for (String source : sourcesUrn) {
+            VariableElementOperation variableElementOperation = getVariableElementOperationRepository().findVariableElementWithVariableElementAsSource(source);
+            if (variableElementOperation != null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_ALREADY_AS_SOURCE_IN_OPERATION).withMessageParameters(source).build();
+            }
+        }
+        // A variable element can not be as target in two operations
+        for (String target : targetsUrn) {
+            VariableElementOperation variableElementOperation = getVariableElementOperationRepository().findVariableElementWithVariableElementAsTarget(target);
+            if (variableElementOperation != null) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_ALREADY_AS_TARGET_IN_OPERATION).withMessageParameters(target).build();
+            }
+        }
+    }
+
 }

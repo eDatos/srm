@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.category.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,43 +91,53 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
-
+        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
             CategorySchemeVersionMetamac categorySchemeVersion = getCategorySchemeVersionMetamac(srmResourceVersion);
+            String categorySchemeUrn = categorySchemeVersion.getMaintainableArtefact().getUrn();
+            Map<String, MetamacExceptionItem> exceptionsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
 
-            // Metadata required
-            ValidationUtils.checkMetadataRequired(categorySchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
-
-            // One category at least
-            Long itemsCount = categoryRepository.countItems(categorySchemeVersion.getId());
-            if (itemsCount == 0) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, categorySchemeVersion.getMaintainableArtefact().getUrn()));
+            // Check categoryScheme
+            {
+                List<MetamacExceptionItem> exceptionsCategoryScheme = new ArrayList<MetamacExceptionItem>();
+                // Metadata required
+                ValidationUtils.checkMetadataRequired(categorySchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptionsCategoryScheme);
+                // One category at least
+                Long itemsCount = categoryRepository.countItems(categorySchemeVersion.getId());
+                if (itemsCount == 0) {
+                    exceptionsCategoryScheme.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS));
+                }
+                addOrUpdateExceptionItemByResourceUrnWhenExceptionsNonZero(exceptionsByResourceUrn, categorySchemeUrn, exceptionsCategoryScheme);
             }
+            // Check categories
+            {
+                // nothing
+            }
+            // Check translations
+            {
+                categoriesMetamacService.checkCategorySchemeVersionTranslations(ctx, categorySchemeVersion.getId(), getLanguageDefault(), exceptionsByResourceUrn);
+            }
+            // Throw exception if there is any exception
+            throwExceptionsInExceptionsMap(exceptionsByResourceUrn, categorySchemeUrn);
         }
 
         @Override
-        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
         }
 
         @Override
-        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
         }
 
         @Override
-        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
         }
 
         @Override
-        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
-        }
-
-        @Override
-        public Map<String, MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
-            return categoriesMetamacService.checkCategorySchemeVersionTranslations(ctx, getCategorySchemeVersionMetamac(srmResourceVersion).getId(), locale);
         }
 
         @Override
@@ -136,8 +147,7 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
-                throws MetamacException {
+        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
             categoriesMetamacService.checkCategorySchemeWithRelatedResourcesExternallyPublished(ctx, getCategorySchemeVersionMetamac(srmResourceVersion));
         }
 

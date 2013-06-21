@@ -13,6 +13,7 @@
         <cdomain:text xml:lang="en">shortName-artefact1 in English</cdomain:text>
         <cdomain:text xml:lang="es">shortName-artefact1 en Español</cdomain:text>
     </sr:shortName>
+    <sr:type>GEOGRAPHICAL</sr:type>
     <sr:validFrom>2012-10-01T10:12:13.014+01:00</sr:validFrom>
     <sr:validTo>2013-10-01T10:12:13.014+01:00</sr:validTo>
     <sr:replacedBy kind="structuralResources#variable">

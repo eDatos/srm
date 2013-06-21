@@ -19,7 +19,6 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variabl
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilyCriteriaPropertyOrder;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilyCriteriaPropertyRestriction;
-import org.siemac.metamac.srm.core.category.domain.CategoryMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
@@ -164,7 +163,10 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case CODELIST_URN:
                     return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CodeMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 case CODELIST_EXTERNALLY_PUBLISHED:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), Boolean.valueOf(propertyRestriction.getValue()),
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), Boolean.valueOf(propertyRestriction.getValue()),
+                            propertyRestriction.getOperationType());
+                case CODELIST_LATEST:
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
                             propertyRestriction.getOperationType());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());

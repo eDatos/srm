@@ -194,6 +194,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             return null;
         }
         VariableDto target = new VariableDto();
+        target.setType(source.getType());
         target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
         target.setValidFrom(CoreCommonUtil.transformDateTimeToDate(source.getValidFrom()));
         target.setValidTo(CoreCommonUtil.transformDateTimeToDate(source.getValidTo()));
@@ -247,6 +248,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         }
         VariableElementDto target = new VariableElementDto();
         target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
+        target.setComment(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getComment()));
         target.setValidFrom(CoreCommonUtil.transformDateTimeToDate(source.getValidFrom()));
         target.setValidTo(CoreCommonUtil.transformDateTimeToDate(source.getValidTo()));
         do2DtoMapperSdmxSrm.identifiableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getIdentifiableArtefact(), target);
@@ -255,6 +257,10 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         for (VariableElement replaceTo : source.getReplaceToVariableElements()) {
             target.addReplaceToVariableElement(variableElementDoToRelatedResourceDto(replaceTo));
         }
+        target.setLatitude(source.getLatitude());
+        target.setLongitude(source.getLongitude());
+        target.setShape(source.getShape());
+        target.setGeographicalGranularity(codeMetamacDoToRelatedResourceDto(source.getGeographicalGranularity()));
 
         // Overwrite these values in the final DTO (if not, these values are taken from the AnnotableArtefact entity)
         target.setId(source.getId());

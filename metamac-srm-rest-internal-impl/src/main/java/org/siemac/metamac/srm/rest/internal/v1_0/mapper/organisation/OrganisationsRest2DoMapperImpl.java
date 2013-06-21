@@ -12,7 +12,6 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationSchemeCriteriaPropertyOrder;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationSchemeCriteriaPropertyRestriction;
-import org.siemac.metamac.srm.core.category.domain.CategoryMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -85,6 +84,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue(),
                             propertyRestriction.getOperationType());
                 case LATEST:
+                    // Note: AgencyScheme, DataProvider... are note marked as final, but they are marked as latest when published.
                     return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
                             propertyRestriction.getOperationType());
                 case TYPE:
@@ -132,7 +132,10 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                 case ORGANISATION_SCHEME_URN:
                     return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 case ORGANISATION_SCHEME_EXTERNALLY_PUBLISHED:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), Boolean.valueOf(propertyRestriction.getValue()),
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), Boolean.valueOf(propertyRestriction.getValue()),
+                            propertyRestriction.getOperationType());
+                case ORGANISATION_SCHEME_LATEST:
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
                             propertyRestriction.getOperationType());
                 case TYPE:
                     return new SculptorPropertyCriteria(OrganisationMetamacProperties.organisationType(), propertyRestrictionValueToOrganisationTypeEnum(propertyRestriction.getValue()),

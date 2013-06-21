@@ -46,6 +46,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcSta
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -453,6 +454,7 @@ public class CodesDo2RestMapperTest {
         assertEqualsInternationalString("es", "shortName-variable1 en Español", "en", "shortName-variable1 in English", target.getShortName());
         MetamacAsserts.assertEqualsDate("2012-10-01 10:12:13", target.getValidFrom());
         MetamacAsserts.assertEqualsDate("2013-10-01 10:12:13", target.getValidTo());
+        assertEquals(VariableType.GEOGRAPHICAL, target.getType());
 
         assertEquals(RestInternalConstants.KIND_VARIABLE, target.getReplacedBy().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variableReplacedBy1", target.getReplacedBy().getSelfLink().getHref());

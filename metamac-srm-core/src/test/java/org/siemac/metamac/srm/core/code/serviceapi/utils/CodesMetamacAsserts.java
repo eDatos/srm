@@ -287,6 +287,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         if (expected == null) {
             return;
         }
+        assertEquals(expected.getType(), actual.getType());
         assertEqualsInternationalString(expected.getShortName(), actual.getShortName());
         assertEqualsDate(expected.getValidFrom(), actual.getValidFrom());
         assertEqualsDate(expected.getValidTo(), actual.getValidTo());
@@ -309,6 +310,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
     }
 
     public static void assertEqualsVariableDto(VariableDto expected, VariableDto actual) {
+        assertEquals(expected.getType(), actual.getType());
         assertEqualsInternationalStringDto(expected.getShortName(), actual.getShortName());
         assertEquals(expected.getValidFrom(), actual.getValidFrom());
         assertEquals(expected.getValidTo(), actual.getValidTo());
@@ -352,6 +354,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
             assertEquals(entity.getVersion(), dto.getVersionOptimisticLocking());
         }
 
+        assertEquals(entity.getType(), dto.getType());
         assertEqualsInternationalString(entity.getShortName(), dto.getShortName());
         assertEqualsDate(entity.getValidFrom(), dto.getValidFrom());
         assertEqualsDate(entity.getValidTo(), dto.getValidTo());
@@ -390,9 +393,17 @@ public class CodesMetamacAsserts extends CodesAsserts {
             return;
         }
         assertEqualsInternationalString(expected.getShortName(), actual.getShortName());
+        assertEqualsInternationalString(expected.getComment(), actual.getComment());
         assertEqualsDate(expected.getValidFrom(), actual.getValidFrom());
         assertEqualsDate(expected.getValidTo(), actual.getValidTo());
         assertEquals(expected.getVariable().getNameableArtefact().getUrn(), actual.getVariable().getNameableArtefact().getUrn());
+        assertEquals(expected.getLatitude(), actual.getLatitude());
+        assertEquals(expected.getLongitude(), actual.getLongitude());
+        assertEquals(expected.getShape(), actual.getShape());
+        assertEqualsNullability(expected.getGeographicalGranularity(), actual.getGeographicalGranularity());
+        if (expected.getGeographicalGranularity() != null) {
+            assertEqualsCode(expected.getGeographicalGranularity(), actual.getGeographicalGranularity());
+        }
 
         assertEqualsNullability(expected.getReplacedByVariableElement(), actual.getReplacedByVariableElement());
         if (expected.getReplacedByVariableElement() != null) {
@@ -410,6 +421,11 @@ public class CodesMetamacAsserts extends CodesAsserts {
 
     public static void assertEqualsVariableElementDto(VariableElementDto expected, VariableElementDto actual) {
         assertEqualsInternationalStringDto(expected.getShortName(), actual.getShortName());
+        assertEqualsInternationalStringDto(expected.getComment(), actual.getComment());
+        assertEquals(expected.getLatitude(), actual.getLatitude());
+        assertEquals(expected.getLongitude(), actual.getLongitude());
+        assertEquals(expected.getShape(), actual.getShape());
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getGeographicalGranularity(), actual.getGeographicalGranularity());
         assertEquals(expected.getValidFrom(), actual.getValidFrom());
         assertEquals(expected.getValidTo(), actual.getValidTo());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getVariable(), actual.getVariable());
@@ -453,6 +469,15 @@ public class CodesMetamacAsserts extends CodesAsserts {
         }
 
         assertEqualsInternationalString(entity.getShortName(), dto.getShortName());
+        assertEqualsInternationalString(entity.getComment(), dto.getComment());
+        assertEquals(entity.getLatitude(), dto.getLatitude());
+        assertEquals(entity.getLongitude(), dto.getLongitude());
+        assertEquals(entity.getShape(), dto.getShape());
+        assertEqualsNullability(entity.getGeographicalGranularity(), dto.getGeographicalGranularity());
+        if (entity.getGeographicalGranularity() != null) {
+            assertEquals(entity.getGeographicalGranularity().getNameableArtefact().getUrn(), dto.getGeographicalGranularity().getUrn());
+        }
+
         assertEqualsDate(entity.getValidFrom(), dto.getValidFrom());
         assertEqualsDate(entity.getValidTo(), dto.getValidTo());
         assertEquals(entity.getVariable().getNameableArtefact().getUrn(), dto.getVariable().getUrn());

@@ -28,12 +28,14 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variabl
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilyMetadata;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
@@ -280,6 +282,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setManagementAppLink(toVariableManagementApplicationLink(source));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
         target.setShortName(toInternationalString(source.getShortName()));
+        target.setType(toVariableType(source.getType()));
         target.setValidFrom(toDate(source.getValidFrom()));
         target.setValidTo(toDate(source.getValidTo()));
         target.setReplacedBy(toResource(source.getReplacedByVariable()));
@@ -573,4 +576,16 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return getInternalWebApplicationNavigation().buildVariableUrl(source);
     }
 
+    private VariableType toVariableType(VariableTypeEnum source) {
+        if (source == null) {
+            return null;
+        }
+        switch (source) {
+            case GEOGRAPHICAL:
+                return org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableType.GEOGRAPHICAL;
+            default:
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
+                throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

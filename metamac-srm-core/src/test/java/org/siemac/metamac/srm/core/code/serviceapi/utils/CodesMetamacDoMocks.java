@@ -157,6 +157,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
     public static Variable mockVariable() {
         Variable variable = new Variable();
         variable.setNameableArtefact(mockNameableArtefact("code-" + MetamacMocks.mockString(5)));
+        variable.setType(null);
         variable.setShortName(BaseDoMocks.mockInternationalString());
         variable.setValidFrom(new DateTime(2012, 10, 1, 10, 12, 13, 14));
         variable.setValidTo(new DateTime(2013, 10, 1, 10, 12, 13, 14));
@@ -172,6 +173,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.setLastUpdatedBy("userLastUpdated");
         target.setLastUpdated(new DateTime(2012, 11, 5, 10, 12, 13, 14));
         target.setUpdateDate(new DateTime(2012, 11, 5, 10, 12, 13, 14));
+        target.setType(null);
         target.setShortName(mockInternationalStringFixedValues("shortName", resourceID));
         target.setValidFrom(new DateTime(2012, 10, 1, 10, 12, 13, 14));
         target.setValidTo(new DateTime(2013, 10, 1, 10, 12, 13, 14));
@@ -191,9 +193,19 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         variableElement.setIdentifiableArtefact(new IdentifiableArtefact());
         mockIdentifiableArtefact(variableElement.getIdentifiableArtefact(), "code-" + MetamacMocks.mockString(5));
         variableElement.setShortName(BaseDoMocks.mockInternationalString());
+        variableElement.setComment(BaseDoMocks.mockInternationalString());
         variableElement.setValidFrom(new DateTime(2012, 10, 1, 10, 12, 13, 14));
         variableElement.setValidTo(new DateTime(2013, 10, 1, 10, 12, 13, 14));
         variableElement.setVariable(variable);
+        return variableElement;
+    }
+
+    public static VariableElement mockVariableElementGeographical(Variable variable, CodeMetamac geographicalGranularity) {
+        VariableElement variableElement = mockVariableElement(variable);
+        variableElement.setLatitude("latitude1");
+        variableElement.setLongitude("longitude1");
+        variableElement.setShape("shape1");
+        variableElement.setGeographicalGranularity(geographicalGranularity);
         return variableElement;
     }
 
@@ -207,6 +219,7 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.setLastUpdated(new DateTime(2012, 11, 5, 10, 12, 13, 14));
         target.setUpdateDate(new DateTime(2012, 11, 5, 10, 12, 13, 14));
         target.setShortName(mockInternationalStringFixedValues("shortName", resourceID));
+        target.setComment(mockInternationalStringFixedValues("comment", resourceID));
         target.setVariable(mockVariableFixedValues("variable01"));
         target.setValidFrom(new DateTime(2012, 10, 1, 10, 12, 13, 14));
         target.setValidTo(new DateTime(2013, 10, 1, 10, 12, 13, 14));
@@ -214,6 +227,15 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         mockIdentifiableArtefactFixedValues(target.getIdentifiableArtefact(), resourceID, null);
         target.getIdentifiableArtefact().setUrn(GeneratorUrnUtils.generateVariableElementUrn(target.getVariable(), target));
         target.getIdentifiableArtefact().setUrnProvider(target.getIdentifiableArtefact().getUrn());
+        return target;
+    }
+
+    public static VariableElement mockVariableElementGeographicalFixedValues(String resourceID) {
+        VariableElement target = mockVariableElementFixedValues(resourceID);
+        target.setLatitude("latitude1");
+        target.setLongitude("longitude1");
+        target.setShape("shape1");
+        target.setGeographicalGranularity(mockCodeFixedValues("code1", mockCodelistFixedValues("agency01", "codelist01", "01.000"), null));
         return target;
     }
 

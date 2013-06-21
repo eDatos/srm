@@ -3209,7 +3209,7 @@
             />
 
             <TB_M_CODES
-              VARIABLE_ELEMENT_FK="[null]"
+              VARIABLE_ELEMENT_FK="51"
               SHORT_NAME_FK="[null]"
               TB_CODES="721"
               ORDER1="0"
@@ -3378,7 +3378,7 @@
         SHORT_NAME_FK="[null]"
         DESCRIPTION_SOURCE_FK="[null]"
         CODELIST_FAMILY_FK="[null]"
-        VARIABLE_FK="1"
+        VARIABLE_FK="5"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUAL_FK="[null]"
         DEFAULT_OPENNESS_VISUAL_FK="[null]"
@@ -5301,6 +5301,7 @@
         NAMEABLE_ARTEFACT_FK="999934"
         
         SHORT_NAME_FK="66"
+        VARIABLE_TYPE="GEOGRAPHICAL"
         
         VALID_FROM_TZ="[null]"
         VALID_FROM="[null]" 
@@ -5340,12 +5341,64 @@
             LAST_UPDATED="2011-01-22 01:02:03"
             LAST_UPDATED_TZ="Europe/London"
         />
+        
+          <!-- VARIABLE ELEMENTS -->
+            <TB_M_VARIABLE_ELEMENTS
+                ID="41"
+                IDENTIFIABLE_ARTEFACT_FK="9999341"
+                
+                SHORT_NAME_FK="152"
+                COMMENT_FK="[null]"
+                VALID_FROM_TZ="Europe/London"
+                VALID_FROM="2041-01-02 02:02:04" 
+                VALID_TO_TZ="Europe/London"
+                VALID_TO="2012-01-02 02:02:04"
+                VARIABLE_FK="1"
+                REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="1"
+                LONGITUDE="2"
+                SHAPE="3"
+                GEOGRAPHICAL_GRANULARITY_FK="111"
+                                
+                UUID="variable-element-41"
+                CREATED_DATE_TZ="Europe/London"
+                CREATED_DATE="2041-01-01 01:02:03"
+                CREATED_BY="user1"
+                LAST_UPDATED_TZ="Europe/London"
+                LAST_UPDATED="2012-01-01 01:02:03"
+                LAST_UPDATED_BY="user2"
+                VERSION="1"
+            />
+            
+               <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9999341"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
+                    
+                    CODE="VARIABLE_ELEMENT_01"
+                    CODE_FULL="[null]"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_04.VARIABLE_ELEMENT_01"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_04.VARIABLE_ELEMENT_01"
+                    
+                    NAME_FK="[null]"
+                    DESCRIPTION_FK="[null]"
+                    
+                    UUID="annotableArtefact-9999341"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2041-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2000-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                /> 
 
     <TB_M_VARIABLES
         ID="3"
         NAMEABLE_ARTEFACT_FK="999933"
         
         SHORT_NAME_FK="65"
+        VARIABLE_TYPE="[null]"
         
         VALID_FROM_TZ="Europe/London"
         VALID_FROM="2011-01-02 02:02:04" 
@@ -5392,6 +5445,7 @@
         NAMEABLE_ARTEFACT_FK="999931"
         
         SHORT_NAME_FK="63"
+        VARIABLE_TYPE="[null]"
         VALID_FROM_TZ="Europe/London"
         VALID_FROM="2011-01-02 02:02:04" 
         VALID_TO_TZ="Europe/London"
@@ -5430,12 +5484,64 @@
             LAST_UPDATED="2011-01-22 01:02:03"
             LAST_UPDATED_TZ="Europe/London"
         /> 
+        
+            <!-- VARIABLE ELEMENTS -->
+            <TB_M_VARIABLE_ELEMENTS
+                ID="11"
+                IDENTIFIABLE_ARTEFACT_FK="9999311"
+                
+                SHORT_NAME_FK="151"
+                COMMENT_FK="[null]"
+                VALID_FROM_TZ="Europe/London"
+                VALID_FROM="2011-01-02 02:02:04" 
+                VALID_TO_TZ="Europe/London"
+                VALID_TO="2012-01-02 02:02:04"
+                VARIABLE_FK="1"
+                REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="[null]"
+                LONGITUDE="[null]"
+                SHAPE="[null]"
+                GEOGRAPHICAL_GRANULARITY_FK="[null]"
+                                
+                UUID="variable-element-11"
+                CREATED_DATE_TZ="Europe/London"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_BY="user1"
+                LAST_UPDATED_TZ="Europe/London"
+                LAST_UPDATED="2012-01-01 01:02:03"
+                LAST_UPDATED_BY="user2"
+                VERSION="1"
+            />
+            
+               <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9999311"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
+                    
+                    CODE="VARIABLE_ELEMENT_01"
+                    CODE_FULL="[null]"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.VARIABLE_ELEMENT_01"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.VARIABLE_ELEMENT_01"
+                    
+                    NAME_FK="[null]"
+                    DESCRIPTION_FK="[null]"
+                    
+                    UUID="annotableArtefact-9999311"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />            
             
     <TB_M_VARIABLES
         ID="2"
         NAMEABLE_ARTEFACT_FK="999932"
         
         SHORT_NAME_FK="64"
+        VARIABLE_TYPE="[null]"
         
         VALID_FROM_TZ="Europe/London"
         VALID_FROM="2011-01-02 02:02:04" 
@@ -5484,12 +5590,17 @@
                 IDENTIFIABLE_ARTEFACT_FK="9999323"
                 
                 SHORT_NAME_FK="83"
+                COMMENT_FK="[null]"
                 VALID_FROM_TZ="Europe/London"
                 VALID_FROM="2011-01-02 02:02:04" 
                 VALID_TO_TZ="Europe/London"
                 VALID_TO="2012-01-02 02:02:04"
                 VARIABLE_FK="2"
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="[null]"
+                LONGITUDE="[null]"
+                SHAPE="[null]"
+                GEOGRAPHICAL_GRANULARITY_FK="[null]"
                 
                 UUID="variable-element-23"
                 CREATED_DATE_TZ="Europe/London"
@@ -5529,13 +5640,18 @@
                 IDENTIFIABLE_ARTEFACT_FK="9999322"
                 
                 SHORT_NAME_FK="73"
+                COMMENT_FK="149"
                 VALID_FROM_TZ="Europe/London"
                 VALID_FROM="2011-01-02 02:02:04" 
                 VALID_TO_TZ="Europe/London"
                 VALID_TO="2012-01-02 02:02:04"
                 VARIABLE_FK="2"
                 REPLACED_BY_VAR_ELEMENT_FK="23"
-                
+                LATITUDE="[null]"
+                LONGITUDE="[null]"
+                SHAPE="[null]"
+                GEOGRAPHICAL_GRANULARITY_FK="[null]"
+                                
                 UUID="variable-element-22"
                 CREATED_DATE_TZ="Europe/London"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -5580,7 +5696,11 @@
                 VALID_TO="2012-01-02 02:02:04"
                 VARIABLE_FK="2"
                 REPLACED_BY_VAR_ELEMENT_FK="22"
-                
+                LATITUDE="[null]"
+                LONGITUDE="[null]"
+                SHAPE="[null]"
+                GEOGRAPHICAL_GRANULARITY_FK="[null]"
+                                
                 UUID="variable-element-21"
                 CREATED_DATE_TZ="Europe/London"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -5625,6 +5745,10 @@
                 VALID_TO="2012-01-02 02:02:04"
                 VARIABLE_FK="2"
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="[null]"
+                LONGITUDE="[null]"
+                SHAPE="[null]"
+                GEOGRAPHICAL_GRANULARITY_FK="[null]"
                 
                 UUID="variable-element-24"
                 CREATED_DATE_TZ="Europe/London"
@@ -5670,6 +5794,10 @@
                 VALID_TO="2012-01-02 02:02:04"
                 VARIABLE_FK="2"
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="[null]"
+                LONGITUDE="[null]"
+                SHAPE="[null]"
+                GEOGRAPHICAL_GRANULARITY_FK="[null]"
                 
                 UUID="variable-element-25"
                 CREATED_DATE_TZ="Europe/London"
@@ -5711,10 +5839,14 @@
                 SHORT_NAME_FK="92"
                 VALID_FROM_TZ="Europe/London"
                 VALID_FROM="2011-01-02 02:02:04" 
-                VALID_TO_TZ="[null]"
-                VALID_TO="[null]"
+                VALID_TO_TZ="Europe/London"
+                VALID_TO="2011-01-02 02:02:04"
                 VARIABLE_FK="2"
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="[null]"
+                LONGITUDE="[null]"
+                SHAPE="[null]"
+                GEOGRAPHICAL_GRANULARITY_FK="[null]"
                 
                 UUID="variable-element-26"
                 CREATED_DATE_TZ="Europe/London"
@@ -5756,10 +5888,14 @@
                 SHORT_NAME_FK="139"
                 VALID_FROM_TZ="Europe/London"
                 VALID_FROM="2011-01-02 02:02:04" 
-                VALID_TO_TZ="[null]"
-                VALID_TO="[null]"
+                VALID_TO_TZ="Europe/London"
+                VALID_TO="2011-01-02 02:02:04"
                 VARIABLE_FK="2"
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="[null]"
+                LONGITUDE="[null]"
+                SHAPE="[null]"
+                GEOGRAPHICAL_GRANULARITY_FK="[null]"
                 
                 UUID="variable-element-27"
                 CREATED_DATE_TZ="Europe/London"
@@ -5792,7 +5928,57 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
+                />       
+                
+            <TB_M_VARIABLE_ELEMENTS
+                ID="28"
+                IDENTIFIABLE_ARTEFACT_FK="9999328"
+                
+                SHORT_NAME_FK="150"
+                VALID_FROM_TZ="Europe/London"
+                VALID_FROM="2011-01-02 02:02:04" 
+                VALID_TO_TZ="[null]"
+                VALID_TO="[null]"
+                VARIABLE_FK="2"
+                REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="[null]"
+                LONGITUDE="[null]"
+                SHAPE="[null]"
+                GEOGRAPHICAL_GRANULARITY_FK="[null]"
+                
+                UUID="variable-element-28"
+                CREATED_DATE_TZ="Europe/London"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_BY="user1"
+                LAST_UPDATED_TZ="Europe/London"
+                LAST_UPDATED="2012-01-01 01:02:03"
+                LAST_UPDATED_BY="user2"
+                VERSION="1"
+            />
+            
+               <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9999328"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
+                    
+                    CODE="VARIABLE_ELEMENT_08"
+                    CODE_FULL="[null]"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_08"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_08"
+                    
+                    NAME_FK="[null]"
+                    DESCRIPTION_FK="[null]"
+                    
+                    UUID="annotableArtefact-9999328"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
                 />                                      
+                                                               
                 
                 <!-- VARIABLE ELEMENTS OPERATIONS -->
                 
@@ -5890,6 +6076,7 @@
         NAMEABLE_ARTEFACT_FK="999935"
         
         SHORT_NAME_FK="67"
+        VARIABLE_TYPE="GEOGRAPHICAL"
         
         VALID_FROM_TZ="[null]"
         VALID_FROM="[null]" 
@@ -5942,6 +6129,10 @@
                 VALID_TO="2012-01-02 02:02:04"
                 VARIABLE_FK="5"
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="70° 55' 59''"
+                LONGITUDE="90° 30' 45''"
+                SHAPE="{shape1:1}"
+                GEOGRAPHICAL_GRANULARITY_FK="1011"
                 
                 UUID="variable-element-51"
                 CREATED_DATE_TZ="Europe/London"
@@ -5987,6 +6178,10 @@
                 VALID_TO="2012-01-02 02:02:04"
                 VARIABLE_FK="5"
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="70° 55' 59''"
+                LONGITUDE="90° 30' 45''"
+                SHAPE="{shape1:1}"
+                GEOGRAPHICAL_GRANULARITY_FK="1011"
                 
                 UUID="variable-element-52"
                 CREATED_DATE_TZ="Europe/London"
@@ -6032,6 +6227,10 @@
                 VALID_TO="2012-01-02 02:02:04"
                 VARIABLE_FK="5"
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="70° 55' 59''"
+                LONGITUDE="90° 30' 45''"
+                SHAPE="{shape1:1}"
+                GEOGRAPHICAL_GRANULARITY_FK="1011"
                 
                 UUID="variable-element-53"
                 CREATED_DATE_TZ="Europe/London"
@@ -6104,6 +6303,7 @@
         NAMEABLE_ARTEFACT_FK="999936"
         
         SHORT_NAME_FK="68"
+        VARIABLE_TYPE="[null]"
         
         VALID_FROM_TZ="[null]"
         VALID_FROM="[null]" 
@@ -8820,5 +9020,67 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="148"
-    />                                                                                              
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="149"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1491"
+        LABEL="comentario ve"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="149"
+    />                                                                                                      
+
+    <TB_LOCALISED_STRINGS
+        ID="1492"
+        LABEL="comment ve"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="149"
+    />          
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="150"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1501"
+        LABEL="ncorto ve28"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="150"
+    />    
+    
+  <TB_INTERNATIONAL_STRINGS
+        ID="151"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1511"
+        LABEL="ncorto ve11"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="151"
+    />  
+    
+  <TB_INTERNATIONAL_STRINGS
+        ID="152"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1521"
+        LABEL="ncorto ve14"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="152"
+    />                                                                                                         
+                                                                                                     
+
 </dataset>

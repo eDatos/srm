@@ -87,14 +87,20 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String  VARIABLE_SHORT_NAME                                        = createCode(VARIABLE_PREFIX, "short_name");
     public static final String  VARIABLE_VALID_FROM                                        = createCode(VARIABLE_PREFIX, "valid_from");
     public static final String  VARIABLE_VALID_TO                                          = createCode(VARIABLE_PREFIX, "valid_to");
+    public static final String  VARIABLE_TYPE                                              = createCode(VARIABLE_PREFIX, "type");
 
     // VARIABLE ELEMENT
     private static final String VARIABLE_ELEMENT_PREFIX                                    = "variable_element";
     public static final String  VARIABLE_ELEMENT                                           = createCode(VARIABLE_ELEMENT_PREFIX);
     public static final String  VARIABLE_ELEMENT_SHORT_NAME                                = createCode(VARIABLE_ELEMENT_PREFIX, "short_name");
+    public static final String  VARIABLE_ELEMENT_COMMENT                                   = createCode(VARIABLE_ELEMENT_PREFIX, "comment");
     public static final String  VARIABLE_ELEMENT_VALID_FROM                                = createCode(VARIABLE_ELEMENT_PREFIX, "valid_from");
     public static final String  VARIABLE_ELEMENT_VALID_TO                                  = createCode(VARIABLE_ELEMENT_PREFIX, "valid_to");
     public static final String  VARIABLE_ELEMENT_VARIABLE                                  = createCode(VARIABLE_ELEMENT_PREFIX, "variable");
+    public static final String  VARIABLE_ELEMENT_LATITUDE                                  = createCode(VARIABLE_ELEMENT_PREFIX, "latitude");
+    public static final String  VARIABLE_ELEMENT_LONGITUDE                                 = createCode(VARIABLE_ELEMENT_PREFIX, "longitude");
+    public static final String  VARIABLE_ELEMENT_SHAPE                                     = createCode(VARIABLE_ELEMENT_PREFIX, "shape");
+    public static final String  VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY                  = createCode(VARIABLE_ELEMENT_PREFIX, "geographical_granularity");
 
     // DSD
     private static final String DATA_STRUCTURE_DEFINITION_PREFIX                           = "data_structure_definition";

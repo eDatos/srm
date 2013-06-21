@@ -226,6 +226,8 @@ public class CodesDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Codes
             target.setNameableArtefact(new NameableArtefact());
         }
 
+        target.setPreviousType(target.getType());
+        target.setType(source.getType());
         target.setShortName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getShortName(), target.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME));
         target.setValidFrom(CoreCommonUtil.transformDateToDateTime(source.getValidFrom()));
         target.setValidTo(CoreCommonUtil.transformDateToDateTime(source.getValidTo()));
@@ -267,7 +269,8 @@ public class CodesDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Codes
             target.setIdentifiableArtefact(new IdentifiableArtefact());
         }
 
-        target.setShortName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getShortName(), target.getShortName(), ServiceExceptionParameters.VARIABLE_SHORT_NAME));
+        target.setShortName(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getShortName(), target.getShortName(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME));
+        target.setComment(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getComment(), target.getComment(), ServiceExceptionParameters.VARIABLE_ELEMENT_COMMENT));
         target.setValidFrom(CoreCommonUtil.transformDateToDateTime(source.getValidFrom()));
         target.setValidTo(CoreCommonUtil.transformDateToDateTime(source.getValidTo()));
         // note: replacedBy metadata is ignored, because it will be updated by replaceTo metadata
@@ -280,6 +283,12 @@ public class CodesDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Codes
             target.getReplaceToVariableElements().add(retrieveVariableElement(replaceToVariableElement.getUrn()));
         }
         target.setIdentifiableArtefact(dto2DoMapperSdmxSrm.identifiableArtefactDtoToEntity(source, target.getIdentifiableArtefact()));
+        target.setLatitude(source.getLatitude());
+        target.setLongitude(source.getLongitude());
+        target.setShape(source.getShape());
+        if (source.getGeographicalGranularity() != null) {
+            target.setGeographicalGranularity(retrieveCode(source.getGeographicalGranularity().getUrn()));
+        }
 
         // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute
         target.setUpdateDate(new DateTime());

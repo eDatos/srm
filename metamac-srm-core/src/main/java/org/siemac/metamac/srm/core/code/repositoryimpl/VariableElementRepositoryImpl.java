@@ -60,6 +60,27 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
         return targets;
     }
 
+    @Override
+    public Long countVariableElementsByVariable(Long variableId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT COUNT(1) ");
+        sb.append("FROM TB_M_VARIABLE_ELEMENTS ");
+        sb.append("WHERE VARIABLE_FK = :variableId");
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("variableId", variableId);
+        return getLong(query.getResultList().get(0));
+    }
+
+    @Override
+    public void clearGeographicalInformationByVariable(Long variableId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE TB_M_VARIABLE_ELEMENTS set LATITUDE = null, LONGITUDE = null, SHAPE = null, GEOGRAPHICAL_GRANULARITY_FK = null ");
+        sb.append("WHERE VARIABLE_FK = :variableId");
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
+        queryUpdate.setParameter("variableId", variableId);
+        queryUpdate.executeUpdate();
+    }
+
     private VariableElementResult variableElementResultSqlToVariableElementResult(Object[] source) {
         VariableElementResult target = new VariableElementResult();
         int i = 0;

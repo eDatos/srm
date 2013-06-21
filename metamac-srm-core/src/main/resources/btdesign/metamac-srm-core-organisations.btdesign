@@ -62,7 +62,7 @@ Application OrganisationsMetamac {
     		"Retrieves organisations scheme by organisation urn"
     		@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeByOrganisationUrn(String organisationUrn) throws MetamacException;
     		"Checks translations for organisation scheme"
-    		Map<String, MetamacExceptionItem> checkOrganisationSchemeVersionTranslations(Long itemSchemeVersionId, String locale) throws MetamacException;
+    		checkOrganisationSchemeVersionTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionsByResourceUrn) throws MetamacException;
 			"Checks related resources are externally published"
     		checkOrganisationSchemeWithRelatedResourcesExternallyPublished(@OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException;
     		

@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.concept.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -106,79 +107,82 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
-                throws MetamacException {
+        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
 
             ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptSchemeVersionMetamac(srmResourceVersion);
+            String conceptSchemeUrn = conceptSchemeVersion.getMaintainableArtefact().getUrn();
+            Map<String, MetamacExceptionItem> exceptionsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
 
-            // Metadata required
-            ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
-
-            // One concept at least
-            Long itemsCount = conceptRepository.countItems(conceptSchemeVersion.getId());
-            if (itemsCount == 0) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, conceptSchemeVersion.getMaintainableArtefact().getUrn()));
-            }
-
-            // Check some metadata that can be empty or incorrect when importing. In not imported, metadata is checked in create/update operations
-            // Note: this is a unefficient operation, so only check when send to production and not in next status.
-            // In another status, if metadata is already changed to wrong value, they will be checked in create/update concept operations
-            if (conceptSchemeVersion.getMaintainableArtefact().getIsImported() && ProcStatusEnum.PRODUCTION_VALIDATION.equals(targetStatus)) {
+            // Check concept scheme
+            {
                 List<MetamacExceptionItem> exceptionsConceptScheme = new ArrayList<MetamacExceptionItem>();
-                conceptSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
-                ConceptsMetamacInvocationValidator.checkConceptScheme(conceptSchemeVersion, false, exceptionsConceptScheme);
-                if (exceptionsConceptScheme.size() != 0) {
-                    exceptions.addAll(exceptionsConceptScheme);
-                } else {
-                    // only check concepts if concept scheme is complete
-                    for (Item item : conceptSchemeVersion.getItems()) {
-                        ConceptMetamac concept = (ConceptMetamac) item;
-                        List<MetamacExceptionItem> exceptionsConcepts = new ArrayList<MetamacExceptionItem>();
-                        // Check misc metadata
-                        ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, concept, false, false, false, exceptionsConcepts);
-                        // Check core representation
-                        MetamacExceptionItem exceptionItem = conceptsMetamacService.checkConceptEnumeratedRepresentation(ctx, concept, false, conceptSchemeVersion.getMaintainableArtefact()
-                                .getIsImported());
-                        if (exceptionItem != null) {
-                            exceptionsConcepts.add(exceptionItem);
-                        }
-                        // Group exceptions by concept
-                        if (exceptionsConcepts.size() != 0) {
-                            MetamacExceptionItem exceptionItemConcept = MetamacExceptionItemBuilder.metamacExceptionItem()
-                                    .withCommonServiceExceptionType(ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA).withMessageParameters(item.getNameableArtefact().getUrn())
-                                    .withExceptionItems(exceptionsConcepts).build();
-                            exceptions.add(exceptionItemConcept);
+                // Metadata required
+                ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptionsConceptScheme);
+                // One concept at least
+                Long itemsCount = conceptRepository.countItems(conceptSchemeVersion.getId());
+                if (itemsCount == 0) {
+                    exceptionsConceptScheme.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS));
+                }
+                // Check some metadata that can be empty or incorrect when importing. In not imported, metadata is checked in create/update operations
+                if (conceptSchemeVersion.getMaintainableArtefact().getIsImported()) {
+                    conceptSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
+                    ConceptsMetamacInvocationValidator.checkConceptScheme(conceptSchemeVersion, false, exceptionsConceptScheme);
+                }
+                addOrUpdateExceptionItemByResourceUrnWhenExceptionsNonZero(exceptionsByResourceUrn, conceptSchemeUrn, exceptionsConceptScheme);
+            }
+            // Check concepts
+            {
+                // only check concepts if concept scheme is complete, because some metadata in concept depends on concept scheme metadata
+                if (!exceptionsByResourceUrn.containsKey(conceptSchemeUrn)) {
+                    // Check some metadata that can be empty or incorrect when importing. In not imported, metadata is checked in create/update operations
+                    // Note: this is a unefficient operation, so only check when send to production and not in next status.
+                    // In another status, if metadata is already changed to wrong value, they will be checked in create/update concept operations
+                    if (conceptSchemeVersion.getMaintainableArtefact().getIsImported() && ProcStatusEnum.PRODUCTION_VALIDATION.equals(targetStatus)) {
+                        for (Item item : conceptSchemeVersion.getItems()) {
+                            ConceptMetamac concept = (ConceptMetamac) item;
+                            String conceptUrn = concept.getNameableArtefact().getUrn();
+                            List<MetamacExceptionItem> exceptionsConcept = new ArrayList<MetamacExceptionItem>();
+                            // Check misc metadata
+                            ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, concept, false, false, false, exceptionsConcept);
+                            // Check core representation
+                            MetamacExceptionItem exceptionItem = conceptsMetamacService.checkConceptEnumeratedRepresentation(ctx, concept, false, conceptSchemeVersion.getMaintainableArtefact()
+                                    .getIsImported());
+                            if (exceptionItem != null) {
+                                exceptionsConcept.add(exceptionItem);
+                            }
+                            // Group exceptions by concept
+                            addOrUpdateExceptionItemByResourceUrnWhenExceptionsNonZero(exceptionsByResourceUrn, conceptUrn, exceptionsConcept);
                         }
                     }
                 }
             }
+            // Check translations
+            {
+                conceptsMetamacService.checkConceptSchemeVersionTranslations(ctx, conceptSchemeVersion.getId(), getLanguageDefault(), exceptionsByResourceUrn);
+            }
+            // Throw exception if there is any exception
+            throwExceptionsInExceptionsMap(exceptionsByResourceUrn, conceptSchemeUrn);
         }
 
         @Override
-        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
         }
 
         @Override
-        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
         }
 
         @Override
-        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
         }
 
         @Override
-        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
-
             // note: role, extends, quantity concepts, representation... are already internally published when they are added
-        }
-
-        @Override
-        public Map<String, MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
-            return conceptsMetamacService.checkConceptSchemeVersionTranslations(ctx, getConceptSchemeVersionMetamac(srmResourceVersion).getId(), locale);
         }
 
         @Override
@@ -188,8 +192,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
-                throws MetamacException {
+        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
             conceptsMetamacService.checkConceptSchemeWithRelatedResourcesExternallyPublished(ctx, getConceptSchemeVersionMetamac(srmResourceVersion));
         }
 

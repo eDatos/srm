@@ -459,11 +459,10 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     }
 
     @Override
-    public Map<String, MetamacExceptionItem> checkCategorySchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
-        Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
+    public void checkCategorySchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn)
+            throws MetamacException {
         getCategorySchemeVersionMetamacRepository().checkCategorySchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
         getCategoryMetamacRepository().checkCategoryTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
-        return exceptionItemsByResourceUrn;
     }
 
     @Override

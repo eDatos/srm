@@ -37,4 +37,28 @@ public class VariableElementOperationRepositoryImpl extends VariableElementOpera
                 parameters);
         return result;
     }
+
+    @Override
+    public VariableElementOperation findVariableElementWithVariableElementAsSource(String urn) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("variableElementUrn", urn);
+        List<VariableElementOperation> result = findByQuery("select op from VariableElementOperation op join op.sources s where s.identifiableArtefact.urn = :variableElementUrn", parameters);
+        if (result == null || result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
+    }
+
+    @Override
+    public VariableElementOperation findVariableElementWithVariableElementAsTarget(String urn) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("variableElementUrn", urn);
+        List<VariableElementOperation> result = findByQuery("select op from VariableElementOperation op join op.targets t where t.identifiableArtefact.urn = :variableElementUrn", parameters);
+        if (result == null || result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
+    }
 }

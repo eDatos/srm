@@ -6,6 +6,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
@@ -44,6 +45,7 @@ public class CodesDoMocks {
         target.addFamily(mockVariableFamily("variableFamily1"));
         target.addFamily(mockVariableFamily("variableFamily2"));
         target.addFamily(mockVariableFamily("variableFamily3"));
+        target.setType(VariableTypeEnum.GEOGRAPHICAL);
         return target;
     }
 

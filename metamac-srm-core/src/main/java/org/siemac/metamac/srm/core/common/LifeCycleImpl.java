@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
@@ -266,12 +268,46 @@ public abstract class LifeCycleImpl implements LifeCycle {
         return srmResourceVersion;
     }
 
+    protected void addOrUpdateExceptionItemByResourceUrnWhenExceptionsNonZero(Map<String, MetamacExceptionItem> exceptionsByResourceUrn, String resourceUrn, List<MetamacExceptionItem> exceptionItems) {
+        if (CollectionUtils.isEmpty(exceptionItems)) {
+            return;
+        }
+        MetamacExceptionItem exceptionItem = null;
+        if (exceptionsByResourceUrn.containsKey(resourceUrn)) {
+            exceptionItem = exceptionsByResourceUrn.get(resourceUrn);
+        } else {
+            exceptionItem = MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA).withMessageParameters(resourceUrn)
+                    .withExceptionItems(new ArrayList<MetamacExceptionItem>()).build();
+            exceptionsByResourceUrn.put(resourceUrn, exceptionItem);
+        }
+        exceptionItem.getExceptionItems().addAll(exceptionItems);
+    }
+
+    protected String getLanguageDefault() throws MetamacException {
+        return srmConfiguration.retrieveLanguageDefault();
+    }
+
+    protected void throwExceptionsInExceptionsMap(Map<String, MetamacExceptionItem> exceptionByResourceUrn, String principalArtefactUrn) throws MetamacException {
+        if (exceptionByResourceUrn == null || exceptionByResourceUrn.isEmpty()) {
+            return;
+        }
+
+        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>(exceptionByResourceUrn.size());
+        // Firstly add exception in principal artefact
+        if (principalArtefactUrn != null && exceptionByResourceUrn.containsKey(principalArtefactUrn)) {
+            exceptions.add(exceptionByResourceUrn.get(principalArtefactUrn));
+            exceptionByResourceUrn.remove(principalArtefactUrn);
+        }
+        // Add other exceptions
+        exceptions.addAll(exceptionByResourceUrn.values());
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     /**
-     * Makes validations to sent to production validation. Also revalidates conditions that were checked to go previous statuses.
+     * Makes validations to sent to production validation. Also revalidates conditions that were checked to go previous statuses
      */
     private void checkResourceInProductionValidation(ServiceContext ctx, String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
-
-        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
         // Check current proc status if target status is production validation
         if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(targetStatus)) {
@@ -284,24 +320,14 @@ public abstract class LifeCycleImpl implements LifeCycle {
         if (srmResourceVersion instanceof ItemSchemeVersion && !isJobInvocation) {
             SdmxSrmValidationUtils.checkArtefactWithoutTaskInBackground((ItemSchemeVersion) srmResourceVersion);
         }
-        // Check translations
-        String locale = srmConfiguration.retrieveLanguageDefault();
-        Map<String, MetamacExceptionItem> exceptionItems = callback.checkConcreteResourceTranslations(ctx, srmResourceVersion, locale);
-        if (exceptionItems != null) {
-            exceptions.addAll(exceptionItems.values());
-        }
-
         // Conditions for concrete resource
-        callback.checkConcreteResourceInProductionValidation(ctx, srmResourceVersion, targetStatus, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
+        callback.checkConcreteResourceInProductionValidation(ctx, srmResourceVersion, targetStatus);
     }
+
     /**
      * Makes validations to send to diffusion validation. Also revalidates conditions that were checked to go previous statuses.
      */
     private void checkResourceInDiffusionValidation(ServiceContext ctx, String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
-
-        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
         // Check current proc status if target status is diffusion validation
         if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(targetStatus)) {
@@ -310,9 +336,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Check other conditions
         checkResourceInProductionValidation(ctx, urn, srmResourceVersion, targetStatus);
-        callback.checkConcreteResourceInDiffusionValidation(srmResourceVersion, targetStatus, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
+        callback.checkConcreteResourceInDiffusionValidation(srmResourceVersion, targetStatus);
     }
 
     /**
@@ -320,17 +344,13 @@ public abstract class LifeCycleImpl implements LifeCycle {
      */
     private void checkResourceInRejectProductionValidation(String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
 
-        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
-
         // Check current proc status if target status is reject
         if (ProcStatusEnum.VALIDATION_REJECTED.equals(targetStatus)) {
             checkProcStatus(srmResourceVersion, procStatusToRejectProductionValidation);
         }
 
         // Check other conditions
-        callback.checkConcreteResourceInRejectProductionValidation(srmResourceVersion, targetStatus, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
+        callback.checkConcreteResourceInRejectProductionValidation(srmResourceVersion, targetStatus);
     }
 
     /**
@@ -338,25 +358,19 @@ public abstract class LifeCycleImpl implements LifeCycle {
      */
     private void checkResourceInRejectDiffusionValidation(String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
 
-        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
-
         // Check current proc status if target status is reject
         if (ProcStatusEnum.VALIDATION_REJECTED.equals(targetStatus)) {
             checkProcStatus(srmResourceVersion, procStatusToRejectDiffusionValidation);
         }
 
         // Check other conditions
-        callback.checkConcreteResourceInRejectDiffusionValidation(srmResourceVersion, targetStatus, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
+        callback.checkConcreteResourceInRejectDiffusionValidation(srmResourceVersion, targetStatus);
     }
 
     /**
      * Makes validations to publish internally. Also revalidates conditions that were checked to go previous statuses.
      */
     private void checkResourceInInternallyPublished(ServiceContext ctx, String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
-
-        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
         // Check current proc status if target status is publish internally
         if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(targetStatus)) {
@@ -365,17 +379,13 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Check other conditions
         checkResourceInDiffusionValidation(ctx, urn, srmResourceVersion, targetStatus);
-        callback.checkConcreteResourceInInternallyPublished(ctx, srmResourceVersion, targetStatus, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
+        callback.checkConcreteResourceInInternallyPublished(ctx, srmResourceVersion, targetStatus);
     }
 
     /**
      * Makes validations to publish externally. Also revalidates conditions that were checked to go previous statuses.
      */
     private void checkResourceInExternallyPublished(ServiceContext ctx, String urn, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
-
-        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
 
         // Check current proc status if target status is publish externally
         if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(targetStatus)) {
@@ -387,9 +397,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Check other conditions
         checkResourceInInternallyPublished(ctx, urn, srmResourceVersion, targetStatus);
-        callback.checkConcreteResourceInExternallyPublished(ctx, srmResourceVersion, targetStatus, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
+        callback.checkConcreteResourceInExternallyPublished(ctx, srmResourceVersion, targetStatus);
     }
 
     /**
@@ -436,15 +444,12 @@ public abstract class LifeCycleImpl implements LifeCycle {
         public List<Object> findSrmResourceVersionsOfSrmResourceInProcStatus(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum... procStatus);
 
         // Conditions to update state
-        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
-                throws MetamacException;
-        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
-        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
-        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
-        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions);
-        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
-                throws MetamacException;
-        public Map<String, MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException;
+        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException;
+        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus);
+        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus);
+        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus);
+        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException;
+        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException;
 
         // Validity, final, public, additional actions
         public Object executeBeforeSendProductionValidation(ServiceContext ctx, Object srmResourceVersion);

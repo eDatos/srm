@@ -33,12 +33,19 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType VARIABLE_WITH_RELATIONS                                                       = create("exception.srm.codelists.variable.with_relations");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_WITH_RELATIONS                                               = create("exception.srm.codelists.variable_element.with_relations");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_WITH_OPERATIONS                                              = create("exception.srm.codelists.variable_element.with_operations");
+    public static final CommonServiceExceptionType VARIABLE_ELEMENT_OPERATION_VARIABLE_ELEMENT_IN_SOURCE_AND_TARGET              = create("exception.srm.codelists.variable_element_operation.variable_element_in_source_and_target");
+    public static final CommonServiceExceptionType VARIABLE_ELEMENT_ALREADY_AS_SOURCE_IN_OPERATION                               = create("exception.srm.codelists.variable_element.already_as_source_in_operation");
+    public static final CommonServiceExceptionType VARIABLE_ELEMENT_ALREADY_AS_TARGET_IN_OPERATION                               = create("exception.srm.codelists.variable_element.already_as_target_in_operation");
     public static final CommonServiceExceptionType CODELIST_ALPHABETICAL_ORDER_OPERATION_NOT_SUPPORTED                           = create("exception.srm.codelists.order_visualisation.alphabetical.operation_not_supported");
     public static final CommonServiceExceptionType CODELIST_ORDER_VISUALISATION_MAXIMUM_REACHED                                  = create("exception.srm.codelists.order_visualisation.maximum_reached");
     public static final CommonServiceExceptionType CODELIST_ALL_EXPANDED_OPENNESS_VISUALISATION_OPERATION_NOT_SUPPORTED          = create("exception.srm.codelists.openness_visualisation.all_expanded.operation_not_supported");
     public static final CommonServiceExceptionType CODELIST_OPENNESS_VISUALISATION_MAXIMUM_REACHED                               = create("exception.srm.codelists.openness_visualisation.maximum_reached");
     public static final CommonServiceExceptionType CODE_NOT_EXTERNALLY_PUBLISHED                                                 = create("exception.srm.codelists.code_not_externally_published");
     public static final CommonServiceExceptionType CODELIST_NOT_EXTERNALLY_PUBLISHED                                             = create("exception.srm.codelists.codelist_not_externally_published");
+    public static final CommonServiceExceptionType CODE_VARIABLE_ELEMENT_REQUIRED_WHEN_GEOGRAPHICAL                              = create("exception.srm.codelists.code_variable_element_required_when_geographical");
+
+    // Variables
+    public static final CommonServiceExceptionType VARIABLE_TYPE_UPDATE_TO_GEOGRAPHICAL_UNSUPPORTED                              = create("exception.srm.codelists.variable.update_type_geographical_unsupported");
 
     // Variable elements
     public static final CommonServiceExceptionType VARIABLE_ELEMENTS_MUST_BELONG_TO_SAME_VARIABLE                                = create("exception.srm.codelists.variable_element.must_belong_to_same_variable");

@@ -102,6 +102,7 @@ public class CodesMetamacDtoMocks {
         variableDto.setCode("code-" + MetamacMocks.mockString(10));
         variableDto.setName(MetamacMocks.mockInternationalStringDto());
         variableDto.setShortName(MetamacMocks.mockInternationalStringDto("es", "shortName" + MetamacMocks.mockString(10)));
+        variableDto.setType(null);
         variableDto.setValidFrom(new Date());
         variableDto.setValidTo(new Date());
         return variableDto;
@@ -123,8 +124,18 @@ public class CodesMetamacDtoMocks {
         VariableElementDto variableElementDto = new VariableElementDto();
         variableElementDto.setCode("code-" + MetamacMocks.mockString(10));
         variableElementDto.setShortName(MetamacMocks.mockInternationalStringDto("es", "shortName" + MetamacMocks.mockString(10)));
+        variableElementDto.setComment(MetamacMocks.mockInternationalStringDto("es", "comment" + MetamacMocks.mockString(10)));
         variableElementDto.setValidFrom(new Date());
         variableElementDto.setValidTo(new Date());
+        return variableElementDto;
+    }
+
+    public static VariableElementDto mockVariableElementGeographicalDto(String code, String codeUrn) {
+        VariableElementDto variableElementDto = mockVariableElementDto();
+        variableElementDto.setLatitude("latitude1");
+        variableElementDto.setLongitude("longitude1");
+        variableElementDto.setShape("shape1");
+        variableElementDto.setGeographicalGranularity(mockCodeRelatedResourceDto(code, codeUrn));
         return variableElementDto;
     }
 

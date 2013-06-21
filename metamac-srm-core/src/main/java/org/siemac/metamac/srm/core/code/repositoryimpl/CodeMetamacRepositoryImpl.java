@@ -6,8 +6,8 @@ import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRe
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getInteger;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getLong;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
+import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils.addSubexceptionToExceptionItemByResource;
 import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils.addTranslationExceptionToExceptionItemsByResource;
-import static org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils.addExceptionToExceptionItemsByResource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -557,23 +557,24 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         checkCodeMetamacTranslations(itemSchemeVersionId, locale, exceptionItemsByUrn);
     }
 
-    @Override
     @SuppressWarnings("rawtypes")
-    public void checkCodelistWithReplaceToExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+    @Override
+    public void checkCodesWithVariableElements(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException {
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT DISTINCT(aisv.URN) ");
-        sb.append("FROM TB_M_CODELISTS_VERSIONS c ");
-        sb.append("INNER JOIN TB_ITEM_SCHEMES_VERSIONS isvb ON isvb.ID = c.TB_CODELISTS_VERSIONS ");
-        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS aisv ON aisv.ID = isvb.MAINTAINABLE_ARTEFACT_FK ");
-        sb.append("WHERE c.REPLACED_BY_CODELIST_FK = :itemSchemeVersionId ");
-        sb.append("AND aisv.PUBLIC_LOGIC != " + booleanToBooleanDatabase(true));
+        sb.append("SELECT distinct(a.URN) ");
+        sb.append("FROM TB_CODES cb ");
+        sb.append("INNER JOIN TB_M_CODES c on cb.ID = c.TB_CODES ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on cb.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("WHERE ");
+        sb.append("cb.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
+        sb.append("AND c.VARIABLE_ELEMENT_FK IS NULL ");
 
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
         List resultsSql = query.getResultList();
         for (Object resultSql : resultsSql) {
-            String urnRelatedResource = getString(resultSql);
-            addExceptionToExceptionItemsByResource(exceptionItemsByUrn, ServiceExceptionType.CODELIST_NOT_EXTERNALLY_PUBLISHED, urnRelatedResource);
+            String urn = getString(resultSql);
+            addSubexceptionToExceptionItemByResource(exceptionItemsByUrn, urn, ServiceExceptionType.CODE_VARIABLE_ELEMENT_REQUIRED_WHEN_GEOGRAPHICAL, null);
         }
     }
 

@@ -78,6 +78,8 @@ Application DtosMetamacCodeDomain {
 		
 		"Dto for Variable"		
 		DataTransferObject VariableDto extends @NameableArtefactDto {
+			"Variable type"
+			- @VariableTypeEnum type nullable;
 			"Short name"
 			- @InternationalStringDto shortName nullable;
             "Date from which the variable is valid"
@@ -102,6 +104,8 @@ Application DtosMetamacCodeDomain {
 		DataTransferObject VariableElementDto extends @IdentifiableArtefactDto {
 			"Short name"
 			- @InternationalStringDto shortName nullable;
+			"Comment"
+			- @InternationalStringDto comment nullable;
             "Date from which the variable element is valid"
             JAVADATE validFrom nullable;
             "Date from which variable element is superceded"
@@ -112,6 +116,10 @@ Application DtosMetamacCodeDomain {
 			- List<@RelatedResourceDto> replaceToVariableElements nullable;
 			"Variable"
 			- @RelatedResourceDto variable not nullable;
+			String latitude nullable;
+			String longitude nullable;
+			String shape nullable;
+			- @RelatedResourceDto geographicalGranularity nullable;
 			"Version to optimistic locking"
 			Long versionOptimisticLocking;
 		}

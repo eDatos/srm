@@ -486,11 +486,10 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     }
 
     @Override
-    public Map<String, MetamacExceptionItem> checkOrganisationSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale) throws MetamacException {
-        Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
+    public void checkOrganisationSchemeVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn)
+            throws MetamacException {
         getOrganisationSchemeVersionMetamacRepository().checkOrganisationSchemeVersionTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
         getOrganisationMetamacRepository().checkOrganisationTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
-        return exceptionItemsByResourceUrn;
     }
 
     @Override

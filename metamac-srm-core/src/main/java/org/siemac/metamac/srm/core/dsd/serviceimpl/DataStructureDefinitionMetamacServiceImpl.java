@@ -61,7 +61,6 @@ import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
-import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualisationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
@@ -588,12 +587,11 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     }
 
     @Override
-    public Map<String, MetamacExceptionItem> checkDataStructureDefinitionTranslations(ServiceContext ctx, Long structureVersionId, String locale) {
-        Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
+    public void checkDataStructureDefinitionTranslations(ServiceContext ctx, Long structureVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn)
+            throws MetamacException {
         getDataStructureDefinitionVersionMetamacRepository().checkDataStructureDefinitionVersionTranslations(structureVersionId, locale, exceptionItemsByResourceUrn);
         componentListRepository.checkComponentListTranslations(structureVersionId, locale, exceptionItemsByResourceUrn);
         componentRepository.checkComponentTranslations(structureVersionId, locale, exceptionItemsByResourceUrn);
-        return exceptionItemsByResourceUrn;
     }
 
     @Override
@@ -786,28 +784,6 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     /**************************************************************************
      * PRIVATE
      *************************************************************************/
-    /**
-     * Retrieves version of a data structure definition in specific procStatus
-     */
-    private DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByProcStatus(ServiceContext ctx, String urn, ProcStatusEnum... procStatus) throws MetamacException {
-
-        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(DataStructureDefinitionVersionMetamac.class)
-                .withProperty(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().urn()).eq(urn)
-                .withProperty(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus()).in((Object[]) procStatus).distinctRoot().build();
-        PagingParameter pagingParameter = PagingParameter.pageAccess(1);
-        PagedResult<DataStructureDefinitionVersionMetamac> dataStructureDefinitionVersionMetamacPagedResult = getDataStructureDefinitionVersionMetamacRepository().findByCondition(conditions,
-                pagingParameter);
-
-        if (dataStructureDefinitionVersionMetamacPagedResult.getValues().size() != 1) {
-            // check data structure definition exists to throws specific exception
-            retrieveDataStructureDefinitionByUrn(ctx, urn);
-
-            // if exists, throw exception about wrong proc status
-            String[] procStatusString = SrmServiceUtils.procStatusEnumToString(procStatus);
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.LIFE_CYCLE_WRONG_PROC_STATUS).withMessageParameters(urn, procStatusString).build();
-        }
-        return dataStructureDefinitionVersionMetamacPagedResult.getValues().get(0);
-    }
 
     /**
      * Typecast to Metamac type

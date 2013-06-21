@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.organisation.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,44 +96,54 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInProductionValidation(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
 
             OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
+            String organisationSchemeUrn = organisationSchemeVersion.getMaintainableArtefact().getUrn();
+            Map<String, MetamacExceptionItem> exceptionsByResourceUrn = new HashMap<String, MetamacExceptionItem>();
 
-            // Metadata required
-            ValidationUtils.checkMetadataRequired(organisationSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptions);
-
-            // One organisation at least
-            Long itemsCount = organisationRepository.countItems(organisationSchemeVersion.getId());
-            if (itemsCount == 0) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS, organisationSchemeVersion.getMaintainableArtefact().getUrn()));
+            // Check organisationScheme
+            {
+                List<MetamacExceptionItem> exceptionsOrganisationScheme = new ArrayList<MetamacExceptionItem>();
+                // Metadata required
+                ValidationUtils.checkMetadataRequired(organisationSchemeVersion.getIsPartial(), ServiceExceptionParameters.ITEM_SCHEME_IS_PARTIAL, exceptionsOrganisationScheme);
+                // One organisation at least
+                Long itemsCount = organisationRepository.countItems(organisationSchemeVersion.getId());
+                if (itemsCount == 0) {
+                    exceptionsOrganisationScheme.add(new MetamacExceptionItem(ServiceExceptionType.ITEM_SCHEME_WITHOUT_ITEMS));
+                }
+                addOrUpdateExceptionItemByResourceUrnWhenExceptionsNonZero(exceptionsByResourceUrn, organisationSchemeUrn, exceptionsOrganisationScheme);
             }
+            // Check organisations
+            {
+                // nothing
+            }
+            // Check translations
+            {
+                organisationsMetamacService.checkOrganisationSchemeVersionTranslations(ctx, organisationSchemeVersion.getId(), getLanguageDefault(), exceptionsByResourceUrn);
+            }
+            // Throw exception if there is any exception
+            throwExceptionsInExceptionsMap(exceptionsByResourceUrn, organisationSchemeUrn);
         }
 
         @Override
-        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
         }
 
         @Override
-        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInRejectProductionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
         }
 
         @Override
-        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInRejectDiffusionValidation(Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
         }
 
         @Override
-        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions) {
+        public void checkConcreteResourceInInternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) {
             // nothing
-        }
-
-        @Override
-        public Map<String, MetamacExceptionItem> checkConcreteResourceTranslations(ServiceContext ctx, Object srmResourceVersion, String locale) throws MetamacException {
-            Long itemSchemeVersionId = getOrganisationSchemeVersionMetamac(srmResourceVersion).getId();
-            return organisationsMetamacService.checkOrganisationSchemeVersionTranslations(ctx, itemSchemeVersionId, locale);
         }
 
         @Override
@@ -145,8 +156,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus, List<MetamacExceptionItem> exceptions)
-                throws MetamacException {
+        public void checkConcreteResourceInExternallyPublished(ServiceContext ctx, Object srmResourceVersion, ProcStatusEnum targetStatus) throws MetamacException {
             organisationsMetamacService.checkOrganisationSchemeWithRelatedResourcesExternallyPublished(ctx, getOrganisationSchemeVersionMetamac(srmResourceVersion));
         }
 
@@ -154,7 +164,7 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
         public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion, Boolean forceLastestFinal) throws MetamacException {
             OrganisationSchemeVersionMetamac organisationSchemeVersion = getOrganisationSchemeVersionMetamac(srmResourceVersion);
             if (SdmxSrmValidationUtils.isOrganisationSchemeWithSpecialTreatment(organisationSchemeVersion)) {
-                // Do not mark as final in SDMX metadata. Only mark is LastFinal
+                // Do not mark as final in SDMX metadata. Only mark it is LatestFinal
                 organisationSchemeVersion.getMaintainableArtefact().setLatestFinal(Boolean.TRUE);
                 updateSrmResource(ctx, organisationSchemeVersion);
             } else {

@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.code.mapper;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -20,6 +21,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsserts;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDtoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -111,11 +113,29 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
     }
 
     @Test
+    public void testVariableGeographicalDtoToDo() throws MetamacException {
+        VariableDto dto = CodesMetamacDtoMocks.mockVariableDto();
+        dto.setType(VariableTypeEnum.GEOGRAPHICAL);
+
+        Variable entity = codesDto2DoMapper.variableDtoToDo(dto);
+        assertEquals(dto.getType(), entity.getType());
+    }
+
+    @Test
     public void testVariableElementDtoToDo() throws MetamacException {
         VariableElementDto dto = CodesMetamacDtoMocks.mockVariableElementDto();
         dto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
         dto.addReplaceToVariableElement(CodesMetamacDtoMocks.mockVariableElementRelatedResourceDto("VARIABLE_ELEMENT_01", VARIABLE_2_VARIABLE_ELEMENT_1));
         dto.addReplaceToVariableElement(CodesMetamacDtoMocks.mockVariableElementRelatedResourceDto("VARIABLE_ELEMENT_02", VARIABLE_2_VARIABLE_ELEMENT_2));
+
+        VariableElement entity = codesDto2DoMapper.variableElementDtoToDo(dto);
+        CodesMetamacAsserts.assertEqualsVariableElement(dto, entity);
+    }
+
+    @Test
+    public void testVariableElementGeographicalDtoToDo() throws MetamacException {
+        VariableElementDto dto = CodesMetamacDtoMocks.mockVariableElementGeographicalDto("CODE01", CODELIST_1_V2_CODE_1);
+        dto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
 
         VariableElement entity = codesDto2DoMapper.variableElementDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsVariableElement(dto, entity);
