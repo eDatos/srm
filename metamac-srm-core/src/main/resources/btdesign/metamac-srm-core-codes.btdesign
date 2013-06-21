@@ -49,6 +49,8 @@ Application CodesMetamac {
     		PagedResult<@CodelistVersionMetamac> findCodelistsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Find codelists can replace another one"
     		PagedResult<@CodelistVersionMetamac> findCodelistsByConditionCanReplaceTo(String codelistUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Find codelists can be geographical granularity of variable elements"
+    		PagedResult<@CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Sends codelist to production validation"
     		@CodelistVersionMetamac sendCodelistToProductionValidation(String urn) throws MetamacException;
     		"Sends codelist to diffusion validation"
@@ -106,6 +108,8 @@ Application CodesMetamac {
     		@CodeMetamac retrieveCodeByUrn(String urn) throws MetamacException;
     		"Finds codes by criteria"
     		PagedResult<@CodeMetamac> findCodesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Find codes can be geographical granularity of variable element"
+    		PagedResult<@CodeMetamac> findCodesByConditionCanBeVariableElementGeographicalGranularity(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Deletes code"
     		deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by codelist in locale and visualisation requested. If visualisation is not provided, tries retrieve codes in default visualisations"

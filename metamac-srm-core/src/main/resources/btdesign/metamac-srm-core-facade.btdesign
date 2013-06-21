@@ -514,6 +514,8 @@ Application SrmFacadeCore {
             MetamacCriteriaResult<@CodelistMetamacBasicDto> findCodelistsByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Find codelists can replace another one"
     		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsByConditionCanReplaceTo(String codelistUrn, MetamacCriteria criteria)  throws MetamacException;
+			"Find codelists can be geographical granularity of variable elements"
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(MetamacCriteria criteria)  throws MetamacException;
             "Retrieves a codelist by URN"
             @CodelistMetamacDto retrieveCodelistByUrn(String urn) throws MetamacException;
             "Retrieves all codelist versions"
@@ -560,6 +562,8 @@ Application SrmFacadeCore {
             @CodeMetamacDto retrieveCodeByUrn(String urn) throws MetamacException;
             "Finds codes by criteria"
             MetamacCriteriaResult<@CodeMetamacBasicDto> findCodesByCondition(MetamacCriteria criteria) throws MetamacException;
+			"Find codes can be geographical granularity of variable element"
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodesByConditionCanBeVariableElementGeographicalGranularity(MetamacCriteria criteria)  throws MetamacException;
 			"Deletes code"
             deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by code scheme in locale and visualisation requested. If visualisation is not provided, tries retrieve codes in default visualisations"

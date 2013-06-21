@@ -1042,6 +1042,24 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canFindCodelistsByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CodelistVersionMetamac> result = getCodesMetamacService().findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodelistVersionToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
     public List<CodelistMetamacBasicDto> retrieveCodelistVersions(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CodesSecurityUtils.canRetrieveCodelistVersions(ctx);
@@ -1329,7 +1347,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // Transform
         CodeMetamacDto codeMetamacDto = codesDo2DtoMapper.codeMetamacDoToDto(codeMetamac);
-
         return codeMetamacDto;
     }
 
@@ -1346,7 +1363,24 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // Transform
         MetamacCriteriaResult<CodeMetamacBasicDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodeToMetamacCriteriaResult(result, sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
 
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findCodesByConditionCanBeVariableElementGeographicalGranularity(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canFindCodesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<CodeMetamac> result = getCodesMetamacService().findCodesByConditionCanBeVariableElementGeographicalGranularity(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodeToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
         return metamacCriteriaResult;
     }
 

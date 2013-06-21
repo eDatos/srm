@@ -485,9 +485,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNull(getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1).getVariableElement());
         assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, getCode(codelistVersion.getItems(), CODELIST_1_V2_CODE_4_1_1).getVariableElement().getIdentifiableArtefact().getUrn());
 
-        // Check the variable has no codelists
+        // Check the variable before
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_5);
-        assertEquals(2, variable.getCodelists().size());
+        assertEquals(3, variable.getCodelists().size());
+        assertTrue(SrmServiceUtils.isCodelistInList(CODELIST_7_V2, variable.getCodelists()));
+        assertTrue(SrmServiceUtils.isCodelistInList(CODELIST_8_V1, variable.getCodelists()));
+        assertTrue(SrmServiceUtils.isCodelistInList(CODELIST_9_V1, variable.getCodelists()));
 
         // Associate the codelist to the variable
         codelistVersion.setVariable(variable);
@@ -518,9 +521,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Check variable has more codelists (and it's the one we have added previously)
         entityManager.clear(); // Clear hibernate cache to check that the variable has been updated
         variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), variable.getNameableArtefact().getUrn());
-        assertEquals(3, variable.getCodelists().size());
+        assertEquals(4, variable.getCodelists().size());
         assertTrue(SrmServiceUtils.isCodelistInList(codelistVersion.getMaintainableArtefact().getUrn(), variable.getCodelists()));
     }
+
     /**
      * Change codelist from family CODELIST_FAMILY_2 to CODELIST_FAMILY_1
      */
@@ -872,6 +876,23 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(CODELIST_13_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
             assertEquals(codelistsPagedResult.getValues().size(), i);
         }
+    }
+
+    @Test
+    @Override
+    public void testFindCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(ctx, null, pagingParameter);
+
+        // Validate
+        assertEquals(1, codelistsPagedResult.getTotalRows());
+        assertEquals(1, codelistsPagedResult.getValues().size());
+
+        int i = 0;
+        assertEquals(CODELIST_10_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(codelistsPagedResult.getValues().size(), i);
     }
 
     @Override
@@ -3818,6 +3839,23 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(codesPagedResult.getValues().size(), i);
             }
         }
+    }
+
+    @Test
+    @Override
+    public void testFindCodesByConditionCanBeVariableElementGeographicalGranularity() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByConditionCanBeVariableElementGeographicalGranularity(ctx, null, pagingParameter);
+
+        // Validate
+        assertEquals(1, codesPagedResult.getTotalRows());
+        assertEquals(1, codesPagedResult.getValues().size());
+
+        int i = 0;
+        assertEquals(CODELIST_10_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(codesPagedResult.getValues().size(), i);
     }
 
     @Override

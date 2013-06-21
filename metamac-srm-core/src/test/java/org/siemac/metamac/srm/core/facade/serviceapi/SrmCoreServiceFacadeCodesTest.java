@@ -580,6 +580,24 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     }
 
     @Test
+    public void testFindCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
+        metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
+        MetamacCriteriaResult<RelatedResourceDto> codelistsPagedResult = srmCoreServiceFacade.findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(ctx, metamacCriteria);
+
+        // Validate
+        assertEquals(1, codelistsPagedResult.getPaginatorResult().getTotalResults().intValue());
+        assertEquals(1, codelistsPagedResult.getResults().size());
+
+        int i = 0;
+        assertEquals(CODELIST_10_V1, codelistsPagedResult.getResults().get(i++).getUrn());
+        assertEquals(codelistsPagedResult.getResults().size(), i);
+    }
+
+    @Test
     public void testRetrieveCodelistVersions() throws Exception {
         // Retrieve all versions
         String urn = CODELIST_1_V1;
@@ -1305,20 +1323,30 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertEquals(4, codesPagedResult.getResults().size());
 
             int i = 0;
-            assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getResults().get(i).getUrn());
-
-            i++;
-            assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getResults().get(i).getUrn());
-
-            i++;
-            assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getResults().get(i).getUrn());
-
-            i++;
-            assertEquals(CODELIST_1_V2_CODE_4_1_1, codesPagedResult.getResults().get(i).getUrn());
-
-            i++;
+            assertEquals(CODELIST_1_V2_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_2_1, codesPagedResult.getResults().get(i++).getUrn());
+            assertEquals(CODELIST_1_V2_CODE_4_1_1, codesPagedResult.getResults().get(i++).getUrn());
             assertEquals(codesPagedResult.getResults().size(), i);
         }
+    }
+
+    @Test
+    public void testFindCodesByConditionCanBeVariableElementGeographicalGranularity() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        MetamacCriteria metamacCriteria = new MetamacCriteria();
+        metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
+        metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
+        MetamacCriteriaResult<RelatedResourceDto> codesPagedResult = srmCoreServiceFacade.findCodesByConditionCanBeVariableElementGeographicalGranularity(ctx, metamacCriteria);
+
+        // Validate
+        assertEquals(1, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+        assertEquals(1, codesPagedResult.getResults().size());
+
+        int i = 0;
+        assertEquals(CODELIST_10_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+        assertEquals(codesPagedResult.getResults().size(), i);
     }
 
     @Test

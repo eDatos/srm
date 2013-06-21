@@ -28,6 +28,7 @@ import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
+import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -47,6 +48,7 @@ import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
@@ -64,6 +66,7 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.TaskImportTsvInfo;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
+import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
@@ -301,6 +304,31 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public PagedResult<CodelistVersionMetamac> findCodelistsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         PagedResult<CodelistVersion> codelistVersionPagedResult = codesService.findCodelistsByCondition(ctx, conditions, pagingParameter);
         return pagedResultCodelistVersionToMetamac(codelistVersionPagedResult);
+    }
+
+    @Override
+    public PagedResult<CodelistVersionMetamac> findCodelistsByConditionCanReplaceTo(ServiceContext ctx, String codelistUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        return findCodelistsByConditionCanReplaceTo(ctx, codelistUrn, false, conditions, pagingParameter);
+    }
+
+    @Override
+    public PagedResult<CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter) throws MetamacException {
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build();
+        }
+        // codelist from DATA (codelist must be this one always)
+        String codelistUrn = srmConfiguration.retrieveCodelistUrnForVariableElementGeographicalGranularity();
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().urn()).eq(codelistUrn).buildSingle());
+        // scheme externally published (variable element has not lifecycle)
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE)
+                .buildSingle());
+        // Codelist with access type = PUBLIC
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
+
+        return findCodelistsByCondition(ctx, conditions, pagingParameter);
     }
 
     @Override
@@ -1239,6 +1267,27 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public PagedResult<CodeMetamac> findCodesByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         PagedResult<Code> codesPagedResult = codesService.findCodesByCondition(ctx, conditions, pagingParameter);
         return pagedResultCodeToMetamac(codesPagedResult);
+    }
+
+    @Override
+    public PagedResult<CodeMetamac> findCodesByConditionCanBeVariableElementGeographicalGranularity(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).distinctRoot().build();
+        }
+        // codelist from DATA (codelist must be this one always)
+        String codelistUrn = srmConfiguration.retrieveCodelistUrnForVariableElementGeographicalGranularity();
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().urn()).eq(codelistUrn).buildSingle());
+        // scheme externally published (variable element has not lifecycle)
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE)
+                .buildSingle());
+        // Codelist with access type = PUBLIC
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
+                .withProperty(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.accessType().getName(), false, CodeMetamac.class))
+                .eq(AccessTypeEnum.PUBLIC).buildSingle());
+
+        return findCodesByCondition(ctx, conditions, pagingParameter);
     }
 
     @Override
@@ -2229,12 +2278,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.CODELIST_REPLACE_TO).build();
             }
         }
-    }
-
-    @Override
-    public PagedResult<CodelistVersionMetamac> findCodelistsByConditionCanReplaceTo(ServiceContext ctx, String codelistUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
-            throws MetamacException {
-        return findCodelistsByConditionCanReplaceTo(ctx, codelistUrn, false, conditions, pagingParameter);
     }
 
     private PagedResult<CodelistVersionMetamac> findCodelistsByConditionCanReplaceTo(ServiceContext ctx, String codelistUrn, boolean retrieveCodelistsReplacedBySelectedCodelist,

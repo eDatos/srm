@@ -17,6 +17,11 @@ public interface SrmConfiguration {
     public String retrievePrimaryMeasureConceptIdUrnDefault() throws MetamacException;
 
     /**
+     * Retrieves the codelist URN for geographical granularity of variable elements
+     */
+    public String retrieveCodelistUrnForVariableElementGeographicalGranularity() throws MetamacException;
+
+    /**
      * Checks if Database is Oracle
      */
     public Boolean isDatabaseOracle() throws MetamacException;

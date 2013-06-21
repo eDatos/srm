@@ -4,6 +4,7 @@
     <comment>Configurations</comment>
     <entry key="metamac.organisation.urn">urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).SDMX01</entry>
     <entry key="metamac.edition.languages">es,pt,en,ca</entry>
+    <entry key="metamac.srm.codelist.variable_element.geographical_granularity.urn">urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST10(01.000)</entry>
     
     <!-- Note: following properties are also written explicitly in SrmConstantsTest. If they are changed, remember to change also in this class -->
     <entry key="metamac.endpoints.statistical.operations.rest.internal">apis.metamac.org/statistical-operations-internal</entry>

@@ -5407,7 +5407,7 @@
                 LATITUDE="1"
                 LONGITUDE="2"
                 SHAPE="3"
-                GEOGRAPHICAL_GRANULARITY_FK="111"
+                GEOGRAPHICAL_GRANULARITY_FK="1011"
                                 
                 UUID="variable-element-41"
                 CREATED_DATE_TZ="Europe/London"
