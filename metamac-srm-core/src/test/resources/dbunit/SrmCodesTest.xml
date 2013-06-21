@@ -3531,7 +3531,7 @@
         SHORT_NAME_FK="[null]"
         DESCRIPTION_SOURCE_FK="[null]"
         CODELIST_FAMILY_FK="2"
-        VARIABLE_FK="2"
+        VARIABLE_FK="5"
         REPLACED_BY_CODELIST_FK="[null]"
         DEFAULT_ORDER_VISUAL_FK="[null]"
         DEFAULT_OPENNESS_VISUAL_FK="[null]"
@@ -3589,6 +3589,55 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
     />
+
+            <!-- CODE01 -->
+            <TB_CODES
+                ID="911"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="91"
+                ITEM_SCHEME_VERSION_FIRST_FK="91"
+                NAMEABLE_ARTEFACT_FK="911"
+                      
+                UUID="codelist-9-v1-code-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+ 
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="51"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="911"
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="911"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CODE01"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST09(01.000).CODE01"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST09(01.000).CODE01"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+                
+                NAME_FK="153"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+                
+                UUID="annotableArtefact-911"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />    
     
     <!-- ************************************************************************************** -->
     <!-- CODELIST 10 (operation type)                                                     -->
@@ -9082,5 +9131,17 @@
         INTERNATIONAL_STRING_FK="152"
     />                                                                                                         
                                                                                                      
+    <TB_INTERNATIONAL_STRINGS
+        ID="153"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1531"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="153"
+    />                                                                                                         
 
 </dataset>

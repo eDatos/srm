@@ -935,15 +935,33 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testSendCodelistToProductionValidationWithGeographical() throws Exception {
+        String urn = CODELIST_9_V1;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+        assertEquals(ProcStatusEnum.DRAFT, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        assertEquals(VariableTypeEnum.GEOGRAPHICAL, codelistVersion.getVariable().getType());
+
+        CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_9_V1_CODE_1);
+        assertNotNull(code.getVariableElement());
+
+        // Send to production validation
+        codelistVersion = codesService.sendCodelistToProductionValidation(ctx, urn);
+        assertEquals(ProcStatusEnum.PRODUCTION_VALIDATION, codelistVersion.getLifeCycleMetadata().getProcStatus());
+    }
+
+    @Test
     public void testSendCodelistToProductionValidationErrorGeographicalWithoutVariableElements() throws Exception {
         String urn = CODELIST_8_V1;
         ServiceContext ctx = getServiceContextAdministrador();
 
-        {
-            CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
-            assertEquals(ProcStatusEnum.DRAFT, codelistVersion.getLifeCycleMetadata().getProcStatus());
-            assertEquals(VariableTypeEnum.GEOGRAPHICAL, codelistVersion.getVariable().getType());
-        }
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(ctx, urn);
+        assertEquals(ProcStatusEnum.DRAFT, codelistVersion.getLifeCycleMetadata().getProcStatus());
+        assertEquals(VariableTypeEnum.GEOGRAPHICAL, codelistVersion.getVariable().getType());
+
+        CodeMetamac code = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_8_V1_CODE_1);
+        assertNull(code.getVariableElement());
 
         // Send to production validation
         try {
@@ -3680,8 +3698,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(34, codesPagedResult.getTotalRows());
-            assertEquals(34, codesPagedResult.getValues().size());
+            assertEquals(35, codesPagedResult.getTotalRows());
+            assertEquals(35, codesPagedResult.getValues().size());
             assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
 
             int i = 0;
@@ -3707,6 +3725,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(CODELIST_6_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CODELIST_7_V2_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CODELIST_8_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_9_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CODELIST_10_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CODELIST_10_V2_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CODELIST_10_V3_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
