@@ -53,6 +53,10 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_WITHOUT_MEASUREDIM_SPECIAL_ATTR                     = create("exception.srm.dsd.validation.measure_dimension.special_attr.not_found");
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_WITHOUT_SPATIALDIM_SPECIAL_ATTR                     = create("exception.srm.dsd.validation.spatial_dimension.special_attr.not_found");
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_WITHOUT_TIMEDIM_SPECIAL_ATTR                        = create("exception.srm.dsd.validation.time_dimension.special_attr.not_found");
+    public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_INVALID                          = create("exception.srm.dsd.validation.dimension.representation.invalid");
+    public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_REQUIRED                         = create("exception.srm.dsd.validation.dimension.representation.required");
+    public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID                         = create("exception.srm.dsd.validation.attribute.representation.invalid");
+    public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_REQUIRED                        = create("exception.srm.dsd.validation.attribute.representation.required");
 
     // Categories
     public static final CommonServiceExceptionType CATEGORY_NOT_EXTERNALLY_PUBLISHED                                             = create("exception.srm.categories.category_not_externally_published");

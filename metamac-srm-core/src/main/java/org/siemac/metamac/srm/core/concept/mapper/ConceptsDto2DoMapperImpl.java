@@ -6,6 +6,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
 import org.siemac.metamac.srm.core.base.mapper.BaseDto2DoMapperImpl;
+import org.siemac.metamac.srm.core.base.serviceimpl.utils.MapperUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.Variable;
@@ -27,9 +28,6 @@ import org.siemac.metamac.srm.core.concept.dto.QuantityDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 @org.springframework.stereotype.Component("conceptsDto2DoMapper")
 public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements ConceptsDto2DoMapper {
@@ -126,7 +124,7 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
 
         // Set if special requirements are required
         if (target.getCoreRepresentation() != null) {
-            target.getCoreRepresentation().setIsExtended(isCoreRepresentationExtends(source.getCoreRepresentation()));
+            target.getCoreRepresentation().setIsExtended(MapperUtils.isCoreRepresentationExtends(source.getCoreRepresentation()));
         }
 
         return target;
@@ -223,16 +221,4 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
         return target;
     }
 
-    private boolean isCoreRepresentationExtends(RepresentationDto representationDto) throws MetamacException {
-        if (representationDto == null) {
-            return false;
-        }
-
-        if (RepresentationTypeEnum.ENUMERATION.equals(representationDto.getRepresentationType())) {
-            if (representationDto.getEnumeration() != null && RelatedResourceTypeEnum.CONCEPT_SCHEME.equals(representationDto.getEnumeration().getType())) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

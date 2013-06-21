@@ -106,6 +106,8 @@ Application DsdsMetamac {
     		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn) throws MetamacException;
     		"Find concept schemes to enumerated representation of measure dimension"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
+    		"Find concept schemes to enumerated representation of atribute (metamac extension)"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
     		"Find codelists to enumerated representation of primary measure"
     		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
     		"Find concept schemes with concepts can be concept of attribute"

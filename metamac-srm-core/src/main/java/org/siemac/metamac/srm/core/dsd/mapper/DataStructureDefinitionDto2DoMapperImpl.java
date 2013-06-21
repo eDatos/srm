@@ -9,6 +9,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.OptimisticLockingUtils;
 import org.siemac.metamac.srm.core.base.mapper.BaseDto2DoMapperImpl;
+import org.siemac.metamac.srm.core.base.serviceimpl.utils.MapperUtils;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisationRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -32,6 +33,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentListDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
 
 @org.springframework.stereotype.Component("dataStructureDefinitionDto2DoMapper")
 public class DataStructureDefinitionDto2DoMapperImpl extends BaseDto2DoMapperImpl implements DataStructureDefinitionDto2DoMapper {
@@ -57,6 +59,15 @@ public class DataStructureDefinitionDto2DoMapperImpl extends BaseDto2DoMapperImp
     public <U extends Component> U componentDtoToComponent(ComponentDto source) throws MetamacException {
 
         U target = (U) dto2DoMapperSdmxSrm.componentDtoToComponent(source);
+
+        // Metamac logic extension, save a concept scheme as enumerated representation
+        if (source.getTypeComponent().equals(TypeComponent.DATA_ATTRIBUTE)) {
+            // Set if special requirements are required
+            if (target.getLocalRepresentation() != null) {
+                target.getLocalRepresentation().setIsExtended(MapperUtils.isCoreRepresentationExtends(source.getLocalRepresentation()));
+            }
+        }
+
         return target;
     }
 

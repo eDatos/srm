@@ -13,6 +13,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
+import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacRepository;
 import org.siemac.metamac.srm.core.task.utils.ImportationMetamacCommonValidations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,12 +23,16 @@ import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesJaxb2DoCallback;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 
 @Component("categoriesMetamacJaxb2DoCallback")
 public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValidations implements CategoriesJaxb2DoCallback {
 
     @Autowired
-    private CategoriesMetamacService categoriesMetamacService;
+    private OrganisationSchemeVersionMetamacRepository organisationSchemeVersionMetamacRepository;
+
+    @Autowired
+    private CategoriesMetamacService                   categoriesMetamacService;
 
     /**************************************************************************
      * CREATES
@@ -133,6 +138,16 @@ public class CategoriesJaxb2DoCallbackImpl extends ImportationMetamacCommonValid
     @Override
     public void validateRestrictions(ServiceContext ctx, Categorisation source) throws MetamacException {
         validateRestrictionsCategorisation(ctx, source.getMaintainableArtefact(), false);
+    }
+
+    @Override
+    public OrganisationSchemeVersion findOrganisationSchemeByUrnForImportation(String urn) {
+        return organisationSchemeVersionMetamacRepository.findByUrnForImportation(urn);
+    }
+
+    @Override
+    public OrganisationSchemeVersion findOrganisationSchemeByRefForImportation(String maintainer, String code, String version) {
+        return organisationSchemeVersionMetamacRepository.findByRefForImportation(maintainer, code, version);
     }
 
 }

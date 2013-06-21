@@ -835,6 +835,25 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureAttributeByCondition(ServiceContext ctx, MetamacCriteria criteria)
+            throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = getDataStructureDefinitionMetamacService().findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureAttributeByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);

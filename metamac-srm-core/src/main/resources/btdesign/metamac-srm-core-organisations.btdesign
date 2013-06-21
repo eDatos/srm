@@ -101,6 +101,8 @@ Application OrganisationsMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@OrganisationSchemeVersionMetamac findByUrn(String urn);
+				@OrganisationSchemeVersionMetamac findByUrnForImportation(String urn);
+				@OrganisationSchemeVersionMetamac findByRefForImportation(String maintainer, String code, String version);
 				@OrganisationSchemeVersionMetamac retrieveOrganisationSchemeVersionByProcStatus(String urn, ArrayProcStatusEnum procStatus) throws MetamacException;
 				@OrganisationSchemeVersionMetamac findByOrganisation(String urn);
 				checkOrganisationSchemeVersionTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;

@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.arte.statistic.sdmx.srm.core.constants.SdmxAlias;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersionRepository;
 
 /**
@@ -33,6 +34,41 @@ public class OrganisationSchemeVersionMetamacRepositoryImpl extends Organisation
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("urn", urn);
         List<OrganisationSchemeVersionMetamac> result = findByQuery("from OrganisationSchemeVersionMetamac where maintainableArtefact.urn = :urn", parameters, 1);
+        if (result == null || result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
+    }
+
+    @Override
+    public OrganisationSchemeVersionMetamac findByUrnForImportation(String urn) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("urn", urn);
+        List<OrganisationSchemeVersionMetamac> result = findByQuery("from OrganisationSchemeVersionMetamac where (maintainableArtefact.urn = :urn OR maintainableArtefact.urnProvider = :urn) "
+                + " AND maintainableArtefact.finalLogicClient is true AND (maintainableArtefact.isTemporal is null OR maintainableArtefact.isTemporal is false)", parameters, 1);
+        if (result == null || result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
+    }
+
+    @Override
+    public OrganisationSchemeVersionMetamac findByRefForImportation(String maintainer, String code, String version) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("code", code);
+        parameters.put("version", version);
+        String query = null;
+        if (SdmxAlias.SDMX_MAINTAINER.equals(maintainer)) {
+            query = "from OrganisationSchemeVersion where maintainableArtefact.maintainer is null and maintainableArtefact.code = :code and maintainableArtefact.versionLogic = :version"
+                    + " AND maintainableArtefact.finalLogicClient is true AND (maintainableArtefact.isTemporal is null OR maintainableArtefact.isTemporal is false)";
+        } else {
+            parameters.put("maintainer", maintainer);
+            query = "from OrganisationSchemeVersion where maintainableArtefact.maintainer.idAsMaintainer = :maintainer and maintainableArtefact.code = :code and maintainableArtefact.versionLogic = :version"
+                    + " AND maintainableArtefact.finalLogicClient is true AND (maintainableArtefact.isTemporal is null OR maintainableArtefact.isTemporal is false)";
+        }
+        List<OrganisationSchemeVersionMetamac> result = findByQuery(query, parameters, 1);
         if (result == null || result.isEmpty()) {
             return null;
         } else {

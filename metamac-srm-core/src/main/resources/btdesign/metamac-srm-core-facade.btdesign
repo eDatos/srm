@@ -266,6 +266,8 @@ Application SrmFacadeCore {
     		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(MetamacCriteria criteria, String conceptUrn) throws MetamacException;
     		"Find concept schemes to enumerated representation of measure dimension"
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(MetamacCriteria criteria) throws MetamacException;
+    		"Find concept schemes to enumerated representation of atribute (metamac extension)"
+    		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureAttributeByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Find codelists to enumerated representation of primary measure"
     		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdPrimaryMeasureByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Find concept schemes with concepts can be concept of attribute"

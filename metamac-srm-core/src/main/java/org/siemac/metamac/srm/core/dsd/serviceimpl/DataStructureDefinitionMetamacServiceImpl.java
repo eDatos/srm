@@ -99,6 +99,8 @@ import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.DataStructureDefin
 import com.arte.statistic.sdmx.srm.core.structure.serviceimpl.utils.DataStructureInvocationValidator;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 
 /**
  * Implementation of DataStructureDefinitionMetamacService.
@@ -704,10 +706,17 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     }
 
     @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter) throws MetamacException {
+        return findConceptSchemesWithSpecificType(ctx, conditions, pagingParameter, ConceptSchemeTypeEnum.MEASURE);
+    }
+
+    @Override
     public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter, String dsdUrn) throws MetamacException {
         return findConceptSchemesWithConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.ATTRIBUTE, ConceptRoleEnum.ATTRIBUTE_OR_DIMENSION);
     }
+
     @Override
     public PagedResult<ConceptMetamac> findConceptsCanBeDsdAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn)
             throws MetamacException {
@@ -1015,27 +1024,78 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             // Role
             checkComponentRoles(ctx, dataStructureDefinitionVersion, component, exceptions);
 
-            // Representation
+            SpecialDimensionTypeEnum specialDimensionTypeEnum = ((DimensionComponent) component).getSpecialDimensionType();
+            // Geographical dimension
             {
-                if (component.getLocalRepresentation() != null) {
-                    Representation representation = component.getLocalRepresentation();
-                    if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
-                        if (representation.getEnumerationCodelist() != null) {
-                            Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
-                            List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
-                                    .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
-                            PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode,
-                                    pagingParameter, component.getCptIdRef().getNameableArtefact().getUrn());
-                            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
-                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DIMENSION_REPRESENTATION_ENUMERATED));
+                if (SpecialDimensionTypeEnum.SPATIAL.equals(specialDimensionTypeEnum)) {
+                    Representation spatialRepresentation = null;
+                    // If it is a geographical dimension, then must have a enumerated local representation or a enumerated inherited representation
+                    if (component.getLocalRepresentation() != null) {
+                        spatialRepresentation = component.getLocalRepresentation();
+                        if (!RepresentationTypeEnum.ENUMERATION.equals(spatialRepresentation.getRepresentationType())) {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_INVALID));
+                            spatialRepresentation = null;
+                        }
+                    } else {
+                        if (component.getCptIdRef().getCoreRepresentation() != null) {
+                            spatialRepresentation = component.getCptIdRef().getCoreRepresentation();
+                            if (!RepresentationTypeEnum.ENUMERATION.equals(spatialRepresentation.getRepresentationType())) {
+                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_INVALID));
+                                spatialRepresentation = null;
                             }
                         } else {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_REQUIRED));
+                            spatialRepresentation = null;
+                        }
+                    }
+                    // Check constraint over spatialRepresentation
+                    if (spatialRepresentation != null) {
+                        // TODO llamar al findGEO, todo revisar tb los mensajes de error
+                    }
+                }
+            }
+
+            // Representation
+            {
+                if (!SpecialDimensionTypeEnum.SPATIAL.equals(specialDimensionTypeEnum)) {
+                    // validation of enumerated local representation or a enumerated inherited representati
+                    if (component.getLocalRepresentation() != null) {
+                        Representation representation = component.getLocalRepresentation();
+                        if (!dimensionCheckRepresentation(ctx, component, representation)) {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DIMENSION_REPRESENTATION_ENUMERATED));
+                        }
+                    } else {
+                        // Check if the concept identity has a valid representation
+                        if (component.getCptIdRef().getCoreRepresentation() != null) {
+                            if (!dimensionCheckRepresentation(ctx, component, component.getCptIdRef().getCoreRepresentation())) {
+                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_INVALID));
+                            }
+                        } else {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_INVALID));
                         }
                     }
                 }
             }
         }
+    }
+
+    protected boolean dimensionCheckRepresentation(ServiceContext ctx, Component component, Representation representation) throws MetamacException {
+        if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
+            if (representation.getEnumerationCodelist() != null) {
+                PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+                Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
+                List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                        .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
+                PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, component
+                        .getCptIdRef().getNameableArtefact().getUrn());
+                if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -1062,27 +1122,116 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             // Role
             checkComponentRoles(ctx, dataStructureDefinitionVersion, component, exceptions);
 
-            // Representation
+            SpecialAttributeTypeEnum specialAttributeType = ((DataAttribute) component).getSpecialAttributeType();
+            // Geographical attribute
             {
-                if (component.getLocalRepresentation() != null) {
-                    Representation representation = component.getLocalRepresentation();
-                    if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
-                        if (representation.getEnumerationCodelist() != null) {
-                            Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
-                            List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
-                                    .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
-                            PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(ctx, criteriaToVerifyConceptIdentityCode,
-                                    pagingParameter, component.getCptIdRef().getNameableArtefact().getUrn());
-                            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
-                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DATA_ATTRIBUTE_REPRESENTATION_ENUMERATED));
+                // If it is a geographical attribute, then must have a enumerated local representation or a enumerated inherited representation
+                if (SpecialAttributeTypeEnum.SPATIAL_EXTENDS.equals(specialAttributeType)) {
+                    Representation spatialRepresentation = null;
+                    if (component.getLocalRepresentation() != null) {
+                        spatialRepresentation = component.getLocalRepresentation();
+                        if (!RepresentationTypeEnum.ENUMERATION.equals(spatialRepresentation.getRepresentationType())) {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID));
+                            spatialRepresentation = null;
+                        }
+                    } else {
+                        if (component.getCptIdRef().getCoreRepresentation() != null) {
+                            spatialRepresentation = component.getCptIdRef().getCoreRepresentation();
+                            if (!RepresentationTypeEnum.ENUMERATION.equals(spatialRepresentation.getRepresentationType())) {
+                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID));
+                                spatialRepresentation = null;
                             }
                         } else {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_REQUIRED));
+                            spatialRepresentation = null;
+                        }
+                    }
+                    // Check constraint over spatialRepresentation
+                    if (spatialRepresentation != null) {
+                        // TODO llamar al findGEO
+                    }
+                }
+            }
+
+            // Measure attribute
+            {
+                // If it is a measure attribute, then must have a enumerated local representation or a enumerated inherited representation
+                if (SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(specialAttributeType)) {
+                    Representation measureRepresentation = null;
+                    if (component.getLocalRepresentation() != null) {
+                        measureRepresentation = component.getLocalRepresentation();
+                        if (!RepresentationTypeEnum.ENUMERATION.equals(measureRepresentation.getRepresentationType())) {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID));
+                            measureRepresentation = null;
+                        }
+                    } else {
+                        if (component.getCptIdRef().getCoreRepresentation() != null) {
+                            measureRepresentation = component.getCptIdRef().getCoreRepresentation();
+                            if (!RepresentationTypeEnum.ENUMERATION.equals(measureRepresentation.getRepresentationType())) {
+                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID));
+                                measureRepresentation = null;
+                            }
+                        } else {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_REQUIRED));
+                            measureRepresentation = null;
+                        }
+                    }
+                    // Check constraint over measure representation
+                    if (measureRepresentation != null) {
+                        if (measureRepresentation.getEnumerationConceptScheme() != null) {
+                            Long conceptSchemeRepresentationId = measureRepresentation.getEnumerationConceptScheme().getId();
+                            List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                                    .withProperty(ConceptSchemeVersionMetamacProperties.id()).eq(conceptSchemeRepresentationId).build();
+                            PagedResult<ConceptSchemeVersionMetamac> result = findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureAttributeByCondition(ctx,
+                                    criteriaToVerifyConceptIdentityCode, pagingParameter);
+                            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptSchemeRepresentationId)) {
+                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID));
+                            }
+                        } else {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID));
+                        }
+                    }
+                }
+            }
+
+            // Representation
+            {
+                if (!SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(specialAttributeType) && !SpecialAttributeTypeEnum.SPATIAL_EXTENDS.equals(specialAttributeType)) {
+                    if (component.getLocalRepresentation() != null) {
+                        Representation representation = component.getLocalRepresentation();
+                        if (!attributeCheckRepresentation(ctx, component, representation)) {
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DATA_ATTRIBUTE_REPRESENTATION_ENUMERATED));
+                        }
+                    } else {
+                        // Check if the concept identity has a valid representation
+                        if (component.getCptIdRef().getCoreRepresentation() != null) {
+                            if (!attributeCheckRepresentation(ctx, component, component.getCptIdRef().getCoreRepresentation())) {
+                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID));
+                            }
+                        } else {
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID));
                         }
                     }
                 }
             }
         }
+    }
+
+    protected boolean attributeCheckRepresentation(ServiceContext ctx, Component component, Representation representation) throws MetamacException {
+        if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
+            PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+            if (representation.getEnumerationCodelist() != null) {
+                Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
+                List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                        .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
+                PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, component
+                        .getCptIdRef().getNameableArtefact().getUrn());
+                if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void checkComponentRoles(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, Component component, List<MetamacExceptionItem> exceptions)
