@@ -7,13 +7,29 @@
     
     <!-- Database -->
     <!-- ORACLE -->
-    <entry key="metamac.srm.db.url">jdbc:oracle:thin:@oracle-dev:1521:XE</entry>
-    <entry key="metamac.srm.db.username">jenkins_metamac_srm</entry>
-    <entry key="metamac.srm.db.password">jenkins_metamac_srm</entry>
+    <entry key="metamac.srm.db.url">jdbc:oracle:thin:@localhost:1521:XE</entry>
+    <entry key="metamac.srm.db.username">srm_test</entry>
+    <entry key="metamac.srm.db.password">srm_test</entry>
     <entry key="metamac.srm.db.dialect">org.siemac.metamac.hibernate.dialect.Oracle10gDialectMetamac</entry>
     <entry key="metamac.srm.db.driverName">oracle.jdbc.OracleDriver</entry>
     <entry key="metamac.srm.db.provider">ORACLE</entry>
     
+<!--     #ORACLE -->
+<!-- metamac.srm.db.url=jdbc:oracle:thin:@localhost:1521:XE -->
+<!-- metamac.srm.db.username=srm_test -->
+<!-- metamac.srm.db.password=srm_test -->
+<!-- metamac.srm.db.dialect=org.siemac.metamac.hibernate.dialect.Oracle10gDialectMetamac -->
+<!-- metamac.srm.db.driverName=oracle.jdbc.OracleDriver -->
+<!-- metamac.srm.db.provider=ORACLE -->
+
+<!-- #MSSQL -->
+<!-- #metamac.srm.db.url=jdbc:sqlserver://lgutmed:1433;databaseName=LOCAL -->
+<!-- #metamac.srm.db.username=mtm_srm_test -->
+<!-- #metamac.srm.db.password=mtm_srm_test -->
+<!-- #metamac.srm.db.dialect=org.hibernate.dialect.SQLServerDialect -->
+<!-- #metamac.srm.db.driverName=com.microsoft.sqlserver.jdbc.SQLServerDriver -->
+<!-- #metamac.srm.db.provider=MSSQL -->
+
     <!-- MSSQL -->
 <!--     <entry key="metamac.srm.db.url">jdbc:sqlserver://localhost:50937;databaseName=LOCAL</entry> -->
 <!--     <entry key="metamac.srm.db.username">mtm_srm_test</entry> -->

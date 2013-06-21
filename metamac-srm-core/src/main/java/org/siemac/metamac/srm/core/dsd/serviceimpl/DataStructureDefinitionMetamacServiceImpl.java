@@ -1029,10 +1029,10 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                         // Check if the concept identity has a valid representation
                         if (component.getCptIdRef().getCoreRepresentation() != null) {
                             if (!dimensionCheckRepresentation(ctx, component, component.getCptIdRef().getCoreRepresentation())) {
-                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_INVALID));
+                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_INHERITED_INVALID));
                             }
                         } else {
-                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_INVALID));
+                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_INHERITED_INVALID));
                         }
                     }
                 }
@@ -1054,18 +1054,18 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         if (component.getLocalRepresentation() != null) {
             representation = component.getLocalRepresentation();
             if (!RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
-                exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType));
+                exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType, component.getUrn()));
                 representation = null;
             }
         } else {
             if (component.getCptIdRef().getCoreRepresentation() != null) {
                 representation = component.getCptIdRef().getCoreRepresentation();
                 if (!RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
-                    exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType));
+                    exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType, component.getUrn()));
                     representation = null;
                 }
             } else {
-                exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType));
+                exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType, component.getUrn()));
                 representation = null;
             }
         }
@@ -1122,6 +1122,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                 if (SpecialAttributeTypeEnum.SPATIAL_EXTENDS.equals(specialAttributeType)) {
                     Representation spatialRepresentation = checkComponentRequiredLocalOrInheritedEnumeratedRepresentation(component, exceptions,
                             ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_REQUIRED);
+
                     // Check constraint over spatialRepresentation
                     if (spatialRepresentation != null) {
                         // TODO llamar al findGEO
@@ -1131,27 +1132,11 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
             // Measure attribute
             {
-                // If it is a measure attribute, then must have a enumerated local representation or a enumerated inherited representation
                 if (SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(specialAttributeType)) {
-                    Representation measureRepresentation = null;
-                    if (component.getLocalRepresentation() != null) {
-                        measureRepresentation = component.getLocalRepresentation();
-                        if (!RepresentationTypeEnum.ENUMERATION.equals(measureRepresentation.getRepresentationType())) {
-                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID));
-                            measureRepresentation = null;
-                        }
-                    } else {
-                        if (component.getCptIdRef().getCoreRepresentation() != null) {
-                            measureRepresentation = component.getCptIdRef().getCoreRepresentation();
-                            if (!RepresentationTypeEnum.ENUMERATION.equals(measureRepresentation.getRepresentationType())) {
-                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID));
-                                measureRepresentation = null;
-                            }
-                        } else {
-                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_REQUIRED));
-                            measureRepresentation = null;
-                        }
-                    }
+                    // If it is a measure attribute, then must have a enumerated local representation or a enumerated inherited representation
+                    Representation measureRepresentation = checkComponentRequiredLocalOrInheritedEnumeratedRepresentation(component, exceptions,
+                            ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_REQUIRED);
+
                     // Check constraint over measure representation
                     if (measureRepresentation != null) {
                         if (measureRepresentation.getEnumerationConceptScheme() != null) {
