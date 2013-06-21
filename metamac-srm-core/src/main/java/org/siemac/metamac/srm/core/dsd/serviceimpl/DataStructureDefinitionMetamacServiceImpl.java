@@ -23,6 +23,7 @@ import org.siemac.metamac.core.common.ent.domain.ExternalItemRepository;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
+import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
@@ -1004,26 +1005,10 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             // Geographical dimension
             {
                 if (SpecialDimensionTypeEnum.SPATIAL.equals(specialDimensionTypeEnum)) {
-                    Representation spatialRepresentation = null;
                     // If it is a geographical dimension, then must have a enumerated local representation or a enumerated inherited representation
-                    if (component.getLocalRepresentation() != null) {
-                        spatialRepresentation = component.getLocalRepresentation();
-                        if (!RepresentationTypeEnum.ENUMERATION.equals(spatialRepresentation.getRepresentationType())) {
-                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_INVALID));
-                            spatialRepresentation = null;
-                        }
-                    } else {
-                        if (component.getCptIdRef().getCoreRepresentation() != null) {
-                            spatialRepresentation = component.getCptIdRef().getCoreRepresentation();
-                            if (!RepresentationTypeEnum.ENUMERATION.equals(spatialRepresentation.getRepresentationType())) {
-                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_INVALID));
-                                spatialRepresentation = null;
-                            }
-                        } else {
-                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_REQUIRED));
-                            spatialRepresentation = null;
-                        }
-                    }
+                    Representation spatialRepresentation = checkComponentRequiredLocalOrInheritedEnumeratedRepresentation(component, exceptions,
+                            ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_REQUIRED);
+
                     // Check constraint over spatialRepresentation
                     if (spatialRepresentation != null) {
                         // TODO llamar al findGEO, todo revisar tb los mensajes de error
@@ -1034,7 +1019,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             // Representation
             {
                 if (!SpecialDimensionTypeEnum.SPATIAL.equals(specialDimensionTypeEnum)) {
-                    // validation of enumerated local representation or a enumerated inherited representati
+                    // validation of enumerated local representation or a enumerated inherited representation
                     if (component.getLocalRepresentation() != null) {
                         Representation representation = component.getLocalRepresentation();
                         if (!dimensionCheckRepresentation(ctx, component, representation)) {
@@ -1053,6 +1038,38 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                 }
             }
         }
+    }
+
+    /**
+     * Check required local or inherited enumerated representation
+     * 
+     * @param component
+     * @param exceptions
+     * @return
+     */
+    protected Representation checkComponentRequiredLocalOrInheritedEnumeratedRepresentation(Component component, List<MetamacExceptionItem> exceptions,
+            CommonServiceExceptionType candidateSeviceExceptionType) {
+        // Check required enumerated representation, then must have a enumerated local representation or a enumerated inherited representation
+        Representation representation = null;
+        if (component.getLocalRepresentation() != null) {
+            representation = component.getLocalRepresentation();
+            if (!RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
+                exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType));
+                representation = null;
+            }
+        } else {
+            if (component.getCptIdRef().getCoreRepresentation() != null) {
+                representation = component.getCptIdRef().getCoreRepresentation();
+                if (!RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
+                    exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType));
+                    representation = null;
+                }
+            } else {
+                exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType));
+                representation = null;
+            }
+        }
+        return representation;
     }
 
     protected boolean dimensionCheckRepresentation(ServiceContext ctx, Component component, Representation representation) throws MetamacException {
@@ -1103,25 +1120,8 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             {
                 // If it is a geographical attribute, then must have a enumerated local representation or a enumerated inherited representation
                 if (SpecialAttributeTypeEnum.SPATIAL_EXTENDS.equals(specialAttributeType)) {
-                    Representation spatialRepresentation = null;
-                    if (component.getLocalRepresentation() != null) {
-                        spatialRepresentation = component.getLocalRepresentation();
-                        if (!RepresentationTypeEnum.ENUMERATION.equals(spatialRepresentation.getRepresentationType())) {
-                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID));
-                            spatialRepresentation = null;
-                        }
-                    } else {
-                        if (component.getCptIdRef().getCoreRepresentation() != null) {
-                            spatialRepresentation = component.getCptIdRef().getCoreRepresentation();
-                            if (!RepresentationTypeEnum.ENUMERATION.equals(spatialRepresentation.getRepresentationType())) {
-                                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID));
-                                spatialRepresentation = null;
-                            }
-                        } else {
-                            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_REQUIRED));
-                            spatialRepresentation = null;
-                        }
-                    }
+                    Representation spatialRepresentation = checkComponentRequiredLocalOrInheritedEnumeratedRepresentation(component, exceptions,
+                            ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_REQUIRED);
                     // Check constraint over spatialRepresentation
                     if (spatialRepresentation != null) {
                         // TODO llamar al findGEO
