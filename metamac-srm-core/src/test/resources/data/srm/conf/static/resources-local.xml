@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Configurations</comment>
+    <!-- The following URN must be create in the system before any DSD creation -->
+    <entry key="metamac.srm.dsd.primary_measure.default_concept.urn">urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME04(01.000).CONCEPT01</entry>
+
+    <!-- Database -->
+    <!-- ORACLE -->
+    <entry key="metamac.srm.db.url">jdbc:oracle:thin:@localhost:1521:XE</entry>
+    <entry key="metamac.srm.db.username">metamac_srm_test</entry>
+    <entry key="metamac.srm.db.password">metamac_srm_test</entry>
+    <entry key="metamac.srm.db.dialect">org.siemac.metamac.hibernate.dialect.Oracle10gDialectMetamac</entry>
+    <entry key="metamac.srm.db.driverName">oracle.jdbc.OracleDriver</entry>
+    <entry key="metamac.srm.db.provider">ORACLE</entry>
+
+    <!-- MSSQL -->
+    <!-- <entry key="metamac.srm.db.url">jdbc:sqlserver://lgutmed:50937;databaseName=LOCAL</entry> -->
+    <!-- <entry key="metamac.srm.db.username">metamac_srm_test</entry> -->
+    <!-- <entry key="metamac.srm.db.password">metamac_srm_test</entry> -->
+    <!-- <entry key="metamac.srm.db.dialect">org.hibernate.dialect.SQLServerDialect</entry> -->
+    <!-- <entry key="metamac.srm.db.driverName">com.microsoft.sqlserver.jdbc.SQLServerDriver</entry> -->
+    <!-- <entry key="metamac.srm.db.provider">MSSQL</entry> -->
+</properties>
