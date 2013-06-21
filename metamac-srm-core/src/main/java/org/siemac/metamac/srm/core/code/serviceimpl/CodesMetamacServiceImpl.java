@@ -2332,13 +2332,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
-    /**
-     * Checks variable element belongs to same variable of codelist
-     */
     private void checkCodeVariableElement(CodelistVersionMetamac codelistVersion, VariableElement variableElement) throws MetamacException {
+        // Checks variable element belongs to same variable of codelist
         if (variableElement != null && !codelistVersion.getVariable().getId().equals(variableElement.getVariable().getId())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.CODE_VARIABLE_ELEMENT).build();
         }
+        // Note: in this point, do not check variable element as required if codelist variable is geographical, to allow save codes and then normalize all together with
+        // 'normaliseVariableElementsToCodes'
     }
 
     /**
