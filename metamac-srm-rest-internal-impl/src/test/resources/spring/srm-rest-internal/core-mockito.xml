@@ -43,6 +43,10 @@
         <constructor-arg value="com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository" />
     </bean>       
 
+    <bean id="organisationSchemeVersionRepository" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersionRepository" />
+    </bean> 
+    
     <bean id="structureVersionRepository" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository" />
     </bean>       
