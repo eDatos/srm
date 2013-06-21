@@ -494,7 +494,6 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             }
         }
 
-        // TODO Vistas materializadas en bbdd para que sea el mismo código independientemente de la bbdd? Mientras, hay que modificar spring-test.properties y resources.xml para indicar el driver
         // Order
         String orderColumn = getOrderColumnName(orderColumnIndex);
         StringBuilder sb = new StringBuilder();
