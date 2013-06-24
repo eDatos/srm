@@ -104,6 +104,8 @@ Application DsdsMetamac {
     		PagedResult<@ConceptMetamac> findConceptsCanBeDsdRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
     		"Find codelists belong to same variable of concept"
     		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn) throws MetamacException;
+    		"Find codelists belong to same variable of concept and the variable must be spatial"
+    		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdSpatialDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn) throws MetamacException;
     		"Find concept schemes to enumerated representation of measure dimension"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
     		"Find concept schemes to enumerated representation of atribute (metamac extension)"
@@ -116,6 +118,8 @@ Application DsdsMetamac {
     		PagedResult<@ConceptMetamac> findConceptsCanBeDsdAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
     		"Find codelists belong to same variable of concept"
     		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn) throws MetamacException;
+			"Find codelists belong to same variable of concept an the variable must be spatial"
+    		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdSpatialAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn) throws MetamacException;
 			"Find orderVisualisation belong to same codelist representation of dimension"
 			PagedResult<@CodelistOrderVisualisation> findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dimensionUrn) throws MetamacException;
             "Find openessVisualisation belong to same codelist representation of dimension"	

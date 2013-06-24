@@ -1112,6 +1112,18 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     }
 
     @Override
+    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdSpatialDimensionByCondition() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void testFindCodelistsCanBeEnumeratedRepresentationForDsdSpatialAttributeByCondition() throws Exception {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
     @Test
     public void testFindConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition() throws Exception {
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
