@@ -1,11 +1,11 @@
 package org.siemac.metamac.srm.core.code.domain.shared;
 
-public class TaskImportTsvInfo {
+public class TaskImportationInfo {
 
     private Boolean isPlannedInBackground;
     private String  jobKey;
 
-    public TaskImportTsvInfo(Boolean isPlannedInBackground, String jobKey) {
+    public TaskImportationInfo(Boolean isPlannedInBackground, String jobKey) {
         this.isPlannedInBackground = isPlannedInBackground;
         this.jobKey = jobKey;
     }

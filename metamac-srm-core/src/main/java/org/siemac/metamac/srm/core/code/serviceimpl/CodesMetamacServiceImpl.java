@@ -64,7 +64,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
-import org.siemac.metamac.srm.core.code.domain.shared.TaskImportTsvInfo;
+import org.siemac.metamac.srm.core.code.domain.shared.TaskImportationInfo;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
@@ -686,7 +686,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public TaskImportTsvInfo importCodesTsv(ServiceContext ctx, String codelistUrn, InputStream stream, String charset, String fileName, boolean updateAlreadyExisting,
+    public TaskImportationInfo importCodesTsv(ServiceContext ctx, String codelistUrn, InputStream stream, String charset, String fileName, boolean updateAlreadyExisting,
             List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException {
 
         // Validation
@@ -702,7 +702,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
             // execute in background
             String jobKey = tasksMetamacService.plannifyImportCodesTsvInBackground(ctx, codelistUrn, stream, fileName, updateAlreadyExisting);
-            return new TaskImportTsvInfo(Boolean.TRUE, jobKey);
+            return new TaskImportationInfo(Boolean.TRUE, jobKey);
         }
 
         // Execute importation now
@@ -790,11 +790,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion.getItemScheme().setIsTaskInBackground(Boolean.FALSE);
         itemSchemeRepository.save(codelistVersion.getItemScheme());
 
-        return new TaskImportTsvInfo(Boolean.FALSE, null);
+        return new TaskImportationInfo(Boolean.FALSE, null);
     }
 
     @Override
-    public TaskImportTsvInfo importCodeOrdersTsv(ServiceContext ctx, String codelistUrn, InputStream stream, String charset, String fileName, List<MetamacExceptionItem> informationItems,
+    public TaskImportationInfo importCodeOrdersTsv(ServiceContext ctx, String codelistUrn, InputStream stream, String charset, String fileName, List<MetamacExceptionItem> informationItems,
             Boolean canBeBackground) throws MetamacException {
 
         // Validation
@@ -810,7 +810,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             // execute in background
             String jobKey = tasksMetamacService.plannifyImportCodeOrdersTsvInBackground(ctx, codelistUrn, stream, fileName);
 
-            return new TaskImportTsvInfo(Boolean.TRUE, jobKey);
+            return new TaskImportationInfo(Boolean.TRUE, jobKey);
         }
 
         // Codes in codelist
@@ -901,7 +901,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion.getItemScheme().setIsTaskInBackground(Boolean.FALSE);
         itemSchemeRepository.save(codelistVersion.getItemScheme());
 
-        return new TaskImportTsvInfo(Boolean.FALSE, null);
+        return new TaskImportationInfo(Boolean.FALSE, null);
     }
 
     @Override
@@ -1953,7 +1953,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public TaskImportTsvInfo importVariableElementsTsv(ServiceContext ctx, String variableUrn, InputStream stream, String charset, String fileName, boolean updateAlreadyExisting,
+    public TaskImportationInfo importVariableElementsTsv(ServiceContext ctx, String variableUrn, InputStream stream, String charset, String fileName, boolean updateAlreadyExisting,
             List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException {
 
         // Validation
@@ -1962,7 +1962,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Plannify task if can be in background
         if (canBeBackground) {
             String jobKey = tasksMetamacService.plannifyImportVariableElementsTsvInBackground(ctx, variableUrn, stream, fileName, updateAlreadyExisting);
-            return new TaskImportTsvInfo(Boolean.TRUE, jobKey);
+            return new TaskImportationInfo(Boolean.TRUE, jobKey);
         }
 
         // Retrieve actual variable elements
@@ -2034,7 +2034,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             getVariableElementRepository().save(variableElement);
         }
 
-        return new TaskImportTsvInfo(Boolean.FALSE, null);
+        return new TaskImportationInfo(Boolean.FALSE, null);
     }
 
     // ------------------------------------------------------------------------------------

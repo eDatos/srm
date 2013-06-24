@@ -72,7 +72,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
-import org.siemac.metamac.srm.core.code.domain.shared.TaskImportTsvInfo;
+import org.siemac.metamac.srm.core.code.domain.shared.TaskImportationInfo;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
@@ -3876,7 +3876,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
                     assertEquals(true, taskImportTsvInfo.getIsPlannedInBackground());
                     assertNotNull(taskImportTsvInfo.getJobKey());
 
@@ -4319,7 +4319,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
                     fail("importation failed");
@@ -4371,7 +4371,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
                     fail("importation failed");
@@ -4504,7 +4504,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
                     fail("importation failed");
@@ -4548,7 +4548,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
                     fail("importation failed");
@@ -4591,7 +4591,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     assertEquals(true, taskImportTsvInfo.getIsPlannedInBackground());
                     assertNotNull(taskImportTsvInfo.getJobKey());
 
@@ -4700,7 +4700,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
                     fail("importation failed");
@@ -4742,7 +4742,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
                     fail("importation failed");
@@ -4780,7 +4780,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
                     fail("importation failed");
@@ -4817,7 +4817,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
                     fail("importation failed");
@@ -4854,7 +4854,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
                     fail("importation failed");
@@ -4892,7 +4892,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
                     fail("importation failed");
@@ -8768,7 +8768,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
+                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
                             Boolean.TRUE);
                     assertEquals(true, taskImportTsvInfo.getIsPlannedInBackground());
                     assertNotNull(taskImportTsvInfo.getJobKey());
@@ -8861,7 +8861,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
+                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
                             Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
@@ -8961,7 +8961,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
+                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
                             Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
@@ -9060,7 +9060,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
+                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
                             Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
@@ -9103,7 +9103,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportTsvInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
+                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
                             Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {

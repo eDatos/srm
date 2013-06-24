@@ -117,9 +117,9 @@ Application CodesMetamac {
 			"Copy codes to another codelist"
 	   		copyCodesInCodelist(String codelistSourceUrn, String codelistTargetUrn, List<CodeToCopy> codesToCopy) throws MetamacException;
 			"Imports codes in tsv format"
-    		TaskImportTsvInfo importCodesTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException;
+    		TaskImportationInfo importCodesTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException;
 			"Imports code orders in tsv format"
-    		TaskImportTsvInfo importCodeOrdersTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException;
+    		TaskImportationInfo importCodeOrdersTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException;
 			"Exports codes in tsv format"
     		String exportCodesTsv(String codelistUrn) throws MetamacException;
 			"Exports code orders in tsv format"
@@ -238,7 +238,7 @@ Application CodesMetamac {
  			"Retrieves all variable elements operations of one variable element"
  			List<@VariableElementOperation> retrieveVariableElementsOperationsByVariableElement(String variableElementUrn) throws MetamacException;
 			"Imports variable elements in tsv format"
-    		TaskImportTsvInfo importVariableElementsTsv(String variableUrn, InputStream tsvStream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException;
+    		TaskImportationInfo importVariableElementsTsv(String variableUrn, InputStream tsvStream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
