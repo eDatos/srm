@@ -22,9 +22,6 @@ import org.siemac.metamac.srm.core.normalisation.MatchResult;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
- * Spring based transactional test with DbUnit support.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 public class CodesAlgorithmsTest {
