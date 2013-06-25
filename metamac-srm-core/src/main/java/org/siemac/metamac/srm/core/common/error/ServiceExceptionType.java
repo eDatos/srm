@@ -31,6 +31,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     // Codelists
     public static final CommonServiceExceptionType VARIABLE_ONLY_IN_ONE_FAMILY                                                   = create("exception.srm.codelists.variable.variable_only_one_family");
     public static final CommonServiceExceptionType VARIABLE_WITH_RELATIONS                                                       = create("exception.srm.codelists.variable.with_relations");
+    public static final CommonServiceExceptionType VARIABLE_MUST_BE_GEOGRAPHICAL                                                 = create("exception.srm.codelists.variable.must_be_geographical");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_WITH_RELATIONS                                               = create("exception.srm.codelists.variable_element.with_relations");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_WITH_OPERATIONS                                              = create("exception.srm.codelists.variable_element.with_operations");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_OPERATION_VARIABLE_ELEMENT_IN_SOURCE_AND_TARGET              = create("exception.srm.codelists.variable_element_operation.variable_element_in_source_and_target");
@@ -90,7 +91,8 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType IMPORTATION_TSV_ERROR_ALPHABETICAL_VISUALISATION_NOT_SUPPORTED                = create("exception.srm.importation.tsv.error.order_visualisation.alphabetical_not_supported");
     public static final CommonServiceExceptionType IMPORTATION_TSV_ERROR_CODE_NOT_FOUND                                          = create("exception.srm.importation.tsv.error.code.not_found");
     public static final CommonServiceExceptionType IMPORTATION_TSV_ERROR_INCORRECT_NUMBER_CODES                                  = create("exception.srm.importation.tsv.error.incorrect_number_codes");
-
+    public static final CommonServiceExceptionType IMPORTATION_SHAPE_ERROR                                                       = create("exception.srm.importation.shape.error");
+    public static final CommonServiceExceptionType IMPORTATION_SHAPE_ERROR_FILE_PARSING                                          = create("exception.srm.importation.shape.error.file_parse");
     public static final CommonServiceExceptionType EXPORTATION_TSV_ERROR                                                         = create("exception.srm.exportation.tsv.error");
 
 }

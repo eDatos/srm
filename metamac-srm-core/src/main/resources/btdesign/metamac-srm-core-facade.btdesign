@@ -710,9 +710,10 @@ Application SrmFacadeCore {
     		processImportCodeOrdersTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey) throws MetamacException;
     		"Imports variable elements in tsv format"
     		processImportVariableElementsTsv(String variableUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+			"Imports geographical information (shape) of variable elements"
+    		processImportVariableElementsShape(String variableUrn, URL shapeFile, String jobKey) throws MetamacException;
     		"Perform a merge with temporal codelist"
 			processPublishInternallyCodelist(String urnToCopy, boolean forceLatestFinal, String jobKey) throws MetamacException;
-    		
     		
     		"Marks job as failed"
     		markTaskAsFailed(String job, java.lang.Exception exception) throws MetamacException;

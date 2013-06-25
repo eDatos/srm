@@ -6180,7 +6180,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="70° 55' 59''"
                 LONGITUDE="90° 30' 45''"
-                SHAPE="{shape1:1}"
+                SHAPE="MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))"
                 GEOGRAPHICAL_GRANULARITY_FK="1011"
                 
                 UUID="variable-element-51"
@@ -6229,7 +6229,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="70° 55' 59''"
                 LONGITUDE="90° 30' 45''"
-                SHAPE="{shape1:1}"
+                SHAPE="MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))"
                 GEOGRAPHICAL_GRANULARITY_FK="1011"
                 
                 UUID="variable-element-52"
@@ -6278,7 +6278,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="70° 55' 59''"
                 LONGITUDE="90° 30' 45''"
-                SHAPE="{shape1:1}"
+                SHAPE="MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))"
                 GEOGRAPHICAL_GRANULARITY_FK="1011"
                 
                 UUID="variable-element-53"
@@ -6312,7 +6312,56 @@
                     LAST_UPDATED_BY="user2"
                     LAST_UPDATED="2011-01-22 01:02:03"
                     LAST_UPDATED_TZ="Europe/London"
-                />                                
+                />      
+                
+            <TB_M_VARIABLE_ELEMENTS
+                ID="54"
+                IDENTIFIABLE_ARTEFACT_FK="9999354"
+                
+                SHORT_NAME_FK="154"
+                VALID_FROM_TZ="Europe/London"
+                VALID_FROM="2011-01-02 02:02:04" 
+                VALID_TO_TZ="Europe/London"
+                VALID_TO="2012-01-02 02:02:04"
+                VARIABLE_FK="5"
+                REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="70° 55' 59''"
+                LONGITUDE="90° 30' 45''"
+                SHAPE="MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))"
+                GEOGRAPHICAL_GRANULARITY_FK="1011"
+                
+                UUID="variable-element-54"
+                CREATED_DATE_TZ="Europe/London"
+                CREATED_DATE="2011-01-01 01:02:04"
+                CREATED_BY="user1"
+                LAST_UPDATED_TZ="Europe/London"
+                LAST_UPDATED="2012-01-01 01:02:04"
+                LAST_UPDATED_BY="user2"
+                VERSION="1"
+            />
+            
+               <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9999354"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
+                    
+                    CODE="VARIABLE_ELEMENT_04"
+                    CODE_FULL="[null]"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_04"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_04"
+                    
+                    NAME_FK="[null]"
+                    DESCRIPTION_FK="[null]"
+                    
+                    UUID="annotableArtefact-9999354"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:04"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:04"
+                    LAST_UPDATED_TZ="Europe/London"
+                />                                                
                 
                 <!-- VARIABLE ELEMENTS OPERATIONS -->
                 
@@ -9144,4 +9193,16 @@
         INTERNATIONAL_STRING_FK="153"
     />                                                                                                         
 
+    <TB_INTERNATIONAL_STRINGS
+        ID="154"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1541"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="154"
+    />    
 </dataset>

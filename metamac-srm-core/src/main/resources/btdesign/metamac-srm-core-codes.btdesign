@@ -239,6 +239,8 @@ Application CodesMetamac {
  			List<@VariableElementOperation> retrieveVariableElementsOperationsByVariableElement(String variableElementUrn) throws MetamacException;
 			"Imports variable elements in tsv format"
     		TaskImportationInfo importVariableElementsTsv(String variableUrn, InputStream tsvStream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException;
+			"Imports geographical information (shape) of variable elements"
+    		TaskImportationInfo importVariableElementsShape(String variableUrn, URL shapeFile, Boolean canBeBackground) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -531,7 +533,7 @@ Application CodesMetamac {
 			// Geographical information
 			String latitude nullable;
 			String longitude nullable;
-			String shape nullable;
+			Clob shape nullable;
 			- @CodeMetamac geographicalGranularity nullable cascade="none" fetch="lazy" databaseColumn="GEOGRAPHICAL_GRANULARITY_FK";
 			
 			"Variable"

@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.facade.serviceimpl;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +56,14 @@ public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImpl
         getCodesMetamacService().importVariableElementsTsv(ctx, variableUrn, tsvStream, charset, fileName, updateAlreadyExisting, informationItems, CAN_NOT_BE_BACKGROUND);
         // Mark job as completed
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, informationItems);
+    }
+
+    @Override
+    public void processImportVariableElementsShape(ServiceContext ctx, String variableUrn, URL shapeFile, String jobKey) throws MetamacException {
+        // Import
+        getCodesMetamacService().importVariableElementsShape(ctx, variableUrn, shapeFile, CAN_NOT_BE_BACKGROUND);
+        // Mark job as completed
+        getTasksMetamacService().markTaskAsFinished(ctx, jobKey, null);
     }
 
     @Override

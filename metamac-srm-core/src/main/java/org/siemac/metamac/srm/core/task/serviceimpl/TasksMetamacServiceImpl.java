@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -97,43 +98,35 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
         return importTsvInBackground(ctx, tsvStream, fileName, jobDataAdditional);
     }
 
-    private synchronized String importTsvInBackground(ServiceContext ctx, InputStream tsvStream, String fileName, JobDataMap jobDataAdditional) throws MetamacException {
-
-        // Plan job
-        OutputStream os = null;
+    @Override
+    public String plannifyImportVariableElementsShapeInBackground(ServiceContext ctx, String variableUrn, URL shapeFileUrl) throws MetamacException {
         try {
-            String jobKey = "job_import_TSV_" + java.util.UUID.randomUUID().toString();
+            // Plan job
+            String jobKey = "job_import_shape_to_variable_elements_" + java.util.UUID.randomUUID().toString();
 
-            // Mark importation in progress
-            createTaskInProgress(ctx, jobKey, fileName);
+            // Mark task in progress
+            createTaskInProgress(ctx, jobKey, null);
 
-            // Scheduler an importation job
-            Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler"); // get a reference to a scheduler
+            // Scheduler a job
+            Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler");
 
-            // Validation: There shouldn't be an import processing
+            // Validation: There shouldn't be an background processing
             if (sched.getCurrentlyExecutingJobs().size() != 0) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR_MAX_CURRENT_JOBS).withLoggedLevel(ExceptionLevelEnum.ERROR).build(); // Error
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR_MAX_CURRENT_JOBS).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
             }
 
-            // Save InputStream (TempFile)
-            File file = File.createTempFile("srm_TSV_", ".import");
-            file.deleteOnExit();
-            os = new FileOutputStream(file);
-            IOUtils.copy(tsvStream, os);
-
             // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
-            JobDetail job = newJob(ImportationTsvJob.class).withIdentity(jobKey, "importation").usingJobData(ImportationTsvJob.FILE_PATH, file.getAbsolutePath())
-                    .usingJobData(ImportationTsvJob.FILE_IMPORTED_NAME, fileName).usingJobData(ImportationTsvJob.USER, ctx.getUserId()).usingJobData(jobDataAdditional).requestRecovery().build();
-            SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "importation").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
+            JobDetail job = newJob(ImportationShapeJob.class).withIdentity(jobKey, "shape").usingJobData(ImportationShapeJob.USER, ctx.getUserId())
+                    .usingJobData(ImportationShapeJob.VARIABLE_URN, variableUrn).usingJobData(ImportationShapeJob.SHAPEFILE_URL, shapeFileUrl.toString()).requestRecovery().build();
+
+            SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "shape").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
+
             sched.scheduleJob(job, trigger);
 
             return jobKey;
         } catch (Exception e) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
-                    .build(); // Error
-        } finally {
-            IOUtils.closeQuietly(tsvStream);
-            IOUtils.closeQuietly(os);
+                    .build();
         }
     }
 
@@ -195,4 +188,45 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
         importData.setStatus(TaskStatusTypeEnum.IN_PROGRESS);
         tasksService.createTask(ctx, importData);
     }
+
+    private synchronized String importTsvInBackground(ServiceContext ctx, InputStream tsvStream, String fileName, JobDataMap jobDataAdditional) throws MetamacException {
+
+        // Plan job
+        OutputStream os = null;
+        try {
+            String jobKey = "job_import_TSV_" + java.util.UUID.randomUUID().toString();
+
+            // Mark importation in progress
+            createTaskInProgress(ctx, jobKey, fileName);
+
+            // Scheduler an importation job
+            Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler"); // get a reference to a scheduler
+
+            // Validation: There shouldn't be an import processing
+            if (sched.getCurrentlyExecutingJobs().size() != 0) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR_MAX_CURRENT_JOBS).withLoggedLevel(ExceptionLevelEnum.ERROR).build(); // Error
+            }
+
+            // Save InputStream (TempFile)
+            File file = File.createTempFile("srm_TSV_", ".import");
+            file.deleteOnExit();
+            os = new FileOutputStream(file);
+            IOUtils.copy(tsvStream, os);
+
+            // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
+            JobDetail job = newJob(ImportationTsvJob.class).withIdentity(jobKey, "importation").usingJobData(ImportationTsvJob.FILE_PATH, file.getAbsolutePath())
+                    .usingJobData(ImportationTsvJob.FILE_IMPORTED_NAME, fileName).usingJobData(ImportationTsvJob.USER, ctx.getUserId()).usingJobData(jobDataAdditional).requestRecovery().build();
+            SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "importation").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
+            sched.scheduleJob(job, trigger);
+
+            return jobKey;
+        } catch (Exception e) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build(); // Error
+        } finally {
+            IOUtils.closeQuietly(tsvStream);
+            IOUtils.closeQuietly(os);
+        }
+    }
+
 }

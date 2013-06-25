@@ -137,6 +137,7 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
 
     // MISC
     public static final String  STREAM                                                     = createCode("stream");
+    public static final String  FILE_URL                                                   = createCode("file_url");
     public static final String  FILE_NAME                                                  = createCode("file_name");
     // MISC internal
     public static final String  CHARSET                                                    = createCode("charset");

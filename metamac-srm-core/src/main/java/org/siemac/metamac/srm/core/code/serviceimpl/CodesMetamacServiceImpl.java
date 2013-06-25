@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,6 +25,7 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
@@ -32,7 +34,9 @@ import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.geotools.feature.FeatureIterator;
 import org.joda.time.DateTime;
+import org.opengis.feature.simple.SimpleFeature;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
@@ -78,6 +82,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SemanticIdentifierValidationUtils;
+import org.siemac.metamac.srm.core.common.service.utils.ShapefileUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -120,6 +125,9 @@ import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * Implementation of CodesMetamacService.
@@ -2037,6 +2045,37 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return new TaskImportationInfo(Boolean.FALSE, null);
     }
 
+    @Override
+    public TaskImportationInfo importVariableElementsShape(ServiceContext ctx, String variableUrn, URL shapeFileUrl, Boolean canBeBackground) throws MetamacException {
+
+        // Validation
+        CodesMetamacInvocationValidator.checkImportVariableElementsShape(variableUrn, shapeFileUrl, canBeBackground, null);
+        Variable variable = retrieveVariableByUrn(variableUrn);
+        SrmValidationUtils.checkVariableIsGeographical(variable);
+
+        // Plannify task if can be in background
+        if (canBeBackground) {
+            String jobKey = tasksMetamacService.plannifyImportVariableElementsShapeInBackground(ctx, variableUrn, shapeFileUrl);
+            return new TaskImportationInfo(Boolean.TRUE, jobKey);
+        }
+
+        // Retrieve variable elements
+        List<VariableElement> variableElementsToPersist = new ArrayList<VariableElement>();
+        Map<String, VariableElement> variableElementsByCode = new HashMap<String, VariableElement>();
+        for (VariableElement variableElement : variable.getVariableElements()) {
+            variableElementsByCode.put(variableElement.getIdentifiableArtefact().getCode(), variableElement);
+        }
+
+        // Import
+        addVariableElementGeographicalInformationFromShapeFile(shapeFileUrl, variableElementsByCode, variableElementsToPersist, SrmConstants.SHAPE_POLYGON, SrmConstants.SHAPE_MULTIPOLYGON);
+        // Persist
+        for (VariableElement variableElement : variableElementsToPersist) {
+            getVariableElementRepository().save(variableElement);
+        }
+
+        return new TaskImportationInfo(Boolean.FALSE, null);
+    }
+
     // ------------------------------------------------------------------------------------
     // CODELIST ORDER VISUALISATIONS
     // ------------------------------------------------------------------------------------
@@ -3424,4 +3463,51 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
+    /**
+     * Adds geographical information of specific type. Modify existing variable element from map, and adds updated variable element to list to mark to execute save operation
+     */
+    private void addVariableElementGeographicalInformationFromShapeFile(URL shapeFileUrl, Map<String, VariableElement> variableElementsByCode, List<VariableElement> variableElementsToPersist,
+            String... geometryType) throws MetamacException {
+
+        try {
+            FeatureIterator<SimpleFeature> iterator = ShapefileUtils.getShapefileIterator(shapeFileUrl);
+            while (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                Geometry geometry = (Geometry) feature.getDefaultGeometry();
+                if (!ArrayUtils.contains(geometryType, geometry.getGeometryType().toUpperCase())) {
+                    continue;
+                }
+
+                // Transform Geometry to well-known text
+                String text = geometry.toText();
+
+                // Extract code of variable element
+                Object code = feature.getAttribute(SrmConstants.SHAPE_VARIABLE_ELEMENT_ATTRIBUTE);
+                if (code == null) {
+                    continue;
+                }
+                VariableElement variableElement = variableElementsByCode.get(code);
+                if (variableElement == null) {
+                    // ignore, do not throw exception
+                    continue;
+                }
+                if (geometry instanceof MultiPolygon) {
+                    variableElement.setShape(text);
+                    variableElementsToPersist.add(variableElement);
+                } else if (geometry instanceof Point) {
+                    Point point = (Point) geometry;
+                    variableElement.setLongitude(String.valueOf(point.getX()));
+                    variableElement.setLatitude(String.valueOf(point.getY()));
+                    variableElementsToPersist.add(variableElement);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Error importing shapefile", e);
+            if (e instanceof MetamacException) {
+                throw (MetamacException) e;
+            } else {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_SHAPE_ERROR).withMessageParameters(e.getMessage()).build();
+            }
+        }
+    }
 }

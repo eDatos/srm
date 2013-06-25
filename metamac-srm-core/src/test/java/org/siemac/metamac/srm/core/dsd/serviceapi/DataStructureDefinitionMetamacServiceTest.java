@@ -412,6 +412,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, DSD_7_V1_DIMENSION_1);
                 // children
                 assertEquals(2, exceptionItem.getExceptionItems().size());
+                // note: error in index 0 is not translation error
                 assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.ANNOTATION},
                         exceptionItem.getExceptionItems().get(1));
             }

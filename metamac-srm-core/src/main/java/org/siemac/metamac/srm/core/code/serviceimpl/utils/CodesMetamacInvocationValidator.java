@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.code.serviceimpl.utils;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -636,6 +637,18 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
             }
         }
         ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_TSV_UPDATE_ALREADY_EXISTING, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkImportVariableElementsShape(String variableUrn, URL shapeFile, Boolean canBeBackground, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(shapeFile, ServiceExceptionParameters.FILE_URL, exceptions);
+        ValidationUtils.checkParameterRequired(canBeBackground, ServiceExceptionParameters.CAN_BE_BACKGROUND, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

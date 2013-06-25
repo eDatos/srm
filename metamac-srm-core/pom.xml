@@ -421,14 +421,22 @@
             <artifactId>gt-shapefile</artifactId>
             <version>${geotools-gt-shapefile.version}</version>
             <exclusions>
-            	<exclusion>
-            		<artifactId>jgridshift</artifactId>
-            		<groupId>jgridshift</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>vecmath</artifactId>
-            		<groupId>java3d</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>jgridshift</artifactId>
+                    <groupId>jgridshift</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>vecmath</artifactId>
+                    <groupId>java3d</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jdom</artifactId>
+                    <groupId>jdom</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jai_core</artifactId>
+                    <groupId>javax.media</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
