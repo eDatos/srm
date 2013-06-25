@@ -985,6 +985,8 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.MEASURE_DIMENSION_REPRESENTATION_ENUMERATED));
                         }
                     }
+                } else {
+                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.MEASURE_DIMENSION_REPRESENTATION_ENUMERATED));
                 }
             }
         }
