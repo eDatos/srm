@@ -92,6 +92,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
+import com.arte.statistic.sdmx.srm.core.structure.domain.NoSpecifiedRelationship;
 import com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure;
 import com.arte.statistic.sdmx.srm.core.structure.domain.ReportingYearStartDay;
 import com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension;
@@ -1165,6 +1166,11 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DATA_ATTRIBUTE_REPRESENTATION_ENUMERATED));
                         }
                     }
+
+                    // Check: this type of attribute only supports a "not specified" relationship type
+                    if (!(((DataAttribute) component).getRelateTo() instanceof NoSpecifiedRelationship)) {
+                        exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_RELATETO_INVALID));
+                    }
                     return;
                 }
             }
@@ -1182,13 +1188,30 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DATA_ATTRIBUTE_REPRESENTATION_ENUMERATED));
                         }
                     }
+
+                    // Check: this type of attribute only supports a "not specified" relationship type
+                    if (!(((DataAttribute) component).getRelateTo() instanceof NoSpecifiedRelationship)) {
+                        exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_RELATETO_INVALID));
+                    }
+                    return;
+                }
+            }
+
+            // Representation: Time attribute
+            {
+                if (SpecialAttributeTypeEnum.TIME_EXTENDS.equals(specialAttributeType)) {
+                    // Check: this type of attribute only supports a "not specified" relationship type
+                    if (!(((DataAttribute) component).getRelateTo() instanceof NoSpecifiedRelationship)) {
+                        exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_RELATETO_INVALID));
+                    }
                     return;
                 }
             }
 
             // Representation: Other
             {
-                if (!SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(specialAttributeType) && !SpecialAttributeTypeEnum.SPATIAL_EXTENDS.equals(specialAttributeType)) {
+                if (!SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(specialAttributeType) && !SpecialAttributeTypeEnum.SPATIAL_EXTENDS.equals(specialAttributeType)
+                        && !SpecialAttributeTypeEnum.TIME_EXTENDS.equals(specialAttributeType)) {
                     if (component.getLocalRepresentation() != null) {
                         Representation representation = component.getLocalRepresentation();
                         if (!attributeCheckRepresentation(ctx, component, representation)) {
@@ -1208,6 +1231,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             }
         }
     }
+
     protected boolean attributeCheckRepresentation(ServiceContext ctx, Component component, Representation representation) throws MetamacException {
         if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
             PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
