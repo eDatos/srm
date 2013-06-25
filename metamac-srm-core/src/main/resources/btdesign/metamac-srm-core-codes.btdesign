@@ -240,7 +240,9 @@ Application CodesMetamac {
 			"Imports variable elements in tsv format"
     		TaskImportationInfo importVariableElementsTsv(String variableUrn, InputStream tsvStream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException;
 			"Imports geographical information (shape) of variable elements"
-    		TaskImportationInfo importVariableElementsShape(String variableUrn, URL shapeFile, Boolean canBeBackground) throws MetamacException;
+    		TaskImportationInfo importVariableElementsShape(String variableUrn, URL shapeFileUrl, Boolean canBeBackground) throws MetamacException;
+    		"Imports geographical information (latitude and longitude) of variable elements"
+    		TaskImportationInfo importVariableElementsPoints(String variableUrn, URL shapeFileUrl, Boolean canBeBackground) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

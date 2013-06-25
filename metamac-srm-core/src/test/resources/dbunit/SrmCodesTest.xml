@@ -6325,8 +6325,8 @@
                 VALID_TO="2012-01-02 02:02:04"
                 VARIABLE_FK="5"
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
-                LATITUDE="70° 55' 59''"
-                LONGITUDE="90° 30' 45''"
+                LATITUDE="71° 55' 59''"
+                LONGITUDE="91° 32' 45''"
                 SHAPE="MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))"
                 GEOGRAPHICAL_GRANULARITY_FK="1011"
                 

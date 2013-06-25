@@ -37,6 +37,8 @@ public class SrmConstants {
     public static final String             SHAPE_POLYGON                                             = "POLYGON";
     public static final String             SHAPE_MULTIPOLYGON                                        = "MULTIPOLYGON";
     public static final String             SHAPE_POINT                                               = "POINT";
+    public static final String             SHAPE_OPERATION_IMPORT_SHAPES                             = "importShapes";
+    public static final String             SHAPE_OPERATION_IMPORT_POINTS                             = "importPoints";
 
     // Misc
     public static final int                METADATA_SHORT_NAME_MAXIMUM_LENGTH                        = 100;

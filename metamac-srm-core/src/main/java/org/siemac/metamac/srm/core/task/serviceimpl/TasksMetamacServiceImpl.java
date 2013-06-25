@@ -28,6 +28,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.task.utils.TasksMetamacInvocationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -100,34 +101,12 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
 
     @Override
     public String plannifyImportVariableElementsShapeInBackground(ServiceContext ctx, String variableUrn, URL shapeFileUrl) throws MetamacException {
-        try {
-            // Plan job
-            String jobKey = "job_import_shape_to_variable_elements_" + java.util.UUID.randomUUID().toString();
+        return plannifyImportVariableElementsShapefileInBackground(ctx, variableUrn, shapeFileUrl, SrmConstants.SHAPE_OPERATION_IMPORT_SHAPES);
+    }
 
-            // Mark task in progress
-            createTaskInProgress(ctx, jobKey, null);
-
-            // Scheduler a job
-            Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler");
-
-            // Validation: There shouldn't be an background processing
-            if (sched.getCurrentlyExecutingJobs().size() != 0) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR_MAX_CURRENT_JOBS).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
-            }
-
-            // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
-            JobDetail job = newJob(ImportationShapeJob.class).withIdentity(jobKey, "shape").usingJobData(ImportationShapeJob.USER, ctx.getUserId())
-                    .usingJobData(ImportationShapeJob.VARIABLE_URN, variableUrn).usingJobData(ImportationShapeJob.SHAPEFILE_URL, shapeFileUrl.toString()).requestRecovery().build();
-
-            SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "shape").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
-
-            sched.scheduleJob(job, trigger);
-
-            return jobKey;
-        } catch (Exception e) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
-                    .build();
-        }
+    @Override
+    public String plannifyImportVariableElementsPointsInBackground(ServiceContext ctx, String variableUrn, URL shapeFileUrl) throws MetamacException {
+        return plannifyImportVariableElementsShapefileInBackground(ctx, variableUrn, shapeFileUrl, SrmConstants.SHAPE_OPERATION_IMPORT_POINTS);
     }
 
     @Override
@@ -226,6 +205,38 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
         } finally {
             IOUtils.closeQuietly(tsvStream);
             IOUtils.closeQuietly(os);
+        }
+    }
+
+    private synchronized String plannifyImportVariableElementsShapefileInBackground(ServiceContext ctx, String variableUrn, URL shapeFileUrl, String operation) throws MetamacException {
+        try {
+            // Plan job
+            String jobKey = "job_import_shapefile_to_variable_elements_" + java.util.UUID.randomUUID().toString();
+
+            // Mark task in progress
+            createTaskInProgress(ctx, jobKey, null);
+
+            // Scheduler a job
+            Scheduler sched = SchedulerRepository.getInstance().lookup("SdmxSrmScheduler");
+
+            // Validation: There shouldn't be an background processing
+            if (sched.getCurrentlyExecutingJobs().size() != 0) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR_MAX_CURRENT_JOBS).withLoggedLevel(ExceptionLevelEnum.ERROR).build();
+            }
+
+            // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
+            JobDetail job = newJob(ImportationShapeJob.class).withIdentity(jobKey, "shape").usingJobData(ImportationShapeJob.USER, ctx.getUserId())
+                    .usingJobData(ImportationShapeJob.VARIABLE_URN, variableUrn).usingJobData(ImportationShapeJob.SHAPEFILE_URL, shapeFileUrl.toString())
+                    .usingJobData(ImportationShapeJob.OPERATION, operation).requestRecovery().build();
+
+            SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "shape").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
+
+            sched.scheduleJob(job, trigger);
+
+            return jobKey;
+        } catch (Exception e) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
         }
     }
 

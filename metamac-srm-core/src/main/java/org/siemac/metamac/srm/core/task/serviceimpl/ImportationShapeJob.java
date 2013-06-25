@@ -12,6 +12,7 @@ import org.quartz.JobKey;
 import org.quartz.PersistJobDataAfterExecution;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.facade.serviceapi.TasksMetamacServiceFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ public class ImportationShapeJob implements Job {
     public static final String        USER                      = "user";
     public static final String        VARIABLE_URN              = "variableUrn";
     public static final String        SHAPEFILE_URL             = "shapefileUrl";
+    public static final String        OPERATION                 = "operation";
 
     private TasksMetamacServiceFacade tasksMetamacServiceFacade = null;
 
@@ -50,9 +52,15 @@ public class ImportationShapeJob implements Job {
             // Parameters
             String variableUrn = data.getString(VARIABLE_URN);
             URL shapeFileUrl = new URL(data.getString(SHAPEFILE_URL));
-
+            String operation = data.getString(OPERATION);
             logger.info("ImportationShapeJob: Import " + shapeFileUrl + ", job " + jobKey + " starting at " + new Date());
-            getTaskMetamacServiceFacade().processImportVariableElementsShape(serviceContext, variableUrn, shapeFileUrl, jobKey.getName());
+            if (SrmConstants.SHAPE_OPERATION_IMPORT_SHAPES.equals(operation)) {
+                getTaskMetamacServiceFacade().processImportVariableElementsShape(serviceContext, variableUrn, shapeFileUrl, jobKey.getName());
+            } else if (SrmConstants.SHAPE_OPERATION_IMPORT_POINTS.equals(operation)) {
+                getTaskMetamacServiceFacade().processImportVariableElementsPoints(serviceContext, variableUrn, shapeFileUrl, jobKey.getName());
+            } else {
+                throw new IllegalArgumentException("Job with operation " + operation + " is not supported");
+            }
             logger.info("ImportationShapeJob: Import " + shapeFileUrl + ", job " + jobKey + " finished at " + new Date());
             // TODO sistema de avisos
         } catch (Exception e) {

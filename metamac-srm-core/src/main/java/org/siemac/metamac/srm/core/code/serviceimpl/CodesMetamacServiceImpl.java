@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,9 +35,15 @@ import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFinder;
+import org.geotools.data.FeatureSource;
+import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.joda.time.DateTime;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.siemac.metamac.core.common.ent.domain.InternationalString;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
@@ -82,7 +89,6 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SemanticIdentifierValidationUtils;
-import org.siemac.metamac.srm.core.common.service.utils.ShapefileUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -2047,33 +2053,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public TaskImportationInfo importVariableElementsShape(ServiceContext ctx, String variableUrn, URL shapeFileUrl, Boolean canBeBackground) throws MetamacException {
+        return importVariableElementsGeographicalInformation(ctx, variableUrn, shapeFileUrl, canBeBackground, SrmConstants.SHAPE_OPERATION_IMPORT_SHAPES);
+    }
 
-        // Validation
-        CodesMetamacInvocationValidator.checkImportVariableElementsShape(variableUrn, shapeFileUrl, canBeBackground, null);
-        Variable variable = retrieveVariableByUrn(variableUrn);
-        SrmValidationUtils.checkVariableIsGeographical(variable);
-
-        // Plannify task if can be in background
-        if (canBeBackground) {
-            String jobKey = tasksMetamacService.plannifyImportVariableElementsShapeInBackground(ctx, variableUrn, shapeFileUrl);
-            return new TaskImportationInfo(Boolean.TRUE, jobKey);
-        }
-
-        // Retrieve variable elements
-        List<VariableElement> variableElementsToPersist = new ArrayList<VariableElement>();
-        Map<String, VariableElement> variableElementsByCode = new HashMap<String, VariableElement>();
-        for (VariableElement variableElement : variable.getVariableElements()) {
-            variableElementsByCode.put(variableElement.getIdentifiableArtefact().getCode(), variableElement);
-        }
-
-        // Import
-        addVariableElementGeographicalInformationFromShapeFile(shapeFileUrl, variableElementsByCode, variableElementsToPersist, SrmConstants.SHAPE_POLYGON, SrmConstants.SHAPE_MULTIPOLYGON);
-        // Persist
-        for (VariableElement variableElement : variableElementsToPersist) {
-            getVariableElementRepository().save(variableElement);
-        }
-
-        return new TaskImportationInfo(Boolean.FALSE, null);
+    @Override
+    public TaskImportationInfo importVariableElementsPoints(ServiceContext ctx, String variableUrn, URL shapeFileUrl, Boolean canBeBackground) throws MetamacException {
+        return importVariableElementsGeographicalInformation(ctx, variableUrn, shapeFileUrl, canBeBackground, SrmConstants.SHAPE_OPERATION_IMPORT_POINTS);
     }
 
     // ------------------------------------------------------------------------------------
@@ -3463,23 +3448,80 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
+    private TaskImportationInfo importVariableElementsGeographicalInformation(ServiceContext ctx, String variableUrn, URL shapeFileUrl, Boolean canBeBackground, String operationType)
+            throws MetamacException {
+
+        // Validation
+        CodesMetamacInvocationValidator.checkImportVariableElementsGeographicalInformation(variableUrn, shapeFileUrl, canBeBackground, null);
+        Variable variable = retrieveVariableByUrn(variableUrn);
+        SrmValidationUtils.checkVariableIsGeographical(variable);
+
+        // Plannify task if can be in background
+        if (canBeBackground) {
+            String jobKey = null;
+            if (SrmConstants.SHAPE_OPERATION_IMPORT_SHAPES.equals(operationType)) {
+                jobKey = tasksMetamacService.plannifyImportVariableElementsShapeInBackground(ctx, variableUrn, shapeFileUrl);
+            } else if (SrmConstants.SHAPE_OPERATION_IMPORT_POINTS.equals(operationType)) {
+                jobKey = tasksMetamacService.plannifyImportVariableElementsPointsInBackground(ctx, variableUrn, shapeFileUrl);
+            } else {
+                throw new UnsupportedOperationException("Operation unsupported: " + operationType);
+            }
+            return new TaskImportationInfo(Boolean.TRUE, jobKey);
+        }
+
+        // Retrieve variable elements
+        List<VariableElement> variableElementsToPersist = new ArrayList<VariableElement>();
+        Map<String, VariableElement> variableElementsByCode = new HashMap<String, VariableElement>();
+        for (VariableElement variableElement : variable.getVariableElements()) {
+            variableElementsByCode.put(variableElement.getIdentifiableArtefact().getCode(), variableElement);
+        }
+
+        // Import
+        String[] geometryTypes = null;
+        if (SrmConstants.SHAPE_OPERATION_IMPORT_SHAPES.equals(operationType)) {
+            geometryTypes = new String[]{SrmConstants.SHAPE_POLYGON, SrmConstants.SHAPE_MULTIPOLYGON};
+        } else if (SrmConstants.SHAPE_OPERATION_IMPORT_POINTS.equals(operationType)) {
+            geometryTypes = new String[]{SrmConstants.SHAPE_POINT};
+        } else {
+            throw new UnsupportedOperationException("Operation unsupported: " + operationType);
+        }
+        addVariableElementGeographicalInformationFromShapeFile(shapeFileUrl, variableElementsByCode, variableElementsToPersist, geometryTypes);
+        // Persist
+        for (VariableElement variableElement : variableElementsToPersist) {
+            getVariableElementRepository().save(variableElement);
+        }
+
+        return new TaskImportationInfo(Boolean.FALSE, null);
+    }
+
     /**
      * Adds geographical information of specific type. Modify existing variable element from map, and adds updated variable element to list to mark to execute save operation
      */
     private void addVariableElementGeographicalInformationFromShapeFile(URL shapeFileUrl, Map<String, VariableElement> variableElementsByCode, List<VariableElement> variableElementsToPersist,
             String... geometryType) throws MetamacException {
 
+        DataStore dataStore = null;
         try {
-            FeatureIterator<SimpleFeature> iterator = ShapefileUtils.getShapefileIterator(shapeFileUrl);
+            // Connection parameters
+            Map<String, Serializable> datastoreParameters = new HashMap<String, Serializable>();
+            datastoreParameters.put(ShapefileDataStoreFactory.URLP.key, shapeFileUrl);
+            dataStore = DataStoreFinder.getDataStore(datastoreParameters);
+
+            String[] typeNames = dataStore.getTypeNames();
+            if (typeNames == null || typeNames.length == 0) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_SHAPE_ERROR_FILE_PARSING).withMessageParameters(shapeFileUrl).build();
+            }
+            String typeName = typeNames[0];
+
+            FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = dataStore.getFeatureSource(typeName);
+            FeatureCollection<SimpleFeatureType, SimpleFeature> collection = featureSource.getFeatures();
+            FeatureIterator<SimpleFeature> iterator = collection.features();
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 Geometry geometry = (Geometry) feature.getDefaultGeometry();
                 if (!ArrayUtils.contains(geometryType, geometry.getGeometryType().toUpperCase())) {
                     continue;
                 }
-
-                // Transform Geometry to well-known text
-                String text = geometry.toText();
 
                 // Extract code of variable element
                 Object code = feature.getAttribute(SrmConstants.SHAPE_VARIABLE_ELEMENT_ATTRIBUTE);
@@ -3491,22 +3533,29 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                     // ignore, do not throw exception
                     continue;
                 }
+
                 if (geometry instanceof MultiPolygon) {
-                    variableElement.setShape(text);
+                    variableElement.setShape(geometry.toText()); // Transform Geometry to well-known text
                     variableElementsToPersist.add(variableElement);
                 } else if (geometry instanceof Point) {
                     Point point = (Point) geometry;
+                    // Do not store well-known text to allow edit in web
                     variableElement.setLongitude(String.valueOf(point.getX()));
                     variableElement.setLatitude(String.valueOf(point.getY()));
                     variableElementsToPersist.add(variableElement);
                 }
             }
+            iterator.close();
         } catch (Exception e) {
             logger.error("Error importing shapefile", e);
             if (e instanceof MetamacException) {
                 throw (MetamacException) e;
             } else {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IMPORTATION_SHAPE_ERROR).withMessageParameters(e.getMessage()).build();
+            }
+        } finally {
+            if (dataStore != null) {
+                dataStore.dispose();
             }
         }
     }

@@ -677,6 +677,10 @@ Application SrmFacadeCore {
  			List<@VariableElementOperationDto> retrieveVariableElementsOperationsByVariableElement(String variableElementUrn) throws MetamacException;
     		"Imports variable elements in tsv format"
     		importVariableElementsTsvInBackground(String variableUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
+			"Imports geographical information (shape) of variable elements"
+    		importVariableElementsShapeInBackground(String variableUrn, URL shapeFileUrl) throws MetamacException;
+			"Imports geographical information (points) of variable elements"
+    		importVariableElementsPointsInBackground(String variableUrn, URL shapeFileUrl) throws MetamacException;
     		    		
     		/**************************************************************************
 		     * COMMON
@@ -711,7 +715,9 @@ Application SrmFacadeCore {
     		"Imports variable elements in tsv format"
     		processImportVariableElementsTsv(String variableUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
 			"Imports geographical information (shape) of variable elements"
-    		processImportVariableElementsShape(String variableUrn, URL shapeFile, String jobKey) throws MetamacException;
+    		processImportVariableElementsShape(String variableUrn, URL shapeFileUrl, String jobKey) throws MetamacException;
+			"Imports geographical information (points) of variable elements"
+    		processImportVariableElementsPoints(String variableUrn, URL shapeFileUrl, String jobKey) throws MetamacException;
     		"Perform a merge with temporal codelist"
 			processPublishInternallyCodelist(String urnToCopy, boolean forceLatestFinal, String jobKey) throws MetamacException;
     		

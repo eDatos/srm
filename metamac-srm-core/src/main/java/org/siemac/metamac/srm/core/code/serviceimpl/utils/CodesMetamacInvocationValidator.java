@@ -641,7 +641,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkImportVariableElementsShape(String variableUrn, URL shapeFile, Boolean canBeBackground, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkImportVariableElementsGeographicalInformation(String variableUrn, URL shapeFile, Boolean canBeBackground, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }

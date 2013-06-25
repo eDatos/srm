@@ -331,12 +331,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     public void testPreCreateCodelist() throws Exception {
-        // TODO testPreCreateCodelist
+        // tested in createCodelist
     }
 
     @Override
     public void testPostCreateCodelist() throws Exception {
-        // TODO testPostCreateCodelist
+        // tested in createCodelist
     }
 
     @Override
@@ -2930,7 +2930,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     @Override
     public void testPreCreateCode() throws Exception {
-        // TODO testPreCreateCode
+        // tested in createCode
     }
 
     @Override
@@ -3887,7 +3887,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
                     assertEquals(true, codelistVersion.getItemScheme().getIsTaskInBackground());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -4325,7 +4325,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                             Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -4378,7 +4378,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                             Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -4512,7 +4512,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                             Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -4557,7 +4557,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                             Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -4606,7 +4606,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
                     assertEquals(true, codelistVersion.getItemScheme().getIsTaskInBackground());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -4709,7 +4709,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -4751,7 +4751,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -4789,7 +4789,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -4826,7 +4826,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -4863,7 +4863,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -4901,7 +4901,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -8788,7 +8788,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -8878,7 +8878,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                             Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -8978,7 +8978,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                             Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -9077,7 +9077,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                             Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -9120,7 +9120,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                             Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
-                    fail("importation failed");
+                    fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
@@ -9197,7 +9197,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testImportVariableElementsShape() throws Exception {
         final String variableUrn = VARIABLE_5;
-        final URL shapeFileUrl = this.getClass().getResource("/shape/comarcas_n1/polygons");
+        final URL shapeFileUrl = this.getClass().getResource("/shape/comarcas_n1/comarcas_n1.shp");
         final StringBuilder jobKey = new StringBuilder();
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);
         tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -9245,6 +9245,65 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             // Not updated (not exist in shapefile)
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_4);
+            assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
+        }
+    }
+
+    @Override
+    @Test
+    public void testImportVariableElementsPoints() throws Exception {
+        final String variableUrn = VARIABLE_5;
+        final URL shapeFileUrl = this.getClass().getResource("/shape/comarcas_n1/comarcas_n1_point.shp");
+        final StringBuilder jobKey = new StringBuilder();
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsPoints(getServiceContextAdministrador(), variableUrn, shapeFileUrl, Boolean.TRUE);
+                    assertEquals(true, taskImportTsvInfo.getIsPlannedInBackground());
+                    assertNotNull(taskImportTsvInfo.getJobKey());
+
+                    jobKey.append(taskImportTsvInfo.getJobKey());
+                } catch (MetamacException e) {
+                    fail("importation failed: " + e.getHumanReadableMessage());
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(0, task.getTaskResults().size());
+        // Validate variable elements
+        {
+            // Not updated (not exist in shapefile)
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_1);
+            assertEquals("90° 30' 45''", variableElement.getLongitude());
+            assertEquals("70° 55' 59''", variableElement.getLatitude());
+            assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
+        }
+        {
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_2);
+            assertEquals("-16.61153654488294", variableElement.getLongitude());
+            assertEquals("28.26462033711757", variableElement.getLatitude());
+            assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
+        }
+        {
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_3);
+            assertEquals("-17.23229859783003", variableElement.getLongitude());
+            assertEquals("28.120675513245782", variableElement.getLatitude());
+            assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
+        }
+        {
+            // Not updated (not exist in shapefile)
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_4);
+            assertEquals("91° 32' 45''", variableElement.getLongitude());
+            assertEquals("71° 55' 59''", variableElement.getLatitude());
             assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
         }
     }

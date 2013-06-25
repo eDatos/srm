@@ -67,6 +67,14 @@ public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImpl
     }
 
     @Override
+    public void processImportVariableElementsPoints(ServiceContext ctx, String variableUrn, URL shapeFile, String jobKey) throws MetamacException {
+        // Import
+        getCodesMetamacService().importVariableElementsPoints(ctx, variableUrn, shapeFile, CAN_NOT_BE_BACKGROUND);
+        // Mark job as completed
+        getTasksMetamacService().markTaskAsFinished(ctx, jobKey, null);
+    }
+
+    @Override
     public void processPublishInternallyCodelist(ServiceContext ctx, String urn, boolean forceLatestFinal, String jobKey) throws MetamacException {
         // Publish
         getCodesMetamacService().publishInternallyCodelist(ctx, urn, forceLatestFinal, CAN_NOT_BE_BACKGROUND);

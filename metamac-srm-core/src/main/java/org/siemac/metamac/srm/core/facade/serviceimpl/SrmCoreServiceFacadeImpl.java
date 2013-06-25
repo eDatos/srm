@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.facade.serviceimpl;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -1905,6 +1906,24 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // Import in background
         getCodesMetamacService().importVariableElementsTsv(ctx, variableUrn, tsvStream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
+    }
+
+    @Override
+    public void importVariableElementsShapeInBackground(ServiceContext ctx, String variableUrn, URL shapeFileUrl) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canImportVariableElements(ctx);
+
+        // Import in background
+        getCodesMetamacService().importVariableElementsShape(ctx, variableUrn, shapeFileUrl, Boolean.TRUE);
+    }
+
+    @Override
+    public void importVariableElementsPointsInBackground(ServiceContext ctx, String variableUrn, URL shapeFileUrl) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canImportVariableElements(ctx);
+
+        // Import in background
+        getCodesMetamacService().importVariableElementsPoints(ctx, variableUrn, shapeFileUrl, Boolean.TRUE);
     }
 
     @Override

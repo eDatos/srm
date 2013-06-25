@@ -20,7 +20,9 @@ Application TaskMetamac {
 			"Prepares importation of variable elements in tsv format"
     		String plannifyImportVariableElementsTsvInBackground(String variableUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 			"Prepares importation of geographical information (shape) of variable elements"
-    		String plannifyImportVariableElementsShapeInBackground(String variableUrn, URL shapeFile) throws MetamacException;
+    		String plannifyImportVariableElementsShapeInBackground(String variableUrn, URL shapeFileUrl) throws MetamacException;
+			"Prepares importation of geographical information (points) of variable elements"
+    		String plannifyImportVariableElementsPointsInBackground(String variableUrn, URL shapeFileUrl) throws MetamacException;
     		"Prepares a merge between codelists"
     		String plannifyPublicationInternallyCodelist(String urn, Boolean forceLatestFinal) throws MetamacException;
 			
