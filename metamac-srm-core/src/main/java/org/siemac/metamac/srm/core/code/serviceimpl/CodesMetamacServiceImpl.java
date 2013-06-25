@@ -91,8 +91,6 @@ import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SemanticIdentifierValidationUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
-import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
-import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -329,7 +327,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(ServiceContext ctx, List<ConditionalCriteria> conditions,
+    public PagedResult<CodelistVersionMetamac> findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ServiceContext ctx, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter) throws MetamacException {
         // Find
         if (conditions == null) {
@@ -1979,53 +1977,69 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             return new TaskImportationInfo(Boolean.TRUE, jobKey);
         }
 
-        // Retrieve actual variable elements
-        Variable variable = retrieveVariableByUrn(variableUrn);
-        List<VariableElement> variableElementsToPersist = new ArrayList<VariableElement>();
-        Map<String, VariableElement> variableElementsPreviousInVariableByCode = new HashMap<String, VariableElement>();
-        for (VariableElement variableElement : variable.getVariableElements()) {
-            variableElementsPreviousInVariableByCode.put(variableElement.getIdentifiableArtefact().getCode(), variableElement);
-        }
-
         // Import
+        Variable variable = retrieveVariableByUrn(variableUrn);
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         InputStreamReader inputStreamReader = null;
         BufferedReader bufferedReader = null;
-        Map<String, VariableElement> variableElementsToPersistByCode = new HashMap<String, VariableElement>();
+        List<VariableElement> variableElementsToPersist = null;
         try {
             inputStreamReader = new InputStreamReader(stream, charset);
             bufferedReader = new BufferedReader(inputStreamReader);
 
-            ImportationVariableElementsTsvHeader header = null;
-            String line = null;
-            int lineNumber = 1;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (StringUtils.isBlank(line)) {
-                    continue;
+            // Header
+            String line = bufferedReader.readLine();
+            ImportationVariableElementsTsvHeader header = ImportationTsvUtils.parseTsvHeaderToImportVariableElements(line, exceptionItems);
+            if (CollectionUtils.isEmpty(exceptionItems)) {
+                if (VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType()) && !header.isGeographicalGranularitySetted()) {
+                    exceptionItems
+                            .add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_COLUMN_REQUIRED, ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_GEOGRAPHICAL_GRANULARITY));
+                } else if (!VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType()) && header.isGeographicalGranularitySetted()) {
+                    exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_COLUMN_UNEXPECTED,
+                            ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_GEOGRAPHICAL_GRANULARITY));
                 }
-                String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
-                if (header == null) {
-                    header = ImportationTsvUtils.parseTsvHeaderToImportVariableElements(columns, exceptionItems);
-                    if (!CollectionUtils.isEmpty(exceptionItems)) {
-                        break;
+            }
+            // Variable elements
+            if (CollectionUtils.isEmpty(exceptionItems)) {
+
+                // Retrieve previous variable elements and prepare map with variable elements must be updated
+                Map<String, VariableElement> variableElementsPreviousInVariableByCode = new HashMap<String, VariableElement>();
+                for (VariableElement variableElement : variable.getVariableElements()) {
+                    variableElementsPreviousInVariableByCode.put(variableElement.getIdentifiableArtefact().getCode(), variableElement);
+                }
+                variableElementsToPersist = new ArrayList<VariableElement>();
+                Map<String, VariableElement> variableElementsToPersistByCode = new HashMap<String, VariableElement>();
+
+                // If geographical, retrieve all codes can be geographical granularity. In one query instead one query for line, to improve efficiency
+                Map<String, CodeMetamac> codesCanBeGeographicalGranularityByCode = null;
+                if (VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType())) {
+                    CodelistVersionMetamac codelistWhoseCodesCanBeGeographicalGranularity = retrieveAndCheckCodelistWhoseCodesCanBeAsGeographicalGranularity(ctx);
+                    List<Code> codesCanBeGeographicalGranularity = codelistWhoseCodesCanBeGeographicalGranularity.getItems();
+                    codesCanBeGeographicalGranularityByCode = new HashMap<String, CodeMetamac>(codesCanBeGeographicalGranularity.size());
+                    for (Code code : codesCanBeGeographicalGranularity) {
+                        codesCanBeGeographicalGranularityByCode.put(code.getNameableArtefact().getCode(), (CodeMetamac) code);
                     }
-                } else {
+                }
+
+                int lineNumber = 2;
+                while ((line = bufferedReader.readLine()) != null) {
+                    if (StringUtils.isBlank(line)) {
+                        continue;
+                    }
+                    String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
                     if (columns.length != header.getColumnsSize()) {
                         exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber));
                         continue;
                     }
                     // Transform variable element and add to list to persist
                     VariableElement variableElement = tsvLineToVariableElement(header, columns, lineNumber, variable, updateAlreadyExisting, variableElementsPreviousInVariableByCode,
-                            variableElementsToPersistByCode, exceptionItems, informationItems);
+                            variableElementsToPersistByCode, codesCanBeGeographicalGranularityByCode, exceptionItems, informationItems);
                     if (variableElement != null) {
                         variableElementsToPersist.add(variableElement);
                         variableElementsToPersistByCode.put(variableElement.getIdentifiableArtefact().getCode(), variableElement);
                     }
+                    lineNumber++;
                 }
-                lineNumber++;
-            }
-            if (header == null) {
-                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_FILE_PARSING, "Header is empty"));
             }
         } catch (IOException e) {
             logger.error("Error importing tsv file", e);
@@ -2569,12 +2583,19 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Check geographical information
-        // required metadata checked in CodesMetamacInvocationValidator
+        checkVariableElementGeographicalGranularity(ctx, variableElement);
+
+        // No translation to check
+    }
+
+    private void checkVariableElementGeographicalGranularity(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
+        // note: required metadata checked in CodesMetamacInvocationValidator
+
         if (variableElement.getGeographicalGranularity() != null) {
             PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
             CodeMetamac codeGeographicalGranularity = retrieveCodeByUrn(ctx, variableElement.getGeographicalGranularity().getNameableArtefact().getUrn());
             Long codeGeographicalGranularityId = codeGeographicalGranularity.getId();
-            List<ConditionalCriteria> criteriaToVerifyGeographicalGranularity = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id())
+            List<ConditionalCriteria> criteriaToVerifyGeographicalGranularity = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.id())
                     .eq(codeGeographicalGranularityId).build();
             PagedResult<CodeMetamac> result = findCodesByConditionCanBeVariableElementGeographicalGranularity(ctx, criteriaToVerifyGeographicalGranularity, pagingParameter);
             if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codeGeographicalGranularityId)) {
@@ -2582,8 +2603,21 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                         .withMessageParameters(ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY).build();
             }
         }
+    }
 
-        // No translation to check
+    private CodelistVersionMetamac retrieveAndCheckCodelistWhoseCodesCanBeAsGeographicalGranularity(ServiceContext ctx) throws MetamacException {
+        String codelistUrn = srmConfiguration.retrieveCodelistUrnForVariableElementGeographicalGranularity();
+
+        PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+        CodelistVersionMetamac codelistGeographicalGranularity = retrieveCodelistByUrn(ctx, codelistUrn);
+        Long codelistGeographicalGranularityId = codelistGeographicalGranularity.getId();
+        List<ConditionalCriteria> criteriaToVerifyGeographicalGranularity = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.id())
+                .eq(codelistGeographicalGranularityId).build();
+        PagedResult<CodelistVersionMetamac> result = findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ctx, criteriaToVerifyGeographicalGranularity, pagingParameter);
+        if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistGeographicalGranularityId)) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CODELIST_UNSUPPORTED_TO_GEOGRAPHICAL_GRANULARITY).withMessageParameters(codelistUrn).build();
+        }
+        return codelistGeographicalGranularity;
     }
 
     /**
@@ -3196,8 +3230,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
      * Transforms tsv line to VariableElement. IMPORTANT: Do not execute save or update operation
      */
     private VariableElement tsvLineToVariableElement(ImportationVariableElementsTsvHeader header, String[] columns, int lineNumber, Variable variable, boolean updateAlreadyExisting,
-            Map<String, VariableElement> variableElementsPreviousInVariable, Map<String, VariableElement> variableElementsToPersistByCode, List<MetamacExceptionItem> exceptionItems,
-            List<MetamacExceptionItem> infoItems) throws MetamacException {
+            Map<String, VariableElement> variableElementsPreviousInVariable, Map<String, VariableElement> variableElementsToPersistByCode,
+            Map<String, CodeMetamac> codesCanBeGeographicalGranularityByCode, List<MetamacExceptionItem> exceptionItems, List<MetamacExceptionItem> infoItems) throws MetamacException {
 
         // semantic identifier
         String codeIdentifier = columns[header.getCodePosition()];
@@ -3237,6 +3271,18 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (variableElement.getShortName() == null) {
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, variableElement.getIdentifiableArtefact().getCode(),
                     ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_SHORT_NAME));
+        }
+
+        // geographical granularity
+        if (header.isGeographicalGranularitySetted()) {
+            String geographicalGranularityIdentifier = columns[header.getGeographicalGranularityPosition()];
+            if (StringUtils.isBlank(geographicalGranularityIdentifier)) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, variableElement.getIdentifiableArtefact().getCode(),
+                        ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_GEOGRAPHICAL_GRANULARITY));
+                return null;
+            }
+            CodeMetamac geographicalGranularity = codesCanBeGeographicalGranularityByCode.get(geographicalGranularityIdentifier);
+            variableElement.setGeographicalGranularity(geographicalGranularity);
         }
 
         // Do not persist if any error ocurrs

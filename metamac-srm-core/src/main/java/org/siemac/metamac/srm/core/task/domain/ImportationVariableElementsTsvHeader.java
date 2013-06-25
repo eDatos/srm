@@ -5,6 +5,7 @@ public class ImportationVariableElementsTsvHeader {
     private int                    columnsSize;
     private int                    codePosition;
     private InternationalStringTsv shortName;
+    private int                    geographicalGranularityPosition = -1;
 
     public int getColumnsSize() {
         return columnsSize;
@@ -28,5 +29,17 @@ public class ImportationVariableElementsTsvHeader {
 
     public void setShortName(InternationalStringTsv shortName) {
         this.shortName = shortName;
+    }
+
+    public int getGeographicalGranularityPosition() {
+        return geographicalGranularityPosition;
+    }
+
+    public void setGeographicalGranularityPosition(int geographicalGranularityPosition) {
+        this.geographicalGranularityPosition = geographicalGranularityPosition;
+    }
+
+    public boolean isGeographicalGranularitySetted() {
+        return geographicalGranularityPosition != -1;
     }
 }

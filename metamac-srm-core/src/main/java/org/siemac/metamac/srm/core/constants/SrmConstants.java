@@ -30,6 +30,7 @@ public class SrmConstants {
     public static final String             TSV_HEADER_LABEL                                          = "label";
     public static final String             TSV_HEADER_LEVEL                                          = "level";
     public static final String             TSV_HEADER_ORDER                                          = "order";
+    public static final String             TSV_HEADER_GEOGRAPHICAL_GRANULARITY                       = "geographical_granularity";
 
     public static final String             TSV_EXPORTATION_ENCODING                                  = "UTF-8";
 

@@ -580,20 +580,20 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity() throws Exception {
+    public void testFindCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
-        MetamacCriteriaResult<RelatedResourceDto> codelistsPagedResult = srmCoreServiceFacade.findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(ctx, metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> codelistsPagedResult = srmCoreServiceFacade.findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ctx, metamacCriteria);
 
         // Validate
         assertEquals(1, codelistsPagedResult.getPaginatorResult().getTotalResults().intValue());
         assertEquals(1, codelistsPagedResult.getResults().size());
 
         int i = 0;
-        assertEquals(CODELIST_10_V1, codelistsPagedResult.getResults().get(i++).getUrn());
+        assertEquals(CODELIST_13_V1, codelistsPagedResult.getResults().get(i++).getUrn());
         assertEquals(codelistsPagedResult.getResults().size(), i);
     }
 
@@ -1341,11 +1341,13 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         MetamacCriteriaResult<RelatedResourceDto> codesPagedResult = srmCoreServiceFacade.findCodesByConditionCanBeVariableElementGeographicalGranularity(ctx, metamacCriteria);
 
         // Validate
-        assertEquals(1, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
-        assertEquals(1, codesPagedResult.getResults().size());
+        assertEquals(3, codesPagedResult.getPaginatorResult().getTotalResults().intValue());
+        assertEquals(3, codesPagedResult.getResults().size());
 
         int i = 0;
-        assertEquals(CODELIST_10_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+        assertEquals(CODELIST_13_V1_CODE_1, codesPagedResult.getResults().get(i++).getUrn());
+        assertEquals(CODELIST_13_V1_CODE_2, codesPagedResult.getResults().get(i++).getUrn());
+        assertEquals(CODELIST_13_V1_CODE_3, codesPagedResult.getResults().get(i++).getUrn());
         assertEquals(codesPagedResult.getResults().size(), i);
     }
 

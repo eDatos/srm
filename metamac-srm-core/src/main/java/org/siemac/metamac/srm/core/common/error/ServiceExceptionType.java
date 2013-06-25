@@ -44,6 +44,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType CODE_NOT_EXTERNALLY_PUBLISHED                                                 = create("exception.srm.codelists.code_not_externally_published");
     public static final CommonServiceExceptionType CODELIST_NOT_EXTERNALLY_PUBLISHED                                             = create("exception.srm.codelists.codelist_not_externally_published");
     public static final CommonServiceExceptionType CODE_VARIABLE_ELEMENT_REQUIRED_WHEN_GEOGRAPHICAL                              = create("exception.srm.codelists.code_variable_element_required_when_geographical");
+    public static final CommonServiceExceptionType CODELIST_UNSUPPORTED_TO_GEOGRAPHICAL_GRANULARITY                              = create("exception.srm.codelists.codelist_unsupported_to_geographical_granularity");
 
     // Variables
     public static final CommonServiceExceptionType VARIABLE_TYPE_UPDATE_TO_GEOGRAPHICAL_UNSUPPORTED                              = create("exception.srm.codelists.variable.update_type_geographical_unsupported");
@@ -79,9 +80,12 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType IMPORTATION_TSV_ERROR_FILE_PARSING                                            = create("exception.srm.importation.tsv.error.file_parse");
     public static final CommonServiceExceptionType IMPORTATION_TSV_HEADER_INCORRECT                                              = create("exception.srm.importation.tsv.error.header.incorrect");
     public static final CommonServiceExceptionType IMPORTATION_TSV_HEADER_INCORRECT_COLUMN                                       = create("exception.srm.importation.tsv.error.header.incorrect_column");
+    public static final CommonServiceExceptionType IMPORTATION_TSV_HEADER_COLUMN_REQUIRED                                        = create("exception.srm.importation.tsv.error.header.column_required");
+    public static final CommonServiceExceptionType IMPORTATION_TSV_HEADER_COLUMN_UNEXPECTED                                      = create("exception.srm.importation.tsv.error.header.column_unexpected");
     public static final CommonServiceExceptionType IMPORTATION_TSV_LINE_INCORRECT                                                = create("exception.srm.importation.tsv.error.line.incorrect");
     public static final CommonServiceExceptionType IMPORTATION_TSV_METADATA_REQUIRED                                             = create("exception.srm.importation.tsv.error.metadata_required");
     public static final CommonServiceExceptionType IMPORTATION_TSV_METADATA_INCORRECT                                            = create("exception.srm.importation.tsv.error.metadata_incorrect");
+    public static final CommonServiceExceptionType IMPORTATION_TSV_METADATA_UNEXPECTED                                           = create("exception.srm.importation.tsv.error.metadata_unexpected");
     public static final CommonServiceExceptionType IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER                        = create("exception.srm.importation.tsv.error.metadata_incorrect_semantic_identifier");
     public static final CommonServiceExceptionType IMPORTATION_TSV_ERROR_PARENT_NOT_FOUND                                        = create("exception.srm.importation.tsv.error.parent.not_found");
     public static final CommonServiceExceptionType IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED                                     = create("info.srm.importation.tsv.resource_not_updated");

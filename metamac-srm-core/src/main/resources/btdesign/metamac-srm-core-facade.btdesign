@@ -519,7 +519,7 @@ Application SrmFacadeCore {
 			"Find codelists can replace another one"
     		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsByConditionCanReplaceTo(String codelistUrn, MetamacCriteria criteria)  throws MetamacException;
 			"Find codelists can be geographical granularity of variable elements"
-    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(MetamacCriteria criteria)  throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(MetamacCriteria criteria)  throws MetamacException;
             "Retrieves a codelist by URN"
             @CodelistMetamacDto retrieveCodelistByUrn(String urn) throws MetamacException;
             "Retrieves all codelist versions"

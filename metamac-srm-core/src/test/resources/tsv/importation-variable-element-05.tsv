@@ -1,0 +1,5 @@
+code	short_name#es	short_name#en	short_name#it	geographical_granularity
+VARIABLE_ELEMENT_01	Nombre corto 1	Short name 1	Nombre corto it 1	CODE01
+VARIABLE_ELEMENT_02	Nombre corto 2		Nombre corto it 2	CODE03
+VARIABLE_ELEMENT_03	Nombre corto 3	Short name 3		CODE02
+VARIABLE_ELEMENT_04	Nombre corto 4	Short name 4	Nombre corto it 4	CODE03

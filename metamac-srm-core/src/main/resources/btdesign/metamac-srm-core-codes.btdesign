@@ -50,7 +50,7 @@ Application CodesMetamac {
 			"Find codelists can replace another one"
     		PagedResult<@CodelistVersionMetamac> findCodelistsByConditionCanReplaceTo(String codelistUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Find codelists can be geographical granularity of variable elements"
-    		PagedResult<@CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@CodelistVersionMetamac> findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Sends codelist to production validation"
     		@CodelistVersionMetamac sendCodelistToProductionValidation(String urn) throws MetamacException;
     		"Sends codelist to diffusion validation"

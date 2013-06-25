@@ -44,7 +44,6 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
 import org.joda.time.tz.DateTimeZoneBuilder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.DirtyDatabase;
@@ -881,18 +880,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     @Override
-    public void testFindCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity() throws Exception {
+    public void testFindCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(ctx, null, pagingParameter);
+        PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ctx, null, pagingParameter);
 
         // Validate
         assertEquals(1, codelistsPagedResult.getTotalRows());
         assertEquals(1, codelistsPagedResult.getValues().size());
 
         int i = 0;
-        assertEquals(CODELIST_10_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        assertEquals(CODELIST_13_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         assertEquals(codelistsPagedResult.getValues().size(), i);
     }
 
@@ -3851,11 +3850,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByConditionCanBeVariableElementGeographicalGranularity(ctx, null, pagingParameter);
 
         // Validate
-        assertEquals(1, codesPagedResult.getTotalRows());
-        assertEquals(1, codesPagedResult.getValues().size());
+        assertEquals(3, codesPagedResult.getTotalRows());
+        assertEquals(3, codesPagedResult.getValues().size());
 
         int i = 0;
-        assertEquals(CODELIST_10_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CODELIST_13_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CODELIST_13_V1_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(CODELIST_13_V1_CODE_3, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
         assertEquals(codesPagedResult.getValues().size(), i);
     }
 
@@ -8765,8 +8766,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     @Test
     @DirtyDatabase
-    @Ignore
-    // TODO review test
     public void testImportVariableElementsTsv() throws Exception {
 
         final String variableUrn = VARIABLE_2;
@@ -8855,8 +8854,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    @Ignore
-    // TODO review test
     @DirtyDatabase
     public void testImportVariableElementsTsvUpdatingAlreadyExistingCodes() throws Exception {
 
@@ -8955,8 +8952,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    @Ignore
-    // TODO review test
     @DirtyDatabase
     public void testImportVariableElementsTsvNotUpdatingAlreadyExistingCodes() throws Exception {
 
@@ -9054,8 +9049,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    @Ignore
-    // TODO review test
     @DirtyDatabase
     public void testImportVariableElementsTsvErrorWithHeaderIncorrect() throws Exception {
 
@@ -9097,8 +9090,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    @Ignore
-    // TODO review test
     @DirtyDatabase
     public void testImportVariableElementsTsvErrorWithBodyIncorrect() throws Exception {
 
@@ -9141,6 +9132,58 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 task.getTaskResults().get(i++));
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), "7", Boolean.FALSE, type, task.getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportVariableElementsTsvGeographical() throws Exception {
+
+        final String variableUrn = VARIABLE_5;
+        final String fileName = "importation-variable-element-05.tsv";
+        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+        final boolean updateAlreadyExisting = true;
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
+                            Boolean.TRUE);
+                    assertEquals(true, taskImportTsvInfo.getIsPlannedInBackground());
+                    assertNotNull(taskImportTsvInfo.getJobKey());
+
+                    jobKey.append(taskImportTsvInfo.getJobKey());
+                } catch (MetamacException e) {
+                    fail("importation failed: " + e.getHumanReadableMessage());
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        // Validate variable elements
+        {
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_1);
+            assertEquals(CODELIST_13_V1_CODE_1, variableElement.getGeographicalGranularity().getNameableArtefact().getUrn());
+        }
+        {
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_2);
+            assertEquals(CODELIST_13_V1_CODE_3, variableElement.getGeographicalGranularity().getNameableArtefact().getUrn());
+        }
+        {
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_3);
+            assertEquals(CODELIST_13_V1_CODE_2, variableElement.getGeographicalGranularity().getNameableArtefact().getUrn());
+        }
+        {
+            VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_4);
+            assertEquals(CODELIST_13_V1_CODE_3, variableElement.getGeographicalGranularity().getNameableArtefact().getUrn());
+        }
     }
 
     @Override
@@ -9195,6 +9238,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     @Test
+    @DirtyDatabase
     public void testImportVariableElementsShape() throws Exception {
         final String variableUrn = VARIABLE_5;
         final URL shapeFileUrl = this.getClass().getResource("/shape/comarcas_n1/comarcas_n1.shp");
@@ -9251,6 +9295,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     @Test
+    @DirtyDatabase
     public void testImportVariableElementsPoints() throws Exception {
         final String variableUrn = VARIABLE_5;
         final URL shapeFileUrl = this.getClass().getResource("/shape/comarcas_n1/comarcas_n1_point.shp");

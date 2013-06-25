@@ -8,5 +8,6 @@
     <entry key="metamac.srm.dsd.time_dimension.default_concept.urn">FILL_ME_WITH_CONCEPT_URN</entry>
     <entry key="metamac.srm.dsd.measure_dimension.default_concept.urn">FILL_ME_WITH_CONCEPT_URN</entry>
     <!-- Codelists -->
+    <!-- Following property can not be modified if some code has already been assigned as geographical granularity of variable element -->
     <entry key="metamac.srm.codelist.variable_element.geographical_granularity.urn">FILL_ME_WITH_CODELIST_URN</entry>
 </properties>

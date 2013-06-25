@@ -1081,7 +1081,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ServiceContext ctx, MetamacCriteria criteria)
+            throws MetamacException {
         // Security
         CodesSecurityUtils.canFindCodelistsByCondition(ctx);
 
@@ -1089,7 +1090,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistVersionMetamac> result = getCodesMetamacService().findCodelistsByConditionWithCodesCanBeVariableElementGeographicalGranularity(ctx, sculptorCriteria.getConditions(),
+        PagedResult<CodelistVersionMetamac> result = getCodesMetamacService().findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
