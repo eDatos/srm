@@ -264,6 +264,8 @@ Application SrmFacadeCore {
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdRoleByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Find codelists belong to same variable of concept"
     		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdDimensionByCondition(MetamacCriteria criteria, String conceptUrn) throws MetamacException;
+    		"Find codelists belong to same variable of concept"
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdSpatialDimensionByCondition(MetamacCriteria criteria, String conceptUrn) throws MetamacException;
     		"Find concept schemes to enumerated representation of measure dimension"
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Find concept schemes to enumerated representation of atribute (metamac extension)"
@@ -276,6 +278,8 @@ Application SrmFacadeCore {
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeDsdAttributeByCondition(MetamacCriteria criteria, String dsdUrn) throws MetamacException;
     		"Find codelists belong to same variable of concept"
     		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(MetamacCriteria criteria, String conceptUrn) throws MetamacException;
+    		"Find codelists belong to same variable of concept"
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForDsdSpatialAttributeByCondition(MetamacCriteria criteria, String conceptUrn) throws MetamacException;
     		"Find orderVisualisation belong to same codelist representation of dimension"
     		MetamacCriteriaResult<@RelatedResourceDto> findOrderVisualisationCanBeDisplayOrderForDsdDimensionByCondition(MetamacCriteria criteria, String dimensionUrn) throws MetamacException;
     		"Find openessVisualisation belong to same codelist representation of dimension"
