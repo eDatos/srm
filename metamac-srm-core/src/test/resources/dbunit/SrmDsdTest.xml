@@ -3800,7 +3800,7 @@
         USAGE_STATUS="CONDITIONAL"
         
         CONCEPT_IDENTITY_FK="10212"
-        REPRESENTATION_FK="[NULL]"
+        REPRESENTATION_FK="65"
     />
  
     <TB_DATA_ATTRIBUTES_EI_ROLES
@@ -4001,7 +4001,7 @@
     />
     
     <TB_FACETS
-    	ID="61"
+    	ID="63"
     	IS_SEQUENCE_FT="[null]"
     	INTERVAL_FT="[null]"
     	START_VALUE_FT="[null]"
@@ -4081,8 +4081,7 @@
         REPRESENTATION_TYPE="TEXT_FORMAT"
         CODELIST_FK="[null]"
         CONCEPT_SCHEME_FK="[null]"
-        TEXT_FORMAT_FK="61"
-        
+        TEXT_FORMAT_FK="63"
     />
     
     <TB_REPRESENTATIONS
@@ -4095,6 +4094,37 @@
         TEXT_FORMAT_FK="[null]"
     /> 
     
+    <TB_REPRESENTATIONS
+    	ID="65"
+    	UUID="tb_representations-65"
+    	VERSION="0"
+        REPRESENTATION_TYPE="TEXT_FORMAT"
+        CODELIST_FK="[null]"
+        CONCEPT_SCHEME_FK="[null]"
+        TEXT_FORMAT_FK="65"
+    />
+    
+    <TB_FACETS
+    	ID="65"
+    	IS_SEQUENCE_FT="[null]"
+    	INTERVAL_FT="[null]"
+    	START_VALUE_FT="[null]"
+    	END_VALUE_FT="[null]"
+    	TIME_INTERVAL_FT="[null]"
+    	START_TIME_FT="[null]"
+    	END_TIME_FT="[null]"
+    	MIN_LENGTH_FT="[null]"
+    	MAX_LENGTH_FT="[null]"
+    	MIN_VALUE_FT="[null]"
+    	MAX_VALUE_FT="[null]"
+    	DECIMALS_FT="[null]"
+    	PATTERN_FT="[null]"
+    	XHTML_EFT="[null]"
+    	IS_MULTI_LINGUAL="[null]"
+    	UUID="tb_facets-65"
+    	VERSION="0"
+    	FACET_VALUE="ReportingYear"
+    />
     
     <TB_M_DIMENSION_ORDERS
     	ID="61"
@@ -4613,7 +4643,7 @@
             USAGE_STATUS="CONDITIONAL"
             
             CONCEPT_IDENTITY_FK="10311"
-            REPRESENTATION_FK="[NULL]"
+            REPRESENTATION_FK="75"
         />
         
          <TB_ANNOTATIONS
@@ -4999,7 +5029,7 @@
             USAGE_STATUS="CONDITIONAL"
             
             CONCEPT_IDENTITY_FK="10311"
-            REPRESENTATION_FK="[NULL]"
+            REPRESENTATION_FK="75"
         />
         
          <TB_ANNOTATIONS
@@ -5232,8 +5262,70 @@
             TEXT_FORMAT_FK="[null]"
         />    
     
+        <TB_REPRESENTATIONS
+            ID="75"
+            UUID="tb_representations-75"
+            VERSION="0"
+            REPRESENTATION_TYPE="TEXT_FORMAT"
+            CODELIST_FK="[null]"
+            CONCEPT_SCHEME_FK="[null]"
+            TEXT_FORMAT_FK="75"
+        />
+        
+        <TB_FACETS
+	    	ID="75"
+	    	IS_SEQUENCE_FT="[null]"
+	    	INTERVAL_FT="[null]"
+	    	START_VALUE_FT="[null]"
+	    	END_VALUE_FT="[null]"
+	    	TIME_INTERVAL_FT="[null]"
+	    	START_TIME_FT="[null]"
+	    	END_TIME_FT="[null]"
+	    	MIN_LENGTH_FT="[null]"
+	    	MAX_LENGTH_FT="[null]"
+	    	MIN_VALUE_FT="[null]"
+	    	MAX_VALUE_FT="[null]"
+	    	DECIMALS_FT="[null]"
+	    	PATTERN_FT="[null]"
+	    	XHTML_EFT="[null]"
+	    	IS_MULTI_LINGUAL="[null]"
+	    	UUID="tb_facets-75"
+	    	VERSION="0"
+	    	FACET_VALUE="Boolean"
+    	/>
     
-    
+       <TB_REPRESENTATIONS
+            ID="76"
+            UUID="tb_representations-76"
+            VERSION="0"
+            REPRESENTATION_TYPE="TEXT_FORMAT"
+            CODELIST_FK="[null]"
+            CONCEPT_SCHEME_FK="[null]"
+            TEXT_FORMAT_FK="75"
+        />
+        
+        <TB_FACETS
+	    	ID="76"
+	    	IS_SEQUENCE_FT="[null]"
+	    	INTERVAL_FT="[null]"
+	    	START_VALUE_FT="[null]"
+	    	END_VALUE_FT="[null]"
+	    	TIME_INTERVAL_FT="[null]"
+	    	START_TIME_FT="[null]"
+	    	END_TIME_FT="[null]"
+	    	MIN_LENGTH_FT="[null]"
+	    	MAX_LENGTH_FT="[null]"
+	    	MIN_VALUE_FT="[null]"
+	    	MAX_VALUE_FT="[null]"
+	    	DECIMALS_FT="[null]"
+	    	PATTERN_FT="[null]"
+	    	XHTML_EFT="[null]"
+	    	IS_MULTI_LINGUAL="[null]"
+	    	UUID="tb_facets-76"
+	    	VERSION="0"
+	    	FACET_VALUE="Boolean"
+    	/>
+    	
         <TB_M_DIMENSION_ORDERS
             ID="71"
             DIM_ORDER="1"
@@ -5416,6 +5508,7 @@
         LAST_UPDATED_TZ="Europe/London"
         LAST_UPDATED="2012-01-01 01:02:03"
         LAST_UPDATED_BY="user2"
+        VARIABLE_TYPE="GEOGRAPHICAL"
         VERSION="1"
     />
     

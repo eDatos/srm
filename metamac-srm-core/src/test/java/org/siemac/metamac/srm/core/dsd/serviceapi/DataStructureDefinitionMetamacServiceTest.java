@@ -411,9 +411,9 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
                 i++;
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, DSD_7_V1_DIMENSION_1);
                 // children
-                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEquals(2, exceptionItem.getExceptionItems().size());
                 assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.ANNOTATION},
-                        exceptionItem.getExceptionItems().get(0));
+                        exceptionItem.getExceptionItems().get(1));
             }
             {
                 // TIME_PERIOD
@@ -438,9 +438,9 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
                 i++;
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, DSD_7_V1_DATA_ATTRIBUTE_3);
                 // children
-                assertEquals(1, exceptionItem.getExceptionItems().size());
+                assertEquals(2, exceptionItem.getExceptionItems().size());
                 assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.ANNOTATION},
-                        exceptionItem.getExceptionItems().get(0));
+                        exceptionItem.getExceptionItems().get(1));
             }
             {
                 // PrimartyMeasure
