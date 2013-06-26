@@ -9,6 +9,7 @@ import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRe
 import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils.addSubexceptionToExceptionItemByResource;
 import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils.addTranslationExceptionToExceptionItemsByResource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -573,7 +574,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         List resultsSql = query.getResultList();
         for (Object resultSql : resultsSql) {
             String urn = getString(resultSql);
-            addSubexceptionToExceptionItemByResource(exceptionItemsByUrn, urn, ServiceExceptionType.CODE_VARIABLE_ELEMENT_REQUIRED_WHEN_GEOGRAPHICAL, null);
+            addSubexceptionToExceptionItemByResource(exceptionItemsByUrn, urn, ServiceExceptionType.CODE_VARIABLE_ELEMENT_REQUIRED_WHEN_GEOGRAPHICAL, (Serializable[]) null);
         }
     }
 
