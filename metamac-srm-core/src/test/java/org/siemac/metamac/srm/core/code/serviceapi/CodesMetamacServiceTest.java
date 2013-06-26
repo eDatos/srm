@@ -9186,6 +9186,51 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Test
+    @DirtyDatabase
+    public void testImportVariableElementsTsvGeographicalErrorWithBodyIncorrect() throws Exception {
+
+        final String variableUrn = VARIABLE_5;
+
+        // Import
+        final String fileName = "importation-variable-element-03-errors-body.tsv";
+        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
+        final StringBuilder jobKey = new StringBuilder();
+        final boolean updateAlreadyExisting = false;
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
+                            Boolean.TRUE);
+                    jobKey.append(taskImportTsvInfo.getJobKey());
+                } catch (MetamacException e) {
+                    fail("importation failed: " + e.getHumanReadableMessage());
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        // Validate
+        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
+        assertEquals(5, task.getTaskResults().size());
+        int i = 0;
+        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), "3", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "variableElement4WithoutShortName#@#parameter.srm.importation.short_name", Boolean.FALSE, type, task
+                .getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "#variableNotSemanticCode#@#parameter.srm.importation.code", Boolean.FALSE, type,
+                task.getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), "7", Boolean.FALSE, type, task.getTaskResults().get(i++));
+        assertEquals(task.getTaskResults().size(), i);
+    }
+
     @Override
     @Test
     public void testExportCodesTsv() throws Exception {
