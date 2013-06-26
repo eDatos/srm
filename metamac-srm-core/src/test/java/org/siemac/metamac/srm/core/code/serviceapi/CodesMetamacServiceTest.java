@@ -6508,8 +6508,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Validate
         assertEquals(VariableTypeEnum.GEOGRAPHICAL, variableElement.getVariable().getType());
         assertEquals(urn, variableElement.getIdentifiableArtefact().getUrn());
-        assertEquals("70.5559", variableElement.getLatitude());
-        assertEquals("90.3045", variableElement.getLongitude());
+        assertEquals(Double.valueOf(70.5559), variableElement.getLatitude());
+        assertEquals(Double.valueOf(90.3045), variableElement.getLongitude());
         assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
         assertEquals(CODELIST_10_V1_CODE_1, variableElement.getGeographicalGranularity().getNameableArtefact().getUrn());
     }
@@ -9373,27 +9373,27 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             // Not updated (not exist in shapefile)
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_1);
-            assertEquals("90° 30' 45''", variableElement.getLongitude());
-            assertEquals("70° 55' 59''", variableElement.getLatitude());
+            assertEquals(Double.valueOf("90.3045"), variableElement.getLongitude());
+            assertEquals(Double.valueOf("70.5559"), variableElement.getLatitude());
             assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
         }
         {
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_2);
-            assertEquals("-16.61153654488294", variableElement.getLongitude());
-            assertEquals("28.26462033711757", variableElement.getLatitude());
+            assertEquals(Double.valueOf("-16.61153654488294"), variableElement.getLongitude());
+            assertEquals(Double.valueOf("28.26462033711757"), variableElement.getLatitude());
             assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
         }
         {
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_3);
-            assertEquals("-17.23229859783003", variableElement.getLongitude());
-            assertEquals("28.120675513245782", variableElement.getLatitude());
+            assertEquals(Double.valueOf("-17.23229859783003"), variableElement.getLongitude());
+            assertEquals(Double.valueOf("28.120675513245782"), variableElement.getLatitude());
             assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
         }
         {
             // Not updated (not exist in shapefile)
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_4);
-            assertEquals("91.3245", variableElement.getLongitude());
-            assertEquals("71.5559", variableElement.getLatitude());
+            assertEquals(Double.valueOf("91.3245"), variableElement.getLongitude());
+            assertEquals(Double.valueOf("71.5559"), variableElement.getLatitude());
             assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
         }
     }

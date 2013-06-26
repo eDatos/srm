@@ -352,6 +352,7 @@ Application CodesMetamac {
 			
 			Repository CodeMetamacRepository {
 				save;
+				deleteAllCodes(Long itemSchemeVersionId);
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByQuery(String query, Map<String, Object> parameters);
 				@CodeMetamac findByUrn(String urn);
