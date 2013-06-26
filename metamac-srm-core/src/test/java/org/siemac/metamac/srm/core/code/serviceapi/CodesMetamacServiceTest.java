@@ -6169,7 +6169,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_5);
-        CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(ctx, CODELIST_10_V1_CODE_1);
+        CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(ctx, CODELIST_13_V1_CODE_1);
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElementGeographical(variable, geographicalGranularity);
         // Replace to
         VariableElement variableElementReplaced1 = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_3);
