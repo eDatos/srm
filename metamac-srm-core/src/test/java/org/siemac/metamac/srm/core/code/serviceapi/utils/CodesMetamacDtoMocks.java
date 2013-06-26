@@ -132,8 +132,8 @@ public class CodesMetamacDtoMocks {
 
     public static VariableElementDto mockVariableElementGeographicalDto(String code, String codeUrn) {
         VariableElementDto variableElementDto = mockVariableElementDto();
-        variableElementDto.setLatitude("latitude1");
-        variableElementDto.setLongitude("longitude1");
+        variableElementDto.setLatitude(Double.valueOf(1));
+        variableElementDto.setLongitude(Double.valueOf(2));
         variableElementDto.setShape("shape1");
         variableElementDto.setGeographicalGranularity(mockCodeRelatedResourceDto(code, codeUrn));
         return variableElementDto;

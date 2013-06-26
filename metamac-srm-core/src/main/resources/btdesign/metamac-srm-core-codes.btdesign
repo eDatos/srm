@@ -533,8 +533,8 @@ Application CodesMetamac {
 			- Bag<@VariableElement> replaceToVariableElements cascade="none" fetch="lazy" <-> replacedByVariableElement;
 			
 			// Geographical information
-			String latitude nullable;
-			String longitude nullable;
+			Double latitude nullable;
+			Double longitude nullable;
 			Clob shape nullable;
 			- @CodeMetamac geographicalGranularity nullable cascade="none" fetch="lazy" databaseColumn="GEOGRAPHICAL_GRANULARITY_FK";
 			

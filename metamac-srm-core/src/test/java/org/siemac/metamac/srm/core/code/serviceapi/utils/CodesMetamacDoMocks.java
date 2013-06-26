@@ -202,8 +202,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
 
     public static VariableElement mockVariableElementGeographical(Variable variable, CodeMetamac geographicalGranularity) {
         VariableElement variableElement = mockVariableElement(variable);
-        variableElement.setLatitude("latitude1");
-        variableElement.setLongitude("longitude1");
+        variableElement.setLatitude(Double.valueOf(1));
+        variableElement.setLongitude(Double.valueOf(2));
         variableElement.setShape("shape1");
         variableElement.setGeographicalGranularity(geographicalGranularity);
         return variableElement;
@@ -232,8 +232,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
 
     public static VariableElement mockVariableElementGeographicalFixedValues(String resourceID) {
         VariableElement target = mockVariableElementFixedValues(resourceID);
-        target.setLatitude("latitude1");
-        target.setLongitude("longitude1");
+        target.setLatitude(Double.valueOf(1));
+        target.setLongitude(Double.valueOf(2));
         target.setShape("shape1");
         target.setGeographicalGranularity(mockCodeFixedValues("code1", mockCodelistFixedValues("agency01", "codelist01", "01.000"), null));
         return target;

@@ -116,8 +116,8 @@ Application DtosMetamacCodeDomain {
 			- List<@RelatedResourceDto> replaceToVariableElements nullable;
 			"Variable"
 			- @RelatedResourceDto variable not nullable;
-			String latitude nullable;
-			String longitude nullable;
+			Double latitude nullable;
+			Double longitude nullable;
 			String shape nullable;
 			- @RelatedResourceDto geographicalGranularity nullable;
 			"Version to optimistic locking"

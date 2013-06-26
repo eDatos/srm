@@ -3589,8 +3589,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 } else if (geometry instanceof Point) {
                     Point point = (Point) geometry;
                     // Do not store well-known text to allow edit in web
-                    variableElement.setLongitude(String.valueOf(point.getX()));
-                    variableElement.setLatitude(String.valueOf(point.getY()));
+                    variableElement.setLongitude(point.getX());
+                    variableElement.setLatitude(point.getY());
                     variableElementsToPersist.add(variableElement);
                 }
             }
