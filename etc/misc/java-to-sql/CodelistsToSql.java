@@ -20,8 +20,8 @@ public class CodelistsToSql {
      * 4) Número de códigos en "numCodes"
      * 5) Para muchos códigos, es mejor poner 'separateFiles' a true para que separe el resultado en varios ficheros.
      */
-    private static long                   firstId                         = 200000000;
-    private static int                    numCodes                        = 15000;
+    private static long                   firstId                         = 100000000;
+    private static int                    numCodes                        = 2;
     private static Boolean                withAnnotations                 = Boolean.TRUE;
     private static Boolean                publishCodelist                 = Boolean.FALSE;
 
@@ -184,7 +184,7 @@ public class CodelistsToSql {
         long id = idVariables.longValue();
         String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=" + codeVariable;
         long idNameableArtefact = insertNameableArtefact(urn, codeVariable, false);
-        long shortName = insertInternationalString("shortName_" + id);
+        long shortName = insertInternationalString("shortNameVariable_" + id);
         insertSentences.add("INSERT INTO TB_M_VARIABLES (ID, UUID, VERSION, NAMEABLE_ARTEFACT_FK, SHORT_NAME_FK) values (" + id + ", '" + id + "', 1, " + idNameableArtefact + ", " + shortName + ");");
 
         insertSentences.add("UPDATE TB_M_CODELISTS_VERSIONS set VARIABLE_FK = " + id + " where TB_CODELISTS_VERSIONS = " + idCodelist + ";");
@@ -217,10 +217,10 @@ public class CodelistsToSql {
      */
     private static long insertVariableElement(String codeVariable, long idVariable) {
         long id = idVariableElements.longValue();
-        String code = "code" + id;
+        String code = "ve" + id;
         String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=" + codeVariable + "." + code;
         long idIdentifiableArtefact = insertIdentifiableArtefact(urn, code, false);
-        long shortName = insertInternationalString("shortName_" + id);
+        long shortName = insertInternationalString("shortNameVe_" + id);
         insertSentences.add("INSERT INTO TB_M_VARIABLE_ELEMENTS (ID, UUID, VERSION, IDENTIFIABLE_ARTEFACT_FK, SHORT_NAME_FK, VARIABLE_FK) values (" + id + ", '" + id + "', 1, "
                 + idIdentifiableArtefact + ", " + shortName + ", " + idVariable + ");");
         idVariableElements.add(1);
@@ -431,7 +431,7 @@ public class CodelistsToSql {
          * );
          */
         String subcode = idCodelists.toString();
-        long shortName = insertInternationalString("shortName_" + subcode);
+        long shortName = insertInternationalString("shortNameCodelist_" + subcode);
         String status = publishCodelist ? "EXTERNALLY_PUBLISHED" : "DRAFT";
         insertSentences.add("INSERT INTO TB_M_CODELISTS_VERSIONS (SHORT_NAME_FK, PROC_STATUS, ACCESS_TYPE, TB_CODELISTS_VERSIONS) values (" + shortName + ", '" + status + "', 'PUBLIC', "
                 + idCodelists + ");");
@@ -615,7 +615,7 @@ public class CodelistsToSql {
      */
     private static void insertCodeMetamac(Long idParent, long idCode, long variableElement) {
         String subcode = String.valueOf(idCode);
-        long shortName = insertInternationalString("shortName_" + subcode);
+        long shortName = insertInternationalString("shortNameCode_" + subcode);
         MutableLong order1 = parentsChildrenNumber.get(idParent);
         StringBuilder sentenceOrders = new StringBuilder();
         for (int i = 0; i < 20; i++) {
