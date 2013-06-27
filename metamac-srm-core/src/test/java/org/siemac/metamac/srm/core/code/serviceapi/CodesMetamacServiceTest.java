@@ -35,6 +35,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
@@ -1910,6 +1911,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Check replace to is not delete
         CodelistVersionMetamac codelistVersionReplaceTo = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnReplaceTo);
         assertNull(codelistVersionReplaceTo.getReplacedByCodelist());
+    }
+
+    @Test
+    public void testDeleteCodelistTestAllEntities() throws Exception {
+        String urn = CODELIST_1_V2;
+
+        executeQueriesToTestDeleteCodelist1V2DeleteAllEntities(true);
+        codesService.deleteCodelist(getServiceContextAdministrador(), urn);
+        executeQueriesToTestDeleteCodelist1V2DeleteAllEntities(false);
     }
 
     @Test
@@ -9663,6 +9673,83 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(2, allVersions.size());
             assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
             assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    private void executeQueriesToTestDeleteCodelist1V2DeleteAllEntities(boolean expectedResults) {
+        // Codelist
+        {
+            Long id = Long.valueOf(12);
+            Query query = entityManager.createNativeQuery("SELECT * FROM TB_CODELISTS_VERSIONS WHERE TB_ITEM_SCHEMES_VERSIONS = " + id);
+            List result = query.getResultList();
+            assertResultsExpected(expectedResults, result.size());
+        }
+        // Codes
+        {
+            List<Integer> ids = Arrays.asList(121, 122, 1221, 12211, 1222, 123, 124, 1241);
+            for (int i = 0; i < ids.size(); i++) {
+                Integer id = ids.get(i);
+                {
+                    Query query = entityManager.createNativeQuery("SELECT * FROM TB_CODES WHERE ID = " + id);
+                    List result = query.getResultList();
+                    assertResultsExpected(expectedResults, result.size());
+                }
+                {
+                    Query query = entityManager.createNativeQuery("SELECT * FROM TB_M_CODES WHERE TB_CODES = " + id);
+                    List result = query.getResultList();
+                    assertResultsExpected(expectedResults, result.size());
+                }
+            }
+        }
+        // Annotable artefact
+        {
+            List<Integer> ids = Arrays.asList(12, 99121, 99122, 991221, 991221, 9912211, 991222, 99123, 99124, 991241, 9912411, 9997121, 9997123);
+            for (int i = 0; i < ids.size(); i++) {
+                Integer id = ids.get(i);
+                {
+                    Query query = entityManager.createNativeQuery("SELECT * FROM TB_ANNOTABLE_ARTEFACTS WHERE ID = " + id);
+                    List result = query.getResultList();
+                    assertResultsExpected(expectedResults, result.size());
+                }
+            }
+        }
+        // Annotations
+        {
+            List<Integer> ids = Arrays.asList(991211, 991212, 9912211, 9912212);
+            for (int i = 0; i < ids.size(); i++) {
+                Integer id = ids.get(i);
+                {
+                    Query query = entityManager.createNativeQuery("SELECT * FROM TB_ANNOTATIONS WHERE ID = " + id);
+                    List result = query.getResultList();
+                    assertResultsExpected(expectedResults, result.size());
+                }
+            }
+        }
+        // International strings and localised strings
+        {
+            List<Integer> ids = Arrays.asList(3, 4, 12, 13, 97, 77, 14, 15, 109, 110, 111, 94, 16, 107, 141, 96, 37, 38, 78, 79);
+            for (int i = 0; i < ids.size(); i++) {
+                Integer id = ids.get(i);
+                {
+                    Query query = entityManager.createNativeQuery("SELECT * FROM TB_INTERNATIONAL_STRINGS WHERE ID = " + id);
+                    List result = query.getResultList();
+                    assertResultsExpected(expectedResults, result.size());
+                }
+                {
+                    Query query = entityManager.createNativeQuery("SELECT * FROM TB_LOCALISED_STRINGS WHERE INTERNATIONAL_STRING_FK = " + id);
+                    List result = query.getResultList();
+                    assertResultsExpected(expectedResults, result.size());
+                }
+            }
+        }
+    }
+
+    private void assertResultsExpected(boolean expectedResults, int results) {
+        if (expectedResults) {
+            assertTrue(results > 0);
+        } else {
+            assertTrue(results == 0);
         }
     }
 

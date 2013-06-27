@@ -414,8 +414,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (doValidations) {
             checkCodelistCanBeModified(codelistVersionMetamac);
         }
+        // First, delete all codes efficiently
+        getCodeMetamacRepository().deleteAllCodesEfficiently(codelistVersionMetamac.getId());
 
         // Delete
+        codelistVersionMetamac = retrieveCodelistByUrn(ctx, codelistVersionMetamac.getMaintainableArtefact().getUrn()); // reload without codes
         codelistVersionMetamac.removeAllReplaceToCodelists(); // codelist can be deleted although it replaces to another codelist
         codelistVersionMetamac.setDefaultOrderVisualisation(null);
         codelistVersionMetamac.setDefaultOpennessVisualisation(null);
@@ -565,6 +568,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Delete temporal version
+        // ===============================================================
+        // DANGEROUS CODE: clear is necessary because items are already loaded
+        entityManager.flush();
+        entityManager.clear();
+        // ===============================================================
+        codelistTemporalVersion = retrieveCodelistByUrn(ctx, urnTemporal);
         deleteCodelist(ctx, codelistTemporalVersion, Boolean.FALSE);
 
         codelistVersion = retrieveCodelistByUrn(ctx, codelistVersion.getMaintainableArtefact().getUrn());

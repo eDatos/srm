@@ -10,6 +10,10 @@ import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils
 import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils.addTranslationExceptionToExceptionItemsByResource;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +23,8 @@ import java.util.Set;
 import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hibernate.Session;
+import org.hibernate.jdbc.Work;
 import org.siemac.metamac.core.common.constants.CoreCommonConstants;
 import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -61,9 +67,6 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @Autowired
     private SrmConfiguration              srmConfiguration;
-
-    public CodeMetamacRepositoryImpl() {
-    }
 
     @Override
     public CodeMetamac findByUrn(String urn) {
@@ -574,7 +577,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         List resultsSql = query.getResultList();
         for (Object resultSql : resultsSql) {
             String urn = getString(resultSql);
-            addSubexceptionToExceptionItemByResource(exceptionItemsByUrn, urn, ServiceExceptionType.CODE_VARIABLE_ELEMENT_REQUIRED_WHEN_GEOGRAPHICAL, (Serializable[]) null);
+            addSubexceptionToExceptionItemByResource(exceptionItemsByUrn, urn, ServiceExceptionType.CODE_VARIABLE_ELEMENT_REQUIRED_WHEN_GEOGRAPHICAL, (Serializable[]) (null));
         }
     }
 
@@ -728,5 +731,251 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             count++;
         }
         return shortNamesByCode;
+    }
+
+    @Override
+    public void deleteAllCodesEfficiently(final Long itemSchemeVersionId) throws MetamacException {
+        Session session = (Session) getEntityManager().getDelegate();
+
+        try {
+            session.doWork(new Work() {
+
+                @Override
+                public void execute(Connection connection) throws SQLException {
+                    // International strings are deleted at the end
+                    List<Long> internationalStringToDelete = new ArrayList<Long>();
+
+                    // Short name
+                    addInternationalStringsToDelete(itemSchemeVersionId, internationalStringToDelete, getCodeMetamacMetadataInternationalStringQuery("SHORT_NAME_FK", itemSchemeVersionId));
+                    deleteCodeMetamacLocalisedStrings(connection, "SHORT_NAME_FK", itemSchemeVersionId);
+
+                    // Name, description, comment
+                    addInternationalStringsToDelete(itemSchemeVersionId, internationalStringToDelete, getCodeNameableArtefactMetadataInternationalStringQuery("NAME_FK", itemSchemeVersionId));
+                    deleteItemNameableArtefactLocalisedStrings(connection, "NAME_FK", itemSchemeVersionId);
+                    addInternationalStringsToDelete(itemSchemeVersionId, internationalStringToDelete, getCodeNameableArtefactMetadataInternationalStringQuery("DESCRIPTION_FK", itemSchemeVersionId));
+                    deleteItemNameableArtefactLocalisedStrings(connection, "DESCRIPTION_FK", itemSchemeVersionId);
+                    addInternationalStringsToDelete(itemSchemeVersionId, internationalStringToDelete, getCodeNameableArtefactMetadataInternationalStringQuery("COMMENT_FK", itemSchemeVersionId));
+                    deleteItemNameableArtefactLocalisedStrings(connection, "COMMENT_FK", itemSchemeVersionId);
+
+                    // Codes and annotable artefacts
+                    deleteCodeAnnotations(connection, itemSchemeVersionId, internationalStringToDelete);
+                    List<Long> annotableArtefactsToDelete = getAnnotableArtefactsToDelete(connection, itemSchemeVersionId); // need obtain before delete codes
+                    deleteCodes(connection, itemSchemeVersionId, internationalStringToDelete);
+                    deleteAnnotableArtefacts(connection, annotableArtefactsToDelete);
+
+                    // Delete all international strings
+                    deleteInternationalStrings(connection, internationalStringToDelete);
+                }
+            });
+        } catch (Exception e) {
+            logger.error("Error deleting item scheme version " + itemSchemeVersionId, e);
+            throw new MetamacException(ServiceExceptionType.UNKNOWN, "Error deleting item scheme version " + itemSchemeVersionId + ": " + e.getMessage());
+        }
+    }
+
+    /**
+     * Delete annotations. Adds international strings to delete to list
+     */
+    private void deleteCodeAnnotations(Connection connection, Long itemSchemeVersionId, List<Long> internationalStringToDelete) throws SQLException {
+        addInternationalStringsToDelete(itemSchemeVersionId, internationalStringToDelete, getAnnotationMetadataInternationalStringQuery("TEXT_FK", itemSchemeVersionId));
+        deleteAnnotationLocalisedStrings(connection, "TEXT_FK", itemSchemeVersionId);
+
+        String sb = "DELETE FROM TB_ANNOTATIONS WHERE ANNOTABLE_ARTEFACT_FK in (SELECT cb.NAMEABLE_ARTEFACT_FK FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + ")";
+        executeSqlStatement(connection, sb);
+    }
+
+    private void deleteCodes(Connection connection, Long itemSchemeVersionId, List<Long> internationalStringToDelete) throws SQLException {
+        // Delete metamac codes
+        executeSqlStatement(connection, "DELETE FROM TB_M_CODES WHERE TB_CODES in (SELECT cb.ID FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + ")");
+        // Clear parent relation
+        executeSqlStatement(connection, "UPDATE TB_CODES cb set PARENT_FK = null WHERE cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId);
+        // Delete codes
+        executeSqlStatement(connection, "DELETE FROM TB_CODES WHERE ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId);
+    }
+
+    private void deleteInternationalStrings(Connection connection, List<Long> internationalStringToDelete) throws SQLException {
+        if (CollectionUtils.isEmpty(internationalStringToDelete)) {
+            return;
+        }
+        StringBuilder internationalStringToDeleteParameter = new StringBuilder();
+        int count = 0;
+        for (int i = 0; i < internationalStringToDelete.size(); i++) {
+            count++;
+            Long id = internationalStringToDelete.get(i);
+            internationalStringToDeleteParameter.append(id);
+            if (count == CoreCommonConstants.SQL_IN_CLAUSE_MAXIMUM_NUMBER || i == internationalStringToDelete.size() - 1) {
+                count = 0;
+                String sb = "DELETE FROM TB_INTERNATIONAL_STRINGS WHERE ID IN (" + internationalStringToDeleteParameter + ")";
+                executeSqlStatement(connection, sb);
+                internationalStringToDeleteParameter = new StringBuilder();
+            } else {
+                internationalStringToDeleteParameter.append(",");
+            }
+        }
+    }
+
+    private void deleteCodeMetamacLocalisedStrings(Connection connection, String columnName, Long itemSchemeVersionId) throws SQLException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("DELETE FROM TB_LOCALISED_STRINGS where INTERNATIONAL_STRING_FK in ( ");
+        sb.append("SELECT ");
+        sb.append("c." + columnName + " ");
+        sb.append("FROM TB_M_CODES c ");
+        sb.append("INNER JOIN TB_CODES cb on c.TB_CODES = cb.ID ");
+        sb.append("WHERE ");
+        sb.append("cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + " ");
+        sb.append("AND ");
+        sb.append("c." + columnName + " ");
+        sb.append("IS NOT NULL)");
+
+        executeSqlStatement(connection, sb);
+    }
+
+    private void deleteItemNameableArtefactLocalisedStrings(Connection connection, String columnName, Long itemSchemeVersionId) throws SQLException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("DELETE FROM TB_LOCALISED_STRINGS where INTERNATIONAL_STRING_FK in ( ");
+        sb.append("SELECT ");
+        sb.append("a." + columnName + " ");
+        sb.append("FROM TB_ANNOTABLE_ARTEFACTS a ");
+        sb.append("INNER JOIN TB_CODES cb on cb.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("WHERE ");
+        sb.append("cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + " ");
+        sb.append("AND ");
+        sb.append("a." + columnName + " ");
+        sb.append("IS NOT NULL)");
+
+        executeSqlStatement(connection, sb);
+    }
+
+    private void deleteAnnotationLocalisedStrings(Connection connection, String columnName, Long itemSchemeVersionId) throws SQLException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("DELETE FROM TB_LOCALISED_STRINGS where INTERNATIONAL_STRING_FK in ( ");
+        sb.append("SELECT ");
+        sb.append("a." + columnName + " ");
+        sb.append("FROM TB_CODES cb INNER JOIN TB_ANNOTATIONS a on cb.NAMEABLE_ARTEFACT_FK = a.ANNOTABLE_ARTEFACT_FK ");
+        sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + " ");
+        sb.append("AND ");
+        sb.append("a." + columnName + " ");
+        sb.append("IS NOT NULL)");
+
+        executeSqlStatement(connection, sb);
+    }
+
+    private void deleteAnnotableArtefacts(Connection connection, List<Long> annotableArtefactsToDelete) throws SQLException {
+        if (CollectionUtils.isEmpty(annotableArtefactsToDelete)) {
+            return;
+        }
+
+        StringBuilder annotableArtefactsToDeleteParameter = new StringBuilder();
+        int count = 0;
+        for (int i = 0; i < annotableArtefactsToDelete.size(); i++) {
+            count++;
+            Long id = annotableArtefactsToDelete.get(i);
+            annotableArtefactsToDeleteParameter.append(id);
+            if (count == 1000 || i == annotableArtefactsToDelete.size() - 1) {
+                count = 0;
+                String sb = "DELETE FROM TB_ANNOTABLE_ARTEFACTS WHERE ID IN (" + annotableArtefactsToDeleteParameter + ")";
+                executeSqlStatement(connection, sb);
+                annotableArtefactsToDeleteParameter = new StringBuilder();
+            } else {
+                annotableArtefactsToDeleteParameter.append(",");
+            }
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    private void addInternationalStringsToDelete(Long itemSchemeVersionId, List<Long> actualInternationalStringsToDelete, String sql) {
+        Query query = getEntityManager().createNativeQuery(sql);
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            Long internationalStringId = getLong(resultSql);
+            actualInternationalStringsToDelete.add(internationalStringId);
+        }
+    }
+
+    private String getCodeMetamacMetadataInternationalStringQuery(String columnName, Long itemSchemeVersionId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ");
+        sb.append("c." + columnName + " ");
+        sb.append("FROM TB_M_CODES c ");
+        sb.append("INNER JOIN TB_CODES cb on c.TB_CODES = cb.ID ");
+        sb.append("WHERE ");
+        sb.append("cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + " ");
+        sb.append("AND ");
+        sb.append("c." + columnName + " ");
+        sb.append("IS NOT NULL");
+        return sb.toString();
+    }
+
+    private String getCodeNameableArtefactMetadataInternationalStringQuery(String columnName, Long itemSchemeVersionId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ");
+        sb.append("a." + columnName + " ");
+        sb.append("FROM TB_CODES cb ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on cb.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("WHERE ");
+        sb.append("cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + " ");
+        sb.append("AND ");
+        sb.append("a." + columnName + " ");
+        sb.append("IS NOT NULL");
+        return sb.toString();
+    }
+
+    private String getAnnotationMetadataInternationalStringQuery(String columnName, Long itemSchemeVersionId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ");
+        sb.append("a." + columnName + " ");
+        sb.append("FROM TB_ANNOTATIONS a ");
+        sb.append("WHERE ");
+        sb.append("a.ANNOTABLE_ARTEFACT_FK in (SELECT cb.NAMEABLE_ARTEFACT_FK FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + ") ");
+        sb.append("AND ");
+        sb.append("a." + columnName + " ");
+        sb.append("IS NOT NULL");
+        return sb.toString();
+    }
+
+    private List<Long> getAnnotableArtefactsToDelete(Connection connection, Long itemSchemeVersionId) throws SQLException {
+        List<Long> annotableArtefactsToDelete = new ArrayList<Long>();
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT cb.NAMEABLE_ARTEFACT_FK ");
+        sb.append("FROM TB_CODES cb ");
+        sb.append("WHERE ");
+        sb.append("cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId);
+
+        Statement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = connection.createStatement();
+            logger.debug(sb);
+            rs = statement.executeQuery(sb.toString());
+            while (rs.next()) {
+                Long annotableArtefactId = rs.getLong("NAMEABLE_ARTEFACT_FK");
+                annotableArtefactsToDelete.add(annotableArtefactId);
+            }
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return annotableArtefactsToDelete;
+    }
+
+    private void executeSqlStatement(Connection connection, String sb) throws SQLException {
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            logger.info(sb); // TODO remove this sentence in future
+            statement.execute(sb);
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
+    }
+
+    private void executeSqlStatement(Connection connection, StringBuilder sb) throws SQLException {
+        executeSqlStatement(connection, sb.toString());
     }
 }
