@@ -67,7 +67,8 @@ public class ImportationTsvUtils {
         return header;
     }
 
-    public static ImportationCodesTsvHeader parseTsvHeaderToImportCodes(String[] headerColumns, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static ImportationCodesTsvHeader parseTsvHeaderToImportCodes(String line, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        String[] headerColumns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
         if (headerColumns == null || headerColumns.length < 4) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT, 4));
         }
@@ -129,7 +130,8 @@ public class ImportationTsvUtils {
      * Imports header of tsv to import orders of codes.
      * Columns "label", "level" and "parent" are optionals.
      */
-    public static ImportationCodeOrdersTsvHeader parseTsvHeaderToImportCodeOrders(String[] headerColumns, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static ImportationCodeOrdersTsvHeader parseTsvHeaderToImportCodeOrders(String line, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        String[] headerColumns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
         if (headerColumns == null || headerColumns.length < 2) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT, 2));
         }

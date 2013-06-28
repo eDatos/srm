@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -727,41 +728,42 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Execute importation now
-        // Retrieve actual codes in codelist
-        List<CodeMetamac> codesToPersist = new ArrayList<CodeMetamac>();
-        Map<String, CodeMetamac> codesPreviousInCodelistByCode = new HashMap<String, CodeMetamac>();
-        for (Item item : codelistVersion.getItems()) {
-            codesPreviousInCodelistByCode.put(item.getNameableArtefact().getCode(), (CodeMetamac) item);
-        }
-        // Retrieve variable elements. It is more efficient retrieve all variable element in one query than execute one query by variable element
-        Map<String, VariableElement> variableElementsInVariableByCode = new HashMap<String, VariableElement>();
-        for (VariableElement variableElement : codelistVersion.getVariable().getVariableElements()) {
-            variableElementsInVariableByCode.put(variableElement.getIdentifiableArtefact().getCode(), variableElement);
-        }
-
-        // Import
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         InputStreamReader inputStreamReader = null;
         BufferedReader bufferedReader = null;
-        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
-        Map<String, CodeMetamac> codesToPersistByCode = new HashMap<String, CodeMetamac>();
+        List<CodeMetamac> codesToPersist = null;
+        Map<String, CodeMetamac> codesToPersistByCode = null;
+        Map<String, CodeMetamac> codesPreviousInCodelistByCode = null;
         try {
             inputStreamReader = new InputStreamReader(stream, charset);
             bufferedReader = new BufferedReader(inputStreamReader);
 
-            ImportationCodesTsvHeader header = null;
-            String line = null;
-            int lineNumber = 1;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (StringUtils.isBlank(line)) {
-                    continue;
+            // Header
+            String line = bufferedReader.readLine();
+            ImportationCodesTsvHeader header = ImportationTsvUtils.parseTsvHeaderToImportCodes(line, exceptionItems);
+
+            // Codes
+            if (CollectionUtils.isEmpty(exceptionItems)) {
+
+                // Retrieve actual codes in codelist
+                codesToPersist = new ArrayList<CodeMetamac>(); // save in order is required (first parent and then children)
+                codesToPersistByCode = new HashMap<String, CodeMetamac>();
+                codesPreviousInCodelistByCode = new HashMap<String, CodeMetamac>();
+                for (Item item : codelistVersion.getItems()) {
+                    codesPreviousInCodelistByCode.put(item.getNameableArtefact().getCode(), (CodeMetamac) item);
                 }
-                String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
-                if (header == null) {
-                    header = ImportationTsvUtils.parseTsvHeaderToImportCodes(columns, exceptionItems);
-                    if (!CollectionUtils.isEmpty(exceptionItems)) {
-                        break;
+                // Retrieve variable elements. It is more efficient retrieve all variable element in one query than execute one query by variable element
+                Map<String, VariableElement> variableElementsInVariableByCode = new HashMap<String, VariableElement>();
+                for (VariableElement variableElement : codelistVersion.getVariable().getVariableElements()) {
+                    variableElementsInVariableByCode.put(variableElement.getIdentifiableArtefact().getCode(), variableElement);
+                }
+
+                int lineNumber = 2;
+                while ((line = bufferedReader.readLine()) != null) {
+                    if (StringUtils.isBlank(line)) {
+                        continue;
                     }
-                } else {
+                    String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
                     if (columns.length != header.getColumnsSize()) {
                         exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber));
                         continue;
@@ -773,11 +775,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                         codesToPersist.add(code);
                         codesToPersistByCode.put(code.getNameableArtefact().getCode(), code);
                     }
+                    lineNumber++;
                 }
-                lineNumber++;
-            }
-            if (header == null) {
-                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_FILE_PARSING, "Header is empty"));
             }
         } catch (IOException e) {
             logger.error("Error importing tsv file", e);
@@ -834,41 +833,40 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             return new TaskImportationInfo(Boolean.TRUE, jobKey);
         }
 
-        // Codes in codelist
-        List<Code> codesInCodelist = codelistVersion.getItems();
-        Map<String, CodeMetamac> codesInCodelistByCode = new HashMap<String, CodeMetamac>();
-        for (Item item : codesInCodelist) {
-            codesInCodelistByCode.put(item.getNameableArtefact().getCode(), (CodeMetamac) item);
-        }
-        Set<String> codesInTsvToCheckAllCodesAreUpdated = new HashSet<String>();
-        List<CodelistOrderVisualisation> orderVisualisations = null;
-
-        // Import
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         InputStreamReader inputStreamReader = null;
         BufferedReader bufferedReader = null;
+        List<Code> codesInCodelist = null;
+        Set<String> codesInTsvToCheckAllCodesAreUpdated = null;
+        List<CodelistOrderVisualisation> orderVisualisations = null;
         try {
             inputStreamReader = new InputStreamReader(stream, charset);
             bufferedReader = new BufferedReader(inputStreamReader);
 
-            ImportationCodeOrdersTsvHeader header = null;
-            String line = null;
-            int lineNumber = 1;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (StringUtils.isBlank(line)) {
-                    continue;
+            // Header
+            String line = bufferedReader.readLine();
+            ImportationCodeOrdersTsvHeader header = ImportationTsvUtils.parseTsvHeaderToImportCodeOrders(line, exceptionItems);
+            if (CollectionUtils.isEmpty(exceptionItems)) {
+                orderVisualisations = tsvHeadToOrderVisualisations(codelistVersion, header, exceptionItems);
+            }
+
+            // Orders
+            if (CollectionUtils.isEmpty(exceptionItems)) {
+
+                // Codes in codelist
+                codesInCodelist = codelistVersion.getItems();
+                Map<String, CodeMetamac> codesInCodelistByCode = new HashMap<String, CodeMetamac>();
+                for (Item item : codesInCodelist) {
+                    codesInCodelistByCode.put(item.getNameableArtefact().getCode(), (CodeMetamac) item);
                 }
-                String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
-                if (header == null) {
-                    header = ImportationTsvUtils.parseTsvHeaderToImportCodeOrders(columns, exceptionItems);
-                    if (!CollectionUtils.isEmpty(exceptionItems)) {
-                        break;
+                codesInTsvToCheckAllCodesAreUpdated = new HashSet<String>();
+
+                int lineNumber = 2;
+                while ((line = bufferedReader.readLine()) != null) {
+                    if (StringUtils.isBlank(line)) {
+                        continue;
                     }
-                    orderVisualisations = tsvHeadToOrderVisualisations(codelistVersion, header, exceptionItems);
-                    if (CollectionUtils.isEmpty(orderVisualisations)) {
-                        break;
-                    }
-                } else {
+                    String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
                     if (columns.length != header.getColumnsSize()) {
                         exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber));
                         continue;
@@ -883,10 +881,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                         }
                     }
                 }
-                lineNumber++;
-            }
-            if (header == null) {
-                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_FILE_PARSING, "Header is empty"));
             }
         } catch (IOException e) {
             logger.error("Error importing tsv file", e);
@@ -900,6 +894,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 logger.error("Error closing streams", e);
             }
         }
+
         if (CollectionUtils.isEmpty(exceptionItems) && codesInTsvToCheckAllCodesAreUpdated.size() != codesInCodelist.size()) {
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_INCORRECT_NUMBER_CODES, codesInCodelist.size(), codesInTsvToCheckAllCodesAreUpdated.size()));
         }
@@ -3445,10 +3440,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return orderVisualisations;
     }
 
-    private void saveCodesEfficiently(List<CodeMetamac> codesToPersist, Map<String, CodeMetamac> codesToPersistByCode) {
-        // Persist
-        for (int i = 0; i < codesToPersist.size(); i++) {
-            CodeMetamac codeMetamac = codesToPersist.get(i);
+    private void saveCodesEfficiently(Collection<CodeMetamac> codesToPersist, Map<String, CodeMetamac> codesToPersistByCode) {
+        for (CodeMetamac codeMetamac : codesToPersist) {
             if (codeMetamac.getParent() != null) {
                 if (codesToPersistByCode.containsKey(codeMetamac.getParent().getNameableArtefact().getCode())) {
                     // update reference because it was saved
