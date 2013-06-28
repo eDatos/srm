@@ -369,7 +369,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public TaskInfo publishInternallyCodelist(ServiceContext ctx, String urn, Boolean forceLatestFinal, Boolean canBeBackground) throws MetamacException {
         // Initialize
         CodelistVersion codelistVersionToPublish = retrieveCodelistByUrn(ctx, urn);
-        ItemScheme itemScheme = codelistVersionToPublish.getItemScheme();
 
         TaskInfo versioningResult = new TaskInfo();
         if (mustExecuteTaskInBackground(true, codelistVersionToPublish, canBeBackground)) {
@@ -377,6 +376,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             // Validation
             codelistLifeCycle.prePublishResourceInInternallyPublished(ctx, urn, ProcStatusEnum.INTERNALLY_PUBLISHED); // PrePublish for early error checking
 
+            ItemScheme itemScheme = codelistVersionToPublish.getItemScheme();
             itemScheme.setIsTaskInBackground(Boolean.TRUE);
             itemScheme = itemSchemeRepository.save(itemScheme);
 
@@ -388,12 +388,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         } else {
             // The publication is now
             CodelistVersion codelist = (CodelistVersionMetamac) codelistLifeCycle.publishInternally(ctx, urn, forceLatestFinal);
+            ItemScheme itemScheme = codelist.getItemScheme();
             itemScheme.setIsTaskInBackground(Boolean.FALSE);
             itemScheme = itemSchemeRepository.save(itemScheme);
 
             versioningResult.setUrnResult(codelist.getMaintainableArtefact().getUrn());
         }
-
         return versioningResult;
     }
 
