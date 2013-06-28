@@ -342,7 +342,6 @@ public class CodelistsToSql {
 
         insertAnnotation(id);
         insertAnnotation(id);
-        insertAnnotation(id);
 
         idAnnotableArtefact.add(1);
         return id;
@@ -554,7 +553,6 @@ public class CodelistsToSql {
         if (withAnnotations) {
             insertAnnotation(id);
             insertAnnotation(id);
-            insertAnnotation(id);
         }
 
         idAnnotableArtefact.add(1);
@@ -568,7 +566,6 @@ public class CodelistsToSql {
                 + code + "', '" + urn + "', '" + urn + "');");
 
         if (withAnnotations) {
-            insertAnnotation(id);
             insertAnnotation(id);
             insertAnnotation(id);
         }
