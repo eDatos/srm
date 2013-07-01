@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.Item;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
@@ -29,6 +30,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Quantit
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RelatedConcepts;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RoleConcepts;
+import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -45,6 +47,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbCallback;
 
 @Component
@@ -81,13 +84,14 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
     }
 
     @Override
-    public ConceptScheme toConceptScheme(ConceptSchemeVersionMetamac source) {
+    public ConceptScheme toConceptScheme(ConceptSchemeVersionMetamac source) throws MetamacException {
         if (source == null) {
             return null;
         }
         // following method will call toConceptScheme(ConceptSchemeVersionMetamac source, ConceptScheme target) method, thank to callback
         return (ConceptScheme) conceptsDo2JaxbSdmxMapper.conceptSchemeDoToJaxb(source, conceptsDo2JaxbCallback, AS_STUB, null);
     }
+
     @Override
     public void toConceptScheme(ConceptSchemeVersionMetamac source, ConceptScheme target) {
         if (source == null) {
@@ -135,7 +139,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             return null;
         }
         Concept target = new Concept();
-        conceptsDo2JaxbSdmxMapper.conceptDoToJaxb(source, target, null);
+        conceptsDo2JaxbSdmxMapper.conceptDoToJaxb(source, null, target, null);
 
         target.setKind(RestInternalConstants.KIND_CONCEPT);
         target.setUrnInternal(source.getNameableArtefact().getUrn());
@@ -163,13 +167,20 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
 
         return target;
     }
+
+    // This method is only call when retrieve one concept scheme and return all children, so only return SDMX information, without metamac metadata
     @Override
-    public void toConcept(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source, org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType target) {
-        if (source == null) {
+    public void toConcept(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source, ItemResult sourceItemResult, ItemSchemeVersion itemSchemeVersion,
+            org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType target) {
+        if (source == null && sourceItemResult == null) {
             return;
         }
-        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
-            target.setUri(toConceptSelfLink(source).getHref());
+        if (SrmRestInternalUtils.uriMustBeSelfLink(itemSchemeVersion.getMaintainableArtefact())) {
+            if (source != null) {
+                target.setUri(toConceptLink(source));
+            } else {
+                target.setUri(toConceptLink(itemSchemeVersion, sourceItemResult));
+            }
         }
     }
 
@@ -379,6 +390,11 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
     }
     private String toConceptLink(com.arte.statistic.sdmx.srm.core.base.domain.Item item) {
         return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item);
+    }
+    private String toConceptLink(ItemSchemeVersion itemSchemeVersion, ItemResult item) {
+        String link = toItemsLink(toSubpathItemSchemes(), toSubpathItems(), itemSchemeVersion);
+        link = RestUtils.createLink(link, item.getCode());
+        return link;
     }
 
     private String toSubpathItemSchemes() {

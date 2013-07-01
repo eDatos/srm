@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.concept.mapper;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
@@ -35,7 +34,6 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemeType;
@@ -103,7 +101,7 @@ public class ConceptsDo2RestMapperTest {
     }
 
     @Test
-    public void testToConceptScheme() {
+    public void testToConceptScheme() throws Exception {
 
         ConceptSchemeVersionMetamac source = mockConceptSchemeWithConcepts("agencyID1", "resourceID1", "01.123");
 
@@ -146,39 +144,10 @@ public class ConceptsDo2RestMapperTest {
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/concepts", target.getChildLinks().getChildLinks().get(0).getHref());
-
-        // Concepts (SDMX type)
-        assertEquals(4, target.getConcepts().size());
-        int i = 0;
-        {
-            ConceptType concept = target.getConcepts().get(i++);
-            assertTrue(concept instanceof ConceptType);
-            assertFalse(concept instanceof Concept);
-            assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept1", concept.getUrn());
-        }
-        {
-            ConceptType concept = target.getConcepts().get(i++);
-            assertTrue(concept instanceof ConceptType);
-            assertFalse(concept instanceof Concept);
-            assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2", concept.getUrn());
-        }
-        {
-            ConceptType concept = target.getConcepts().get(i++);
-            assertTrue(concept instanceof ConceptType);
-            assertFalse(concept instanceof Concept);
-            assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2A", concept.getUrn());
-        }
-        {
-            ConceptType concept = target.getConcepts().get(i++);
-            assertTrue(concept instanceof ConceptType);
-            assertFalse(concept instanceof Concept);
-            assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2B", concept.getUrn());
-        }
-        assertEquals(i, target.getConcepts().size());
     }
 
     @Test
-    public void testToConceptSchemeImported() {
+    public void testToConceptSchemeImported() throws Exception {
 
         ConceptSchemeVersionMetamac source = mockConceptSchemeWithConcepts("agencyID1", "resourceID1", "01.123");
         source.getMaintainableArtefact().setIsImported(Boolean.TRUE);

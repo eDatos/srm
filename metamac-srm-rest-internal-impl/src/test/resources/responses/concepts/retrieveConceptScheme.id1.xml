@@ -12,8 +12,8 @@
             <common:AnnotationTitle>title-code2</common:AnnotationTitle>
             <common:AnnotationType>type-code2</common:AnnotationType>
             <common:AnnotationURL>url-code2</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
             <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
+            <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
         </common:Annotation>
     </common:Annotations>
     <common:Name xml:lang="es">name-itemScheme1v01.000 en Español</common:Name>
@@ -33,12 +33,12 @@
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
                 <common:AnnotationType>type-code2</common:AnnotationType>
                 <common:AnnotationURL>url-code2</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
                 <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
-        <common:Name xml:lang="es">name-concept1 en Español</common:Name>
         <common:Name xml:lang="en">name-concept1 in English</common:Name>
+        <common:Name xml:lang="es">name-concept1 en Español</common:Name>
         <common:Description xml:lang="en">description-concept1 in English</common:Description>
         <common:Description xml:lang="es">description-concept1 en Español</common:Description>
         <structure:CoreRepresentation>
@@ -64,8 +64,8 @@
                 <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
-        <common:Name xml:lang="es">name-concept2 en Español</common:Name>
         <common:Name xml:lang="en">name-concept2 in English</common:Name>
+        <common:Name xml:lang="es">name-concept2 en Español</common:Name>
         <common:Description xml:lang="en">description-concept2 in English</common:Description>
         <common:Description xml:lang="es">description-concept2 en Español</common:Description>
         <structure:CoreRepresentation>
@@ -76,19 +76,19 @@
     </structure:Concept>
     <structure:Concept id="concept2A" urn="urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).concept2A" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/concept2A">
         <common:Annotations>
+            <common:Annotation id="code1">
+                <common:AnnotationTitle>title-code1</common:AnnotationTitle>
+                <common:AnnotationType>type-code1</common:AnnotationType>
+                <common:AnnotationURL>url-code1</common:AnnotationURL>
+                <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
+            </common:Annotation>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
                 <common:AnnotationType>type-code2</common:AnnotationType>
                 <common:AnnotationURL>url-code2</common:AnnotationURL>
                 <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
                 <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
-            </common:Annotation>
-            <common:Annotation id="code1">
-                <common:AnnotationTitle>title-code1</common:AnnotationTitle>
-                <common:AnnotationType>type-code1</common:AnnotationType>
-                <common:AnnotationURL>url-code1</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
-                <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
         <common:Name xml:lang="en">name-concept2A in English</common:Name>
@@ -110,15 +110,15 @@
                 <common:AnnotationTitle>title-code1</common:AnnotationTitle>
                 <common:AnnotationType>type-code1</common:AnnotationType>
                 <common:AnnotationURL>url-code1</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
                 <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
             </common:Annotation>
             <common:Annotation id="code2">
                 <common:AnnotationTitle>title-code2</common:AnnotationTitle>
                 <common:AnnotationType>type-code2</common:AnnotationType>
                 <common:AnnotationURL>url-code2</common:AnnotationURL>
-                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
                 <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
+                <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
             </common:Annotation>
         </common:Annotations>
         <common:Name xml:lang="en">name-concept2B in English</common:Name>
@@ -156,8 +156,8 @@
     <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
     <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
     <sr:comment>
-        <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
         <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
     </sr:comment>
     <sr:type>OPERATION</sr:type>
     <sr:statisticalOperation kind="statisticalOperations#operation">

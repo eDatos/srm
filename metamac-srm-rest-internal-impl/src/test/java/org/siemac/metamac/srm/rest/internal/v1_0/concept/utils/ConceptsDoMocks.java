@@ -8,6 +8,8 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+
 public class ConceptsDoMocks {
 
     public static ConceptSchemeVersionMetamac mockConceptScheme(String agencyID, String resourceID, String version) {
@@ -72,6 +74,14 @@ public class ConceptsDoMocks {
         target.addRelatedConcept(mockConcept("1_conceptRelated2", itemSchemeVersion, null));
         target.addRelatedConcept(mockConcept("1_conceptRelated3", itemSchemeVersion, null));
         return target;
+    }
+
+    public static ItemResult mockConceptResult(String resourceID, ItemResult parent) {
+        ItemResult itemResult = ConceptsMetamacDoMocks.mockConceptResultFixedValues(resourceID, parent);
+        itemResult.setUriProvider(null);
+        itemResult.setUrn(itemResult.getUrn().replace("urn:sdmx:org.sdmx.infomodel.xxx=", "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000)."));
+        itemResult.setUrnProvider(itemResult.getUrn());
+        return itemResult;
     }
 
     public static ConceptType mockConceptType(String identifier) {

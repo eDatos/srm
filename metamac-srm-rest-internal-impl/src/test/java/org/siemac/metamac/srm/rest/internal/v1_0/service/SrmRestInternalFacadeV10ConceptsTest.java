@@ -27,6 +27,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
@@ -48,6 +49,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -59,10 +61,13 @@ import org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 
 public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV10BaseTest {
 
     private ConceptsMetamacService      conceptsService;
+    private ConceptRepository           conceptRepository;
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     @Test
@@ -594,6 +599,21 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         });
     }
 
+    private void mockFindConceptsByNativeSqlQuery() throws MetamacException {
+        when(conceptRepository.findConceptsByConceptSchemeUnordered(any(Long.class), any(ItemMetamacResultSelection.class))).thenAnswer(new Answer<List<ItemResult>>() {
+
+            @Override
+            public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {
+                // any
+                ItemResult concept1 = ConceptsDoMocks.mockConceptResult("concept1", null);
+                ItemResult concept2 = ConceptsDoMocks.mockConceptResult("concept2", null);
+                ItemResult concept2A = ConceptsDoMocks.mockConceptResult("concept2A", concept2);
+                ItemResult concept2B = ConceptsDoMocks.mockConceptResult("concept2B", concept2);
+                return Arrays.asList(concept1, concept2, concept2A, concept2B);
+            };
+        });
+    }
+
     @SuppressWarnings("unchecked")
     private void mockFindConceptsByCondition() throws MetamacException {
         when(conceptsService.findConceptsByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(new Answer<PagedResult<ConceptMetamac>>() {
@@ -655,10 +675,13 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         reset(conceptsService);
         itemSchemeVersionRepository = applicationContext.getBean(ItemSchemeVersionRepository.class);
         reset(itemSchemeVersionRepository);
+        conceptRepository = applicationContext.getBean(ConceptRepository.class);
+        reset(conceptRepository);
 
         mockRetrieveItemSchemeVersionByVersion();
         mockFindConceptSchemesByCondition();
         mockFindConceptsByCondition();
+        mockFindConceptsByNativeSqlQuery();
         mockRetrieveConceptTypes();
     }
 

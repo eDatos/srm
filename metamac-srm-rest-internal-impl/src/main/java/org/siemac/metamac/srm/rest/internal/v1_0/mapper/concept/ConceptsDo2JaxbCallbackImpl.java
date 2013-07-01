@@ -9,8 +9,11 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbCallback;
 
@@ -20,8 +23,11 @@ public class ConceptsDo2JaxbCallbackImpl implements ConceptsDo2JaxbCallback {
     @Autowired
     private ConceptsDo2RestMapperV10 conceptsDo2RestMapperV10;
 
+    @Autowired
+    private ConceptRepository        conceptRepository;
+
     @Override
-    public ConceptSchemeType createConceptSchemeJaxb(com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion source) {
+    public ConceptSchemeType createConceptSchemeJaxb() {
         return new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptScheme();
     }
 
@@ -31,25 +37,27 @@ public class ConceptsDo2JaxbCallbackImpl implements ConceptsDo2JaxbCallback {
     }
 
     @Override
-    public ConceptType createConceptJaxb(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source) {
+    public ConceptType createConceptJaxb() {
         // do not return Metamac type because when ItemScheme is retrieved, the items must be SDMX type
         return new ConceptType();
     }
 
     @Override
-    public void fillConceptJaxb(Concept source, ConceptType target) {
-        // do not fill Metamac type because when ItemScheme is retrieved, the items must be SDMX type
-        conceptsDo2RestMapperV10.toConcept(source, target);
+    public void fillConceptJaxb(Concept source, ItemResult sourceItemResult, ItemSchemeVersion itemSchemeVersion, ConceptType target) {
+        if (target instanceof org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept) {
+            // nothing more (mapping is done explicitly in toConcept(ConceptMetamac source))
+        } else {
+            conceptsDo2RestMapperV10.toConcept(source, sourceItemResult, itemSchemeVersion, target);
+        }
     }
 
     @Override
-    public ConceptsType createConceptSchemesJaxb(List<ConceptSchemeVersion> sourceList) {
+    public ConceptsType createConceptSchemesJaxb() {
         throw new IllegalArgumentException("createConceptSchemesDoToJaxb not supported");
     }
 
     @Override
     public List<ItemResult> findConceptsByConceptSchemeEfficiently(ConceptSchemeVersion conceptSchemeVersion) throws MetamacException {
-        // TODO findConceptsByConceptSchemeEfficiently
-        throw new UnsupportedOperationException();
+        return conceptRepository.findConceptsByConceptSchemeUnordered(conceptSchemeVersion.getId(), ItemResultSelection.SDMX_API);
     }
 }
