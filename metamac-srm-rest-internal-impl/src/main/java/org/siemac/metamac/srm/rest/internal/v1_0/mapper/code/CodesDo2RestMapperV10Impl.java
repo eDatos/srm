@@ -141,8 +141,9 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         Code target = new Code();
-        codesDo2JaxbSdmxMapper.codeDoToJaxb(source, target);
+        codesDo2JaxbSdmxMapper.codeDoToJaxb(source, null, target);
 
+        // All metamac information
         target.setKind(RestInternalConstants.KIND_CODE);
         target.setUrnInternal(source.getNameableArtefact().getUrn());
         target.setSelfLink(toCodeSelfLink(source));
@@ -164,23 +165,18 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
+    // This method is only call when retrieve one codelist and return all children, so only return SDMX information, without metamac metadata
     @Override
-    public void toCode(com.arte.statistic.sdmx.srm.core.code.domain.Code source, CodeType target) {
-        if (source == null) {
-            return;
-        }
-        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
-            target.setUri(toCodeSelfLink(source).getHref());
-        }
-    }
-
-    @Override
-    public void toCode(ItemResult source, ItemSchemeVersion itemSchemeVersion, CodeType target) {
-        if (source == null) {
+    public void toCode(com.arte.statistic.sdmx.srm.core.code.domain.Code source, ItemResult sourceItemResult, ItemSchemeVersion itemSchemeVersion, CodeType target) {
+        if (source == null && sourceItemResult == null) {
             return;
         }
         if (SrmRestInternalUtils.uriMustBeSelfLink(itemSchemeVersion.getMaintainableArtefact())) {
-            target.setUri(toCodeLink(itemSchemeVersion, source));
+            if (source != null) {
+                target.setUri(toCodeLink(source));
+            } else {
+                target.setUri(toCodeLink(itemSchemeVersion, sourceItemResult));
+            }
         }
     }
 

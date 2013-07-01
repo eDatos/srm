@@ -30,7 +30,7 @@ public class CodesDo2JaxbSoapCallbackImpl implements CodesDo2JaxbCallback {
     private final ItemMetamacResultSelection codeMetamacResultSelection = new ItemMetamacResultSelection(true, false, true, true);
 
     @Override
-    public CodelistType createCodelistJaxb(com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion source) {
+    public CodelistType createCodelistJaxb() {
         return new org.siemac.metamac.soap.structural_resources.v1_0.domain.Codelist();
     }
 
@@ -40,27 +40,17 @@ public class CodesDo2JaxbSoapCallbackImpl implements CodesDo2JaxbCallback {
     }
 
     @Override
-    public CodeType createCodeJaxb(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
-        return new org.siemac.metamac.soap.structural_resources.v1_0.domain.Code();
+    public CodeType createCodeJaxb() {
+        return new org.siemac.metamac.soap.structural_resources.v1_0.domain.Code(); // when retrieve codes in codelist request, return some metamac information
     }
 
     @Override
-    public CodeType createCodeJaxb(ItemResult source) {
-        return new org.siemac.metamac.soap.structural_resources.v1_0.domain.Code();
+    public void fillCodeJaxb(Code source, ItemResult sourceItemResult, ItemSchemeVersion itemSchemeVersion, CodeType target) {
+        codesDo2SoapMapperV10.toCode((CodeMetamac) source, sourceItemResult, (org.siemac.metamac.soap.structural_resources.v1_0.domain.Code) target);
     }
 
     @Override
-    public void fillCodeJaxb(Code source, CodeType target) {
-        codesDo2SoapMapperV10.toCode((CodeMetamac) source, (org.siemac.metamac.soap.structural_resources.v1_0.domain.Code) target);
-    }
-
-    @Override
-    public void fillCodeJaxb(ItemResult source, ItemSchemeVersion itemSchemeVersion, CodeType target) {
-        codesDo2SoapMapperV10.toCode(source, itemSchemeVersion, (org.siemac.metamac.soap.structural_resources.v1_0.domain.Code) target);
-    }
-
-    @Override
-    public CodelistsType createCodelistsJaxb(List<CodelistVersion> source) {
+    public CodelistsType createCodelistsJaxb() {
         throw new IllegalArgumentException("createCodelistsJaxb unsupported");
     }
 

@@ -29,7 +29,7 @@ public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
     private final ItemMetamacResultSelection codeMetamacResultSelection = new ItemMetamacResultSelection(true, false, true, false);
 
     @Override
-    public CodelistType createCodelistJaxb(com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion source) {
+    public CodelistType createCodelistJaxb() {
         return new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist();
     }
 
@@ -39,29 +39,22 @@ public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
     }
 
     @Override
-    public CodeType createCodeJaxb(ItemResult source) {
+    public CodeType createCodeJaxb() {
         // when retrieve Codelist, only return SDMX metadata
-        CodeType target = new CodeType();
-        return target;
+        return new CodeType();
     }
 
     @Override
-    public CodeType createCodeJaxb(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
-        throw new IllegalArgumentException("createCodelistsJaxb not supported");
+    public void fillCodeJaxb(Code source, ItemResult sourceItemResult, ItemSchemeVersion itemSchemeVersion, CodeType target) {
+        if (target instanceof org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code) {
+            // nothing more (mapping is done explicitly in toCode(CodeMetamac source))
+        } else {
+            codesDo2RestMapperV10.toCode(source, sourceItemResult, itemSchemeVersion, target);
+        }
     }
 
     @Override
-    public void fillCodeJaxb(ItemResult source, ItemSchemeVersion itemSchemeVersion, CodeType target) {
-        codesDo2RestMapperV10.toCode(source, itemSchemeVersion, target);
-    }
-
-    @Override
-    public void fillCodeJaxb(Code source, CodeType target) {
-        codesDo2RestMapperV10.toCode(source, target);
-    }
-
-    @Override
-    public CodelistsType createCodelistsJaxb(List<CodelistVersion> source) {
+    public CodelistsType createCodelistsJaxb() {
         throw new IllegalArgumentException("createCodelistsJaxb not supported");
     }
 

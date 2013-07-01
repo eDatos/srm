@@ -170,9 +170,17 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
     }
 
     @Override
-    public void toCode(ItemResult source, ItemSchemeVersion itemSchemeVersion, Code target) {
-        CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) source.getExtensionPoint();
-        target.setShortName(toInternationalString(extensionPoint.getShortName()));
+    public void toCode(CodeMetamac source, ItemResult sourceItemResult, Code target) {
+        if (sourceItemResult != null) {
+            CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) sourceItemResult.getExtensionPoint();
+            target.setShortName(toInternationalString(extensionPoint.getShortName()));
+        } else if (source != null) {
+            if (source.getVariableElement() == null) {
+                target.setShortName(toInternationalString(source.getShortName()));
+            } else {
+                target.setShortName(toInternationalString(source.getVariableElement().getShortName()));
+            }
+        }
     }
 
     @Override
@@ -181,19 +189,7 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         // following method will call toCode(CodeMetamac source, Code target) method, thank to callback
-        return (Code) codesDo2JaxbSdmxMapper.codeDoToJaxb(source, codesDo2JaxbCallback);
-    }
-
-    @Override
-    public void toCode(CodeMetamac source, Code target) {
-        if (source == null) {
-            return;
-        }
-        if (source.getVariableElement() == null) {
-            target.setShortName(toInternationalString(source.getShortName()));
-        } else {
-            target.setShortName(toInternationalString(source.getVariableElement().getShortName()));
-        }
+        return (Code) codesDo2JaxbSdmxMapper.codeDoToJaxb(source, null, source.getItemSchemeVersion(), codesDo2JaxbCallback);
     }
 
     @Override

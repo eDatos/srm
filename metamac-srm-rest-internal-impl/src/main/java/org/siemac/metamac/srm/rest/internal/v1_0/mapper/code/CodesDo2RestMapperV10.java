@@ -24,8 +24,7 @@ public interface CodesDo2RestMapperV10 {
 
     public Codes toCodes(PagedResult<CodeMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
     public Code toCode(CodeMetamac source);
-    public void toCode(com.arte.statistic.sdmx.srm.core.code.domain.Code source, CodeType target);
-    public void toCode(ItemResult source, ItemSchemeVersion itemSchemeVersion, CodeType target);
+    public void toCode(com.arte.statistic.sdmx.srm.core.code.domain.Code source, ItemResult sourceItemResult, ItemSchemeVersion itemSchemeVersion, CodeType target);
     public ResourceInternal toResource(CodeMetamac source);
 
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies toVariableFamilies(PagedResult<VariableFamily> sources, String query, String orderBy, Integer limit);
