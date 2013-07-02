@@ -12,6 +12,7 @@ public class VariableDS extends DataSource {
     public static final String URN                  = "var-urn";
     // Content descriptors
     public static final String FAMILIES             = "var-family";
+    public static final String IS_GEOGRAPHICAL      = "var-type";
     // Diffusion descriptors
     public static final String REPLACE_TO_VARIABLES = "var-replace-to";
     public static final String REPLACED_BY_VARIABLE = "var-replaced-by";
