@@ -41,7 +41,7 @@ public class DsdViewImpl extends ViewWithUiHandlers<DsdUiHandlers> implements Ds
 
     private TitleLabel                        dsdTitle;
 
-    private CustomTabSet        tabSet;
+    private CustomTabSet                      tabSet;
 
     private Tab                               generalTab;
     private Tab                               primaryMeasureTab;
