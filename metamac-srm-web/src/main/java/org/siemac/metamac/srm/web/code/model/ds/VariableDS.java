@@ -13,6 +13,7 @@ public class VariableDS extends DataSource {
     // Content descriptors
     public static final String FAMILIES             = "var-family";
     public static final String IS_GEOGRAPHICAL      = "var-type";
+    public static final String IS_GEOGRAPHICAL_VIEW = "var-type-view";  // Not mapped in DTO
     // Diffusion descriptors
     public static final String REPLACE_TO_VARIABLES = "var-replace-to";
     public static final String REPLACED_BY_VARIABLE = "var-replaced-by";

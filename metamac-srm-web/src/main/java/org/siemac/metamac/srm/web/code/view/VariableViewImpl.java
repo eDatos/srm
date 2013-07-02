@@ -23,6 +23,7 @@ import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariablePresenter;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
+import org.siemac.metamac.srm.web.code.utils.CodesFormUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.ImportVariableElementsWindow;
 import org.siemac.metamac.srm.web.code.widgets.NewVariableElementWindow;
@@ -40,6 +41,7 @@ import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
+import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
@@ -63,6 +65,9 @@ import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.FormItemIfFunction;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
@@ -365,9 +370,16 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
+
+        ViewTextItem staticIsGeographical = new ViewTextItem(VariableDS.IS_GEOGRAPHICAL_VIEW, getConstants().variableIsGeographical());
+        staticIsGeographical.setShowIfCondition(getStaticIsGeographicalFormItemIfFunction());
+
         CustomCheckboxItem isGeographical = new CustomCheckboxItem(VariableDS.IS_GEOGRAPHICAL, getConstants().variableIsGeographical());
+        isGeographical.setShowIfCondition(getIsGeographicalFormItemIfFunction());
+
         RelatedResourceListItem families = createFamiliesItem();
-        contentDescriptorsEditionForm.setFields(isGeographical, families);
+
+        contentDescriptorsEditionForm.setFields(staticIsGeographical, isGeographical, families);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -413,6 +425,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         identifiersEditionForm.setValue(VariableDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableDto.getShortName()));
 
         // Content descriptors
+        contentDescriptorsEditionForm.setValue(VariableDS.IS_GEOGRAPHICAL_VIEW, VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType()) ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
+                .getConstants().no());
         contentDescriptorsEditionForm.setValue(VariableDS.IS_GEOGRAPHICAL, VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType()));
         ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(VariableDS.FAMILIES)).setRelatedResources(variableDto.getFamilies());
 
@@ -615,22 +629,43 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
             @Override
             public void onClick(ClickEvent event) {
-                newVariableElementWindow = new NewVariableElementWindow(getConstants().variableElementCreate());
-                newVariableElementWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+                if (variableDto != null && variableDto.getType() == null && !BooleanUtils.isTrue(variableDto.getHasVariableElements())) {
+                    // If it is not a geographical variable and the first variable element is going to be created, show an information message saying that once a variable had a variable element,
+                    // cannot be turned into a geographical variable
+                    final InformationWindow informationWindow = new InformationWindow(getConstants().variableElementCreate(), getConstants()
+                            .variableElementCreateInANonGeographicalVariableInfoMessage());
+                    informationWindow.show();
+                    informationWindow.getAcceptButtonHandlerRegistration().removeHandler();
+                    informationWindow.getAcceptButton().addClickHandler(new ClickHandler() {
 
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        if (newVariableElementWindow.validateForm()) {
-                            VariableElementDto variableElementToCreate = newVariableElementWindow.getNewVariableElementDto();
-                            variableElementToCreate.setVariable(RelatedResourceUtils.createRelatedResourceDto(variableDto.getUrn()));
-                            getUiHandlers().createVariableElement(variableElementToCreate);
-                            newVariableElementWindow.destroy();
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            showNewVariableElementWindow();
+                            informationWindow.markForDestroy();
                         }
-                    }
-                });
+                    });
+                } else {
+                    showNewVariableElementWindow();
+                }
             }
         });
         return createButton;
+    }
+
+    private void showNewVariableElementWindow() {
+        newVariableElementWindow = new NewVariableElementWindow(getConstants().variableElementCreate());
+        newVariableElementWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+            @Override
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                if (newVariableElementWindow.validateForm()) {
+                    VariableElementDto variableElementToCreate = newVariableElementWindow.getNewVariableElementDto();
+                    variableElementToCreate.setVariable(RelatedResourceUtils.createRelatedResourceDto(variableDto.getUrn()));
+                    getUiHandlers().createVariableElement(variableElementToCreate);
+                    newVariableElementWindow.destroy();
+                }
+            }
+        });
     }
 
     private CustomToolStripButton createImportVariableElementsButton() {
@@ -791,6 +826,32 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         if (CodesClientSecurityUtils.canSegregateVariableElement()) {
             segregateVariableElementButton.show();
         }
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    // FORM ITEM IF FUNCTIONS
+    // ------------------------------------------------------------------------------------------------------------
+
+    // IS GEOGRAPHICAL
+
+    private FormItemIfFunction getIsGeographicalFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return CodesFormUtils.canVariableIsGeographicalBeEdited(variableDto);
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticIsGeographicalFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem item, Object value, DynamicForm form) {
+                return !CodesFormUtils.canVariableIsGeographicalBeEdited(variableDto);
+            }
+        };
     }
 
     // ------------------------------------------------------------------------------------------------------------

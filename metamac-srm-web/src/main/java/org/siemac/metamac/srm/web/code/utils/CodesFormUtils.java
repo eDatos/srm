@@ -1,8 +1,10 @@
 package org.siemac.metamac.srm.web.code.utils;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 
 /**
@@ -46,5 +48,19 @@ public class CodesFormUtils {
             return false;
         }
         return CommonUtils.canSdmxMetadataAndStructureBeModified(codelistDto);
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    // VARIABLE
+    // ---------------------------------------------------------------------------------------------
+
+    // IS GEOGRAPHICAL
+
+    public static boolean canVariableIsGeographicalBeEdited(VariableDto variableDto) {
+        if (variableDto == null) {
+            return false;
+        }
+        // the metadata can only be edited when the variable has no variable elements
+        return !BooleanUtils.isTrue(variableDto.getHasVariableElements());
     }
 }

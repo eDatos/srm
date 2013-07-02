@@ -298,6 +298,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
             }
             @Override
             public void onWaitSuccess(SaveVariableElementResult result) {
+                retrieveVariableByUrn(result.getSavedVariableElementDto().getVariable().getUrn()); // To update the metadata 'hasVariableElements'
                 retrieveVariableElementsByVariable(ELEMENT_LIST_FIRST_RESULT, ELEMENT_LIST_MAX_RESULTS, null, variableDto.getUrn());
                 ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, MetamacSrmWeb.getMessages().variableElementSaved());
             }
