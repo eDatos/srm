@@ -31,6 +31,7 @@ import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedActio
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomDateItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
@@ -57,11 +58,13 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     private GroupDynamicForm                             identifiersForm;
     private GroupDynamicForm                             contentDescriptorsForm;
     private GroupDynamicForm                             diffusionDescriptorsForm;
+    private GroupDynamicForm                             annotationsForm;
 
     // Edition forms
     private GroupDynamicForm                             identifiersEditionForm;
     private GroupDynamicForm                             contentDescriptorsEditionForm;
     private GroupDynamicForm                             diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                             annotationsEditionForm;
 
     private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToElementsWindow;
     private SearchMultipleRelatedResourcePaginatedWindow createSegregationWindow;
@@ -129,6 +132,9 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
                 diffusionDescriptorsForm.setTranslationsShowed(translationsShowed);
                 diffusionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
+
+                annotationsForm.setTranslationsShowed(translationsShowed);
+                annotationsEditionForm.setTranslationsShowed(translationsShowed);
             }
         });
 
@@ -235,9 +241,15 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         ViewTextItem replacedByElement = new ViewTextItem(VariableElementDS.REPLACED_BY_ELEMENT, getConstants().variableElementReplacedByVariableElement());
         diffusionDescriptorsForm.setFields(validFrom, validTo, replaceToElements, replacedByElement);
 
+        // Annotations
+        annotationsForm = new GroupDynamicForm(getConstants().formAnnotations());
+        ViewMultiLanguageTextItem comments = new ViewMultiLanguageTextItem(VariableElementDS.COMMENTS, getConstants().variableElementComment());
+        annotationsForm.setFields(comments);
+
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
         mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
+        mainFormLayout.addViewCanvas(annotationsForm);
     }
 
     private void createEditionForm() {
@@ -263,9 +275,15 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         ViewTextItem replacedByElement = new ViewTextItem(VariableElementDS.REPLACED_BY_ELEMENT, getConstants().variableElementReplacedByVariableElement());
         diffusionDescriptorsEditionForm.setFields(validFrom, validTo, replaceToElements, replacedByElement);
 
+        // Annotations
+        annotationsEditionForm = new GroupDynamicForm(getConstants().formAnnotations());
+        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(VariableElementDS.COMMENTS, getConstants().variableElementComment());
+        annotationsEditionForm.setFields(comments);
+
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(annotationsEditionForm);
     }
 
     public void setEditionMode() {
@@ -286,6 +304,10 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         diffusionDescriptorsForm.setValue(VariableElementDS.VALID_TO, DateUtils.getFormattedDate(variableElementDto.getValidTo()));
         ((RelatedResourceListItem) diffusionDescriptorsForm.getItem(VariableElementDS.REPLACE_TO_ELEMENTS)).setRelatedResources(variableElementDto.getReplaceToVariableElements());
         diffusionDescriptorsForm.setValue(VariableElementDS.REPLACED_BY_ELEMENT, RelatedResourceUtils.getRelatedResourceName(variableElementDto.getReplacedByVariableElement()));
+
+        // Annotations
+        annotationsForm.setValue(VariableElementDS.COMMENTS, RecordUtils.getInternationalStringRecord(variableElementDto.getComment()));
+
     }
 
     public void setVariableElementEditionMode(VariableElementDto variableElementDto) {
@@ -302,6 +324,9 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         diffusionDescriptorsEditionForm.setValue(VariableElementDS.VALID_TO, variableElementDto.getValidTo());
         ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.REPLACE_TO_ELEMENTS)).setRelatedResources(variableElementDto.getReplaceToVariableElements());
         diffusionDescriptorsEditionForm.setValue(VariableElementDS.REPLACED_BY_ELEMENT, RelatedResourceUtils.getRelatedResourceName(variableElementDto.getReplacedByVariableElement()));
+
+        // Annotations
+        annotationsEditionForm.setValue(VariableElementDS.COMMENTS, RecordUtils.getInternationalStringRecord(variableElementDto.getComment()));
     }
 
     public void saveVariableElement() {
@@ -317,6 +342,9 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         variableElementDto.getReplaceToVariableElements().clear();
         variableElementDto.getReplaceToVariableElements().addAll(
                 ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.REPLACE_TO_ELEMENTS)).getSelectedRelatedResources());
+
+        // Annotations
+        variableElementDto.setComment((InternationalStringDto) annotationsEditionForm.getValue(VariableElementDS.COMMENTS));
 
         getUiHandlers().saveVariableElement(variableElementDto);
     }

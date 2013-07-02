@@ -16,6 +16,8 @@ public class VariableElementDS extends DataSource {
     public static final String VALID_TO            = "ele-valid-to";
     public static final String REPLACE_TO_ELEMENTS = "ele-replace-to";
     public static final String REPLACED_BY_ELEMENT = "ele-replaced-by";
+    // Annotations
+    public static final String COMMENTS            = "ele-comments";
 
     public static final String DTO                 = "ele-dto";
 }
