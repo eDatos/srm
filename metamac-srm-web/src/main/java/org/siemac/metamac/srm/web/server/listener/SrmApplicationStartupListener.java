@@ -14,9 +14,11 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum;
@@ -82,6 +84,7 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
         checkOptionalConceptUrn(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN);
         checkOptionalConceptUrn(SrmConfigurationConstants.DSD_TIME_DIMENSION_DEFAULT_CONCEPT_ID_URN);
         checkOptionalConceptUrn(SrmConfigurationConstants.DSD_MEASURE_DIMENSION_DEFAULT_CONCEPT_ID_URN);
+        checkOptionalCodelistUrn(SrmConfigurationConstants.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY_CODELIST_URN);
     }
 
     private void checkRequiredOrganisationUrn(String propertyKey) {
@@ -124,6 +127,32 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
                 MetamacCriteriaResult<ConceptMetamacBasicDto> result = srmCoreServiceFacade.findConceptsByCondition(getStartupServiceContext(), criteria);
                 if (result.getResults().isEmpty()) {
                     String errorMessage = "Property [" + propertyKey + "] is not properly filled. The concept URN specified is not correct. Aborting application startup...";
+                    abortApplicationStartup(errorMessage);
+                } else {
+                    LOG.info("Property [" + propertyKey + "] filled");
+                }
+            } catch (MetamacException e) {
+                abortApplicationStartup("Error checking the property [" + propertyKey + "]");
+            }
+        }
+    }
+
+    private void checkOptionalCodelistUrn(String propertyKey) {
+        checkOptionalProperty(propertyKey);
+
+        String codelistUrn = configurationService.getProperty(propertyKey);
+        if (StringUtils.isNotBlank(codelistUrn)) {
+            try {
+                MetamacCriteria criteria = new MetamacCriteria();
+                criteria.setPaginator(new MetamacCriteriaPaginator());
+                criteria.getPaginator().setFirstResult(0);
+                criteria.getPaginator().setMaximumResultSize(SrmWebConstants.NO_LIMIT_IN_PAGINATION);
+                criteria.getPaginator().setCountTotalResults(true);
+                criteria.setRestriction(new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.URN.name(), codelistUrn, OperationType.EQ));
+
+                MetamacCriteriaResult<CodelistMetamacBasicDto> result = srmCoreServiceFacade.findCodelistsByCondition(getStartupServiceContext(), criteria);
+                if (result.getResults().isEmpty()) {
+                    String errorMessage = "Property [" + propertyKey + "] is not properly filled. The codelist URN specified is not correct. Aborting application startup...";
                     abortApplicationStartup(errorMessage);
                 } else {
                     LOG.info("Property [" + propertyKey + "] filled");
