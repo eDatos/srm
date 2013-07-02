@@ -68,6 +68,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
@@ -376,6 +377,12 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         CustomCheckboxItem isGeographical = new CustomCheckboxItem(VariableDS.IS_GEOGRAPHICAL, getConstants().variableIsGeographical());
         isGeographical.setShowIfCondition(getIsGeographicalFormItemIfFunction());
+        FormItemIcon infoIcon = new FormItemIcon();
+        infoIcon.setHeight(14);
+        infoIcon.setWidth(14);
+        infoIcon.setSrc(org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.info().getURL());
+        infoIcon.setPrompt(getConstants().variableIsGeographicalChangeInfoMessage());
+        isGeographical.setIcons(infoIcon);
 
         RelatedResourceListItem families = createFamiliesItem();
 
