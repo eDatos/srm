@@ -227,7 +227,8 @@ public class CodesClientSecurityUtils {
         if (isTaskInBackground(codelistMetamacDto.getIsTaskInBackground())) {
             return false;
         }
-        return SharedCodesSecurityUtils.canImportCodes(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus());
+        return SharedCodesSecurityUtils.canImportCodes(MetamacSrmWeb.getCurrentUser(), codelistMetamacDto.getLifeCycle().getProcStatus())
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(codelistMetamacDto);
     }
 
     public static boolean canUpdateCodeParent(CodelistMetamacDto codelistMetamacDto) {
