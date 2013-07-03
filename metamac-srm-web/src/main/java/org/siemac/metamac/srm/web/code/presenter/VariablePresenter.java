@@ -23,6 +23,9 @@ import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
 import org.siemac.metamac.srm.web.shared.code.CreateVariableElementOperationAction;
 import org.siemac.metamac.srm.web.shared.code.CreateVariableElementOperationResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementOperationsAction;
@@ -45,6 +48,8 @@ import org.siemac.metamac.srm.web.shared.code.SaveVariableAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableElementAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableElementResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -102,6 +107,9 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
         void setVariableElementsForFusion(GetVariableElementsResult result);
         void setVariableElementsForSegregation(GetVariableElementsResult result);
         void setVariableElementOperations(List<VariableElementOperationDto> variableElementOperationDtos);
+
+        void setCodelistsForVariableElementGeographicalGranularity(GetRelatedResourcesResult result);
+        void setCodesForVariableElementGeographicalGranularity(GetRelatedResourcesResult result);
     }
 
     @ContentSlot
@@ -377,6 +385,44 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
                 retrieveVariableElementOperations(variableDto.getUrn());
             }
         });
+    }
+
+    //
+    // RELATED RESOURCES
+    //
+
+    @Override
+    public void retrieveCodelistsForVariableElementGeographicalGranularity(int firstResult, int maxResults, String criteria) {
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, firstResult, maxResults, codelistWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCodelistsForVariableElementGeographicalGranularity(result);
+                    }
+                });
+    }
+
+    @Override
+    public void retrieveCodesForVariableElementGeographicalGranularity(int firstResult, int maxResults, String criteria, String codelistUrn) {
+        CodeWebCriteria codeWebCriteria = new CodeWebCriteria(criteria);
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODES_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, firstResult, maxResults, codeWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCodesForVariableElementGeographicalGranularity(result);
+                    }
+                });
     }
 
     //

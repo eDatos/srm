@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.code.presenter.VariableElementPresenter;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableElementUiHandlers;
+import org.siemac.metamac.srm.web.code.widgets.SearchCodeForVariableElementGeographicalGranularity;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementMainFormLayout;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementOperationLayout;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
@@ -58,12 +59,14 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     private GroupDynamicForm                             identifiersForm;
     private GroupDynamicForm                             contentDescriptorsForm;
     private GroupDynamicForm                             diffusionDescriptorsForm;
+    private GroupDynamicForm                             geographicalInformationForm;
     private GroupDynamicForm                             annotationsForm;
 
     // Edition forms
     private GroupDynamicForm                             identifiersEditionForm;
     private GroupDynamicForm                             contentDescriptorsEditionForm;
     private GroupDynamicForm                             diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                             geographicalInformationEditionForm;
     private GroupDynamicForm                             annotationsEditionForm;
 
     private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToElementsWindow;
@@ -133,6 +136,9 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
                 diffusionDescriptorsForm.setTranslationsShowed(translationsShowed);
                 diffusionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
+                geographicalInformationForm.setTranslationsShowed(translationsShowed);
+                geographicalInformationEditionForm.setTranslationsShowed(translationsShowed);
+
                 annotationsForm.setTranslationsShowed(translationsShowed);
                 annotationsEditionForm.setTranslationsShowed(translationsShowed);
             }
@@ -143,7 +149,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
             @Override
             public void onClick(ClickEvent event) {
-                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)) {
+                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)
+                        && annotationsEditionForm.validate(false)) { // TODO validate geographicalInformationEditionForm (only if it is visible!)
                     saveVariableElement();
                 }
             }
@@ -232,6 +239,12 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         RelatedResourceLinkItem variable = new RelatedResourceLinkItem(VariableElementDS.VARIABLE, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
         contentDescriptorsForm.setFields(variable);
 
+        // Geographical information
+        geographicalInformationForm = new GroupDynamicForm(getConstants().formGeographicalInformation());
+        RelatedResourceLinkItem geographicalGranularity = new RelatedResourceLinkItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY, getConstants().variableElementGeographicalGranularity(),
+                getCustomLinkItemNavigationClickHandler());
+        geographicalInformationForm.setFields(geographicalGranularity);
+
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         ViewTextItem validFrom = new ViewTextItem(VariableElementDS.VALID_FROM, getConstants().variableElementValidFrom());
@@ -248,6 +261,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
+        mainFormLayout.addViewCanvas(geographicalInformationForm);
         mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
         mainFormLayout.addViewCanvas(annotationsForm);
     }
@@ -267,6 +281,12 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         RelatedResourceLinkItem variable = new RelatedResourceLinkItem(VariableElementDS.VARIABLE, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
         contentDescriptorsEditionForm.setFields(variable);
 
+        // Geographical information
+        geographicalInformationEditionForm = new GroupDynamicForm(getConstants().formGeographicalInformation());
+        SearchCodeForVariableElementGeographicalGranularity geographicalGranularity = createGeographicalGranularityItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY, getConstants()
+                .variableElementGeographicalGranularity());
+        geographicalInformationEditionForm.setFields(geographicalGranularity);
+
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         CustomDateItem validFrom = new CustomDateItem(VariableElementDS.VALID_FROM, getConstants().variableElementValidFrom());
@@ -282,6 +302,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(geographicalInformationEditionForm);
         mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionForm);
     }
@@ -298,6 +319,9 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         // Content descriptors
         ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(VariableElementDS.VARIABLE)).setRelatedResource(variableElementDto.getVariable());
+
+        // Geographical information
+        ((RelatedResourceLinkItem) geographicalInformationForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY)).setRelatedResource(variableElementDto.getGeographicalGranularity());
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(VariableElementDS.VALID_FROM, DateUtils.getFormattedDate(variableElementDto.getValidFrom()));
@@ -319,6 +343,10 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // Content descriptors
         ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(VariableElementDS.VARIABLE)).setRelatedResource(variableElementDto.getVariable());
 
+        // Geographical information
+        ((SearchCodeForVariableElementGeographicalGranularity) geographicalInformationEditionForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY)).setRelatedResource(variableElementDto
+                .getGeographicalGranularity());
+
         // Diffusion descriptors
         diffusionDescriptorsEditionForm.setValue(VariableElementDS.VALID_FROM, variableElementDto.getValidFrom());
         diffusionDescriptorsEditionForm.setValue(VariableElementDS.VALID_TO, variableElementDto.getValidTo());
@@ -335,6 +363,9 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         variableElementDto.setShortName((InternationalStringDto) identifiersEditionForm.getValue(VariableElementDS.SHORT_NAME));
 
         // Content descriptors
+
+        // Geographical information
+        // TODO granularity
 
         // Diffusion descriptors
         variableElementDto.setValidFrom(((CustomDateItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.VALID_FROM)).getValueAsDate());
@@ -396,6 +427,22 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
             }
         });
         return replaceToItem;
+    }
+
+    private SearchCodeForVariableElementGeographicalGranularity createGeographicalGranularityItem(final String name, String title) {
+        final SearchCodeForVariableElementGeographicalGranularity item = new SearchCodeForVariableElementGeographicalGranularity(name, title, getCustomLinkItemNavigationClickHandler());
+        item.setUiHandlers(getUiHandlers());
+        item.setSaveClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+            @Override
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                RelatedResourceDto code = item.getSelectedItem();
+                item.markSearchWindowForDestroy();
+                item.setRelatedResource(code);
+                contentDescriptorsEditionForm.validate(false);
+            }
+        });
+        return item;
     }
 
     private void showCreateSegregationWindow() {

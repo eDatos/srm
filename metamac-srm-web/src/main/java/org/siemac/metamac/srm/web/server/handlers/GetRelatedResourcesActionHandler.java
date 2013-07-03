@@ -276,6 +276,18 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
 
                     break;
                 }
+                case CODELIST_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY: {
+                    CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
+                    result = srmCoreServiceFacade.findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
+                case CODES_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY: {
+                    CodeWebCriteria codeWebCriteria = (CodeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getCodeCriteriaRestriction(codeWebCriteria));
+                    result = srmCoreServiceFacade.findCodesByConditionCanBeVariableElementGeographicalGranularity(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
                 default:
                     throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, "An unknown exception has ocurred. Please contact system administrator.");
             }

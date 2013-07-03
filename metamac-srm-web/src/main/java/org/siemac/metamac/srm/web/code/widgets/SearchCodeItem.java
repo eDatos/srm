@@ -8,7 +8,6 @@ import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavig
 public abstract class SearchCodeItem extends SearchItemItem {
 
     public SearchCodeItem(String name, String title, CustomLinkItemNavigationClickHandler navigationHandler) {
-        super(name, title, getConstants().searchCodes(), getConstants().filterCodeList(), getConstants().selectedCodeList(), getConstants().selectionCode(), navigationHandler);
+        super(name, title, getConstants().searchCodes(), getConstants().filterCodelist(), getConstants().selectedCodelist(), getConstants().selectionCode(), navigationHandler);
     }
-
 }

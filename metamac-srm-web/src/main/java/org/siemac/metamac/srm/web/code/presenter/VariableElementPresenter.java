@@ -20,6 +20,9 @@ import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableElementUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
 import org.siemac.metamac.srm.web.shared.code.CreateVariableElementOperationAction;
 import org.siemac.metamac.srm.web.shared.code.CreateVariableElementOperationResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementOperationsAction;
@@ -34,6 +37,8 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableElementAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableElementResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -274,6 +279,46 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
                 getView().setVariableElementOperations(result.getOperations());
             }
         });
+    }
+
+    //
+    // RELATED RESOURCES
+    //
+
+    @Override
+    public void retrieveCodelistsForVariableElementGeographicalGranularity(int firstResult, int maxResults, String criteria) {
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, firstResult, maxResults, codelistWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(VariableElementPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        // TODO Auto-generated method stub
+
+                    }
+                });
+    }
+
+    @Override
+    public void retrieveCodesForVariableElementGeographicalGranularity(int firstResult, int maxResults, String criteria, String codelistUrn) {
+        CodeWebCriteria codeWebCriteria = new CodeWebCriteria(criteria);
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODES_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, firstResult, maxResults, codeWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(VariableElementPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        // TODO Auto-generated method stub
+
+                    }
+                });
     }
 
     //

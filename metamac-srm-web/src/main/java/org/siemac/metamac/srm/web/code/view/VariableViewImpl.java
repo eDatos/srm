@@ -29,6 +29,7 @@ import org.siemac.metamac.srm.web.code.widgets.ImportVariableElementsWindow;
 import org.siemac.metamac.srm.web.code.widgets.NewVariableElementWindow;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementOperationLayout;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
@@ -660,7 +661,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     }
 
     private void showNewVariableElementWindow() {
-        newVariableElementWindow = new NewVariableElementWindow(getConstants().variableElementCreate());
+        newVariableElementWindow = new NewVariableElementWindow(getConstants().variableElementCreate(), getUiHandlers());
         newVariableElementWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
             @Override
@@ -832,6 +833,24 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     private void showListGridSegregateButton() {
         if (CodesClientSecurityUtils.canSegregateVariableElement()) {
             segregateVariableElementButton.show();
+        }
+    }
+
+    //
+    // RELATED RESOURCES
+    //
+
+    @Override
+    public void setCodelistsForVariableElementGeographicalGranularity(GetRelatedResourcesResult result) {
+        if (newVariableElementWindow != null) {
+            newVariableElementWindow.setItemSchemes(result);
+        }
+    }
+
+    @Override
+    public void setCodesForVariableElementGeographicalGranularity(GetRelatedResourcesResult result) {
+        if (newVariableElementWindow != null) {
+            newVariableElementWindow.setItems(result);
         }
     }
 

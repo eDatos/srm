@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
@@ -18,6 +19,8 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
     protected SearchRelatedResourcePaginatedWithRelatedResourceFilterWindow searchItemWindow;
 
     private ClickHandler                                                    saveClickHandler;
+
+    private String                                                          informationLabelMessage;
 
     public SearchItemItem(final String name, String title, final String windowTitle, final String windowFilterListTitle, final String windowFilterTextTitle, final String windowSelectionListTitle,
             CustomLinkItemNavigationClickHandler itemNavigationHandler) {
@@ -49,6 +52,15 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
 
                 searchItemWindow = new SearchRelatedResourcePaginatedWithRelatedResourceFilterWindow(windowTitle, windowFilterListTitle, windowFilterTextTitle, windowSelectionListTitle, MAX_RESULTS,
                         filterListAction, selectionListAction);
+
+                // Add an information message (if it has been specified")
+                if (!StringUtils.isBlank(informationLabelMessage)) {
+                    searchItemWindow.setInformationLabelMessage(informationLabelMessage);
+                    searchItemWindow.showInformationLabel();
+                }
+
+                // Hide the initial filter form (it is empty)
+                searchItemWindow.getInitialFilterForm().hide();
 
                 // Load the list of items (to populate the selection window)
                 retrieveItemSchemes(FIRST_RESULT, MAX_RESULTS, null);
@@ -90,6 +102,10 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
 
             }
         });
+    }
+
+    public void setInformationLabelMessage(String informationLabelMessage) {
+        this.informationLabelMessage = informationLabelMessage;
     }
 
     public void setItemSchemes(List<RelatedResourceDto> itemSchemes, int firstResult, int totalResults) {
