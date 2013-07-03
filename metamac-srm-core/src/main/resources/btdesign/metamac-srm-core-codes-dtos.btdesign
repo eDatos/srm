@@ -98,6 +98,10 @@ Application DtosMetamacCodeDomain {
 			Long versionOptimisticLocking;
 		}
 		
+		DataTransferObject VariableRelatedResourceDto extends @RelatedResourceDto {
+			- @VariableTypeEnum variableType nullable;
+		}
+		
 		"Dto for Variable"
 		DataTransferObject VariableBasicDto extends @NameableArtefactMetamacBasicDto {
 		}
@@ -117,7 +121,7 @@ Application DtosMetamacCodeDomain {
 			"Variable elements that are replaced by this one"
 			- List<@RelatedResourceDto> replaceToVariableElements nullable;
 			"Variable"
-			- @RelatedResourceDto variable not nullable;
+			- @VariableRelatedResourceDto variable not nullable;
 			Double latitude nullable;
 			Double longitude nullable;
 			String shape nullable;

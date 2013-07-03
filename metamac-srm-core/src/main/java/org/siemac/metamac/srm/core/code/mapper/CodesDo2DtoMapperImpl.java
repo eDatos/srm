@@ -28,6 +28,7 @@ import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.VariableRelatedResourceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -237,8 +238,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
             return null;
         }
         RelatedResourceDto target = new RelatedResourceDto();
-        do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
-        target.setType(null);
+        variableDoToRelatedResourceDto(source, target);
         return target;
     }
 
@@ -253,7 +253,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         target.setValidFrom(CoreCommonUtil.transformDateTimeToDate(source.getValidFrom()));
         target.setValidTo(CoreCommonUtil.transformDateTimeToDate(source.getValidTo()));
         do2DtoMapperSdmxSrm.identifiableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getIdentifiableArtefact(), target);
-        target.setVariable(variableDoToRelatedResourceDto(source.getVariable()));
+        target.setVariable(variableDoToVariableRelatedResourceDto(source.getVariable()));
         target.setReplacedByVariableElement(variableElementDoToRelatedResourceDto(source.getReplacedByVariableElement()));
         for (VariableElement replaceTo : source.getReplaceToVariableElements()) {
             target.addReplaceToVariableElement(variableElementDoToRelatedResourceDto(replaceTo));
@@ -457,6 +457,24 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         RelatedResourceDto target = new RelatedResourceDto();
         do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
         target.setType(null);
+        return target;
+    }
+
+    private void variableDoToRelatedResourceDto(Variable source, RelatedResourceDto target) {
+        if (source == null) {
+            return;
+        }
+        do2DtoMapperSdmxSrm.nameableArtefactDoToRelatedResourceDto(source.getNameableArtefact(), target);
+        target.setType(null);
+    }
+
+    private VariableRelatedResourceDto variableDoToVariableRelatedResourceDto(Variable source) {
+        if (source == null) {
+            return null;
+        }
+        VariableRelatedResourceDto target = new VariableRelatedResourceDto();
+        variableDoToRelatedResourceDto(source, target);
+        target.setVariableType(source.getType());
         return target;
     }
 

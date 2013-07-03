@@ -10,7 +10,9 @@ import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.VariableRelatedResourceDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.utils.CodesDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -108,12 +110,19 @@ public class CodesMetamacDtoMocks {
         return variableDto;
     }
 
-    public static RelatedResourceDto mockVariableRelatedResourceDto(String code, String urn) {
-        RelatedResourceDto relatedResourceDto = new RelatedResourceDto();
+    public static VariableRelatedResourceDto mockVariableRelatedResourceDto(String code, String urn) {
+        VariableRelatedResourceDto relatedResourceDto = new VariableRelatedResourceDto();
         relatedResourceDto.setCode(code);
         relatedResourceDto.setUrn(urn);
         relatedResourceDto.setUrnProvider(urn);
         relatedResourceDto.setType(null);
+        relatedResourceDto.setVariableType(null);
+        return relatedResourceDto;
+    }
+
+    public static VariableRelatedResourceDto mockVariableGeographicalRelatedResourceDto(String code, String urn) {
+        VariableRelatedResourceDto relatedResourceDto = mockVariableRelatedResourceDto(code, urn);
+        relatedResourceDto.setVariableType(VariableTypeEnum.GEOGRAPHICAL);
         return relatedResourceDto;
     }
 

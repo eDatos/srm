@@ -135,7 +135,7 @@ public class CodesDto2DoMapperTest extends SrmBaseTest {
     @Test
     public void testVariableElementGeographicalDtoToDo() throws MetamacException {
         VariableElementDto dto = CodesMetamacDtoMocks.mockVariableElementGeographicalDto("CODE01", CODELIST_1_V2_CODE_1);
-        dto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
+        dto.setVariable(CodesMetamacDtoMocks.mockVariableGeographicalRelatedResourceDto("VARIABLE_01", VARIABLE_1));
 
         VariableElement entity = codesDto2DoMapper.variableElementDtoToDo(dto);
         CodesMetamacAsserts.assertEqualsVariableElement(dto, entity);
