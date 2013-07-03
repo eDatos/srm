@@ -11,7 +11,11 @@ public class VariableElementDS extends DataSource {
     public static final String URN                      = "ele-urn";
     // Content descriptors
     public static final String VARIABLE                 = "ele-variable";
+    // Geographical information
     public static final String GEOGRAPHICAL_GRANULARITY = "ele-geo-gran";
+    public static final String LATITUDE                 = "ele-lat";
+    public static final String LONGITUDE                = "ele-lon";
+    public static final String SHAPE                    = "ele-shape";
     // Diffusion descriptors
     public static final String VALID_FROM               = "ele-valid-from";
     public static final String VALID_TO                 = "ele-valid-to";

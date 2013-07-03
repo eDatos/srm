@@ -21,6 +21,7 @@ import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
+import org.siemac.metamac.srm.core.code.dto.VariableRelatedResourceDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
@@ -280,6 +281,12 @@ public class RelatedResourceUtils extends RelatedResourceBaseUtils {
             relatedResourceDtos.add(getVariableBasicDtoAsRelatedResourceDto(codelist));
         }
         return relatedResourceDtos;
+    }
+
+    public static VariableRelatedResourceDto createVariableRelatedResourceDto(String urn) {
+        VariableRelatedResourceDto variableRelatedResourceDto = new VariableRelatedResourceDto();
+        variableRelatedResourceDto.setUrn(urn);
+        return variableRelatedResourceDto;
     }
 
     // Variable families

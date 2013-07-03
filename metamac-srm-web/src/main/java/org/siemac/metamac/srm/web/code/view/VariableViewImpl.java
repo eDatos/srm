@@ -661,14 +661,13 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     }
 
     private void showNewVariableElementWindow() {
-        newVariableElementWindow = new NewVariableElementWindow(getConstants().variableElementCreate(), getUiHandlers());
+        newVariableElementWindow = new NewVariableElementWindow(getConstants().variableElementCreate(), getUiHandlers(), variableDto);
         newVariableElementWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
             @Override
             public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
                 if (newVariableElementWindow.validateForm()) {
                     VariableElementDto variableElementToCreate = newVariableElementWindow.getNewVariableElementDto();
-                    variableElementToCreate.setVariable(RelatedResourceUtils.createRelatedResourceDto(variableDto.getUrn()));
                     getUiHandlers().createVariableElement(variableElementToCreate);
                     newVariableElementWindow.destroy();
                 }

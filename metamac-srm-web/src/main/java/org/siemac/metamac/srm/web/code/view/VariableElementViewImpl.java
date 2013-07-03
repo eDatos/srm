@@ -8,6 +8,7 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
@@ -152,7 +153,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
             @Override
             public void onClick(ClickEvent event) {
                 if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)
-                        && annotationsEditionForm.validate(false)) { // TODO validate geographicalInformationEditionForm (only if it is visible!)
+                        && annotationsEditionForm.validate(false) && (geographicalInformationEditionForm.isVisible() ? geographicalInformationEditionForm.validate(false) : true)) {
                     saveVariableElement();
                 }
             }
@@ -198,6 +199,15 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         setVariableElementViewMode(variableElementDto);
         setVariableElementEditionMode(variableElementDto);
+
+        // Show the geographical information form only if the variable element belongs to a geographical variable
+        if (variableElementDto.getVariable() != null && VariableTypeEnum.GEOGRAPHICAL.equals(variableElementDto.getVariable().getVariableType())) {
+            geographicalInformationForm.show();
+            geographicalInformationEditionForm.show();
+        } else {
+            geographicalInformationForm.hide();
+            geographicalInformationEditionForm.hide();
+        }
     }
 
     @Override
@@ -441,7 +451,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
                 RelatedResourceDto code = item.getSelectedItem();
                 item.markSearchWindowForDestroy();
                 item.setRelatedResource(code);
-                contentDescriptorsEditionForm.validate(false);
+                geographicalInformationEditionForm.validate(false);
             }
         });
         return item;
