@@ -91,6 +91,9 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
         void setVariableElementsForSegregation(GetVariableElementsResult result);
 
         void setVariableElementOperations(List<VariableElementOperationDto> variableElementOperationDtos);
+
+        void setCodelistsForVariableElementGeographicalGranularity(GetRelatedResourcesResult result);
+        void setCodesForVariableElementGeographicalGranularity(GetRelatedResourcesResult result);
     }
 
     @ContentSlot
@@ -297,8 +300,7 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
                     }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
-                        // TODO Auto-generated method stub
-
+                        getView().setCodelistsForVariableElementGeographicalGranularity(result);
                     }
                 });
     }
@@ -315,8 +317,7 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
                     }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
-                        // TODO Auto-generated method stub
-
+                        getView().setCodesForVariableElementGeographicalGranularity(result);
                     }
                 });
     }

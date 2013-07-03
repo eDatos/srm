@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.web.code.view.handlers.VariableElementUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.SearchCodeForVariableElementGeographicalGranularity;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementMainFormLayout;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementOperationLayout;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
@@ -119,6 +120,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     public void setUiHandlers(VariableElementUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         variableElementOperationsLayout.setUiHandlers(uiHandlers);
+        ((SearchCodeForVariableElementGeographicalGranularity) geographicalInformationEditionForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY)).setUiHandlers(uiHandlers);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -133,11 +135,11 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
                 contentDescriptorsForm.setTranslationsShowed(translationsShowed);
                 contentDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
-                diffusionDescriptorsForm.setTranslationsShowed(translationsShowed);
-                diffusionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
-
                 geographicalInformationForm.setTranslationsShowed(translationsShowed);
                 geographicalInformationEditionForm.setTranslationsShowed(translationsShowed);
+
+                diffusionDescriptorsForm.setTranslationsShowed(translationsShowed);
+                diffusionDescriptorsEditionForm.setTranslationsShowed(translationsShowed);
 
                 annotationsForm.setTranslationsShowed(translationsShowed);
                 annotationsEditionForm.setTranslationsShowed(translationsShowed);
@@ -365,7 +367,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // Content descriptors
 
         // Geographical information
-        // TODO granularity
+        variableElementDto.setGeographicalGranularity(((SearchCodeForVariableElementGeographicalGranularity) geographicalInformationEditionForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY))
+                .getRelatedResourceDto());
 
         // Diffusion descriptors
         variableElementDto.setValidFrom(((CustomDateItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.VALID_FROM)).getValueAsDate());
@@ -431,7 +434,6 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
     private SearchCodeForVariableElementGeographicalGranularity createGeographicalGranularityItem(final String name, String title) {
         final SearchCodeForVariableElementGeographicalGranularity item = new SearchCodeForVariableElementGeographicalGranularity(name, title, getCustomLinkItemNavigationClickHandler());
-        item.setUiHandlers(getUiHandlers());
         item.setSaveClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
             @Override
@@ -479,6 +481,22 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
                 getUiHandlers().createSegregation(sourceUrn, targetUrns);
             }
         });
+    }
+
+    //
+    // RELATED RESOURCES
+    //
+
+    @Override
+    public void setCodelistsForVariableElementGeographicalGranularity(GetRelatedResourcesResult result) {
+        ((SearchCodeForVariableElementGeographicalGranularity) geographicalInformationEditionForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY)).setItemSchemes(result.getRelatedResourceDtos(),
+                result.getFirstResultOut(), result.getTotalResults());
+    }
+
+    @Override
+    public void setCodesForVariableElementGeographicalGranularity(GetRelatedResourcesResult result) {
+        ((SearchCodeForVariableElementGeographicalGranularity) geographicalInformationEditionForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY)).setItems(result.getRelatedResourceDtos(),
+                result.getFirstResultOut(), result.getTotalResults());
     }
 
     // ------------------------------------------------------------------------------------------------------------
