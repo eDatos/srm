@@ -80,6 +80,7 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
         // SRM properties
 
         checkRequiredProperty(SrmConfigurationConstants.USER_GUIDE_FILE_NAME);
+        checkRequiredProperty(SrmConfigurationConstants.JOB_DELETE_DEPRECATED_ENTITIES_CRON_EXPRESSION);
 
         checkOptionalConceptUrn(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN);
         checkOptionalConceptUrn(SrmConfigurationConstants.DSD_TIME_DIMENSION_DEFAULT_CONCEPT_ID_URN);
