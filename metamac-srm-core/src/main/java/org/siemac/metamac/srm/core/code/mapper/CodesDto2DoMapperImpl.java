@@ -276,6 +276,8 @@ public class CodesDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Codes
         // note: replacedBy metadata is ignored, because it will be updated by replaceTo metadata
         if (source.getVariable() != null) {
             target.setVariable(retrieveVariable(source.getVariable().getUrn()));
+        } else {
+            target.setVariable(null);
         }
         target.removeAllReplaceToVariableElements();
         for (RelatedResourceDto replaceToVariableElement : source.getReplaceToVariableElements()) {
@@ -288,6 +290,8 @@ public class CodesDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Codes
         target.setShape(source.getShape());
         if (source.getGeographicalGranularity() != null) {
             target.setGeographicalGranularity(retrieveCode(source.getGeographicalGranularity().getUrn()));
+        } else {
+            target.setGeographicalGranularity(null);
         }
 
         // Optimistic locking: Update "update date" attribute to force update to root entity, to increment "version" attribute
