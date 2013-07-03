@@ -111,7 +111,7 @@ public class CodelistsToSql {
     }
 
     private static long insertCodelist(String codeCodelist, String title) {
-        String urn = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ISTAC:" + codeCodelist + "(1.0)";
+        String urn = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ISTAC:" + codeCodelist + "(01.000)";
         long idMaintainableArtefactInserted = insertMaintainableArtefact(codeCodelist, urn, title);
         insertItemScheme();
         insertItemSchemeVersion(idMaintainableArtefactInserted);
@@ -145,7 +145,7 @@ public class CodelistsToSql {
         long idCode = idCodes.longValue();
 
         String code = "code" + idCode;
-        String urn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:" + codeCodelist + "(1.0)." + code;
+        String urn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:" + codeCodelist + "(01.000)." + code;
         long idNameableArtefact = insertNameableArtefact(urn, code, withAnnotations);
         insertCode(idCode, idCodelist, idParent, idNameableArtefact);
         long variableElement = insertVariableElement(codeVariable, idVariable);
@@ -465,7 +465,7 @@ public class CodelistsToSql {
         } else {
             code = "orden" + columnIndex;;
         }
-        String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=ISTAC:" + codeCodelist + "(1.0)." + code;
+        String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=ISTAC:" + codeCodelist + "(01.000)." + code;
         long idNameableArtefact = insertNameableArtefact(urn, code, false);
         insertSentences.add("INSERT INTO TB_M_CODELIST_ORDER_VIS (ID, UUID, VERSION, COLUMN_INDEX, NAMEABLE_ARTEFACT_FK, CODELIST_FK) values (" + id + ", " + id + ", 0, " + columnIndex + ", "
                 + idNameableArtefact + "," + idCodelists + ");");
@@ -483,7 +483,7 @@ public class CodelistsToSql {
         } else {
             code = "openness" + columnIndex;;
         }
-        String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=ISTAC:" + codeCodelist + "(1.0)." + code;
+        String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=ISTAC:" + codeCodelist + "(01.000)." + code;
         long idNameableArtefact = insertNameableArtefact(urn, code, false);
         insertSentences.add("INSERT INTO TB_M_CODELIST_OPENNESS_VIS (ID, UUID, VERSION, COLUMN_INDEX, NAMEABLE_ARTEFACT_FK, CODELIST_FK) values (" + id + ", " + id + ", 0, " + columnIndex + ", "
                 + idNameableArtefact + "," + idCodelists + ");");
