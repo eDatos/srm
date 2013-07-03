@@ -12,6 +12,7 @@ public class SrmConfigurationConstants extends ConfigurationConstants {
     public static final String DSD_TIME_DIMENSION_DEFAULT_CONCEPT_ID_URN              = "metamac.srm.dsd.time_dimension.default_concept.urn";
     public static final String DSD_MEASURE_DIMENSION_DEFAULT_CONCEPT_ID_URN           = "metamac.srm.dsd.measure_dimension.default_concept.urn";
     public static final String VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY_CODELIST_URN = "metamac.srm.codelist.variable_element.geographical_granularity.urn";
+    public static final String JOB_DELETE_DEPRECATED_ENTITIES_CRON_EXPRESSION         = "metamac.srm.jobs.delete_deprecated_entities.cron_expression";
 
     public static final String USER_GUIDE_FILE_NAME                                   = "metamac.srm.user.guide.file.name";
 
