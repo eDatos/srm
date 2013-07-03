@@ -1684,6 +1684,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Retrieve
         Variable variable = retrieveVariableByUrn(urn);
+        // Count variable elements
+        Long variableElementsCount = getVariableElementRepository().countVariableElementsByVariable(variable.getId());
+        variable.setHasVariableElements(variableElementsCount != 0);
         return variable;
     }
 

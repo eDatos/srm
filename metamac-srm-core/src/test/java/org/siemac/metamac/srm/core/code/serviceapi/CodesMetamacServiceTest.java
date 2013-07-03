@@ -5978,6 +5978,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEqualsInternationalString(variable.getShortName(), "es", "variable-65", null, null);
         assertEqualsDate(new DateTime(2011, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variable.getValidFrom());
         assertEqualsDate(new DateTime(2012, 01, 02, 02, 02, 04, 0, new DateTimeZoneBuilder().toDateTimeZone("Europe/London", false)), variable.getValidTo());
+        assertFalse(variable.getHasVariableElements());
 
         assertEquals(VARIABLE_4, variable.getReplacedByVariable().getNameableArtefact().getUrn());
         assertEquals(2, variable.getReplaceToVariables().size());
@@ -5988,6 +5989,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals("user1", variable.getCreatedBy());
         assertEquals("user2", variable.getLastUpdatedBy());
         assertEquals(Long.valueOf(1), variable.getVersion());
+    }
+
+    @Test
+    public void testRetrieveVariableByUrnWithVariableElements() throws Exception {
+        String urn = VARIABLE_2;
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), urn);
+
+        assertEquals(urn, variable.getNameableArtefact().getUrn());
+        assertTrue(variable.getHasVariableElements());
     }
 
     @Test

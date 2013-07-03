@@ -352,6 +352,8 @@ public class CodesMetamacAsserts extends CodesAsserts {
             assertNotNull(entity.getVersion());
             assertEquals(entity.getVersion(), dto.getVersion());
             assertEquals(entity.getVersion(), dto.getVersionOptimisticLocking());
+
+            assertEquals(entity.getHasVariableElements(), dto.getHasVariableElements());
         }
 
         assertEquals(entity.getType(), dto.getType());

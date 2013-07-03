@@ -198,6 +198,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
         target.setValidFrom(CoreCommonUtil.transformDateTimeToDate(source.getValidFrom()));
         target.setValidTo(CoreCommonUtil.transformDateTimeToDate(source.getValidTo()));
+        target.setHasVariableElements(source.getHasVariableElements());
         do2DtoMapperSdmxSrm.nameableArtefactToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getNameableArtefact(), target);
         for (VariableFamily variableFamily : source.getFamilies()) {
             target.addFamily(variableFamilyDoToRelatedResourceDto(variableFamily));

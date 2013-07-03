@@ -490,6 +490,8 @@ Application CodesMetamac {
 			- @Variable replacedByVariable nullable cascade="none" fetch="lazy" databaseColumn="REPLACED_BY_VARIABLE_FK"  <-> replaceToVariables;
 			"Variables that are replaced by this one"
 			- Bag<@Variable> replaceToVariables cascade="none" fetch="lazy" <-> replacedByVariable;
+			"True when variable has some variable element. False otherwise. Null is unknown."
+			Boolean hasVariableElements nullable transient;
 			
 			"Variable families"
 			- Bag<@VariableFamily> families cascade="none" fetch="lazy" databaseColumn="VARIABLE_FAMILY_FK" databaseJoinTable="TB_M_VAR_FAMILIES_VARIABLES" <-> variables;
