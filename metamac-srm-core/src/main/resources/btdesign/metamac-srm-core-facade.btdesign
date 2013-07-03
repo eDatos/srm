@@ -725,6 +725,9 @@ Application SrmFacadeCore {
     		markTaskAsFailed(String job, java.lang.Exception exception) throws MetamacException;
     		"Mark a specific Item Scheme with a failed flag"
     		markTaskItemSchemeAsFailed(String urnToCopy) throws MetamacException;
+ 			
+ 			"Delete entities marked to delete"
+    		deleteEntitiesMarkedToDelete() throws MetamacException;
     		
    		}
     }

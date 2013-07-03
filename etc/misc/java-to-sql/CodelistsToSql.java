@@ -20,8 +20,8 @@ public class CodelistsToSql {
      * 4) Número de códigos en "numCodes"
      * 5) Para muchos códigos, es mejor poner 'separateFiles' a true para que separe el resultado en varios ficheros.
      */
-    private static long                   firstId                         = 100000000;
-    private static int                    numCodes                        = 2;
+    private static long                   firstId                         = 600000000;
+    private static int                    numCodes                        = 1;
     private static Boolean                withAnnotations                 = Boolean.TRUE;
     private static Boolean                publishCodelist                 = Boolean.FALSE;
 
@@ -146,7 +146,7 @@ public class CodelistsToSql {
 
         String code = "code" + idCode;
         String urn = "urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:" + codeCodelist + "(01.000)." + code;
-        long idNameableArtefact = insertNameableArtefact(urn, code, withAnnotations);
+        long idNameableArtefact = insertNameableArtefact(urn, code, withAnnotations, false);
         insertCode(idCode, idCodelist, idParent, idNameableArtefact);
         long variableElement = insertVariableElement(codeVariable, idVariable);
         insertCodeMetamac(idParent, idCode, variableElement);
@@ -183,7 +183,7 @@ public class CodelistsToSql {
     private static long insertVariableUpdatingCodelist(String codeVariable, long idCodelist) {
         long id = idVariables.longValue();
         String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=" + codeVariable;
-        long idNameableArtefact = insertNameableArtefact(urn, codeVariable, false);
+        long idNameableArtefact = insertNameableArtefact(urn, codeVariable, false, true);
         long shortName = insertInternationalString("shortNameVariable_" + id);
         insertSentences.add("INSERT INTO TB_M_VARIABLES (ID, UUID, VERSION, NAMEABLE_ARTEFACT_FK, SHORT_NAME_FK) values (" + id + ", '" + id + "', 1, " + idNameableArtefact + ", " + shortName + ");");
 
@@ -341,7 +341,6 @@ public class CodelistsToSql {
                         + ", " + finalLogic + ", " + finalLogic + ", 1, 0, " + idMaintainer + ");");
 
         insertAnnotation(id);
-        insertAnnotation(id);
 
         idAnnotableArtefact.add(1);
         return id;
@@ -466,7 +465,7 @@ public class CodelistsToSql {
             code = "orden" + columnIndex;;
         }
         String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=ISTAC:" + codeCodelist + "(01.000)." + code;
-        long idNameableArtefact = insertNameableArtefact(urn, code, false);
+        long idNameableArtefact = insertNameableArtefact(urn, code, false, true);
         insertSentences.add("INSERT INTO TB_M_CODELIST_ORDER_VIS (ID, UUID, VERSION, COLUMN_INDEX, NAMEABLE_ARTEFACT_FK, CODELIST_FK) values (" + id + ", " + id + ", 0, " + columnIndex + ", "
                 + idNameableArtefact + "," + idCodelists + ");");
         idCodelistOrderVisualisation.add(1);
@@ -484,7 +483,7 @@ public class CodelistsToSql {
             code = "openness" + columnIndex;;
         }
         String urn = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=ISTAC:" + codeCodelist + "(01.000)." + code;
-        long idNameableArtefact = insertNameableArtefact(urn, code, false);
+        long idNameableArtefact = insertNameableArtefact(urn, code, false, true);
         insertSentences.add("INSERT INTO TB_M_CODELIST_OPENNESS_VIS (ID, UUID, VERSION, COLUMN_INDEX, NAMEABLE_ARTEFACT_FK, CODELIST_FK) values (" + id + ", " + id + ", 0, " + columnIndex + ", "
                 + idNameableArtefact + "," + idCodelists + ");");
         idCodelistOpennessVisualisation.add(1);
@@ -541,17 +540,22 @@ public class CodelistsToSql {
      * MAINTAINER_FK NUMBER(19)
      * );
      */
-    private static long insertNameableArtefact(String urn, String code, boolean withAnnotations) {
+    private static long insertNameableArtefact(String urn, String code, boolean withAnnotations, boolean onlyName) {
         long id = idAnnotableArtefact.toLong();
         long name = insertInternationalString("name_" + code);
-        long description = insertInternationalString("description_" + code);
-        long comment = insertInternationalString("comment_" + code);
+        Long description = null;
+        if (!onlyName) {
+            description = insertInternationalString("description_" + code);
+        }
+        Long comment = null;
+        if (!onlyName) {
+            description = insertInternationalString("comment_" + code);
+        }
 
         insertSentences.add("INSERT INTO TB_ANNOTABLE_ARTEFACTS (ID, UUID, VERSION, ANNOTABLE_ARTEFACT_TYPE, CODE, URN, URN_PROVIDER, NAME_FK, DESCRIPTION_FK, COMMENT_FK) values (" + id + ", " + id
                 + ", 1, 'NAMEABLE_ARTEFACT', '" + code + "', '" + urn + "', '" + urn + "', " + name + ", " + description + ", " + comment + ");");
 
         if (withAnnotations) {
-            insertAnnotation(id);
             insertAnnotation(id);
         }
 
@@ -566,7 +570,6 @@ public class CodelistsToSql {
                 + code + "', '" + urn + "', '" + urn + "');");
 
         if (withAnnotations) {
-            insertAnnotation(id);
             insertAnnotation(id);
         }
 

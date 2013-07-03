@@ -27,6 +27,7 @@ import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.srm.core.base.repositoryimpl.EntityToDeleteRepository;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.task.utils.TasksMetamacInvocationValidator;
@@ -47,6 +48,9 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
 
     @Autowired
     private TasksService               tasksService;
+
+    @Autowired
+    private EntityToDeleteRepository   entityToDeleteRepository;
 
     @Autowired
     @Qualifier("importationMetamacJaxb2DoCallback")
@@ -159,6 +163,11 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
     @Override
     public PagedResult<Task> findTasksByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         return tasksService.findTasksByCondition(ctx, conditions, pagingParameter);
+    }
+
+    @Override
+    public void deleteEntitiesMarkedToDelete(ServiceContext ctx) throws MetamacException {
+        entityToDeleteRepository.deleteEntitiesMarkedToDelete();
     }
 
     private void createTaskInProgress(ServiceContext ctx, String jobKey, String fileName) throws MetamacException {

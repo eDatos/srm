@@ -447,7 +447,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             sb.append("SELECT c.TB_CODES, ls.LOCALE as LS_LOCALE, ls.LABEL as LS_LABEL ");
             sb.append("FROM TB_M_CODES c INNER JOIN TB_CODES cb on cb.ID = c.TB_CODES ");
             sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = c.SHORT_NAME_FK ");
-            sb.append("WHERE c.VARIABLE_ELEMENT_FK is null AND cb.ITEM_SCHEME_VERSION_FK = :codelistVersion and c.SHORT_NAME_FK is not null");
+            sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion and c.SHORT_NAME_FK is not null");
             executeQueryCodeShortNameAndUpdateCodeMetamacResult(idCodelist, sb.toString(), mapCodeByItemId);
         }
         return codes;
@@ -742,29 +742,19 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
                 @Override
                 public void execute(Connection connection) throws SQLException {
-                    // International strings are deleted at the end
-                    List<Long> internationalStringToDelete = new ArrayList<Long>();
 
-                    // Short name
-                    addInternationalStringsToDelete(itemSchemeVersionId, internationalStringToDelete, getCodeMetamacMetadataInternationalStringQuery("SHORT_NAME_FK", itemSchemeVersionId));
-                    deleteCodeMetamacLocalisedStrings(connection, "SHORT_NAME_FK", itemSchemeVersionId);
-
-                    // Name, description, comment
-                    addInternationalStringsToDelete(itemSchemeVersionId, internationalStringToDelete, getCodeNameableArtefactMetadataInternationalStringQuery("NAME_FK", itemSchemeVersionId));
-                    deleteItemNameableArtefactLocalisedStrings(connection, "NAME_FK", itemSchemeVersionId);
-                    addInternationalStringsToDelete(itemSchemeVersionId, internationalStringToDelete, getCodeNameableArtefactMetadataInternationalStringQuery("DESCRIPTION_FK", itemSchemeVersionId));
-                    deleteItemNameableArtefactLocalisedStrings(connection, "DESCRIPTION_FK", itemSchemeVersionId);
-                    addInternationalStringsToDelete(itemSchemeVersionId, internationalStringToDelete, getCodeNameableArtefactMetadataInternationalStringQuery("COMMENT_FK", itemSchemeVersionId));
-                    deleteItemNameableArtefactLocalisedStrings(connection, "COMMENT_FK", itemSchemeVersionId);
+                    // Mark international strings to delete: Short name, name, description, comment, annotation text...
+                    insertInternationalStringToDeleteFromCodeMetamac(connection, itemSchemeVersionId, "SHORT_NAME_FK");
+                    insertInternationalStringToDeleteFromCodeNameableArtefact(connection, itemSchemeVersionId, "NAME_FK");
+                    insertInternationalStringToDeleteFromCodeNameableArtefact(connection, itemSchemeVersionId, "DESCRIPTION_FK");
+                    insertInternationalStringToDeleteFromCodeNameableArtefact(connection, itemSchemeVersionId, "COMMENT_FK");
+                    insertInternationalStringToDeleteFromAnnotation(connection, itemSchemeVersionId, "TEXT_FK");
 
                     // Codes and annotable artefacts
-                    deleteCodeAnnotations(connection, itemSchemeVersionId, internationalStringToDelete);
+                    deleteCodeAnnotationsEfficiently(connection, itemSchemeVersionId);
                     List<Long> annotableArtefactsToDelete = getAnnotableArtefactsToDelete(connection, itemSchemeVersionId); // need obtain before delete codes
-                    deleteCodes(connection, itemSchemeVersionId, internationalStringToDelete);
-                    deleteAnnotableArtefacts(connection, annotableArtefactsToDelete);
-
-                    // Delete all international strings
-                    deleteInternationalStrings(connection, internationalStringToDelete);
+                    deleteCodesEfficiently(connection, itemSchemeVersionId);
+                    deleteAnnotableArtefactsEfficiently(connection, annotableArtefactsToDelete);
                 }
             });
         } catch (Exception e) {
@@ -774,50 +764,14 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     /**
-     * Delete annotations. Adds international strings to delete to list
+     * Insert in temporal table with entities to delete
      */
-    private void deleteCodeAnnotations(Connection connection, Long itemSchemeVersionId, List<Long> internationalStringToDelete) throws SQLException {
-        addInternationalStringsToDelete(itemSchemeVersionId, internationalStringToDelete, getAnnotationMetadataInternationalStringQuery("TEXT_FK", itemSchemeVersionId));
-        deleteAnnotationLocalisedStrings(connection, "TEXT_FK", itemSchemeVersionId);
-
-        String sb = "DELETE FROM TB_ANNOTATIONS WHERE ANNOTABLE_ARTEFACT_FK in (SELECT cb.NAMEABLE_ARTEFACT_FK FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + ")";
-        executeSqlStatement(connection, sb);
-    }
-
-    private void deleteCodes(Connection connection, Long itemSchemeVersionId, List<Long> internationalStringToDelete) throws SQLException {
-        // Delete metamac codes
-        executeSqlStatement(connection, "DELETE FROM TB_M_CODES WHERE TB_CODES in (SELECT cb.ID FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + ")");
-        // Clear parent relation
-        executeSqlStatement(connection, "UPDATE TB_CODES cb set PARENT_FK = null WHERE cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId);
-        // Delete codes
-        executeSqlStatement(connection, "DELETE FROM TB_CODES WHERE ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId);
-    }
-
-    private void deleteInternationalStrings(Connection connection, List<Long> internationalStringToDelete) throws SQLException {
-        if (CollectionUtils.isEmpty(internationalStringToDelete)) {
-            return;
-        }
-        StringBuilder internationalStringToDeleteParameter = new StringBuilder();
-        int count = 0;
-        for (int i = 0; i < internationalStringToDelete.size(); i++) {
-            count++;
-            Long id = internationalStringToDelete.get(i);
-            internationalStringToDeleteParameter.append(id);
-            if (count == CoreCommonConstants.SQL_IN_CLAUSE_MAXIMUM_NUMBER || i == internationalStringToDelete.size() - 1) {
-                count = 0;
-                String sb = "DELETE FROM TB_INTERNATIONAL_STRINGS WHERE ID IN (" + internationalStringToDeleteParameter + ")";
-                executeSqlStatement(connection, sb);
-                internationalStringToDeleteParameter = new StringBuilder();
-            } else {
-                internationalStringToDeleteParameter.append(",");
-            }
-        }
-    }
-
-    private void deleteCodeMetamacLocalisedStrings(Connection connection, String columnName, Long itemSchemeVersionId) throws SQLException {
+    private void insertInternationalStringToDeleteFromCodeMetamac(Connection connection, Long itemSchemeVersionId, String columnName) throws SQLException {
         StringBuilder sb = new StringBuilder();
-        sb.append("DELETE FROM TB_LOCALISED_STRINGS where INTERNATIONAL_STRING_FK in ( ");
+        sb.append("INSERT INTO TB_ENTITIES_TO_DELETE ");
+        sb.append("(TABLE_NAME, ID_TO_DELETE) ");
         sb.append("SELECT ");
+        sb.append("'" + SrmConstants.TABLE_INTERNATIONAL_STRINGS + "', ");
         sb.append("c." + columnName + " ");
         sb.append("FROM TB_M_CODES c ");
         sb.append("INNER JOIN TB_CODES cb on c.TB_CODES = cb.ID ");
@@ -825,42 +779,67 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         sb.append("cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + " ");
         sb.append("AND ");
         sb.append("c." + columnName + " ");
-        sb.append("IS NOT NULL)");
+        sb.append("IS NOT NULL");
 
         executeSqlStatement(connection, sb);
     }
 
-    private void deleteItemNameableArtefactLocalisedStrings(Connection connection, String columnName, Long itemSchemeVersionId) throws SQLException {
+    private void insertInternationalStringToDeleteFromCodeNameableArtefact(Connection connection, Long itemSchemeVersionId, String columnName) throws SQLException {
         StringBuilder sb = new StringBuilder();
-        sb.append("DELETE FROM TB_LOCALISED_STRINGS where INTERNATIONAL_STRING_FK in ( ");
+        sb.append("INSERT INTO TB_ENTITIES_TO_DELETE ");
+        sb.append("(TABLE_NAME, ID_TO_DELETE) ");
         sb.append("SELECT ");
+        sb.append("'TB_INTERNATIONAL_STRINGS', ");
         sb.append("a." + columnName + " ");
-        sb.append("FROM TB_ANNOTABLE_ARTEFACTS a ");
-        sb.append("INNER JOIN TB_CODES cb on cb.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("FROM TB_CODES cb ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on cb.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("WHERE ");
         sb.append("cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + " ");
         sb.append("AND ");
         sb.append("a." + columnName + " ");
-        sb.append("IS NOT NULL)");
+        sb.append("IS NOT NULL");
 
         executeSqlStatement(connection, sb);
     }
 
-    private void deleteAnnotationLocalisedStrings(Connection connection, String columnName, Long itemSchemeVersionId) throws SQLException {
+    private void insertInternationalStringToDeleteFromAnnotation(Connection connection, Long itemSchemeVersionId, String columnName) throws SQLException {
         StringBuilder sb = new StringBuilder();
-        sb.append("DELETE FROM TB_LOCALISED_STRINGS where INTERNATIONAL_STRING_FK in ( ");
+        sb.append("INSERT INTO TB_ENTITIES_TO_DELETE ");
+        sb.append("(TABLE_NAME, ID_TO_DELETE) ");
         sb.append("SELECT ");
+        sb.append("'TB_INTERNATIONAL_STRINGS', ");
         sb.append("a." + columnName + " ");
-        sb.append("FROM TB_CODES cb INNER JOIN TB_ANNOTATIONS a on cb.NAMEABLE_ARTEFACT_FK = a.ANNOTABLE_ARTEFACT_FK ");
-        sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + " ");
+        sb.append("FROM TB_ANNOTATIONS a ");
+        sb.append("WHERE ");
+        sb.append("a.ANNOTABLE_ARTEFACT_FK in (SELECT cb.NAMEABLE_ARTEFACT_FK FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + ") ");
         sb.append("AND ");
         sb.append("a." + columnName + " ");
-        sb.append("IS NOT NULL)");
+        sb.append("IS NOT NULL");
 
         executeSqlStatement(connection, sb);
     }
 
-    private void deleteAnnotableArtefacts(Connection connection, List<Long> annotableArtefactsToDelete) throws SQLException {
+    /**
+     * Delete annotations
+     */
+    private void deleteCodeAnnotationsEfficiently(Connection connection, Long itemSchemeVersionId) throws SQLException {
+        executeSqlStatement(connection, "DELETE FROM TB_ANNOTATIONS WHERE ANNOTABLE_ARTEFACT_FK in (SELECT cb.NAMEABLE_ARTEFACT_FK FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = "
+                + itemSchemeVersionId + ")");
+    }
+
+    /**
+     * Delete entities of Code
+     */
+    private void deleteCodesEfficiently(Connection connection, Long itemSchemeVersionId) throws SQLException {
+        // Delete metamac codes
+        executeSqlStatement(connection, "DELETE FROM TB_M_CODES WHERE TB_CODES in (SELECT cb.ID FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + ")");
+        // Clear parent relation
+        executeSqlStatement(connection, "UPDATE TB_CODES set PARENT_FK = null WHERE ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId);
+        // Delete codes
+        executeSqlStatement(connection, "DELETE FROM TB_CODES WHERE ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId);
+    }
+
+    private void deleteAnnotableArtefactsEfficiently(Connection connection, List<Long> annotableArtefactsToDelete) throws SQLException {
         if (CollectionUtils.isEmpty(annotableArtefactsToDelete)) {
             return;
         }
@@ -880,57 +859,6 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
                 annotableArtefactsToDeleteParameter.append(",");
             }
         }
-    }
-
-    @SuppressWarnings("rawtypes")
-    private void addInternationalStringsToDelete(Long itemSchemeVersionId, List<Long> actualInternationalStringsToDelete, String sql) {
-        Query query = getEntityManager().createNativeQuery(sql);
-        List resultsSql = query.getResultList();
-        for (Object resultSql : resultsSql) {
-            Long internationalStringId = getLong(resultSql);
-            actualInternationalStringsToDelete.add(internationalStringId);
-        }
-    }
-
-    private String getCodeMetamacMetadataInternationalStringQuery(String columnName, Long itemSchemeVersionId) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT ");
-        sb.append("c." + columnName + " ");
-        sb.append("FROM TB_M_CODES c ");
-        sb.append("INNER JOIN TB_CODES cb on c.TB_CODES = cb.ID ");
-        sb.append("WHERE ");
-        sb.append("cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + " ");
-        sb.append("AND ");
-        sb.append("c." + columnName + " ");
-        sb.append("IS NOT NULL");
-        return sb.toString();
-    }
-
-    private String getCodeNameableArtefactMetadataInternationalStringQuery(String columnName, Long itemSchemeVersionId) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT ");
-        sb.append("a." + columnName + " ");
-        sb.append("FROM TB_CODES cb ");
-        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on cb.NAMEABLE_ARTEFACT_FK = a.ID ");
-        sb.append("WHERE ");
-        sb.append("cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + " ");
-        sb.append("AND ");
-        sb.append("a." + columnName + " ");
-        sb.append("IS NOT NULL");
-        return sb.toString();
-    }
-
-    private String getAnnotationMetadataInternationalStringQuery(String columnName, Long itemSchemeVersionId) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT ");
-        sb.append("a." + columnName + " ");
-        sb.append("FROM TB_ANNOTATIONS a ");
-        sb.append("WHERE ");
-        sb.append("a.ANNOTABLE_ARTEFACT_FK in (SELECT cb.NAMEABLE_ARTEFACT_FK FROM TB_CODES cb WHERE cb.ITEM_SCHEME_VERSION_FK = " + itemSchemeVersionId + ") ");
-        sb.append("AND ");
-        sb.append("a." + columnName + " ");
-        sb.append("IS NOT NULL");
-        return sb.toString();
     }
 
     private List<Long> getAnnotableArtefactsToDelete(Connection connection, Long itemSchemeVersionId) throws SQLException {

@@ -56,6 +56,7 @@ import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.srm.core.base.repositoryimpl.EntityToDeleteRepository;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
@@ -151,6 +152,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Autowired
     private ItemRepository                itemRepository;
+
+    @Autowired
+    private EntityToDeleteRepository      entityToDeleteRepository;
 
     @Autowired
     protected PlatformTransactionManager  transactionManager;
@@ -1917,9 +1921,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testDeleteCodelistTestAllEntities() throws Exception {
         String urn = CODELIST_1_V2;
 
-        executeQueriesToTestDeleteCodelist1V2DeleteAllEntities(true);
+        executeQueriesToTestDeleteCodelist1V2DeleteAllEntities(true, null);
         codesService.deleteCodelist(getServiceContextAdministrador(), urn);
-        executeQueriesToTestDeleteCodelist1V2DeleteAllEntities(false);
+        entityManager.flush();
+        executeQueriesToTestDeleteCodelist1V2DeleteAllEntities(false, true);
+
+        // Test action invoked by job
+        entityToDeleteRepository.deleteEntitiesMarkedToDelete();
+        entityManager.flush();
+        executeQueriesToTestDeleteCodelist1V2DeleteAllEntities(false, false);
     }
 
     @Test
@@ -9677,7 +9687,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @SuppressWarnings("rawtypes")
-    private void executeQueriesToTestDeleteCodelist1V2DeleteAllEntities(boolean expectedResults) {
+    private void executeQueriesToTestDeleteCodelist1V2DeleteAllEntities(Boolean expectedResults, Boolean expectedResultsYetMarkedAsDeleted) {
         // Codelist
         {
             Long id = Long.valueOf(12);
@@ -9727,10 +9737,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             }
         }
         // International strings and localised strings
-        {
+        if (expectedResults) {
             List<Integer> ids = Arrays.asList(3, 4, 12, 13, 97, 77, 14, 15, 109, 110, 111, 94, 16, 107, 141, 96, 37, 38, 78, 79);
             for (int i = 0; i < ids.size(); i++) {
                 Integer id = ids.get(i);
+                {
+                    Query query = entityManager.createNativeQuery("SELECT * FROM TB_ENTITIES_TO_DELETE WHERE ID_TO_DELETE = " + id);
+                    List result = query.getResultList();
+                    assertEquals(0, result.size());
+                }
                 {
                     Query query = entityManager.createNativeQuery("SELECT * FROM TB_INTERNATIONAL_STRINGS WHERE ID = " + id);
                     List result = query.getResultList();
@@ -9740,6 +9755,58 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     Query query = entityManager.createNativeQuery("SELECT * FROM TB_LOCALISED_STRINGS WHERE INTERNATIONAL_STRING_FK = " + id);
                     List result = query.getResultList();
                     assertResultsExpected(expectedResults, result.size());
+                }
+            }
+        } else {
+            // International string of Codelist and visualisations must be deleted
+            {
+                List<Integer> ids = Arrays.asList(3, 4, 78, 79, 102, 103, 104);
+                for (int i = 0; i < ids.size(); i++) {
+                    Integer id = ids.get(i);
+                    {
+                        Query query = entityManager.createNativeQuery("SELECT * FROM TB_INTERNATIONAL_STRINGS WHERE ID = " + id);
+                        List result = query.getResultList();
+                        assertResultsExpected(expectedResults, result.size());
+                    }
+                    {
+                        Query query = entityManager.createNativeQuery("SELECT * FROM TB_LOCALISED_STRINGS WHERE INTERNATIONAL_STRING_FK = " + id);
+                        List result = query.getResultList();
+                        assertResultsExpected(expectedResults, result.size());
+                    }
+                }
+            }
+            // International strings of codes can be marked as deleted by job
+            {
+                List<Integer> ids = Arrays.asList(12, 13, 97, 77, 14, 15, 109, 110, 111, 94, 16, 107, 141, 96, 37, 38);
+                for (int i = 0; i < ids.size(); i++) {
+                    Integer id = ids.get(i);
+                    {
+                        Query query = entityManager.createNativeQuery("SELECT * FROM TB_ENTITIES_TO_DELETE WHERE TABLE_NAME = 'TB_INTERNATIONAL_STRINGS' AND ID_TO_DELETE = " + id);
+                        List result = query.getResultList();
+                        if (expectedResultsYetMarkedAsDeleted) {
+                            assertEquals(1, result.size());
+                        } else {
+                            assertEquals(0, result.size());
+                        }
+                    }
+                    {
+                        Query query = entityManager.createNativeQuery("SELECT * FROM TB_INTERNATIONAL_STRINGS WHERE ID = " + id);
+                        List result = query.getResultList();
+                        if (expectedResultsYetMarkedAsDeleted) {
+                            assertEquals(1, result.size());
+                        } else {
+                            assertEquals(0, result.size());
+                        }
+                    }
+                    {
+                        Query query = entityManager.createNativeQuery("SELECT * FROM TB_LOCALISED_STRINGS WHERE INTERNATIONAL_STRING_FK = " + id);
+                        List result = query.getResultList();
+                        if (expectedResultsYetMarkedAsDeleted) {
+                            assertResultsExpected(true, result.size());
+                        } else {
+                            assertEquals(0, result.size());
+                        }
+                    }
                 }
             }
         }

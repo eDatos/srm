@@ -5,7 +5,7 @@ Application SrmEntitiesBaseCore {
     
     Module core_entities_base {
     	basePackage=org.siemac.metamac.srm.core.base
-    
+    		
     	BasicType SrmLifeCycleMetadata {
 			!immutable
 			

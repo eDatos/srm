@@ -35,6 +35,10 @@ Application TaskMetamac {
     		markTaskAsFailed(String job, java.lang.Exception exception) throws MetamacException;
     		"Find information about tasks"
 			PagedResult<@Task> findTasksByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
+			
+			// MISC
+			"Delete entities marked to delete"
+    		deleteEntitiesMarkedToDelete() throws MetamacException;
 		}
 	}
 }

@@ -39,4 +39,5 @@
     <import resource="classpath:/spring/srm/include/entity-manager-factory.xml" />
     <import resource="classpath:/spring/srm/include/interceptor.xml" />
     <import resource="classpath:/spring/srm/include/more.xml" /> 
+    <import resource="classpath:/spring/srm/include/quartz.xml" />
 </beans>

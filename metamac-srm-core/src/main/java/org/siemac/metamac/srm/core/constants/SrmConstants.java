@@ -8,6 +8,7 @@ public class SrmConstants {
 
     // Artefacts
     public static final VersionPatternEnum VERSION_PATTERN_METAMAC                                   = VersionPatternEnum.XX_YYY;
+
     // Codelists
     public static final int                CODELIST_ORDER_VISUALISATION_MAXIMUM_NUMBER               = 20;
     public static final String             CODELIST_ORDER_VISUALISATION_ALPHABETICAL_CODE            = "ALPHABETICAL";
@@ -44,4 +45,5 @@ public class SrmConstants {
     // Misc
     public static final int                METADATA_SHORT_NAME_MAXIMUM_LENGTH                        = 100;
     public static final int                CODE_QUERY_COLUMN_ORDER_LENGTH                            = 6;
+    public static final String             TABLE_INTERNATIONAL_STRINGS                                = "TB_INTERNATIONAL_STRINGS";
 }

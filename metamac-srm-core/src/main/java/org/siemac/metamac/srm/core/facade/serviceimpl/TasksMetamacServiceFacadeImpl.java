@@ -93,4 +93,9 @@ public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImpl
     public void markTaskItemSchemeAsFailed(ServiceContext ctx, String urnToCopy) throws MetamacException {
         baseService.markTaskItemSchemeInBackgroundAsFailed(ctx, urnToCopy);
     }
+
+    @Override
+    public void deleteEntitiesMarkedToDelete(ServiceContext ctx) throws MetamacException {
+        getTasksMetamacService().deleteEntitiesMarkedToDelete(ctx);
+    }
 }
