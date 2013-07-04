@@ -260,7 +260,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         ViewTextItem latitude = new ViewTextItem(VariableElementDS.LATITUDE, getConstants().variableElementLatitude());
         latitude.setStartRow(true);
         ViewTextItem longitude = new ViewTextItem(VariableElementDS.LONGITUDE, getConstants().variableElementLongitude());
-        ViewTextItem hasShape = new ViewTextItem(VariableElementDS.SHAPE, getConstants().variableElementHasShape());
+        ViewTextItem hasShape = new ViewTextItem(VariableElementDS.SHAPE, getConstants().variableElementHasPolygonShape());
         geographicalInformationForm.setFields(geographicalGranularity, latitude, longitude, hasShape);
 
         // Diffusion descriptors
@@ -306,7 +306,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         DoubleItem latitude = new DoubleItem(VariableElementDS.LATITUDE, getConstants().variableElementLatitude());
         latitude.setStartRow(true);
         DoubleItem longitude = new DoubleItem(VariableElementDS.LONGITUDE, getConstants().variableElementLongitude());
-        ViewTextItem hasShape = new ViewTextItem(VariableElementDS.SHAPE, getConstants().variableElementHasShape());
+        ViewTextItem hasShape = new ViewTextItem(VariableElementDS.SHAPE, getConstants().variableElementHasPolygonShape());
         geographicalInformationEditionForm.setFields(geographicalGranularity, latitude, longitude, hasShape);
 
         // Diffusion descriptors
