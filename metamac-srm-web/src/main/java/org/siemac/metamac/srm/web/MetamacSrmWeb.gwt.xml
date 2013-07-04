@@ -40,7 +40,6 @@
     <inherits name="org.siemac.metamac.web.common.MetamacWebCommon" />
     <inherits name="org.siemac.metamac.SsoClient" />
     <inherits name="org.siemac.metamac.srm.SrmCore" />
-    <inherits name="com.arte.statistic.sdmx.v2_1.domain.StatisticSdmxV2_1Domain" />
     <inherits name="com.arte.statistic.sdmx.srm.core.StatisticSdmxSrmCore" />
 
     <!-- Specify the app entry point class. -->
