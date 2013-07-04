@@ -75,6 +75,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
+import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.form.validator.RequiredIfFunction;
 import com.smartgwt.client.widgets.form.validator.RequiredIfValidator;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -331,8 +332,32 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         final RequiredSelectItem relatedTo = new RequiredSelectItem(DataAttributeDS.RELATED_TO, getConstants().dsdAttributeRelatedWith());
         relatedTo.setValueMap(CommonUtils.getTypeRelationshipHashMap());
-        relatedTo.setRedrawOnChange(true);
         relatedTo.setShowIfCondition(getRelatedToFormItemIfFunction());
+        relatedTo.setValidateOnChange(true);
+        relatedTo.addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                relatedTo.validate();
+            }
+        });
+        relatedTo.setValidators(new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+
+                // The attributes with a type specified, can only be related to datasets (TypeRelathionship = NO_SPECIFIED_RELATIONSHIP)
+
+                SpecialAttributeTypeEnum attributeType = !StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE)) ? SpecialAttributeTypeEnum.valueOf(editionForm
+                        .getValueAsString(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE)) : null;
+                TypeRelathionship typeRelathionship = !StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.RELATED_TO)) ? TypeRelathionship.valueOf(editionForm
+                        .getValueAsString(DataAttributeDS.RELATED_TO)) : null;
+                if (attributeType != null && !TypeRelathionship.NO_SPECIFIED_RELATIONSHIP.equals(typeRelathionship)) {
+                    return false;
+                }
+                return true;
+            }
+        });
 
         ViewTextItem staticRelatedTo = new ViewTextItem(DataAttributeDS.RELATED_TO_VIEW, getConstants().dsdAttributeRelatedWith());
         staticRelatedTo.setShowIfCondition(getStaticRelatedToFormItemIfFunction());
