@@ -5,6 +5,8 @@ import java.util.Date;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedCodesSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -401,6 +403,13 @@ public class CodesClientSecurityUtils {
 
     public static boolean canDeleteVariableElementOperation() {
         return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canImportVariableElementShape(VariableDto variableDto) {
+        if (variableDto != null && !VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType())) {
+            return false;
+        }
+        return SharedCodesSecurityUtils.canImportVariableElements(MetamacSrmWeb.getCurrentUser());
     }
 
     //

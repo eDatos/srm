@@ -33,7 +33,7 @@ public class ImportCodesWindow extends ImportResourceWindow {
 
             HiddenItem codelistUrnItem = new HiddenItem(SrmSharedTokens.UPLOAD_PARAM_CODELIST_URN);
 
-            CustomCheckboxItem updateExistingCodesItem = new CustomCheckboxItem(SrmSharedTokens.UPDATE_PARAM_UPDATE_EXISTING, getConstants().codesUploadUpdateExisting());
+            CustomCheckboxItem updateExistingCodesItem = new CustomCheckboxItem(SrmSharedTokens.UPLOAD_PARAM_UPDATE_EXISTING, getConstants().codesUploadUpdateExisting());
 
             addFieldsInThePenultimePosition(fileTypeItem, codelistUrnItem, updateExistingCodesItem);
         }

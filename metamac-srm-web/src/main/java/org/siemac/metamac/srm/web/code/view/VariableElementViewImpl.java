@@ -24,11 +24,13 @@ import org.siemac.metamac.srm.web.code.widgets.VariableElementOperationLayout;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
+import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
+import org.siemac.metamac.web.common.client.widgets.DoubleItem;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -255,7 +257,11 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         geographicalInformationForm = new GroupDynamicForm(getConstants().formGeographicalInformation());
         RelatedResourceLinkItem geographicalGranularity = new RelatedResourceLinkItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY, getConstants().variableElementGeographicalGranularity(),
                 getCustomLinkItemNavigationClickHandler());
-        geographicalInformationForm.setFields(geographicalGranularity);
+        ViewTextItem latitude = new ViewTextItem(VariableElementDS.LATITUDE, getConstants().variableElementLatitude());
+        latitude.setStartRow(true);
+        ViewTextItem longitude = new ViewTextItem(VariableElementDS.LONGITUDE, getConstants().variableElementLongitude());
+        ViewTextItem hasShape = new ViewTextItem(VariableElementDS.SHAPE, getConstants().variableElementHasShape());
+        geographicalInformationForm.setFields(geographicalGranularity, latitude, longitude, hasShape);
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -297,7 +303,11 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         geographicalInformationEditionForm = new GroupDynamicForm(getConstants().formGeographicalInformation());
         SearchCodeForVariableElementGeographicalGranularity geographicalGranularity = createGeographicalGranularityItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY, getConstants()
                 .variableElementGeographicalGranularity());
-        geographicalInformationEditionForm.setFields(geographicalGranularity);
+        DoubleItem latitude = new DoubleItem(VariableElementDS.LATITUDE, getConstants().variableElementLatitude());
+        latitude.setStartRow(true);
+        DoubleItem longitude = new DoubleItem(VariableElementDS.LONGITUDE, getConstants().variableElementLongitude());
+        ViewTextItem hasShape = new ViewTextItem(VariableElementDS.SHAPE, getConstants().variableElementHasShape());
+        geographicalInformationEditionForm.setFields(geographicalGranularity, latitude, longitude, hasShape);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -334,6 +344,10 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         // Geographical information
         ((RelatedResourceLinkItem) geographicalInformationForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY)).setRelatedResource(variableElementDto.getGeographicalGranularity());
+        geographicalInformationForm.setValue(VariableElementDS.LATITUDE, variableElementDto.getLatitude() != null ? variableElementDto.getLatitude().toString() : StringUtils.EMPTY);
+        geographicalInformationForm.setValue(VariableElementDS.LONGITUDE, variableElementDto.getLongitude() != null ? variableElementDto.getLongitude().toString() : StringUtils.EMPTY);
+        geographicalInformationForm
+                .setValue(VariableElementDS.SHAPE, StringUtils.isBlank(variableElementDto.getShape()) ? MetamacWebCommon.getConstants().no() : MetamacWebCommon.getConstants().yes());
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(VariableElementDS.VALID_FROM, DateUtils.getFormattedDate(variableElementDto.getValidFrom()));
@@ -343,7 +357,6 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         // Annotations
         annotationsForm.setValue(VariableElementDS.COMMENTS, RecordUtils.getInternationalStringRecord(variableElementDto.getComment()));
-
     }
 
     public void setVariableElementEditionMode(VariableElementDto variableElementDto) {
@@ -358,6 +371,10 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // Geographical information
         ((SearchCodeForVariableElementGeographicalGranularity) geographicalInformationEditionForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY)).setRelatedResource(variableElementDto
                 .getGeographicalGranularity());
+        geographicalInformationEditionForm.setValue(VariableElementDS.LATITUDE, variableElementDto.getLatitude() != null ? variableElementDto.getLatitude().toString() : StringUtils.EMPTY);
+        geographicalInformationEditionForm.setValue(VariableElementDS.LONGITUDE, variableElementDto.getLongitude() != null ? variableElementDto.getLongitude().toString() : StringUtils.EMPTY);
+        geographicalInformationEditionForm.setValue(VariableElementDS.SHAPE, StringUtils.isBlank(variableElementDto.getShape()) ? MetamacWebCommon.getConstants().no() : MetamacWebCommon
+                .getConstants().yes());
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm.setValue(VariableElementDS.VALID_FROM, variableElementDto.getValidFrom());
@@ -379,6 +396,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // Geographical information
         variableElementDto.setGeographicalGranularity(((SearchCodeForVariableElementGeographicalGranularity) geographicalInformationEditionForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY))
                 .getRelatedResourceDto());
+        variableElementDto.setLatitude(((DoubleItem) geographicalInformationEditionForm.getItem(VariableElementDS.LATITUDE)).getValueAsDouble());
+        variableElementDto.setLongitude(((DoubleItem) geographicalInformationEditionForm.getItem(VariableElementDS.LONGITUDE)).getValueAsDouble());
 
         // Diffusion descriptors
         variableElementDto.setValidFrom(((CustomDateItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.VALID_FROM)).getValueAsDate());

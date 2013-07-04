@@ -33,7 +33,7 @@ public class ImportVariableElementsWindow extends ImportResourceWindow {
 
             HiddenItem variableUrnItem = new HiddenItem(SrmSharedTokens.UPLOAD_PARAM_VARIABLE_URN);
 
-            CustomCheckboxItem updateExistingElementsItem = new CustomCheckboxItem(SrmSharedTokens.UPDATE_PARAM_UPDATE_EXISTING, getConstants().variableElementsUploadUpdateExisting());
+            CustomCheckboxItem updateExistingElementsItem = new CustomCheckboxItem(SrmSharedTokens.UPLOAD_PARAM_UPDATE_EXISTING, getConstants().variableElementsUploadUpdateExisting());
 
             addFieldsInThePenultimePosition(fileTypeItem, variableUrnItem, updateExistingElementsItem);
         }

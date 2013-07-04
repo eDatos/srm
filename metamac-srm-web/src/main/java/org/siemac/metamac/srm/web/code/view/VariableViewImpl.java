@@ -25,9 +25,11 @@ import org.siemac.metamac.srm.web.code.presenter.VariablePresenter;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CodesFormUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableUiHandlers;
+import org.siemac.metamac.srm.web.code.widgets.ImportVariableElementShapeWindow;
 import org.siemac.metamac.srm.web.code.widgets.ImportVariableElementsWindow;
 import org.siemac.metamac.srm.web.code.widgets.NewVariableElementWindow;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementOperationLayout;
+import org.siemac.metamac.srm.web.code.widgets.VariableMainFormLayout;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
@@ -47,7 +49,6 @@ import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
-import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomDateItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
@@ -84,7 +85,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> implements VariablePresenter.VariableView {
 
     private VLayout                                      panel;
-    private InternationalMainFormLayout                  mainFormLayout;
+    private VariableMainFormLayout                       mainFormLayout;
 
     // View forms
     private GroupDynamicForm                             identifiersForm;
@@ -122,6 +123,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     private CustomSectionStack                           operationsSectionStack;
     private VariableElementOperationLayout               variableElementOperationsLayout;
 
+    private ImportVariableElementShapeWindow             importVariableElementShapeWindow;
+
     private VariableDto                                  variableDto;
 
     @Inject
@@ -134,10 +137,27 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // VARIABLE
         //
 
-        mainFormLayout = new InternationalMainFormLayout(CodesClientSecurityUtils.canUpdateVariable(), CodesClientSecurityUtils.canDeleteVariable());
+        mainFormLayout = new VariableMainFormLayout(CodesClientSecurityUtils.canUpdateVariable(), CodesClientSecurityUtils.canDeleteVariable());
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
+
+        // SHAPES IMPORTATION
+
+        // Variable elements importation window
+
+        importVariableElementShapeWindow = new ImportVariableElementShapeWindow();
+        importVariableElementShapeWindow.setUploadListener(new UploadListener() {
+
+            @Override
+            public void uploadFailed(String fileName) {
+                getUiHandlers().resourceImportationFailed(fileName);
+            }
+            @Override
+            public void uploadComplete(String fileName) {
+                getUiHandlers().resourceImportationSucceed(fileName);
+            }
+        });
 
         // VARIABLE ELEMENTS
 
@@ -295,6 +315,15 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
                 getUiHandlers().deleteVariable(variableDto.getUrn());
             }
         });
+
+        // Importation
+        mainFormLayout.getImportShape().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                importVariableElementShapeWindow.show();
+            }
+        });
     }
 
     @Override
@@ -318,7 +347,9 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariable(VariableDto variableDto) {
         this.variableDto = variableDto;
+        this.mainFormLayout.setVariable(variableDto);
         this.importVariableElementsWindow.setVariable(variableDto);
+        this.importVariableElementShapeWindow.setVariable(variableDto);
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(variableDto.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;

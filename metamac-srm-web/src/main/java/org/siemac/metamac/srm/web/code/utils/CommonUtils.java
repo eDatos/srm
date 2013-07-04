@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.web.code.model.record.CodelistVisualisationRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableElementOperationRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
+import org.siemac.metamac.srm.web.shared.code.enums.VariableElementShapeTypeEnum;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -100,6 +101,19 @@ public class CommonUtils {
             hashMap.put(visualisation.getUrn(), getCodelistVisualisationName(visualisation));
         }
         return hashMap;
+    }
+
+    public static LinkedHashMap<String, String> getVariableElementShapeTypeHashMap() {
+        LinkedHashMap<String, String> hashMap = new LinkedHashMap<String, String>();
+        hashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+        for (VariableElementShapeTypeEnum value : VariableElementShapeTypeEnum.values()) {
+            hashMap.put(value.name(), getVariableElementShapeTypeName(value));
+        }
+        return hashMap;
+    }
+
+    public static String getVariableElementShapeTypeName(VariableElementShapeTypeEnum variableElementShapeType) {
+        return variableElementShapeType != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().variableElementShapeTypeEnum() + variableElementShapeType.name()) : null;
     }
 
     public static String getVariableElementOperationTypeName(VariableElementOperationTypeEnum operationTypeEnum) {
