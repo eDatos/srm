@@ -41,8 +41,8 @@ public class CodelistCodesPanel extends VLayout {
         importCodesWindow.setUploadListener(new UploadListener() {
 
             @Override
-            public void uploadFailed(String fileName) {
-                uiHandlers.resourceImportationFailed(fileName);
+            public void uploadFailed(String errorMessage) {
+                uiHandlers.resourceImportationFailed(errorMessage);
             }
             @Override
             public void uploadComplete(String fileName) {

@@ -218,8 +218,8 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
     //
 
     @Override
-    public void sDMXResourceImportationFailed(String fileName) {
-        ShowMessageEvent.fireErrorMessage(MainPagePresenter.this, MetamacSrmWeb.getMessages().resourceErrorImport());
+    public void sDMXResourceImportationFailed(String errorMessage) {
+        ShowMessageEvent.fireErrorMessage(MainPagePresenter.this, errorMessage);
     }
 
     @Override

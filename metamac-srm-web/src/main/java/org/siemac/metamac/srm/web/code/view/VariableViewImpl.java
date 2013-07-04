@@ -150,8 +150,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         importVariableElementShapeWindow.setUploadListener(new UploadListener() {
 
             @Override
-            public void uploadFailed(String fileName) {
-                getUiHandlers().resourceImportationFailed(fileName);
+            public void uploadFailed(String errorMessage) {
+                getUiHandlers().resourceImportationFailed(errorMessage);
             }
             @Override
             public void uploadComplete(String fileName) {
@@ -167,8 +167,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         importVariableElementsWindow.setUploadListener(new UploadListener() {
 
             @Override
-            public void uploadFailed(String fileName) {
-                getUiHandlers().resourceImportationFailed(fileName);
+            public void uploadFailed(String errorMessage) {
+                getUiHandlers().resourceImportationFailed(errorMessage);
             }
             @Override
             public void uploadComplete(String fileName) {

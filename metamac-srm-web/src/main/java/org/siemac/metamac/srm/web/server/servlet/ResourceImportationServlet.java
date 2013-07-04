@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,6 +27,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.ImportableResourceTypeEnum;
@@ -130,9 +130,15 @@ public class ResourceImportationServlet extends HttpServlet {
             sendSuccessImportationResponse(response, fileName);
 
         } catch (Exception e) {
-            // TODO MetamacException
+            String errorMessage = null;
+            if (e instanceof MetamacException) {
+                errorMessage = getMessageFromMetamacException((MetamacException) e);
+            } else {
+                errorMessage = e.getMessage();
+            }
             logger.log(Level.SEVERE, "Error importing file = " + fileName + ". " + e.getMessage());
-            sendFailedImportationResponse(response, fileName);
+            logger.log(Level.SEVERE, e.getMessage());
+            sendFailedImportationResponse(response, errorMessage);
         }
     }
 
@@ -185,8 +191,7 @@ public class ResourceImportationServlet extends HttpServlet {
 
     // Variable element shape
 
-    private void importVariableElementShape(SrmCoreServiceFacade srmCoreServiceFacade, String fileName, InputStream inputStream, HashMap<String, String> args) throws MetamacException,
-            MalformedURLException {
+    private void importVariableElementShape(SrmCoreServiceFacade srmCoreServiceFacade, String fileName, InputStream inputStream, HashMap<String, String> args) throws MetamacException, IOException {
 
         VariableElementShapeTypeEnum shapeType = VariableElementShapeTypeEnum.valueOf(args.get(SrmSharedTokens.UPLOAD_PARAM_VARIABLE_ELEMENT_SHAPE_TYPE));
         String variableUrn = args.get(SrmSharedTokens.UPLOAD_PARAM_VARIABLE_URN);
@@ -206,13 +211,14 @@ public class ResourceImportationServlet extends HttpServlet {
     //
 
     /**
-     * Given an inputStream, creates a file in the temp directory
+     * Given an {@link InputStream}, creates a file in the temporal directory
      * 
      * @param fileName
      * @param inputStream
      * @return
+     * @throws IOException
      */
-    private String inputStreamToTempFile(String fileName, InputStream inputStream) {
+    private String inputStreamToTempFile(String fileName, InputStream inputStream) throws IOException {
 
         OutputStream outputStream = null;
         File outputFile = null;
@@ -232,25 +238,14 @@ public class ResourceImportationServlet extends HttpServlet {
             }
 
         } catch (IOException e) {
-            // TODO throw MetamacException
-            e.printStackTrace();
+            throw e;
 
         } finally {
             if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    // TODO throw MetamacException
-                    e.printStackTrace();
-                }
+                inputStream.close();
             }
             if (outputStream != null) {
-                try {
-                    outputStream.close();
-                } catch (IOException e) {
-                    // TODO throw MetamacException
-                    e.printStackTrace();
-                }
+                outputStream.close();
             }
         }
 
@@ -262,55 +257,49 @@ public class ResourceImportationServlet extends HttpServlet {
      * 
      * @param zipFile
      * @return the URL of the SHP file
+     * @throws IOException
      */
-    public URL unZipCompressedShapefile(String zipFile) {
+    public URL unZipCompressedShapefile(String zipFile) throws IOException {
 
         URL shpFileURL = null;
 
         byte[] buffer = new byte[1024];
 
-        try {
+        File outputFolder = (File) getServletContext().getAttribute("javax.servlet.context.tempdir");
 
-            File outputFolder = (File) getServletContext().getAttribute("javax.servlet.context.tempdir");
+        // get the zip file content
+        ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
 
-            // get the zip file content
-            ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
+        // get the zipped file list entry
+        ZipEntry ze = zis.getNextEntry();
 
-            // get the zipped file list entry
-            ZipEntry ze = zis.getNextEntry();
+        while (ze != null) {
 
-            while (ze != null) {
+            String fileName = ze.getName();
+            File newFile = new File(outputFolder + File.separator + fileName);
 
-                String fileName = ze.getName();
-                File newFile = new File(outputFolder + File.separator + fileName);
-
-                // If the file that is been processed is the SHP, store its path to return it
-                if (StringUtils.endsWith(fileName, ".shp")) {
-                    shpFileURL = newFile.toURI().toURL();
-                }
-
-                // create all non exists folders
-                // else you will hit FileNotFoundException for compressed folder
-                new File(newFile.getParent()).mkdirs();
-
-                FileOutputStream fos = new FileOutputStream(newFile);
-
-                int len;
-                while ((len = zis.read(buffer)) > 0) {
-                    fos.write(buffer, 0, len);
-                }
-
-                fos.close();
-                ze = zis.getNextEntry();
+            // If the file that is been processed is the SHP, store its path to return it
+            if (StringUtils.endsWith(fileName, ".shp")) {
+                shpFileURL = newFile.toURI().toURL();
             }
 
-            zis.closeEntry();
-            zis.close();
+            // create all non exists folders
+            // else you will hit FileNotFoundException for compressed folder
+            new File(newFile.getParent()).mkdirs();
 
-        } catch (IOException ex) {
-            // TODO throw MetamacException
-            ex.printStackTrace();
+            FileOutputStream fos = new FileOutputStream(newFile);
+
+            int len;
+            while ((len = zis.read(buffer)) > 0) {
+                fos.write(buffer, 0, len);
+            }
+
+            fos.close();
+            ze = zis.getNextEntry();
         }
+
+        zis.closeEntry();
+        zis.close();
 
         return shpFileURL;
     }
@@ -320,8 +309,11 @@ public class ResourceImportationServlet extends HttpServlet {
         sendResponse(response, action);
     }
 
-    private void sendFailedImportationResponse(HttpServletResponse response, String fileName) throws IOException {
-        String action = "if (parent.uploadFailed) parent.uploadFailed('" + fileName + "');";
+    private void sendFailedImportationResponse(HttpServletResponse response, String errorMessage) throws IOException {
+
+        String processedErrorMessage = escapeUnsupportedCharacters(errorMessage);
+
+        String action = "if (parent.uploadFailed) parent.uploadFailed('" + processedErrorMessage + "');";
         sendResponse(response, action);
     }
 
@@ -339,5 +331,23 @@ public class ResourceImportationServlet extends HttpServlet {
         out.println("</body>");
         out.println("</html>");
         out.flush();
+    }
+
+    private String getMessageFromMetamacException(MetamacException e) {
+        if (e.getPrincipalException() != null) {
+            return e.getPrincipalException().getMessage();
+        }
+        List<MetamacExceptionItem> items = e.getExceptionItems();
+        if (items != null && !items.isEmpty()) {
+            return items.get(0).getMessage(); // only return the first message error
+        }
+        return null;
+    }
+
+    private String escapeUnsupportedCharacters(String message) {
+        if (!StringUtils.isBlank(message)) {
+            return message.replace("'", "");
+        }
+        return message;
     }
 }

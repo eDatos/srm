@@ -435,8 +435,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     }
 
     @Override
-    public void resourceImportationFailed(String fileName) {
-        ShowMessageEvent.fireErrorMessage(VariablePresenter.this, getMessages().resourceErrorImport());
+    public void resourceImportationFailed(String errorMessage) {
+        ShowMessageEvent.fireErrorMessage(VariablePresenter.this, errorMessage);
     }
 
     //

@@ -56,6 +56,6 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
 
     // Importation
 
-    void resourceImportationFailed(String fileName);
+    void resourceImportationFailed(String errorMessage);
     void resourceImportationSucceed(String fileName);
 }

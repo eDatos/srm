@@ -113,9 +113,9 @@ public class ImportResourceWindow extends Window {
             listener.uploadComplete(fileName);
     }
 
-    public void uploadFailed(String fileName) {
+    public void uploadFailed(String errorMessage) {
         if (listener != null) {
-            listener.uploadFailed(fileName);
+            listener.uploadFailed(errorMessage);
         }
     }
 
@@ -126,8 +126,8 @@ public class ImportResourceWindow extends Window {
     }-*/;
 
     private native void initUploadFailed(ImportResourceWindow upload) /*-{
-		$wnd.uploadFailed = function(fileName) {
-			upload.@org.siemac.metamac.srm.web.client.widgets.ImportResourceWindow::uploadFailed(Ljava/lang/String;)(fileName);
+		$wnd.uploadFailed = function(errorMessage) {
+			upload.@org.siemac.metamac.srm.web.client.widgets.ImportResourceWindow::uploadFailed(Ljava/lang/String;)(errorMessage);
 		}
     }-*/;
 

@@ -1125,8 +1125,8 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void resourceImportationFailed(String fileName) {
-        ShowMessageEvent.fireErrorMessage(CodelistPresenter.this, getMessages().resourceErrorImport());
+    public void resourceImportationFailed(String errorMessage) {
+        ShowMessageEvent.fireErrorMessage(CodelistPresenter.this, errorMessage);
     }
 
     //
