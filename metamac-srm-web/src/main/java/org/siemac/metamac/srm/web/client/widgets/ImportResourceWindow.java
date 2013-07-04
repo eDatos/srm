@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.client.widgets;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
@@ -15,6 +16,7 @@ import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.events.VisibilityChangedEvent;
 import com.smartgwt.client.widgets.events.VisibilityChangedHandler;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.UploadItem;
 import com.smartgwt.client.widgets.layout.VLayout;
 
@@ -55,7 +57,7 @@ public class ImportResourceWindow extends Window {
             @Override
             public void onVisibilityChanged(VisibilityChangedEvent event) {
                 if (event.getIsVisible()) {
-                    form.clearValues(); // TODO do not clear hidden fields
+                    form.clearValues(); // do not clear hidden fields (HiddenItem)
                 }
             }
         });
@@ -88,8 +90,8 @@ public class ImportResourceWindow extends Window {
 
             @Override
             public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                Object obj = ImportResourceWindow.this.form.getUploadItem().getDisplayValue();
-                if (ImportResourceWindow.this.form.validate() && obj != null) {
+                String displayValue = ImportResourceWindow.this.form.getUploadItem().getDisplayValue();
+                if (ImportResourceWindow.this.form.validate() && !StringUtils.isBlank(displayValue)) {
                     ImportResourceWindow.this.form.submitForm();
                     hide();
                 }
@@ -118,17 +120,23 @@ public class ImportResourceWindow extends Window {
     }
 
     private native void initComplete(ImportResourceWindow upload) /*-{
-                                                                  $wnd.uploadComplete = function(fileName) {
-                                                                  upload.@org.siemac.metamac.srm.web.client.widgets.ImportResourceWindow::uploadComplete(Ljava/lang/String;)(fileName);
-                                                                  };
-                                                                  }-*/;
+		$wnd.uploadComplete = function(fileName) {
+			upload.@org.siemac.metamac.srm.web.client.widgets.ImportResourceWindow::uploadComplete(Ljava/lang/String;)(fileName);
+		};
+    }-*/;
 
     private native void initUploadFailed(ImportResourceWindow upload) /*-{
-                                                                      $wnd.uploadFailed = function(fileName) {
-                                                                      upload.@org.siemac.metamac.srm.web.client.widgets.ImportResourceWindow::uploadFailed(Ljava/lang/String;)(fileName);
-                                                                      }
-                                                                      }-*/;
+		$wnd.uploadFailed = function(fileName) {
+			upload.@org.siemac.metamac.srm.web.client.widgets.ImportResourceWindow::uploadFailed(Ljava/lang/String;)(fileName);
+		}
+    }-*/;
 
+    /**
+     * Contains an {@link UploadItem}. It can be extended to add more {@link FormItem}s.
+     * <p>
+     * <b>NOTE: </b>If a form containing an UploadItem is redrawn (which may happen if other form items are shown or hidden, the form is resized, or other items show validation errors) then the value
+     * in the upload item is lost (because an HTML upload field may not be created with a value).
+     */
     protected class UploadForm extends CustomDynamicForm {
 
         protected UploadItem       uploadItem;
@@ -167,6 +175,25 @@ public class ImportResourceWindow extends Window {
 
         public CustomButtonItem getUploadButton() {
             return uploadButton;
+        }
+
+        @Override
+        public Boolean validate(boolean validateHiddenFields) {
+            // Force to call the override method
+            return validate();
+        }
+
+        @Override
+        public boolean validate() {
+            FormItem[] formItems = getFields();
+            for (FormItem formItem : formItems) {
+                if (!(formItem instanceof UploadItem)) { // Avoid to validate the UploadItem
+                    if (!formItem.validate()) {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }
