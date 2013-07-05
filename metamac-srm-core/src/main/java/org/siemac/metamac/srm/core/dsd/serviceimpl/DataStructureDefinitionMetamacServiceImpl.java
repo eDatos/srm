@@ -1287,12 +1287,12 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
             if (representation.getEnumerationConceptScheme() != null) {
                 PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
-                Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
-                List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
-                        .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistRepresentationId).build();
+                Long conceptSchemeRepresentationId = representation.getEnumerationConceptScheme().getId();
+                List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                        .withProperty(ConceptSchemeVersionMetamacProperties.id()).eq(conceptSchemeRepresentationId).build();
                 PagedResult<ConceptSchemeVersionMetamac> result = findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureAttributeByCondition(ctx, criteriaToVerifyConceptIdentityCode,
                         pagingParameter);
-                if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistRepresentationId)) {
+                if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptSchemeRepresentationId)) {
                     return false;
                 }
             } else {
