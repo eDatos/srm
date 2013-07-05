@@ -63,9 +63,10 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_WITHOUT_SPATIALDIM_SPECIAL_ATTR                     = create("exception.srm.dsd.validation.spatial_dimension.special_attr.not_found");
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_WITHOUT_TIMEDIM_SPECIAL_ATTR                        = create("exception.srm.dsd.validation.time_dimension.special_attr.not_found");
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_INHERITED_INVALID                = create("exception.srm.dsd.validation.dimension.representation.inherited.invalid");
-    public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_REQUIRED                         = create("exception.srm.dsd.validation.dimension.representation.required");
+    public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_ENUM_REQUIRED                    = create("exception.srm.dsd.validation.dimension.representation.enumerated.required");
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_INVALID                         = create("exception.srm.dsd.validation.attribute.representation.inherited.invalid");
-    public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_REQUIRED                        = create("exception.srm.dsd.validation.attribute.representation.required");
+    public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_ENUM_REQUIRED                   = create("exception.srm.dsd.validation.attribute.representation.enumerated.required");
+    public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_NONENUM_REQUIRED                = create("exception.srm.dsd.validation.attribute.representation.nonenumerated.required");
     public static final CommonServiceExceptionType DATA_STRUCTURE_DEFINITION_ATTR_RELATETO_INVALID                               = create("exception.srm.dsd.validation.attribute.relateto.invalid");
 
     // Categories

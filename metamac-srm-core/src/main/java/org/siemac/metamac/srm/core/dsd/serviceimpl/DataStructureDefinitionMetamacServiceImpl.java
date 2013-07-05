@@ -82,6 +82,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.RepresentationConstraintValidator;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
@@ -1022,8 +1023,8 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             {
                 if (SpecialDimensionTypeEnum.SPATIAL.equals(specialDimensionTypeEnum)) {
                     // If it is a geographical dimension, then must have a enumerated local representation or a enumerated inherited representation
-                    Representation spatialRepresentation = checkComponentRequiredLocalOrInheritedEnumeratedRepresentation(component, exceptions,
-                            ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_REQUIRED);
+                    Representation spatialRepresentation = checkComponentRequiredLocalOrInheritedRepresentation(component, RepresentationTypeEnum.ENUMERATION, exceptions,
+                            ServiceExceptionType.DATA_STRUCTURE_DEFINITION_DIM_REPRESENTATION_ENUM_REQUIRED);
 
                     // Check constraint over spatialRepresentation
                     if (spatialRepresentation != null) {
@@ -1058,27 +1059,30 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             }
         }
     }
+
     /**
-     * Check required local or inherited enumerated representation
+     * Check required local or inherited representation
      * 
      * @param component
+     * @param representationTypeEnum type of representation to be checked
      * @param exceptions
+     * @param candidateSeviceExceptionType
      * @return
      */
-    protected Representation checkComponentRequiredLocalOrInheritedEnumeratedRepresentation(Component component, List<MetamacExceptionItem> exceptions,
+    protected Representation checkComponentRequiredLocalOrInheritedRepresentation(Component component, RepresentationTypeEnum representationTypeEnum, List<MetamacExceptionItem> exceptions,
             CommonServiceExceptionType candidateSeviceExceptionType) {
         // Check required enumerated representation, then must have a enumerated local representation or a enumerated inherited representation
         Representation representation = null;
         if (component.getLocalRepresentation() != null) {
             representation = component.getLocalRepresentation();
-            if (!RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
+            if (!representationTypeEnum.equals(representation.getRepresentationType())) {
                 exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType, component.getUrn()));
                 representation = null;
             }
         } else {
             if (component.getCptIdRef().getCoreRepresentation() != null) {
                 representation = component.getCptIdRef().getCoreRepresentation();
-                if (!RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
+                if (!representationTypeEnum.equals(representation.getRepresentationType())) {
                     exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType, component.getUrn()));
                     representation = null;
                 }
@@ -1157,8 +1161,8 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             {
                 // If it is a geographical attribute, then must have a enumerated local representation or a enumerated inherited representation
                 if (SpecialAttributeTypeEnum.SPATIAL_EXTENDS.equals(specialAttributeType)) {
-                    Representation spatialRepresentation = checkComponentRequiredLocalOrInheritedEnumeratedRepresentation(component, exceptions,
-                            ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_REQUIRED);
+                    Representation spatialRepresentation = checkComponentRequiredLocalOrInheritedRepresentation(component, RepresentationTypeEnum.ENUMERATION, exceptions,
+                            ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_ENUM_REQUIRED);
 
                     // Check constraint over spatialRepresentation
                     if (spatialRepresentation != null) {
@@ -1179,8 +1183,8 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             {
                 if (SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(specialAttributeType)) {
                     // If it is a measure attribute, then must have a enumerated local representation or a enumerated inherited representation
-                    Representation measureRepresentation = checkComponentRequiredLocalOrInheritedEnumeratedRepresentation(component, exceptions,
-                            ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_REQUIRED);
+                    Representation measureRepresentation = checkComponentRequiredLocalOrInheritedRepresentation(component, RepresentationTypeEnum.ENUMERATION, exceptions,
+                            ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_ENUM_REQUIRED);
 
                     // Check constraint over measure representation
                     if (measureRepresentation != null) {
@@ -1200,6 +1204,18 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             // Representation: Time attribute
             {
                 if (SpecialAttributeTypeEnum.TIME_EXTENDS.equals(specialAttributeType)) {
+                    // If it is a time attribute, then must have a non enumerated local representation or a non enumerated inherited representation
+                    Representation timeRepresentation = checkComponentRequiredLocalOrInheritedRepresentation(component, RepresentationTypeEnum.TEXT_FORMAT, exceptions,
+                            ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_REPRESENTATION_NONENUM_REQUIRED);
+
+                    // Check constraint over time representation
+                    if (timeRepresentation != null) {
+                        List<MetamacExceptionItem> exceptionsTimeAttributeRepresentation = timeAttributeCheckRepresentation(ctx, component, timeRepresentation);
+                        if (!exceptionsTimeAttributeRepresentation.isEmpty()) {
+                            exceptions.addAll(exceptionsTimeAttributeRepresentation);
+                        }
+                    }
+
                     // Check: this type of attribute only supports a "not specified" relationship type
                     if (!(((DataAttribute) component).getRelateTo() instanceof NoSpecifiedRelationship)) {
                         exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_ATTR_RELATETO_INVALID));
@@ -1231,7 +1247,6 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             }
         }
     }
-
     protected boolean attributeCheckRepresentation(ServiceContext ctx, Component component, Representation representation) throws MetamacException {
         if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
             PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
@@ -1286,6 +1301,12 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         }
 
         return true;
+    }
+
+    protected List<MetamacExceptionItem> timeAttributeCheckRepresentation(ServiceContext ctx, Component component, Representation representation) throws MetamacException {
+        List<MetamacExceptionItem> exceptions = new LinkedList<MetamacExceptionItem>();
+        RepresentationConstraintValidator.validateTimeDimensionRepresentationType(representation, exceptions);
+        return exceptions;
     }
 
     private void checkComponentRoles(ServiceContext ctx, DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion, Component component, List<MetamacExceptionItem> exceptions)
