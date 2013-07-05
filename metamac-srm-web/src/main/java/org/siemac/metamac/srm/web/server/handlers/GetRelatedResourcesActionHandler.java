@@ -288,6 +288,20 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     result = srmCoreServiceFacade.findCodesByConditionCanBeVariableElementGeographicalGranularity(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
+                case CODELIST_WITH_DSD_SPATIAL_DIMENSION_ENUMERATED_REPRESENTATION: {
+                    CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
+                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdSpatialDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            codelistWebCriteria.getConceptUrn());
+                    break;
+                }
+                case CODELIST_WITH_DSD_SPATIAL_ATTRIBUTE_ENUMERATED_REPRESENTATION: {
+                    CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
+                    result = srmCoreServiceFacade.findCodelistsCanBeEnumeratedRepresentationForDsdSpatialAttributeByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            codelistWebCriteria.getConceptUrn());
+                    break;
+                }
                 default:
                     throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, "An unknown exception has ocurred. Please contact system administrator.");
             }

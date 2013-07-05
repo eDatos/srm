@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.dsd.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -302,6 +303,13 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         CustomSelectItem type = new CustomSelectItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
         type.setValueMap(CommonUtils.getDataAttributeTypeHashMap());
+        type.addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                editionForm.validate(false);
+            }
+        });
 
         // USAGE STATUS
 
@@ -889,6 +897,39 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                 FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto);
             }
         });
+
+        // Measure attribute validator
+
+        CustomValidator measureCustomValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                // Measure attributes must be enumerated
+                if (CommonUtils.isAttributeTypeMeasureAttribute(editionForm.getValueAsString(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE))) {
+                    return RepresentationTypeEnum.ENUMERATION.toString().equals(value);
+                }
+                return true;
+            }
+        };
+        measureCustomValidator.setErrorMessage(getMessages().errorRequiredEnumeratedRepresentationInMeasureAttribute());
+
+        // Time attribute validator
+
+        CustomValidator timeCustomValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                // Time attributes must have a non enumerated representation
+                if (CommonUtils.isAttributeTypeTimeAttribute(editionForm.getValueAsString(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE))) {
+                    return RepresentationTypeEnum.TEXT_FORMAT.toString().equals(value);
+                }
+                return true;
+            }
+        };
+        timeCustomValidator.setErrorMessage(getMessages().errorRequiredNonEnumeratedRepresentationInTimeAttribute());
+
+        representationTypeItem.setValidators(measureCustomValidator, timeCustomValidator);
+
         return representationTypeItem;
     }
 

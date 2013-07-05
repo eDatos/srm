@@ -215,8 +215,16 @@ public class CommonUtils extends CommonSharedUtils {
         return StringUtils.equals(TypeDimensionComponent.MEASUREDIMENSION.name(), typeDimensionComponent);
     }
 
+    public static boolean isAttributeTypeMeasureAttribute(String typeAttributeComponent) {
+        return StringUtils.equals(SpecialAttributeTypeEnum.MEASURE_EXTENDS.name(), typeAttributeComponent);
+    }
+
     public static boolean isDimensionTypeTimeDimension(String typeDimensionComponent) {
         return StringUtils.equals(TypeDimensionComponent.TIMEDIMENSION.name(), typeDimensionComponent);
+    }
+
+    public static boolean isAttributeTypeTimeAttribute(String typeAttributeComponent) {
+        return StringUtils.equals(SpecialAttributeTypeEnum.TIME_EXTENDS.name(), typeAttributeComponent);
     }
 
     public static boolean isDimensionTypeTimeDimension(TypeDimensionComponent typeDimensionComponent) {

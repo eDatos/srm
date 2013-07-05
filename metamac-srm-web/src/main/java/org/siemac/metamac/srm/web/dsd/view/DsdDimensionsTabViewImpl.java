@@ -864,30 +864,37 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationTypeItem.getValueAsString(), dataStructureDefinitionMetamacDto);
             }
         });
+
+        // Measure dimension validator
+
         CustomValidator measureCustomValidator = new CustomValidator() {
 
             @Override
             protected boolean condition(Object value) {
                 // Measure dimensions must be enumerated
                 if (CommonUtils.isDimensionTypeMeasureDimension(editionForm.getValueAsString(DimensionDS.TYPE))) {
-                    return RepresentationTypeEnum.ENUMERATION.toString().equals(value) ? true : false;
+                    return RepresentationTypeEnum.ENUMERATION.toString().equals(value);
                 }
                 return true;
             }
         };
         measureCustomValidator.setErrorMessage(getMessages().errorRequiredEnumeratedRepresentationInMeasureDimension());
+
+        // Time dimension validator
+
         CustomValidator timeCustomValidator = new CustomValidator() {
 
             @Override
             protected boolean condition(Object value) {
                 // Time dimensions must have a non enumerated representation
                 if (CommonUtils.isDimensionTypeTimeDimension(editionForm.getValueAsString(DimensionDS.TYPE))) {
-                    return RepresentationTypeEnum.TEXT_FORMAT.toString().equals(value) ? true : false;
+                    return RepresentationTypeEnum.TEXT_FORMAT.toString().equals(value);
                 }
                 return true;
             }
         };
         timeCustomValidator.setErrorMessage(getMessages().errorRequiredNonEnumeratedRepresentationInTimeDimension());
+
         representationTypeItem.setValidators(measureCustomValidator, timeCustomValidator);
         return representationTypeItem;
     }
