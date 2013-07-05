@@ -1285,7 +1285,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
     protected boolean measureAttributeCheckRepresentation(ServiceContext ctx, Component component, Representation representation) throws MetamacException {
         if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
-            if (representation.getEnumerationCodelist() != null) {
+            if (representation.getEnumerationConceptScheme() != null) {
                 PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
                 Long codelistRepresentationId = representation.getEnumerationCodelist().getId();
                 List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
