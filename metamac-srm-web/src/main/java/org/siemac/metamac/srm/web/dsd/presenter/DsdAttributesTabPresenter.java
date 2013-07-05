@@ -35,6 +35,7 @@ import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
@@ -287,19 +288,24 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     }
 
     @Override
-    public void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn) {
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_DSD_ATTRIBUTE_ENUMERATED_REPRESENTATION, firstResult, maxResults, new CodelistWebCriteria(
-                criteria, conceptUrn)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+    public void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn, SpecialAttributeTypeEnum attributeTypeEnum) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setCodelistsForEnumeratedRepresentation(result);
-            }
-        });
+        StructuralResourcesRelationEnum structuralResourcesRelationEnum = SpecialAttributeTypeEnum.SPATIAL_EXTENDS.equals(attributeTypeEnum)
+                ? StructuralResourcesRelationEnum.CODELIST_WITH_DSD_SPATIAL_ATTRIBUTE_ENUMERATED_REPRESENTATION
+                : StructuralResourcesRelationEnum.CODELIST_WITH_DSD_ATTRIBUTE_ENUMERATED_REPRESENTATION;
+
+        dispatcher.execute(new GetRelatedResourcesAction(structuralResourcesRelationEnum, firstResult, maxResults, new CodelistWebCriteria(criteria, conceptUrn)),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCodelistsForEnumeratedRepresentation(result);
+                    }
+                });
     }
 
     @Override

@@ -133,6 +133,17 @@ public class CommonUtils extends CommonSharedUtils {
         return specialAttributeTypeEnum != null ? MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().specialAttributeTypeEnum() + specialAttributeTypeEnum.name()) : null;
     }
 
+    public static SpecialAttributeTypeEnum getSpecialAttributeTypeEnum(String type) {
+        if (!StringUtils.isBlank(type)) {
+            try {
+                return SpecialAttributeTypeEnum.valueOf(type);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
     // FACET VALUE TYPE
 
     public static LinkedHashMap<String, String> getDsdFacetValueTypeHashMap() {
