@@ -553,18 +553,23 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 dimensionComponentDto.setLocalRepresentation(new RepresentationDto());
             }
 
-            // Code List
             if (RepresentationTypeEnum.ENUMERATION.equals(representationType)) {
+
                 dimensionComponentDto.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+
                 if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionComponentDto.getTypeDimensionComponent())) {
                     dimensionComponentDto.getLocalRepresentation().setEnumeration(getConceptSchemeEnumeratedRepresentationFromEditionForm());
                 } else {
                     dimensionComponentDto.getLocalRepresentation().setEnumeration(
                             ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)).getRelatedResourceDto());
                 }
+
                 dimensionComponentDto.getLocalRepresentation().setTextFormat(null);
-                // Facet
+
             } else if (RepresentationTypeEnum.TEXT_FORMAT.equals(representationType)) {
+
+                // Facet
+
                 dimensionComponentDto.getLocalRepresentation().setRepresentationType(RepresentationTypeEnum.TEXT_FORMAT);
                 FacetDto facetDto = facetEditionForm.getFacet();
                 dimensionComponentDto.getLocalRepresentation().setTextFormat(facetDto);
