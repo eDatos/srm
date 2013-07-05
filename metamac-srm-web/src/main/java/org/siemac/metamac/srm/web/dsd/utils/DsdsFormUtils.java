@@ -211,6 +211,15 @@ public class DsdsFormUtils {
         return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
     }
 
+    // CONCEPT SCHEME (ENUMERATED REPRESENTATION)
+
+    public static boolean canAttributeConceptSchemeEnumeratedRepresentationBeEdited(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
+        if (dataStructureDefinitionMetamacDto == null) {
+            return false;
+        }
+        return CommonUtils.canSdmxMetadataAndStructureBeModified(dataStructureDefinitionMetamacDto);
+    }
+
     // ---------------------------------------------------------------------------------------------
     // GROUP KEYS
     // ---------------------------------------------------------------------------------------------

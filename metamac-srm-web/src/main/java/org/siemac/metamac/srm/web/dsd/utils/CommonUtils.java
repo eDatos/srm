@@ -374,12 +374,22 @@ public class CommonUtils extends CommonSharedUtils {
     }
 
     public static boolean isDimensionCodelistEnumeratedRepresentationVisible(String representationType, String dimensionType) {
-        // Show CodeList if RepresentationTypeEnum = ENUMERATED (except in MeasureDimension)
+        // Show Codelist if RepresentationTypeEnum = ENUMERATED (except in MeasureDimension)
         return isRepresentationTypeEnumerated(representationType) && !isDimensionTypeMeasureDimension(dimensionType);
     }
 
     public static boolean isDimensionConceptSchemeEnumeratedRepresentationVisible(String representationType, String dimensionType) {
         // Show ConceptScheme if RepresentationTypeEnum = ENUMERATED and TypeDimensionComponent == MEASUREDIMENSION
         return isRepresentationTypeEnumerated(representationType) && isDimensionTypeMeasureDimension(dimensionType);
+    }
+
+    public static boolean isAttributeCodelistEnumeratedRepresentationVisible(String representationType, String attributeType) {
+        // Show Codelist if RepresentationTypeEnum = ENUMERATED (except in measure attributes)
+        return isRepresentationTypeEnumerated(representationType) && !isAttributeTypeMeasureAttribute(attributeType);
+    }
+
+    public static boolean isAttributeConceptSchemeEnumeratedRepresentationVisible(String representationType, String attributeType) {
+        // Show ConceptScheme if RepresentationTypeEnum = ENUMERATED and attribute type is measure
+        return isRepresentationTypeEnumerated(representationType) && isAttributeTypeMeasureAttribute(attributeType);
     }
 }

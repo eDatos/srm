@@ -84,6 +84,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         void setConceptsForAttributeRole(GetRelatedResourcesResult result);
 
         void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result);
+        void setConceptSchemesForEnumeratedRepresentation(GetRelatedResourcesResult result);
 
         void setDimensions(List<DimensionComponentDto> dimensionComponentDtos);
         void setGroupKeys(List<DescriptorDto> descriptorDtos);
@@ -297,6 +298,22 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
             @Override
             public void onWaitSuccess(GetRelatedResourcesResult result) {
                 getView().setCodelistsForEnumeratedRepresentation(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveConceptSchemesForEnumeratedRepresentation(int firstResult, int maxResults, String criteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_DSD_MEASURE_ATTRIBUTE_ENUMERATED_REPRESENTATION, firstResult, maxResults,
+                new ConceptSchemeWebCriteria(criteria, dataStructureDefinitionDto.getUrn())), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setConceptSchemesForEnumeratedRepresentation(result);
             }
         });
     }
