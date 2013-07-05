@@ -242,6 +242,18 @@ public class CommonUtils extends CommonSharedUtils {
         return TypeDimensionComponent.TIMEDIMENSION.equals(typeDimensionComponent);
     }
 
+    public static boolean isDimensionTypeSpatialDimension(String specialDimensionType) {
+        if (!StringUtils.isBlank(specialDimensionType)) {
+            try {
+                SpecialDimensionTypeEnum specialDimensionTypeEnum = SpecialDimensionTypeEnum.valueOf(specialDimensionType);
+                return SpecialDimensionTypeEnum.SPATIAL.equals(specialDimensionTypeEnum);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
     /**
      * Returns attribute components of attributesDescriptor
      * 
