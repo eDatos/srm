@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.dsd.view.handlers;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
@@ -20,7 +21,7 @@ public interface DsdAttributesTabUiHandlers extends BaseUiHandlers {
     void retrieveConceptSchemesForAttributeRole(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
     void retrieveConceptsForAttributeRole(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria);
 
-    void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn, SpecialAttributeTypeEnum attributeType);
+    void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria, SpecialAttributeTypeEnum attributeType);
 
     void retrieveConceptSchemesForEnumeratedRepresentation(int firstResult, int maxResults, String criteria);
 }

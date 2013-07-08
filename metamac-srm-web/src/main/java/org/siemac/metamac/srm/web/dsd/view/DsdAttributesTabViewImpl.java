@@ -32,6 +32,7 @@ import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
@@ -1232,21 +1233,33 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
                         @Override
                         public void retrieveResultSet(int firstResult, int maxResults) {
-                            getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(),
-                                    conceptUrn, specialAttributeTypeEnum);
+                            retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn,
+                                    searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionValue(), specialAttributeTypeEnum);
                         }
                     });
                     searchCodelistForEnumeratedRepresentationWindow.setInfoMessage(getConstants().dsdAttributeEnumeratedRepresentationInfoMessage());
 
+                    searchCodelistForEnumeratedRepresentationWindow.showIsLastVersionItem();
+                    searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
+
+                        @Override
+                        public void onChanged(ChangedEvent event) {
+                            retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn,
+                                    searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionValue(), specialAttributeTypeEnum);
+                        }
+                    });
+
                     // Load codelists (to populate the selection window)
-                    getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, conceptUrn, specialAttributeTypeEnum);
+                    retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, conceptUrn, searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionValue(),
+                            specialAttributeTypeEnum);
 
                     searchCodelistForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
                     searchCodelistForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                         @Override
                         public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                            getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, criteria, conceptUrn, specialAttributeTypeEnum);
+                            retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, criteria, conceptUrn, searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionValue(),
+                                    specialAttributeTypeEnum);
                         }
                     });
 
@@ -1265,6 +1278,15 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
         return codelistItem;
+    }
+
+    private void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn, boolean isLastVersion, SpecialAttributeTypeEnum attributeType) {
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
+        codelistWebCriteria.setCriteria(criteria);
+        codelistWebCriteria.setConceptUrn(conceptUrn);
+        codelistWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, codelistWebCriteria, attributeType);
     }
 
     private SearchRelatedResourceLinkItem createMeasureAttributeEnumeratedRepresentationItem(String name, String title) {
