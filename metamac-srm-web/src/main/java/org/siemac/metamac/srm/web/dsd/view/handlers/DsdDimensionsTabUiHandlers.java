@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.dsd.view.handlers;
 
 import java.util.List;
 
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
@@ -21,7 +22,7 @@ public interface DsdDimensionsTabUiHandlers extends BaseUiHandlers {
 
     void retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
 
-    void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn, boolean isSpatialDimension);
+    void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria, boolean isSpatialDimension);
 
     void retrieveConceptSchemesForDimensionRole(int firstResult, int maxResults);
     void retrieveConceptsForDimensionRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn);

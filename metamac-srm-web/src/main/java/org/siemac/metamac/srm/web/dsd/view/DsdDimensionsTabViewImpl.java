@@ -31,6 +31,7 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdDimensionsTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.dsd.widgets.NewDimensionWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
@@ -1171,21 +1172,33 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                         @Override
                         public void retrieveResultSet(int firstResult, int maxResults) {
-                            getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(),
-                                    conceptUrn, isSpatialDimension);
+                            retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn,
+                                    searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionValue(), isSpatialDimension);
                         }
                     });
                     searchCodelistForEnumeratedRepresentationWindow.setInfoMessage(getConstants().dsdDimensionEnumeratedRepresentationInfoMessage());
 
+                    searchCodelistForEnumeratedRepresentationWindow.showIsLastVersionItem();
+                    searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
+
+                        @Override
+                        public void onChanged(ChangedEvent event) {
+                            retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn,
+                                    searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionValue(), isSpatialDimension);
+                        }
+                    });
+
                     // Load codelists (to populate the selection window)
-                    getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, conceptUrn, isSpatialDimension);
+                    retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, conceptUrn, searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionValue(),
+                            isSpatialDimension);
 
                     searchCodelistForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
                     searchCodelistForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                         @Override
                         public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                            getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, criteria, conceptUrn, isSpatialDimension);
+                            retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, criteria, conceptUrn, searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionValue(),
+                                    isSpatialDimension);
                         }
                     });
 
@@ -1204,6 +1217,16 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
         return codelistItem;
+    }
+
+    private void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn, boolean isLastVersion, boolean isSpatialDimension) {
+
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
+        codelistWebCriteria.setCriteria(criteria);
+        codelistWebCriteria.setConceptUrn(conceptUrn);
+        codelistWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, codelistWebCriteria, isSpatialDimension);
     }
 
     // ------------------------------------------------------------------------------------------------------------

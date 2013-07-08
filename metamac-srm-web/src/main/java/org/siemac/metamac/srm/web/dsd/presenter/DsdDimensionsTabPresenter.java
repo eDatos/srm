@@ -290,24 +290,23 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     }
 
     @Override
-    public void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn, boolean isSpatialDimension) {
+    public void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria, boolean isSpatialDimension) {
 
         StructuralResourcesRelationEnum structuralResourcesRelationEnum = isSpatialDimension
                 ? StructuralResourcesRelationEnum.CODELIST_WITH_DSD_SPATIAL_DIMENSION_ENUMERATED_REPRESENTATION
                 : StructuralResourcesRelationEnum.CODELIST_WITH_DSD_DIMENSION_ENUMERATED_REPRESENTATION;
 
-        dispatcher.execute(new GetRelatedResourcesAction(structuralResourcesRelationEnum, firstResult, maxResults, new CodelistWebCriteria(criteria, conceptUrn)),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(structuralResourcesRelationEnum, firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
-                    }
-                    @Override
-                    public void onWaitSuccess(GetRelatedResourcesResult result) {
-                        getView().setCodelistsForEnumeratedRepresentation(result);
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setCodelistsForEnumeratedRepresentation(result);
+            }
+        });
     }
 
     @Override
