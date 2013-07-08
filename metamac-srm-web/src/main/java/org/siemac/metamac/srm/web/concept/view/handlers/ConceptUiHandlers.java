@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.concept.view.handlers;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 
 public interface ConceptUiHandlers extends BaseConceptUiHandlers {
 
@@ -10,8 +12,8 @@ public interface ConceptUiHandlers extends BaseConceptUiHandlers {
 
     void deleteConcept(ConceptMetamacDto conceptMetamacDto);
 
-    void retrieveConceptSchemesWithConceptsThatCanBeRole(int firstResult, int maxResults);
-    void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, String concept, String conceptSchemeUrn);
+    void retrieveConceptSchemesWithConceptsThatCanBeRole(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
+    void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria);
 
     void retrieveConceptSchemesWithConceptsThatCanBeExtended(int firstResult, int maxResults);
     void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, String concept, String conceptSchemeUrn);

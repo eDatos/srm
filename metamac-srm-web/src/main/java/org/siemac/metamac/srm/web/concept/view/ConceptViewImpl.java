@@ -43,6 +43,8 @@ import org.siemac.metamac.srm.web.concept.widgets.ViewQuantityForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
@@ -830,19 +832,32 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                             @Override
                             public void retrieveResultSet(int firstResult, int maxResults) {
-                                getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getInitialSelectionValue());
+                                retrieveConceptsThatCanBeRole(firstResult, maxResults, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getInitialSelectionValue(),
+                                        searchRolesWindow.getIsLastVersionValue());
                             }
                         });
 
+                searchRolesWindow.showIsLastVersionItem();
+                searchRolesWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        retrieveConceptSchemesWithConceptsThatCanBeRole(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchRolesWindow.getIsLastVersionValue());
+                        retrieveConceptsThatCanBeRole(FIRST_RESULT, MAX_RESULTS, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getInitialSelectionValue(),
+                                searchRolesWindow.getIsLastVersionValue());
+                    }
+                });
+
                 // Load the list of concepts and concept schemes that can be roles
-                getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULT, MAX_RESULTS, null, null);
-                getUiHandlers().retrieveConceptSchemesWithConceptsThatCanBeRole(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
+                retrieveConceptSchemesWithConceptsThatCanBeRole(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchRolesWindow.getIsLastVersionValue());
+                retrieveConceptsThatCanBeRole(FIRST_RESULT, MAX_RESULTS, null, null, searchRolesWindow.getIsLastVersionValue());
 
                 searchRolesWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        getUiHandlers().retrieveConceptsThatCanBeRole(FIRST_RESULT, MAX_RESULTS, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getInitialSelectionValue());
+                        retrieveConceptsThatCanBeRole(FIRST_RESULT, MAX_RESULTS, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getInitialSelectionValue(),
+                                searchRolesWindow.getIsLastVersionValue());
                     }
                 });
 
@@ -854,7 +869,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, concept, searchRolesWindow.getInitialSelectionValue());
+                        retrieveConceptsThatCanBeRole(firstResult, maxResults, concept, searchRolesWindow.getInitialSelectionValue(), searchRolesWindow.getIsLastVersionValue());
                     }
                 });
                 searchRolesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
@@ -870,6 +885,22 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             }
         });
         return rolesItem;
+    }
+
+    private void retrieveConceptSchemesWithConceptsThatCanBeRole(int firstResult, int maxResults, boolean isLastVersion) {
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+        conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveConceptSchemesWithConceptsThatCanBeRole(firstResult, maxResults, conceptSchemeWebCriteria);
+    }
+
+    private void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn, boolean isLastVersion) {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria();
+        conceptWebCriteria.setCriteria(criteria);
+        conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
+        conceptWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, conceptWebCriteria);
     }
 
     private SearchRelatedResourceLinkItem createExtendsItem(String name, String title) {

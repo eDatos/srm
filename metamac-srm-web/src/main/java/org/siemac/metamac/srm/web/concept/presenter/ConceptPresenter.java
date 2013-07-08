@@ -369,9 +369,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
-        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
-        conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
+    public void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         dispatcher.execute(new GetConceptsCanBeRoleAction(firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetConceptsCanBeRoleResult>() {
 
             @Override
@@ -403,18 +401,19 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptSchemesWithConceptsThatCanBeRole(int firstResult, int maxResults) {
-        dispatcher.execute(new GetConceptSchemesWithConceptsCanBeRoleAction(firstResult, maxResults, null), new WaitingAsyncCallback<GetConceptSchemesWithConceptsCanBeRoleResult>() {
+    public void retrieveConceptSchemesWithConceptsThatCanBeRole(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
+        dispatcher.execute(new GetConceptSchemesWithConceptsCanBeRoleAction(firstResult, maxResults, conceptSchemeWebCriteria),
+                new WaitingAsyncCallback<GetConceptSchemesWithConceptsCanBeRoleResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetConceptSchemesWithConceptsCanBeRoleResult result) {
-                getView().setConceptSchemesWithConceptsThatCanBeRole(result.getConceptSchemes());
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetConceptSchemesWithConceptsCanBeRoleResult result) {
+                        getView().setConceptSchemesWithConceptsThatCanBeRole(result.getConceptSchemes());
+                    }
+                });
     }
 
     @Override
