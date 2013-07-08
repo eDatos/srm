@@ -274,9 +274,9 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     }
 
     @Override
-    public void retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(int firstResult, int maxResults, String criteria) {
+    public void retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_DSD_MEASURE_DIMENSION_ENUMERATED_REPRESENTATION, firstResult, maxResults,
-                new ConceptSchemeWebCriteria(criteria, dataStructureDefinitionDto.getUrn())), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                conceptSchemeWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {

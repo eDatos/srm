@@ -1093,20 +1093,31 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(firstResult, maxResults,
-                                searchConceptSchemeForEnumeratedRepresentationWindow.getRelatedResourceCriteria());
+                        retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(firstResult, maxResults, searchConceptSchemeForEnumeratedRepresentationWindow.getRelatedResourceCriteria(),
+                                searchConceptSchemeForEnumeratedRepresentationWindow.getIsLastVersionValue());
+                    }
+                });
+
+                searchConceptSchemeForEnumeratedRepresentationWindow.showIsLastVersionItem();
+                searchConceptSchemeForEnumeratedRepresentationWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS,
+                                searchConceptSchemeForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), searchConceptSchemeForEnumeratedRepresentationWindow.getIsLastVersionValue());
                     }
                 });
 
                 // Load concept schemes (to populate the selection window)
-                getUiHandlers().retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null);
+                retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, searchConceptSchemeForEnumeratedRepresentationWindow.getIsLastVersionValue());
 
                 searchConceptSchemeForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
                 searchConceptSchemeForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(firstResult, maxResults, criteria);
+                        retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(firstResult, maxResults, criteria,
+                                searchConceptSchemeForEnumeratedRepresentationWindow.getIsLastVersionValue());
                     }
                 });
 
@@ -1124,6 +1135,15 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
         return conceptSchemeItem;
+    }
+
+    private void retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(int firstResult, int maxResults, String criteria, boolean isLastVersion) {
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+        conceptSchemeWebCriteria.setCriteria(criteria);
+        conceptSchemeWebCriteria.setDsdUrn(dataStructureDefinitionMetamacDto.getUrn());
+        conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(firstResult, maxResults, conceptSchemeWebCriteria);
     }
 
     private SearchRelatedResourceLinkItem createEnumeratedRepresentationItem(String name, String title) {
