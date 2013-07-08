@@ -23,5 +23,5 @@ public interface DsdAttributesTabUiHandlers extends BaseUiHandlers {
 
     void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria, SpecialAttributeTypeEnum attributeType);
 
-    void retrieveConceptSchemesForEnumeratedRepresentation(int firstResult, int maxResults, String criteria);
+    void retrieveConceptSchemesForEnumeratedRepresentation(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
 }

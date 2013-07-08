@@ -302,9 +302,9 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     }
 
     @Override
-    public void retrieveConceptSchemesForEnumeratedRepresentation(int firstResult, int maxResults, String criteria) {
+    public void retrieveConceptSchemesForEnumeratedRepresentation(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_DSD_MEASURE_ATTRIBUTE_ENUMERATED_REPRESENTATION, firstResult, maxResults,
-                new ConceptSchemeWebCriteria(criteria, dataStructureDefinitionDto.getUrn())), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                conceptSchemeWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
             @Override
             public void onWaitFailure(Throwable caught) {
