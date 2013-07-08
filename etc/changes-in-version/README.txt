@@ -19,6 +19,8 @@ Cuando se cree la RELEASE, añadir estos pasos al manual de instalación:
 		 ID_TO_DELETE NUMBER(19) NOT NULL
 	);
 	
+	CREATE INDEX IX_TB_ENTITIES_TO_D_TABLE_NAME ON TB_ENTITIES_TO_DELETE (TABLE_NAME);
+	
 3. Cambios en DATA
 
 	- Añadida propiedad: metamac.srm.codelist.variable_element.geographical_granularity.urn (ver descripción en manual de instalación)
