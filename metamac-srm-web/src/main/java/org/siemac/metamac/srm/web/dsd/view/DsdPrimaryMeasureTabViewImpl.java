@@ -20,6 +20,8 @@ import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdPrimaryMeasureTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
@@ -399,19 +401,31 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveConcepts(firstResult, maxResults, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue());
+                        retrieveConcepts(firstResult, maxResults, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue(),
+                                searchConceptWindow.getIsLastVersionValue());
+                    }
+                });
+                searchConceptWindow.showIsLastVersionItem();
+                searchConceptWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        retrieveConceptSchemes(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptWindow.getIsLastVersionValue());
+                        retrieveConcepts(FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue(),
+                                searchConceptWindow.getIsLastVersionValue());
                     }
                 });
 
                 // Load concept schemes and concepts (to populate the selection window)
-                getUiHandlers().retrieveConceptSchemes(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
-                getUiHandlers().retrieveConcepts(FIRST_RESULT, MAX_RESULTS, null, null);
+                retrieveConceptSchemes(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptWindow.getIsLastVersionValue());
+                retrieveConcepts(FIRST_RESULT, MAX_RESULTS, null, null, searchConceptWindow.getIsLastVersionValue());
 
                 searchConceptWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        getUiHandlers().retrieveConcepts(FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue());
+                        retrieveConcepts(FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue(),
+                                searchConceptWindow.getIsLastVersionValue());
                     }
                 });
 
@@ -420,7 +434,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        getUiHandlers().retrieveConcepts(firstResult, maxResults, concept, searchConceptWindow.getInitialSelectionValue());
+                        retrieveConcepts(firstResult, maxResults, concept, searchConceptWindow.getInitialSelectionValue(), searchConceptWindow.getIsLastVersionValue());
                     }
                 });
 
@@ -438,6 +452,24 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             }
         });
         return conceptItem;
+    }
+
+    private void retrieveConceptSchemes(int firstResult, int maxResults, boolean isLastVersion) {
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+        conceptSchemeWebCriteria.setDsdUrn(dataStructureDefinitionMetamacDto.getUrn());
+        conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveConceptSchemes(firstResult, maxResults, conceptSchemeWebCriteria);
+    }
+
+    private void retrieveConcepts(int firstResult, int maxResults, String criteria, String conceptSchemeUrn, boolean isLastVersion) {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria();
+        conceptWebCriteria.setCriteria(criteria);
+        conceptWebCriteria.setDsdUrn(dataStructureDefinitionMetamacDto.getUrn());
+        conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
+        conceptWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveConcepts(firstResult, maxResults, conceptWebCriteria);
     }
 
     private SearchRelatedResourceLinkItem createEnumeratedRepresentationItem(String name, String title) {
