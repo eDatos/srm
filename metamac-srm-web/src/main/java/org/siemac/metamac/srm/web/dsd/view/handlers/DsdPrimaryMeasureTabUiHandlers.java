@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.web.dsd.view.handlers;
 
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
@@ -12,5 +13,5 @@ public interface DsdPrimaryMeasureTabUiHandlers extends BaseUiHandlers {
 
     void retrieveConceptSchemes(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
     void retrieveConcepts(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria);
-    void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria);
+    void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria);
 }

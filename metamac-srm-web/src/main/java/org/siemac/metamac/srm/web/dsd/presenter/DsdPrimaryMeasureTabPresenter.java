@@ -186,19 +186,19 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     }
 
     @Override
-    public void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria) {
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_DSD_PRIMARY_MEASURE_ENUMERATED_REPRESENTATION, firstResult, maxResults, new CodelistWebCriteria(
-                criteria)), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+    public void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_DSD_PRIMARY_MEASURE_ENUMERATED_REPRESENTATION, firstResult, maxResults, codelistWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdPrimaryMeasureTabPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setCodelistsForEnumeratedRepresentation(result);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(DsdPrimaryMeasureTabPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCodelistsForEnumeratedRepresentation(result);
+                    }
+                });
     }
 
     //

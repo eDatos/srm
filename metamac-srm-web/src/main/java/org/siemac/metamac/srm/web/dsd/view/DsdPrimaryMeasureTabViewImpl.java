@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.web.dsd.utils.DsdsFormUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdPrimaryMeasureTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
@@ -485,19 +486,30 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria());
+                        retrieveCodelistsFormEnumeratedRepresentation(firstResult, maxResults, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(),
+                                searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionValue());
+                    }
+                });
+
+                searchCodelistForEnumeratedRepresentationWindow.showIsLastVersionItem();
+                searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        retrieveCodelistsFormEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, searchCodelistForEnumeratedRepresentationWindow.getRelatedResourceCriteria(),
+                                searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionValue());
                     }
                 });
 
                 // Load codelists (to populate the selection window)
-                getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null);
+                retrieveCodelistsFormEnumeratedRepresentation(FIRST_RESULST, MAX_RESULTS, null, searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionValue());
 
                 searchCodelistForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
                 searchCodelistForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, criteria);
+                        retrieveCodelistsFormEnumeratedRepresentation(firstResult, maxResults, criteria, searchCodelistForEnumeratedRepresentationWindow.getIsLastVersionValue());
                     }
                 });
 
@@ -515,6 +527,15 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             }
         });
         return enumeratedRepresentationItem;
+    }
+
+    private void retrieveCodelistsFormEnumeratedRepresentation(int firstResult, int maxResults, String criteria, boolean isLastVersion) {
+
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
+        codelistWebCriteria.setCriteria(criteria);
+        codelistWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveCodelistsForEnumeratedRepresentation(firstResult, maxResults, codelistWebCriteria);
     }
 
     // ------------------------------------------------------------------------------------------------------------
