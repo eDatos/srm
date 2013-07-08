@@ -242,27 +242,23 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     }
 
     @Override
-    public void retrieveConceptSchemes(TypeDimensionComponent dimensionType, int firstResult, int maxResults) {
+    public void retrieveConceptSchemes(TypeDimensionComponent dimensionType, int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         StructuralResourcesRelationEnum relationType = getRelationTypeForConceptScheme(dimensionType);
-        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, new ConceptSchemeWebCriteria(null, dataStructureDefinitionDto.getUrn())),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptSchemeWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
-                    }
-                    @Override
-                    public void onWaitSuccess(GetRelatedResourcesResult result) {
-                        getView().setConceptSchemes(result);
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setConceptSchemes(result);
+            }
+        });
     }
 
     @Override
-    public void retrieveConcepts(TypeDimensionComponent dimensionType, int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
-        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
-        conceptWebCriteria.setDsdUrn(dataStructureDefinitionDto.getUrn());
-        conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
+    public void retrieveConcepts(TypeDimensionComponent dimensionType, int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         StructuralResourcesRelationEnum relationType = getRelationTypeForConcept(dimensionType);
         dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 

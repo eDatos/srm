@@ -31,6 +31,8 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdDimensionsTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdFacetForm;
 import org.siemac.metamac.srm.web.dsd.widgets.NewDimensionWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
@@ -978,19 +980,32 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveConcepts(dimensionType, firstResult, maxResults, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue());
+                        retrieveConcepts(dimensionType, firstResult, maxResults, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue(),
+                                searchConceptWindow.getIsLastVersionValue());
+                    }
+                });
+
+                searchConceptWindow.showIsLastVersionItem();
+                searchConceptWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        retrieveConceptSchemes(dimensionType, FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptWindow.getIsLastVersionValue());
+                        retrieveConcepts(dimensionType, FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue(),
+                                searchConceptWindow.getIsLastVersionValue());
                     }
                 });
 
                 // Load concept schemes and concepts (to populate the selection window)
-                getUiHandlers().retrieveConceptSchemes(dimensionType, FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
-                getUiHandlers().retrieveConcepts(dimensionType, FIRST_RESULT, MAX_RESULTS, null, null);
+                retrieveConceptSchemes(dimensionType, FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptWindow.getIsLastVersionValue());
+                retrieveConcepts(dimensionType, FIRST_RESULT, MAX_RESULTS, null, null, searchConceptWindow.getIsLastVersionValue());
 
                 searchConceptWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        getUiHandlers().retrieveConcepts(dimensionType, FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue());
+                        retrieveConcepts(dimensionType, FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue(),
+                                searchConceptWindow.getIsLastVersionValue());
                     }
                 });
 
@@ -999,7 +1014,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        getUiHandlers().retrieveConcepts(dimensionType, firstResult, maxResults, concept, searchConceptWindow.getInitialSelectionValue());
+                        retrieveConcepts(dimensionType, firstResult, maxResults, concept, searchConceptWindow.getInitialSelectionValue(), searchConceptWindow.getIsLastVersionValue());
                     }
                 });
 
@@ -1035,6 +1050,24 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
         return conceptItem;
+    }
+
+    private void retrieveConceptSchemes(TypeDimensionComponent dimensionType, int firstResult, int maxResults, boolean isLastVersion) {
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+        conceptSchemeWebCriteria.setDsdUrn(dataStructureDefinitionMetamacDto.getUrn());
+        conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveConceptSchemes(dimensionType, firstResult, maxResults, conceptSchemeWebCriteria);
+    }
+
+    private void retrieveConcepts(TypeDimensionComponent dimensionType, int firstResult, int maxResults, String criteria, String conceptSchemeUrn, boolean isLastVersion) {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria();
+        conceptWebCriteria.setCriteria(criteria);
+        conceptWebCriteria.setDsdUrn(dataStructureDefinitionMetamacDto.getUrn());
+        conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
+        conceptWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveConcepts(dimensionType, firstResult, maxResults, conceptWebCriteria);
     }
 
     private SearchRelatedResourceLinkItem createMeasureDimensionEnumeratedRepresentationItem(String name, String title) {
