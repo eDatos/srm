@@ -11,13 +11,15 @@ public interface ConceptUiHandlers extends BaseConceptUiHandlers {
     void deleteConcept(ConceptMetamacDto conceptMetamacDto);
 
     void retrieveConceptSchemesWithConceptsThatCanBeRole(int firstResult, int maxResults);
-    void retrieveConceptSchemesWithConceptsThatCanBeExtended(int firstResult, int maxResults);
     void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, String concept, String conceptSchemeUrn);
+
+    void retrieveConceptSchemesWithConceptsThatCanBeExtended(int firstResult, int maxResults);
     void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, String concept, String conceptSchemeUrn);
 
     void retrieveConceptTypes();
 
-    void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptRoleEnum conceptRoleEnum, String variableUrn, int firstResult, int maxResults, String criteria, String conceptUrn);
+    void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptRoleEnum conceptRoleEnum, String variableUrn, int firstResult, int maxResults, String criteria, String conceptUrn,
+            boolean isLastVersion);
 
     void retrieveVariables(int firstResult, int maxResults, String criteria, String variableFamilyUrn);
     void retrieveVariableFamilies(int firstResult, int maxResults, String criteria);

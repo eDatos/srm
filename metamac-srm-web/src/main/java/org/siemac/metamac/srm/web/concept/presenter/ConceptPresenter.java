@@ -312,7 +312,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptRoleEnum conceptRole, String variableUrn, int firstResult, int maxResults, String criteria, String conceptUrn) {
+    public void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptRoleEnum conceptRole, String variableUrn, int firstResult, int maxResults, String criteria, String conceptUrn,
+            boolean isLastVersion) {
 
         if (ConceptRoleEnum.MEASURE_DIMENSION.equals(conceptRole)) {
 
@@ -320,6 +321,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria(criteria);
             conceptSchemeWebCriteria.setConceptUrn(conceptUrn);
+            conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
 
             dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_CONCEPT_ENUMERATED_REPRESENTATION, firstResult, maxResults, conceptSchemeWebCriteria),
                     new WaitingAsyncCallback<GetRelatedResourcesResult>() {
@@ -339,6 +341,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             // for the rest of the concepts, the enumerated representation must be a codelist
 
             CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
+            codelistWebCriteria.setIsLastVersion(isLastVersion);
             if (!StringUtils.isBlank(variableUrn)) {
 
                 // The concept URN is not set in the criteria because if it were set, the query to find the codelists will take into account the concept that is in the DB, and we want to take into

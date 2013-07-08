@@ -1100,21 +1100,35 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                             @Override
                             public void retrieveResultSet(int firstResult, int maxResults) {
                                 getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, variableUrn, firstResult, maxResults,
-                                        searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn);
+                                        searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn,
+                                        searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getIsLastVersionValue());
                             }
                         });
                 searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.setInfoMessage(getConstants().conceptEnumeratedRepresentationInfoMessage());
                 searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.showInfoMessage();
 
+                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.showIsLastVersionItem();
+                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, variableUrn, FIRST_RESULST, MAX_RESULTS,
+                                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn,
+                                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getIsLastVersionValue());
+                    }
+                });
+
                 // Load codelists (to populate the selection window)
-                getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, variableUrn, FIRST_RESULST, MAX_RESULTS, null, conceptUrn);
+                getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, variableUrn, FIRST_RESULST, MAX_RESULTS, null, conceptUrn,
+                        searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getIsLastVersionValue());
 
                 searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
                 searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, variableUrn, firstResult, maxResults, criteria, conceptUrn);
+                        getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptRole, variableUrn, firstResult, maxResults, criteria, conceptUrn,
+                                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getIsLastVersionValue());
                     }
                 });
 
