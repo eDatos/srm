@@ -1133,15 +1133,26 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
                             @Override
                             public void retrieveResultSet(int firstResult, int maxResults) {
-                                getUiHandlers().retrieveConceptsForAttributeRole(firstResult, maxResults, searchConceptsForRolesWindow.getRelatedResourceCriteria(),
-                                        searchConceptsForRolesWindow.getInitialSelectionValue());
+                                retrieveConceptsForAttributeRole(firstResult, maxResults, searchConceptsForRolesWindow.getRelatedResourceCriteria(),
+                                        searchConceptsForRolesWindow.getInitialSelectionValue(), searchConceptsForRolesWindow.getIsLastVersionValue());
 
                             }
                         });
 
+                searchConceptsForRolesWindow.showIsLastVersionItem();
+                searchConceptsForRolesWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        retrieveConceptSchemesForAttributeRole(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptsForRolesWindow.getIsLastVersionValue());
+                        retrieveConceptsForAttributeRole(FIRST_RESULT, MAX_RESULTS, searchConceptsForRolesWindow.getRelatedResourceCriteria(), searchConceptsForRolesWindow.getInitialSelectionValue(),
+                                searchConceptsForRolesWindow.getIsLastVersionValue());
+                    }
+                });
+
                 // Load concept schemes and concepts (to populate the selection window)
-                getUiHandlers().retrieveConceptSchemesForAttributeRole(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
-                getUiHandlers().retrieveConceptsForAttributeRole(FIRST_RESULT, MAX_RESULTS, null, null);
+                retrieveConceptSchemesForAttributeRole(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptsForRolesWindow.getIsLastVersionValue());
+                retrieveConceptsForAttributeRole(FIRST_RESULT, MAX_RESULTS, null, null, searchConceptsForRolesWindow.getIsLastVersionValue());
 
                 // Set the selected concepts
                 List<RelatedResourceDto> selectedConcepts = ((RelatedResourceListItem) editionForm.getItem(DataAttributeDS.ROLE)).getRelatedResourceDtos();
@@ -1151,8 +1162,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        getUiHandlers().retrieveConceptsForAttributeRole(FIRST_RESULT, MAX_RESULTS, searchConceptsForRolesWindow.getRelatedResourceCriteria(),
-                                searchConceptsForRolesWindow.getInitialSelectionValue());
+                        retrieveConceptsForAttributeRole(FIRST_RESULT, MAX_RESULTS, searchConceptsForRolesWindow.getRelatedResourceCriteria(), searchConceptsForRolesWindow.getInitialSelectionValue(),
+                                searchConceptsForRolesWindow.getIsLastVersionValue());
                     }
                 });
 
@@ -1160,7 +1171,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveConceptsForAttributeRole(firstResult, maxResults, criteria, searchConceptsForRolesWindow.getInitialSelectionValue());
+                        retrieveConceptsForAttributeRole(firstResult, maxResults, criteria, searchConceptsForRolesWindow.getInitialSelectionValue(),
+                                searchConceptsForRolesWindow.getIsLastVersionValue());
                     }
                 });
                 searchConceptsForRolesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
@@ -1175,6 +1187,24 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
         return relatedResources;
+    }
+
+    private void retrieveConceptSchemesForAttributeRole(int firstResult, int maxResults, boolean isLastVersion) {
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+        conceptSchemeWebCriteria.setDsdUrn(dataStructureDefinitionMetamacDto.getUrn());
+        conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveConceptSchemesForAttributeRole(firstResult, maxResults, conceptSchemeWebCriteria);
+    }
+
+    private void retrieveConceptsForAttributeRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn, boolean isLastVersion) {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria();
+        conceptWebCriteria.setCriteria(criteria);
+        conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
+        conceptWebCriteria.setDsdUrn(dataStructureDefinitionMetamacDto.getUrn());
+        conceptWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveConceptsForAttributeRole(firstResult, maxResults, conceptWebCriteria);
     }
 
     private SearchRelatedResourceLinkItem createEnumeratedRepresentationItem(String name, String title) {

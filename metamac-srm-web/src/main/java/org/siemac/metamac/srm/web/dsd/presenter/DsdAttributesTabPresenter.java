@@ -250,26 +250,23 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     }
 
     @Override
-    public void retrieveConceptSchemesForAttributeRole(int firstResult, int maxResults) {
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_ROLES, firstResult, maxResults, new ConceptSchemeWebCriteria(null,
-                dataStructureDefinitionDto.getUrn())), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+    public void retrieveConceptSchemesForAttributeRole(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_ROLES, firstResult, maxResults, conceptSchemeWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setConceptSchemesForAttributeRole(result);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptSchemesForAttributeRole(result);
+                    }
+                });
     }
 
     @Override
-    public void retrieveConceptsForAttributeRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
-        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
-        conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
-        conceptWebCriteria.setDsdUrn(dataStructureDefinitionDto.getUrn());
+    public void retrieveConceptsForAttributeRole(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_DSD_ROLES, firstResult, maxResults, conceptWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 

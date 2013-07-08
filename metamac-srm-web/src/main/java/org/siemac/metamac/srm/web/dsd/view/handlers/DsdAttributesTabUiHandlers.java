@@ -17,9 +17,10 @@ public interface DsdAttributesTabUiHandlers extends BaseUiHandlers {
     void retrieveConceptSchemes(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
     void retrieveConcepts(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria);
 
-    void retrieveConceptSchemesForAttributeRole(int firstResult, int maxResults);
-    void retrieveConceptsForAttributeRole(int firstResult, int maxResults, String criteria, String conceptSchemeUrn);
+    void retrieveConceptSchemesForAttributeRole(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
+    void retrieveConceptsForAttributeRole(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria);
 
     void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, String criteria, String conceptUrn, SpecialAttributeTypeEnum attributeType);
+
     void retrieveConceptSchemesForEnumeratedRepresentation(int firstResult, int maxResults, String criteria);
 }
