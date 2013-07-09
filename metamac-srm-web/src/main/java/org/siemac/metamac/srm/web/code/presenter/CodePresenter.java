@@ -43,6 +43,8 @@ import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentAction;
 import org.siemac.metamac.srm.web.shared.code.UpdateCodeParentResult;
 import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementResult;
+import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
@@ -381,12 +383,12 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
     }
 
     @Override
-    public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, String criteria) {
+    public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, CategorySchemeWebCriteria categorySchemeWebCriteria) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
+    public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, CategoryWebCriteria categoryWebCriteria) {
         throw new UnsupportedOperationException();
     }
 

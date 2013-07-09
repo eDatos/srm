@@ -30,6 +30,8 @@ import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeResult;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryResult;
+import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -253,12 +255,12 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
     }
 
     @Override
-    public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, String criteria) {
+    public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, CategorySchemeWebCriteria categorySchemeWebCriteria) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String categorySchemeUrn) {
+    public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, CategoryWebCriteria categoryWebCriteria) {
         throw new UnsupportedOperationException();
     }
 

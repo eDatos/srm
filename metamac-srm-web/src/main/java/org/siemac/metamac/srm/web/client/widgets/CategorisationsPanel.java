@@ -13,6 +13,8 @@ import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.utils.RecordUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.CategorisationUiHandlers;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomLinkListGridField;
@@ -27,6 +29,8 @@ import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -202,38 +206,49 @@ public abstract class CategorisationsPanel extends VLayout {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveCategorySchemesForCategorisations(firstResult, maxResults, searchCategoriesWindow.getFilterListCriteria());
+                retrieveCategorySchemesForCategorisations(firstResult, maxResults, searchCategoriesWindow.getFilterListCriteria(), searchCategoriesWindow.getIsLastVersionValue());
             }
         };
         PaginatedAction selectionListAction = new PaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveCategoriesForCategorisations(firstResult, maxResults, searchCategoriesWindow.getSelectionListCriteria(),
-                        searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter());
+                retrieveCategoriesForCategorisations(firstResult, maxResults, searchCategoriesWindow.getSelectionListCriteria(), searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter(),
+                        searchCategoriesWindow.getIsLastVersionValue());
             }
         };
         searchCategoriesWindow = new SearchCategoriesForCategorisation(MAX_RESULTS, filterListAction, selectionListAction);
 
+        searchCategoriesWindow.showIsLastVersionItem();
+        searchCategoriesWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                retrieveCategorySchemesForCategorisations(FIRST_RESULT, MAX_RESULTS, searchCategoriesWindow.getFilterListCriteria(), searchCategoriesWindow.getIsLastVersionValue());
+                retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, searchCategoriesWindow.getSelectionListCriteria(), searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter(),
+                        searchCategoriesWindow.getIsLastVersionValue());
+            }
+        });
+
         // Load the list of categories (to populate the selection window)
-        getUiHandlers().retrieveCategorySchemesForCategorisations(FIRST_RESULT, MAX_RESULTS, null);
-        getUiHandlers().retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, null, null);
+        retrieveCategorySchemesForCategorisations(FIRST_RESULT, MAX_RESULTS, null, searchCategoriesWindow.getIsLastVersionValue());
+        retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, null, null, searchCategoriesWindow.getIsLastVersionValue());
 
         // Filter categories when the category scheme filter changes
         searchCategoriesWindow.getFilterListItem().getListGrid().addRecordClickHandler(new RecordClickHandler() {
 
             @Override
             public void onRecordClick(RecordClickEvent event) {
-                getUiHandlers().retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, searchCategoriesWindow.getSelectionListCriteria(),
-                        searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter());
+                retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, searchCategoriesWindow.getSelectionListCriteria(), searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter(),
+                        searchCategoriesWindow.getIsLastVersionValue());
             }
         });
         searchCategoriesWindow.getClearButton().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
             @Override
             public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                getUiHandlers().retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, searchCategoriesWindow.getSelectionListCriteria(),
-                        searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter());
+                retrieveCategoriesForCategorisations(FIRST_RESULT, MAX_RESULTS, searchCategoriesWindow.getSelectionListCriteria(), searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter(),
+                        searchCategoriesWindow.getIsLastVersionValue());
             }
         });
 
@@ -242,14 +257,14 @@ public abstract class CategorisationsPanel extends VLayout {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                getUiHandlers().retrieveCategoriesForCategorisations(firstResult, maxResults, criteria, searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter());
+                retrieveCategoriesForCategorisations(firstResult, maxResults, criteria, searchCategoriesWindow.getSelectedRelatedResourceUrnAsFilter(), searchCategoriesWindow.getIsLastVersionValue());
             }
         });
         searchCategoriesWindow.setFilterListSearchAction(new SearchPaginatedAction() {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                getUiHandlers().retrieveCategorySchemesForCategorisations(firstResult, maxResults, criteria);
+                retrieveCategorySchemesForCategorisations(firstResult, maxResults, criteria, searchCategoriesWindow.getIsLastVersionValue());
             }
         });
 
@@ -264,6 +279,21 @@ public abstract class CategorisationsPanel extends VLayout {
                 }
             }
         });
+    }
+
+    private void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, String criteria, boolean isLastVersion) {
+        CategorySchemeWebCriteria categorySchemeWebCriteria = new CategorySchemeWebCriteria();
+        categorySchemeWebCriteria.setCriteria(criteria);
+        categorySchemeWebCriteria.setIsLastVersion(isLastVersion);
+        getUiHandlers().retrieveCategorySchemesForCategorisations(firstResult, maxResults, categorySchemeWebCriteria);
+    }
+
+    private void retrieveCategoriesForCategorisations(int firstResult, int maxResults, String criteria, String itemSchemeUrn, boolean isLastVersion) {
+        CategoryWebCriteria categoryWebCriteria = new CategoryWebCriteria();
+        categoryWebCriteria.setCriteria(criteria);
+        categoryWebCriteria.setItemSchemeUrn(itemSchemeUrn);
+        categoryWebCriteria.setIsLastVersion(isLastVersion);
+        getUiHandlers().retrieveCategoriesForCategorisations(firstResult, maxResults, categoryWebCriteria);
     }
 
     private void showDeleteCategorisationButton(ListGridRecord[] selectedRecords) {
