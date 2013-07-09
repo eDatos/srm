@@ -1,6 +1,8 @@
 package org.siemac.metamac.srm.core.common.service.utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,8 @@ import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
@@ -524,5 +528,13 @@ public class SrmServiceUtils extends SdmxSrmUtils {
             exceptionItemsByUrn.put(urnRelatedResource, MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(exceptionType).withMessageParameters(urnRelatedResource)
                     .build());
         }
+    }
+
+    public static MetamacExceptionItem returnOrThrowException(CommonServiceExceptionType serviceExceptionType, boolean throwException, Serializable... parameters) throws MetamacException {
+        MetamacExceptionItem exceptionItem = MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(serviceExceptionType).withMessageParameters(parameters).build();
+        if (throwException) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(Arrays.asList(exceptionItem)).build();
+        }
+        return exceptionItem;
     }
 }

@@ -145,8 +145,7 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
                             // Check misc metadata
                             ConceptsMetamacInvocationValidator.checkConcept(conceptSchemeVersion, concept, false, false, false, exceptionsConcept);
                             // Check core representation
-                            MetamacExceptionItem exceptionItem = conceptsMetamacService.checkConceptEnumeratedRepresentation(ctx, concept, false, conceptSchemeVersion.getMaintainableArtefact()
-                                    .getIsImported());
+                            MetamacExceptionItem exceptionItem = conceptsMetamacService.checkConceptRepresentation(ctx, conceptSchemeVersion, concept, false);
                             if (exceptionItem != null) {
                                 exceptionsConcept.add(exceptionItem);
                             }

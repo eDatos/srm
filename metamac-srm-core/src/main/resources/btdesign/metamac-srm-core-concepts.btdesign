@@ -97,8 +97,8 @@ Application ConceptsMetamac {
 			@ConceptMetamac preCreateConcept(String conceptSchemeUrn, @ConceptMetamac concept) throws MetamacException;
 			"Updates concept"
 			@ConceptMetamac updateConcept(@ConceptMetamac concept) throws MetamacException;
-			"Checks concept enumerated representation is valid"
-			MetamacExceptionItem checkConceptEnumeratedRepresentation(@ConceptMetamac concept, boolean throwException, Boolean isImported) throws MetamacException;
+			"Checks concept representation is valid"
+			MetamacExceptionItem checkConceptRepresentation(@ConceptSchemeVersionMetamac conceptSchemeVersion, @ConceptMetamac concept, boolean throwException) throws MetamacException;
     		"Retrieves concept by urn"
     		@ConceptMetamac retrieveConceptByUrn(String urn) throws MetamacException;
 			"Deletes concept"

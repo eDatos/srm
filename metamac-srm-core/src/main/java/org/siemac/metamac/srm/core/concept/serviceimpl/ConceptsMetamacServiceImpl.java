@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.core.concept.serviceimpl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,6 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
-import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
@@ -668,49 +666,56 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
      * If it is an enumerated representation must be a codelist of same variable of concept and must be published
      */
     @Override
-    public MetamacExceptionItem checkConceptEnumeratedRepresentation(ServiceContext ctx, ConceptMetamac concept, boolean throwException, Boolean isImported) throws MetamacException {
+    public MetamacExceptionItem checkConceptRepresentation(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept, boolean throwException)
+            throws MetamacException {
 
-        if (isImported && concept.getId() == null) {
+        if (conceptSchemeVersion.getMaintainableArtefact().getIsImported() && concept.getId() == null) {
             return null; // when importing (but only when creating), skip validations
         }
-
-        if (concept.getCoreRepresentation() == null || !RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())) {
+        if (concept.getCoreRepresentation() == null) {
             return null;
         }
 
-        if (concept.getCoreRepresentation().getEnumerationCodelist() == null && concept.getCoreRepresentation().getEnumerationConceptScheme() == null) {
-            return returnOrThrowExceptionForCheckConceptEnumeratedRepresentation(throwException);
-        } else if (concept.getCoreRepresentation().getEnumerationCodelist() != null) {
-            if (ConceptRoleEnum.MEASURE_DIMENSION.equals(concept.getSdmxRelatedArtefact())) {
-                return returnOrThrowExceptionForCheckConceptEnumeratedRepresentation(throwException);
-            }
-            if (concept.getVariable() == null) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_VARIABLE_REQUIRED).build();
-            }
-            PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
-            Long codelistId = concept.getCoreRepresentation().getEnumerationCodelist().getId();
-            List<ConditionalCriteria> criteriaToVerifyCodelistRepresentation = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.id())
-                    .eq(codelistId).build();
-            PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ctx, criteriaToVerifyCodelistRepresentation, pagingParameter, concept
-                    .getVariable().getId());
-            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistId)) {
-                return returnOrThrowExceptionForCheckConceptEnumeratedRepresentation(throwException);
-            }
-        } else if (concept.getCoreRepresentation().getEnumerationConceptScheme() != null) {
-            if (!ConceptRoleEnum.MEASURE_DIMENSION.equals(concept.getSdmxRelatedArtefact())) {
-                return returnOrThrowExceptionForCheckConceptEnumeratedRepresentation(throwException);
-            }
-            PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
-            Long conceptSchemeId = concept.getCoreRepresentation().getEnumerationConceptScheme().getId();
-            List<ConditionalCriteria> criteriaToVerifyConceptSchemeRepresentation = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
-                    .withProperty(ConceptSchemeVersionMetamacProperties.id()).eq(conceptSchemeId).build();
-            PagedResult<ConceptSchemeVersionMetamac> result = findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ctx, criteriaToVerifyConceptSchemeRepresentation, pagingParameter, concept
-                    .getNameableArtefact().getUrn());
-            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptSchemeId)) {
-                return returnOrThrowExceptionForCheckConceptEnumeratedRepresentation(throwException);
-            }
+        if (ConceptSchemeTypeEnum.ROLE.equals(conceptSchemeVersion.getType()) || ConceptSchemeTypeEnum.GLOSSARY.equals(conceptSchemeVersion.getType())) {
+            return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_UNEXPECTED, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
         }
 
+        if (RepresentationTypeEnum.TEXT_FORMAT.equals(concept.getCoreRepresentation().getRepresentationType())) {
+            // no extra validation
+        } else if (RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())) {
+            if (concept.getCoreRepresentation().getEnumerationCodelist() != null) {
+                if (ConceptRoleEnum.MEASURE_DIMENSION.equals(concept.getSdmxRelatedArtefact())) {
+                    return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
+                }
+                if (concept.getVariable() == null) {
+                    return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_VARIABLE_REQUIRED, throwException);
+                }
+                PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+                Long codelistId = concept.getCoreRepresentation().getEnumerationCodelist().getId();
+                List<ConditionalCriteria> criteriaToVerifyCodelistRepresentation = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                        .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistId).build();
+                PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ctx, criteriaToVerifyCodelistRepresentation, pagingParameter, concept
+                        .getVariable().getId());
+                if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistId)) {
+                    return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
+                }
+            } else if (concept.getCoreRepresentation().getEnumerationConceptScheme() != null) {
+                if (!ConceptRoleEnum.MEASURE_DIMENSION.equals(concept.getSdmxRelatedArtefact())) {
+                    return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
+                }
+                PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+                Long conceptSchemeId = concept.getCoreRepresentation().getEnumerationConceptScheme().getId();
+                List<ConditionalCriteria> criteriaToVerifyConceptSchemeRepresentation = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
+                        .withProperty(ConceptSchemeVersionMetamacProperties.id()).eq(conceptSchemeId).build();
+                PagedResult<ConceptSchemeVersionMetamac> result = findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ctx, criteriaToVerifyConceptSchemeRepresentation, pagingParameter, concept
+                        .getNameableArtefact().getUrn());
+                if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptSchemeId)) {
+                    return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
+                }
+            } else {
+                return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
+            }
+        }
         return null; // no fail
     }
 
@@ -1341,7 +1346,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private void checkConceptToCreateOrUpdate(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) throws MetamacException {
         checkConceptSchemeCanBeModified(conceptSchemeVersion);
         checkConceptMetadataExtends(ctx, conceptSchemeVersion, concept);
-        checkConceptEnumeratedRepresentation(ctx, concept, true, conceptSchemeVersion.getMaintainableArtefact().getIsImported());
+        checkConceptRepresentation(ctx, conceptSchemeVersion, concept, true);
         checkConceptQuantity(ctx, conceptSchemeVersion, concept);
     }
 
@@ -1505,15 +1510,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
         }
         return conceptSchemeVersion;
-    }
-
-    private MetamacExceptionItem returnOrThrowExceptionForCheckConceptEnumeratedRepresentation(boolean throwException) throws MetamacException {
-        MetamacExceptionItem exceptionItem = MetamacExceptionItemBuilder.metamacExceptionItem().withCommonServiceExceptionType(ServiceExceptionType.METADATA_INCORRECT)
-                .withMessageParameters(ServiceExceptionParameters.CONCEPT_REPRESENTATION_ENUMERATED).build();
-        if (exceptionItem != null && throwException) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(Arrays.asList(exceptionItem)).build();
-        }
-        return exceptionItem;
     }
 
 }
