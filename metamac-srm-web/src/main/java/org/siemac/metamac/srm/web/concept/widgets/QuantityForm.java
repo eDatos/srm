@@ -41,6 +41,7 @@ public class QuantityForm extends BaseQuantityForm {
     private SearchConceptForQuantityNumeratorItem   searchNumeratorItem;
     private SearchConceptForQuantityBaseItem        searchBaseItem;
     private SearchCodeForQuantityUnitItem           searchUnitItem;
+    private SearchCodeForQuantityBaseLocationItem   searchBaseLocationItem;
 
     public QuantityForm(String groupTitle) {
         super(groupTitle);
@@ -124,33 +125,16 @@ public class QuantityForm extends BaseQuantityForm {
         baseTime.setShowIfCondition(getBaseTimeIfFunction());
         baseTime.setValidators(TimeVariableWebUtils.getTimeCustomValidator());
 
-        // final GeographicalSelectItem baseLocation = new GeographicalSelectItem(ConceptDS.QUANTITY_BASE_LOCATION, getConstants().conceptQuantityBaseLocation());
-        // baseLocation.setRequired(true);
-        // baseLocation.setShowIfCondition(getBaseLocationIfFunction());
-        // baseLocation.getGeoGranularitySelectItem().addChangedHandler(new ChangedHandler() {
-        //
-        // @Override
-        // public void onChanged(ChangedEvent event) {
-        // // Clear geographical value
-        // baseLocation.setGeoValuesValueMap(new LinkedHashMap<String, String>());
-        // baseLocation.setGeoValue(new String());
-        // // Set values with selected granularity
-        // if (event.getValue() != null && !event.getValue().toString().isEmpty()) {
-        // if (uiHandlers instanceof IndicatorUiHandler) {
-        // ((IndicatorUiHandler) uiHandlers).retrieveGeographicalValues(event.getValue().toString());
-        // }
-        // }
-        // }
-        // });
+        // Search base location
+        searchBaseLocationItem = createQuantityBaseLocationItem(ConceptDS.QUANTITY_BASE_LOCATION, getConstants().conceptQuantityBaseLocation());
+        searchBaseLocationItem.setShowIfCondition(getBaseLocationIfFunction());
 
         // Search indicator base
         searchBaseItem = createQuantityBaseItem(ConceptDS.QUANTITY_BASE_QUANTITY, getConstants().conceptQuantityBaseQuantity());
-        // FIXME
-        searchBaseItem.setRequired(true);
-        searchBaseItem.setShowIfCondition(FormItemUtils.getFalseFormItemIfFunction());
+        searchBaseItem.setShowIfCondition(getBaseQuantityIfFunction());
 
         setFields(type, searchUnitItem, unitSymbol, unitMultiplier, sigDigits, decPlaces, min, max, searchDenominatorItem, searchNumeratorItem, isPercentange, percentageOf, indexBaseType, baseValue,
-                baseTime, /* baseLocation, */searchBaseItem);
+                baseTime, searchBaseLocationItem, searchBaseItem);
     }
 
     public void setCodelistsForQuantityUnitFilter(List<RelatedResourceDto> resources, int firstResult, int totalResults) {
@@ -171,6 +155,20 @@ public class QuantityForm extends BaseQuantityForm {
         if (searchBaseItem != null && searchBaseItem.getSearchWindow() != null) {
             searchBaseItem.getSearchWindow().setFilterRelatedResources(resources);
             searchBaseItem.getSearchWindow().refreshFilterListPaginationInfo(firstResult, resources.size(), totalResults);
+        }
+    }
+
+    public void setCodelistsForQuantityBaseLocationFilter(List<RelatedResourceDto> codelistDtos, int firstResult, int totalResults) {
+        if (searchBaseLocationItem != null && searchBaseLocationItem.getSearchWindow() != null) {
+            searchBaseLocationItem.getSearchWindow().setFilterRelatedResources(codelistDtos);
+            searchBaseLocationItem.getSearchWindow().refreshFilterListPaginationInfo(firstResult, codelistDtos.size(), totalResults);
+        }
+    }
+
+    public void setCodeThatCanBeQuantityBaseLocation(List<RelatedResourceDto> codesDtos, int firstResult, int totalResults) {
+        if (searchBaseLocationItem != null && searchBaseLocationItem.getSearchWindow() != null) {
+            searchBaseLocationItem.getSearchWindow().setRelatedResources(codesDtos);
+            searchBaseLocationItem.getSearchWindow().refreshListPaginationInfo(firstResult, codesDtos.size(), totalResults);
         }
     }
 
@@ -252,13 +250,7 @@ public class QuantityForm extends BaseQuantityForm {
                 setValue(ConceptDS.QUANTITY_BASE_TIME, quantityDto.getBaseTime());
             }
 
-            // FIXME: baseLocation
-            // if (quantityDto.getBaseLocation() != null) {
-            // setValue(ConceptDS.QUANTITY_INDEX_BASE_TYPE, QuantityIndexBaseTypeEnum.BASE_LOCATION.toString());
-            // Base location granularity set in setGeographicalGranularity method
-            // ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoGranularity(new String());
-            // ((GeographicalSelectItem) getItem(ConceptDS.QUANTITY_BASE_LOCATION)).setGeoValue(quantityDto.getBaseLocationUuid());
-            // }
+            setRelatedResourceDtoValue(ConceptDS.QUANTITY_BASE_LOCATION, quantityDto.getBaseLocation());
 
             if (quantityDto.getBaseQuantity() != null) {
                 setRelatedResourceDtoValue(ConceptDS.QUANTITY_BASE_QUANTITY, quantityDto.getBaseQuantity());
@@ -300,8 +292,8 @@ public class QuantityForm extends BaseQuantityForm {
                     ? (getValue(ConceptDS.QUANTITY_BASE_VALUE) != null ? (Integer) getValue(ConceptDS.QUANTITY_BASE_VALUE) : null)
                     : null);
             quantityDto.setBaseTime(getItem(ConceptDS.QUANTITY_BASE_TIME).isVisible() ? getValueAsString(ConceptDS.QUANTITY_BASE_TIME) : null);
-            // FIXME:
-            // quantityDto.setBaseLocation();
+
+            quantityDto.setBaseLocation(getRelatedResourceDtoValue(ConceptDS.QUANTITY_BASE_LOCATION));
             quantityDto.setBaseQuantity(getRelatedResourceDtoValue(ConceptDS.QUANTITY_BASE_QUANTITY));
             return quantityDto;
         }
@@ -328,6 +320,12 @@ public class QuantityForm extends BaseQuantityForm {
 
     private SearchConceptForQuantityBaseItem createQuantityBaseItem(final String name, String title) {
         final SearchConceptForQuantityBaseItem item = new SearchConceptForQuantityBaseItem(name, title, getCustomLinkItemNavigationClickHandler());
+        item.setSaveClickHandler(getSearchItemSaveClickHandler(item, name));
+        return item;
+    }
+
+    private SearchCodeForQuantityBaseLocationItem createQuantityBaseLocationItem(final String name, String title) {
+        final SearchCodeForQuantityBaseLocationItem item = new SearchCodeForQuantityBaseLocationItem(name, title, getCustomLinkItemNavigationClickHandler());
         item.setSaveClickHandler(getSearchItemSaveClickHandler(item, name));
         return item;
     }
@@ -415,6 +413,7 @@ public class QuantityForm extends BaseQuantityForm {
         searchNumeratorItem.setUiHandlers(uiHandlers);
         searchDenominatorItem.setUiHandlers(uiHandlers);
         searchBaseItem.setUiHandlers(uiHandlers);
+        searchBaseLocationItem.setUiHandlers(uiHandlers);
     }
 
     private void setRelatedResourceDtoValue(String name, RelatedResourceDto relatedResourceDto) {

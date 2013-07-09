@@ -106,12 +106,14 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         void setConceptTypes(List<ConceptTypeDto> conceptTypeDtos);
 
         void setCodelistsOrConceptSchemesForEnumeratedRepresentation(GetRelatedResourcesResult result);
-        void setCodelistsForQuantityUnitFilter(List<RelatedResourceDto> codeListDtos, int firstResult, int totalResults);
+        void setCodelistsForQuantityUnitFilter(List<RelatedResourceDto> codelistDtos, int firstResult, int totalResults);
+        void setCodelistsForQuantityBaseLocationFilter(List<RelatedResourceDto> codelistDtos, int firstResult, int totalResults);
         void setConceptSchemesForQuantityNumeratorFilter(List<RelatedResourceDto> conceptSchemesDtos, int firstResult, int totalResults);
         void setConceptSchemesForQuantityDenominatorFilter(List<RelatedResourceDto> conceptSchemesDtos, int firstResult, int totalResults);
         void setConceptSchemesForQuantityBaseFilter(List<RelatedResourceDto> conceptSchemesDtos, int firstResult, int totalResults);
 
         void setCodeThatCanBeQuantityUnit(List<RelatedResourceDto> codesDtos, int firstResult, int totalResults);
+        void setCodeThatCanBeQuantityBaseLocation(List<RelatedResourceDto> codesDtos, int firstResult, int totalResults);
         void setConceptSchemesWithConceptsThatCanBeRole(List<RelatedResourceDto> conceptSchemes);
         void setConceptSchemesWithConceptsThatCanBeExtended(List<RelatedResourceDto> conceptSchemes);
         void setConceptThatCanBeRoles(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults);
@@ -304,6 +306,10 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             getView().setConceptTypes(conceptTypeDtos);
         }
     }
+
+    //
+    // RELATED RESOURCES
+    //
 
     @Override
     public void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptRoleEnum conceptRole, String variableUrn, int firstResult, int maxResults, String criteria, String conceptUrn,
@@ -599,6 +605,40 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
                         getView().setConceptThatCanBeQuantityDenominator(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
+                    }
+                });
+    }
+
+    @Override
+    public void retrieveCodelistsForQuantityBaseLocationFilter(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_QUANTITY_BASE_LOCATION, firstResult, maxResults, codelistWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
+                    }
+
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCodelistsForQuantityBaseLocationFilter(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
+                    }
+                });
+    }
+
+    @Override
+    public void retrieveCodesForQuantityBaseLocation(int firstResult, int maxResults, CodeWebCriteria codeWebCriteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODE_WITH_QUANTITY_BASE_LOCATION, firstResult, maxResults, codeWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
+                    }
+
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCodeThatCanBeQuantityBaseLocation(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
                     }
                 });
     }

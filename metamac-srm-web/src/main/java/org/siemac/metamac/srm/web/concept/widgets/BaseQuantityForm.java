@@ -17,6 +17,7 @@ import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -40,10 +41,10 @@ public class BaseQuantityForm extends GroupDynamicForm {
     protected QuantityIndexBaseTypeEnum getIndexBaseTypeEnum(QuantityDto quantityDto) {
         Integer baseValue = quantityDto.getBaseValue();
         String baseTime = quantityDto.getBaseTime();
-        String baseLocation = "";// FIXME quantityDto.getBaseLocation();
+        RelatedResourceDto baseLocation = quantityDto.getBaseLocation();
         if (!StringUtils.isBlank(baseTime)) {
             return QuantityIndexBaseTypeEnum.BASE_TIME;
-        } else if (!StringUtils.isBlank(baseLocation)) {
+        } else if (baseLocation != null) {
             return QuantityIndexBaseTypeEnum.BASE_LOCATION;
         } else if (baseValue != null) {
             return QuantityIndexBaseTypeEnum.BASE_VALUE;
@@ -62,10 +63,7 @@ public class BaseQuantityForm extends GroupDynamicForm {
     protected LinkedHashMap<String, String> getQuantityIndexBaseTypeValueMap() {
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         for (QuantityIndexBaseTypeEnum type : QuantityIndexBaseTypeEnum.values()) {
-            // FIXME: ENABLED LOCATION when its done
-            if (!QuantityIndexBaseTypeEnum.BASE_LOCATION.equals(type)) {
-                valueMap.put(type.toString(), getCoreMessages().getString(getCoreMessages().quantityIndexBaseTypeEnum() + type.getName()));
-            }
+            valueMap.put(type.toString(), getCoreMessages().getString(getCoreMessages().quantityIndexBaseTypeEnum() + type.getName()));
         }
         return valueMap;
     }

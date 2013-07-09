@@ -72,14 +72,14 @@ public class ViewQuantityForm extends BaseQuantityForm {
         ViewTextItem baseTime = new ViewTextItem(ConceptDS.QUANTITY_BASE_TIME, getConstants().conceptQuantityBaseTime());
         baseTime.setShowIfCondition(getBaseTimeIfFunction());
 
-        ViewTextItem baseLocation = new ViewTextItem(ConceptDS.QUANTITY_BASE_LOCATION, getConstants().conceptQuantityBaseLocation());
+        RelatedResourceLinkItem baseLocation = new RelatedResourceLinkItem(ConceptDS.QUANTITY_BASE_LOCATION, getConstants().conceptQuantityBaseLocation(), getCustomLinkItemNavigationClickHandler());
         baseLocation.setShowIfCondition(getBaseLocationIfFunction());
 
         RelatedResourceLinkItem baseQuantity = new RelatedResourceLinkItem(ConceptDS.QUANTITY_BASE_QUANTITY, getConstants().conceptQuantityBaseQuantity(), getCustomLinkItemNavigationClickHandler());
         baseQuantity.setShowIfCondition(getBaseQuantityIfFunction());
 
         setFields(type, typeText, unit, unitSymbol, unitMultiplier, sigDigits, decPlaces, min, max, denominator, numerator, isPercentage, isPercentageText, percentageOf, indexBaseType,
-                indexBaseTypeText, baseValue, baseTime, /* baseLocation, */baseQuantity);
+                indexBaseTypeText, baseValue, baseTime, baseLocation, baseQuantity);
     }
 
     public void setValue(QuantityDto quantityDto) {
@@ -110,8 +110,7 @@ public class ViewQuantityForm extends BaseQuantityForm {
             setValue(ConceptDS.QUANTITY_BASE_VALUE, quantityDto.getBaseValue() != null ? quantityDto.getBaseValue().toString() : "");
             setValue(ConceptDS.QUANTITY_BASE_TIME, quantityDto.getBaseTime());
 
-            // FIXME: base_location
-            // setValue(ConceptDS.QUANTITY_BASE_LOCATION, ""); //
+            setRelatedResourceDtoValue(ConceptDS.QUANTITY_BASE_LOCATION, quantityDto.getBaseLocation());
 
             setRelatedResourceDtoValue(ConceptDS.QUANTITY_BASE_QUANTITY, quantityDto.getBaseQuantity());
 
@@ -122,5 +121,4 @@ public class ViewQuantityForm extends BaseQuantityForm {
     private void setRelatedResourceDtoValue(String name, RelatedResourceDto relatedResourceDto) {
         ((RelatedResourceLinkItem) getField(name)).setRelatedResource(relatedResourceDto);
     }
-
 }

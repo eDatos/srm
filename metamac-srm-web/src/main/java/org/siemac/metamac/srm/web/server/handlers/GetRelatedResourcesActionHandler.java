@@ -353,6 +353,18 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     result = srmCoreServiceFacade.findConceptsCanBeExtendedByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
+                case CODELIST_WITH_QUANTITY_BASE_LOCATION: {
+                    CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
+                    result = srmCoreServiceFacade.findCodelistsByConditionWithCodesCanBeQuantityBaseLocation(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
+                case CODE_WITH_QUANTITY_BASE_LOCATION: {
+                    CodeWebCriteria codeWebCriteria = (CodeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getCodeCriteriaRestriction(codeWebCriteria));
+                    result = srmCoreServiceFacade.findCodesCanBeQuantityBaseLocation(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
                 default:
                     throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, "An unknown exception has ocurred. Please contact system administrator.");
             }

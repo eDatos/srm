@@ -757,9 +757,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     @Override
-    public void setCodelistsForQuantityUnitFilter(List<RelatedResourceDto> codeListDtos, int firstResult, int totalResults) {
+    public void setCodelistsForQuantityUnitFilter(List<RelatedResourceDto> codelistDtos, int firstResult, int totalResults) {
         if (quantityEditionForm != null) {
-            quantityEditionForm.setCodelistsForQuantityUnitFilter(codeListDtos, firstResult, totalResults);
+            quantityEditionForm.setCodelistsForQuantityUnitFilter(codelistDtos, firstResult, totalResults);
         }
     }
 
@@ -767,6 +767,20 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     public void setCodeThatCanBeQuantityUnit(List<RelatedResourceDto> codesDtos, int firstResult, int totalResults) {
         if (quantityEditionForm != null) {
             quantityEditionForm.setCodesForQuantityUnit(codesDtos, firstResult, totalResults);
+        }
+    }
+
+    @Override
+    public void setCodelistsForQuantityBaseLocationFilter(List<RelatedResourceDto> codelistDtos, int firstResult, int totalResults) {
+        if (quantityEditionForm != null) {
+            quantityEditionForm.setCodelistsForQuantityBaseLocationFilter(codelistDtos, firstResult, totalResults);
+        }
+    }
+
+    @Override
+    public void setCodeThatCanBeQuantityBaseLocation(List<RelatedResourceDto> codesDtos, int firstResult, int totalResults) {
+        if (quantityEditionForm != null) {
+            quantityEditionForm.setCodeThatCanBeQuantityBaseLocation(codesDtos, firstResult, totalResults);
         }
     }
 
