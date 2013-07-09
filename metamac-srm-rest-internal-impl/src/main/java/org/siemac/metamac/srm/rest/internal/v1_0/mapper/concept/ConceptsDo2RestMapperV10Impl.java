@@ -368,7 +368,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         if (QuantityUtils.isIndexOrExtension(source.getQuantityType())) {
             ((QuantityIndex) target).setBaseValue(toBigInteger(source.getBaseValue()));
             ((QuantityIndex) target).setBaseTime(source.getBaseTime());
-            // TODO quantity.baseLocation
+            ((QuantityIndex) target).setBaseLocation(codesDo2RestMapper.toResource(source.getBaseLocation()));
         }
         if (QuantityUtils.isChangeRateOrExtension(source.getQuantityType())) {
             ((QuantityChangeRate) target).setBaseQuantity(toResource(source.getBaseQuantity()));
