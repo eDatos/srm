@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.concept.view.handlers;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
+import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 
@@ -26,13 +28,17 @@ public interface ConceptUiHandlers extends BaseConceptUiHandlers {
     void retrieveVariables(int firstResult, int maxResults, String criteria, String variableFamilyUrn);
     void retrieveVariableFamilies(int firstResult, int maxResults, String criteria);
 
-    // Relations
-    void retrieveCodesForQuantityUnit(int firstResult, int maxResults, String codeCriteria, String schemeUrnAsFilter);
-    void retrieveCodeListsForQuantityUnitFilter(int firstResult, int maxResults, String filterListCriteria);
-    void retrieveConceptsForQuantityDenominator(int firstResult, int maxResults, String conceptCriteria, String schemeUrnAsFilter);
-    void retrieveConceptSchemesForQuantityDenominatorFilter(int firstResult, int maxResults, String filterListCriteria);
-    void retrieveConceptsForQuantityNumerator(int firstResult, int maxResults, String conceptCriteria, String schemeUrnAsFilter);
-    void retrieveConceptSchemesForQuantityNumeratorFilter(int firstResult, int maxResults, String filterListCriteria);
-    void retrieveConceptsForQuantityBase(int firstResult, int maxResults, String conceptCriteria, String schemeUrnAsFilter);
-    void retrieveConceptSchemesForQuantityBaseFilter(int firstResult, int maxResults, String filterListCriteria);
+    // RELATED RESOURCE RELATIONS
+
+    void retrieveCodelistsForQuantityUnitFilter(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria);
+    void retrieveCodesForQuantityUnit(int firstResult, int maxResults, CodeWebCriteria codeWebCriteria);
+
+    void retrieveConceptSchemesForQuantityDenominatorFilter(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
+    void retrieveConceptsForQuantityDenominator(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria);
+
+    void retrieveConceptSchemesForQuantityNumeratorFilter(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
+    void retrieveConceptsForQuantityNumerator(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria);
+
+    void retrieveConceptSchemesForQuantityBaseFilter(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
+    void retrieveConceptsForQuantityBase(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria);
 }

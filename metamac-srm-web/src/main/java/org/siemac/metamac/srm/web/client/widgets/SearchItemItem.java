@@ -2,12 +2,17 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
+import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
@@ -17,6 +22,9 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
 
     protected SearchRelatedResourcePaginatedWithRelatedResourceFilterWindow searchItemWindow;
+
+    protected CustomCheckboxItem                                            isLastVersionItem;
+    protected Boolean                                                       isLastVersionItemVisible = Boolean.TRUE;
 
     private ClickHandler                                                    saveClickHandler;
 
@@ -37,7 +45,7 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        retrieveItemSchemes(firstResult, maxResults, searchItemWindow.getFilterListCriteria());
+                        retrieveItemSchemes(firstResult, maxResults, searchItemWindow.getFilterListCriteria(), isLastVersionItem.getValueAsBoolean());
                     }
 
                 };
@@ -45,7 +53,8 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        retrieveItems(firstResult, maxResults, searchItemWindow.getSelectionListCriteria(), searchItemWindow.getSelectedRelatedResourceUrnAsFilter());
+                        retrieveItems(firstResult, maxResults, searchItemWindow.getSelectionListCriteria(), searchItemWindow.getSelectedRelatedResourceUrnAsFilter(),
+                                isLastVersionItem.getValueAsBoolean());
                     }
 
                 };
@@ -59,26 +68,43 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
                     searchItemWindow.showInformationLabel();
                 }
 
-                // Hide the initial filter form (it is empty)
-                searchItemWindow.getInitialFilterForm().hide();
+                // Add isLastVersionItem to the initial filter form
+                isLastVersionItem = new CustomCheckboxItem("is-last-version", MetamacWebCommon.getConstants().resourceOnlyLastVersion());
+                isLastVersionItem.setTitleStyle("staticFormItemTitle");
+                isLastVersionItem.setVisible(BooleanUtils.isFalse(isLastVersionItemVisible) ? false : true);
+                if (isLastVersionItemVisible) {
+                    isLastVersionItem.setValue(true); // by default, show last versions
+                }
+                isLastVersionItem.addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        retrieveItemSchemes(FIRST_RESULT, MAX_RESULTS, searchItemWindow.getFilterListCriteria(), isLastVersionItem.getValueAsBoolean());
+                        retrieveItems(FIRST_RESULT, MAX_RESULTS, searchItemWindow.getSelectionListCriteria(), searchItemWindow.getSelectedRelatedResourceUrnAsFilter(),
+                                isLastVersionItem.getValueAsBoolean());
+                    }
+                });
+                searchItemWindow.getInitialFilterForm().addFields(isLastVersionItem);
 
                 // Load the list of items (to populate the selection window)
-                retrieveItemSchemes(FIRST_RESULT, MAX_RESULTS, null);
-                retrieveItems(FIRST_RESULT, MAX_RESULTS, null, null);
+                retrieveItemSchemes(FIRST_RESULT, MAX_RESULTS, null, isLastVersionItem.getValueAsBoolean());
+                retrieveItems(FIRST_RESULT, MAX_RESULTS, null, null, isLastVersionItem.getValueAsBoolean());
 
                 // Filter items when the item scheme filter changes
                 searchItemWindow.getFilterListItem().getListGrid().addRecordClickHandler(new RecordClickHandler() {
 
                     @Override
                     public void onRecordClick(RecordClickEvent event) {
-                        retrieveItems(FIRST_RESULT, MAX_RESULTS, searchItemWindow.getSelectionListCriteria(), searchItemWindow.getSelectedRelatedResourceUrnAsFilter());
+                        retrieveItems(FIRST_RESULT, MAX_RESULTS, searchItemWindow.getSelectionListCriteria(), searchItemWindow.getSelectedRelatedResourceUrnAsFilter(),
+                                isLastVersionItem.getValueAsBoolean());
                     }
                 });
                 searchItemWindow.getClearButton().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
                     public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        retrieveItems(FIRST_RESULT, MAX_RESULTS, searchItemWindow.getSelectionListCriteria(), searchItemWindow.getSelectedRelatedResourceUrnAsFilter());
+                        retrieveItems(FIRST_RESULT, MAX_RESULTS, searchItemWindow.getSelectionListCriteria(), searchItemWindow.getSelectedRelatedResourceUrnAsFilter(),
+                                isLastVersionItem.getValueAsBoolean());
                     }
                 });
 
@@ -87,14 +113,14 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        retrieveItems(firstResult, maxResults, criteria, searchItemWindow.getSelectedRelatedResourceUrnAsFilter());
+                        retrieveItems(firstResult, maxResults, criteria, searchItemWindow.getSelectedRelatedResourceUrnAsFilter(), isLastVersionItem.getValueAsBoolean());
                     }
                 });
                 searchItemWindow.setFilterListSearchAction(new SearchPaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        retrieveItemSchemes(firstResult, maxResults, criteria);
+                        retrieveItemSchemes(firstResult, maxResults, criteria, isLastVersionItem.getValueAsBoolean());
                     }
                 });
 
@@ -141,7 +167,19 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
         return null;
     }
 
-    protected abstract void retrieveItemSchemes(int firstResult, int maxResults, String filterListCriteria);
-    protected abstract void retrieveItems(int firstResult, int maxResults, String selectionListCriteria, String selectedRelatedResourceUrnAsFilter);
+    public CustomCheckboxItem getIsLastVersionItem() {
+        return isLastVersionItem;
+    }
+
+    public Boolean getIsLastVersionItemVisible() {
+        return isLastVersionItemVisible;
+    }
+
+    public void setIsLastVersionItemVisible(Boolean isLastVersionItemVisible) {
+        this.isLastVersionItemVisible = isLastVersionItemVisible;
+    }
+
+    protected abstract void retrieveItemSchemes(int firstResult, int maxResults, String filterListCriteria, boolean isLastVersion);
+    protected abstract void retrieveItems(int firstResult, int maxResults, String selectionListCriteria, String selectedRelatedResourceUrnAsFilter, boolean isLastVersion);
 
 }

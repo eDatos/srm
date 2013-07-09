@@ -455,9 +455,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveCodeListsForQuantityUnitFilter(int firstResult, int maxResults, String filterListCriteria) {
-        CodelistWebCriteria criteria = new CodelistWebCriteria(filterListCriteria);
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_QUANTITY_UNIT, firstResult, maxResults, criteria),
+    public void retrieveCodelistsForQuantityUnitFilter(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_QUANTITY_UNIT, firstResult, maxResults, codelistWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
                     @Override
@@ -473,10 +472,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveCodesForQuantityUnit(int firstResult, int maxResults, String codeCriteria, String schemeUrnAsFilter) {
-        CodeWebCriteria criteria = new CodeWebCriteria(codeCriteria);
-        criteria.setItemSchemeUrn(schemeUrnAsFilter);
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODE_WITH_QUANTITY_UNIT, firstResult, maxResults, criteria),
+    public void retrieveCodesForQuantityUnit(int firstResult, int maxResults, CodeWebCriteria codeWebCriteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODE_WITH_QUANTITY_UNIT, firstResult, maxResults, codeWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
                     @Override
@@ -492,11 +489,11 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptSchemesForQuantityBaseFilter(int firstResult, int maxResults, String filterListCriteria) {
-        ConceptSchemeWebCriteria criteria = new ConceptSchemeWebCriteria(filterListCriteria);
-        criteria.setRelatedConceptSchemeUrn(conceptSchemeUrn);
+    public void retrieveConceptSchemesForQuantityBaseFilter(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
 
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_BASE_QUANTITY, firstResult, maxResults, criteria),
+        conceptSchemeWebCriteria.setRelatedConceptSchemeUrn(conceptSchemeUrn);
+
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_BASE_QUANTITY, firstResult, maxResults, conceptSchemeWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
                     @Override
@@ -512,11 +509,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptsForQuantityBase(int firstResult, int maxResults, String conceptCriteria, String schemeUrnAsFilter) {
-        ConceptWebCriteria criteria = new ConceptWebCriteria(conceptCriteria);
-        criteria.setItemSchemeUrn(schemeUrnAsFilter);
-
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_BASE_QUANTITY, firstResult, maxResults, criteria),
+    public void retrieveConceptsForQuantityBase(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_BASE_QUANTITY, firstResult, maxResults, conceptWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
                     @Override
@@ -532,11 +526,11 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptSchemesForQuantityNumeratorFilter(int firstResult, int maxResults, String filterListCriteria) {
-        ConceptSchemeWebCriteria criteria = new ConceptSchemeWebCriteria(filterListCriteria);
-        criteria.setRelatedConceptSchemeUrn(conceptSchemeUrn);
+    public void retrieveConceptSchemesForQuantityNumeratorFilter(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
 
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_NUMERATOR, firstResult, maxResults, criteria),
+        conceptSchemeWebCriteria.setRelatedConceptSchemeUrn(conceptSchemeUrn);
+
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_NUMERATOR, firstResult, maxResults, conceptSchemeWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
                     @Override
@@ -551,12 +545,10 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
                 });
 
     }
-    @Override
-    public void retrieveConceptsForQuantityNumerator(int firstResult, int maxResults, String conceptCriteria, String schemeUrnAsFilter) {
-        ConceptWebCriteria criteria = new ConceptWebCriteria(conceptCriteria);
-        criteria.setItemSchemeUrn(schemeUrnAsFilter);
 
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_NUMERATOR, firstResult, maxResults, criteria),
+    @Override
+    public void retrieveConceptsForQuantityNumerator(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_NUMERATOR, firstResult, maxResults, conceptWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
                     @Override
@@ -572,11 +564,11 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptSchemesForQuantityDenominatorFilter(int firstResult, int maxResults, String filterListCriteria) {
-        ConceptSchemeWebCriteria criteria = new ConceptSchemeWebCriteria(filterListCriteria);
-        criteria.setRelatedConceptSchemeUrn(conceptSchemeUrn);
+    public void retrieveConceptSchemesForQuantityDenominatorFilter(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
 
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_DENOMINATOR, firstResult, maxResults, criteria),
+        conceptSchemeWebCriteria.setRelatedConceptSchemeUrn(conceptSchemeUrn);
+
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_DENOMINATOR, firstResult, maxResults, conceptSchemeWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
                     @Override
@@ -593,11 +585,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptsForQuantityDenominator(int firstResult, int maxResults, String conceptCriteria, String schemeUrnAsFilter) {
-        ConceptWebCriteria criteria = new ConceptWebCriteria(conceptCriteria);
-        criteria.setItemSchemeUrn(schemeUrnAsFilter);
-
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_DENOMINATOR, firstResult, maxResults, criteria),
+    public void retrieveConceptsForQuantityDenominator(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_DENOMINATOR, firstResult, maxResults, conceptWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
                     @Override
