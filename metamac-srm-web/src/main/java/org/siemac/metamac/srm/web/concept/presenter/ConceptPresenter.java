@@ -384,9 +384,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, String criteria, String conceptSchemeUrn) {
-        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
-        conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
+    public void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         dispatcher.execute(new GetConceptsCanBeExtendedAction(firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetConceptsCanBeExtendedResult>() {
 
             @Override
@@ -417,18 +415,19 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptSchemesWithConceptsThatCanBeExtended(int firstResult, int maxResults) {
-        dispatcher.execute(new GetConceptSchemesWithConceptsCanBeExtendedAction(firstResult, maxResults, null), new WaitingAsyncCallback<GetConceptSchemesWithConceptsCanBeExtendedResult>() {
+    public void retrieveConceptSchemesWithConceptsThatCanBeExtended(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
+        dispatcher.execute(new GetConceptSchemesWithConceptsCanBeExtendedAction(firstResult, maxResults, conceptSchemeWebCriteria),
+                new WaitingAsyncCallback<GetConceptSchemesWithConceptsCanBeExtendedResult>() {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetConceptSchemesWithConceptsCanBeExtendedResult result) {
-                getView().setConceptSchemesWithConceptsThatCanBeExtended(result.getConceptSchemes());
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetConceptSchemesWithConceptsCanBeExtendedResult result) {
+                        getView().setConceptSchemesWithConceptsThatCanBeExtended(result.getConceptSchemes());
+                    }
+                });
     }
 
     @Override

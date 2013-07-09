@@ -917,20 +917,31 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                             @Override
                             public void retrieveResultSet(int firstResult, int maxResults) {
-                                getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, searchExtendsWindow.getRelatedResourceCriteria(),
-                                        searchExtendsWindow.getInitialSelectionValue());
+                                retrieveConceptsThatCanBeExtended(firstResult, maxResults, searchExtendsWindow.getRelatedResourceCriteria(), searchExtendsWindow.getInitialSelectionValue(),
+                                        searchExtendsWindow.getIsLastVersionValue());
                             }
                         });
 
+                searchExtendsWindow.showIsLastVersionItem();
+                searchExtendsWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        retrieveConceptSchemesWithConceptsThatCanBeExtended(FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchExtendsWindow.getIsLastVersionValue());
+                        retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, null, null, searchExtendsWindow.getIsLastVersionValue());
+                    }
+                });
+
                 // Load concepts and concept scheme that can be extended (to populate the selection window)
-                getUiHandlers().retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, null, null);
-                getUiHandlers().retrieveConceptSchemesWithConceptsThatCanBeExtended(FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION);
+                retrieveConceptSchemesWithConceptsThatCanBeExtended(FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchExtendsWindow.getIsLastVersionValue());
+                retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, null, null, searchExtendsWindow.getIsLastVersionValue());
 
                 searchExtendsWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        getUiHandlers().retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, searchExtendsWindow.getRelatedResourceCriteria(), searchExtendsWindow.getInitialSelectionValue());
+                        retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, searchExtendsWindow.getRelatedResourceCriteria(), searchExtendsWindow.getInitialSelectionValue(),
+                                searchExtendsWindow.getIsLastVersionValue());
                     }
                 });
 
@@ -939,7 +950,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, concept, searchExtendsWindow.getInitialSelectionValue());
+                        retrieveConceptsThatCanBeExtended(firstResult, maxResults, concept, searchExtendsWindow.getInitialSelectionValue(), searchExtendsWindow.getIsLastVersionValue());
                     }
                 });
                 searchExtendsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
@@ -955,6 +966,22 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             }
         });
         return extendsItem;
+    }
+
+    private void retrieveConceptSchemesWithConceptsThatCanBeExtended(int firstResult, int maxResults, boolean isLastVersion) {
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+        conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveConceptSchemesWithConceptsThatCanBeExtended(firstResult, maxResults, conceptSchemeWebCriteria);
+    }
+
+    private void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, String criteria, String conceptSchemeUrn, boolean isLastVersion) {
+        ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria();
+        conceptWebCriteria.setCriteria(criteria);
+        conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
+        conceptWebCriteria.setIsLastVersion(isLastVersion);
+
+        getUiHandlers().retrieveConceptsThatCanBeExtended(firstResult, maxResults, conceptWebCriteria);
     }
 
     private ConceptsListItem createRelatedConceptsItem(String name, String title) {
