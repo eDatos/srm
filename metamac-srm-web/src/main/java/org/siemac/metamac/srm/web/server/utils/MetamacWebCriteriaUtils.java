@@ -186,6 +186,10 @@ public class MetamacWebCriteriaUtils {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_TYPE.name(), criteria.getConceptSchemeTypeEnum(), OperationType.EQ));
             }
+            if (criteria.getIsLatestFinal() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(ConceptMetamacCriteriaPropertyEnum.CONCEPT_SCHEME_LATEST_FINAL.name(), criteria.getIsLatestFinal(), OperationType.EQ));
+            }
 
         }
         return conjunctionRestriction;
@@ -328,6 +332,10 @@ public class MetamacWebCriteriaUtils {
             }
             if (StringUtils.isNotBlank(criteria.getShortName())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.SHORT_NAME.name(), criteria.getShortName(), OperationType.ILIKE));
+            }
+            if (criteria.getIsLatestFinal() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODELIST_LATEST_FINAL.name(), criteria.getIsLatestFinal(), OperationType.EQ));
             }
 
         }
@@ -511,6 +519,11 @@ public class MetamacWebCriteriaUtils {
                         criteria.getIsExternallyPublished(), OperationType.EQ);
                 conjunctionRestriction.getRestrictions().add(publishedRestriction);
             }
+            if (criteria.getIsLatestFinal() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(CategoryMetamacCriteriaPropertyEnum.CATEGORY_SCHEME_LATEST_FINAL.name(), criteria.getIsLatestFinal(), OperationType.EQ));
+            }
+
         }
 
         return conjunctionRestriction;
@@ -768,6 +781,10 @@ public class MetamacWebCriteriaUtils {
             if (criteria.getOrganisationSchemeType() != null) {
                 conjunctionRestriction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(OrganisationMetamacCriteriaPropertyEnum.ORGANISATION_SCHEME_TYPE.name(), criteria.getOrganisationSchemeType(), OperationType.EQ));
+            }
+            if (criteria.getIsLatestFinal() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(OrganisationMetamacCriteriaPropertyEnum.ORGANISATION_SCHEME_LATEST_FINAL.name(), criteria.getIsLatestFinal(), OperationType.EQ));
             }
         }
 

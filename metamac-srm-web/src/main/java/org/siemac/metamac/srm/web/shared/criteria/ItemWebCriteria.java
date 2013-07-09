@@ -6,6 +6,7 @@ public class ItemWebCriteria extends NameableArtefactWebCriteria {
 
     private String            itemSchemeUrn;
     private Boolean           isLastVersion;
+    private Boolean           isLatestFinal;
 
     public ItemWebCriteria() {
     }
@@ -28,5 +29,13 @@ public class ItemWebCriteria extends NameableArtefactWebCriteria {
 
     public void setItemSchemeUrn(String itemSchemeUrn) {
         this.itemSchemeUrn = itemSchemeUrn;
+    }
+
+    public Boolean getIsLatestFinal() {
+        return isLatestFinal;
+    }
+
+    public void setIsLatestFinal(Boolean isLatestFinal) {
+        this.isLatestFinal = isLatestFinal;
     }
 }
