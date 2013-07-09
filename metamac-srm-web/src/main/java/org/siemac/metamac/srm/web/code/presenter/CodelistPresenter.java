@@ -1064,8 +1064,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     }
 
     @Override
-    public void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, String criteria) {
-        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
+    public void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
         codelistWebCriteria.setCodelisUrnToReplaceCodelist(codelistMetamacDto.getUrn());
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_THAT_CAN_BE_REPLACED, firstResult, maxResults, codelistWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {

@@ -44,6 +44,7 @@ import org.siemac.metamac.srm.web.code.widgets.CodelistVersionsSectionStack;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
@@ -76,6 +77,8 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -1080,12 +1083,22 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveCodelistsThatCanBeReplaced(firstResult, maxResults, searchReplaceToCodelistsWindow.getRelatedResourceCriteria());
+                        retrieveCodelistsThatCanBeReplaced(firstResult, maxResults, searchReplaceToCodelistsWindow.getRelatedResourceCriteria(), searchReplaceToCodelistsWindow.getIsLastVersionValue());
+                    }
+                });
+
+                searchReplaceToCodelistsWindow.showIsLastVersionItem();
+                searchReplaceToCodelistsWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        retrieveCodelistsThatCanBeReplaced(FIRST_RESULST, MAX_RESULTS, searchReplaceToCodelistsWindow.getRelatedResourceCriteria(),
+                                searchReplaceToCodelistsWindow.getIsLastVersionValue());
                     }
                 });
 
                 // Load the list codelists that can be replaced
-                getUiHandlers().retrieveCodelistsThatCanBeReplaced(FIRST_RESULST, MAX_RESULTS, null);
+                retrieveCodelistsThatCanBeReplaced(FIRST_RESULST, MAX_RESULTS, null, searchReplaceToCodelistsWindow.getIsLastVersionValue());
 
                 // Set the selected codelists
                 List<RelatedResourceDto> selectedCodelists = ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).getRelatedResourceDtos();
@@ -1095,7 +1108,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveCodelistsThatCanBeReplaced(firstResult, maxResults, criteria);
+                        retrieveCodelistsThatCanBeReplaced(firstResult, maxResults, criteria, searchReplaceToCodelistsWindow.getIsLastVersionValue());
                     }
                 });
                 searchReplaceToCodelistsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
@@ -1111,6 +1124,13 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             }
         });
         return replaceToItem;
+    }
+
+    private void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, String criteria, boolean isLastVersion) {
+        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
+        codelistWebCriteria.setCriteria(criteria);
+        codelistWebCriteria.setIsLastVersion(isLastVersion);
+        getUiHandlers().retrieveCodelistsThatCanBeReplaced(firstResult, maxResults, codelistWebCriteria);
     }
 
     private SearchRelatedResourceLinkItem createVariableItem(String name, String title) {

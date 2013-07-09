@@ -289,8 +289,7 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
     //
 
     @Override
-    public void retrieveCodelistsForVariableElementGeographicalGranularity(int firstResult, int maxResults, String criteria) {
-        CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
+    public void retrieveCodelistsForVariableElementGeographicalGranularity(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, firstResult, maxResults, codelistWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
@@ -306,8 +305,7 @@ public class VariableElementPresenter extends Presenter<VariableElementPresenter
     }
 
     @Override
-    public void retrieveCodesForVariableElementGeographicalGranularity(int firstResult, int maxResults, String criteria, String codelistUrn) {
-        CodeWebCriteria codeWebCriteria = new CodeWebCriteria(criteria);
+    public void retrieveCodesForVariableElementGeographicalGranularity(int firstResult, int maxResults, CodeWebCriteria codeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODES_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, firstResult, maxResults, codeWebCriteria),
                 new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
