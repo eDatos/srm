@@ -89,12 +89,8 @@ import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptActionHandle
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemeVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemesActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemesWithConceptsCanBeExtendedActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemesWithConceptsCanBeRoleActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsBySchemeActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsCanBeExtendedActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsCanBeRoleActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetStatisticalOperationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptSchemeActionHandler;
@@ -222,12 +218,8 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeExtendedAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeRoleAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
@@ -333,10 +325,6 @@ public class ServerModule extends HandlerModule {
         bindHandler(UpdateConceptSchemeProcStatusAction.class, UpdateConceptSchemeProcStatusActionHandler.class);
         bindHandler(CancelConceptSchemeValidityAction.class, CancelConceptSchemeValidityActionHandler.class);
         bindHandler(FindAllConceptTypesAction.class, FindAllConceptTypesActionHandler.class);
-        bindHandler(GetConceptSchemesWithConceptsCanBeRoleAction.class, GetConceptSchemesWithConceptsCanBeRoleActionHandler.class);
-        bindHandler(GetConceptSchemesWithConceptsCanBeExtendedAction.class, GetConceptSchemesWithConceptsCanBeExtendedActionHandler.class);
-        bindHandler(GetConceptsCanBeRoleAction.class, GetConceptsCanBeRoleActionHandler.class);
-        bindHandler(GetConceptsCanBeExtendedAction.class, GetConceptsCanBeExtendedActionHandler.class);
         bindHandler(CreateConceptSchemeTemporalVersionAction.class, CreateConceptSchemeTemporalVersionActionHandler.class);
         bindHandler(CopyConceptSchemeAction.class, CopyConceptSchemeActionHandler.class);
 

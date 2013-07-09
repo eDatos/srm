@@ -19,7 +19,9 @@ import org.siemac.metamac.srm.web.shared.criteria.CodelistOrderVisualisationWebC
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.ItemWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VersionableResourceWebCriteria;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -52,6 +54,25 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
             criteria.getPaginator().setFirstResult(action.getFirstResult());
             criteria.getPaginator().setMaximumResultSize(action.getMaxResults());
             criteria.getPaginator().setCountTotalResults(true);
+
+            // Filter by LATEST_FINAL instead of IS_LAST_VERSION. We want the last internally published resources. The search by isLastVersion may give us a wrong result.
+
+            if (action.getCriteria() != null) {
+                if (action.getCriteria() instanceof VersionableResourceWebCriteria) {
+
+                    Boolean isLastVersion = ((VersionableResourceWebCriteria) action.getCriteria()).getIsLastVersion();
+
+                    ((VersionableResourceWebCriteria) action.getCriteria()).setIsLatestFinal(isLastVersion);
+                    ((VersionableResourceWebCriteria) action.getCriteria()).setIsLastVersion(null);
+
+                } else if (action.getCriteria() instanceof ItemWebCriteria) {
+
+                    Boolean isLastVersion = ((ItemWebCriteria) action.getCriteria()).getIsLastVersion();
+
+                    ((ItemWebCriteria) action.getCriteria()).setIsLatestFinal(isLastVersion);
+                    ((ItemWebCriteria) action.getCriteria()).setIsLastVersion(null);
+                }
+            }
 
             switch (action.getStructuralResourcesRelationEnum()) {
                 case CONCEPT_SCHEMES_WITH_DSD_PRIMARY_MEASURE: {
@@ -306,6 +327,30 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
                     result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureAttributeByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
+                case CONCEPT_SCHEMES_WITH_CONCEPT_ROLE: {
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeRole(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
+                case CONCEPTS_WITH_CONCEPT_ROLE: {
+                    ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
+                    result = srmCoreServiceFacade.findConceptsCanBeRoleByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
+                case CONCEPT_SCHEMES_WITH_CONCEPT_EXTENDS: {
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeExtended(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    break;
+                }
+                case CONCEPT_WITH_CONCEPT_EXTENDS: {
+                    ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
+                    result = srmCoreServiceFacade.findConceptsCanBeExtendedByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 default:

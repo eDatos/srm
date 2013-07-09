@@ -39,16 +39,8 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeExtendedAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeExtendedResult;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeRoleAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesWithConceptsCanBeRoleResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeExtendedResult;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleAction;
-import org.siemac.metamac.srm.web.shared.concept.GetConceptsCanBeRoleResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
@@ -369,63 +361,65 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
-        dispatcher.execute(new GetConceptsCanBeRoleAction(firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetConceptsCanBeRoleResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetConceptsCanBeRoleResult result) {
-                getView().setConceptThatCanBeRoles(result.getConcepts(), result.getFirstResultOut(), result.getTotalResults());
-            }
-        });
-    }
-
-    @Override
-    public void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
-        dispatcher.execute(new GetConceptsCanBeExtendedAction(firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetConceptsCanBeExtendedResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetConceptsCanBeExtendedResult result) {
-                getView().setConceptThatCanBeExtended(result.getConceptList(), result.getFirstResultOut(), result.getTotalResults());
-            }
-        });
-    }
-
-    @Override
     public void retrieveConceptSchemesWithConceptsThatCanBeRole(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
-        dispatcher.execute(new GetConceptSchemesWithConceptsCanBeRoleAction(firstResult, maxResults, conceptSchemeWebCriteria),
-                new WaitingAsyncCallback<GetConceptSchemesWithConceptsCanBeRoleResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_CONCEPT_ROLE, firstResult, maxResults, conceptSchemeWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
                         ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                     }
                     @Override
-                    public void onWaitSuccess(GetConceptSchemesWithConceptsCanBeRoleResult result) {
-                        getView().setConceptSchemesWithConceptsThatCanBeRole(result.getConceptSchemes());
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptSchemesWithConceptsThatCanBeRole(result.getRelatedResourceDtos());
+                    }
+                });
+    }
+
+    @Override
+    public void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_CONCEPT_ROLE, firstResult, maxResults, conceptWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptThatCanBeRoles(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
                     }
                 });
     }
 
     @Override
     public void retrieveConceptSchemesWithConceptsThatCanBeExtended(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
-        dispatcher.execute(new GetConceptSchemesWithConceptsCanBeExtendedAction(firstResult, maxResults, conceptSchemeWebCriteria),
-                new WaitingAsyncCallback<GetConceptSchemesWithConceptsCanBeExtendedResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_CONCEPT_EXTENDS, firstResult, maxResults, conceptSchemeWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
                         ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
                     }
                     @Override
-                    public void onWaitSuccess(GetConceptSchemesWithConceptsCanBeExtendedResult result) {
-                        getView().setConceptSchemesWithConceptsThatCanBeExtended(result.getConceptSchemes());
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptSchemesWithConceptsThatCanBeExtended(result.getRelatedResourceDtos());
+                    }
+                });
+    }
+
+    @Override
+    public void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_CONCEPT_EXTENDS, firstResult, maxResults, conceptWebCriteria),
+                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setConceptThatCanBeExtended(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
                     }
                 });
     }
