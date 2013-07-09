@@ -3795,6 +3795,55 @@
                 LAST_UPDATED="2011-01-22 01:02:03"
                 LAST_UPDATED_TZ="Europe/London"
             />     
+            
+            <!-- CODE02 -->
+            <TB_CODES
+                ID="1012"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="101"
+                ITEM_SCHEME_VERSION_FIRST_FK="101"
+                NAMEABLE_ARTEFACT_FK="1012"
+                      
+                UUID="codelist-10-v1-code-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+ 
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="1012"
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="1012"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CODE02"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(01.000).CODE02"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(01.000).CODE02"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+                
+                UUID="annotableArtefact-1012"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />              
     
     <!-- Version 2 -->
     

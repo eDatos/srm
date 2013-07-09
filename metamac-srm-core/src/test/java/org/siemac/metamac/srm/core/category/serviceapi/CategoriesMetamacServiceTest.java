@@ -2231,27 +2231,23 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     @Test
     @Override
     public void testPreCreateCategoryScheme() throws Exception {
-        // TODO testPreCreateCategoryScheme
-
+        // tested in createCategory
     }
 
     @Test
     @Override
     public void testPreCreateCategory() throws Exception {
-        // TODO testPreCreateCategory
-
+        // tested in createCategory
     }
 
     @Override
     public void testPreCreateCategorisation() throws Exception {
-        // TODO testPreCreateCategorisation
-
+        // tested in createCategorisation
     }
 
     @Override
     public void testPostCreateCategorisation() throws Exception {
-        // TODO testPostCreateCategorisation
-
+        // tested in createCategorisation
     }
 
     // In CategoriesMetamacCategorisationServiceTest.java

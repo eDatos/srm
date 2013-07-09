@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.core.concept.mapper;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacAsserts;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDtoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,18 +48,46 @@ public class ConceptsDto2DoMapperTest extends SrmBaseTest {
     }
 
     @Test
-    public void testConceptMetamacDtoToDo() throws MetamacException {
+    public void testConceptMetamacRateDtoToDo() throws MetamacException {
         ConceptMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptDto(RepresentationTypeEnum.ENUMERATION);
         dto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE01", VARIABLE_1));
+        // transform
+        ConceptMetamac entity = conceptsDto2DoMapper.conceptDtoToDo(dto);
+        ConceptsMetamacAsserts.assertEqualsConcept(dto, entity);
+    }
+
+    @Test
+    public void testConceptMetamacChangeRateDtoToDo() throws MetamacException {
+        ConceptMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptDto(RepresentationTypeEnum.ENUMERATION);
         // quantity
         RelatedResourceDto unitCode = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CODE01", CODELIST_7_V2_CODE_1);
         RelatedResourceDto numerator = ConceptsMetamacDtoMocks.mockConceptRelatedResourceDto("CONCEPT0201", CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
         RelatedResourceDto denominator = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CONCEPT03", CONCEPT_SCHEME_1_V2_CONCEPT_3);
-        RelatedResourceDto baseQuantity = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CONCEPT04", CONCEPT_SCHEME_1_V2_CONCEPT_4);
+        RelatedResourceDto baseQuantity = ConceptsMetamacDtoMocks.mockConceptRelatedResourceDto("CONCEPT04", CONCEPT_SCHEME_1_V2_CONCEPT_4);
         dto.setQuantity(ConceptsMetamacDtoMocks.mockQuantityDtoTypeChangeRate(unitCode, numerator, denominator, baseQuantity));
 
         // transform
         ConceptMetamac entity = conceptsDto2DoMapper.conceptDtoToDo(dto);
+        assertEquals(QuantityTypeEnum.CHANGE_RATE, entity.getQuantity().getQuantityType());
+        ConceptsMetamacAsserts.assertEqualsConcept(dto, entity);
+    }
+
+    @Test
+    public void testConceptMetamacIndexDtoToDo() throws MetamacException {
+        ConceptMetamacDto dto = ConceptsMetamacDtoMocks.mockConceptDto(RepresentationTypeEnum.ENUMERATION);
+        // quantity
+        RelatedResourceDto unitCode = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CODE01", CODELIST_7_V2_CODE_1);
+        RelatedResourceDto numerator = ConceptsMetamacDtoMocks.mockConceptRelatedResourceDto("CONCEPT0201", CONCEPT_SCHEME_1_V2_CONCEPT_2_1);
+        RelatedResourceDto denominator = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CONCEPT03", CONCEPT_SCHEME_1_V2_CONCEPT_3);
+        RelatedResourceDto baseLocation = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CODE01", CODELIST_7_V2_CODE_1);
+        dto.setQuantity(ConceptsMetamacDtoMocks.mockQuantityDtoTypeIndex(unitCode, numerator, denominator, baseLocation));
+        dto.getQuantity().setBaseTime("2010");
+        dto.getQuantity().setBaseValue(33);
+
+        // transform
+        ConceptMetamac entity = conceptsDto2DoMapper.conceptDtoToDo(dto);
+        assertNotNull(entity.getQuantity().getBaseLocation());
+        assertEquals(QuantityTypeEnum.INDEX, entity.getQuantity().getQuantityType());
         ConceptsMetamacAsserts.assertEqualsConcept(dto, entity);
     }
 

@@ -894,7 +894,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         Statement statement = null;
         try {
             statement = connection.createStatement();
-            logger.info(sb); // TODO remove this sentence in future
+            logger.info(sb); // TODO remove this log in future
             statement.execute(sb);
         } finally {
             if (statement != null) {

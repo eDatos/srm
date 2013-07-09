@@ -365,6 +365,8 @@ Application SrmFacadeCore {
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(String conceptSchemeUrn, MetamacCriteria criteria)  throws MetamacException;
 			"Find codelists with codes than than can be unit in concept quantity by criteria"
     		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsByConditionWithCodesCanBeQuantityUnit(MetamacCriteria criteria)  throws MetamacException;
+			"Find codelists with codes than than can be base quantity in concept quantity by criteria"
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsByConditionWithCodesCanBeQuantityBaseLocation(MetamacCriteria criteria)  throws MetamacException;
             
             "Retrieves a concept scheme by URN"
             @ConceptSchemeMetamacDto retrieveConceptSchemeByUrn(String urn) throws MetamacException;
@@ -411,6 +413,8 @@ Application SrmFacadeCore {
     		MetamacCriteriaResult<@RelatedResourceDto> findConceptsCanBeQuantityBaseQuantity(String conceptSchemeUrn, MetamacCriteria criteria)  throws MetamacException;
 			"Finds codes than can be unit in concept quantity by criteria"
     		MetamacCriteriaResult<@RelatedResourceDto> findCodesCanBeQuantityUnit(MetamacCriteria criteria)  throws MetamacException;
+			"Finds codes than can be base location in concept quantity by criteria"
+    		MetamacCriteriaResult<@RelatedResourceDto> findCodesCanBeQuantityBaseLocation(MetamacCriteria criteria)  throws MetamacException;
 			"Deletes concept"
             deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme in locale requested"

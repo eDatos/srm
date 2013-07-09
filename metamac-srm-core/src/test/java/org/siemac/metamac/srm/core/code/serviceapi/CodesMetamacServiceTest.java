@@ -3739,8 +3739,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
             // Validate
-            assertEquals(35, codesPagedResult.getTotalRows());
-            assertEquals(35, codesPagedResult.getValues().size());
+            assertEquals(36, codesPagedResult.getTotalRows());
+            assertEquals(36, codesPagedResult.getValues().size());
             assertTrue(codesPagedResult.getValues().get(0) instanceof CodeMetamac);
 
             int i = 0;
@@ -3768,6 +3768,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(CODELIST_8_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CODELIST_9_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CODELIST_10_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+            assertEquals(CODELIST_10_V1_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CODELIST_10_V2_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CODELIST_10_V3_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(CODELIST_11_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());

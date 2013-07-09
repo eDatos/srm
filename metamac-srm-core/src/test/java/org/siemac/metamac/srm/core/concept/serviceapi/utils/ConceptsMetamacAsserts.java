@@ -195,7 +195,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalString(expected.getPercentageOf(), actual.getPercentageOf());
         assertEquals(expected.getBaseValue(), actual.getBaseValue());
         assertEquals(expected.getBaseTime(), actual.getBaseTime());
-        // TODO quantity.baseLocation
+        assertQuantityRelatedItem(expected.getBaseLocation(), actual.getBaseLocation());
         assertQuantityRelatedItem(expected.getBaseQuantity(), actual.getBaseQuantity());
     }
 
@@ -218,7 +218,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalStringDto(expected.getPercentageOf(), actual.getPercentageOf());
         assertEquals(expected.getBaseValue(), actual.getBaseValue());
         assertEquals(expected.getBaseTime(), actual.getBaseTime());
-        // TODO quantity.baseLocation
+        BaseAsserts.assertEqualsRelatedResourceDto(expected.getBaseLocation(), actual.getBaseLocation());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getBaseQuantity(), actual.getBaseQuantity());
     }
 
@@ -228,6 +228,7 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
             return;
         }
         assertEquals(entity.getQuantityType(), dto.getQuantityType());
+        assertEqualsNullability(entity.getUnitCode(), dto.getUnitCode());
         if (entity.getUnitCode() != null) {
             assertEquals(entity.getUnitCode().getNameableArtefact().getUrn(), dto.getUnitCode().getUrn());
         }
@@ -247,7 +248,11 @@ public class ConceptsMetamacAsserts extends ConceptsAsserts {
         assertEqualsInternationalString(entity.getPercentageOf(), dto.getPercentageOf());
         assertEquals(entity.getBaseValue(), dto.getBaseValue());
         assertEquals(entity.getBaseTime(), dto.getBaseTime());
-        // TODO quantity.baseLocation
+        assertEqualsNullability(entity.getBaseLocation(), dto.getBaseLocation());
+        if (entity.getBaseLocation() != null) {
+            assertEquals(entity.getBaseLocation().getNameableArtefact().getUrn(), dto.getBaseLocation().getUrn());
+        }
+        assertEqualsNullability(entity.getBaseQuantity(), dto.getBaseQuantity());
         if (entity.getBaseQuantity() != null) {
             assertEquals(entity.getBaseQuantity().getNameableArtefact().getUrn(), dto.getBaseQuantity().getUrn());
         }

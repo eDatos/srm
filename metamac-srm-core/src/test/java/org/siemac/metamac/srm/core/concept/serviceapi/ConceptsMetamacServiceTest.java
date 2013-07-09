@@ -616,6 +616,27 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(CODELIST_7_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         assertEquals(CODELIST_8_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
         // assertEquals(CODELIST_9_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn()); // restricted
+        // codelist10 draft
+        assertEquals(codelistsPagedResult.getValues().size(), i);
+    }
+
+    @Override
+    @Test
+    public void testFindCodelistsByConditionWithCodesCanBeQuantityBaseLocation() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.id()).ascending().distinctRoot().build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<CodelistVersionMetamac> codelistsPagedResult = conceptsService.findCodelistsByConditionWithCodesCanBeQuantityBaseLocation(getServiceContextAdministrador(), conditions,
+                pagingParameter);
+
+        // Validate
+        assertEquals(1, codelistsPagedResult.getTotalRows());
+        assertEquals(1, codelistsPagedResult.getValues().size());
+
+        int i = 0;
+        assertEquals(CODELIST_7_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn());
+        // assertEquals(CODELIST_8_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn()); // not geographical
+        // assertEquals(CODELIST_9_V1, codelistsPagedResult.getValues().get(i++).getMaintainableArtefact().getUrn()); // restricted
+        // codelist10 draft
         assertEquals(codelistsPagedResult.getValues().size(), i);
     }
 
@@ -1609,7 +1630,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         {
             ConceptMetamac concept3 = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V2_CONCEPT_3);
             concept3.setQuantity(new Quantity());
-            concept3.getQuantity().setQuantityType(QuantityTypeEnum.FRACTION);
+            concept3.getQuantity().setQuantityType(QuantityTypeEnum.INDEX);
             concept3.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_10_V1_CODE_1));
             concept3.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
             concept3.getQuantity().setSignificantDigits(Integer.valueOf(2));
@@ -1622,6 +1643,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             concept3.getQuantity().setIsPercentage(Boolean.FALSE);
             concept3.getQuantity().setPercentageOf(BaseDoMocks.mockInternationalString());
             concept3.getQuantity().setBaseQuantity(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_11_V1_CONCEPT_1));
+            concept3.getQuantity().setBaseLocation(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_10_V1_CODE_2));
             itemRepository.save(concept3);
         }
 
@@ -1631,13 +1653,14 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             conceptsService.publishExternallyConceptScheme(getServiceContextAdministrador(), urn);
             fail("related resources");
         } catch (MetamacException e) {
-            assertEquals(5, e.getExceptionItems().size());
+            assertEquals(6, e.getExceptionItems().size());
 
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_1_V2_CONCEPT_2);
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_1);
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_3_V1_CONCEPT_2);
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CONCEPT_NOT_EXTERNALLY_PUBLISHED, CONCEPT_SCHEME_11_V1_CONCEPT_1);
             assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CODE_NOT_EXTERNALLY_PUBLISHED, CODELIST_10_V1_CODE_1);
+            assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.CODE_NOT_EXTERNALLY_PUBLISHED, CODELIST_10_V1_CODE_2);
         }
     }
 
@@ -4276,6 +4299,25 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         PagedResult<CodeMetamac> codesPagedResult = conceptsService.findCodesCanBeQuantityUnit(getServiceContextAdministrador(), conditions, pagingParameter);
 
         // Validate
+        assertEquals(3, codesPagedResult.getTotalRows());
+        assertEquals(3, codesPagedResult.getValues().size());
+
+        int i = 0;
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE01", codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST07(02.000).CODE02", codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST08(01.000).CODE01", codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
+        assertEquals(codesPagedResult.getValues().size(), i);
+    }
+
+    @Override
+    @Test
+    public void testFindCodesCanBeQuantityBaseLocation() throws Exception {
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Code.class).orderBy(CodeProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
+                .orderBy(CodeProperties.id()).ascending().distinctRoot().build();
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+        PagedResult<CodeMetamac> codesPagedResult = conceptsService.findCodesCanBeQuantityBaseLocation(getServiceContextAdministrador(), conditions, pagingParameter);
+
+        // Validate
         assertEquals(2, codesPagedResult.getTotalRows());
         assertEquals(2, codesPagedResult.getValues().size());
 
@@ -4643,15 +4685,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     @Test
     @Override
     public void testPreCreateConceptScheme() throws Exception {
-        // TODO testPreCreateConceptScheme
-
+        // tested in createConcept
     }
 
     @Test
     @Override
     public void testPreCreateConcept() throws Exception {
-        // TODO testPreCreateConcept
-
+        // tested in createConcept
     }
 
     private ConceptMetamacVisualisationResult getConceptMetamacVisualisationResult(List<ConceptMetamacVisualisationResult> actuals, String codeUrn) {

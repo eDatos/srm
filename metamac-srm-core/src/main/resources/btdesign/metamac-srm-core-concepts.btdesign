@@ -50,6 +50,8 @@ Application ConceptsMetamac {
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Find codelists with codes than than can be unit in concept quantity by criteria"
     		PagedResult<@CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeQuantityUnit(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Find codelists with codes than than can be base location in concept quantity by criteria"
+    		PagedResult<@CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeQuantityBaseLocation(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Sends concept scheme to production validation"
     		@ConceptSchemeVersionMetamac sendConceptSchemeToProductionValidation(String urn) throws MetamacException;
     		"Sends concept scheme to diffusion validation"
@@ -129,6 +131,8 @@ Application ConceptsMetamac {
     		PagedResult<@ConceptMetamac> findConceptsCanBeQuantityBaseQuantity(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Finds codes than can be unit in concept quantity by criteria"
     		PagedResult<@CodeMetamac> findCodesCanBeQuantityUnit(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+			"Finds codes than can be base location in concept quantity by criteria"
+    		PagedResult<@CodeMetamac> findCodesCanBeQuantityBaseLocation(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		
     		"Finds all concept types"
     		List<@ConceptType> findAllConceptTypes throws MetamacException;
@@ -253,7 +257,7 @@ Application ConceptsMetamac {
 			"Time value base. Only when Quantity is Index"
 			String baseTime nullable;
             "Geographical value base. Only when Quantity is Index"
-			String baseLocation nullable databaseColumn="BASE_LOCATION_FK";
+            - @CodeMetamac baseLocation nullable cascade="none" databaseColumn="BASE_LOCATION_FK";
 			"Base quantity. Only when Quantity is Change Rate"
 			- @ConceptMetamac baseQuantity nullable cascade="none" databaseColumn="BASE_QUANTITY_FK";
 			

@@ -166,7 +166,7 @@ public class ConceptsDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Co
         target.setPercentageOf(dto2DoMapperSdmxSrm.internationalStringToEntity(source.getPercentageOf(), target.getPercentageOf(), ServiceExceptionParameters.CONCEPT_QUANTITY_PERCENTAGE_OF));
         target.setBaseValue(source.getBaseValue());
         target.setBaseTime(source.getBaseTime());
-        // TODO quantity.baseLocation
+        target.setBaseLocation(toCodeRelation(source.getBaseLocation()));
         target.setBaseQuantity(toConceptRelation(source.getBaseQuantity()));
         return target;
     }

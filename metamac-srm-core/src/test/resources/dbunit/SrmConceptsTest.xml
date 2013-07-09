@@ -5324,6 +5324,7 @@
         VALID_FROM="2011-01-02 02:02:04" 
         VALID_TO_TZ="Europe/London"
         VALID_TO="2012-01-02 02:02:04"
+        VARIABLE_TYPE="GEOGRAPHICAL"
         
         UUID="variable-01"
         CREATED_DATE_TZ="Europe/London"
@@ -5367,6 +5368,7 @@
         VALID_FROM="2011-01-02 02:02:04" 
         VALID_TO_TZ="Europe/London"
         VALID_TO="2012-01-02 02:02:04"
+        VARIABLE_TYPE="[null]"
         
         UUID="variable-02"
         CREATED_DATE_TZ="Europe/London"
@@ -5506,7 +5508,7 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
-        <!-- CODE01 -->
+             <!-- CODE01 -->
             <TB_CODES
                 ID="20111"
                 PARENT_FK="[null]"
@@ -5514,7 +5516,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="2011"
                 NAMEABLE_ARTEFACT_FK="20111"
                       
-                UUID="codelist-1-v2-code-1"
+                UUID="codelist-7-v2-code-1"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2011-01-01 01:02:03"
@@ -5563,7 +5565,7 @@
                 ITEM_SCHEME_VERSION_FIRST_FK="2011"
                 NAMEABLE_ARTEFACT_FK="20112"
                       
-                UUID="codelist-1-v2-code-4"
+                UUID="codelist-7-v2-code-2"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2012-01-01 01:02:03"
@@ -5708,6 +5710,55 @@
         LAST_UPDATED="2011-01-22 01:02:03"
         LAST_UPDATED_TZ="Europe/London"
     />
+    
+            <!-- CODE01 -->
+            <TB_CODES
+                ID="20211"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="2021"
+                ITEM_SCHEME_VERSION_FIRST_FK="2021"
+                NAMEABLE_ARTEFACT_FK="20211"
+                      
+                UUID="codelist-8-v1-code-1"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+            
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="20211"
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="20211"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CODE01"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST08(01.000).CODE01"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST08(01.000).CODE01"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+                
+                NAME_FK="107"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+                
+                UUID="annotableArtefact-20211"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2011-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />    
     
     <!-- ************************************************************************************** -->
     <!-- CODELIST 9                                                                             -->
@@ -5917,7 +5968,7 @@
         LAST_UPDATED_TZ="Europe/London"
     />
     
-        <!-- CODE01 -->
+            <!-- CODE01 -->
             <TB_CODES
                 ID="20411"
                 PARENT_FK="[null]"
@@ -5957,6 +6008,55 @@
                 COMMENT_FK="[null]"
                 
                 UUID="annotableArtefact-20411"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2001-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2001-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"
+            />  
+            
+            <!-- CODE02 -->
+            <TB_CODES
+                ID="20412"
+                PARENT_FK="[null]"
+                ITEM_SCHEME_VERSION_FK="2041"
+                ITEM_SCHEME_VERSION_FIRST_FK="2041"
+                NAMEABLE_ARTEFACT_FK="20412"
+                      
+                UUID="codelist-10-v1-code-2"
+                VERSION="1"
+                CREATED_BY="user1"
+                CREATED_DATE="2001-01-01 01:02:03"
+                CREATED_DATE_TZ="Europe/London"
+                LAST_UPDATED_BY="user2"
+                LAST_UPDATED="2001-01-22 01:02:03"
+                LAST_UPDATED_TZ="Europe/London"  
+            />
+            
+            <TB_M_CODES
+              VARIABLE_ELEMENT_FK="[null]"
+              SHORT_NAME_FK="[null]"
+              TB_CODES="20412"
+            />
+        
+            <TB_ANNOTABLE_ARTEFACTS 
+                ID="20412"
+                ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+                
+                CODE="CODE02"
+                URI_PROVIDER="[null]"
+                URN_PROVIDER="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(01.000).CODE02"
+                URN="urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(01.000).CODE02"
+                REPLACED_BY_VERSION="[null]"
+                REPLACE_TO_VERSION="[null]"
+                
+                NAME_FK="[null]"
+                DESCRIPTION_FK="[null]"
+                COMMENT_FK="[null]"
+                
+                UUID="annotableArtefact-20412"
                 VERSION="1"
                 CREATED_BY="user1"
                 CREATED_DATE="2001-01-01 01:02:03"
@@ -7746,5 +7846,18 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="106"
-    />                                                             
+    />        
+    
+   <TB_INTERNATIONAL_STRINGS
+        ID="107"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1071"
+        LABEL="nombre"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="107"
+    />                                                                 
 </dataset>

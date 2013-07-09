@@ -1749,7 +1749,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
         // Organisations
         assertEquals(5, organisationSchemeVersionTemporal.getItems().size());
-        // TODO Check any organisation
+        // Check any organisation
         {
             String organisationUrn = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(01.000_temporal).ORGANISATION01";
             OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), organisationUrn);
@@ -1793,7 +1793,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
 
             // Organisations
             assertEquals(5, organisationSchemeVersionTemporal.getItems().size());
-            // TODO Check any organisation
+            // Check any organisation
             {
                 String organisationUrn = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME03(02.000).ORGANISATION01";
                 OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), organisationUrn);
@@ -2676,15 +2676,13 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     @Test
     @Override
     public void testPreCreateOrganisationScheme() throws Exception {
-        // TODO testPreCreateOrganisationScheme
-
+        // tested in createOrganisation
     }
 
     @Test
     @Override
     public void testPreCreateOrganisation() throws Exception {
-        // TODO testPreCreateOrganisation
-
+        // tested in createOrganisation
     }
 
     protected OrganisationMetamacVisualisationResult getOrganisationVisualisationResult(List<OrganisationMetamacVisualisationResult> actuals, String codeUrn) {

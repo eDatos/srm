@@ -172,7 +172,7 @@ public class ConceptsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Co
         target.setPercentageOf(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getPercentageOf()));
         target.setBaseValue(source.getBaseValue());
         target.setBaseTime(source.getBaseTime());
-        // TODO quantity.baseLocation
+        target.setBaseLocation(codesDo2DtoMapper.codeMetamacDoToRelatedResourceDto(source.getBaseLocation()));
         target.setBaseQuantity(conceptMetamacDoToRelatedResourceDto(source.getBaseQuantity()));
         return target;
     }

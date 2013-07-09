@@ -225,7 +225,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         checkConceptsWithQuantityConceptMetadataExternallyPublished(itemSchemeVersionId, "DENOMINATOR_FK", exceptionItemsByUrn);
         checkConceptsWithQuantityConceptMetadataExternallyPublished(itemSchemeVersionId, "BASE_QUANTITY_FK", exceptionItemsByUrn);
         checkConceptsWithQuantityCodeMetadataExternallyPublished(itemSchemeVersionId, "UNIT_CODE_FK", exceptionItemsByUrn);
-        // TODO baseLocation
+        checkConceptsWithQuantityCodeMetadataExternallyPublished(itemSchemeVersionId, "BASE_LOCATION_FK", exceptionItemsByUrn);
     }
 
     @Override

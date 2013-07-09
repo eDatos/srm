@@ -85,7 +85,7 @@ Application DtosMetamacConceptDomain {
 			"Time value base. Only when Quantity is Index"
 			String baseTime nullable;
             "Geographical value base. Only when Quantity is Index"
-			String baseLocation nullable;
+			- @RelatedResourceDto baseLocation nullable;
 			"Base quantity. Only when Quantity is Change Rate"
 			- @RelatedResourceDto baseQuantity nullable;
 	    }

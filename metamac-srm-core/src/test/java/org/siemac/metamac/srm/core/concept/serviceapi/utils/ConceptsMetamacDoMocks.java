@@ -118,7 +118,7 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         // Note: following metadata are not in change_rate, but put it to test all metadata conversion. This entity never will be saved
         target.setBaseValue(Integer.valueOf(5));
         target.setBaseTime("2010");
-        // TODO quantity.baseLocation
+        target.setBaseLocation(CodesMetamacDoMocks.mockCodeFixedValues("baseLocation01", CodesMetamacDoMocks.mockCodelistFixedValues("agency01", "codelist01", "01.000"), null));
         return target;
     }
 

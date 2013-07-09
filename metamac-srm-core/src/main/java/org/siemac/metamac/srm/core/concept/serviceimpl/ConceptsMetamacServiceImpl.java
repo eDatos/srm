@@ -39,6 +39,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
@@ -333,6 +334,25 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Codelist with access type = PUBLIC
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
 
+        return codesMetamacService.findCodelistsByCondition(ctx, conditions, pagingParameter);
+    }
+
+    @Override
+    public PagedResult<CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeQuantityBaseLocation(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+            throws MetamacException {
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).distinctRoot().build();
+        }
+        // scheme internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
+                .withProperty(CodelistVersionMetamacProperties.maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
+        // Codelist with access type = PUBLIC
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
+        // Codelist with geographical variable
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.variable().type()).eq(VariableTypeEnum.GEOGRAPHICAL)
+                .buildSingle());
         return codesMetamacService.findCodelistsByCondition(ctx, conditions, pagingParameter);
     }
 
@@ -795,6 +815,31 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
+    public PagedResult<CodeMetamac> findCodesCanBeQuantityBaseLocation(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+
+        // Find
+        if (conditions == null) {
+            conditions = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).distinctRoot().build();
+        }
+        // codelist internally or externally published
+        ConditionalCriteria publishedCondition = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
+                .withProperty(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).buildSingle();
+        conditions.add(publishedCondition);
+        // codelist with access == public
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
+                .withProperty(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.accessType().getName(), false, CodeMetamac.class))
+                .eq(AccessTypeEnum.PUBLIC).buildSingle());
+        // codelist with geographical variable
+        conditions.add(ConditionalCriteriaBuilder
+                .criteriaFor(CodeMetamac.class)
+                .withProperty(
+                        new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.variable().type().getName(), false, CodeMetamac.class))
+                .eq(VariableTypeEnum.GEOGRAPHICAL).buildSingle());
+
+        return codesMetamacService.findCodesByCondition(ctx, conditions, pagingParameter);
+    }
+
+    @Override
     public void deleteConcept(ServiceContext ctx, String urn) throws MetamacException {
 
         ConceptMetamac concept = retrieveConceptByUrn(ctx, urn);
@@ -1217,7 +1262,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         quantityCopied.setPercentageOf(BaseCopyAllMetadataUtils.copy(quantityToCopy.getPercentageOf()));
         quantityCopied.setBaseValue(quantityToCopy.getBaseValue());
         quantityCopied.setBaseTime(quantityToCopy.getBaseTime());
-        // target.setBaseLocation(source.getBaseLocation()); // TODO quantity.baseLocation
+        quantityCopied.setBaseLocation(quantityToCopy.getBaseLocation());
         quantityCopied.setBaseQuantity(versioningConceptRelatedInQuantity(itemSchemeVersionIdToCopy, conceptSchemeNewVersion, quantityToCopy.getBaseQuantity()));
 
         conceptInNewVersion.setQuantity(quantityCopied);
@@ -1377,8 +1422,14 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_QUANTITY);
             }
         }
-
-        // TODO quantity.baseLocation
+        if (quantity.getBaseLocation() != null) {
+            Long codeBaseLocationId = quantity.getBaseLocation().getId();
+            List<ConditionalCriteria> criteriaToVerifyBaseLocation = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.id()).eq(codeBaseLocationId).build();
+            PagedResult<CodeMetamac> result = findCodesCanBeQuantityBaseLocation(ctx, criteriaToVerifyBaseLocation, pagingParameter);
+            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codeBaseLocationId)) {
+                throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_LOCATION);
+            }
+        }
     }
 
     private void checkConceptSchemeCanBeModified(ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {

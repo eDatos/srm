@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.QuantityUnitSymbolPositionEnum;
+import org.siemac.metamac.srm.core.concept.serviceimpl.utils.shared.QuantityUtils;
 
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -74,33 +75,54 @@ public class ConceptsMetamacDtoMocks {
         return relatedResourceDto;
     }
 
-    public static QuantityDto mockQuantityDtoTypeQuantity(RelatedResourceDto unitCode) {
+    public static QuantityDto mockQuantityDtoCommon(QuantityTypeEnum type, RelatedResourceDto unitCode, RelatedResourceDto numerator, RelatedResourceDto denominator, RelatedResourceDto baseQuantity,
+            RelatedResourceDto baseLocation) {
         QuantityDto target = new QuantityDto();
-        target.setQuantityType(QuantityTypeEnum.QUANTITY);
-        target.setUnitCode(unitCode);
-        target.setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
-        target.setSignificantDigits(Integer.valueOf(5));
-        target.setDecimalPlaces(Integer.valueOf(2));
-        target.setUnitMultiplier(Integer.valueOf(10));
+        target.setQuantityType(type);
+        if (QuantityUtils.isQuantityOrExtension(type)) {
+            target.setUnitCode(unitCode);
+            target.setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+            target.setSignificantDigits(Integer.valueOf(5));
+            target.setDecimalPlaces(Integer.valueOf(2));
+            target.setUnitMultiplier(Integer.valueOf(10));
+        }
+        if (QuantityUtils.isAmountOrExtension(type)) {
+            // nothing
+        }
+        if (QuantityUtils.isMagnitudeOrExtension(type)) {
+            target.setMinimum(Integer.valueOf(1000));
+            target.setMaximum(Integer.valueOf(2000));
+        }
+        if (QuantityUtils.isFractionOrExtension(type)) {
+            target.setNumerator(numerator);
+            target.setDenominator(denominator);
+        }
+        if (QuantityUtils.isRatioOrExtension(type)) {
+            target.setIsPercentage(Boolean.FALSE);
+            target.setPercentageOf(BaseDtoMocks.mockInternationalStringDto("es", "percentageOf"));
+        }
+        if (QuantityUtils.isRateOrExtension(type)) {
+            // nothing
+        }
+        if (QuantityUtils.isIndexOrExtension(type)) {
+            target.setBaseLocation(baseLocation);
+        }
+        if (QuantityUtils.isChangeRateOrExtension(type)) {
+            target.setBaseQuantity(baseQuantity);
+        }
         return target;
     }
 
+    public static QuantityDto mockQuantityDtoTypeQuantity(RelatedResourceDto unitCode) {
+        return mockQuantityDtoCommon(QuantityTypeEnum.QUANTITY, unitCode, null, null, null, null);
+    }
+
+    public static QuantityDto mockQuantityDtoTypeIndex(RelatedResourceDto unitCode, RelatedResourceDto numerator, RelatedResourceDto denominator, RelatedResourceDto baseLocation) {
+        return mockQuantityDtoCommon(QuantityTypeEnum.INDEX, unitCode, numerator, denominator, null, baseLocation);
+    }
+
     public static QuantityDto mockQuantityDtoTypeChangeRate(RelatedResourceDto unitCode, RelatedResourceDto numerator, RelatedResourceDto denominator, RelatedResourceDto baseQuantity) {
-        QuantityDto target = new QuantityDto();
-        target.setQuantityType(QuantityTypeEnum.CHANGE_RATE);
-        target.setUnitCode(unitCode);
-        target.setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
-        target.setSignificantDigits(Integer.valueOf(5));
-        target.setDecimalPlaces(Integer.valueOf(2));
-        target.setUnitMultiplier(Integer.valueOf(10));
-        target.setMinimum(Integer.valueOf(1000));
-        target.setMaximum(Integer.valueOf(2000));
-        target.setNumerator(numerator);
-        target.setDenominator(denominator);
-        target.setIsPercentage(Boolean.FALSE);
-        target.setPercentageOf(BaseDtoMocks.mockInternationalStringDto("es", "percentageOf"));
-        target.setBaseQuantity(baseQuantity);
-        return target;
+        return mockQuantityDtoCommon(QuantityTypeEnum.CHANGE_RATE, unitCode, numerator, denominator, baseQuantity, null);
     }
 
     // -----------------------------------------------------------------------------------
