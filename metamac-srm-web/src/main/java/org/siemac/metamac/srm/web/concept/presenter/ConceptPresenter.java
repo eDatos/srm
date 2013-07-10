@@ -13,7 +13,7 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
-import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -312,10 +312,10 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     //
 
     @Override
-    public void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptRoleEnum conceptRole, String variableUrn, int firstResult, int maxResults, String criteria, String conceptUrn,
-            boolean isLastVersion) {
+    public void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptSchemeTypeEnum conceptSchemeTypeEnum, String variableUrn, int firstResult, int maxResults, String criteria,
+            String conceptUrn, boolean isLastVersion) {
 
-        if (ConceptRoleEnum.MEASURE_DIMENSION.equals(conceptRole)) {
+        if (ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeTypeEnum)) {
 
             // the enumerated representation of a measure dimension concept must be a concept scheme
 

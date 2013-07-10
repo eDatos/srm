@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.web.concept.view.handlers;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
-import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
@@ -22,7 +22,7 @@ public interface ConceptUiHandlers extends BaseConceptUiHandlers {
 
     void retrieveConceptTypes();
 
-    void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptRoleEnum conceptRoleEnum, String variableUrn, int firstResult, int maxResults, String criteria, String conceptUrn,
+    void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptSchemeTypeEnum conceptSchemeType, String variableUrn, int firstResult, int maxResults, String criteria, String conceptUrn,
             boolean isLastVersion);
 
     void retrieveVariables(int firstResult, int maxResults, String criteria, String variableFamilyUrn);
