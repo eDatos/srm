@@ -9,7 +9,6 @@ import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.category.model.ds.CategorySchemeDS;
 import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
 import org.siemac.metamac.srm.web.category.presenter.CategorySchemePresenter;
@@ -210,19 +209,12 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
             }
         });
 
-        // Edit: Add a custom handler to check scheme status before start editing
+        // Edit
         mainFormLayout.getEditToolStripButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                ProcStatusEnum status = categorySchemeDto.getLifeCycle().getProcStatus();
-                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(status)) {
-                    // If the scheme is published, create a temporal version
-                    getUiHandlers().createTemporalVersion(categorySchemeDto.getUrn());
-                } else {
-                    // Default behavior
-                    startCategorySchemeEdition();
-                }
+                startCategorySchemeEdition();
             }
         });
 
@@ -283,7 +275,14 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
                 getUiHandlers().publishExternally(categorySchemeDto.getUrn(), categorySchemeDto.getLifeCycle().getProcStatus());
             }
         });
-        mainFormLayout.getVersioning().addClickHandler(new ClickHandler() {
+        mainFormLayout.getCreateTemporalVersion().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().createTemporalVersion(categorySchemeDto.getUrn());
+            }
+        });
+        mainFormLayout.getConsolidateVersion().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -295,13 +294,6 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
             @Override
             public void onClick(ClickEvent event) {
                 getUiHandlers().cancelValidity(categorySchemeDto.getUrn());
-            }
-        });
-        mainFormLayout.getVersionSdmxResource().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                versionCategoryScheme();
             }
         });
         mainFormLayout.getExport().addClickHandler(new ClickHandler() {

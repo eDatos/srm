@@ -16,7 +16,6 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
@@ -276,19 +275,12 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             }
         });
 
-        // Edit: Add a custom handler to check scheme status before start editing
+        // Edit
         mainFormLayout.getEditToolStripButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                ProcStatusEnum status = codelistDto.getLifeCycle().getProcStatus();
-                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(status)) {
-                    // If the scheme is published, create a temporal version
-                    getUiHandlers().createTemporalVersion(codelistDto.getUrn());
-                } else {
-                    // Default behavior
-                    startCodelistEdition();
-                }
+                startCodelistEdition();
             }
         });
 
@@ -349,7 +341,14 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 getUiHandlers().publishExternally(codelistDto.getUrn(), codelistDto.getLifeCycle().getProcStatus());
             }
         });
-        mainFormLayout.getVersioning().addClickHandler(new ClickHandler() {
+        mainFormLayout.getCreateTemporalVersion().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().createTemporalVersion(codelistDto.getUrn());
+            }
+        });
+        mainFormLayout.getConsolidateVersion().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -376,13 +375,6 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                         getUiHandlers().addCodelistToFamily(codelistDto.getUrn(), selectedFamily.getUrn());
                     }
                 });
-            }
-        });
-        mainFormLayout.getVersionSdmxResource().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                versionCodelist();
             }
         });
         mainFormLayout.getExport().addClickHandler(new ClickHandler() {

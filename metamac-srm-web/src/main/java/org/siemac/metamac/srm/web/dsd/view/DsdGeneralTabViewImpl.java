@@ -13,7 +13,6 @@ import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisa
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
@@ -153,19 +152,12 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             }
         });
 
-        // Edit: Add a custom handler to check scheme status before start editing
+        // Edit
         mainFormLayout.getEditToolStripButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                ProcStatusEnum status = dataStructureDefinitionMetamacDto.getLifeCycle().getProcStatus();
-                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(status)) {
-                    // If the scheme is published, create a temporal version
-                    getUiHandlers().createTemporalVersion(dataStructureDefinitionMetamacDto.getUrn());
-                } else {
-                    // Default behavior
-                    startDsdEdition();
-                }
+                startDsdEdition();
             }
         });
 
@@ -226,7 +218,14 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                 getUiHandlers().publishExternally(dataStructureDefinitionMetamacDto);
             }
         });
-        mainFormLayout.getVersioning().addClickHandler(new ClickHandler() {
+        mainFormLayout.getCreateTemporalVersion().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().createTemporalVersion(dataStructureDefinitionMetamacDto.getUrn());
+            }
+        });
+        mainFormLayout.getConsolidateVersion().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -238,13 +237,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             @Override
             public void onClick(ClickEvent event) {
                 getUiHandlers().cancelValidity(dataStructureDefinitionMetamacDto.getUrn());
-            }
-        });
-        mainFormLayout.getVersionSdmxResource().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                versionDsd();
             }
         });
         mainFormLayout.getExport().addClickHandler(new ClickHandler() {

@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
@@ -321,19 +320,12 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             }
         });
 
-        // Edit: Add a custom handler to check scheme status before start editing
+        // Edit
         mainFormLayout.getEditToolStripButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                ProcStatusEnum status = organisationSchemeDto.getLifeCycle().getProcStatus();
-                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(status)) {
-                    // If the scheme is published, create a temporal version
-                    getUiHandlers().createTemporalVersion(organisationSchemeDto.getUrn());
-                } else {
-                    // Default behavior
-                    startOrganisationSchemeEdition();
-                }
+                startOrganisationSchemeEdition();
             }
         });
 
@@ -394,7 +386,14 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 getUiHandlers().publishExternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus());
             }
         });
-        mainFormLayout.getVersioning().addClickHandler(new ClickHandler() {
+        mainFormLayout.getCreateTemporalVersion().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().createTemporalVersion(organisationSchemeDto.getUrn());
+            }
+        });
+        mainFormLayout.getConsolidateVersion().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -406,13 +405,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             @Override
             public void onClick(ClickEvent event) {
                 getUiHandlers().cancelValidity(organisationSchemeDto.getUrn());
-            }
-        });
-        mainFormLayout.getVersionSdmxResource().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                versionOrganisationScheme();
             }
         });
         mainFormLayout.getExport().addClickHandler(new ClickHandler() {
