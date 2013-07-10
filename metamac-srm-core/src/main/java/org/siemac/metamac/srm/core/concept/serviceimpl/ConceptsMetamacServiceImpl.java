@@ -204,7 +204,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeRole(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeRoleByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
         // Find
         if (conditions == null) {
@@ -225,7 +225,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeExtended(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeExtendedByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
         // Find
         if (conditions == null) {
@@ -245,7 +245,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContext ctx, List<ConditionalCriteria> conditions,
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForConceptsByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter, String conceptUrn) throws MetamacException {
 
         // Find
@@ -300,25 +300,25 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ServiceContext ctx, String conceptSchemeUrn,
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeQuantityBaseQuantityByCondition(ServiceContext ctx, String conceptSchemeUrn,
             List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         return findConceptSchemesCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
     }
 
     @Override
-    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions,
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeQuantityNumeratorByCondition(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter) throws MetamacException {
         return findConceptSchemesCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
     }
 
     @Override
-    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(ServiceContext ctx, String conceptSchemeUrn,
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeQuantityDenominatorByCondition(ServiceContext ctx, String conceptSchemeUrn,
             List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
         return findConceptSchemesCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
     }
 
     @Override
-    public PagedResult<CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeQuantityUnit(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+    public PagedResult<CodelistVersionMetamac> findCodelistsWithCodesCanBeQuantityUnitByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
         // Find
         if (conditions == null) {
@@ -335,7 +335,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeQuantityBaseLocation(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+    public PagedResult<CodelistVersionMetamac> findCodelistsWithCodesCanBeQuantityBaseLocationByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
         // Find
         if (conditions == null) {
@@ -709,8 +709,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 Long conceptSchemeId = concept.getCoreRepresentation().getEnumerationConceptScheme().getId();
                 List<ConditionalCriteria> criteriaToVerifyConceptSchemeRepresentation = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
                         .withProperty(ConceptSchemeVersionMetamacProperties.id()).eq(conceptSchemeId).build();
-                PagedResult<ConceptSchemeVersionMetamac> result = findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ctx, criteriaToVerifyConceptSchemeRepresentation, pagingParameter, concept
-                        .getNameableArtefact().getUrn());
+                PagedResult<ConceptSchemeVersionMetamac> result = findConceptSchemesCanBeEnumeratedRepresentationForConceptsByCondition(ctx, criteriaToVerifyConceptSchemeRepresentation,
+                        pagingParameter, concept.getNameableArtefact().getUrn());
                 if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptSchemeId)) {
                     return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
                 }
@@ -785,25 +785,25 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<ConceptMetamac> findConceptsCanBeQuantityNumerator(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+    public PagedResult<ConceptMetamac> findConceptsCanBeQuantityNumeratorByCondition(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
-        return findConceptsCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
+        return findConceptsCanBeQuantityByCondition(ctx, conceptSchemeUrn, conditions, pagingParameter);
     }
 
     @Override
-    public PagedResult<ConceptMetamac> findConceptsCanBeQuantityDenominator(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
-            throws MetamacException {
-        return findConceptsCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
+    public PagedResult<ConceptMetamac> findConceptsCanBeQuantityDenominatorByCondition(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter) throws MetamacException {
+        return findConceptsCanBeQuantityByCondition(ctx, conceptSchemeUrn, conditions, pagingParameter);
     }
 
     @Override
-    public PagedResult<ConceptMetamac> findConceptsCanBeQuantityBaseQuantity(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
-            throws MetamacException {
-        return findConceptsCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
+    public PagedResult<ConceptMetamac> findConceptsCanBeQuantityBaseQuantityByCondition(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter) throws MetamacException {
+        return findConceptsCanBeQuantityByCondition(ctx, conceptSchemeUrn, conditions, pagingParameter);
     }
 
     @Override
-    public PagedResult<CodeMetamac> findCodesCanBeQuantityUnit(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+    public PagedResult<CodeMetamac> findCodesCanBeQuantityUnitByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
 
         // Find
         if (conditions == null) {
@@ -822,7 +822,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<CodeMetamac> findCodesCanBeQuantityBaseLocation(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+    public PagedResult<CodeMetamac> findCodesCanBeQuantityBaseLocationByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
 
         // Find
         if (conditions == null) {
@@ -1397,7 +1397,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (quantity.getUnitCode() != null) {
             Long unitCodeId = quantity.getUnitCode().getId();
             List<ConditionalCriteria> criteriaToVerifyUnitCode = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.id()).eq(unitCodeId).build();
-            PagedResult<CodeMetamac> result = findCodesCanBeQuantityUnit(ctx, criteriaToVerifyUnitCode, pagingParameter);
+            PagedResult<CodeMetamac> result = findCodesCanBeQuantityUnitByCondition(ctx, criteriaToVerifyUnitCode, pagingParameter);
             if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(unitCodeId)) {
                 throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_CODE);
             }
@@ -1406,7 +1406,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             Long conceptNumeratorId = quantity.getNumerator().getId();
             List<ConditionalCriteria> criteriaToVerifyNumerator = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id()).eq(conceptNumeratorId)
                     .build();
-            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityNumerator(ctx, conceptSchemeVersionSourceUrn, criteriaToVerifyNumerator, pagingParameter);
+            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityNumeratorByCondition(ctx, conceptSchemeVersionSourceUrn, criteriaToVerifyNumerator, pagingParameter);
             if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptNumeratorId)) {
                 throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_NUMERATOR);
             }
@@ -1415,7 +1415,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             Long conceptDenominatorId = quantity.getDenominator().getId();
             List<ConditionalCriteria> criteriaToVerifyDenominator = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id()).eq(conceptDenominatorId)
                     .build();
-            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityDenominator(ctx, conceptSchemeVersionSourceUrn, criteriaToVerifyDenominator, pagingParameter);
+            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityDenominatorByCondition(ctx, conceptSchemeVersionSourceUrn, criteriaToVerifyDenominator, pagingParameter);
             if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptDenominatorId)) {
                 throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_DENOMINATOR);
             }
@@ -1424,7 +1424,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             Long conceptBaseQuantityId = quantity.getBaseQuantity().getId();
             List<ConditionalCriteria> criteriaToVerifyBaseQuantity = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id()).eq(conceptBaseQuantityId)
                     .build();
-            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityBaseQuantity(ctx, conceptSchemeVersionSourceUrn, criteriaToVerifyBaseQuantity, pagingParameter);
+            PagedResult<ConceptMetamac> result = findConceptsCanBeQuantityBaseQuantityByCondition(ctx, conceptSchemeVersionSourceUrn, criteriaToVerifyBaseQuantity, pagingParameter);
             if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptBaseQuantityId)) {
                 throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_QUANTITY);
             }
@@ -1432,7 +1432,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (quantity.getBaseLocation() != null) {
             Long codeBaseLocationId = quantity.getBaseLocation().getId();
             List<ConditionalCriteria> criteriaToVerifyBaseLocation = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.id()).eq(codeBaseLocationId).build();
-            PagedResult<CodeMetamac> result = findCodesCanBeQuantityBaseLocation(ctx, criteriaToVerifyBaseLocation, pagingParameter);
+            PagedResult<CodeMetamac> result = findCodesCanBeQuantityBaseLocationByCondition(ctx, criteriaToVerifyBaseLocation, pagingParameter);
             if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codeBaseLocationId)) {
                 throw new MetamacException(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_LOCATION);
             }
@@ -1447,7 +1447,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     /**
      * At the moment, conditions to be numerator, numerator o base quantity are identical.
      */
-    private PagedResult<ConceptMetamac> findConceptsCanBeQuantity(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+    private PagedResult<ConceptMetamac> findConceptsCanBeQuantityByCondition(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
 
         // Find

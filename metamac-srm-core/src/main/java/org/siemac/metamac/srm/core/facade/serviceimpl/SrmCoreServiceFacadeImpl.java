@@ -1063,7 +1063,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsByConditionCanReplaceTo(ServiceContext ctx, String codelistUrn, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanReplaceToByCondition(ServiceContext ctx, String codelistUrn, MetamacCriteria criteria) throws MetamacException {
         // Security
         CodesSecurityUtils.canFindCodelistsByCondition(ctx);
 
@@ -1071,7 +1071,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistVersionMetamac> result = getCodesMetamacService().findCodelistsByConditionCanReplaceTo(ctx, codelistUrn, sculptorCriteria.getConditions(),
+        PagedResult<CodelistVersionMetamac> result = getCodesMetamacService().findCodelistsCanReplaceToByCondition(ctx, codelistUrn, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -1081,7 +1081,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ServiceContext ctx, MetamacCriteria criteria)
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsWhoseCodesCanBeVariableElementGeographicalGranularityByCondition(ServiceContext ctx, MetamacCriteria criteria)
             throws MetamacException {
         // Security
         CodesSecurityUtils.canFindCodelistsByCondition(ctx);
@@ -1090,7 +1090,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistVersionMetamac> result = getCodesMetamacService().findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ctx, sculptorCriteria.getConditions(),
+        PagedResult<CodelistVersionMetamac> result = getCodesMetamacService().findCodelistsWhoseCodesCanBeVariableElementGeographicalGranularityByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -1407,7 +1407,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodesByConditionCanBeVariableElementGeographicalGranularity(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodesCanBeVariableElementGeographicalGranularityByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         CodesSecurityUtils.canFindCodesByCondition(ctx);
 
@@ -1415,7 +1415,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodeMetamac> result = getCodesMetamacService().findCodesByConditionCanBeVariableElementGeographicalGranularity(ctx, sculptorCriteria.getConditions(),
+        PagedResult<CodeMetamac> result = getCodesMetamacService().findCodesCanBeVariableElementGeographicalGranularityByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -2518,7 +2518,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeRole(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeRoleByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
@@ -2526,7 +2526,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesByConditionWithConceptsCanBeRole(ctx, sculptorCriteria.getConditions(),
+        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesWithConceptsCanBeRoleByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -2537,7 +2537,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeExtended(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeExtendedByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
 
@@ -2545,7 +2545,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesByConditionWithConceptsCanBeExtended(ctx, sculptorCriteria.getConditions(),
+        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesWithConceptsCanBeExtendedByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -2556,7 +2556,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContext ctx, String conceptUrn, MetamacCriteria criteria)
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesCanBeEnumeratedRepresentationForConceptsByCondition(ServiceContext ctx, String conceptUrn, MetamacCriteria criteria)
             throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
@@ -2565,7 +2565,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ctx, sculptorCriteria.getConditions(),
+        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesCanBeEnumeratedRepresentationForConceptsByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter(), conceptUrn);
 
         // Transform
@@ -2576,7 +2576,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria)
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeQuantityNumeratorByCondition(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria)
             throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
@@ -2585,7 +2585,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(ctx, conceptSchemeUrn,
+        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesWithConceptsCanBeQuantityNumeratorByCondition(ctx, conceptSchemeUrn,
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -2596,7 +2596,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria)
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeQuantityDenominatorByCondition(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria)
             throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
@@ -2605,7 +2605,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(ctx, conceptSchemeUrn,
+        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesWithConceptsCanBeQuantityDenominatorByCondition(ctx, conceptSchemeUrn,
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -2616,7 +2616,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria)
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeQuantityBaseQuantityByCondition(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria)
             throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
@@ -2625,7 +2625,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ctx, conceptSchemeUrn,
+        PagedResult<ConceptSchemeVersionMetamac> result = getConceptsMetamacService().findConceptSchemesWithConceptsCanBeQuantityBaseQuantityByCondition(ctx, conceptSchemeUrn,
                 sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -2636,7 +2636,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsByConditionWithCodesCanBeQuantityUnit(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsWithCodesCanBeQuantityUnitByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         CodesSecurityUtils.canFindCodelistsByCondition(ctx);
 
@@ -2644,7 +2644,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistVersionMetamac> result = getConceptsMetamacService().findCodelistsByConditionWithCodesCanBeQuantityUnit(ctx, sculptorCriteria.getConditions(),
+        PagedResult<CodelistVersionMetamac> result = getConceptsMetamacService().findCodelistsWithCodesCanBeQuantityUnitByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -2655,7 +2655,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsByConditionWithCodesCanBeQuantityBaseLocation(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsWithCodesCanBeQuantityBaseLocationByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         CodesSecurityUtils.canFindCodelistsByCondition(ctx);
 
@@ -2663,7 +2663,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodelistMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodelistVersionMetamac> result = getConceptsMetamacService().findCodelistsByConditionWithCodesCanBeQuantityBaseLocation(ctx, sculptorCriteria.getConditions(),
+        PagedResult<CodelistVersionMetamac> result = getConceptsMetamacService().findCodelistsWithCodesCanBeQuantityBaseLocationByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -2935,7 +2935,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeQuantityNumerator(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeQuantityNumeratorByCondition(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria) throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
 
@@ -2943,7 +2943,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptMetamac> result = getConceptsMetamacService().findConceptsCanBeQuantityNumerator(ctx, conceptSchemeUrn, sculptorCriteria.getConditions(),
+        PagedResult<ConceptMetamac> result = getConceptsMetamacService().findConceptsCanBeQuantityNumeratorByCondition(ctx, conceptSchemeUrn, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -2954,7 +2954,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeQuantityDenominator(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeQuantityDenominatorByCondition(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria) throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
 
@@ -2962,7 +2962,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptMetamac> result = getConceptsMetamacService().findConceptsCanBeQuantityDenominator(ctx, conceptSchemeUrn, sculptorCriteria.getConditions(),
+        PagedResult<ConceptMetamac> result = getConceptsMetamacService().findConceptsCanBeQuantityDenominatorByCondition(ctx, conceptSchemeUrn, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -2973,7 +2973,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeQuantityBaseQuantity(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeQuantityBaseQuantityByCondition(ServiceContext ctx, String conceptSchemeUrn, MetamacCriteria criteria) throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
 
@@ -2981,7 +2981,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<ConceptMetamac> result = getConceptsMetamacService().findConceptsCanBeQuantityBaseQuantity(ctx, conceptSchemeUrn, sculptorCriteria.getConditions(),
+        PagedResult<ConceptMetamac> result = getConceptsMetamacService().findConceptsCanBeQuantityBaseQuantityByCondition(ctx, conceptSchemeUrn, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter());
 
         // Transform
@@ -2992,7 +2992,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodesCanBeQuantityUnit(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodesCanBeQuantityUnitByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         CodesSecurityUtils.canFindCodesByCondition(ctx);
 
@@ -3000,7 +3000,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodeMetamac> result = getConceptsMetamacService().findCodesCanBeQuantityUnit(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+        PagedResult<CodeMetamac> result = getConceptsMetamacService().findCodesCanBeQuantityUnitByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodeToMetamacCriteriaResultRelatedResource(result,
@@ -3010,7 +3010,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodesCanBeQuantityBaseLocation(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodesCanBeQuantityBaseLocationByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         CodesSecurityUtils.canFindCodesByCondition(ctx);
 
@@ -3018,7 +3018,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getCodeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
 
         // Find
-        PagedResult<CodeMetamac> result = getConceptsMetamacService().findCodesCanBeQuantityBaseLocation(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+        PagedResult<CodeMetamac> result = getConceptsMetamacService().findCodesCanBeQuantityBaseLocationByCondition(ctx, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
         // Transform
         MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultCodeToMetamacCriteriaResultRelatedResource(result,

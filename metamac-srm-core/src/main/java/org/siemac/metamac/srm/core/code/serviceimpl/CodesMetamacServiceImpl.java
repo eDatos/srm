@@ -322,13 +322,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<CodelistVersionMetamac> findCodelistsByConditionCanReplaceTo(ServiceContext ctx, String codelistUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+    public PagedResult<CodelistVersionMetamac> findCodelistsCanReplaceToByCondition(ServiceContext ctx, String codelistUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
-        return findCodelistsByConditionCanReplaceTo(ctx, codelistUrn, false, conditions, pagingParameter);
+        return findCodelistsCanReplaceToByCondition(ctx, codelistUrn, false, conditions, pagingParameter);
     }
 
     @Override
-    public PagedResult<CodelistVersionMetamac> findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ServiceContext ctx, List<ConditionalCriteria> conditions,
+    public PagedResult<CodelistVersionMetamac> findCodelistsWhoseCodesCanBeVariableElementGeographicalGranularityByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
             PagingParameter pagingParameter) throws MetamacException {
         // Find
         if (conditions == null) {
@@ -1288,7 +1288,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<CodeMetamac> findCodesByConditionCanBeVariableElementGeographicalGranularity(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
+    public PagedResult<CodeMetamac> findCodesCanBeVariableElementGeographicalGranularityByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
         // Find
         if (conditions == null) {
@@ -2315,7 +2315,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             Long codelistReplaceToId = replaceTo.getId();
             List<ConditionalCriteria> criteriaToVerifyCodelistReplaceTo = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.id())
                     .eq(codelistReplaceToId).build();
-            PagedResult<CodelistVersionMetamac> result = findCodelistsByConditionCanReplaceTo(ctx, codelist.getMaintainableArtefact().getUrn(), true, criteriaToVerifyCodelistReplaceTo,
+            PagedResult<CodelistVersionMetamac> result = findCodelistsCanReplaceToByCondition(ctx, codelist.getMaintainableArtefact().getUrn(), true, criteriaToVerifyCodelistReplaceTo,
                     pagingParameter);
             if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistReplaceToId)) {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT).withMessageParameters(ServiceExceptionParameters.CODELIST_REPLACE_TO).build();
@@ -2323,7 +2323,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
-    private PagedResult<CodelistVersionMetamac> findCodelistsByConditionCanReplaceTo(ServiceContext ctx, String codelistUrn, boolean retrieveCodelistsReplacedBySelectedCodelist,
+    private PagedResult<CodelistVersionMetamac> findCodelistsCanReplaceToByCondition(ServiceContext ctx, String codelistUrn, boolean retrieveCodelistsReplacedBySelectedCodelist,
             List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
 
         // Validation
@@ -2600,7 +2600,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             Long codeGeographicalGranularityId = codeGeographicalGranularity.getId();
             List<ConditionalCriteria> criteriaToVerifyGeographicalGranularity = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.id())
                     .eq(codeGeographicalGranularityId).build();
-            PagedResult<CodeMetamac> result = findCodesByConditionCanBeVariableElementGeographicalGranularity(ctx, criteriaToVerifyGeographicalGranularity, pagingParameter);
+            PagedResult<CodeMetamac> result = findCodesCanBeVariableElementGeographicalGranularityByCondition(ctx, criteriaToVerifyGeographicalGranularity, pagingParameter);
             if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codeGeographicalGranularityId)) {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT)
                         .withMessageParameters(ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY).build();
@@ -2616,7 +2616,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         Long codelistGeographicalGranularityId = codelistGeographicalGranularity.getId();
         List<ConditionalCriteria> criteriaToVerifyGeographicalGranularity = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.id())
                 .eq(codelistGeographicalGranularityId).build();
-        PagedResult<CodelistVersionMetamac> result = findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ctx, criteriaToVerifyGeographicalGranularity, pagingParameter);
+        PagedResult<CodelistVersionMetamac> result = findCodelistsWhoseCodesCanBeVariableElementGeographicalGranularityByCondition(ctx, criteriaToVerifyGeographicalGranularity, pagingParameter);
         if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistGeographicalGranularityId)) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CODELIST_UNSUPPORTED_TO_GEOGRAPHICAL_GRANULARITY).withMessageParameters(codelistUrn).build();
         }

@@ -540,7 +540,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindConceptSchemesByConditionWithConceptsCanBeRole() throws Exception {
+    public void testFindConceptSchemesWithConceptsCanBeRoleByCondition() throws Exception {
 
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         // Order
@@ -556,7 +556,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
         metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeRole(getServiceContextAdministrador(), metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeRoleByCondition(getServiceContextAdministrador(), metamacCriteria);
 
         assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
         int i = 0;
@@ -566,7 +566,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindConceptSchemesByConditionWithConceptsCanBeExtended() throws Exception {
+    public void testFindConceptSchemesWithConceptsCanBeExtendedByCondition() throws Exception {
 
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         // Order
@@ -582,7 +582,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         metamacCriteria.getPaginator().setMaximumResultSize(Integer.MAX_VALUE);
         metamacCriteria.getPaginator().setCountTotalResults(Boolean.TRUE);
 
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeExtended(getServiceContextAdministrador(), metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeExtendedByCondition(getServiceContextAdministrador(), metamacCriteria);
 
         assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
         int i = 0;
@@ -592,13 +592,13 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityNumerator() throws Exception {
+    public void testFindConceptSchemesWithConceptsCanBeQuantityNumeratorByCondition() throws Exception {
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
 
         String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(getServiceContextAdministrador(), conceptSchemeUrn,
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeQuantityNumeratorByCondition(getServiceContextAdministrador(), conceptSchemeUrn,
                 metamacCriteria);
 
         // Validate
@@ -612,13 +612,13 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityDenominator() throws Exception {
+    public void testFindConceptSchemesWithConceptsCanBeQuantityDenominatorByCondition() throws Exception {
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
 
         String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(getServiceContextAdministrador(), conceptSchemeUrn,
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeQuantityDenominatorByCondition(getServiceContextAdministrador(), conceptSchemeUrn,
                 metamacCriteria);
 
         // Validate
@@ -632,13 +632,13 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity() throws Exception {
+    public void testFindConceptSchemesWithConceptsCanBeQuantityBaseQuantityByCondition() throws Exception {
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
 
         String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(getServiceContextAdministrador(), conceptSchemeUrn,
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeQuantityBaseQuantityByCondition(getServiceContextAdministrador(), conceptSchemeUrn,
                 metamacCriteria);
 
         // Validate
@@ -652,11 +652,11 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindCodelistsByConditionWithCodesCanBeQuantityUnit() throws Exception {
+    public void testFindCodelistsWithCodesCanBeQuantityUnitByCondition() throws Exception {
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsByConditionWithCodesCanBeQuantityUnit(getServiceContextAdministrador(), metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsWithCodesCanBeQuantityUnitByCondition(getServiceContextAdministrador(), metamacCriteria);
 
         // Validate
         assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());
@@ -669,11 +669,11 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindCodelistsByConditionWithCodesCanBeQuantityBaseLocation() throws Exception {
+    public void testFindCodelistsWithCodesCanBeQuantityBaseLocationByCondition() throws Exception {
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsByConditionWithCodesCanBeQuantityBaseLocation(getServiceContextAdministrador(), metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodelistsWithCodesCanBeQuantityBaseLocationByCondition(getServiceContextAdministrador(), metamacCriteria);
 
         // Validate
         assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
@@ -1597,13 +1597,13 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindConceptsCanBeQuantityDenominator() throws Exception {
+    public void testFindConceptsCanBeQuantityDenominatorByCondition() throws Exception {
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
 
         String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeQuantityDenominator(getServiceContextAdministrador(), conceptSchemeUrn, metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeQuantityDenominatorByCondition(getServiceContextAdministrador(), conceptSchemeUrn, metamacCriteria);
 
         // Validate
         assertEquals(6, result.getPaginatorResult().getTotalResults().intValue());
@@ -1619,13 +1619,13 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindConceptsCanBeQuantityNumerator() throws Exception {
+    public void testFindConceptsCanBeQuantityNumeratorByCondition() throws Exception {
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
 
         String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeQuantityNumerator(getServiceContextAdministrador(), conceptSchemeUrn, metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeQuantityNumeratorByCondition(getServiceContextAdministrador(), conceptSchemeUrn, metamacCriteria);
 
         // Validate
         assertEquals(6, result.getPaginatorResult().getTotalResults().intValue());
@@ -1641,13 +1641,13 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindConceptsCanBeQuantityBaseQuantity() throws Exception {
+    public void testFindConceptsCanBeQuantityBaseQuantityByCondition() throws Exception {
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
 
         String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeQuantityBaseQuantity(getServiceContextAdministrador(), conceptSchemeUrn, metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findConceptsCanBeQuantityBaseQuantityByCondition(getServiceContextAdministrador(), conceptSchemeUrn, metamacCriteria);
 
         // Validate
         assertEquals(6, result.getPaginatorResult().getTotalResults().intValue());
@@ -1663,12 +1663,12 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindCodesCanBeQuantityUnit() throws Exception {
+    public void testFindCodesCanBeQuantityUnitByCondition() throws Exception {
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
 
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodesCanBeQuantityUnit(getServiceContextAdministrador(), metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodesCanBeQuantityUnitByCondition(getServiceContextAdministrador(), metamacCriteria);
 
         // Validate
         assertEquals(3, result.getPaginatorResult().getTotalResults().intValue());
@@ -1681,12 +1681,12 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindCodesCanBeQuantityBaseLocation() throws Exception {
+    public void testFindCodesCanBeQuantityBaseLocationByCondition() throws Exception {
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
 
-        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodesCanBeQuantityBaseLocation(getServiceContextAdministrador(), metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> result = srmCoreServiceFacade.findCodesCanBeQuantityBaseLocationByCondition(getServiceContextAdministrador(), metamacCriteria);
 
         // Validate
         assertEquals(2, result.getPaginatorResult().getTotalResults().intValue());

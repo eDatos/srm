@@ -807,7 +807,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     @Override
-    public void testFindCodelistsByConditionCanReplaceTo() throws Exception {
+    public void testFindCodelistsCanReplaceToByCondition() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
         // New codelist
@@ -816,7 +816,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.id()).ascending().distinctRoot()
                     .build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-            PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsByConditionCanReplaceTo(ctx, codelistUrn, conditions, pagingParameter);
+            PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsCanReplaceToByCondition(ctx, codelistUrn, conditions, pagingParameter);
 
             // Validate
             assertEquals(7, codelistsPagedResult.getTotalRows());
@@ -840,7 +840,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.id()).ascending().distinctRoot()
                     .build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-            PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsByConditionCanReplaceTo(ctx, codelistUrn, conditions, pagingParameter);
+            PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsCanReplaceToByCondition(ctx, codelistUrn, conditions, pagingParameter);
 
             // Validate
             assertEquals(6, codelistsPagedResult.getTotalRows());
@@ -864,7 +864,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.id()).ascending().distinctRoot()
                     .build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-            PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsByConditionCanReplaceTo(ctx, codelistUrn, conditions, pagingParameter);
+            PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsCanReplaceToByCondition(ctx, codelistUrn, conditions, pagingParameter);
 
             // Validate
             assertEquals(7, codelistsPagedResult.getTotalRows());
@@ -885,11 +885,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     @Override
-    public void testFindCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity() throws Exception {
+    public void testFindCodelistsWhoseCodesCanBeVariableElementGeographicalGranularityByCondition() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ctx, null, pagingParameter);
+        PagedResult<CodelistVersionMetamac> codelistsPagedResult = codesService.findCodelistsWhoseCodesCanBeVariableElementGeographicalGranularityByCondition(ctx, null, pagingParameter);
 
         // Validate
         assertEquals(1, codelistsPagedResult.getTotalRows());
@@ -3864,11 +3864,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     @Override
-    public void testFindCodesByConditionCanBeVariableElementGeographicalGranularity() throws Exception {
+    public void testFindCodesCanBeVariableElementGeographicalGranularityByCondition() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesByConditionCanBeVariableElementGeographicalGranularity(ctx, null, pagingParameter);
+        PagedResult<CodeMetamac> codesPagedResult = codesService.findCodesCanBeVariableElementGeographicalGranularityByCondition(ctx, null, pagingParameter);
 
         // Validate
         assertEquals(3, codesPagedResult.getTotalRows());

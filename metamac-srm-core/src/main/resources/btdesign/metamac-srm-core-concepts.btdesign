@@ -37,21 +37,21 @@ Application ConceptsMetamac {
 			"Finds concept schemes by criteria"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Finds concept schemes with concepts that can be extended"
-    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeExtended(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeExtendedByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Finds concept schemes with concepts that can be enumerated representation for concepts"
-    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForConcepts(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn)  throws MetamacException;
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesCanBeEnumeratedRepresentationForConceptsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn)  throws MetamacException;
     		"Finds concept schemes with concepts that can be role"
-    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeRole(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Finds concept schemes with concepts than can be numerator in quantity by criteria"
-    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeQuantityNumeratorByCondition(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Finds concept schemes with concepts than can be denominator in quantity by criteria"
-    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeQuantityDenominatorByCondition(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Finds concept schemes with concepts than can be base quantity in quantity by criteria"
-    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeQuantityBaseQuantityByCondition(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Find codelists with codes than than can be unit in concept quantity by criteria"
-    		PagedResult<@CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeQuantityUnit(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@CodelistVersionMetamac> findCodelistsWithCodesCanBeQuantityUnitByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Find codelists with codes than than can be base location in concept quantity by criteria"
-    		PagedResult<@CodelistVersionMetamac> findCodelistsByConditionWithCodesCanBeQuantityBaseLocation(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@CodelistVersionMetamac> findCodelistsWithCodesCanBeQuantityBaseLocationByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		"Sends concept scheme to production validation"
     		@ConceptSchemeVersionMetamac sendConceptSchemeToProductionValidation(String urn) throws MetamacException;
     		"Sends concept scheme to diffusion validation"
@@ -124,15 +124,15 @@ Application ConceptsMetamac {
 			"Finds concepts than can be extended by criteria"
     		PagedResult<@ConceptMetamac> findConceptsCanBeExtendedByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Finds concepts than can be numerator in quantity by criteria"
-    		PagedResult<@ConceptMetamac> findConceptsCanBeQuantityNumerator(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@ConceptMetamac> findConceptsCanBeQuantityNumeratorByCondition(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Finds concepts than can be denominator in quantity by criteria"
-    		PagedResult<@ConceptMetamac> findConceptsCanBeQuantityDenominator(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@ConceptMetamac> findConceptsCanBeQuantityDenominatorByCondition(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Finds concepts than can be base quantity in quantity by criteria"
-    		PagedResult<@ConceptMetamac> findConceptsCanBeQuantityBaseQuantity(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@ConceptMetamac> findConceptsCanBeQuantityBaseQuantityByCondition(String conceptSchemeUrn, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Finds codes than can be unit in concept quantity by criteria"
-    		PagedResult<@CodeMetamac> findCodesCanBeQuantityUnit(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@CodeMetamac> findCodesCanBeQuantityUnitByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 			"Finds codes than can be base location in concept quantity by criteria"
-    		PagedResult<@CodeMetamac> findCodesCanBeQuantityBaseLocation(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
+    		PagedResult<@CodeMetamac> findCodesCanBeQuantityBaseLocationByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
     		
     		"Finds all concept types"
     		List<@ConceptType> findAllConceptTypes throws MetamacException;

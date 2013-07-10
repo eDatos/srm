@@ -580,13 +580,13 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity() throws Exception {
+    public void testFindCodelistsWhoseCodesCanBeVariableElementGeographicalGranularityByCondition() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
-        MetamacCriteriaResult<RelatedResourceDto> codelistsPagedResult = srmCoreServiceFacade.findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ctx, metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> codelistsPagedResult = srmCoreServiceFacade.findCodelistsWhoseCodesCanBeVariableElementGeographicalGranularityByCondition(ctx, metamacCriteria);
 
         // Validate
         assertEquals(1, codelistsPagedResult.getPaginatorResult().getTotalResults().intValue());
@@ -1334,13 +1334,13 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     }
 
     @Test
-    public void testFindCodesByConditionCanBeVariableElementGeographicalGranularity() throws Exception {
+    public void testFindCodesCanBeVariableElementGeographicalGranularityByCondition() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
         MetamacCriteria metamacCriteria = new MetamacCriteria();
         metamacCriteria.setOrdersBy(buildMetamacCriteriaOrderByUrn());
         metamacCriteria.setPaginator(buildMetamacCriteriaPaginatorNoLimitsAndCountResults());
-        MetamacCriteriaResult<RelatedResourceDto> codesPagedResult = srmCoreServiceFacade.findCodesByConditionCanBeVariableElementGeographicalGranularity(ctx, metamacCriteria);
+        MetamacCriteriaResult<RelatedResourceDto> codesPagedResult = srmCoreServiceFacade.findCodesCanBeVariableElementGeographicalGranularityByCondition(ctx, metamacCriteria);
 
         // Validate
         assertEquals(3, codesPagedResult.getPaginatorResult().getTotalResults().intValue());

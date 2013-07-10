@@ -489,11 +489,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     @Override
-    public void testFindConceptSchemesByConditionWithConceptsCanBeRole() throws Exception {
+    public void testFindConceptSchemesWithConceptsCanBeRoleByCondition() throws Exception {
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
                 .build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByConditionWithConceptsCanBeRole(getServiceContextAdministrador(), conditions,
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesWithConceptsCanBeRoleByCondition(getServiceContextAdministrador(), conditions,
                 pagingParameter);
 
         // Validate
@@ -506,11 +506,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     @Override
-    public void testFindConceptSchemesByConditionWithConceptsCanBeExtended() throws Exception {
+    public void testFindConceptSchemesWithConceptsCanBeExtendedByCondition() throws Exception {
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
                 .build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesByConditionWithConceptsCanBeExtended(getServiceContextAdministrador(), conditions,
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesWithConceptsCanBeExtendedByCondition(getServiceContextAdministrador(), conditions,
                 pagingParameter);
 
         // Validate
@@ -523,12 +523,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     @Override
-    public void testFindConceptSchemesCanBeEnumeratedRepresentationForConcepts() throws Exception {
+    public void testFindConceptSchemesCanBeEnumeratedRepresentationForConceptsByCondition() throws Exception {
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
                 .build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesCanBeEnumeratedRepresentationForConcepts(getServiceContextAdministrador(),
-                conditions, pagingParameter, CONCEPT_SCHEME_15_V1_CONCEPT_1);
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesCanBeEnumeratedRepresentationForConceptsByCondition(
+                getServiceContextAdministrador(), conditions, pagingParameter, CONCEPT_SCHEME_15_V1_CONCEPT_1);
 
         // Validate
         assertEquals(2, conceptSchemeVersionPagedResult.getTotalRows());
@@ -540,12 +540,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     @Override
-    public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityNumerator() throws Exception {
+    public void testFindConceptSchemesWithConceptsCanBeQuantityNumeratorByCondition() throws Exception {
         String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.id()).ascending().distinctRoot()
                 .build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<ConceptSchemeVersionMetamac> conceptSchemesPagedResult = conceptsService.findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(getServiceContextAdministrador(),
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemesPagedResult = conceptsService.findConceptSchemesWithConceptsCanBeQuantityNumeratorByCondition(getServiceContextAdministrador(),
                 conceptSchemeUrn, conditions, pagingParameter);
 
         // Validate
@@ -561,12 +561,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     @Override
-    public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityDenominator() throws Exception {
+    public void testFindConceptSchemesWithConceptsCanBeQuantityDenominatorByCondition() throws Exception {
         String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.id()).ascending().distinctRoot()
                 .build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<ConceptSchemeVersionMetamac> conceptSchemesPagedResult = conceptsService.findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(getServiceContextAdministrador(),
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemesPagedResult = conceptsService.findConceptSchemesWithConceptsCanBeQuantityDenominatorByCondition(getServiceContextAdministrador(),
                 conceptSchemeUrn, conditions, pagingParameter);
 
         // Validate
@@ -582,12 +582,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     @Override
-    public void testFindConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity() throws Exception {
+    public void testFindConceptSchemesWithConceptsCanBeQuantityBaseQuantityByCondition() throws Exception {
         String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.id()).ascending().distinctRoot()
                 .build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<ConceptSchemeVersionMetamac> conceptSchemesPagedResult = conceptsService.findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(getServiceContextAdministrador(),
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemesPagedResult = conceptsService.findConceptSchemesWithConceptsCanBeQuantityBaseQuantityByCondition(getServiceContextAdministrador(),
                 conceptSchemeUrn, conditions, pagingParameter);
 
         // Validate
@@ -603,10 +603,10 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Override
     @Test
-    public void testFindCodelistsByConditionWithCodesCanBeQuantityUnit() throws Exception {
+    public void testFindCodelistsWithCodesCanBeQuantityUnitByCondition() throws Exception {
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.id()).ascending().distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<CodelistVersionMetamac> codelistsPagedResult = conceptsService.findCodelistsByConditionWithCodesCanBeQuantityUnit(getServiceContextAdministrador(), conditions, pagingParameter);
+        PagedResult<CodelistVersionMetamac> codelistsPagedResult = conceptsService.findCodelistsWithCodesCanBeQuantityUnitByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
         // Validate
         assertEquals(2, codelistsPagedResult.getTotalRows());
@@ -622,10 +622,10 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Override
     @Test
-    public void testFindCodelistsByConditionWithCodesCanBeQuantityBaseLocation() throws Exception {
+    public void testFindCodelistsWithCodesCanBeQuantityBaseLocationByCondition() throws Exception {
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.id()).ascending().distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<CodelistVersionMetamac> codelistsPagedResult = conceptsService.findCodelistsByConditionWithCodesCanBeQuantityBaseLocation(getServiceContextAdministrador(), conditions,
+        PagedResult<CodelistVersionMetamac> codelistsPagedResult = conceptsService.findCodelistsWithCodesCanBeQuantityBaseLocationByCondition(getServiceContextAdministrador(), conditions,
                 pagingParameter);
 
         // Validate
@@ -4269,12 +4269,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     @Override
-    public void testFindConceptsCanBeQuantityDenominator() throws Exception {
+    public void testFindConceptsCanBeQuantityDenominatorByCondition() throws Exception {
         String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
                 .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeQuantityDenominator(getServiceContextAdministrador(), conceptSchemeUrn, conditions, pagingParameter);
+        PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeQuantityDenominatorByCondition(getServiceContextAdministrador(), conceptSchemeUrn, conditions,
+                pagingParameter);
 
         // Validate
         assertEquals(6, conceptsPagedResult.getTotalRows());
@@ -4292,12 +4293,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     @Override
-    public void testFindConceptsCanBeQuantityNumerator() throws Exception {
+    public void testFindConceptsCanBeQuantityNumeratorByCondition() throws Exception {
         String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
                 .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeQuantityNumerator(getServiceContextAdministrador(), conceptSchemeUrn, conditions, pagingParameter);
+        PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService
+                .findConceptsCanBeQuantityNumeratorByCondition(getServiceContextAdministrador(), conceptSchemeUrn, conditions, pagingParameter);
 
         // Validate
         assertEquals(6, conceptsPagedResult.getTotalRows());
@@ -4315,12 +4317,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Test
     @Override
-    public void testFindConceptsCanBeQuantityBaseQuantity() throws Exception {
+    public void testFindConceptsCanBeQuantityBaseQuantityByCondition() throws Exception {
         String conceptSchemeUrn = CONCEPT_SCHEME_4_V1;
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
                 .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeQuantityBaseQuantity(getServiceContextAdministrador(), conceptSchemeUrn, conditions, pagingParameter);
+        PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeQuantityBaseQuantityByCondition(getServiceContextAdministrador(), conceptSchemeUrn, conditions,
+                pagingParameter);
 
         // Validate
         assertEquals(6, conceptsPagedResult.getTotalRows());
@@ -4338,11 +4341,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Override
     @Test
-    public void testFindCodesCanBeQuantityUnit() throws Exception {
+    public void testFindCodesCanBeQuantityUnitByCondition() throws Exception {
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Code.class).orderBy(CodeProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
                 .orderBy(CodeProperties.id()).ascending().distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<CodeMetamac> codesPagedResult = conceptsService.findCodesCanBeQuantityUnit(getServiceContextAdministrador(), conditions, pagingParameter);
+        PagedResult<CodeMetamac> codesPagedResult = conceptsService.findCodesCanBeQuantityUnitByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
         // Validate
         assertEquals(3, codesPagedResult.getTotalRows());
@@ -4357,11 +4360,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Override
     @Test
-    public void testFindCodesCanBeQuantityBaseLocation() throws Exception {
+    public void testFindCodesCanBeQuantityBaseLocationByCondition() throws Exception {
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Code.class).orderBy(CodeProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
                 .orderBy(CodeProperties.id()).ascending().distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<CodeMetamac> codesPagedResult = conceptsService.findCodesCanBeQuantityBaseLocation(getServiceContextAdministrador(), conditions, pagingParameter);
+        PagedResult<CodeMetamac> codesPagedResult = conceptsService.findCodesCanBeQuantityBaseLocationByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
         // Validate
         assertEquals(2, codesPagedResult.getTotalRows());
