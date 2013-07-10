@@ -86,6 +86,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
+import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> implements ConceptPresenter.ConceptView {
@@ -371,19 +372,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         // Representation type
 
-        final CustomSelectItem representationType = new CustomSelectItem(RepresentationDS.TYPE, getConstants().representation());
-        representationType.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
-        representationType.addChangedHandler(new ChangedHandler() {
-
-            @Override
-            public void onChanged(ChangedEvent event) {
-                if (conceptSchemeMetamacDto != null) {
-                    FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationType.getValueAsString(), conceptSchemeMetamacDto);
-                }
-                contentDescriptorsEditionForm.markForRedraw();
-            }
-        });
-        representationType.setShowIfCondition(getRepresentationTypeFormItemIfFunction());
+        final CustomSelectItem representationType = createRepresentationTypeItem(RepresentationDS.TYPE, getConstants().representation());
 
         ViewTextItem staticRepresentationType = new ViewTextItem(RepresentationDS.TYPE_VIEW, getConstants().representation());
         staticRepresentationType.setShowIfCondition(getStaticRepresentationTypeFormItemIfFunction());
@@ -1149,6 +1138,41 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         return variableItem;
     };
 
+    private CustomSelectItem createRepresentationTypeItem(String name, String title) {
+        final CustomSelectItem representationType = new CustomSelectItem(RepresentationDS.TYPE, getConstants().representation());
+        representationType.setValueMap(org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationEnumHashMap());
+
+        representationType.addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                if (conceptSchemeMetamacDto != null) {
+                    FacetFormUtils.setFacetFormVisibility(facetEditionForm, facetStaticEditionForm, representationType.getValueAsString(), conceptSchemeMetamacDto);
+                }
+                contentDescriptorsEditionForm.markForRedraw();
+            }
+        });
+
+        representationType.setShowIfCondition(getRepresentationTypeFormItemIfFunction());
+
+        // Validators
+        CustomValidator representationTypeValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                if (value != null && !StringUtils.isBlank(value.toString())) {
+                    // Concepts from ROLE or GLOSARRY schemes cannot have a representation (enumerated or non enumerated)
+                    return !ConceptSchemeTypeEnum.ROLE.equals(conceptSchemeMetamacDto.getType()) && !ConceptSchemeTypeEnum.GLOSSARY.equals(conceptSchemeMetamacDto.getType());
+                }
+                return true;
+            }
+        };
+        representationTypeValidator.setErrorMessage(getConstants().conceptRepresentationValidatorMessage());
+        representationType.setValidators(representationTypeValidator);
+
+        return representationType;
+    }
+
     private SearchRelatedResourceLinkItem createEnumeratedRepresentationItem(String name, String title) {
         final int FIRST_RESULST = 0;
         final int MAX_RESULTS = 8;
@@ -1215,7 +1239,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                         contentDescriptorsEditionForm.validate(false);
                     }
                 });
-
             }
         });
         return searchItem;
