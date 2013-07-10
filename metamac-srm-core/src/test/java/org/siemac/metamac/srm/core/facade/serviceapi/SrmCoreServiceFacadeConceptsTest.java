@@ -1718,6 +1718,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         conceptMetamacDto.setItemSchemeVersionUrn(CONCEPT_SCHEME_16_V1);
         RelatedResourceDto unitCode = CodesMetamacDtoMocks.mockCodeRelatedResourceDto("CODE01", CODELIST_7_V2_CODE_1);
         conceptMetamacDto.setQuantity(ConceptsMetamacDtoMocks.mockQuantityDtoTypeQuantity(unitCode));
+        conceptMetamacDto.setSdmxRelatedArtefact(null);
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME16(01.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());

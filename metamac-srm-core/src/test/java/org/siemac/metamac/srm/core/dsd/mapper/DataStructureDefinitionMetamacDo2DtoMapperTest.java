@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.core.concept.serviceapi.utils.ConceptsMetamacDoMocks;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
@@ -82,10 +83,10 @@ public class DataStructureDefinitionMetamacDo2DtoMapperTest extends SrmBaseTest 
                 DataStructureDefinitionMetamacDoMocks.mockMeasureDimension(concept01, Arrays.asList(concept01, concept02), conceptScheme)));
 
         ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
-        dataStructureDefinitionVersionMetamac
-                .addShowDecimalsPrecision(DataStructureDefinitionMetamacDoMocks.mockMeasureDimensionPrecision(5, ConceptsMetamacDoMocks.mockConcept(conceptType, codelist)));
-        dataStructureDefinitionVersionMetamac
-                .addShowDecimalsPrecision(DataStructureDefinitionMetamacDoMocks.mockMeasureDimensionPrecision(4, ConceptsMetamacDoMocks.mockConcept(conceptType, codelist)));
+        dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(DataStructureDefinitionMetamacDoMocks.mockMeasureDimensionPrecision(5,
+                ConceptsMetamacDoMocks.mockConcept(conceptType, codelist, ConceptRoleEnum.ATTRIBUTE)));
+        dataStructureDefinitionVersionMetamac.addShowDecimalsPrecision(DataStructureDefinitionMetamacDoMocks.mockMeasureDimensionPrecision(4,
+                ConceptsMetamacDoMocks.mockConcept(conceptType, codelist, ConceptRoleEnum.ATTRIBUTE)));
 
         dataStructureDefinitionVersionMetamac.addDimensionVisualisationInfo(DataStructureDefinitionMetamacDoMocks.mockDimensionVisualizationInfo(dataStructureDefinitionVersionMetamac
                 .getStubDimensions().iterator().next().getDimension()));

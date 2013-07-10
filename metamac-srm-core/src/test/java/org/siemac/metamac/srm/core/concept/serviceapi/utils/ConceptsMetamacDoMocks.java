@@ -39,14 +39,14 @@ public class ConceptsMetamacDoMocks extends ConceptsDoMocks {
         return target;
     }
 
-    public static ConceptMetamac mockConcept(ConceptType conceptType, CodelistVersion coreRepresentation) {
+    public static ConceptMetamac mockConcept(ConceptType conceptType, CodelistVersion coreRepresentation, ConceptRoleEnum sdmxRelatedArtefact) {
         ConceptMetamac target = new ConceptMetamac();
         target.setPluralName(mockInternationalString("pluralName"));
         target.setAcronym(mockInternationalString("acronym"));
         target.setDescriptionSource(mockInternationalString("descriptionSource"));
         target.setContext(mockInternationalString("context"));
         target.setDocMethod(mockInternationalString("docMethod"));
-        target.setSdmxRelatedArtefact(ConceptRoleEnum.ATTRIBUTE);
+        target.setSdmxRelatedArtefact(sdmxRelatedArtefact);
         target.setConceptType(conceptType);
         target.setDerivation(mockInternationalString("derivation"));
         target.setLegalActs(mockInternationalString("legalActs"));
