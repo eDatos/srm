@@ -20,9 +20,9 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
     protected MainFormLayoutButton rejectValidation;
     protected MainFormLayoutButton publishInternally;
     protected MainFormLayoutButton publishExternally;
-    protected MainFormLayoutButton versioning;
+    protected MainFormLayoutButton createTemporalVersion;
     protected MainFormLayoutButton cancelValidity;
-    protected MainFormLayoutButton versionSdmxResource;
+    protected MainFormLayoutButton consolidateVersion;
     protected MainFormLayoutButton export;
     protected MainFormLayoutButton copy;
     // protected AnnounceToolStripButton announce;
@@ -52,9 +52,9 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         publishInternally = new MainFormLayoutButton(getConstants().lifeCyclePublishInternally(), GlobalResources.RESOURCE.internalPublish().getURL());
         publishExternally = new MainFormLayoutButton(getConstants().lifeCyclePublishExternally(), GlobalResources.RESOURCE.externalPublish().getURL());
         rejectValidation = new MainFormLayoutButton(getConstants().lifeCycleRejectValidation(), GlobalResources.RESOURCE.reject().getURL());
-        versioning = new MainFormLayoutButton(getConstants().lifeCycleVersioning(), GlobalResources.RESOURCE.version().getURL());
+        createTemporalVersion = new MainFormLayoutButton(getConstants().lifeCycleCreateVersion(), GlobalResources.RESOURCE.version().getURL());
+        consolidateVersion = new MainFormLayoutButton(getConstants().lifeCycleConsolidateVersion(), GlobalResources.RESOURCE.version().getURL());
         cancelValidity = new MainFormLayoutButton(getConstants().lifeCycleCancelValidity(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.disable().getURL());
-        versionSdmxResource = new MainFormLayoutButton(getConstants().lifeCycleVersionSdmxResource(), GlobalResources.RESOURCE.version().getURL());
         export = new MainFormLayoutButton(getConstants().actionExport(), GlobalResources.RESOURCE.exportResource().getURL());
         copy = new MainFormLayoutButton(getConstants().actionCopy(), GlobalResources.RESOURCE.copy().getURL());
         // announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
@@ -64,9 +64,9 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         toolStrip.addButton(publishInternally);
         toolStrip.addButton(publishExternally);
         toolStrip.addButton(rejectValidation);
-        toolStrip.addButton(versioning);
+        toolStrip.addButton(createTemporalVersion);
+        toolStrip.addButton(consolidateVersion);
         toolStrip.addButton(cancelValidity);
-        toolStrip.addButton(versionSdmxResource);
         toolStrip.addButton(export);
         toolStrip.addButton(copy);
         // toolStrip.addButton(announce);
@@ -112,16 +112,16 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         return publishExternally;
     }
 
-    public HasClickHandlers getVersioning() {
-        return versioning;
+    public HasClickHandlers getCreateTemporalVersion() {
+        return createTemporalVersion;
     }
 
     public HasClickHandlers getCancelValidity() {
         return cancelValidity;
     }
 
-    public HasClickHandlers getVersionSdmxResource() {
-        return versionSdmxResource;
+    public HasClickHandlers getConsolidateVersion() {
+        return consolidateVersion;
     }
 
     public HasClickHandlers getExport() {
@@ -142,9 +142,9 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         rejectValidation.hide();
         publishInternally.hide();
         publishExternally.hide();
-        versioning.hide();
+        createTemporalVersion.hide();
         cancelValidity.hide();
-        versionSdmxResource.hide();
+        consolidateVersion.hide();
         export.hide();
         copy.hide();
         // announce.hide();
@@ -166,9 +166,9 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
             showRejectValidationButton();
         } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(procStatus)) {
             showPublishExternallyButton();
-            showVersioningButton();
+            showCreateTemporalVersionButton();
         } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(procStatus)) {
-            showVersioningButton();
+            showCreateTemporalVersionButton();
             // Only cancel scheme validity if it has not been canceled previously
             if (validTo == null) {
                 showCancelValidityButton();
@@ -176,7 +176,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         }
         // Version SDMX resource button: this button will be shown when the resource is in a temporal version. Take into account that resources with a temporal version can be in any procStatus,
         // excepting INTERNALLY_PUBLISHED and EXTERNALLY_PUBLISHED.
-        showVersionSdmxResourceButton();
+        showConsolidateVersionButton();
 
         showExportButton();
         showCopyButton();
@@ -195,11 +195,11 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
 
     protected abstract void showPublishExternallyButton();
 
-    protected abstract void showVersioningButton();
+    protected abstract void showCreateTemporalVersionButton();
+
+    protected abstract void showConsolidateVersionButton();
 
     protected abstract void showCancelValidityButton();
-
-    protected abstract void showVersionSdmxResourceButton();
 
     protected abstract void showExportButton();
 
