@@ -550,7 +550,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 } else {
                     // Temporal version has been created synchronously
                     CodelistPresenter.this.codelistMetamacDto = result.getCodelistMetamacDto();
-                    retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn(), true);
+                    retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn(), false);
                     updateUrl();
                 }
             }

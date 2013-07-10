@@ -468,7 +468,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(CreateConceptSchemeTemporalVersionResult result) {
                 ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeMetamacDto();
-                retrieveCompleteConceptSchemeByUrn(result.getConceptSchemeMetamacDto().getUrn(), true);
+                retrieveCompleteConceptSchemeByUrn(result.getConceptSchemeMetamacDto().getUrn(), false);
                 updateUrl();
             }
         });

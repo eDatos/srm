@@ -484,7 +484,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
             @Override
             public void onWaitSuccess(CreateCategorySchemeTemporalVersionResult result) {
                 CategorySchemePresenter.this.categorySchemeMetamacDto = result.getCategorySchemeMetamacDto();
-                retrieveCompleteCategorySchemeByUrn(result.getCategorySchemeMetamacDto().getUrn(), true);
+                retrieveCompleteCategorySchemeByUrn(result.getCategorySchemeMetamacDto().getUrn(), false);
                 updateUrl();
             }
         });

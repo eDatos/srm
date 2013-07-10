@@ -374,7 +374,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             }
             @Override
             public void onWaitSuccess(CreateDsdTemporalVersionResult result) {
-                retrieveCompleteDsd(result.getDataStructureDefinitionMetamacDto().getUrn(), true);
+                retrieveCompleteDsd(result.getDataStructureDefinitionMetamacDto().getUrn(), false);
                 // Update the version list
                 UpdateMaintainableArtefactVersionsEvent.fire(DsdGeneralTabPresenter.this, result.getDataStructureDefinitionMetamacDto().getUrn());
                 // Update DSD urn in main page
