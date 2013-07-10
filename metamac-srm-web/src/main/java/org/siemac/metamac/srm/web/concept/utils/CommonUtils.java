@@ -94,7 +94,7 @@ public class CommonUtils {
      */
 
     public static boolean isMetadataSdmxRelatedArtefactVisible(ConceptSchemeTypeEnum type) {
-        return ConceptSchemeTypeEnum.OPERATION.equals(type) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(type) || ConceptSchemeTypeEnum.MEASURE.equals(type);
+        return ConceptSchemeTypeEnum.OPERATION.equals(type) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(type);
     }
 
     public static boolean isMetadataRolesVisible(ConceptSchemeTypeEnum type) {
