@@ -208,65 +208,65 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CODELIST_WITH_QUANTITY_UNIT: {
                     CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
-                    result = srmCoreServiceFacade.findCodelistsByConditionWithCodesCanBeQuantityUnit(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    result = srmCoreServiceFacade.findCodelistsWithCodesCanBeQuantityUnitByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CODE_WITH_QUANTITY_UNIT: {
                     CodeWebCriteria codeWebCriteria = (CodeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getCodeCriteriaRestriction(codeWebCriteria));
-                    result = srmCoreServiceFacade.findCodesCanBeQuantityUnit(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    result = srmCoreServiceFacade.findCodesCanBeQuantityUnitByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CONCEPT_SCHEME_WITH_QUANTITY_NUMERATOR: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityNumerator(ServiceContextHolder.getCurrentServiceContext(),
+                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeQuantityNumeratorByCondition(ServiceContextHolder.getCurrentServiceContext(),
                             conceptSchemeWebCriteria.getRelatedConceptSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_WITH_QUANTITY_NUMERATOR: {
                     ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
-                    result = srmCoreServiceFacade.findConceptsCanBeQuantityNumerator(ServiceContextHolder.getCurrentServiceContext(), conceptWebCriteria.getItemSchemeUrn(), criteria);
+                    result = srmCoreServiceFacade.findConceptsCanBeQuantityNumeratorByCondition(ServiceContextHolder.getCurrentServiceContext(), conceptWebCriteria.getItemSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_SCHEME_WITH_QUANTITY_DENOMINATOR: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityDenominator(ServiceContextHolder.getCurrentServiceContext(),
+                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeQuantityDenominatorByCondition(ServiceContextHolder.getCurrentServiceContext(),
                             conceptSchemeWebCriteria.getRelatedConceptSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_WITH_QUANTITY_DENOMINATOR: {
                     ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
-                    result = srmCoreServiceFacade.findConceptsCanBeQuantityDenominator(ServiceContextHolder.getCurrentServiceContext(), conceptWebCriteria.getItemSchemeUrn(), criteria);
+                    result = srmCoreServiceFacade.findConceptsCanBeQuantityDenominatorByCondition(ServiceContextHolder.getCurrentServiceContext(), conceptWebCriteria.getItemSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_SCHEME_WITH_QUANTITY_BASE_QUANTITY: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeQuantityBaseQuantity(ServiceContextHolder.getCurrentServiceContext(),
+                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeQuantityBaseQuantityByCondition(ServiceContextHolder.getCurrentServiceContext(),
                             conceptSchemeWebCriteria.getRelatedConceptSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_WITH_QUANTITY_BASE_QUANTITY: {
                     ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
-                    result = srmCoreServiceFacade.findConceptsCanBeQuantityBaseQuantity(ServiceContextHolder.getCurrentServiceContext(), conceptWebCriteria.getItemSchemeUrn(), criteria);
+                    result = srmCoreServiceFacade.findConceptsCanBeQuantityBaseQuantityByCondition(ServiceContextHolder.getCurrentServiceContext(), conceptWebCriteria.getItemSchemeUrn(), criteria);
                     break;
                 }
                 case CONCEPT_SCHEME_WITH_CONCEPT_ENUMERATED_REPRESENTATION: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForConcepts(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeWebCriteria.getConceptUrn(),
-                            criteria);
+                    result = srmCoreServiceFacade.findConceptSchemesCanBeEnumeratedRepresentationForConceptsByCondition(ServiceContextHolder.getCurrentServiceContext(),
+                            conceptSchemeWebCriteria.getConceptUrn(), criteria);
                     break;
                 }
                 case CODELIST_THAT_CAN_BE_REPLACED: {
                     CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
-                    result = srmCoreServiceFacade.findCodelistsByConditionCanReplaceTo(ServiceContextHolder.getCurrentServiceContext(), codelistWebCriteria.getCodelisUrnToReplaceCodelist(), criteria);
+                    result = srmCoreServiceFacade.findCodelistsCanReplaceToByCondition(ServiceContextHolder.getCurrentServiceContext(), codelistWebCriteria.getCodelisUrnToReplaceCodelist(), criteria);
                     break;
                 }
                 case CATEGORY_SCHEMES_FOR_CATEGORISATIONS: {
@@ -300,13 +300,13 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CODELIST_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY: {
                     CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
-                    result = srmCoreServiceFacade.findCodelistsByConditionWhoseCodesCanBeVariableElementGeographicalGranularity(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    result = srmCoreServiceFacade.findCodelistsWhoseCodesCanBeVariableElementGeographicalGranularityByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CODES_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY: {
                     CodeWebCriteria codeWebCriteria = (CodeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getCodeCriteriaRestriction(codeWebCriteria));
-                    result = srmCoreServiceFacade.findCodesByConditionCanBeVariableElementGeographicalGranularity(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    result = srmCoreServiceFacade.findCodesCanBeVariableElementGeographicalGranularityByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CODELIST_WITH_DSD_SPATIAL_DIMENSION_ENUMERATED_REPRESENTATION: {
@@ -332,7 +332,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CONCEPT_SCHEMES_WITH_CONCEPT_ROLE: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeRole(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeRoleByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CONCEPTS_WITH_CONCEPT_ROLE: {
@@ -344,7 +344,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CONCEPT_SCHEMES_WITH_CONCEPT_EXTENDS: {
                     ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
-                    result = srmCoreServiceFacade.findConceptSchemesByConditionWithConceptsCanBeExtended(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeExtendedByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CONCEPT_WITH_CONCEPT_EXTENDS: {
@@ -356,13 +356,13 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CODELIST_WITH_QUANTITY_BASE_LOCATION: {
                     CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getCodelistCriteriaRestriction(codelistWebCriteria));
-                    result = srmCoreServiceFacade.findCodelistsByConditionWithCodesCanBeQuantityBaseLocation(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    result = srmCoreServiceFacade.findCodelistsWithCodesCanBeQuantityBaseLocationByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CODE_WITH_QUANTITY_BASE_LOCATION: {
                     CodeWebCriteria codeWebCriteria = (CodeWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getCodeCriteriaRestriction(codeWebCriteria));
-                    result = srmCoreServiceFacade.findCodesCanBeQuantityBaseLocation(ServiceContextHolder.getCurrentServiceContext(), criteria);
+                    result = srmCoreServiceFacade.findCodesCanBeQuantityBaseLocationByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 default:
