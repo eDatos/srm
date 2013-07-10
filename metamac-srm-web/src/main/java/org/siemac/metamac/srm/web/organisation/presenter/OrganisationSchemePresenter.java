@@ -497,7 +497,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
             @Override
             public void onWaitSuccess(CreateOrganisationSchemeTemporalVersionResult result) {
                 OrganisationSchemePresenter.this.organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
-                retrieveCompleteOrganisationSchemeByUrn(result.getOrganisationSchemeMetamacDto().getUrn(), true);
+                retrieveCompleteOrganisationSchemeByUrn(result.getOrganisationSchemeMetamacDto().getUrn(), false);
                 updateUrl();
             }
         });
