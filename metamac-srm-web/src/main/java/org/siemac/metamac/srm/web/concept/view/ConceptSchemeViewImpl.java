@@ -12,7 +12,6 @@ import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisa
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
@@ -233,19 +232,12 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             }
         });
 
-        // Edit: Add a custom edit button handler
+        // Edit
         mainFormLayout.getEditToolStripButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                ProcStatusEnum status = conceptSchemeDto.getLifeCycle().getProcStatus();
-                if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(status)) {
-                    // If the scheme is published, create a temporal version
-                    getUiHandlers().createTemporalVersion(conceptSchemeDto.getUrn());
-                } else {
-                    // Default behavior
-                    startConceptSchemeEdition();
-                }
+                startConceptSchemeEdition();
             }
         });
 
@@ -306,7 +298,14 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
                 getUiHandlers().publishExternally(conceptSchemeDto);
             }
         });
-        mainFormLayout.getVersioning().addClickHandler(new ClickHandler() {
+        mainFormLayout.getCreateTemporalVersion().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().createTemporalVersion(conceptSchemeDto.getUrn());
+            }
+        });
+        mainFormLayout.getConsolidateVersion().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -318,13 +317,6 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             @Override
             public void onClick(ClickEvent event) {
                 getUiHandlers().cancelValidity(conceptSchemeDto.getUrn());
-            }
-        });
-        mainFormLayout.getVersionSdmxResource().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                versionConceptScheme();
             }
         });
         mainFormLayout.getExport().addClickHandler(new ClickHandler() {
