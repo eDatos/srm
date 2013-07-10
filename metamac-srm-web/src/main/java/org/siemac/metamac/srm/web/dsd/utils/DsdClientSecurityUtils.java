@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.dsd.utils;
 import java.util.Date;
 
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -25,7 +26,14 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canUpdateDataStructureDefinition(MetamacSrmWeb.getCurrentUser(), procStatus, operationCode);
     }
 
-    public static boolean canVersioningDsd(String operationCode) {
+    public static boolean canVersioningDsd(String operationCode, RelatedResourceDto maintainer, String versionLogic) {
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer)) {
+            return false;
+        }
+        if (!VersionUtil.isTemporalVersion(versionLogic)) {
+            // The scheme can only be version when the temporal version has been previously created
+            return false;
+        }
         return SharedDsdSecurityUtils.canVersioningDsd(MetamacSrmWeb.getCurrentUser(), operationCode);
     }
 

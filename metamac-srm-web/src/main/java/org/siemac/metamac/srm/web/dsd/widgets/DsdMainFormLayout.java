@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.dsd.widgets;
 
-import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
@@ -22,13 +21,7 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     private void setCanEdit() {
-        boolean canEdit = false;
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(procStatus)) {
-            canEdit = DsdClientSecurityUtils.canCreateDsdTemporalVersion(operationCode);
-        } else {
-            canEdit = DsdClientSecurityUtils.canUpdateDsd(procStatus, operationCode);
-        }
-        super.setCanEdit(canEdit);
+        super.setCanEdit(DsdClientSecurityUtils.canUpdateDsd(procStatus, operationCode));
     }
 
     private void setCanDelete() {
@@ -73,9 +66,9 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     @Override
-    protected void showVersioningButton() {
-        if (canVersionDsd()) {
-            versioning.show();
+    protected void showCreateTemporalVersionButton() {
+        if (DsdClientSecurityUtils.canCreateDsdTemporalVersion(operationCode)) {
+            createTemporalVersion.show();
         }
     }
 
@@ -87,9 +80,9 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     @Override
-    protected void showVersionSdmxResourceButton() {
-        if (canVersionDsd() && VersionUtil.isTemporalVersion(versionLogic)) {
-            versionSdmxResource.show();
+    protected void showConsolidateVersionButton() {
+        if (DsdClientSecurityUtils.canVersioningDsd(operationCode, maintainer, versionLogic)) {
+            consolidateVersion.show();
         }
     }
 
@@ -113,9 +106,4 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
     // announce.show();
     // }
     // }
-
-    private boolean canVersionDsd() {
-        // Resources from other maintainers can not be version
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && DsdClientSecurityUtils.canVersioningDsd(operationCode);
-    }
 }

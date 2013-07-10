@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.organisation.utils;
 import java.util.Date;
 
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
@@ -54,7 +55,7 @@ public class OrganisationsClientSecurityUtils {
         return SharedOrganisationsSecurityUtils.canPublishOrganisationSchemeExternally(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canVersioningOrganisationScheme(String urn, RelatedResourceDto maintainer, OrganisationSchemeTypeEnum organisationSchemeType) {
+    public static boolean canVersioningOrganisationScheme(String urn, RelatedResourceDto maintainer, String versionLogic, OrganisationSchemeTypeEnum organisationSchemeType) {
 
         // Resources from other maintainers can not be version
         if (org.siemac.metamac.srm.web.client.utils.CommonUtils.hasDefaultMaintainerOrIsAgencySchemeSdmxResource(urn, maintainer)) {
@@ -64,6 +65,12 @@ public class OrganisationsClientSecurityUtils {
             if (!org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isDataConsumerScheme(organisationSchemeType)
                     && !org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isDataProviderScheme(organisationSchemeType)
                     & !org.siemac.metamac.srm.web.organisation.utils.CommonUtils.isAgencyScheme(organisationSchemeType)) {
+
+                if (!VersionUtil.isTemporalVersion(versionLogic)) {
+                    // The scheme can only be version when the temporal version has been previously created
+                    return false;
+                }
+
                 return SharedOrganisationsSecurityUtils.canVersioningOrganisationScheme(MetamacSrmWeb.getCurrentUser());
             }
         }

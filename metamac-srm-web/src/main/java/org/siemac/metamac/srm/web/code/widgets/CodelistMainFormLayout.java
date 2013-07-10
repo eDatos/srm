@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.web.code.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
-import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
@@ -33,13 +32,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     private void setCanEdit() {
-        boolean canEdit = false;
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(procStatus)) {
-            canEdit = CodesClientSecurityUtils.canCreateCodelistTemporalVersion(isTaskInBackground);
-        } else {
-            canEdit = CodesClientSecurityUtils.canUpdateCodelist(procStatus, isTaskInBackground);
-        }
-        super.setCanEdit(canEdit);
+        super.setCanEdit(CodesClientSecurityUtils.canUpdateCodelist(procStatus, isTaskInBackground));
     }
 
     private void setCanDelete() {
@@ -104,9 +97,9 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     @Override
-    protected void showVersioningButton() {
-        if (canVersionCodelist()) {
-            versioning.show();
+    protected void showCreateTemporalVersionButton() {
+        if (CodesClientSecurityUtils.canCreateCodelistTemporalVersion(isTaskInBackground)) {
+            createTemporalVersion.show();
         }
     }
 
@@ -118,9 +111,9 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     @Override
-    protected void showVersionSdmxResourceButton() {
-        if (canVersionCodelist() && VersionUtil.isTemporalVersion(versionLogic)) {
-            versionSdmxResource.show();
+    protected void showConsolidateVersionButton() {
+        if (CodesClientSecurityUtils.canVersioningCodelist(maintainer, versionLogic, isTaskInBackground)) {
+            consolidateVersion.show();
         }
     }
 
@@ -147,10 +140,5 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     public HasClickHandlers getAddCodelistToFamily() {
         return addCodelistToFamilyButton;
-    }
-
-    private boolean canVersionCodelist() {
-        // Resources from other maintainers can not be version
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CodesClientSecurityUtils.canVersioningCodelist(isTaskInBackground);
     }
 }

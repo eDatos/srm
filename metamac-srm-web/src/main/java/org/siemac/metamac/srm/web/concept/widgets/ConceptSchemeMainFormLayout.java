@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.concept.widgets;
 
-import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
@@ -26,13 +25,7 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     private void setCanEdit() {
-        boolean canEdit = false;
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(procStatus)) {
-            canEdit = ConceptsClientSecurityUtils.canCreateConceptSchemeTemporalVersion(type, relatedOperationCode);
-        } else {
-            canEdit = ConceptsClientSecurityUtils.canUpdateConceptScheme(procStatus, type, relatedOperationCode);
-        }
-        super.setCanEdit(canEdit);
+        super.setCanEdit(ConceptsClientSecurityUtils.canUpdateConceptScheme(procStatus, type, relatedOperationCode));
     }
 
     private void setCanDelete() {
@@ -82,9 +75,16 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     @Override
-    protected void showVersioningButton() {
-        if (canConceptSchemeBeVersion()) {
-            versioning.show();
+    protected void showCreateTemporalVersionButton() {
+        if (ConceptsClientSecurityUtils.canCreateConceptSchemeTemporalVersion(type, relatedOperationCode)) {
+            createTemporalVersion.show();
+        }
+    }
+
+    @Override
+    protected void showConsolidateVersionButton() {
+        if (ConceptsClientSecurityUtils.canVersioningConceptScheme(type, relatedOperationCode, maintainer, versionLogic)) {
+            consolidateVersion.show();
         }
     }
 
@@ -92,13 +92,6 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
     protected void showCancelValidityButton() {
         if (ConceptsClientSecurityUtils.canCancelConceptSchemeValidity(urn, type, relatedOperationCode, maintainer, versionLogic, procStatus, validTo)) {
             cancelValidity.show();
-        }
-    }
-
-    @Override
-    protected void showVersionSdmxResourceButton() {
-        if (canConceptSchemeBeVersion() && VersionUtil.isTemporalVersion(versionLogic)) {
-            versionSdmxResource.show();
         }
     }
 
@@ -122,9 +115,4 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
     // announce.show();
     // }
     // }
-
-    private boolean canConceptSchemeBeVersion() {
-        // Resources from other maintainers can not be version
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && ConceptsClientSecurityUtils.canVersioningConceptScheme(type, relatedOperationCode);
-    }
 }

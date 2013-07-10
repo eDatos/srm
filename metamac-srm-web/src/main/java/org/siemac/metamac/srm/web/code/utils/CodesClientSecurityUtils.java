@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.code.utils;
 import java.util.Date;
 
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
@@ -82,8 +83,15 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canPublishCodelistExternally(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canVersioningCodelist(Boolean isTaskInBackground) {
+    public static boolean canVersioningCodelist(RelatedResourceDto maintainer, String versionLogic, Boolean isTaskInBackground) {
         if (isTaskInBackground(isTaskInBackground)) {
+            return false;
+        }
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer)) {
+            return false;
+        }
+        if (!VersionUtil.isTemporalVersion(versionLogic)) {
+            // The scheme can only be version when the temporal version has been previously created
             return false;
         }
         return SharedCodesSecurityUtils.canVersioningCodelist(MetamacSrmWeb.getCurrentUser());

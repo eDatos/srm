@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.organisation.widgets;
 
-import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
@@ -26,13 +25,7 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     private void setCanEdit() {
-        boolean canEdit = false;
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(procStatus)) {
-            canEdit = OrganisationsClientSecurityUtils.canCreateOrganisationSchemeTemporalVersion();
-        } else {
-            canEdit = OrganisationsClientSecurityUtils.canUpdateOrganisationScheme(procStatus, organisationSchemeType);
-        }
-        super.setCanEdit(canEdit);
+        super.setCanEdit(OrganisationsClientSecurityUtils.canUpdateOrganisationScheme(procStatus, organisationSchemeType));
     }
 
     private void setCanDelete() {
@@ -77,9 +70,9 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     @Override
-    protected void showVersioningButton() {
-        if (canVersionOrganisationScheme()) {
-            versioning.show();
+    protected void showCreateTemporalVersionButton() {
+        if (OrganisationsClientSecurityUtils.canCreateOrganisationSchemeTemporalVersion()) {
+            createTemporalVersion.show();
         }
     }
 
@@ -91,9 +84,9 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     @Override
-    protected void showVersionSdmxResourceButton() {
-        if (canVersionOrganisationScheme() && VersionUtil.isTemporalVersion(versionLogic)) {
-            versionSdmxResource.show();
+    protected void showConsolidateVersionButton() {
+        if (OrganisationsClientSecurityUtils.canVersioningOrganisationScheme(urn, maintainer, versionLogic, organisationSchemeType)) {
+            consolidateVersion.show();
         }
     }
 
@@ -117,8 +110,4 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
     // announce.show();
     // }
     // }
-
-    private boolean canVersionOrganisationScheme() {
-        return OrganisationsClientSecurityUtils.canVersioningOrganisationScheme(urn, maintainer, organisationSchemeType);
-    }
 }

@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.concept.utils;
 import java.util.Date;
 
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
@@ -56,7 +57,14 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canPublishConceptSchemeExternally(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
-    public static boolean canVersioningConceptScheme(ConceptSchemeTypeEnum type, String operationCode) {
+    public static boolean canVersioningConceptScheme(ConceptSchemeTypeEnum type, String operationCode, RelatedResourceDto maintainer, String versionLogic) {
+        if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer)) {
+            return false;
+        }
+        if (!VersionUtil.isTemporalVersion(versionLogic)) {
+            // The scheme can only be version when the temporal version has been previously created
+            return false;
+        }
         return SharedConceptsSecurityUtils.canVersioningConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode);
     }
 
