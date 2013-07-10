@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.web.category.widgets;
 
-import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
@@ -18,13 +17,7 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     private void setCanEdit() {
-        boolean canEdit = false;
-        if (org.siemac.metamac.srm.web.client.utils.CommonUtils.isMaintainableArtefactPublished(procStatus)) {
-            canEdit = CategoriesClientSecurityUtils.canCreateCategorySchemeTemporalVersion();
-        } else {
-            canEdit = CategoriesClientSecurityUtils.canUpdateCategoryScheme(procStatus);
-        }
-        super.setCanEdit(canEdit);
+        super.setCanEdit(CategoriesClientSecurityUtils.canUpdateCategoryScheme(procStatus));
     }
 
     private void setCanDelete() {
@@ -69,9 +62,9 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     @Override
-    protected void showVersioningButton() {
-        if (canCategorySchemeBeVersion()) {
-            versioning.show();
+    protected void showCreateTemporalVersionButton() {
+        if (CategoriesClientSecurityUtils.canCreateCategorySchemeTemporalVersion()) {
+            createTemporalVersion.show();
         }
     }
     @Override
@@ -82,9 +75,9 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
     }
 
     @Override
-    protected void showVersionSdmxResourceButton() {
-        if (canCategorySchemeBeVersion() && VersionUtil.isTemporalVersion(versionLogic)) {
-            versionSdmxResource.show();
+    protected void showConsolidateVersionButton() {
+        if (CategoriesClientSecurityUtils.canVersioningCategoryScheme(maintainer, versionLogic)) {
+            consolidateVersion.show();
         }
     }
 
@@ -108,9 +101,4 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
     // announce.show();
     // }
     // }
-
-    private boolean canCategorySchemeBeVersion() {
-        // Resources from other maintainers can not be version
-        return org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer) && CategoriesClientSecurityUtils.canVersioningCategoryScheme();
-    }
 }
