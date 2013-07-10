@@ -54,7 +54,6 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.domain.Quantity;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
-import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
@@ -684,7 +683,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             // no extra validation
         } else if (RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())) {
             if (concept.getCoreRepresentation().getEnumerationCodelist() != null) {
-                if (ConceptRoleEnum.MEASURE_DIMENSION.equals(concept.getSdmxRelatedArtefact())) {
+                if (ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersion.getType())) {
                     return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
                 }
                 if (concept.getVariable() == null) {
@@ -700,7 +699,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                     return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
                 }
             } else if (concept.getCoreRepresentation().getEnumerationConceptScheme() != null) {
-                if (!ConceptRoleEnum.MEASURE_DIMENSION.equals(concept.getSdmxRelatedArtefact())) {
+                if (!ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersion.getType())) {
+                    return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
+                }
+                if (concept.getCoreRepresentation().getEnumerationConceptScheme().getId().equals(conceptSchemeVersion.getId())) {
                     return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
                 }
                 PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);

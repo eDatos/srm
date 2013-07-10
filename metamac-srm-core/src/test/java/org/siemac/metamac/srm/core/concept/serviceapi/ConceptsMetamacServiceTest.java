@@ -2836,23 +2836,43 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
-    public void testCreateConceptWithExtendsRepresentation() throws Exception {
+    public void testCreateConceptWithExtends() throws Exception {
+
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, null, ConceptRoleEnum.ATTRIBUTE);
+        concept.setParent(null);
+        concept.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V1_CONCEPT_1));
+        concept.setVariable(codesService.retrieveVariableByUrn(ctx, VARIABLE_1));
+        concept.setSdmxRelatedArtefact(ConceptRoleEnum.MEASURE_DIMENSION);
+
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+
+        // Create
+        ConceptMetamac conceptCreated = conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+
+        // Validate
+        ConceptMetamac conceptRetrieved = conceptsService.retrieveConceptByUrn(ctx, conceptCreated.getNameableArtefact().getUrn());
+        assertEquals(CONCEPT_SCHEME_7_V1_CONCEPT_1, conceptRetrieved.getConceptExtends().getNameableArtefact().getUrn());
+    }
+
+    @Test
+    public void testCreateConceptWithRepresentation() throws Exception {
 
         ServiceContext ctx = getServiceContextAdministrador();
 
         ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
         ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1), ConceptRoleEnum.ATTRIBUTE);
         concept.setParent(null);
-        concept.setConceptExtends(conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V1_CONCEPT_1));
-        concept.setVariable(codesService.retrieveVariableByUrn(ctx, VARIABLE_1));
-        concept.setSdmxRelatedArtefact(ConceptRoleEnum.MEASURE_DIMENSION);
+        concept.setSdmxRelatedArtefact(null);
         Representation enumeratedRepresentation = new Representation();
         enumeratedRepresentation.setIsExtended(true);
         enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
-        enumeratedRepresentation.setEnumerationConceptScheme(conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_15_V1));// codesService.retrieveCodelistByUrn(getServiceContextAdministrador(),
+        enumeratedRepresentation.setEnumerationConceptScheme(conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_15_V1));
         concept.setCoreRepresentation(enumeratedRepresentation);
 
-        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptSchemeUrn = CONCEPT_SCHEME_16_V1;
 
         // Create
         ConceptMetamac conceptCreated = conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
