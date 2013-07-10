@@ -232,7 +232,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         String srmApiInternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_SRM_INTERNAL_API);
         srmApiInternalEndpointV10 = RestUtils.createLink(srmApiInternalEndpoint, RestInternalConstants.API_VERSION_1_0);
 
-        // Statistical operations Internal Api (do not add api version! it is already stored in database)
+        // Statistical operations Internal Api (do not add api version! it is already stored in database (~latest))
         statisticalOperationsApiInternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_INTERNAL_API);
         statisticalOperationsApiInternalEndpoint = StringUtils.removeEnd(statisticalOperationsApiInternalEndpoint, "/");
 
