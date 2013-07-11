@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD;
 import static org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresDoMocks.mockDataStructure;
 import static org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresDoMocks.mockDataStructureWithComponents;
@@ -99,6 +99,7 @@ public class DataStructuresDo2RestMapperTest {
     public void testToDataStructure() {
 
         DataStructureDefinitionVersionMetamac source = mockDataStructureWithComponents("agencyID1", "resourceID1", "01.123");
+        source.getStatisticalOperation().setCodeNested("codeNested");
 
         // Transform
         DataStructure target = do2RestInternalMapper.toDataStructure(source);
@@ -122,6 +123,7 @@ public class DataStructuresDo2RestMapperTest {
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-resourceID1", target.getStatisticalOperation().getUrn());
         assertEquals("statisticalOperations#operation", target.getStatisticalOperation().getKind());
         assertEquals("operation-resourceID1", target.getStatisticalOperation().getId());
+        assertEquals(source.getStatisticalOperation().getCodeNested(), target.getStatisticalOperation().getNestedId());
         assertNull(target.getStatisticalOperation().getName());
         // show decimals
         assertEquals(2, target.getShowDecimalsPrecisions().getTotal().intValue());
