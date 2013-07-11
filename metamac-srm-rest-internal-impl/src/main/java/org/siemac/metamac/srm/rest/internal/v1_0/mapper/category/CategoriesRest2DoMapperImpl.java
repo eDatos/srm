@@ -4,7 +4,6 @@ import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
 import org.siemac.metamac.rest.exception.RestException;
-import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteria;
 import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaBase;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
@@ -32,6 +31,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
     private RestCriteria2SculptorCriteria<Categorisation>               categorisationCriteriaMapper = null;
 
     public CategoriesRest2DoMapperImpl() {
+        super();
         categorySchemeCriteriaMapper = new RestCriteria2SculptorCriteria<CategorySchemeVersionMetamac>(CategorySchemeVersionMetamac.class, CategorySchemeCriteriaPropertyOrder.class,
                 CategorySchemeCriteriaPropertyRestriction.class, new CategorySchemeCriteriaCallback());
         categoryCriteriaMapper = new RestCriteria2SculptorCriteria<CategoryMetamac>(CategoryMetamac.class, CategoryCriteriaPropertyOrder.class, CategoryCriteriaPropertyRestriction.class,
@@ -62,37 +62,31 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
             CategorySchemeCriteriaPropertyRestriction propertyNameCriteria = CategorySchemeCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().code(), PropertyTypeEnum.STRING, propertyRestriction);
                 case URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact());
                 case NAME:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case VALID_FROM:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validFrom(), CategorySchemeVersionMetamac.class, false);
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validFrom(), CategorySchemeVersionMetamac.class, false);
                 case VALID_TO:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validTo(), CategorySchemeVersionMetamac.class, false);
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validTo(), CategorySchemeVersionMetamac.class, false);
                 case PROC_STATUS:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(),
-                            propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), PropertyTypeEnum.PROC_STATUS, propertyRestriction);
                 case INTERNAL_PUBLICATION_DATE:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
                             CategorySchemeVersionMetamac.class, true);
                 case INTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
                 case EXTERNAL_PUBLICATION_DATE:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
                             CategorySchemeVersionMetamac.class, true);
                 case EXTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
                 case LATEST:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -124,22 +118,19 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
             CategoryCriteriaPropertyRestriction propertyNameCriteria = CategoryCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().codeFull(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().codeFull(), PropertyTypeEnum.STRING, propertyRestriction);
                 case URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CategoryMetamacProperties.nameableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CategoryMetamacProperties.nameableArtefact());
                 case NAME:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().name().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case CATEGORY_SCHEME_URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 case CATEGORY_SCHEME_EXTERNALLY_PUBLISHED:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), Boolean.valueOf(propertyRestriction.getValue()),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 case CATEGORY_SCHEME_LATEST:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -171,18 +162,17 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
             CategorisationCriteriaPropertyRestriction propertyNameCriteria = CategorisationCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().code(), PropertyTypeEnum.STRING, propertyRestriction);
                 case URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CategorisationProperties.maintainableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CategorisationProperties.maintainableArtefact());
                 case NAME:
-                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().name().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case ARTEFACT_URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CategorisationProperties.artefactCategorised());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CategorisationProperties.artefactCategorised());
                 case CATEGORY_URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CategorisationProperties.category().nameableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CategorisationProperties.category().nameableArtefact());
                 case LATEST:
-                    return new SculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }

@@ -3,9 +3,8 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
-import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteria;
-import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaBase;
 import org.siemac.metamac.rest.exception.RestException;
+import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaBase;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationCriteriaPropertyOrder;
@@ -18,9 +17,6 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
 import org.springframework.stereotype.Component;
-
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 @Component
 public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements OrganisationsRest2DoMapper {
@@ -52,44 +48,36 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
             OrganisationSchemeCriteriaPropertyRestriction propertyNameCriteria = OrganisationSchemeCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code(), PropertyTypeEnum.STRING, propertyRestriction);
                 case URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact());
                 case NAME:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case VALID_FROM:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact().validFrom(), OrganisationSchemeVersionMetamac.class,
-                            false);
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact().validFrom(),
+                            OrganisationSchemeVersionMetamac.class, false);
                 case VALID_TO:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact().validTo(), OrganisationSchemeVersionMetamac.class,
-                            false);
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact().validTo(),
+                            OrganisationSchemeVersionMetamac.class, false);
                 case PROC_STATUS:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(),
-                            propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), PropertyTypeEnum.PROC_STATUS, propertyRestriction);
                 case INTERNAL_PUBLICATION_DATE:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
                             OrganisationSchemeVersionMetamac.class, true);
                 case INTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
                 case EXTERNAL_PUBLICATION_DATE:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
                             OrganisationSchemeVersionMetamac.class, true);
                 case EXTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
                 case LATEST:
                     // Note: AgencyScheme, DataProvider... are note marked as final, but they are marked as latest when published.
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 case TYPE:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.organisationSchemeType(),
-                            propertyRestrictionValueToOrganisationSchemeTypeEnum(propertyRestriction.getValue()), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.organisationSchemeType(), PropertyTypeEnum.ORGANISATION_SCHEME_TYPE, propertyRestriction);
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -121,25 +109,21 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
             OrganisationCriteriaPropertyRestriction propertyNameCriteria = OrganisationCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().code(), PropertyTypeEnum.STRING, propertyRestriction);
                 case URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, OrganisationMetamacProperties.nameableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, OrganisationMetamacProperties.nameableArtefact());
                 case NAME:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().name().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case ORGANISATION_SCHEME_URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 case ORGANISATION_SCHEME_EXTERNALLY_PUBLISHED:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), Boolean.valueOf(propertyRestriction.getValue()),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 case ORGANISATION_SCHEME_LATEST:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 case TYPE:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.organisationType(), propertyRestrictionValueToOrganisationTypeEnum(propertyRestriction.getValue()),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(OrganisationMetamacProperties.organisationType(), PropertyTypeEnum.ORGANISATION_TYPE, propertyRestriction);
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -162,13 +146,5 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
         public Property retrievePropertyOrderDefault() throws RestException {
             return OrganisationMetamacProperties.nameableArtefact().code();
         }
-    }
-
-    private OrganisationSchemeTypeEnum propertyRestrictionValueToOrganisationSchemeTypeEnum(String value) {
-        return value != null ? OrganisationSchemeTypeEnum.valueOf(value) : null;
-    }
-
-    private OrganisationTypeEnum propertyRestrictionValueToOrganisationTypeEnum(String value) {
-        return value != null ? OrganisationTypeEnum.valueOf(value) : null;
     }
 }

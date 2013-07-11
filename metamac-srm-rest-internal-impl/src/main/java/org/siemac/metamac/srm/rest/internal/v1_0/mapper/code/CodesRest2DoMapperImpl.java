@@ -3,10 +3,10 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.code;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
+import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteria;
 import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaBase;
 import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaDisjunction;
-import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodeCriteriaPropertyOrder;
@@ -85,37 +85,33 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
             CodelistCriteriaPropertyRestriction propertyNameCriteria = CodelistCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().code(), PropertyTypeEnum.STRING, propertyRestriction);
                 case URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact());
                 case NAME:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case DESCRIPTION_SOURCE:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.descriptionSource().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.descriptionSource().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case VALID_FROM:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact().validFrom(), CodelistVersionMetamac.class, false);
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact().validFrom(), CodelistVersionMetamac.class, false);
                 case VALID_TO:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact().validTo(), CodelistVersionMetamac.class, false);
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact().validTo(), CodelistVersionMetamac.class, false);
                 case PROC_STATUS:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestrictionValueToProcStatusEnum(propertyRestriction.getValue()),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().procStatus(), PropertyTypeEnum.PROC_STATUS, propertyRestriction);
                 case INTERNAL_PUBLICATION_DATE:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(), CodelistVersionMetamac.class, true);
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
+                            CodelistVersionMetamac.class, true);
                 case INTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
                 case EXTERNAL_PUBLICATION_DATE:
-                    return getSculptorPropertyCriteriaDate(propertyRestriction, CodelistVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(), CodelistVersionMetamac.class, true);
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CodelistVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
+                            CodelistVersionMetamac.class, true);
                 case EXTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
                 case LATEST:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -147,27 +143,24 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
             CodeCriteriaPropertyRestriction propertyNameCriteria = CodeCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().code(), PropertyTypeEnum.STRING, propertyRestriction);
                 case URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CodeMetamacProperties.nameableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CodeMetamacProperties.nameableArtefact());
                 case NAME:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().name().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case SHORT_NAME:
-                    SculptorPropertyCriteria propertyCriteria1 = new SculptorPropertyCriteria(CodeMetamacProperties.shortName().texts().label(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
-                    SculptorPropertyCriteria propertyCriteria2 = new SculptorPropertyCriteria(CodeMetamacProperties.variableElement().shortName().texts().label(), propertyRestriction.getValue(),
-                            propertyRestriction.getOperationType());
+                    SculptorPropertyCriteria propertyCriteria1 = buildSculptorPropertyCriteria(CodeMetamacProperties.shortName().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
+                    SculptorPropertyCriteria propertyCriteria2 = buildSculptorPropertyCriteria(CodeMetamacProperties.variableElement().shortName().texts().label(), PropertyTypeEnum.STRING,
+                            propertyRestriction);
                     return new SculptorPropertyCriteriaDisjunction(propertyCriteria1, propertyCriteria2);
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case CODELIST_URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CodeMetamacProperties.itemSchemeVersion().maintainableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CodeMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 case CODELIST_EXTERNALLY_PUBLISHED:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), Boolean.valueOf(propertyRestriction.getValue()),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 case CODELIST_LATEST:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), Boolean.valueOf(propertyRestriction.getValue()),
-                            propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -199,11 +192,11 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
             VariableFamilyCriteriaPropertyRestriction propertyNameCriteria = VariableFamilyCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().code(), PropertyTypeEnum.STRING, propertyRestriction);
                 case URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, VariableFamilyProperties.nameableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, VariableFamilyProperties.nameableArtefact());
                 case NAME:
-                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().name().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -235,15 +228,15 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
             VariableCriteriaPropertyRestriction propertyNameCriteria = VariableCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(VariableProperties.nameableArtefact().code(), PropertyTypeEnum.STRING, propertyRestriction);
                 case URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, VariableProperties.nameableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, VariableProperties.nameableArtefact());
                 case NAME:
-                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(VariableProperties.nameableArtefact().name().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case SHORT_NAME:
-                    return new SculptorPropertyCriteria(VariableProperties.shortName().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(VariableProperties.shortName().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case FAMILY_URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, VariableProperties.families().nameableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, VariableProperties.families().nameableArtefact());
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -275,11 +268,11 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
             CodelistFamilyCriteriaPropertyRestriction propertyNameCriteria = CodelistFamilyCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().code(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().code(), PropertyTypeEnum.STRING, propertyRestriction);
                 case URN:
-                    return getUrnSculptorPropertyCriteriaDisjunction(propertyRestriction, CodelistFamilyProperties.nameableArtefact());
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CodelistFamilyProperties.nameableArtefact());
                 case NAME:
-                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
+                    return buildSculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().name().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
