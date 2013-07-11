@@ -1586,7 +1586,8 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                 .withProperty(conceptSchemeTypeProperty).eq(ConceptSchemeTypeEnum.OPERATION).and().withProperty(conceptSchemeRelatedOperationUrnProperty)
                 .eq(dataStructureDefinitionVersionMetamac.getStatisticalOperation().getUrn()).rbrace().buildSingle());
         // Concept primary_measure
-        Property conceptRoleEnumProperty = buildConceptSchemePropertyToConceptSdmxRelatedArtefact();
+        Property conceptRoleEnumProperty = new LeafProperty<ConceptSchemeVersionMetamac>(ConceptSchemeVersionMetamacProperties.items().getName(), ConceptMetamacProperties.sdmxRelatedArtefact()
+                .getName(), false, ConceptSchemeVersionMetamac.class);
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(conceptRoleEnumProperty).in((Object[]) conceptRolesEnum).buildSingle());
         // Do not repeat results and order by. Order by items id is due to bug in Sculpor criteria
         conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.items().id()).ascending().distinctRoot().build());
@@ -1750,12 +1751,6 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
     private Property<ConceptMetamac> buildConceptPropertyToConceptSchemeType() {
         return new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), false, ConceptMetamac.class);
-    }
-
-    private Property<ConceptSchemeVersionMetamac> buildConceptSchemePropertyToConceptSdmxRelatedArtefact() {
-        return new LeafProperty<ConceptSchemeVersionMetamac>(ConceptSchemeVersionMetamacProperties.items().getName(), ConceptMetamacProperties.sdmxRelatedArtefact().getName(), false,
-                ConceptSchemeVersionMetamac.class);
-
     }
 
     private DataStructureDefinitionVersionMetamac retrieveDataStructureDefinitionVersionByUrn(String urn) throws MetamacException {
