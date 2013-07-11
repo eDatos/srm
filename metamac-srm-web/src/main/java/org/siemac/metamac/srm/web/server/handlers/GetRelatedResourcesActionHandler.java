@@ -1,8 +1,5 @@
 package org.siemac.metamac.srm.web.server.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
@@ -277,23 +274,7 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CATEGORIES_FOR_CATEGORISATIONS: {
                     CategoryWebCriteria categoryWebCriteria = (CategoryWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getCategoryCriteriaRestriction(categoryWebCriteria));
-                    MetamacCriteriaResult<RelatedResourceDto> categoriesResult = srmCoreServiceFacade.findCategoriesCanBeCategorisationCategoryByCondition(
-                            ServiceContextHolder.getCurrentServiceContext(), criteria);
-
-                    // Transform the categories result into a related resource result
-
-                    List<RelatedResourceDto> categories = categoriesResult.getResults();
-                    List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
-                    for (RelatedResourceDto categoryRelatedResourceDto : categories) {
-                        RelatedResourceDto relatedResourceDto = categoryRelatedResourceDto;
-                        relatedResourceDto.setCode(categoryRelatedResourceDto.getCodeNested()); // Set the codeFull into the code field
-                        relatedResourceDtos.add(relatedResourceDto);
-                    }
-
-                    result = new MetamacCriteriaResult<RelatedResourceDto>();
-                    result.setPaginatorResult(categoriesResult.getPaginatorResult());
-                    result.setResults(relatedResourceDtos);
-
+                    result = srmCoreServiceFacade.findCategoriesCanBeCategorisationCategoryByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
                 case CODELIST_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY: {
