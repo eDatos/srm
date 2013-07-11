@@ -9,10 +9,10 @@ import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.core.common.constants.CoreCommonConstants;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
-import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteria;
-import org.siemac.metamac.rest.common.query.domain.SculptorPropertyCriteriaDisjunction;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
+import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteria;
+import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaDisjunction;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
@@ -57,7 +57,8 @@ public abstract class BaseRest2DoMapperV10Impl {
     }
 
     @SuppressWarnings({"rawtypes"})
-    public static SculptorPropertyCriteriaDisjunction getUrnSculptorPropertyCriteriaDisjunction(MetamacRestQueryPropertyRestriction propertyRestriction, NameableArtefactProperty nameableArtefactProperty) {
+    public static SculptorPropertyCriteriaDisjunction getUrnSculptorPropertyCriteriaDisjunction(MetamacRestQueryPropertyRestriction propertyRestriction,
+            NameableArtefactProperty nameableArtefactProperty) {
         SculptorPropertyCriteria propertyCriteria1Urn = new SculptorPropertyCriteria(nameableArtefactProperty.urn(), propertyRestriction.getValue(), propertyRestriction.getOperationType());
         SculptorPropertyCriteria propertyCriteria2UrnProvider = new SculptorPropertyCriteria(nameableArtefactProperty.urnProvider(), propertyRestriction.getValue(),
                 propertyRestriction.getOperationType());
