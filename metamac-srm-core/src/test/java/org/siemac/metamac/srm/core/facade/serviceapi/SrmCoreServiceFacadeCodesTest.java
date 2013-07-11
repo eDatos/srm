@@ -113,10 +113,10 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     public void testCreateCodelist() throws Exception {
         // Create
         CodelistMetamacDto codelistDto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
-        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST07", CODELIST_7_V1, null));
-        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST10", CODELIST_10_V1, null));
-        codelistDto.setFamily(new RelatedResourceDto("CODELIST_FAMILY_01", CODELIST_FAMILY_1, null));
-        codelistDto.setVariable(new RelatedResourceDto("VARIABLE_01", VARIABLE_1, null));
+        codelistDto.getReplaceToCodelists().add(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST07", CODELIST_7_V1));
+        codelistDto.getReplaceToCodelists().add(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST10", CODELIST_10_V1));
+        codelistDto.setFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("CODELIST_FAMILY_01", CODELIST_FAMILY_1));
+        codelistDto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
         CodelistMetamacDto codelistMetamacCreated = srmCoreServiceFacade.createCodelist(getServiceContextAdministrador(), codelistDto);
 
         // Validate some metadata
@@ -133,8 +133,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
     @Test
     public void testCreateCodelistErrorReplaceTo() throws Exception {
         CodelistMetamacDto codelistDto = CodesMetamacDtoMocks.mockCodelistDto(AGENCY_ROOT_1_V1_CODE, AGENCY_ROOT_1_V1);
-        codelistDto.setVariable(new RelatedResourceDto("VARIABLE_01", VARIABLE_1, null));
-        codelistDto.getReplaceToCodelists().add(new RelatedResourceDto("CODELIST12", CODELIST_12_V1, null));
+        codelistDto.setVariable(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
+        codelistDto.getReplaceToCodelists().add(CodesMetamacDtoMocks.mockCodelistRelatedResourceDto("CODELIST12", CODELIST_12_V1));
 
         // Create
         try {
@@ -1817,8 +1817,8 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         VariableDto variableDto = CodesMetamacDtoMocks.mockVariableDto();
         variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_01", VARIABLE_FAMILY_1));
         variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_02", VARIABLE_FAMILY_2));
-        variableDto.getReplaceToVariables().add(new RelatedResourceDto("VARIABLE_04", VARIABLE_4, null));
-        variableDto.getReplaceToVariables().add(new RelatedResourceDto("VARIABLE_05", VARIABLE_5, null));
+        variableDto.getReplaceToVariables().add(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_04", VARIABLE_4));
+        variableDto.getReplaceToVariables().add(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_05", VARIABLE_5));
 
         VariableDto variableCreated = srmCoreServiceFacade.createVariable(getServiceContextAdministrador(), variableDto);
 
@@ -1834,13 +1834,12 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
         VariableDto variableReplaced = srmCoreServiceFacade.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_4);
         assertEquals(variableCreated.getUrn(), variableReplaced.getReplacedByVariable().getUrn());
     }
-
     @Test
     public void testCreateVariableErrorReplaceTo() throws Exception {
         VariableDto variableDto = CodesMetamacDtoMocks.mockVariableDto();
         variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_01", VARIABLE_FAMILY_1));
         variableDto.addFamily(CodesMetamacDtoMocks.mockVariableFamilyRelatedResourceDto("VARIABLE_FAMILY_02", VARIABLE_FAMILY_2));
-        variableDto.getReplaceToVariables().add(new RelatedResourceDto("VARIABLE_01", VARIABLE_1, null));
+        variableDto.getReplaceToVariables().add(CodesMetamacDtoMocks.mockVariableRelatedResourceDto("VARIABLE_01", VARIABLE_1));
 
         try {
             srmCoreServiceFacade.createVariable(getServiceContextAdministrador(), variableDto);

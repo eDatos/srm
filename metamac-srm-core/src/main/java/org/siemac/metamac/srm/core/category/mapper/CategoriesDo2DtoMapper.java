@@ -11,7 +11,6 @@ import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategoryRelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 public interface CategoriesDo2DtoMapper {
@@ -25,7 +24,7 @@ public interface CategoriesDo2DtoMapper {
     // Categories
     public CategoryMetamacDto categoryMetamacDoToDto(CategoryMetamac source);
     public CategoryMetamacBasicDto categoryMetamacDoToBasicDto(CategoryMetamac source);
-    public CategoryRelatedResourceDto categoryMetamacDoToRelatedResourceDto(CategoryMetamac source);
+    public RelatedResourceDto categoryMetamacDoToRelatedResourceDto(CategoryMetamac source);
 
     // Categorisations
     public CategorisationDto categorisationDoToDto(Categorisation source);

@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.QuantityUnitSymbolPositionEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.shared.QuantityUtils;
+import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacDtoMocks;
 
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -29,9 +30,7 @@ public class ConceptsMetamacDtoMocks {
         ConceptSchemeMetamacDto conceptSchemeDto = new ConceptSchemeMetamacDto();
         ConceptsDtoMocks.mockConceptSchemeDto(conceptSchemeDto);
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.GLOSSARY);
-
-        conceptSchemeDto.setMaintainer(new RelatedResourceDto(codeMaintainer, urnMaintainer, RelatedResourceTypeEnum.AGENCY));
-
+        conceptSchemeDto.setMaintainer(OrganisationsMetamacDtoMocks.mockMaintainerDto(codeMaintainer, urnMaintainer));
         return conceptSchemeDto;
     }
 
@@ -40,7 +39,7 @@ public class ConceptsMetamacDtoMocks {
         ConceptsDtoMocks.mockConceptSchemeDto(conceptSchemeDto);
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.OPERATION);
         conceptSchemeDto.setRelatedOperation(BaseDtoMocks.mockExternalItemStatisticalOperationDto("operation1"));
-        RelatedResourceDto maintainerDto = new RelatedResourceDto(codeMaintainer, urnMaintainer, RelatedResourceTypeEnum.AGENCY);
+        RelatedResourceDto maintainerDto = OrganisationsMetamacDtoMocks.mockMaintainerDto(codeMaintainer, urnMaintainer);
         maintainerDto.setUrnProvider(urnMaintainer);
         conceptSchemeDto.setMaintainer(maintainerDto);
         return conceptSchemeDto;

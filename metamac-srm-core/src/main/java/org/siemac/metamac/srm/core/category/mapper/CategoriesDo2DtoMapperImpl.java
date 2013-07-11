@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategoryRelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 
 @org.springframework.stereotype.Component("categoriesDo2DtoMapper")
@@ -85,11 +84,11 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
     }
 
     @Override
-    public CategoryRelatedResourceDto categoryMetamacDoToRelatedResourceDto(CategoryMetamac source) {
+    public RelatedResourceDto categoryMetamacDoToRelatedResourceDto(CategoryMetamac source) {
         if (source == null) {
             return null;
         }
-        CategoryRelatedResourceDto target = do2DtoMapperSdmxSrm.categoryDoToRelatedResourceDto(source);
+        RelatedResourceDto target = do2DtoMapperSdmxSrm.categoryDoToRelatedResourceDto(source);
         return target;
     }
 

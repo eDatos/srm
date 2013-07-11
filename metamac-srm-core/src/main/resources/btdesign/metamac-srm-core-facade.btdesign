@@ -490,7 +490,7 @@ Application SrmFacadeCore {
             "Finds categories by criteria"
             MetamacCriteriaResult<@CategoryMetamacBasicDto> findCategoriesByCondition(MetamacCriteria criteria) throws MetamacException;
     		"Finds categories can be category in categorisation"
-    		MetamacCriteriaResult<@CategoryRelatedResourceDto> findCategoriesCanBeCategorisationCategoryByCondition(MetamacCriteria criteria) throws MetamacException;
+    		MetamacCriteriaResult<@RelatedResourceDto> findCategoriesCanBeCategorisationCategoryByCondition(MetamacCriteria criteria) throws MetamacException;
 			"Deletes category"
             deleteCategory(String urn) throws MetamacException;
     		"Retrieves categories by category scheme in locale requested"
