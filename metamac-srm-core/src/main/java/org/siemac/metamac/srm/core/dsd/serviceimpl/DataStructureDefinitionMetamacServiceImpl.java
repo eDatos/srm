@@ -656,6 +656,24 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     }
 
     @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdSpatialDimensionByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, String dsdUrn) throws MetamacException {
+
+        addSpatialConditionForConceptSchemes(conditions); // Condition Spatial
+
+        return findConceptSchemesWithConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.DIMENSION, ConceptRoleEnum.ATTRIBUTE_OR_DIMENSION);
+    }
+
+    @Override
+    public PagedResult<ConceptMetamac> findConceptsCanBeDsdSpatialDimensionByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn)
+            throws MetamacException {
+
+        addSpatialConditionForConcepts(conditions); // Condition Spatial
+
+        return findConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.DIMENSION, ConceptRoleEnum.ATTRIBUTE_OR_DIMENSION);
+    }
+
+    @Override
     public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter)
             throws MetamacException {
         return findConceptSchemesWithSpecificType(ctx, conditions, pagingParameter, ConceptSchemeTypeEnum.ROLE);
@@ -727,6 +745,49 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
     @Override
     public PagedResult<ConceptMetamac> findConceptsCanBeDsdAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn)
+            throws MetamacException {
+        return findConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.ATTRIBUTE, ConceptRoleEnum.ATTRIBUTE_OR_DIMENSION);
+    }
+
+    @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdSpatialAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, String dsdUrn) throws MetamacException {
+
+        addSpatialConditionForConceptSchemes(conditions); // Spatial condition
+
+        return findConceptSchemesWithConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.ATTRIBUTE, ConceptRoleEnum.ATTRIBUTE_OR_DIMENSION);
+    }
+
+    @Override
+    public PagedResult<ConceptMetamac> findConceptsCanBeDsdSpatialAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn)
+            throws MetamacException {
+
+        addSpatialConditionForConcepts(conditions); // Spatial condition
+
+        return findConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.ATTRIBUTE, ConceptRoleEnum.ATTRIBUTE_OR_DIMENSION);
+    }
+
+    @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdMeasureAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, String dsdUrn) throws MetamacException {
+
+        return findConceptSchemesWithConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.MEASURE_DIMENSION);
+    }
+
+    @Override
+    public PagedResult<ConceptMetamac> findConceptsCanBeDsdMeasureAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn)
+            throws MetamacException {
+        return findConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.MEASURE_DIMENSION);
+    }
+
+    @Override
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdTimeAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter, String dsdUrn) throws MetamacException {
+        return findConceptSchemesWithConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.ATTRIBUTE, ConceptRoleEnum.ATTRIBUTE_OR_DIMENSION);
+    }
+
+    @Override
+    public PagedResult<ConceptMetamac> findConceptsCanBeDsdTimeAttributeByCondition(ServiceContext ctx, List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn)
             throws MetamacException {
         return findConceptsCanBeDsdSpecificDimensionByCondition(ctx, conditions, pagingParameter, dsdUrn, ConceptRoleEnum.ATTRIBUTE, ConceptRoleEnum.ATTRIBUTE_OR_DIMENSION);
     }
@@ -1004,12 +1065,21 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
             String dataStructureDefinitionVersionUrn = dataStructureDefinitionVersion.getMaintainableArtefact().getUrn();
 
+            SpecialDimensionTypeEnum specialDimensionTypeEnum = ((DimensionComponent) component).getSpecialDimensionType();
+
             // ConceptIdentity
             {
                 Long conceptIdentityId = component.getCptIdRef().getId();
                 List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id())
                         .eq(conceptIdentityId).build();
-                PagedResult<ConceptMetamac> result = findConceptsCanBeDsdDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+
+                PagedResult<ConceptMetamac> result = null;
+                if (SpecialDimensionTypeEnum.SPATIAL.equals(specialDimensionTypeEnum)) {
+                    result = findConceptsCanBeDsdSpatialDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+                } else {
+                    result = findConceptsCanBeDsdDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+                }
+
                 if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptIdentityId)) {
                     exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DIMENSION_CONCEPT_ID_REF));
                 }
@@ -1018,7 +1088,6 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             // Role
             checkComponentRoles(ctx, dataStructureDefinitionVersion, component, exceptions);
 
-            SpecialDimensionTypeEnum specialDimensionTypeEnum = ((DimensionComponent) component).getSpecialDimensionType();
             // Geographical dimension
             {
                 if (SpecialDimensionTypeEnum.SPATIAL.equals(specialDimensionTypeEnum)) {
@@ -1141,13 +1210,24 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             }
             PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
             String dataStructureDefinitionVersionUrn = dataStructureDefinitionVersion.getMaintainableArtefact().getUrn();
+            SpecialAttributeTypeEnum specialAttributeType = ((DataAttribute) component).getSpecialAttributeType();
 
             // ConceptIdentity
             {
                 Long conceptIdentityId = component.getCptIdRef().getId();
                 List<ConditionalCriteria> criteriaToVerifyConceptIdentityCode = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.id())
                         .eq(conceptIdentityId).build();
-                PagedResult<ConceptMetamac> result = findConceptsCanBeDsdDimensionByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+                PagedResult<ConceptMetamac> result = null;
+                if (SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(specialAttributeType)) {
+                    result = findConceptsCanBeDsdMeasureAttributeByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+                } else if (SpecialAttributeTypeEnum.SPATIAL_EXTENDS.equals(specialAttributeType)) {
+                    result = findConceptsCanBeDsdSpatialAttributeByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+                } else if (SpecialAttributeTypeEnum.TIME_EXTENDS.equals(specialAttributeType)) {
+                    result = findConceptsCanBeDsdTimeAttributeByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+                } else {
+                    result = findConceptsCanBeDsdAttributeByCondition(ctx, criteriaToVerifyConceptIdentityCode, pagingParameter, dataStructureDefinitionVersionUrn);
+                }
+
                 if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(conceptIdentityId)) {
                     exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.DATA_ATTRIBUTE_CONCEPT_ID_REF));
                 }
@@ -1156,7 +1236,6 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             // Role
             checkComponentRoles(ctx, dataStructureDefinitionVersion, component, exceptions);
 
-            SpecialAttributeTypeEnum specialAttributeType = ((DataAttribute) component).getSpecialAttributeType();
             // Representation: Geographical attribute
             {
                 // If it is a geographical attribute, then must have a enumerated local representation or a enumerated inherited representation
@@ -1634,7 +1713,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(conceptSchemeTypeProperty).eq(ConceptSchemeTypeEnum.TRANSVERSAL).or().lbrace()
                 .withProperty(conceptSchemeTypeProperty).eq(ConceptSchemeTypeEnum.OPERATION).and().withProperty(conceptSchemeRelatedOperationUrnProperty).eq(statisticalOperationUrn).rbrace()
                 .buildSingle());
-        // Concept primary_measure
+        // Concept related artefact
         Property conceptRoleEnumProperty = ConceptMetamacProperties.sdmxRelatedArtefact();
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(entitySearchedClass).withProperty(conceptRoleEnumProperty).in((Object[]) conceptRolesEnum).buildSingle());
         // Do not repeat results
@@ -1760,6 +1839,28 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
         }
         return dataStructureDefinitionVersion;
+    }
+
+    protected void addSpatialConditionForConceptSchemes(List<ConditionalCriteria> conditions) {
+        // Prepare conditions
+        if (conditions == null) {
+            conditions = new ArrayList<ConditionalCriteria>();
+        }
+        // Condition Spatial
+        @SuppressWarnings("rawtypes")
+        Property conceptSpatialVariableProperty = new LeafProperty<ConceptSchemeVersionMetamac>(ConceptSchemeVersionMetamacProperties.items().getName(), ConceptMetamacProperties.variable().type()
+                .getName(), false, ConceptSchemeVersionMetamac.class);
+
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).withProperty(conceptSpatialVariableProperty).eq(VariableTypeEnum.GEOGRAPHICAL).buildSingle());
+    }
+
+    protected void addSpatialConditionForConcepts(List<ConditionalCriteria> conditions) {
+        // Prepare conditions
+        if (conditions == null) {
+            conditions = new ArrayList<ConditionalCriteria>();
+        }
+        // Condition Spatial
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.variable().type()).eq(VariableTypeEnum.GEOGRAPHICAL).buildSingle());
     }
 
 }

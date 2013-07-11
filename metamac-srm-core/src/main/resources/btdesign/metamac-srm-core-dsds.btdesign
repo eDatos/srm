@@ -98,6 +98,10 @@ Application DsdsMetamac {
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
     		"Find concepts can be dimension"
     		PagedResult<@ConceptMetamac> findConceptsCanBeDsdDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concepts schemes can be spatial dimension"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdSpatialDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concepts can be spatial dimension"
+    		PagedResult<@ConceptMetamac> findConceptsCanBeDsdSpatialDimensionByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
     		"Find concept schemes with concepts can be role"
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
     		"Find concepts can be role"
@@ -116,6 +120,18 @@ Application DsdsMetamac {
     		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
     		"Find concepts can be concept of attribute"
     		PagedResult<@ConceptMetamac> findConceptsCanBeDsdAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concepts schemes can be concept of spatial attribute"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdSpatialAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concepts can be concept of spatial attribute"
+    		PagedResult<@ConceptMetamac> findConceptsCanBeDsdSpatialAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+      		"Find concepts schemes can be concept of measure attribute"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdMeasureAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+            "Find concepts can be concept of measure attribute"
+            PagedResult<@ConceptMetamac> findConceptsCanBeDsdMeasureAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+    		"Find concepts schemes can be concept of measure attribute"
+    		PagedResult<@ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeDsdTimeAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
+            "Find concepts can be concept of time attribute"
+            PagedResult<@ConceptMetamac> findConceptsCanBeDsdTimeAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String dsdUrn) throws MetamacException;
     		"Find codelists belong to same variable of concept"
     		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForDsdAttributeByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn) throws MetamacException;
 			"Find codelists belong to same variable of concept an the variable must be spatial"

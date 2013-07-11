@@ -743,6 +743,43 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdSpatialDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
+            throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = getDataStructureDefinitionMetamacService().findConceptSchemesWithConceptsCanBeDsdSpatialDimensionByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdSpatialDimensionByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptMetamac> result = getDataStructureDefinitionMetamacService().findConceptsCanBeDsdSpatialDimensionByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dsdUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
     public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdRoleByCondition(ServiceContext ctx, MetamacCriteria criteria) throws MetamacException {
         // Security
         ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
@@ -900,6 +937,117 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // Find
         PagedResult<ConceptMetamac> result = getDataStructureDefinitionMetamacService().findConceptsCanBeDsdAttributeByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dsdUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdSpatialAttributeByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
+            throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = getDataStructureDefinitionMetamacService().findConceptSchemesWithConceptsCanBeDsdSpatialAttributeByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdSpatialAttributeByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptMetamac> result = getDataStructureDefinitionMetamacService().findConceptsCanBeDsdSpatialAttributeByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dsdUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdMeasureAttributeByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
+            throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = getDataStructureDefinitionMetamacService().findConceptSchemesWithConceptsCanBeDsdMeasureAttributeByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdMeasureAttributeByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptMetamac> result = getDataStructureDefinitionMetamacService().findConceptsCanBeDsdMeasureAttributeByCondition(ctx, sculptorCriteria.getConditions(),
+                sculptorCriteria.getPagingParameter(), dsdUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptSchemesWithConceptsCanBeDsdTimeAttributeByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn)
+            throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptSchemesByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptSchemeMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptSchemeVersionMetamac> result = getDataStructureDefinitionMetamacService().findConceptSchemesWithConceptsCanBeDsdTimeAttributeByCondition(ctx,
+                sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), dsdUrn);
+
+        // Transform
+        MetamacCriteriaResult<RelatedResourceDto> metamacCriteriaResult = sculptorCriteria2MetamacCriteriaMapper.pageResultConceptSchemeVersionToMetamacCriteriaResultRelatedResource(result,
+                sculptorCriteria.getPageSize());
+        return metamacCriteriaResult;
+    }
+
+    @Override
+    public MetamacCriteriaResult<RelatedResourceDto> findConceptsCanBeDsdTimeAttributeByCondition(ServiceContext ctx, MetamacCriteria criteria, String dsdUrn) throws MetamacException {
+        // Security
+        ConceptsSecurityUtils.canFindConceptsByCondition(ctx);
+
+        // Transform
+        SculptorCriteria sculptorCriteria = metamacCriteria2SculptorCriteriaMapper.getConceptMetamacCriteriaMapper().metamacCriteria2SculptorCriteria(criteria);
+
+        // Find
+        PagedResult<ConceptMetamac> result = getDataStructureDefinitionMetamacService().findConceptsCanBeDsdTimeAttributeByCondition(ctx, sculptorCriteria.getConditions(),
                 sculptorCriteria.getPagingParameter(), dsdUrn);
 
         // Transform

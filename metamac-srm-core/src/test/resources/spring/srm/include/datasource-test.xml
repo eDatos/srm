@@ -31,6 +31,7 @@
         <property name="jpaProperties">
             <props>
                 <!-- These properties override persistence-test.xml -->
+<!--                 <prop key="hibernate.format_sql">true</prop> -->
                 <prop key="hibernate.hbm2ddl.auto">validate</prop>
                 <prop key="hibernate.ejb.cfgfile">hibernate.cfg.xml</prop>
                 <prop key="query.substitutions">true 1, false 0</prop>
