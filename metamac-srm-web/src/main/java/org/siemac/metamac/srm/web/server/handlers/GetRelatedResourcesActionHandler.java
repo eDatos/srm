@@ -30,7 +30,6 @@ import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategoryRelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.gwtplatform.dispatch.shared.ActionException;
 
@@ -278,16 +277,16 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                 case CATEGORIES_FOR_CATEGORISATIONS: {
                     CategoryWebCriteria categoryWebCriteria = (CategoryWebCriteria) action.getCriteria();
                     criteria.setRestriction(MetamacWebCriteriaUtils.getCategoryCriteriaRestriction(categoryWebCriteria));
-                    MetamacCriteriaResult<CategoryRelatedResourceDto> categoriesResult = srmCoreServiceFacade.findCategoriesCanBeCategorisationCategoryByCondition(
+                    MetamacCriteriaResult<RelatedResourceDto> categoriesResult = srmCoreServiceFacade.findCategoriesCanBeCategorisationCategoryByCondition(
                             ServiceContextHolder.getCurrentServiceContext(), criteria);
 
                     // Transform the categories result into a related resource result
 
-                    List<CategoryRelatedResourceDto> categories = categoriesResult.getResults();
+                    List<RelatedResourceDto> categories = categoriesResult.getResults();
                     List<RelatedResourceDto> relatedResourceDtos = new ArrayList<RelatedResourceDto>();
-                    for (CategoryRelatedResourceDto categoryRelatedResourceDto : categories) {
+                    for (RelatedResourceDto categoryRelatedResourceDto : categories) {
                         RelatedResourceDto relatedResourceDto = categoryRelatedResourceDto;
-                        relatedResourceDto.setCode(categoryRelatedResourceDto.getCodeFull()); // Set the codeFull into the code field
+                        relatedResourceDto.setCode(categoryRelatedResourceDto.getCodeNested()); // Set the codeFull into the code field
                         relatedResourceDtos.add(relatedResourceDto);
                     }
 
