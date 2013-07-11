@@ -13,6 +13,7 @@ public class ExternalItemUtils {
     public static ExternalItemDto getOperationAsExternalItemDto(ResourceInternal resource) {
         ExternalItemDto externalItemDto = new ExternalItemDto();
         externalItemDto.setCode(resource.getId());
+        externalItemDto.setCodeNested(resource.getNestedId());
         externalItemDto.setUri(resource.getSelfLink().getHref());
         externalItemDto.setUrn(resource.getUrn());
         externalItemDto.setType(TypeExternalArtefactsEnum.STATISTICAL_OPERATION);
