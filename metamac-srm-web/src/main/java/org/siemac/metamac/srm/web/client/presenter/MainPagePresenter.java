@@ -190,6 +190,7 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
             @Override
             public void onFailure(Throwable caught) {
                 logger.log(Level.SEVERE, "Error closing session");
+                ShowMessageEvent.fireErrorMessage(MainPagePresenter.this, caught);
             }
             @Override
             public void onSuccess(CloseSessionResult result) {
