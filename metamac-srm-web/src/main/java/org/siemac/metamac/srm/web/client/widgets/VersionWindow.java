@@ -1,13 +1,16 @@
 package org.siemac.metamac.srm.web.client.widgets;
 
+import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
+
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
-import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
+import org.siemac.metamac.web.common.client.widgets.InformationLabel;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem;
 
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
@@ -20,10 +23,14 @@ public class VersionWindow extends CustomWindow {
 
     public VersionWindow(String title) {
         super(title);
-        setHeight(100);
         setWidth(330);
+        setHeight(170);
 
-        SelectItem versionItem = new SelectItem(FIELD_VERSION, MetamacSrmWeb.getConstants().lifeCycleVersionType());
+        InformationLabel informationLabel = new InformationLabel(getConstants().lifeCycleVersionInfoMessage());
+        informationLabel.setWidth100();
+        informationLabel.setMargin(10);
+
+        SelectItem versionItem = new SelectItem(FIELD_VERSION, getConstants().lifeCycleVersionType());
         versionItem.setRequired(true);
         versionItem.setValueMap(CommonUtils.getVersionTypeHashMap());
 
@@ -31,7 +38,10 @@ public class VersionWindow extends CustomWindow {
 
         form = new CustomDynamicForm();
         form.setFields(versionItem, acceptButtonItem);
+        form.setMargin(10);
+        form.setAlign(Alignment.CENTER);
 
+        addItem(informationLabel);
         addItem(form);
         show();
     }
