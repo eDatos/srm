@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.ArrayUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
@@ -269,19 +268,6 @@ public class CommonUtils extends CommonSharedUtils {
             }
         }
         return dataAttributeDtos;
-    }
-
-    /**
-     * @param list
-     * @return
-     */
-    public static String getRoleListToString(List<ExternalItemDto> list) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < list.size(); i++) {
-            builder.append(i != 0 ? ",  " : "");
-            builder.append(list.get(i).getCode());
-        }
-        return builder.toString();
     }
 
     public static String getStatisticalOperationCodeFromDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
