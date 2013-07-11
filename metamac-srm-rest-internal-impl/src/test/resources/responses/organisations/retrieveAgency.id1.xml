@@ -44,6 +44,7 @@
         <structure:Telephone>telephone-contact02</structure:Telephone>
         <structure:Fax>fax-contact02</structure:Fax>
     </structure:Contact>
+    <sr:nestedId>idAsMaintaineritem1</sr:nestedId>
     <cdomain:selfLink kind="structuralResources#agency" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies/item1"/>
     <cdomain:parentLink kind="structuralResources#agencies" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies"/>
     <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.Agency=agency1:itemScheme1(01.000).item1</sr:urnInternal>

@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.rest.internal.v1_0.category.utils;
 
 import static org.junit.Assert.assertEquals;
 
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategoryResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
@@ -24,7 +23,7 @@ public class CategoriesAsserts extends Asserts {
         Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CATEGORY_SCHEME, expectedSelfLink, expectedManagementLink, actual);
     }
 
-    public static void assertEqualsResource(CategoryMetamac expected, CategoryResourceInternal actual) {
+    public static void assertEqualsResource(CategoryMetamac expected, ResourceInternal actual) {
         MaintainableArtefact maintainableArtefact = expected.getItemSchemeVersion().getMaintainableArtefact();
         String agency = maintainableArtefact.getMaintainer().getIdAsMaintainer();
         String codeItemScheme = maintainableArtefact.getCode();

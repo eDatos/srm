@@ -141,6 +141,7 @@ public abstract class BaseDo2RestMapperV10Impl {
             return;
         }
         target.setId(source.getCode());
+        // nestedId:  only filled to some resource
         target.setUrn(source.getUrnProvider());
         target.setUrnInternal(source.getUrn());
         target.setKind(kind);
@@ -162,6 +163,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
         ResourceInternal target = new ResourceInternal();
         target.setId(source.getCode());
+        target.setNestedId(source.getCodeNested());
         target.setUrn(source.getUrn());
         target.setUrnInternal(source.getUrnInternal());
         target.setKind(source.getType().getValue());

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsDoMocks.mockOrganisation;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsDoMocks.mockOrganisationScheme;
@@ -39,6 +39,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencyScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencySchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -193,38 +194,39 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         OrganisationTypeEnum organisationTypeEnum = OrganisationTypeEnum.AGENCY;
         OrganisationSchemeVersionMetamac organisationScheme1 = mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, organisationSchemeTypeEnum);
         OrganisationSchemeVersionMetamac organisationScheme2 = mockOrganisationScheme(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_1, organisationSchemeTypeEnum);
-        List<OrganisationMetamac> source = new ArrayList<OrganisationMetamac>();
-        source.add(mockOrganisation(ITEM_1_CODE, organisationScheme1, null, organisationTypeEnum));
-        source.add(mockOrganisation(ITEM_2_CODE, organisationScheme1, null, organisationTypeEnum));
-        source.add(mockOrganisation(ITEM_3_CODE, organisationScheme1, null, organisationTypeEnum));
-        source.add(mockOrganisation(ITEM_1_CODE, organisationScheme2, null, organisationTypeEnum));
+        List<OrganisationMetamac> sources = new ArrayList<OrganisationMetamac>();
+        sources.add(mockOrganisation(ITEM_1_CODE, organisationScheme1, null, organisationTypeEnum));
+        sources.add(mockOrganisation(ITEM_2_CODE, organisationScheme1, null, organisationTypeEnum));
+        sources.add(mockOrganisation(ITEM_3_CODE, organisationScheme1, null, organisationTypeEnum));
+        sources.add(mockOrganisation(ITEM_1_CODE, organisationScheme2, null, organisationTypeEnum));
 
-        Integer totalRows = source.size() * 5;
-        PagedResult<OrganisationMetamac> sources = new PagedResult<OrganisationMetamac>(source, offset, source.size(), limit, totalRows, 0);
+        Integer totalRows = sources.size() * 5;
+        PagedResult<OrganisationMetamac> sourcesPagedList = new PagedResult<OrganisationMetamac>(sources, offset, sources.size(), limit, totalRows, 0);
 
         // Transform
-        Agencies target = do2RestInternalMapper.toAgencies(sources, agencyID, organisationSchemeID, version, query, orderBy, limit);
+        Agencies targets = do2RestInternalMapper.toAgencies(sourcesPagedList, agencyID, organisationSchemeID, version, query, orderBy, limit);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_AGENCIES, target.getKind());
+        assertEquals(RestInternalConstants.KIND_AGENCIES, targets.getKind());
 
         String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes" + "/" + agencyID + "/" + organisationSchemeID + "/" + version + "/agencies?query=" + query
                 + "&orderBy=" + orderBy;
 
-        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
-        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
-        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
-        assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
-        assertEquals(baseLink + "&limit=" + limit + "&offset=16", target.getLastLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, targets.getSelfLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", targets.getFirstLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", targets.getPreviousLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=8", targets.getNextLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=16", targets.getLastLink());
 
-        assertEquals(limit.intValue(), target.getLimit().intValue());
-        assertEquals(offset.intValue(), target.getOffset().intValue());
-        assertEquals(totalRows.intValue(), target.getTotal().intValue());
+        assertEquals(limit.intValue(), targets.getLimit().intValue());
+        assertEquals(offset.intValue(), targets.getOffset().intValue());
+        assertEquals(totalRows.intValue(), targets.getTotal().intValue());
 
-        assertEquals(source.size(), target.getAgencies().size());
-        for (int i = 0; i < source.size(); i++) {
-            assertEqualsResource(source.get(i), RestInternalConstants.KIND_AGENCY, RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES, RestInternalConstants.LINK_SUBPATH_AGENCIES, target.getAgencies()
-                    .get(i));
+        assertEquals(sources.size(), targets.getAgencies().size());
+        for (int i = 0; i < sources.size(); i++) {
+            OrganisationMetamac source = sources.get(i);
+            ResourceInternal target = targets.getAgencies().get(i);
+            assertEqualsResource(source, RestInternalConstants.KIND_AGENCY, RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES, RestInternalConstants.LINK_SUBPATH_AGENCIES, target);
         }
     }
 
@@ -243,6 +245,7 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
         assertEquals(RestInternalConstants.KIND_AGENCY, target.getKind());
         assertEquals("organisation2", target.getId());
+        assertEquals("idAsMaintainerorganisation2", target.getNestedId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=agencyID1:AGENCIES(01.000).organisation2", target.getUrn());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=agencyID1:AGENCIES(01.000).organisation2", target.getUrnInternal());
 

@@ -1,5 +1,8 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -7,6 +10,7 @@ import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUt
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class OrganisationsAsserts extends Asserts {
 
@@ -32,5 +36,10 @@ public class OrganisationsAsserts extends Asserts {
         String expectedManagementLink = "http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type="
                 + SrmRestInternalUtils.toOrganisationSchemeType(expected.getOrganisationType()).getName() + ";id=" + agency + ":" + codeItemScheme + "(" + version + ")/organisation;id=" + code;
         Asserts.assertEqualsResource(expected, kindExpected, expectedSelfLink, expectedManagementLink, actual);
+
+        if (OrganisationTypeEnum.AGENCY.equals(expected.getOrganisationType())) {
+            assertNotNull(actual.getNestedId());
+            assertEquals(expected.getIdAsMaintainer(), actual.getNestedId());
+        }
     }
 }
