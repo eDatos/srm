@@ -3,8 +3,8 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategories;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategorySchemes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyRetrieveCategory;
@@ -120,7 +120,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
     @Test
     public void testFindCategorySchemesByAgencyErrorWildcard() throws Exception {
         try {
-            getSrmRestInternalFacadeClientXml().findCategorySchemes(WILDCARD, null, null, null, null);
+            getSrmRestInternalFacadeClientXml().findCategorySchemes(WILDCARD_ALL, null, null, null, null);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -137,15 +137,15 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
     @Test
     public void testFindCategorySchemesByAgencyAndResource() throws Exception {
         testFindCategorySchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, null, null, null);
-        testFindCategorySchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, null, null, null, null);
+        testFindCategorySchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, null, null, null, null);
         testFindCategorySchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "2", null, null, null);
-        testFindCategorySchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, "2", null, null, null);
+        testFindCategorySchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, "2", null, null, null);
         testFindCategorySchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "0", null, null);
-        testFindCategorySchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, null, "0", null, null);
+        testFindCategorySchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, null, "0", null, null);
         testFindCategorySchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "2", "0", null, null);
         testFindCategorySchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindCategorySchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindCategorySchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
+        testFindCategorySchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindCategorySchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
     @Test
@@ -163,7 +163,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
     @Test
     public void testFindCategorySchemesByAgencyAndResourceErrorWildcard() throws Exception {
         try {
-            getSrmRestInternalFacadeClientXml().findCategorySchemes(AGENCY_1, WILDCARD, null, null, null, null);
+            getSrmRestInternalFacadeClientXml().findCategorySchemes(AGENCY_1, WILDCARD_ALL, null, null, null, null);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -204,7 +204,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
     public void testRetrieveCategorySchemeVersionLatest() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = LATEST;
+        String version = WILDCARD_LATEST;
         CategoryScheme categoryScheme = getSrmRestInternalFacadeClientXml().retrieveCategoryScheme(agencyID, resourceID, version);
 
         // Validation
@@ -272,7 +272,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
     public void testRetrieveCategorySchemeErrorWildcard() throws Exception {
         // Agency
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCategoryScheme(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveCategoryScheme(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -287,7 +287,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
         // Resource
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCategoryScheme(AGENCY_1, WILDCARD, VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveCategoryScheme(AGENCY_1, WILDCARD_ALL, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -302,7 +302,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
         // Version
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCategoryScheme(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveCategoryScheme(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -319,33 +319,33 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
     public void testFindCategories() throws Exception {
 
         // without parameters
-        testFindCategories(WILDCARD, WILDCARD, WILDCARD, null, null, null, null); // without limits
-        testFindCategories(WILDCARD, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
-        testFindCategories(WILDCARD, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindCategories(WILDCARD, WILDCARD, WILDCARD, "2", "0", null, null); // with pagination
-        testFindCategories(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCategories(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindCategories(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null); // without limits
+        testFindCategories(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "10000", null, null, null); // without limits
+        testFindCategories(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, "0", null, null); // without limits, first page
+        testFindCategories(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", null, null); // with pagination
+        testFindCategories(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindCategories(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // agency
-        testFindCategories(AGENCY_1, WILDCARD, WILDCARD, null, null, null, null); // without limits
-        testFindCategories(AGENCY_1, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
-        testFindCategories(AGENCY_1, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindCategories(AGENCY_1, WILDCARD, WILDCARD, "2", "0", null, null); // with pagination
-        testFindCategories(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCategories(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindCategories(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null); // without limits
+        testFindCategories(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "10000", null, null, null); // without limits
+        testFindCategories(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, null, "0", null, null); // without limits, first page
+        testFindCategories(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", null, null); // with pagination
+        testFindCategories(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindCategories(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // resource
-        testFindCategories(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, null, null, null, null); // without limits
-        testFindCategories(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "10000", null, null, null); // without limits
-        testFindCategories(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindCategories(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", null, null); // with pagination
-        testFindCategories(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCategories(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindCategories(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, null, null, null, null); // without limits
+        testFindCategories(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "10000", null, null, null); // without limits
+        testFindCategories(WILDCARD_ALL, ITEM_SCHEME_1_CODE, WILDCARD_ALL, null, "0", null, null); // without limits, first page
+        testFindCategories(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", null, null); // with pagination
+        testFindCategories(WILDCARD_ALL, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindCategories(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // version
         testFindCategories(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", null, null); // with pagination
-        testFindCategories(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCategories(AGENCY_1, WILDCARD, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindCategories(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindCategories(AGENCY_1, WILDCARD_ALL, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
     }
 
     @Test
@@ -430,7 +430,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCategory(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveCategory(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -444,7 +444,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         }
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCategory(AGENCY_1, WILDCARD, VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveCategory(AGENCY_1, WILDCARD_ALL, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -459,7 +459,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCategory(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveCategory(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -474,7 +474,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
         // ItemID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCategory(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveCategory(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, WILDCARD_ALL);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 

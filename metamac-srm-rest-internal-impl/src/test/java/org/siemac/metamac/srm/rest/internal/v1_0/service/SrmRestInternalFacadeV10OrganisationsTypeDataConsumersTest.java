@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationSchemes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisations;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisation;
@@ -95,7 +95,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     @Test
     public void testFindDataConsumerSchemesByAgencyErrorWildcard() throws Exception {
         try {
-            getSrmRestInternalFacadeClientXml().findDataConsumerSchemes(WILDCARD, null, null, null, null);
+            getSrmRestInternalFacadeClientXml().findDataConsumerSchemes(WILDCARD_ALL, null, null, null, null);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -117,11 +117,11 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         testFindDataConsumerSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null);
         testFindDataConsumerSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
 
-        testFindDataConsumerSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, null, null, null, null);
-        testFindDataConsumerSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, null, "0", null, null);
-        testFindDataConsumerSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, "2", "0", null, null);
-        testFindDataConsumerSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindDataConsumerSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
+        testFindDataConsumerSchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, null, null, null, null);
+        testFindDataConsumerSchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, null, "0", null, null);
+        testFindDataConsumerSchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, "2", "0", null, null);
+        testFindDataConsumerSchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindDataConsumerSchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
     @Test
@@ -136,7 +136,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     @Test
     public void testFindDataConsumerSchemesByAgencyAndResourceErrorWildcard() throws Exception {
         try {
-            getSrmRestInternalFacadeClientXml().findDataConsumerSchemes(AGENCY_1, WILDCARD, null, null, null, null);
+            getSrmRestInternalFacadeClientXml().findDataConsumerSchemes(AGENCY_1, WILDCARD_ALL, null, null, null, null);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -177,7 +177,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     public void testRetrieveDataConsumerSchemeVersionLatest() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = LATEST;
+        String version = WILDCARD_LATEST;
         DataConsumerScheme dataConsumerScheme = getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(agencyID, resourceID, version);
 
         // Validation
@@ -235,7 +235,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     public void testRetrieveDataConsumerSchemeErrorWildcard() throws Exception {
         // Agency
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -250,7 +250,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
         // Resource
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(AGENCY_1, WILDCARD, VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(AGENCY_1, WILDCARD_ALL, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -265,7 +265,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
         // Version
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveDataConsumerScheme(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -282,33 +282,33 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
     public void testFindOrganisations() throws Exception {
 
         // without parameters
-        testFindDataConsumers(WILDCARD, WILDCARD, WILDCARD, null, null, null, null); // without limits
-        testFindDataConsumers(WILDCARD, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
-        testFindDataConsumers(WILDCARD, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindDataConsumers(WILDCARD, WILDCARD, WILDCARD, "2", "0", null, null); // with pagination
-        testFindDataConsumers(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindDataConsumers(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindDataConsumers(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null); // without limits
+        testFindDataConsumers(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "10000", null, null, null); // without limits
+        testFindDataConsumers(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, "0", null, null); // without limits, first page
+        testFindDataConsumers(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", null, null); // with pagination
+        testFindDataConsumers(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindDataConsumers(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // agency
-        testFindDataConsumers(AGENCY_1, WILDCARD, WILDCARD, null, null, null, null); // without limits
-        testFindDataConsumers(AGENCY_1, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
-        testFindDataConsumers(AGENCY_1, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindDataConsumers(AGENCY_1, WILDCARD, WILDCARD, "2", "0", null, null); // with pagination
-        testFindDataConsumers(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindDataConsumers(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindDataConsumers(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null); // without limits
+        testFindDataConsumers(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "10000", null, null, null); // without limits
+        testFindDataConsumers(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, null, "0", null, null); // without limits, first page
+        testFindDataConsumers(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", null, null); // with pagination
+        testFindDataConsumers(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindDataConsumers(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // resource
-        testFindDataConsumers(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, null, null, null, null); // without limits
-        testFindDataConsumers(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "10000", null, null, null); // without limits
-        testFindDataConsumers(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindDataConsumers(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", null, null); // with pagination
-        testFindDataConsumers(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindDataConsumers(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindDataConsumers(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, null, null, null, null); // without limits
+        testFindDataConsumers(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "10000", null, null, null); // without limits
+        testFindDataConsumers(WILDCARD_ALL, ITEM_SCHEME_1_CODE, WILDCARD_ALL, null, "0", null, null); // without limits, first page
+        testFindDataConsumers(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", null, null); // with pagination
+        testFindDataConsumers(WILDCARD_ALL, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindDataConsumers(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // version
         testFindDataConsumers(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", null, null); // with pagination
-        testFindDataConsumers(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindDataConsumers(AGENCY_1, WILDCARD, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindDataConsumers(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindDataConsumers(AGENCY_1, WILDCARD_ALL, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
     }
 
     @Test
@@ -393,7 +393,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -407,7 +407,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         }
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(AGENCY_1, WILDCARD, VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(AGENCY_1, WILDCARD_ALL, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -422,7 +422,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -437,7 +437,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
         // ItemID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveDataConsumer(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, WILDCARD_ALL);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 

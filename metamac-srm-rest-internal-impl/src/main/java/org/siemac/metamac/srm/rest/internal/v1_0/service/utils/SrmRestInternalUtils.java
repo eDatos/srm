@@ -137,7 +137,7 @@ public class SrmRestInternalUtils {
             MaintainableArtefactProperty maintainableArtefactProperty) {
         if (SdmxAlias.SDMX_MAINTAINER.equals(agencyID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.maintainer()).isNull().buildSingle());
-        } else if (agencyID != null && !RestInternalConstants.WILDCARD.equals(agencyID)) {
+        } else if (agencyID != null && !RestInternalConstants.WILDCARD_ALL.equals(agencyID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
         }
     }
@@ -145,7 +145,7 @@ public class SrmRestInternalUtils {
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaByMaintainableArtefactCode(List<ConditionalCriteria> conditionalCriteria, String code, Class entity,
             MaintainableArtefactProperty maintainableArtefactProperty) {
-        if (code != null && !RestInternalConstants.WILDCARD.equals(code)) {
+        if (code != null && !RestInternalConstants.WILDCARD_ALL.equals(code)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(maintainableArtefactProperty.code()).eq(code).or()
                     .withProperty(maintainableArtefactProperty.codeFull()).eq(code).rbrace().buildSingle());
         }
@@ -154,7 +154,7 @@ public class SrmRestInternalUtils {
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaByMaintainableArtefactVersion(List<ConditionalCriteria> conditionalCriteria, String version, Class entity,
             MaintainableArtefactProperty maintainableArtefactProperty) {
-        if (RestInternalConstants.LATEST.equals(version)) {
+        if (RestInternalConstants.WILDCARD_LATEST.equals(version)) {
 
             // AgencyScheme, DataProviderScheme and DataConsumerScheme never are versioned, so they are always with same version
             if (OrganisationSchemeVersionMetamac.class.equals(entity)) {
@@ -168,13 +168,13 @@ public class SrmRestInternalUtils {
             } else {
                 conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).buildSingle());
             }
-        } else if (version != null && !RestInternalConstants.WILDCARD.equals(version)) {
+        } else if (version != null && !RestInternalConstants.WILDCARD_ALL.equals(version)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
         }
     }
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaByItemCode(List<ConditionalCriteria> conditionalCriteria, String code, Class entity, NameableArtefactProperty nameableArtefactProperty) {
-        if (code != null && !RestInternalConstants.WILDCARD.equals(code)) {
+        if (code != null && !RestInternalConstants.WILDCARD_ALL.equals(code)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(nameableArtefactProperty.code()).eq(code).or()
                     .withProperty(nameableArtefactProperty.codeFull()).eq(code).rbrace().buildSingle());
         }

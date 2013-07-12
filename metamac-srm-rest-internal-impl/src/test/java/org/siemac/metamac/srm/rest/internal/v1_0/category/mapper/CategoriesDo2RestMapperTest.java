@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks.mockCategorisation;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks.mockCategory;
@@ -56,8 +56,8 @@ public class CategoriesDo2RestMapperTest {
     @Test
     public void testToCategorySchemes() {
 
-        String agencyID = WILDCARD;
-        String resourceID = WILDCARD;
+        String agencyID = WILDCARD_ALL;
+        String resourceID = WILDCARD_ALL;
         String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
         String orderBy = ORDER_BY_ID_DESC;
         Integer limit = Integer.valueOf(4);
@@ -192,9 +192,9 @@ public class CategoriesDo2RestMapperTest {
     @Test
     public void testToCategories() {
 
-        String agencyID = WILDCARD;
-        String categorySchemeID = WILDCARD;
-        String version = WILDCARD;
+        String agencyID = WILDCARD_ALL;
+        String categorySchemeID = WILDCARD_ALL;
+        String version = WILDCARD_ALL;
         String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
         String orderBy = ORDER_BY_ID_DESC;
         Integer limit = Integer.valueOf(4);
@@ -288,8 +288,8 @@ public class CategoriesDo2RestMapperTest {
     @Test
     public void testToCategorisations() {
 
-        String agencyID = WILDCARD;
-        String resourceID = WILDCARD;
+        String agencyID = WILDCARD_ALL;
+        String resourceID = WILDCARD_ALL;
         String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
         String orderBy = ORDER_BY_ID_DESC;
         Integer limit = Integer.valueOf(4);

@@ -3,8 +3,8 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodelistFamilies;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodelists;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodes;
@@ -138,7 +138,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     @Test
     public void testFindCodelistsByAgencyErrorWildcard() throws Exception {
         try {
-            getSrmRestInternalFacadeClientXml().findCodelists(WILDCARD, null, null, null, null);
+            getSrmRestInternalFacadeClientXml().findCodelists(WILDCARD_ALL, null, null, null, null);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -155,15 +155,15 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     @Test
     public void testFindCodelistsByAgencyAndResource() throws Exception {
         testFindCodelists(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, null, null, null);
-        testFindCodelists(WILDCARD, ITEM_SCHEME_1_CODE, null, null, null, null, null);
+        testFindCodelists(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, null, null, null, null);
         testFindCodelists(AGENCY_1, ITEM_SCHEME_1_CODE, null, "2", null, null, null);
-        testFindCodelists(WILDCARD, ITEM_SCHEME_1_CODE, null, "2", null, null, null);
+        testFindCodelists(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, "2", null, null, null);
         testFindCodelists(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, "0", null, null);
-        testFindCodelists(WILDCARD, ITEM_SCHEME_1_CODE, null, null, "0", null, null);
+        testFindCodelists(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, null, "0", null, null);
         testFindCodelists(AGENCY_1, ITEM_SCHEME_1_CODE, null, "2", "0", null, null);
         testFindCodelists(AGENCY_1, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindCodelists(WILDCARD, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindCodelists(WILDCARD, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
+        testFindCodelists(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindCodelists(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
     @Test
@@ -181,7 +181,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     @Test
     public void testFindCodelistsByAgencyAndResourceErrorWildcard() throws Exception {
         try {
-            getSrmRestInternalFacadeClientXml().findCodelists(AGENCY_1, WILDCARD, null, null, null, null);
+            getSrmRestInternalFacadeClientXml().findCodelists(AGENCY_1, WILDCARD_ALL, null, null, null, null);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -222,7 +222,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     public void testRetrieveCodelistVersionLatest() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = LATEST;
+        String version = WILDCARD_LATEST;
         Codelist codelist = getSrmRestInternalFacadeClientXml().retrieveCodelist(agencyID, resourceID, version);
 
         // Validation
@@ -290,7 +290,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     public void testRetrieveCodelistErrorWildcard() throws Exception {
         // Agency
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCodelist(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveCodelist(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -305,7 +305,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         // Resource
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCodelist(AGENCY_1, WILDCARD, VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveCodelist(AGENCY_1, WILDCARD_ALL, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -320,7 +320,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         // Version
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCodelist(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveCodelist(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -338,33 +338,33 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     public void testFindCodes() throws Exception {
 
         // without parameters
-        testFindCodes(WILDCARD, WILDCARD, WILDCARD, null, null, null, null); // without limits
-        testFindCodes(WILDCARD, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
-        testFindCodes(WILDCARD, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindCodes(WILDCARD, WILDCARD, WILDCARD, "2", "0", null, null); // with pagination
-        testFindCodes(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCodes(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null); // without limits
+        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "10000", null, null, null); // without limits
+        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, "0", null, null); // without limits, first page
+        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", null, null); // with pagination
+        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // agency
-        testFindCodes(AGENCY_1, WILDCARD, WILDCARD, null, null, null, null); // without limits
-        testFindCodes(AGENCY_1, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
-        testFindCodes(AGENCY_1, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindCodes(AGENCY_1, WILDCARD, WILDCARD, "2", "0", null, null); // with pagination
-        testFindCodes(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCodes(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null); // without limits
+        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "10000", null, null, null); // without limits
+        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, null, "0", null, null); // without limits, first page
+        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", null, null); // with pagination
+        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // resource
-        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, null, null, null, null); // without limits
-        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "10000", null, null, null); // without limits
-        testFindCodes(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", null, null); // with pagination
-        testFindCodes(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, null, null, null, null); // without limits
+        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "10000", null, null, null); // without limits
+        testFindCodes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, WILDCARD_ALL, null, "0", null, null); // without limits, first page
+        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", null, null); // with pagination
+        testFindCodes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // version
         testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", null, null); // with pagination
-        testFindCodes(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCodes(AGENCY_1, WILDCARD, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindCodes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindCodes(AGENCY_1, WILDCARD_ALL, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
     }
 
     @Test
@@ -448,7 +448,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCode(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveCode(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -462,7 +462,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         }
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCode(AGENCY_1, WILDCARD, VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveCode(AGENCY_1, WILDCARD_ALL, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -477,7 +477,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCode(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveCode(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -492,7 +492,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         // ItemID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCode(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveCode(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, WILDCARD_ALL);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 

@@ -3,8 +3,8 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
 import static org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresMockitoVerify.verifyFindDataStructures;
 import static org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresMockitoVerify.verifyRetrieveDataStructure;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
@@ -111,7 +111,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
     @Test
     public void testFindDataStructuresByAgencyErrorWildcard() throws Exception {
         try {
-            getSrmRestInternalFacadeClientXml().findDataStructures(WILDCARD, null, null, null, null);
+            getSrmRestInternalFacadeClientXml().findDataStructures(WILDCARD_ALL, null, null, null, null);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -128,15 +128,15 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
     @Test
     public void testFindDataStructuresByAgencyAndResource() throws Exception {
         testFindDataStructures(AGENCY_1, ARTEFACT_1_CODE, null, null, null, null, null);
-        testFindDataStructures(WILDCARD, ARTEFACT_1_CODE, null, null, null, null, null);
+        testFindDataStructures(WILDCARD_ALL, ARTEFACT_1_CODE, null, null, null, null, null);
         testFindDataStructures(AGENCY_1, ARTEFACT_1_CODE, null, "2", null, null, null);
-        testFindDataStructures(WILDCARD, ARTEFACT_1_CODE, null, "2", null, null, null);
+        testFindDataStructures(WILDCARD_ALL, ARTEFACT_1_CODE, null, "2", null, null, null);
         testFindDataStructures(AGENCY_1, ARTEFACT_1_CODE, null, null, "0", null, null);
-        testFindDataStructures(WILDCARD, ARTEFACT_1_CODE, null, null, "0", null, null);
+        testFindDataStructures(WILDCARD_ALL, ARTEFACT_1_CODE, null, null, "0", null, null);
         testFindDataStructures(AGENCY_1, ARTEFACT_1_CODE, null, "2", "0", null, null);
         testFindDataStructures(AGENCY_1, ARTEFACT_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindDataStructures(WILDCARD, ARTEFACT_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindDataStructures(WILDCARD, ARTEFACT_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
+        testFindDataStructures(WILDCARD_ALL, ARTEFACT_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindDataStructures(WILDCARD_ALL, ARTEFACT_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
     @Test
@@ -154,7 +154,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
     @Test
     public void testFindDataStructuresByAgencyAndResourceErrorWildcard() throws Exception {
         try {
-            getSrmRestInternalFacadeClientXml().findDataStructures(AGENCY_1, WILDCARD, null, null, null, null);
+            getSrmRestInternalFacadeClientXml().findDataStructures(AGENCY_1, WILDCARD_ALL, null, null, null, null);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -193,7 +193,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
     public void testRetrieveDataStructureVersionLatest() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ARTEFACT_1_CODE;
-        String version = LATEST;
+        String version = WILDCARD_LATEST;
         DataStructure dataStructure = getSrmRestInternalFacadeClientXml().retrieveDataStructure(agencyID, resourceID, version);
 
         // Validation
@@ -259,7 +259,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
     public void testRetrieveDataStructureErrorWildcard() throws Exception {
         // Agency
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataStructure(WILDCARD, ARTEFACT_1_CODE, VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveDataStructure(WILDCARD_ALL, ARTEFACT_1_CODE, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -274,7 +274,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
 
         // Resource
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataStructure(AGENCY_1, WILDCARD, VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveDataStructure(AGENCY_1, WILDCARD_ALL, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -289,7 +289,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
 
         // Version
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataStructure(AGENCY_1, ARTEFACT_1_CODE, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveDataStructure(AGENCY_1, ARTEFACT_1_CODE, WILDCARD_ALL);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 

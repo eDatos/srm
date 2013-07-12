@@ -1382,7 +1382,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
      * Check unsupported wildcards in some parameters
      */
     private void checkParameterNotWildcardAll(String parameterName, String parameterValue) {
-        if (RestInternalConstants.WILDCARD.equals(parameterValue)) {
+        if (RestInternalConstants.WILDCARD_ALL.equals(parameterValue)) {
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, parameterName);
             throw new RestException(exception, Status.BAD_REQUEST);
         }

@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationSchemes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisations;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisation;
@@ -95,7 +95,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     @Test
     public void testFindDataProviderSchemesByAgencyErrorWildcard() throws Exception {
         try {
-            getSrmRestInternalFacadeClientXml().findDataProviderSchemes(WILDCARD, null, null, null, null);
+            getSrmRestInternalFacadeClientXml().findDataProviderSchemes(WILDCARD_ALL, null, null, null, null);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -117,11 +117,11 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
         testFindDataProviderSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null);
         testFindDataProviderSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
 
-        testFindDataProviderSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, null, null, null, null);
-        testFindDataProviderSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, null, "0", null, null);
-        testFindDataProviderSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, "2", "0", null, null);
-        testFindDataProviderSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindDataProviderSchemes(WILDCARD, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
+        testFindDataProviderSchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, null, null, null, null);
+        testFindDataProviderSchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, null, "0", null, null);
+        testFindDataProviderSchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, "2", "0", null, null);
+        testFindDataProviderSchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindDataProviderSchemes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
     @Test
@@ -136,7 +136,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     @Test
     public void testFindDataProviderSchemesByAgencyAndResourceErrorWildcard() throws Exception {
         try {
-            getSrmRestInternalFacadeClientXml().findDataProviderSchemes(AGENCY_1, WILDCARD, null, null, null, null);
+            getSrmRestInternalFacadeClientXml().findDataProviderSchemes(AGENCY_1, WILDCARD_ALL, null, null, null, null);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -177,7 +177,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     public void testRetrieveDataProviderSchemeVersionLatest() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
-        String version = LATEST;
+        String version = WILDCARD_LATEST;
         DataProviderScheme dataProviderScheme = getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(agencyID, resourceID, version);
 
         // Validation
@@ -235,7 +235,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     public void testRetrieveDataProviderSchemeErrorWildcard() throws Exception {
         // Agency
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -250,7 +250,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
         // Resource
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(AGENCY_1, WILDCARD, VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(AGENCY_1, WILDCARD_ALL, VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -265,7 +265,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
         // Version
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveDataProviderScheme(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -282,33 +282,33 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
     public void testFindOrganisations() throws Exception {
 
         // without parameters
-        testFindDataProviders(WILDCARD, WILDCARD, WILDCARD, null, null, null, null); // without limits
-        testFindDataProviders(WILDCARD, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
-        testFindDataProviders(WILDCARD, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindDataProviders(WILDCARD, WILDCARD, WILDCARD, "2", "0", null, null); // with pagination
-        testFindDataProviders(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindDataProviders(WILDCARD, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindDataProviders(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null); // without limits
+        testFindDataProviders(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "10000", null, null, null); // without limits
+        testFindDataProviders(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, "0", null, null); // without limits, first page
+        testFindDataProviders(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", null, null); // with pagination
+        testFindDataProviders(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindDataProviders(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // agency
-        testFindDataProviders(AGENCY_1, WILDCARD, WILDCARD, null, null, null, null); // without limits
-        testFindDataProviders(AGENCY_1, WILDCARD, WILDCARD, "10000", null, null, null); // without limits
-        testFindDataProviders(AGENCY_1, WILDCARD, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindDataProviders(AGENCY_1, WILDCARD, WILDCARD, "2", "0", null, null); // with pagination
-        testFindDataProviders(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindDataProviders(AGENCY_1, WILDCARD, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindDataProviders(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null); // without limits
+        testFindDataProviders(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "10000", null, null, null); // without limits
+        testFindDataProviders(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, null, "0", null, null); // without limits, first page
+        testFindDataProviders(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", null, null); // with pagination
+        testFindDataProviders(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindDataProviders(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // resource
-        testFindDataProviders(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, null, null, null, null); // without limits
-        testFindDataProviders(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "10000", null, null, null); // without limits
-        testFindDataProviders(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, null, "0", null, null); // without limits, first page
-        testFindDataProviders(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", null, null); // with pagination
-        testFindDataProviders(WILDCARD, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindDataProviders(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindDataProviders(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, null, null, null, null); // without limits
+        testFindDataProviders(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "10000", null, null, null); // without limits
+        testFindDataProviders(WILDCARD_ALL, ITEM_SCHEME_1_CODE, WILDCARD_ALL, null, "0", null, null); // without limits, first page
+        testFindDataProviders(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", null, null); // with pagination
+        testFindDataProviders(WILDCARD_ALL, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindDataProviders(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
 
         // version
         testFindDataProviders(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", null, null); // with pagination
-        testFindDataProviders(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindDataProviders(AGENCY_1, WILDCARD, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        testFindDataProviders(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
+        testFindDataProviders(AGENCY_1, WILDCARD_ALL, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
     }
 
     @Test
@@ -393,7 +393,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataProvider(WILDCARD, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveDataProvider(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -407,7 +407,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
         }
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataProvider(AGENCY_1, WILDCARD, VERSION_1, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveDataProvider(AGENCY_1, WILDCARD_ALL, VERSION_1, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -422,7 +422,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
         // AgencyID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataProvider(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD, ITEM_1_CODE);
+            getSrmRestInternalFacadeClientXml().retrieveDataProvider(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, ITEM_1_CODE);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -437,7 +437,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
         // ItemID
         try {
-            getSrmRestInternalFacadeClientXml().retrieveDataProvider(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveDataProvider(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, WILDCARD_ALL);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 

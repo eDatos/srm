@@ -3,8 +3,8 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
+import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategorisations;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyRetrieveCategorisation;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
@@ -110,7 +110,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
     @Test
     public void testFindCategorisationsByAgencyErrorWildcard() throws Exception {
         try {
-            getSrmRestInternalFacadeClientXml().findCategorisations(WILDCARD, null, null, null, null);
+            getSrmRestInternalFacadeClientXml().findCategorisations(WILDCARD_ALL, null, null, null, null);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -127,15 +127,15 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
     @Test
     public void testFindCategorisationsByAgencyAndResource() throws Exception {
         testFindCategorisations(AGENCY_1, CATEGORISATION_1_CODE, null, null, null, null, null);
-        testFindCategorisations(WILDCARD, CATEGORISATION_1_CODE, null, null, null, null, null);
+        testFindCategorisations(WILDCARD_ALL, CATEGORISATION_1_CODE, null, null, null, null, null);
         testFindCategorisations(AGENCY_1, CATEGORISATION_1_CODE, null, "2", null, null, null);
-        testFindCategorisations(WILDCARD, CATEGORISATION_1_CODE, null, "2", null, null, null);
+        testFindCategorisations(WILDCARD_ALL, CATEGORISATION_1_CODE, null, "2", null, null, null);
         testFindCategorisations(AGENCY_1, CATEGORISATION_1_CODE, null, null, "0", null, null);
-        testFindCategorisations(WILDCARD, CATEGORISATION_1_CODE, null, null, "0", null, null);
+        testFindCategorisations(WILDCARD_ALL, CATEGORISATION_1_CODE, null, null, "0", null, null);
         testFindCategorisations(AGENCY_1, CATEGORISATION_1_CODE, null, "2", "0", null, null);
         testFindCategorisations(AGENCY_1, CATEGORISATION_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindCategorisations(WILDCARD, CATEGORISATION_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
-        testFindCategorisations(WILDCARD, CATEGORISATION_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
+        testFindCategorisations(WILDCARD_ALL, CATEGORISATION_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        testFindCategorisations(WILDCARD_ALL, CATEGORISATION_1_CODE, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
     @Test
@@ -153,7 +153,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
     @Test
     public void testFindCategorisationsByAgencyAndResourceErrorWildcard() throws Exception {
         try {
-            getSrmRestInternalFacadeClientXml().findCategorisations(AGENCY_1, WILDCARD, null, null, null, null);
+            getSrmRestInternalFacadeClientXml().findCategorisations(AGENCY_1, WILDCARD_ALL, null, null, null, null);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -192,7 +192,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
     public void testRetrieveCategorisationVersionLatest() throws Exception {
         String agencyID = AGENCY_1;
         String resourceID = CATEGORISATION_1_CODE;
-        String version = LATEST;
+        String version = WILDCARD_LATEST;
         Categorisation categorisation = getSrmRestInternalFacadeClientXml().retrieveCategorisation(agencyID, resourceID, version);
 
         // Validation
@@ -258,7 +258,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
     public void testRetrieveCategorisationErrorWildcard() throws Exception {
         // Agency
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCategorisation(WILDCARD, CATEGORISATION_1_CODE, CATEGORISATION_1_VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveCategorisation(WILDCARD_ALL, CATEGORISATION_1_CODE, CATEGORISATION_1_VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -273,7 +273,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
 
         // Resource
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCategorisation(AGENCY_1, WILDCARD, CATEGORISATION_1_VERSION_1);
+            getSrmRestInternalFacadeClientXml().retrieveCategorisation(AGENCY_1, WILDCARD_ALL, CATEGORISATION_1_VERSION_1);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 
@@ -288,7 +288,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
 
         // Version
         try {
-            getSrmRestInternalFacadeClientXml().retrieveCategorisation(AGENCY_1, CATEGORISATION_1_CODE, WILDCARD);
+            getSrmRestInternalFacadeClientXml().retrieveCategorisation(AGENCY_1, CATEGORISATION_1_CODE, WILDCARD_ALL);
         } catch (ServerWebApplicationException e) {
             assertEquals(Status.BAD_REQUEST.getStatusCode(), e.getStatus());
 

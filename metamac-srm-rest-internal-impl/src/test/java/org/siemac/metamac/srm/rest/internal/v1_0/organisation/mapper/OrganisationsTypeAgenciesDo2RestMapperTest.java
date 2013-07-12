@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
-import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsDoMocks.mockOrganisation;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsDoMocks.mockOrganisationScheme;
@@ -61,8 +61,8 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
     @Test
     public void testToAgencySchemes() throws MetamacException {
 
-        String agencyID = WILDCARD;
-        String resourceID = WILDCARD;
+        String agencyID = WILDCARD_ALL;
+        String resourceID = WILDCARD_ALL;
         String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
         String orderBy = ORDER_BY_ID_DESC;
         Integer limit = Integer.valueOf(4);
@@ -182,9 +182,9 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
     @Test
     public void testToAgencies() throws MetamacException {
 
-        String agencyID = WILDCARD;
-        String organisationSchemeID = WILDCARD;
-        String version = WILDCARD;
+        String agencyID = WILDCARD_ALL;
+        String organisationSchemeID = WILDCARD_ALL;
+        String version = WILDCARD_ALL;
         String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
         String orderBy = ORDER_BY_ID_DESC;
         Integer limit = Integer.valueOf(4);
