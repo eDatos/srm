@@ -24,4 +24,6 @@ public class DimensionDS {
 
     public static final String ENUMERATED_REPRESENTATION_CONCEPT_SCHEME      = "dim-repr-enum-scheme";
     public static final String ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW = "dim-repr-enum-scheme-view"; // Not mapped in DTO
+
+    public static final String DTO                                           = "dim-dto";
 }

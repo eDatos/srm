@@ -1,21 +1,17 @@
 package org.siemac.metamac.srm.web.dsd.model.record;
 
+import org.siemac.metamac.srm.web.dsd.model.ds.DimensionDS;
+import org.siemac.metamac.web.common.client.widgets.NavigableListGridRecord;
+
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class DimensionRecord extends ListGridRecord {
-
-    public static final String IDENTIFIER              = "identifier";
-    public static final String CODE                    = "dim-code";
-    public static final String CONCEPT                 = "concept";
-    public static final String ROLE                    = "role";
-    public static final String TYPE                    = "type";
-    public static final String DIMENSION_COMPONENT_DTO = "dimension_component_dto";
+public class DimensionRecord extends NavigableListGridRecord {
 
     public DimensionRecord() {
     }
 
-    public DimensionRecord(Long id, String idLogic, String concept, String type, DimensionComponentDto dimensionComponentDto) {
+    public DimensionRecord(Long id, String idLogic, RelatedResourceDto concept, String type, DimensionComponentDto dimensionComponentDto) {
         setIdentifier(id);
         setCode(idLogic);
         setConcept(concept);
@@ -24,43 +20,42 @@ public class DimensionRecord extends ListGridRecord {
     }
 
     public void setIdentifier(Long value) {
-        setAttribute(IDENTIFIER, value);
+        setAttribute(DimensionDS.ID, value);
     }
 
     public void setCode(String value) {
-        setAttribute(CODE, value);
+        setAttribute(DimensionDS.CODE, value);
     }
 
-    public void setConcept(String attribute) {
-        setAttribute(CONCEPT, attribute);
+    public void setConcept(RelatedResourceDto relatedResourceDto) {
+        setRelatedResource(DimensionDS.CONCEPT, relatedResourceDto);
     }
 
     public void setType(String attribute) {
-        setAttribute(TYPE, attribute);
+        setAttribute(DimensionDS.TYPE, attribute);
     }
 
     public void setDimensionComponentDto(DimensionComponentDto value) {
-        setAttribute(DIMENSION_COMPONENT_DTO, value);
+        setAttribute(DimensionDS.DTO, value);
     }
 
     public Long getIdentifier() {
-        return getAttributeAsLong(IDENTIFIER);
+        return getAttributeAsLong(DimensionDS.ID);
     }
 
     public String getCode() {
-        return getAttributeAsString(CODE);
+        return getAttributeAsString(DimensionDS.CODE);
     }
 
     public String getConcept() {
-        return getAttributeAsString(CONCEPT);
+        return getAttributeAsString(DimensionDS.CONCEPT);
     }
 
     public String getType() {
-        return getAttributeAsString(TYPE);
+        return getAttributeAsString(DimensionDS.TYPE);
     }
 
     public DimensionComponentDto getDimensionComponentDto() {
-        return (DimensionComponentDto) getAttributeAsObject(DIMENSION_COMPONENT_DTO);
+        return (DimensionComponentDto) getAttributeAsObject(DimensionDS.DTO);
     }
-
 }

@@ -1,11 +1,12 @@
 package org.siemac.metamac.srm.web.dsd.model.record;
 
 import org.siemac.metamac.srm.web.dsd.model.ds.DataAttributeDS;
+import org.siemac.metamac.web.common.client.widgets.NavigableListGridRecord;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class DataAttributeRecord extends ListGridRecord {
+public class DataAttributeRecord extends NavigableListGridRecord {
 
     public DataAttributeRecord() {
     }
@@ -22,8 +23,8 @@ public class DataAttributeRecord extends ListGridRecord {
         setAttribute(DataAttributeDS.USAGE_STATUS, value);
     }
 
-    public void setConcept(String value) {
-        setAttribute(DataAttributeDS.CONCEPT, value);
+    public void setConcept(RelatedResourceDto relatedResourceDto) {
+        setRelatedResource(DataAttributeDS.CONCEPT, relatedResourceDto);
     }
 
     public void setDataAttributeDto(DataAttributeDto value) {

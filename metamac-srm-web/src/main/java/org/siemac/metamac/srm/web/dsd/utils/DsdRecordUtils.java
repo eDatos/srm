@@ -43,9 +43,8 @@ public class DsdRecordUtils extends org.siemac.metamac.srm.web.client.utils.Reco
      * @return
      */
     public static DimensionRecord getDimensionRecord(DimensionComponentDto dimensionComponentDto) {
-        DimensionRecord dimensionRecord = new DimensionRecord(dimensionComponentDto.getId(), dimensionComponentDto.getCode(), dimensionComponentDto.getCptIdRef() == null
-                ? null
-                : dimensionComponentDto.getCptIdRef().getCode(), org.siemac.metamac.srm.web.dsd.utils.CommonUtils.getDimensionTypeName(dimensionComponentDto), dimensionComponentDto);
+        DimensionRecord dimensionRecord = new DimensionRecord(dimensionComponentDto.getId(), dimensionComponentDto.getCode(), dimensionComponentDto.getCptIdRef(),
+                org.siemac.metamac.srm.web.dsd.utils.CommonUtils.getDimensionTypeName(dimensionComponentDto), dimensionComponentDto);
         return dimensionRecord;
     }
 
@@ -68,7 +67,7 @@ public class DsdRecordUtils extends org.siemac.metamac.srm.web.client.utils.Reco
         record.setId(dataAttributeDto.getId());
         record.setCode(dataAttributeDto.getCode());
         record.setUsageStatus(CommonUtils.getUsageStatusName(dataAttributeDto.getUsageStatus()));
-        record.setConcept(dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef().getCode());
+        record.setConcept(dataAttributeDto.getCptIdRef());
         record.setSpecialAttributeType(CommonUtils.getSpecialAttributeTypeName(dataAttributeDto.getSpecialAttributeType()));
         record.setDataAttributeDto(dataAttributeDto);
         return record;

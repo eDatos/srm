@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.web.client.representation.widgets.StaticFacetForm;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
+import org.siemac.metamac.srm.web.client.widgets.NavigableListGrid;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
@@ -36,7 +37,8 @@ import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
-import org.siemac.metamac.web.common.client.widgets.BaseCustomListGrid;
+import org.siemac.metamac.web.common.client.widgets.CustomLinkListGridField;
+import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -79,7 +81,6 @@ import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
-import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -97,7 +98,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     private VLayout                                      panel;
     private VLayout                                      selectedComponentLayout;
-    private BaseCustomListGrid                           dimensionsGrid;
+    private NavigableListGrid                            dimensionsGrid;
     private InternationalMainFormLayout                  mainFormLayout;
 
     private AnnotationsPanel                             viewAnnotationsPanel;
@@ -166,18 +167,18 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Grid
 
-        dimensionsGrid = new BaseCustomListGrid();
+        dimensionsGrid = new NavigableListGrid();
         dimensionsGrid.setWidth100();
         dimensionsGrid.setHeight(150);
         dimensionsGrid.setSelectionType(SelectionStyle.SIMPLE);
         dimensionsGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
-        ListGridField idLogicField = new ListGridField(DimensionRecord.CODE, getConstants().dsdDimensionsId());
-        ListGridField typeField = new ListGridField(DimensionRecord.TYPE, getConstants().dsdDimensionsType());
-        ListGridField conceptField = new ListGridField(DimensionRecord.CONCEPT, getConstants().concept());
-        dimensionsGrid.setFields(idLogicField, typeField, conceptField);
+        CustomListGridField codeField = new CustomListGridField(DimensionDS.CODE, getConstants().dsdDimensionsId());
+        CustomListGridField typeField = new CustomListGridField(DimensionDS.TYPE, getConstants().dsdDimensionsType());
+        CustomLinkListGridField conceptField = new CustomLinkListGridField(DimensionDS.CONCEPT, getConstants().concept());
+        dimensionsGrid.setFields(codeField, typeField, conceptField);
         // ToolTip
-        idLogicField.setShowHover(true);
-        idLogicField.setHoverCustomizer(new HoverCustomizer() {
+        codeField.setShowHover(true);
+        codeField.setHoverCustomizer(new HoverCustomizer() {
 
             @Override
             public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
@@ -433,6 +434,12 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     @Override
     public Widget asWidget() {
         return panel;
+    }
+
+    @Override
+    public void setUiHandlers(DsdDimensionsTabUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        dimensionsGrid.setUiHandlers(getUiHandlers());
     }
 
     @Override
