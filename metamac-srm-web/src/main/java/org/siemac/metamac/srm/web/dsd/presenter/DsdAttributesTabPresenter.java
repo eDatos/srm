@@ -218,35 +218,59 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     }
 
     @Override
-    public void retrieveConceptSchemes(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_ATTRIBUTE, firstResult, maxResults, conceptSchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+    public void retrieveConceptSchemes(SpecialAttributeTypeEnum specialAttributeTypeEnum, int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
+        StructuralResourcesRelationEnum relationType = getRelationTypeForConceptScheme(specialAttributeTypeEnum);
+        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptSchemeWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
-                    }
-                    @Override
-                    public void onWaitSuccess(GetRelatedResourcesResult result) {
-                        getView().setConceptSchemes(result);
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setConceptSchemes(result);
+            }
+        });
     }
 
     @Override
-    public void retrieveConcepts(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
-        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_ATTRIBUTE, firstResult, maxResults, conceptWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+    public void retrieveConcepts(SpecialAttributeTypeEnum specialAttributeTypeEnum, int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
+        StructuralResourcesRelationEnum relationType = getRelationTypeForConcept(specialAttributeTypeEnum);
+        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
-                    }
-                    @Override
-                    public void onWaitSuccess(GetRelatedResourcesResult result) {
-                        getView().setConcepts(result);
-                    }
-                });
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(GetRelatedResourcesResult result) {
+                getView().setConcepts(result);
+            }
+        });
+    }
+
+    private StructuralResourcesRelationEnum getRelationTypeForConceptScheme(SpecialAttributeTypeEnum specialAttributeTypeEnum) {
+        if (SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(specialAttributeTypeEnum)) {
+            return StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_MEASURE_ATTRIBUTE;
+        } else if (SpecialAttributeTypeEnum.SPATIAL_EXTENDS.equals(specialAttributeTypeEnum)) {
+            return StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_SPATIAL_ATTRIBUTE;
+        } else if (SpecialAttributeTypeEnum.TIME_EXTENDS.equals(specialAttributeTypeEnum)) {
+            return StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_TIME_ATTRIBUTE;
+        } else {
+            return StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_ATTRIBUTE;
+        }
+    }
+
+    private StructuralResourcesRelationEnum getRelationTypeForConcept(SpecialAttributeTypeEnum specialAttributeTypeEnum) {
+        if (SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(specialAttributeTypeEnum)) {
+            return StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_MEASURE_ATTRIBUTE;
+        } else if (SpecialAttributeTypeEnum.SPATIAL_EXTENDS.equals(specialAttributeTypeEnum)) {
+            return StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_SPATIAL_ATTRIBUTE;
+        } else if (SpecialAttributeTypeEnum.TIME_EXTENDS.equals(specialAttributeTypeEnum)) {
+            return StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_TIME_ATTRIBUTE;
+        } else {
+            return StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_ATTRIBUTE;
+        }
     }
 
     @Override
