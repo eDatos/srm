@@ -24,6 +24,7 @@
         <URN>urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agency1:categoryScheme-categorisation1(01.000)</URN>
     </structure:Source>
     <structure:Target>
+        <Ref maintainableParentID="categoryScheme-categorisation1" maintainableParentVersion="01.000" agencyID="agency1" id="category-categorisation1"/>
         <URN>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:categoryScheme-categorisation1(01.000).category-categorisation1</URN>
     </structure:Target>
     <cdomain:selfLink kind="structuralResources#categorisation" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations/agency1/categorisation1/01.000"/>

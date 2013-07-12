@@ -43,6 +43,7 @@
         <common:Description xml:lang="es">description-concept1 en Español</common:Description>
         <structure:CoreRepresentation>
             <structure:Enumeration>
+                <Ref agencyID="agency01" id="codelist01" version="01.000"/>
                 <URN>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</URN>
             </structure:Enumeration>
         </structure:CoreRepresentation>
@@ -70,6 +71,7 @@
         <common:Description xml:lang="es">description-concept2 en Español</common:Description>
         <structure:CoreRepresentation>
             <structure:Enumeration>
+                <Ref agencyID="agency01" id="codelist01" version="01.000"/>
                 <URN>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</URN>
             </structure:Enumeration>
         </structure:CoreRepresentation>
@@ -100,6 +102,7 @@
         </structure:Parent>
         <structure:CoreRepresentation>
             <structure:Enumeration>
+                <Ref agencyID="agency01" id="codelist01" version="01.000"/>
                 <URN>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</URN>
             </structure:Enumeration>
         </structure:CoreRepresentation>
@@ -130,6 +133,7 @@
         </structure:Parent>
         <structure:CoreRepresentation>
             <structure:Enumeration>
+                <Ref agencyID="agency01" id="codelist01" version="01.000"/>
                 <URN>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</URN>
             </structure:Enumeration>
         </structure:CoreRepresentation>
