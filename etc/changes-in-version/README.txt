@@ -29,8 +29,10 @@ Cuando se cree la RELEASE, añadir estos pasos al manual de instalación:
 	
 3. Cambios en DATA
 
-	- Añadida propiedad: metamac.srm.codelist.variable_element.geographical_granularity.urn (ver descripción en manual de instalación)
-	- Añadida propiedad: metamac.srm.jobs.delete_deprecated_entities.cron_expression (ver descripción en manual de instalación)
+	- Añadida propiedad: 'metamac.srm.codelist.variable_element.geographical_granularity.urn' (ver descripción en manual de instalación)
+	- Añadida propiedad: 'metamac.srm.jobs.delete_deprecated_entities.cron_expression' (ver descripción en manual de instalación)
+	- Renombrar propiedad: la propiedad 'metamac.srm.dsd.time_dimension.default_concept.urn' se ha renombrado a 'metamac.srm.dsd.time_dimension_or_attribute.default_concept.urn'
+	- Renombrar propiedad: la propiedad 'metamac.srm.dsd.measure_dimension.default_concept.urn' se ha renombrado a 'metamac.srm.dsd.measure_dimension_or_attribute.default_concept.urn'
 	 	
 99. Reiniciar Tomcat
 
