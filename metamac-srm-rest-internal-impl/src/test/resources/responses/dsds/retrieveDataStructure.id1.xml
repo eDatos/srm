@@ -366,33 +366,35 @@
     <sr:autoOpen>true</sr:autoOpen>
     <sr:heading total="2">
         <sr:dimension>
-            <URN>urn:sdmx:org.sdmx.infomodel.xxx=dimension01</URN>
+            <Ref id="dimension01" class="Dimension"/>
         </sr:dimension>
         <sr:dimension>
-            <URN>urn:sdmx:org.sdmx.infomodel.xxx=dimension02</URN>
+            <Ref id="dimension02" class="Dimension"/>
         </sr:dimension>
     </sr:heading>
     <sr:stub total="3">
         <sr:dimension>
-            <URN>urn:sdmx:org.sdmx.infomodel.xxx=dimension03</URN>
+            <Ref id="dimension03" class="Dimension"/>
         </sr:dimension>
         <sr:dimension>
-            <URN>urn:sdmx:org.sdmx.infomodel.xxx=dimension04</URN>
+            <Ref id="dimension04" class="Dimension"/>
         </sr:dimension>
         <sr:dimension>
-            <URN>urn:sdmx:org.sdmx.infomodel.xxx=dimension05</URN>
+            <Ref id="dimension05" class="Dimension"/>
         </sr:dimension>
     </sr:stub>
     <sr:showDecimals>3</sr:showDecimals>
     <sr:showDecimalsPrecisions total="2">
         <sr:showDecimalPrecision>
             <sr:concept>
+                <Ref maintainableParentID="conceptScheme01" maintainableParentVersion="01.000" id="concept01" agencyID="agency01"/>
                 <URN>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01</URN>
             </sr:concept>
             <sr:showDecimals>2</sr:showDecimals>
         </sr:showDecimalPrecision>
         <sr:showDecimalPrecision>
             <sr:concept>
+                <Ref maintainableParentID="conceptScheme01" maintainableParentVersion="01.000" id="concept02" agencyID="agency01"/>
                 <URN>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02</URN>
             </sr:concept>
             <sr:showDecimals>5</sr:showDecimals>

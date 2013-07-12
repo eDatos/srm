@@ -7,7 +7,6 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
-import org.sdmx.resources.sdmxml.schemas.v2_1.common.URNReferenceType;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.exception.RestException;
@@ -33,7 +32,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
-import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
 import com.arte.statistic.sdmx.srm.core.structure.domain.Dimension;
 import com.arte.statistic.sdmx.srm.core.structure.mapper.StructureDo2JaxbCallback;
@@ -44,6 +42,9 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionType
 public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapperV10Impl implements DataStructuresDo2RestMapperV10 {
 
     private final boolean                                                            AS_STUB = false;
+
+    @Autowired
+    private com.arte.statistic.sdmx.srm.core.common.mapper.CommonDo2JaxbMapper       commonDo2JaxbMapper;
 
     @Autowired
     private com.arte.statistic.sdmx.srm.core.structure.mapper.StructureDo2JaxbMapper dataStructuresDo2JaxbSdmxMapper;
@@ -140,8 +141,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
 
         // Values
         for (DimensionOrder source : sources) {
-            URNReferenceType target = toUrnReference(source.getDimension());
-            targets.getDimensions().add(target);
+            targets.getDimensions().add(commonDo2JaxbMapper.localDimensionReferenceDoToJaxb(source.getDimension()));
         }
         return targets;
     }
@@ -157,22 +157,10 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         for (MeasureDimensionPrecision source : sources) {
             ShowDecimalPrecision target = new ShowDecimalPrecision();
             target.setShowDecimals(BigInteger.valueOf(source.getShowDecimalPrecision()));
-            target.setConcept(toUrnReference(source.getConcept()));
+            target.setConcept(commonDo2JaxbMapper.conceptReferenceTypeDoToJaxb(source.getConcept(), null));
             targets.getShowDecimalPrecisions().add(target);
         }
         return targets;
-    }
-
-    private URNReferenceType toUrnReference(com.arte.statistic.sdmx.srm.core.base.domain.Component source) {
-        URNReferenceType target = new URNReferenceType();
-        target.setURN(getUrn(source));
-        return target;
-    }
-
-    private URNReferenceType toUrnReference(Concept source) {
-        URNReferenceType target = new URNReferenceType();
-        target.setURN(getUrn(source.getNameableArtefact()));
-        return target;
     }
 
     private ResourceLink toDataStructureSelfLink(DataStructureDefinitionVersionMetamac source) {

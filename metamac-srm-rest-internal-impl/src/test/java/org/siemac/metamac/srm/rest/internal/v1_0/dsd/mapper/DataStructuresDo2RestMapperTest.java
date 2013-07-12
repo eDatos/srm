@@ -135,13 +135,13 @@ public class DataStructuresDo2RestMapperTest {
         assertEquals(5, target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(1).getShowDecimals().intValue());
         // heading
         assertEquals(2, target.getHeading().getTotal().intValue());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.xxx=dimension01", target.getHeading().getDimensions().get(0).getURN());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.xxx=dimension02", target.getHeading().getDimensions().get(1).getURN());
+        assertEquals("dimension01", target.getHeading().getDimensions().get(0).getRef().getId());
+        assertEquals("dimension02", target.getHeading().getDimensions().get(1).getRef().getId());
         // stub
         assertEquals(3, target.getStub().getTotal().intValue());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.xxx=dimension03", target.getStub().getDimensions().get(0).getURN());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.xxx=dimension04", target.getStub().getDimensions().get(1).getURN());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.xxx=dimension05", target.getStub().getDimensions().get(2).getURN());
+        assertEquals("dimension03", target.getStub().getDimensions().get(0).getRef().getId());
+        assertEquals("dimension04", target.getStub().getDimensions().get(1).getRef().getId());
+        assertEquals("dimension05", target.getStub().getDimensions().get(2).getRef().getId());
         // attribute
         assertTrue(target.getDataStructureComponents().getAttributeList().getAttributesAndReportingYearStartDaies().get(0) instanceof Attribute);
         assertEquals(AttributeQualifierType.SPATIAL, ((Attribute) target.getDataStructureComponents().getAttributeList().getAttributesAndReportingYearStartDaies().get(0)).getType());
