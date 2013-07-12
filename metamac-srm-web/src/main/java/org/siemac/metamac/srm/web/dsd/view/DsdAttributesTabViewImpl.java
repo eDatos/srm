@@ -1024,7 +1024,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             }
         });
 
-        // Measure attribute validator
+        // MEASURE ATTRIBUTE VALIDATOR
 
         CustomValidator measureCustomValidator = new CustomValidator() {
 
@@ -1039,7 +1039,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         };
         measureCustomValidator.setErrorMessage(getMessages().errorRequiredEnumeratedRepresentationInMeasureAttribute());
 
-        // Time attribute validator
+        // TIME ATTRIBUTE VALIDATOR
 
         CustomValidator timeCustomValidator = new CustomValidator() {
 
@@ -1054,7 +1054,22 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         };
         timeCustomValidator.setErrorMessage(getMessages().errorRequiredNonEnumeratedRepresentationInTimeAttribute());
 
-        representationTypeItem.setValidators(measureCustomValidator, timeCustomValidator);
+        // SPATIAL DIMENSION VALIDATOR
+
+        CustomValidator spatialCustomValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                // Spatial attributes cannot have a non enumerated representation
+                if (SpecialAttributeTypeEnum.SPATIAL_EXTENDS.equals(getSpecialAttributeTypeFromEditionForm())) {
+                    return !RepresentationTypeEnum.TEXT_FORMAT.toString().equals(value);
+                }
+                return true;
+            }
+        };
+        spatialCustomValidator.setErrorMessage(getMessages().errorEnumeratedRepresentationInSpatialAttribute());
+
+        representationTypeItem.setValidators(measureCustomValidator, timeCustomValidator, spatialCustomValidator);
 
         return representationTypeItem;
     }

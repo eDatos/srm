@@ -544,7 +544,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // Type
         dimensionComponentDto.setTypeDimensionComponent(getDimensionTypeFromEditionForm());
-        dimensionComponentDto.setSpecialDimensionType(CommonUtils.getSpecialDimensionType(editionForm.getValueAsString(DimensionDS.TYPE)));
+        dimensionComponentDto.setSpecialDimensionType(getSpecialDimensionTypeFromEditionForm());
 
         // Concept
         dimensionComponentDto.setCptIdRef(((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.CONCEPT)).getRelatedResourceDto());
@@ -600,6 +600,10 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         dimensionComponentDto.getAnnotations().addAll(editionAnnotationsPanel.getAnnotations());
 
         return dimensionComponentDto;
+    }
+
+    private SpecialDimensionTypeEnum getSpecialDimensionTypeFromEditionForm() {
+        return CommonUtils.getSpecialDimensionType(editionForm.getValueAsString(DimensionDS.TYPE));
     }
 
     private TypeDimensionComponent getDimensionTypeFromEditionForm() {
@@ -881,7 +885,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             }
         });
 
-        // Measure dimension validator
+        // MEASURE DIMENSION VALIDATOR
 
         CustomValidator measureCustomValidator = new CustomValidator() {
 
@@ -896,7 +900,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         };
         measureCustomValidator.setErrorMessage(getMessages().errorRequiredEnumeratedRepresentationInMeasureDimension());
 
-        // Time dimension validator
+        // TIME DIMENSION VALIDATOR
 
         CustomValidator timeCustomValidator = new CustomValidator() {
 
@@ -911,7 +915,22 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         };
         timeCustomValidator.setErrorMessage(getMessages().errorRequiredNonEnumeratedRepresentationInTimeDimension());
 
-        representationTypeItem.setValidators(measureCustomValidator, timeCustomValidator);
+        // SPATIAL DIMENSION VALIDATOR
+
+        CustomValidator spatialCustomValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                // Spatial dimensions cannot have a non enumerated representation
+                if (SpecialDimensionTypeEnum.SPATIAL.equals(getSpecialDimensionTypeFromEditionForm())) {
+                    return !RepresentationTypeEnum.TEXT_FORMAT.toString().equals(value);
+                }
+                return true;
+            }
+        };
+        spatialCustomValidator.setErrorMessage(getMessages().errorEnumeratedRepresentationInSpatialDimension());
+
+        representationTypeItem.setValidators(measureCustomValidator, timeCustomValidator, spatialCustomValidator);
         return representationTypeItem;
     }
 
