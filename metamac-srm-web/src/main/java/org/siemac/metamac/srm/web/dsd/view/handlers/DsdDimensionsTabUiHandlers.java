@@ -17,8 +17,9 @@ public interface DsdDimensionsTabUiHandlers extends BaseUiHandlers {
     void saveDimension(DimensionComponentDto dimensionComponentDto);
     void deleteDimensions(List<DimensionComponentDto> dimensionComponentDtos);
 
-    void retrieveConceptSchemes(TypeDimensionComponent dimensionType, int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
-    void retrieveConcepts(TypeDimensionComponent dimensionType, int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria);
+    void retrieveConceptSchemes(TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionTypeEnum, int firstResult, int maxResults,
+            ConceptSchemeWebCriteria conceptSchemeWebCriteria);
+    void retrieveConcepts(TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionType, int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria);
 
     void retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
 

@@ -242,8 +242,9 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     }
 
     @Override
-    public void retrieveConceptSchemes(TypeDimensionComponent dimensionType, int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
-        StructuralResourcesRelationEnum relationType = getRelationTypeForConceptScheme(dimensionType);
+    public void retrieveConceptSchemes(TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionTypeEnum, int firstResult, int maxResults,
+            ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
+        StructuralResourcesRelationEnum relationType = getRelationTypeForConceptScheme(dimensionType, specialDimensionTypeEnum);
         dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptSchemeWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
             @Override
@@ -258,8 +259,8 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     }
 
     @Override
-    public void retrieveConcepts(TypeDimensionComponent dimensionType, int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
-        StructuralResourcesRelationEnum relationType = getRelationTypeForConcept(dimensionType);
+    public void retrieveConcepts(TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionType, int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
+        StructuralResourcesRelationEnum relationType = getRelationTypeForConcept(dimensionType, specialDimensionType);
         dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
 
             @Override
@@ -381,10 +382,14 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         });
     }
 
-    private StructuralResourcesRelationEnum getRelationTypeForConceptScheme(TypeDimensionComponent dimensionType) {
+    private StructuralResourcesRelationEnum getRelationTypeForConceptScheme(TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionTypeEnum) {
         StructuralResourcesRelationEnum relationType = null;
         if (TypeDimensionComponent.DIMENSION.equals(dimensionType)) {
-            relationType = StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_DIMENSION;
+            if (SpecialDimensionTypeEnum.SPATIAL.equals(specialDimensionTypeEnum)) {
+                relationType = StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_SPATIAL_DIMENSION;
+            } else {
+                relationType = StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_DIMENSION;
+            }
         } else if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionType)) {
             relationType = StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_MEASURE_DIMENSION;
         } else if (TypeDimensionComponent.TIMEDIMENSION.equals(dimensionType)) {
@@ -393,10 +398,14 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         return relationType;
     }
 
-    private StructuralResourcesRelationEnum getRelationTypeForConcept(TypeDimensionComponent dimensionType) {
+    private StructuralResourcesRelationEnum getRelationTypeForConcept(TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionTypeEnum) {
         StructuralResourcesRelationEnum relationType = null;
         if (TypeDimensionComponent.DIMENSION.equals(dimensionType)) {
-            relationType = StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_DIMENSION;
+            if (SpecialDimensionTypeEnum.SPATIAL.equals(specialDimensionTypeEnum)) {
+                relationType = StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_SPATIAL_DIMENSION;
+            } else {
+                relationType = StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_DIMENSION;
+            }
         } else if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionType)) {
             relationType = StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_MEASURE_DIMENSION;
         } else if (TypeDimensionComponent.TIMEDIMENSION.equals(dimensionType)) {

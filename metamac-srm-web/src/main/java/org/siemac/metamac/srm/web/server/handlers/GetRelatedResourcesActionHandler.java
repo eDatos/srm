@@ -345,6 +345,19 @@ public class GetRelatedResourcesActionHandler extends SecurityActionHandler<GetR
                     result = srmCoreServiceFacade.findCodesCanBeQuantityBaseLocationByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria);
                     break;
                 }
+                case CONCEPT_SCHEMES_WITH_DSD_SPATIAL_DIMENSION: {
+                    ConceptSchemeWebCriteria conceptSchemeWebCriteria = (ConceptSchemeWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptSchemeCriteriaRestriction(conceptSchemeWebCriteria));
+                    result = srmCoreServiceFacade.findConceptSchemesWithConceptsCanBeDsdSpatialDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria,
+                            conceptSchemeWebCriteria.getDsdUrn());
+                    break;
+                }
+                case CONCEPT_WITH_DSD_SPATIAL_DIMENSION: {
+                    ConceptWebCriteria conceptWebCriteria = (ConceptWebCriteria) action.getCriteria();
+                    criteria.setRestriction(MetamacWebCriteriaUtils.getConceptCriteriaRestriction(conceptWebCriteria));
+                    result = srmCoreServiceFacade.findConceptsCanBeDsdSpatialDimensionByCondition(ServiceContextHolder.getCurrentServiceContext(), criteria, conceptWebCriteria.getDsdUrn());
+                    break;
+                }
                 default:
                     throw new MetamacWebException(CommonSharedConstants.EXCEPTION_UNKNOWN, "An unknown exception has ocurred. Please contact system administrator.");
             }

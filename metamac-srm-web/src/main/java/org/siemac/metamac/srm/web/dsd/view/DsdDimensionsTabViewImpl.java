@@ -56,6 +56,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
 import com.google.gwt.user.client.ui.Widget;
@@ -1005,14 +1006,15 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
                 final TypeDimensionComponent dimensionType = dimensionComponentDto.getTypeDimensionComponent();
+                final SpecialDimensionTypeEnum specialDimensionType = dimensionComponentDto.getSpecialDimensionType();
 
                 SelectItem conceptSchemeSelectItem = new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme());
                 searchConceptWindow = new SearchRelatedResourcePaginatedWindow(getConstants().conceptSelection(), MAX_RESULTS, conceptSchemeSelectItem, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        retrieveConcepts(dimensionType, firstResult, maxResults, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue(),
-                                searchConceptWindow.getIsLastVersionValue());
+                        retrieveConcepts(dimensionType, specialDimensionType, firstResult, maxResults, searchConceptWindow.getRelatedResourceCriteria(),
+                                searchConceptWindow.getInitialSelectionValue(), searchConceptWindow.getIsLastVersionValue());
                     }
                 });
 
@@ -1021,22 +1023,22 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        retrieveConceptSchemes(dimensionType, FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptWindow.getIsLastVersionValue());
-                        retrieveConcepts(dimensionType, FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue(),
-                                searchConceptWindow.getIsLastVersionValue());
+                        retrieveConceptSchemes(dimensionType, specialDimensionType, FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptWindow.getIsLastVersionValue());
+                        retrieveConcepts(dimensionType, specialDimensionType, FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(),
+                                searchConceptWindow.getInitialSelectionValue(), searchConceptWindow.getIsLastVersionValue());
                     }
                 });
 
                 // Load concept schemes and concepts (to populate the selection window)
-                retrieveConceptSchemes(dimensionType, FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptWindow.getIsLastVersionValue());
-                retrieveConcepts(dimensionType, FIRST_RESULT, MAX_RESULTS, null, null, searchConceptWindow.getIsLastVersionValue());
+                retrieveConceptSchemes(dimensionType, specialDimensionType, FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptWindow.getIsLastVersionValue());
+                retrieveConcepts(dimensionType, specialDimensionType, FIRST_RESULT, MAX_RESULTS, null, null, searchConceptWindow.getIsLastVersionValue());
 
                 searchConceptWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        retrieveConcepts(dimensionType, FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue(),
-                                searchConceptWindow.getIsLastVersionValue());
+                        retrieveConcepts(dimensionType, specialDimensionType, FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(),
+                                searchConceptWindow.getInitialSelectionValue(), searchConceptWindow.getIsLastVersionValue());
                     }
                 });
 
@@ -1045,7 +1047,8 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        retrieveConcepts(dimensionType, firstResult, maxResults, concept, searchConceptWindow.getInitialSelectionValue(), searchConceptWindow.getIsLastVersionValue());
+                        retrieveConcepts(dimensionType, specialDimensionType, firstResult, maxResults, concept, searchConceptWindow.getInitialSelectionValue(),
+                                searchConceptWindow.getIsLastVersionValue());
                     }
                 });
 
@@ -1083,22 +1086,23 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         return conceptItem;
     }
 
-    private void retrieveConceptSchemes(TypeDimensionComponent dimensionType, int firstResult, int maxResults, boolean isLastVersion) {
+    private void retrieveConceptSchemes(TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionType, int firstResult, int maxResults, boolean isLastVersion) {
         ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
         conceptSchemeWebCriteria.setDsdUrn(dataStructureDefinitionMetamacDto.getUrn());
         conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
 
-        getUiHandlers().retrieveConceptSchemes(dimensionType, firstResult, maxResults, conceptSchemeWebCriteria);
+        getUiHandlers().retrieveConceptSchemes(dimensionType, specialDimensionType, firstResult, maxResults, conceptSchemeWebCriteria);
     }
 
-    private void retrieveConcepts(TypeDimensionComponent dimensionType, int firstResult, int maxResults, String criteria, String conceptSchemeUrn, boolean isLastVersion) {
+    private void retrieveConcepts(TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionType, int firstResult, int maxResults, String criteria, String conceptSchemeUrn,
+            boolean isLastVersion) {
         ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria();
         conceptWebCriteria.setCriteria(criteria);
         conceptWebCriteria.setDsdUrn(dataStructureDefinitionMetamacDto.getUrn());
         conceptWebCriteria.setItemSchemeUrn(conceptSchemeUrn);
         conceptWebCriteria.setIsLastVersion(isLastVersion);
 
-        getUiHandlers().retrieveConcepts(dimensionType, firstResult, maxResults, conceptWebCriteria);
+        getUiHandlers().retrieveConcepts(dimensionType, specialDimensionType, firstResult, maxResults, conceptWebCriteria);
     }
 
     private SearchRelatedResourceLinkItem createMeasureDimensionEnumeratedRepresentationItem(String name, String title) {
