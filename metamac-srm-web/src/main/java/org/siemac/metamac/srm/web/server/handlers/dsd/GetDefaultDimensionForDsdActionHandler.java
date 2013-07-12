@@ -55,7 +55,7 @@ public class GetDefaultDimensionForDsdActionHandler extends SecurityActionHandle
     }
 
     private RelatedResourceDto getDefaultTimeDimensionConcept(String dsdUrn) throws MetamacWebException {
-        String defaultConceptUrn = configurationService.getProperty(SrmConfigurationConstants.DSD_TIME_DIMENSION_DEFAULT_CONCEPT_ID_URN);
+        String defaultConceptUrn = configurationService.getProperty(SrmConfigurationConstants.DSD_TIME_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN);
         if (StringUtils.isNotBlank(defaultConceptUrn)) {
             MetamacCriteria criteria = new MetamacCriteria();
             criteria.setPaginator(new MetamacCriteriaPaginator());
@@ -77,7 +77,7 @@ public class GetDefaultDimensionForDsdActionHandler extends SecurityActionHandle
     }
 
     private RelatedResourceDto getDefaultMeasureDimensionConcept(String dsdUrn) throws MetamacWebException {
-        String defaultConceptUrn = configurationService.getProperty(SrmConfigurationConstants.DSD_TIME_DIMENSION_DEFAULT_CONCEPT_ID_URN);
+        String defaultConceptUrn = configurationService.getProperty(SrmConfigurationConstants.DSD_MEASURE_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN);
         if (StringUtils.isNotBlank(defaultConceptUrn)) {
             MetamacCriteria criteria = new MetamacCriteria();
             criteria.setPaginator(new MetamacCriteriaPaginator());
