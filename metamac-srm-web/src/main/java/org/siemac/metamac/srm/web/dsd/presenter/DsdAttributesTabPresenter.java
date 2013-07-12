@@ -25,6 +25,8 @@ import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributesForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributesForDsdResult;
+import org.siemac.metamac.srm.web.shared.dsd.GetDefaultConceptForDsdAtributeAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDefaultConceptForDsdAtributeResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
@@ -32,6 +34,7 @@ import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdResult;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
@@ -80,6 +83,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
         void setConceptSchemes(GetRelatedResourcesResult result);
         void setConcepts(GetRelatedResourcesResult result);
+        void setDefaultConcept(RelatedResourceDto relatedResourceDto);
 
         void setConceptSchemesForAttributeRole(GetRelatedResourcesResult result);
         void setConceptsForAttributeRole(GetRelatedResourcesResult result);
@@ -359,6 +363,21 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
                 if (updateView) {
                     getView().setDsdAttributes(dataStructureDefinitionDto, dataAttributeDtos);
                 }
+            }
+        });
+    }
+
+    @Override
+    public void loadDefaultConcept(SpecialAttributeTypeEnum specialAttributeTypeEnum, String dsdUrn) {
+        dispatcher.execute(new GetDefaultConceptForDsdAtributeAction(dsdUrn, specialAttributeTypeEnum), new WaitingAsyncCallback<GetDefaultConceptForDsdAtributeResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(GetDefaultConceptForDsdAtributeResult result) {
+                getView().setDefaultConcept(result.getConcept());
             }
         });
     }

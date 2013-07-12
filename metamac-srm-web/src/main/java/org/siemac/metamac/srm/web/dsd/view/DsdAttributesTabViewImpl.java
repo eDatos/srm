@@ -314,16 +314,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // TYPE
 
-        CustomSelectItem type = new CustomSelectItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
-        type.setValueMap(CommonUtils.getDataAttributeTypeHashMap());
-        type.addChangedHandler(new ChangedHandler() {
-
-            @Override
-            public void onChanged(ChangedEvent event) {
-                editionForm.validate(false);
-                editionForm.markForRedraw();
-            }
-        });
+        CustomSelectItem specialAttributeTypeItem = createSpecialAttributeTypeItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
 
         // USAGE STATUS
 
@@ -461,7 +452,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         ViewTextItem urn = new ViewTextItem(DataAttributeDS.URN, getConstants().identifiableArtefactUrn());
         ViewTextItem urnProvider = new ViewTextItem(DataAttributeDS.URN_PROVIDER, getConstants().identifiableArtefactUrnProvider());
 
-        editionForm.setFields(code, staticCode, type, usageStatusItem, staticUsageStatusItem, concept, staticConcept, roleItem, staticRoleItem, relatedTo, staticRelatedTo,
+        editionForm.setFields(code, staticCode, specialAttributeTypeItem, usageStatusItem, staticUsageStatusItem, concept, staticConcept, roleItem, staticRoleItem, relatedTo, staticRelatedTo,
                 groupKeysForDimensionRelationshipItem, staticGroupKeysForDimensionRelationshipItem, dimensionsForDimensionRelationshipItem, staticDimensionsForDimensionRelationshipItem,
                 groupKeyFormForGroupRelationship, staticGroupKeyFormForGroupRelationship, representationTypeItem, staticRepresentationTypeItem, codelist, codelistView, staticEditableConceptScheme,
                 staticConceptScheme, urn, urnProvider);
@@ -550,6 +541,13 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         if (searchConceptWindow != null) {
             searchConceptWindow.setRelatedResources(result.getRelatedResourceDtos());
             searchConceptWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
+        }
+    }
+
+    @Override
+    public void setDefaultConcept(RelatedResourceDto relatedResourceDto) {
+        if (relatedResourceDto != null) {
+            setConceptInEditionForm(relatedResourceDto);
         }
     }
 
@@ -715,8 +713,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         editionForm.setValue(DataAttributeDS.URN_PROVIDER, dataAttributeDto.getUrnProvider());
 
         // Concept
-        ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT)).setRelatedResource(dataAttributeDto.getCptIdRef());
-        ((RelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT_VIEW)).setRelatedResource(dataAttributeDto.getCptIdRef());
+        setConceptInEditionForm(dataAttributeDto.getCptIdRef());
 
         // RelateTo
         editionForm.clearValue(DataAttributeDS.RELATED_TO);
@@ -813,6 +810,12 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         editionAnnotationsPanel.setAnnotations(dataAttributeDto.getAnnotations(), dataStructureDefinitionMetamacDto);
     }
 
+    private void setConceptInEditionForm(RelatedResourceDto concept) {
+        ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT)).setRelatedResource(concept);
+        ((RelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT_VIEW)).setRelatedResource(concept);
+        editionForm.validate(false);
+    }
+
     private void setEnumeratedRepresentationTypeInEditionForm() {
         editionForm.setValue(DataAttributeDS.REPRESENTATION_TYPE, RepresentationTypeEnum.ENUMERATION.toString());
         editionForm.setValue(DataAttributeDS.REPRESENTATION_TYPE_VIEW, getCoreMessages().representationTypeEnumENUMERATION());
@@ -851,7 +854,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         dataAttributeDto.getRole().addAll(selectedRoles);
 
         // Concept
-        dataAttributeDto.setCptIdRef(((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT)).getRelatedResourceDto());
+        dataAttributeDto.setCptIdRef(getConceptFromEditionForm());
 
         // Usage Status
         dataAttributeDto.setUsageStatus(StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.USAGE_STATUS)) ? null : UsageStatus.valueOf(editionForm
@@ -938,6 +941,10 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         return dataAttributeDto;
     }
 
+    private RelatedResourceDto getConceptFromEditionForm() {
+        return ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT)).getRelatedResourceDto();
+    }
+
     private SpecialAttributeTypeEnum getSpecialAttributeTypeFromEditionForm() {
         return !StringUtils.isBlank(editionForm.getValueAsString(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE)) ? SpecialAttributeTypeEnum.valueOf(editionForm
                 .getValueAsString(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE)) : null;
@@ -1009,6 +1016,36 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         if (DsdClientSecurityUtils.canDeleteAttribute(dataStructureDefinitionMetamacDto)) {
             deleteToolStripButton.show();
         }
+    }
+
+    //
+    // FORM ITEMS
+    //
+
+    private CustomSelectItem createSpecialAttributeTypeItem(String name, String title) {
+        CustomSelectItem item = new CustomSelectItem(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
+        item.setValueMap(CommonUtils.getDataAttributeTypeHashMap());
+        item.addChangedHandler(new ChangedHandler() {
+
+            @Override
+            public void onChanged(ChangedEvent event) {
+                editionForm.validate(false);
+                editionForm.markForRedraw();
+
+                // If the selected type is time or measure, and if the concept has not been specified yet, load the default concept for the time or measure attribute (the default concepts are
+                // specified in the data directory).
+
+                RelatedResourceDto selectedConcept = getConceptFromEditionForm();
+                if (selectedConcept == null) {
+                    String value = event.getValue() != null ? (String) event.getValue() : null;
+                    SpecialAttributeTypeEnum specialAttributeTypeEnum = CommonUtils.getSpecialAttributeTypeEnum(value);
+                    if (SpecialAttributeTypeEnum.TIME_EXTENDS.equals(specialAttributeTypeEnum) || SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(specialAttributeTypeEnum)) {
+                        getUiHandlers().loadDefaultConcept(specialAttributeTypeEnum, dataStructureDefinitionMetamacDto.getUrn());
+                    }
+                }
+            }
+        });
+        return item;
     }
 
     private CustomSelectItem createRepresentationTypeItem(String name, String title) {

@@ -103,6 +103,7 @@ import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteAttributesForDsdActi
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDescriptorListForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDimensionListForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.DeleteDsdsActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.dsd.GetDefaultConceptForDsdAtributeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.GetDefaultDimensionForDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.GetDsdAndDescriptorsActionHandler;
@@ -233,6 +234,7 @@ import org.siemac.metamac.srm.web.shared.dsd.DeleteAttributesForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDescriptorListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDimensionListForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.DeleteDsdsAction;
+import org.siemac.metamac.srm.web.shared.dsd.GetDefaultConceptForDsdAtributeAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDefaultDimensionForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
@@ -308,6 +310,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetDefaultDimensionForDsdAction.class, GetDefaultDimensionForDsdActionHandler.class);
         bindHandler(GetDsdDimensionsAndCandidateVisualisationsAction.class, GetDsdDimensionsAndCandidateVisualisationsActionHandler.class);
         bindHandler(CopyDsdAction.class, CopyDsdActionHandler.class);
+        bindHandler(GetDefaultConceptForDsdAtributeAction.class, GetDefaultConceptForDsdAtributeActionHandler.class);
 
         // Concepts
         bindHandler(GetConceptSchemeAction.class, GetConceptSchemeActionHandler.class);
