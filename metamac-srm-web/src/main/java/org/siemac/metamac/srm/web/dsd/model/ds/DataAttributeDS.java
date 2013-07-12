@@ -40,4 +40,6 @@ public class DataAttributeDS {
 
     public static final String ENUMERATED_REPRESENTATION_CONCEPT_SCHEME      = "attr-repr-enum-scheme";
     public static final String ENUMERATED_REPRESENTATION_CONCEPT_SCHEME_VIEW = "attr-repr-enum-scheme-view"; // Not mapped in DTO
+
+    public static final String DTO                                           = "attr-dto";
 }

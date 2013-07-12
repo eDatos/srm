@@ -23,7 +23,7 @@ import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataAttributeDS;
-import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
+import org.siemac.metamac.srm.web.dsd.model.record.DataAttributeRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
@@ -178,10 +178,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         attributesGrid.setHeight(150);
         attributesGrid.setSelectionType(SelectionStyle.SIMPLE);
         attributesGrid.setSelectionAppearance(SelectionAppearance.CHECKBOX);
-        CustomListGridField codeField = new CustomListGridField(AttributeRecord.CODE, MetamacSrmWeb.getConstants().dsdAttributeId());
-        CustomListGridField usageField = new CustomListGridField(AttributeRecord.USAGE_STATUS, MetamacSrmWeb.getConstants().dsdAttributeUsageStatus());
-        CustomListGridField attributeConceptField = new CustomListGridField(AttributeRecord.CONCEPT, MetamacSrmWeb.getConstants().concept());
-        attributesGrid.setFields(codeField, usageField, attributeConceptField);
+        CustomListGridField codeField = new CustomListGridField(DataAttributeDS.CODE, getConstants().dsdAttributeId());
+        CustomListGridField usageField = new CustomListGridField(DataAttributeDS.USAGE_STATUS, getConstants().dsdAttributeUsageStatus());
+        CustomListGridField attributeConceptField = new CustomListGridField(DataAttributeDS.CONCEPT, getConstants().concept());
+        CustomListGridField specialAttributeTypeField = new CustomListGridField(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
+        attributesGrid.setFields(codeField, specialAttributeTypeField, usageField, attributeConceptField);
 
         // Show attribute details when record clicked
         attributesGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
@@ -189,7 +190,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             @Override
             public void onSelectionChanged(SelectionEvent event) {
                 if (attributesGrid.getSelectedRecords() != null && attributesGrid.getSelectedRecords().length == 1) {
-                    AttributeRecord record = (AttributeRecord) attributesGrid.getSelectedRecord();
+                    DataAttributeRecord record = (DataAttributeRecord) attributesGrid.getSelectedRecord();
                     DataAttributeDto dataAttributeDto = record.getDataAttributeDto();
                     selectAttribute(dataAttributeDto);
                 } else {
@@ -821,7 +822,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             List<DataAttributeDto> selectedAttributes = new ArrayList<DataAttributeDto>();
             ListGridRecord[] records = attributesGrid.getSelectedRecords();
             for (int i = 0; i < records.length; i++) {
-                AttributeRecord record = (AttributeRecord) records[i];
+                DataAttributeRecord record = (DataAttributeRecord) records[i];
                 selectedAttributes.add(record.getDataAttributeDto());
             }
             return selectedAttributes;
@@ -958,7 +959,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     public void onAttributeSaved(DataAttributeDto dataAttributeDto) {
         this.dataAttributeDto = dataAttributeDto;
         attributesGrid.removeSelectedData();
-        AttributeRecord record = DsdRecordUtils.getAttributeRecord(dataAttributeDto);
+        DataAttributeRecord record = DsdRecordUtils.getAttributeRecord(dataAttributeDto);
         attributesGrid.addData(record);
         attributesGrid.selectRecord(record);
         mainFormLayout.setViewMode();

@@ -3,10 +3,9 @@ package org.siemac.metamac.srm.web.dsd.utils;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
-import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.AnnotationRecord;
-import org.siemac.metamac.srm.web.dsd.model.record.AttributeRecord;
+import org.siemac.metamac.srm.web.dsd.model.record.DataAttributeRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.GroupKeysRecord;
 import org.siemac.metamac.srm.web.dsd.model.record.InternationalAnnotationRecord;
@@ -59,15 +58,19 @@ public class DsdRecordUtils extends org.siemac.metamac.srm.web.client.utils.Reco
     }
 
     /**
-     * Returns {@link AttributeRecord} from {@link DataAttributeDto}
+     * Returns {@link DataAttributeRecord} from {@link DataAttributeDto}
      * 
      * @param dataAttributeDto
      * @return
      */
-    public static AttributeRecord getAttributeRecord(DataAttributeDto dataAttributeDto) {
-        AttributeRecord record = new AttributeRecord(dataAttributeDto.getId(), dataAttributeDto.getCode(), MetamacSrmWeb.getCoreMessages().getString(
-                MetamacSrmWeb.getCoreMessages().usageStatus() + dataAttributeDto.getUsageStatus().getName()), dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef().getCode(),
-                dataAttributeDto);
+    public static DataAttributeRecord getAttributeRecord(DataAttributeDto dataAttributeDto) {
+        DataAttributeRecord record = new DataAttributeRecord();
+        record.setId(dataAttributeDto.getId());
+        record.setCode(dataAttributeDto.getCode());
+        record.setUsageStatus(CommonUtils.getUsageStatusName(dataAttributeDto.getUsageStatus()));
+        record.setConcept(dataAttributeDto.getCptIdRef() == null ? null : dataAttributeDto.getCptIdRef().getCode());
+        record.setSpecialAttributeType(CommonUtils.getSpecialAttributeTypeName(dataAttributeDto.getSpecialAttributeType()));
+        record.setDataAttributeDto(dataAttributeDto);
         return record;
     }
 
