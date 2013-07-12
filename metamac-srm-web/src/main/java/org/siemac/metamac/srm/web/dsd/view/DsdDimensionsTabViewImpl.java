@@ -413,7 +413,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
                 return true;
             }
         };
-        timeValidator.setErrorMessage(getMessages().errorTextTypeInTimeDimension());
+        timeValidator.setErrorMessage(getMessages().errorTextTypeInDsdTimeDimensionOrAttribute());
         facetEditionForm.getTextType().setValidateOnChange(true);
         facetEditionForm.getTextType().setRedrawOnChange(true);
         facetEditionForm.getTextType().setValidators(timeValidator);

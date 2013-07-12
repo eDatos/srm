@@ -8,5 +8,4 @@ public class DsdFacetForm extends BaseFacetForm {
     public DsdFacetForm() {
         textType.setValueMap(CommonUtils.getDsdFacetValueTypeHashMap());
     }
-
 }

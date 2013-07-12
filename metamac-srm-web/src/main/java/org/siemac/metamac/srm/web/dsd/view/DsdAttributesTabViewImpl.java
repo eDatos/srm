@@ -58,6 +58,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RelationshipDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
@@ -467,6 +468,24 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         facetEditionForm = new DsdFacetForm();
         facetEditionForm.setVisible(false);
+        // TextType applicable to time attributes is restricted to those that represent time
+        CustomValidator timeValidator = new CustomValidator() {
+
+            @Override
+            protected boolean condition(Object value) {
+                if (SpecialAttributeTypeEnum.TIME_EXTENDS.equals(getSpecialAttributeTypeFromEditionForm())) {
+                    if (value != null) {
+                        FacetValueTypeEnum f = FacetValueTypeEnum.valueOf((String) value);
+                        return FacetFormUtils.representsTime(f) ? true : false;
+                    }
+                }
+                return true;
+            }
+        };
+        timeValidator.setErrorMessage(getMessages().errorTextTypeInDsdTimeDimensionOrAttribute());
+        facetEditionForm.getTextType().setValidateOnChange(true);
+        facetEditionForm.getTextType().setRedrawOnChange(true);
+        facetEditionForm.getTextType().setValidators(timeValidator);
 
         facetStaticEditionForm = new StaticFacetForm();
         facetStaticEditionForm.setVisible(false);
