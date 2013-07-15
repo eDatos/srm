@@ -683,9 +683,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             // no extra validation
         } else if (RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())) {
             if (concept.getCoreRepresentation().getEnumerationCodelist() != null) {
-                if (ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersion.getType())) {
-                    return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
-                }
                 if (concept.getVariable() == null) {
                     return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.CONCEPT_REPRESENTATION_ENUMERATED_CODELIST_VARIABLE_REQUIRED, throwException);
                 }
@@ -699,9 +696,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                     return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
                 }
             } else if (concept.getCoreRepresentation().getEnumerationConceptScheme() != null) {
-                if (!ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersion.getType())) {
-                    return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
-                }
                 if (concept.getCoreRepresentation().getEnumerationConceptScheme().getId().equals(conceptSchemeVersion.getId())) {
                     return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
                 }
