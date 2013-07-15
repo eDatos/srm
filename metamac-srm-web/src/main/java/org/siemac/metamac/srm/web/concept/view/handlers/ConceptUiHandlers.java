@@ -1,11 +1,12 @@
 package org.siemac.metamac.srm.web.concept.view.handlers;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
-import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
+
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 
 public interface ConceptUiHandlers extends BaseConceptUiHandlers {
 
@@ -22,8 +23,8 @@ public interface ConceptUiHandlers extends BaseConceptUiHandlers {
 
     void retrieveConceptTypes();
 
-    void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptSchemeTypeEnum conceptSchemeType, String variableUrn, int firstResult, int maxResults, String criteria, String conceptUrn,
-            boolean isLastVersion);
+    void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(RelatedResourceTypeEnum relatedResourceTypeEnum, String variableUrn, int firstResult, int maxResults, String criteria,
+            String conceptUrn, boolean isLastVersion);
 
     void retrieveVariables(int firstResult, int maxResults, String criteria, String variableFamilyUrn);
     void retrieveVariableFamilies(int firstResult, int maxResults, String criteria);

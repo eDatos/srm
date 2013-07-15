@@ -68,6 +68,7 @@ import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigatio
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -496,12 +497,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.setRelatedResources(result.getRelatedResourceDtos());
             searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
 
-            if (!ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeMetamacDto.getType())) {
-                // The result contains codelists
-                if (result.getRelatedResourceDtos().isEmpty()) {
-                    // if there is no results, show an info message (maybe the attribute concept has no variable)
-                    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.showInfoMessage();
-                }
+            if (result.getRelatedResourceDtos().isEmpty()) {
+                // if there is no results, show an info message (maybe the attribute concept has no variable)
+                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.showInfoMessage();
             } else {
                 searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.hideInfoMessage();
             }
@@ -1184,16 +1182,35 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             public void onFormItemClick(FormItemIconClickEvent event) {
 
                 final String conceptUrn = conceptDto.getUrn();
-                final ConceptSchemeTypeEnum conceptSchemeType = conceptSchemeMetamacDto.getType();
                 RelatedResourceDto selectedVariable = getVariableFromEditionForm();
                 final String variableUrn = selectedVariable != null ? selectedVariable.getUrn() : null;
 
+                RelatedResourceTypeEnum defaultResourceType = RelatedResourceTypeEnum.CODELIST;
+
+                CustomSelectItem resourceType = new CustomSelectItem("resource-type", getConstants().resourceType());
+                resourceType.setValueMap(CommonUtils.getResourceTypeThatCanBeEnumeratedRepresentationForConcept());
+                resourceType.setValue(defaultResourceType.name());
+                resourceType.addChangedHandler(new ChangedHandler() {
+
+                    @Override
+                    public void onChanged(ChangedEvent event) {
+                        RelatedResourceTypeEnum resourceType = CommonUtils.getRelatedResourceTypeEnum(searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getInitialSelectionValue());
+
+                        getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(resourceType, variableUrn, FIRST_RESULST, MAX_RESULTS,
+                                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn,
+                                searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getIsLastVersionValue());
+                    }
+                });
+
                 searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow = new SearchRelatedResourcePaginatedWindow(getConstants().enumeratedRepresentationSelection(), MAX_RESULTS,
-                        new PaginatedAction() {
+                        resourceType, new PaginatedAction() {
 
                             @Override
                             public void retrieveResultSet(int firstResult, int maxResults) {
-                                getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptSchemeType, variableUrn, firstResult, maxResults,
+                                RelatedResourceTypeEnum resourceType = CommonUtils.getRelatedResourceTypeEnum(searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow
+                                        .getInitialSelectionValue());
+
+                                getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(resourceType, variableUrn, firstResult, maxResults,
                                         searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn,
                                         searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getIsLastVersionValue());
                             }
@@ -1208,14 +1225,17 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptSchemeType, variableUrn, FIRST_RESULST, MAX_RESULTS,
+
+                        RelatedResourceTypeEnum resourceType = CommonUtils.getRelatedResourceTypeEnum(searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getInitialSelectionValue());
+
+                        getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(resourceType, variableUrn, FIRST_RESULST, MAX_RESULTS,
                                 searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getRelatedResourceCriteria(), conceptUrn,
                                 searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getIsLastVersionValue());
                     }
                 });
 
                 // Load codelists (to populate the selection window)
-                getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptSchemeType, variableUrn, FIRST_RESULST, MAX_RESULTS, null, conceptUrn,
+                getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(defaultResourceType, variableUrn, FIRST_RESULST, MAX_RESULTS, null, conceptUrn,
                         searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getIsLastVersionValue());
 
                 searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
@@ -1223,7 +1243,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(conceptSchemeType, variableUrn, firstResult, maxResults, criteria, conceptUrn,
+
+                        RelatedResourceTypeEnum resourceType = CommonUtils.getRelatedResourceTypeEnum(searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getInitialSelectionValue());
+
+                        getUiHandlers().retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(resourceType, variableUrn, firstResult, maxResults, criteria, conceptUrn,
                                 searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow.getIsLastVersionValue());
                     }
                 });

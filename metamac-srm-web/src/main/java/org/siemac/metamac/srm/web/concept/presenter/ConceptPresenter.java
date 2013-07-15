@@ -13,7 +13,6 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
-import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -56,6 +55,7 @@ import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -312,12 +312,10 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     //
 
     @Override
-    public void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(ConceptSchemeTypeEnum conceptSchemeTypeEnum, String variableUrn, int firstResult, int maxResults, String criteria,
+    public void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(RelatedResourceTypeEnum relatedResourceTypeEnum, String variableUrn, int firstResult, int maxResults, String criteria,
             String conceptUrn, boolean isLastVersion) {
 
-        if (ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeTypeEnum)) {
-
-            // the enumerated representation of a measure dimension concept must be a concept scheme
+        if (RelatedResourceTypeEnum.CONCEPT_SCHEME.equals(relatedResourceTypeEnum)) {
 
             ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria(criteria);
             conceptSchemeWebCriteria.setConceptUrn(conceptUrn);
@@ -336,9 +334,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
                         }
                     });
 
-        } else {
-
-            // for the rest of the concepts, the enumerated representation must be a codelist
+        } else if (RelatedResourceTypeEnum.CODELIST.equals(relatedResourceTypeEnum)) {
 
             CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria(criteria);
             codelistWebCriteria.setIsLastVersion(isLastVersion);

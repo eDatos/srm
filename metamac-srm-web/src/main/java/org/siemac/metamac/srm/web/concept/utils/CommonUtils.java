@@ -5,6 +5,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptTypeDto;
@@ -16,6 +17,7 @@ import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 
 public class CommonUtils {
@@ -87,6 +89,24 @@ public class CommonUtils {
             quantityTypeHashMap.put(c.toString(), value);
         }
         return quantityTypeHashMap;
+    }
+
+    public static LinkedHashMap<String, String> getResourceTypeThatCanBeEnumeratedRepresentationForConcept() {
+        LinkedHashMap<String, String> typeHashMap = new LinkedHashMap<String, String>();
+        typeHashMap.put(RelatedResourceTypeEnum.CODELIST.name(), getConstants().codelist());
+        typeHashMap.put(RelatedResourceTypeEnum.CONCEPT_SCHEME.name(), getConstants().conceptScheme());
+        return typeHashMap;
+    }
+
+    public static RelatedResourceTypeEnum getRelatedResourceTypeEnum(String resourceType) {
+        if (!StringUtils.isBlank(resourceType)) {
+            try {
+                return RelatedResourceTypeEnum.valueOf(resourceType);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return null;
     }
 
     /**
