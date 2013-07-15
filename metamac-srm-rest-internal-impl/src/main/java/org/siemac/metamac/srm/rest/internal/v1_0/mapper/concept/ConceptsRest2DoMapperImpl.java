@@ -134,8 +134,9 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                 case CONCEPT_SCHEME_STATISTICAL_OPERATION_URN:
                     return buildSculptorPropertyCriteria(new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties
                             .relatedOperation().urn().getName(), false, ConceptMetamac.class), PropertyTypeEnum.STRING, propertyRestriction);
-                case CONCEPT_SCHEME_EXTERNALLY_PUBLISHED:
-                    return buildSculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                case CONCEPT_SCHEME_PROC_STATUS:
+                    return buildSculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.PROC_STATUS_ITEM_SCHEME_FROM_ITEM,
+                            propertyRestriction);
                 case CONCEPT_SCHEME_LATEST:
                     return buildSculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:

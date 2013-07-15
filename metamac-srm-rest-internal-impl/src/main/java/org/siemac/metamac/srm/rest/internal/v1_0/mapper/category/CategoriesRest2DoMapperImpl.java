@@ -127,8 +127,9 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                     return buildSculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case CATEGORY_SCHEME_URN:
                     return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact());
-                case CATEGORY_SCHEME_EXTERNALLY_PUBLISHED:
-                    return buildSculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                case CATEGORY_SCHEME_PROC_STATUS:
+                    return buildSculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.PROC_STATUS_ITEM_SCHEME_FROM_ITEM,
+                            propertyRestriction);
                 case CATEGORY_SCHEME_LATEST:
                     return buildSculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:

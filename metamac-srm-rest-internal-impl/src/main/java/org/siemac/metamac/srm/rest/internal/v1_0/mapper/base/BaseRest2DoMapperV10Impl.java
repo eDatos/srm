@@ -13,6 +13,7 @@ import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteria;
 import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaDisjunction;
 import org.siemac.metamac.rest.search.criteria.utils.CriteriaUtils;
 import org.siemac.metamac.rest.search.criteria.utils.CriteriaUtils.PropertyValueRestToPropertyValueEntityInterface;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
@@ -32,7 +33,7 @@ public abstract class BaseRest2DoMapperV10Impl {
     private PropertyValueRestToPropertyValueEntityInterface propertyValueRestToPropertyValueEntity = null;
 
     protected enum PropertyTypeEnum {
-        STRING, DATE, BOOLEAN, PROC_STATUS, ORGANISATION_SCHEME_TYPE, ORGANISATION_TYPE, CONCEPT_SCHEME_TYPE
+        STRING, DATE, BOOLEAN, PROC_STATUS, PROC_STATUS_ITEM_SCHEME_FROM_ITEM, ORGANISATION_SCHEME_TYPE, ORGANISATION_TYPE, CONCEPT_SCHEME_TYPE
     }
 
     public BaseRest2DoMapperV10Impl() {
@@ -63,6 +64,9 @@ public abstract class BaseRest2DoMapperV10Impl {
                         return Boolean.valueOf(value);
                     case PROC_STATUS:
                         return ProcStatusEnum.valueOf(value);
+                    case PROC_STATUS_ITEM_SCHEME_FROM_ITEM:
+                        // This conversion is necesary due to error in queries with basicType of ItemScheme from Item property path
+                        return procStatusItemSchemeToPublicLogic(propertyName, value);
                     case ORGANISATION_SCHEME_TYPE:
                         return OrganisationSchemeTypeEnum.valueOf(value);
                     case ORGANISATION_TYPE:
@@ -121,6 +125,18 @@ public abstract class BaseRest2DoMapperV10Impl {
     protected RestException toRestExceptionParameterIncorrect(String parameter) {
         org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, parameter);
         throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+    }
+
+    private Boolean procStatusItemSchemeToPublicLogic(String propertyName, String value) {
+        ProcStatus procStatus = ProcStatus.valueOf(value);
+        switch (procStatus) {
+            case INTERNALLY_PUBLISHED:
+                return Boolean.FALSE;
+            case EXTERNALLY_PUBLISHED:
+                return Boolean.TRUE;
+            default:
+                throw toRestExceptionParameterIncorrect(propertyName);
+        }
     }
 
 }

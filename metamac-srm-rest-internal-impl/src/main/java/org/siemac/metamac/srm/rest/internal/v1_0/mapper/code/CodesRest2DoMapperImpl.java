@@ -157,8 +157,8 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                     return buildSculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case CODELIST_URN:
                     return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CodeMetamacProperties.itemSchemeVersion().maintainableArtefact());
-                case CODELIST_EXTERNALLY_PUBLISHED:
-                    return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                case CODELIST_PROC_STATUS:
+                    return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.PROC_STATUS_ITEM_SCHEME_FROM_ITEM, propertyRestriction);
                 case CODELIST_LATEST:
                     return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
