@@ -25,5 +25,6 @@ public interface DsdAttributesTabUiHandlers extends BaseUiHandlers {
 
     void retrieveConceptSchemesForEnumeratedRepresentation(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria);
 
-    void loadDefaultConcept(SpecialAttributeTypeEnum specialAttributeTypeEnum, String dsdUrn);
+    void retrieveDefaultConcept(SpecialAttributeTypeEnum specialAttributeTypeEnum, String dsdUrn);
+    void retrieveConceptSchemeEnumeratedRepresentationFromConcept(String conceptUrn);
 }

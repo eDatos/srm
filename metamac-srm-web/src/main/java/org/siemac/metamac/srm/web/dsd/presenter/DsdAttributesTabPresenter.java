@@ -8,6 +8,7 @@ import java.util.Set;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
+import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
@@ -20,6 +21,8 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdAttributesTabUiHandlers;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
+import org.siemac.metamac.srm.web.shared.concept.GetConceptResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
@@ -38,6 +41,8 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.google.gwt.event.shared.EventBus;
@@ -87,6 +92,8 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
         void setConceptSchemesForAttributeRole(GetRelatedResourcesResult result);
         void setConceptsForAttributeRole(GetRelatedResourcesResult result);
+
+        void setDefaultConceptSchemeEnumeratedRepresentation(RelatedResourceDto conceptScheme);
 
         void setCodelistsForEnumeratedRepresentation(GetRelatedResourcesResult result);
         void setConceptSchemesForEnumeratedRepresentation(GetRelatedResourcesResult result);
@@ -368,7 +375,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     }
 
     @Override
-    public void loadDefaultConcept(SpecialAttributeTypeEnum specialAttributeTypeEnum, String dsdUrn) {
+    public void retrieveDefaultConcept(SpecialAttributeTypeEnum specialAttributeTypeEnum, String dsdUrn) {
         dispatcher.execute(new GetDefaultConceptForDsdAtributeAction(dsdUrn, specialAttributeTypeEnum), new WaitingAsyncCallback<GetDefaultConceptForDsdAtributeResult>() {
 
             @Override
@@ -378,6 +385,27 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
             @Override
             public void onWaitSuccess(GetDefaultConceptForDsdAtributeResult result) {
                 getView().setDefaultConcept(result.getConcept());
+            }
+        });
+    }
+
+    @Override
+    public void retrieveConceptSchemeEnumeratedRepresentationFromConcept(String conceptUrn) {
+        dispatcher.execute(new GetConceptAction(conceptUrn), new WaitingAsyncCallback<GetConceptResult>() {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(GetConceptResult result) {
+                ConceptMetamacDto concept = result.getConceptDto();
+                if (concept.getCoreRepresentation() != null && RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType())) {
+                    RelatedResourceDto enumeration = concept.getCoreRepresentation().getEnumeration();
+                    if (enumeration != null && RelatedResourceTypeEnum.CONCEPT_SCHEME.equals(enumeration.getType())) {
+                        getView().setDefaultConceptSchemeEnumeratedRepresentation(enumeration);
+                    }
+                }
             }
         });
     }

@@ -552,6 +552,15 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     }
 
     @Override
+    public void setDefaultConceptSchemeEnumeratedRepresentation(RelatedResourceDto conceptScheme) {
+        // This is only call when we are creating a measure attribute
+        setEnumeratedRepresentationTypeInEditionForm();
+        setConceptSchemeEnumerationRepresentationInEditionForm(conceptScheme);
+        editionForm.markForRedraw();
+        editionForm.validate();
+    }
+
+    @Override
     public void setConceptSchemesForAttributeRole(GetRelatedResourcesResult result) {
         if (searchConceptsForRolesWindow != null) {
             searchConceptsForRolesWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
@@ -813,6 +822,17 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     private void setConceptInEditionForm(RelatedResourceDto concept) {
         ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT)).setRelatedResource(concept);
         ((RelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT_VIEW)).setRelatedResource(concept);
+
+        // If the attribute has a measure type, and the enumerated representations has not been specified yet, load the concept scheme that the concept has as a enumerated representation (if it is has
+        // been specified).
+
+        if (concept != null) {
+            SpecialAttributeTypeEnum specialAttributeTypeEnum = getSpecialAttributeTypeFromEditionForm();
+            if (SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(specialAttributeTypeEnum)) {
+                getUiHandlers().retrieveConceptSchemeEnumeratedRepresentationFromConcept(concept.getUrn());
+            }
+        }
+
         editionForm.validate(false);
     }
 
@@ -1040,7 +1060,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                     String value = event.getValue() != null ? (String) event.getValue() : null;
                     SpecialAttributeTypeEnum specialAttributeTypeEnum = CommonUtils.getSpecialAttributeTypeEnum(value);
                     if (SpecialAttributeTypeEnum.TIME_EXTENDS.equals(specialAttributeTypeEnum) || SpecialAttributeTypeEnum.MEASURE_EXTENDS.equals(specialAttributeTypeEnum)) {
-                        getUiHandlers().loadDefaultConcept(specialAttributeTypeEnum, dataStructureDefinitionMetamacDto.getUrn());
+                        getUiHandlers().retrieveDefaultConcept(specialAttributeTypeEnum, dataStructureDefinitionMetamacDto.getUrn());
                     }
                 }
             }
@@ -1173,7 +1193,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
                         RelatedResourceDto selectedConcept = searchConceptWindow.getSelectedRelatedResource();
                         searchConceptWindow.markForDestroy();
                         // Set selected concepts in form
-                        ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.CONCEPT)).setRelatedResource(selectedConcept);
+                        setConceptInEditionForm(selectedConcept);
 
                         // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
                         ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)).clearRelatedResource();
