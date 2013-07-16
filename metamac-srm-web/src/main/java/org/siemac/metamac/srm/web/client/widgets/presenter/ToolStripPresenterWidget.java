@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
