@@ -136,7 +136,8 @@ public class SrmRestInternalUtils {
     private static void addConditionalCriteriaByMaintainableArtefactAgency(List<ConditionalCriteria> conditionalCriteria, String agencyID, Class entity,
             MaintainableArtefactProperty maintainableArtefactProperty) {
         if (SdmxAlias.SDMX_MAINTAINER.equals(agencyID)) {
-            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.maintainer()).isNull().buildSingle());
+            conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(maintainableArtefactProperty.maintainer().idAsMaintainer()).eq(agencyID).or()
+                    .withProperty(maintainableArtefactProperty.maintainer()).isNull().rbrace().build());
         } else if (agencyID != null && !RestInternalConstants.WILDCARD_ALL.equals(agencyID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
         }
