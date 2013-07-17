@@ -139,7 +139,7 @@ public class AnnotationsPanel extends VLayout {
         // Annotations list
 
         listGrid = new AnnotationsListGrid();
-        listGrid.setCellHeight(40);
+        listGrid.setCanFocus(false);
         listGrid.setAutoFitMaxRecords(10);
         listGrid.setAutoFitData(Autofit.VERTICAL);
         listGrid.setShowRowNumbers(true);
@@ -151,7 +151,7 @@ public class AnnotationsPanel extends VLayout {
         listGrid.setAnimateSelectionUnder(true);
         listGrid.setWrapCells(true);
         listGrid.setBorder("1px solid #A7ABB4");
-        listGrid.setEditEvent(ListGridEditEvent.DOUBLECLICK);
+        listGrid.setEditEvent(ListGridEditEvent.CLICK);
         listGrid.setCanEdit(!viewMode);
         listGrid.setCanRemoveRecords(!viewMode);
         listGrid.setRemoveFieldTitle(getConstants().actionDelete());

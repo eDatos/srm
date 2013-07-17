@@ -24,6 +24,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationRe
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -43,10 +44,12 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
 
         setShowFilterEditor(false);
         setCanCollapseGroup(false);
+        setEditEvent(ListGridEditEvent.CLICK);
 
         // This field will show the code and the name of the concept
         codeField = new CustomLinkTreeGridField(CONCEPT_FIELD, getConstants().identifiableArtefactCode());
         codeField.setWidth("30%");
+        codeField.setCanEdit(false);
 
         TreeGridField showDecimalsPrecisionField = new TreeGridField(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getConstants().dsdDecimals());
         showDecimalsPrecisionField.setWidth("20%");
