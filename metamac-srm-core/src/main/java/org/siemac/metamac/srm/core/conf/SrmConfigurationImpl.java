@@ -29,6 +29,7 @@ public class SrmConfigurationImpl implements SrmConfiguration {
     private String               languageDefault;
     private String               statisticalOperationsInternalApiUrlBase;
     private String               statisticalOperationsInternalWebApplicationUrlBase;
+    private String               jobDeleteDeprecatedEntitiesCronExpression;
 
     @Override
     public String retrieveMaintainerUrnDefault() throws MetamacException {
@@ -111,6 +112,14 @@ public class SrmConfigurationImpl implements SrmConfiguration {
             statisticalOperationsInternalWebApplicationUrlBase = retrieveProperty(SrmConfigurationConstants.WEB_APPLICATION_STATISTICAL_OPERATIONS_INTERNAL_WEB, Boolean.TRUE);
         }
         return statisticalOperationsInternalWebApplicationUrlBase;
+    }
+
+    @Override
+    public String retrieveJobDeleteDeprecatedEntitiesCronExpression() throws MetamacException {
+        if (jobDeleteDeprecatedEntitiesCronExpression == null) {
+            jobDeleteDeprecatedEntitiesCronExpression = retrieveProperty(SrmConfigurationConstants.JOB_DELETE_DEPRECATED_ENTITIES_CRON_EXPRESSION, Boolean.FALSE);
+        }
+        return jobDeleteDeprecatedEntitiesCronExpression;
     }
 
     private String retrieveProperty(String propertyName, Boolean required) throws MetamacException {

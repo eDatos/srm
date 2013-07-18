@@ -12,10 +12,10 @@
         <!-- </property> -->
     </bean>
 
-    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <bean id="cronTrigger" class="org.siemac.metamac.srm.core.job.MetamacCronTriggerFactoryBean">
         <property name="jobDetail" ref="deleteEntitiesMarkedToDeleteJob" />
         <property name="group" value="deleteEntitiesMarkedToDelete" />
-        <property name="cronExpression" value="${metamac.srm.jobs.delete_deprecated_entities.cron_expression}" />
+        <property name="cronExpressionProperty" value="metamac.srm.jobs.delete_deprecated_entities.cron_expression" />
     </bean>
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

@@ -51,4 +51,6 @@ public interface SrmConfiguration {
      */
     public String retrieveStatisticalOperationsInternalWebApplicationUrlBase() throws MetamacException;
 
+    public String retrieveJobDeleteDeprecatedEntitiesCronExpression() throws MetamacException;
+
 }
