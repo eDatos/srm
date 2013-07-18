@@ -2,6 +2,6 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>Rest endpoints</comment>
-    <entry key="metamac.endpoints.srm.rest.internal">http://data.istac.es/apis/structural-resources-internal</entry>
-    <entry key="metamac.endpoints.statistical.operations.rest.internal">http://data.istac.es/apis/operations-internal</entry>
+    <entry key="metamac.srm.rest.internal">http://data.istac.es/apis/structural-resources-internal</entry>
+    <entry key="metamac.statistical_operations.rest.internal">http://data.istac.es/apis/operations-internal</entry>
 </properties>
