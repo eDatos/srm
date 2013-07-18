@@ -43,7 +43,7 @@
     </bean>
 
    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName"    value="${metamac.srm.db.driverName}"/>
+        <property name="driverClassName"    value="${metamac.srm.db.driver_name}"/>
         <property name="url"                value="${metamac.srm.db.url}"/>
         <property name="username"           value="${metamac.srm.db.username}"/>
         <property name="password"           value="${metamac.srm.db.password}"/>

@@ -33,6 +33,8 @@ Cuando se cree la RELEASE, añadir estos pasos al manual de instalación:
 	- Añadida propiedad: 'metamac.srm.jobs.delete_deprecated_entities.cron_expression' (ver descripción en manual de instalación)
 	- Renombrar propiedad: la propiedad 'metamac.srm.dsd.time_dimension.default_concept.urn' se ha renombrado a 'metamac.srm.dsd.time_dimension_or_attribute.default_concept.urn'
 	- Renombrar propiedad: la propiedad 'metamac.srm.dsd.measure_dimension.default_concept.urn' se ha renombrado a 'metamac.srm.dsd.measure_dimension_or_attribute.default_concept.urn'
+	- Renombrar propiedad driverName
+	- Renombrar propiedad: metamac.srm.user.guide.file.name por metamac.srm.user_guide.file_name
 	 	
 99. Reiniciar Tomcat
 

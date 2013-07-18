@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>Configurations</comment>
-    <entry key="metamac.srm.user.guide.file.name">Gestor_recursos_estructurales-Manual_usuario.pdf</entry>
+    <entry key="metamac.srm.user_guide.file_name">Gestor_recursos_estructurales-Manual_usuario.pdf</entry>
     <!--  Before creating a DSD in the application, the concepts that are referenced by these URNs must have been created or loaded in the system-->
     <entry key="metamac.srm.dsd.primary_measure.default_concept.urn">FILL_ME_WITH_CONCEPT_URN</entry>
     <entry key="metamac.srm.dsd.time_dimension_or_attribute.default_concept.urn">FILL_ME_WITH_CONCEPT_URN</entry>

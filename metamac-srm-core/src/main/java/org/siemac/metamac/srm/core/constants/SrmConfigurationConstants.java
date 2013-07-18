@@ -14,7 +14,7 @@ public class SrmConfigurationConstants extends ConfigurationConstants {
     public static final String VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY_CODELIST_URN    = "metamac.srm.codelist.variable_element.geographical_granularity.urn";
     public static final String JOB_DELETE_DEPRECATED_ENTITIES_CRON_EXPRESSION            = "metamac.srm.jobs.delete_deprecated_entities.cron_expression";
 
-    public static final String USER_GUIDE_FILE_NAME                                      = "metamac.srm.user.guide.file.name";
+    public static final String USER_GUIDE_FILE_NAME                                      = "metamac.srm.user_guide.file_name";
 
     // DataSource
 
@@ -22,7 +22,7 @@ public class SrmConfigurationConstants extends ConfigurationConstants {
     public static final String DB_USERNAME                                               = "metamac.srm.db.username";
     public static final String DB_PASSWORD                                               = "metamac.srm.db.password";
     public static final String DB_DIALECT                                                = "metamac.srm.db.dialect";
-    public static final String DB_DRIVER_NAME                                            = "metamac.srm.db.driverName";
+    public static final String DB_DRIVER_NAME                                            = "metamac.srm.db.driver_name";
     public static final String DB_DRIVER_NAME_ORACLE                                     = "oracle.jdbc.OracleDriver";
     public static final String DB_DRIVER_NAME_MSSQL                                      = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 }
