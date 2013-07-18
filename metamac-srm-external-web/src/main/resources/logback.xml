@@ -2,7 +2,7 @@
 <!DOCTYPE configuration>
 <configuration>
 
-    <property name="LOGS_HOME" value="/data/metamac/srm/srm-external-web/logs" />
+    <property name="LOGS_HOME" value="/data/metamac/srm/logs" />
 
 
 
