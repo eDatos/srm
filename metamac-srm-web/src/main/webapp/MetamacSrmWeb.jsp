@@ -8,8 +8,8 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta name="gwt:property" content="locale=es">
-
+    
+    <meta name="gwt:property" content="locale=<%=request.getLocale()%>">
 
     <!--                                           -->
     <!-- This script loads your compiled module.   -->

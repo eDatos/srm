@@ -104,7 +104,7 @@
 
     <!-- ******************* Default page to serve ******************** -->
     <welcome-file-list>
-        <welcome-file>MetamacSrmWeb.html</welcome-file>
+        <welcome-file>MetamacSrmWeb.jsp</welcome-file>
     </welcome-file-list>
 
 </web-app>

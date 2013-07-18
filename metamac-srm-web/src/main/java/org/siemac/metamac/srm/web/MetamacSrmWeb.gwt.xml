@@ -61,6 +61,12 @@
     <extend-property name="locale" values="es" />
     <extend-property name="locale" values="en" />
     <extend-property name="locale" values="pt" />
+    
+    <!-- Default locale -->
+    <set-property name="locale" value="en,es" />
+
+    <!-- Fallback locale -->
+    <set-property-fallback name="locale" value="en" />
 
     <!-- Generate code in compilation time only for gecko-based/safari browsers -->
     <!-- <set-property name="user.agent" value="gecko1_8" /> -->
