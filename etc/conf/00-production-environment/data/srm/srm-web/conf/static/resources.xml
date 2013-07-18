@@ -4,12 +4,12 @@
     <comment>Configurations</comment>
     <entry key="metamac.srm.user_guide.file_name">Gestor_recursos_estructurales-Manual_usuario.pdf</entry>
     <!--  Before creating a DSD in the application, the concepts that are referenced by these URNs must have been created or loaded in the system-->
-    <entry key="metamac.srm.dsd.primary_measure.default_concept.urn">FILL_ME_WITH_CONCEPT_URN</entry>
-    <entry key="metamac.srm.dsd.time_dimension_or_attribute.default_concept.urn">FILL_ME_WITH_CONCEPT_URN</entry>
-    <entry key="metamac.srm.dsd.measure_dimension_or_attribute.default_concept.urn">FILL_ME_WITH_CONCEPT_URN</entry>
+    <entry key="metamac.srm.dsd.primary_measure.default_concept.urn"></entry>
+    <entry key="metamac.srm.dsd.time_dimension_or_attribute.default_concept.urn"></entry>
+    <entry key="metamac.srm.dsd.measure_dimension_or_attribute.default_concept.urn"></entry>
     <!-- Codelists -->
     <!-- Following property can not be modified if some code has already been assigned as geographical granularity of variable element -->
-    <entry key="metamac.srm.codelist.variable_element.geographical_granularity.urn">FILL_ME_WITH_CODELIST_URN</entry>
+    <entry key="metamac.srm.codelist.variable_element.geographical_granularity.urn"></entry>
     <!-- Other -->
     <entry key="metamac.srm.jobs.delete_deprecated_entities.cron_expression">0 30 2 ? * *</entry>
 </properties>
