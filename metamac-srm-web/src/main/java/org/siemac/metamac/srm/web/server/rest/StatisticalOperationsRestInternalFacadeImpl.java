@@ -111,7 +111,7 @@ public class StatisticalOperationsRestInternalFacadeImpl implements StatisticalO
 
     private void throwMetamacWebException(ServiceContext serviceContext, String exceptionCode) throws MetamacWebException {
         Locale locale = (Locale) serviceContext.getProperty(LocaleConstants.locale);
-        String exceptionnMessage = webTranslateExceptions.getTranslatedMessage(exceptionCode, locale.getLanguage());
+        String exceptionnMessage = webTranslateExceptions.getTranslatedMessage(exceptionCode, locale);
 
         throw new MetamacWebException(exceptionCode, exceptionnMessage);
     }
