@@ -1,13 +1,12 @@
 package org.siemac.metamac.srm.web.server.handlers.concept;
 
+import java.util.Locale;
+
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.lang.shared.LocaleConstants;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operation;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.ProcStatus;
-import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
-import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.server.rest.StatisticalOperationsRestInternalFacade;
 import org.siemac.metamac.srm.web.server.utils.WebTranslateExceptions;
 import org.siemac.metamac.srm.web.shared.WebMessageExceptionsConstants;
@@ -80,7 +79,7 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
     }
 
     private void throwMetamacWebException(ServiceContext serviceContext, String exceptionCode) throws MetamacWebException {
-        String locale = (String) serviceContext.getProperty(LocaleConstants.locale);
+        Locale locale = (Locale) serviceContext.getProperty(LocaleConstants.locale);
         String exceptionnMessage = webTranslateExceptions.getTranslatedMessage(exceptionCode, locale);
 
         throw new MetamacWebException(exceptionCode, exceptionnMessage);
