@@ -22,7 +22,6 @@ public class SrmConfigurationImpl implements SrmConfiguration {
 
     private String               maintainerUrnDefault;
     private String               primaryMeasureConceptIdUrnDefault;
-    private String               variableElementGeographicalGranularityCodelistUrn;
     private Boolean              isDatabaseOracle;
     private Boolean              isDatabaseSqlServer;
     private List<String>         languages;
@@ -49,10 +48,7 @@ public class SrmConfigurationImpl implements SrmConfiguration {
 
     @Override
     public String retrieveCodelistUrnForVariableElementGeographicalGranularity() throws MetamacException {
-        if (variableElementGeographicalGranularityCodelistUrn == null) {
-            variableElementGeographicalGranularityCodelistUrn = retrieveProperty(SrmConfigurationConstants.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY_CODELIST_URN, Boolean.TRUE);
-        }
-        return variableElementGeographicalGranularityCodelistUrn;
+        return configurationService.retrieveDefaultCodelistGeographicalGranularityUrn();
     }
 
     @Override

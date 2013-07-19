@@ -7,9 +7,6 @@
     <entry key="metamac.srm.dsd.primary_measure.default_concept.urn"></entry>
     <entry key="metamac.srm.dsd.time_dimension_or_attribute.default_concept.urn"></entry>
     <entry key="metamac.srm.dsd.measure_dimension_or_attribute.default_concept.urn"></entry>
-    <!-- Codelists -->
-    <!-- Following property can not be modified if some code has already been assigned as geographical granularity of variable element -->
-    <entry key="metamac.srm.codelist.variable_element.geographical_granularity.urn"></entry>
     <!-- Other -->
     <entry key="metamac.srm.jobs.delete_deprecated_entities.cron_expression">0 30 2 ? * *</entry>
 </properties>
