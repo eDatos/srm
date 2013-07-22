@@ -268,7 +268,7 @@
                 <!-- Plugin configuration. There are many available options, see gwt-maven-plugin
                     documentation at codehaus.org -->
                 <configuration>
-                    <runTarget>http://localhost:8080/metamac-srm-web/MetamacSrmWeb.html</runTarget>
+                    <runTarget>http://localhost:8080/metamac-srm-web/MetamacSrmWeb.jsp</runTarget>
                     <hostedWebapp>${webappDirectory}</hostedWebapp>
                     <noServer>true</noServer>
                     <debugPort>9997</debugPort>
