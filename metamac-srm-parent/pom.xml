@@ -24,7 +24,7 @@
         <metamac-rest-common.version>1.3.0</metamac-rest-common.version>
         <metamac-rest-common-test.version>1.2.0</metamac-rest-common-test.version>
         <statistic-sdmx-v2_1.version>1.0.0</statistic-sdmx-v2_1.version>
-        <statistic-sdmx-srm.version>1.1.0</statistic-sdmx-srm.version>
+        <statistic-sdmx-srm.version>1.1.1-SNAPSHOT</statistic-sdmx-srm.version>
     </properties>
 
     <repositories>
