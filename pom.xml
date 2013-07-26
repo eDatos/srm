@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.siemac.metamac.metamac-srm</groupId>
         <artifactId>metamac-srm-parent</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.1.0</version>
         <relativePath>metamac-srm-parent/pom.xml</relativePath>
     </parent>
 
@@ -25,9 +25,9 @@
     </modules>
 
     <scm>
-        <connection>scm:svn:http://svn.arte-consultores.com/svn/arte/istac/metamac/metamac-srm/trunk/</connection>
-        <developerConnection>scm:svn:http://svn.arte-consultores.com/svn/arte/istac/metamac/metamac-srm/trunk/</developerConnection>
-        <url>http://svn.arte-consultores.com/viewvc/arte/istac/metamac/metamac-srm/trunk/</url>
+        <connection>scm:svn:http://svn.arte-consultores.com/svn/arte/istac/metamac/metamac-srm/tags/20130726-1407-v1.1.0</connection>
+        <developerConnection>scm:svn:http://svn.arte-consultores.com/svn/arte/istac/metamac/metamac-srm/tags/20130726-1407-v1.1.0</developerConnection>
+        <url>http://svn.arte-consultores.com/viewvc/arte/istac/metamac/metamac-srm/tags/20130726-1407-v1.1.0</url>
     </scm>
 
     <build>
