@@ -68,46 +68,51 @@ public class OrganisationsDo2JaxbCallbackImpl implements OrganisationsDo2JaxbCal
 
     @Override
     public AgencyType createAgencyJaxb(Organisation source) {
-        return new AgencyType();
+        throw new IllegalArgumentException("createAgencyJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
     public void fillAgencyJaxb(Organisation source, AgencyType target) {
-        organisationsDo2RestMapperV10.toAgency(source, target);
+        throw new IllegalArgumentException("fillAgencyJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
     public DataConsumerType createDataConsumerJaxb(Organisation source) {
-        return new DataConsumerType();
+        throw new IllegalArgumentException("createDataConsumerJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
     public void fillDataConsumerJaxb(Organisation source, DataConsumerType target) {
-        organisationsDo2RestMapperV10.toDataConsumer(source, target);
+        throw new IllegalArgumentException("fillDataConsumerJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
     public DataProviderType createDataProviderJaxb(Organisation source) {
-        return new DataProviderType();
+        throw new IllegalArgumentException("createDataProviderJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
     public void fillDataProviderJaxb(Organisation source, DataProviderType target) {
-        organisationsDo2RestMapperV10.toDataProvider(source, target);
+        throw new IllegalArgumentException("fillDataProviderJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
     public OrganisationUnitType createOrganisationUnitJaxb(Organisation source) {
-        return new OrganisationUnitType();
+        throw new IllegalArgumentException("createOrganisationUnitJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
     public void fillOrganisationUnitJaxb(Organisation source, OrganisationUnitType target) {
-        organisationsDo2RestMapperV10.toOrganisationUnit(source, target);
+        throw new IllegalArgumentException("fillOrganisationUnitJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
     public OrganisationSchemesType createOrganisationSchemesJaxb(List<OrganisationSchemeVersion> sourceList) {
         throw new IllegalArgumentException("createOrganisationSchemesJaxb not supported");
+    }
+
+    @Override
+    public boolean mustRetrieveOrganisationsInsideOrganisationScheme() {
+        return false;
     }
 }

@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationSchemes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisations;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisation;
@@ -166,8 +166,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEME, dataProviderScheme.getKind());
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEME, dataProviderScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES, dataProviderScheme.getParentLink().getKind());
-        assertTrue(dataProviderScheme.getDataProviders().get(0) instanceof DataProviderType);
-        assertFalse(dataProviderScheme.getDataProviders().get(0) instanceof DataProvider);
+        assertEquals(0, dataProviderScheme.getDataProviders().size());
 
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);

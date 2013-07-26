@@ -73,6 +73,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -103,6 +104,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -154,8 +156,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Autowired
     private DataStructuresDo2RestMapperV10        dataStructuresDo2RestMapperV10;
 
-    private final ServiceContext                  ctx    = new ServiceContext("restInternal", "restInternal", "restInternal");
-    private final Logger                          logger = LoggerFactory.getLogger(SrmRestInternalFacadeV10Impl.class);
+    private final ServiceContext                  ctx                      = new ServiceContext("restInternal", "restInternal", "restInternal");
+    private final Logger                          logger                   = LoggerFactory.getLogger(SrmRestInternalFacadeV10Impl.class);
+    private final ItemMetamacResultSelection      itemResultSelection      = ItemMetamacResultSelection.API;
+    private final PagingParameter                 pagingParameterOneResult = PagingParameter.pageAccess(1, 1, false);
 
     @Override
     public ConceptSchemes findConceptSchemes(String query, String orderBy, String limit, String offset) {
@@ -180,14 +184,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
 
             // Find one
-            PagedResult<ConceptSchemeVersionMetamac> entitiesPagedResult = findConceptSchemesCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
-            if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND, resourceID, version, agencyID);
-                throw new RestException(exception, Status.NOT_FOUND);
-            }
+            ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemePublished(agencyID, resourceID, version);
 
             // Transform
-            ConceptScheme conceptScheme = conceptsDo2RestMapper.toConceptScheme(entitiesPagedResult.getValues().get(0));
+            ConceptScheme conceptScheme = conceptsDo2RestMapper.toConceptScheme(conceptSchemeVersion);
             return conceptScheme;
         } catch (Exception e) {
             throw manageException(e);
@@ -199,13 +199,23 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         try {
             checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
-            // Find
-            SculptorCriteria sculptorCriteria = conceptsRest2DoMapper.getConceptCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-            PagedResult<ConceptMetamac> entitiesPagedResult = findConceptsCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+            if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
+                // Find. Retrieve concepts paginated
+                SculptorCriteria sculptorCriteria = conceptsRest2DoMapper.getConceptCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+                PagedResult<ConceptMetamac> entitiesPagedResult = findConceptsCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
-            // Transform
-            Concepts concepts = conceptsDo2RestMapper.toConcepts(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
-            return concepts;
+                // Transform
+                Concepts concepts = conceptsDo2RestMapper.toConcepts(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+                return concepts;
+            } else {
+                // Retrieve all concepts of conceptScheme, without pagination
+                ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemePublished(agencyID, resourceID, version);
+                List<ItemResult> items = conceptsService.retrieveConceptsByConceptSchemeUrnUnordered(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn(), itemResultSelection);
+
+                // Transform
+                Concepts concepts = conceptsDo2RestMapper.toConcepts(items, conceptSchemeVersion);
+                return concepts;
+            }
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -217,7 +227,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, conceptID, RestInternalConstants.PARAMETER_CONCEPT_ID);
 
             // Find one
-            PagedResult<ConceptMetamac> entitiesPagedResult = findConceptsCore(agencyID, resourceID, version, conceptID, null, PagingParameter.pageAccess(1, 1, false));
+            PagedResult<ConceptMetamac> entitiesPagedResult = findConceptsCore(agencyID, resourceID, version, conceptID, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONCEPT_NOT_FOUND, conceptID, version, resourceID, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
@@ -268,14 +278,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
 
             // Find one
-            PagedResult<CategorySchemeVersionMetamac> entitiesPagedResult = findCategorySchemesCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
-            if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND, resourceID, version, agencyID);
-                throw new RestException(exception, Status.NOT_FOUND);
-            }
+            CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemePublished(agencyID, resourceID, version);
 
             // Transform
-            CategoryScheme categoryScheme = categoriesDo2RestMapper.toCategoryScheme(entitiesPagedResult.getValues().get(0));
+            CategoryScheme categoryScheme = categoriesDo2RestMapper.toCategoryScheme(categorySchemeVersion);
             return categoryScheme;
         } catch (Exception e) {
             throw manageException(e);
@@ -287,13 +293,23 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         try {
             checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
-            // Find
-            SculptorCriteria sculptorCriteria = categoriesRest2DoMapper.getCategoryCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-            PagedResult<CategoryMetamac> entitiesPagedResult = findCategoriesCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+            if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
+                // Find. Retrieve categories paginated
+                SculptorCriteria sculptorCriteria = categoriesRest2DoMapper.getCategoryCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+                PagedResult<CategoryMetamac> entitiesPagedResult = findCategoriesCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
-            // Transform
-            Categories categories = categoriesDo2RestMapper.toCategories(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
-            return categories;
+                // Transform
+                Categories categories = categoriesDo2RestMapper.toCategories(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+                return categories;
+            } else {
+                // Retrieve all categories of categoryScheme, without pagination
+                CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemePublished(agencyID, resourceID, version);
+                List<ItemResult> items = categoriesService.retrieveCategoriesByCategorySchemeUrnUnordered(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn(), itemResultSelection);
+
+                // Transform
+                Categories categories = categoriesDo2RestMapper.toCategories(items, categorySchemeVersion);
+                return categories;
+            }
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -305,7 +321,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, categoryID, RestInternalConstants.PARAMETER_CATEGORY_ID);
 
             // Find one
-            PagedResult<CategoryMetamac> entitiesPagedResult = findCategoriesCore(agencyID, resourceID, version, categoryID, null, PagingParameter.pageAccess(1, 1, false));
+            PagedResult<CategoryMetamac> entitiesPagedResult = findCategoriesCore(agencyID, resourceID, version, categoryID, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils
                         .getException(RestServiceExceptionType.CATEGORY_NOT_FOUND, categoryID, version, resourceID, agencyID);
@@ -343,8 +359,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
 
             // Find one
-            PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation> entitiesPagedResult = findCategorisationsCore(agencyID, resourceID, version, null,
-                    PagingParameter.pageAccess(1, 1, false));
+            PagedResult<com.arte.statistic.sdmx.srm.core.category.domain.Categorisation> entitiesPagedResult = findCategorisationsCore(agencyID, resourceID, version, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CATEGORISATION_NOT_FOUND, resourceID, version, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
@@ -381,14 +396,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
 
             // Find one
-            PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(null, agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
-            if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND, resourceID, version, agencyID);
-                throw new RestException(exception, Status.NOT_FOUND);
-            }
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemePublished(agencyID, resourceID, version);
 
             // Transform
-            OrganisationScheme itemScheme = organisationsDo2RestMapper.toOrganisationScheme(entitiesPagedResult.getValues().get(0));
+            OrganisationScheme itemScheme = organisationsDo2RestMapper.toOrganisationScheme(organisationSchemeVersion);
             return itemScheme;
         } catch (Exception e) {
             throw manageException(e);
@@ -400,14 +411,25 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         try {
             checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
-            // Find
-            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(null, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
-                    sculptorCriteria.getPagingParameter());
+            if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
+                // Find. Retrieve organisations paginated
+                SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+                PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(null, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
+                        sculptorCriteria.getPagingParameter());
 
-            // Transform
-            Organisations items = organisationsDo2RestMapper.toOrganisations(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
-            return items;
+                // Transform
+                Organisations organisations = organisationsDo2RestMapper.toOrganisations(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+                return organisations;
+            } else {
+                // Retrieve all organisations of organisationScheme, without pagination
+                OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemePublished(agencyID, resourceID, version);
+                List<ItemResult> items = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(),
+                        itemResultSelection);
+
+                // Transform
+                Organisations organisations = organisationsDo2RestMapper.toOrganisations(items, organisationSchemeVersion);
+                return organisations;
+            }
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -419,7 +441,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, RestInternalConstants.PARAMETER_ORGANISATION_ID);
 
             // Find one
-            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(null, agencyID, resourceID, version, organisationID, null, PagingParameter.pageAccess(1, 1, false));
+            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(null, agencyID, resourceID, version, organisationID, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_NOT_FOUND, organisationID, version, resourceID,
                         agencyID);
@@ -457,34 +479,39 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
 
             // Find one
-            PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(OrganisationSchemeTypeEnum.AGENCY_SCHEME, agencyID, resourceID, version, null,
-                    PagingParameter.pageAccess(1, 1, false));
-            if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.AGENCY_SCHEME_NOT_FOUND, resourceID, version, agencyID);
-                throw new RestException(exception, Status.NOT_FOUND);
-            }
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveAgencySchemePublished(agencyID, resourceID, version);
 
             // Transform
-            AgencyScheme itemScheme = organisationsDo2RestMapper.toAgencyScheme(entitiesPagedResult.getValues().get(0));
+            AgencyScheme itemScheme = organisationsDo2RestMapper.toAgencyScheme(organisationSchemeVersion);
             return itemScheme;
         } catch (Exception e) {
             throw manageException(e);
         }
     }
-
     @Override
     public Agencies findAgencies(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
         try {
             checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
-            // Find
-            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.AGENCY, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
-                    sculptorCriteria.getPagingParameter());
+            if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
+                // Find. Retrieve organisations paginated
+                SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+                PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.AGENCY, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
+                        sculptorCriteria.getPagingParameter());
 
-            // Transform
-            Agencies items = organisationsDo2RestMapper.toAgencies(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
-            return items;
+                // Transform
+                Agencies agencies = organisationsDo2RestMapper.toAgencies(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+                return agencies;
+            } else {
+                // Retrieve all organisations of organisationScheme, without pagination
+                OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveAgencySchemePublished(agencyID, resourceID, version);
+                List<ItemResult> items = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(),
+                        itemResultSelection);
+
+                // Transform
+                Agencies agencies = organisationsDo2RestMapper.toAgencies(items, organisationSchemeVersion);
+                return agencies;
+            }
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -496,8 +523,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, RestInternalConstants.PARAMETER_ORGANISATION_ID);
 
             // Find one
-            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.AGENCY, agencyID, resourceID, version, organisationID, null,
-                    PagingParameter.pageAccess(1, 1, false));
+            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.AGENCY, agencyID, resourceID, version, organisationID, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.AGENCY_NOT_FOUND, organisationID, version, resourceID,
                         agencyID);
@@ -535,16 +561,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
 
             // Find one
-            PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, agencyID, resourceID, version, null,
-                    PagingParameter.pageAccess(1, 1, false));
-            if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_UNIT_SCHEME_NOT_FOUND, resourceID, version,
-                        agencyID);
-                throw new RestException(exception, Status.NOT_FOUND);
-            }
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationUnitSchemePublished(agencyID, resourceID, version);
 
             // Transform
-            OrganisationUnitScheme itemScheme = organisationsDo2RestMapper.toOrganisationUnitScheme(entitiesPagedResult.getValues().get(0));
+            OrganisationUnitScheme itemScheme = organisationsDo2RestMapper.toOrganisationUnitScheme(organisationSchemeVersion);
             return itemScheme;
         } catch (Exception e) {
             throw manageException(e);
@@ -556,14 +576,25 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         try {
             checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
-            // Find
-            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.ORGANISATION_UNIT, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
-                    sculptorCriteria.getPagingParameter());
+            if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
+                // Find. Retrieve organisations paginated
+                SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+                PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.ORGANISATION_UNIT, agencyID, resourceID, version, null,
+                        sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
-            // Transform
-            OrganisationUnits items = organisationsDo2RestMapper.toOrganisationUnits(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
-            return items;
+                // Transform
+                OrganisationUnits organisationUnits = organisationsDo2RestMapper.toOrganisationUnits(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+                return organisationUnits;
+            } else {
+                // Retrieve all organisations of organisationScheme, without pagination
+                OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationUnitSchemePublished(agencyID, resourceID, version);
+                List<ItemResult> items = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(),
+                        itemResultSelection);
+
+                // Transform
+                OrganisationUnits organisationUnits = organisationsDo2RestMapper.toOrganisationUnits(items, organisationSchemeVersion);
+                return organisationUnits;
+            }
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -576,7 +607,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
             // Find one
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.ORGANISATION_UNIT, agencyID, resourceID, version, organisationID, null,
-                    PagingParameter.pageAccess(1, 1, false));
+                    pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.ORGANISATION_UNIT_NOT_FOUND, organisationID, version,
                         resourceID, agencyID);
@@ -614,16 +645,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
 
             // Find one
-            PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME, agencyID, resourceID, version, null,
-                    PagingParameter.pageAccess(1, 1, false));
-            if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils
-                        .getException(RestServiceExceptionType.DATA_PROVIDER_SCHEME_NOT_FOUND, resourceID, version, agencyID);
-                throw new RestException(exception, Status.NOT_FOUND);
-            }
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveDataProviderSchemePublished(agencyID, resourceID, version);
 
             // Transform
-            DataProviderScheme itemScheme = organisationsDo2RestMapper.toDataProviderScheme(entitiesPagedResult.getValues().get(0));
+            DataProviderScheme itemScheme = organisationsDo2RestMapper.toDataProviderScheme(organisationSchemeVersion);
             return itemScheme;
         } catch (Exception e) {
             throw manageException(e);
@@ -635,14 +660,25 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         try {
             checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
-            // Find
-            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_PROVIDER, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
-                    sculptorCriteria.getPagingParameter());
+            if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
+                // Find. Retrieve organisations paginated
+                SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+                PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_PROVIDER, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
+                        sculptorCriteria.getPagingParameter());
 
-            // Transform
-            DataProviders items = organisationsDo2RestMapper.toDataProviders(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
-            return items;
+                // Transform
+                DataProviders dataProviders = organisationsDo2RestMapper.toDataProviders(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+                return dataProviders;
+            } else {
+                // Retrieve all organisations of organisationScheme, without pagination
+                OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveDataProviderSchemePublished(agencyID, resourceID, version);
+                List<ItemResult> items = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(),
+                        itemResultSelection);
+
+                // Transform
+                DataProviders dataProviders = organisationsDo2RestMapper.toDataProviders(items, organisationSchemeVersion);
+                return dataProviders;
+            }
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -655,7 +691,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
             // Find one
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_PROVIDER, agencyID, resourceID, version, organisationID, null,
-                    PagingParameter.pageAccess(1, 1, false));
+                    pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.DATA_PROVIDER_NOT_FOUND, organisationID, version, resourceID,
                         agencyID);
@@ -693,16 +729,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
 
             // Find one
-            PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME, agencyID, resourceID, version, null,
-                    PagingParameter.pageAccess(1, 1, false));
-            if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils
-                        .getException(RestServiceExceptionType.DATA_CONSUMER_SCHEME_NOT_FOUND, resourceID, version, agencyID);
-                throw new RestException(exception, Status.NOT_FOUND);
-            }
+            OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveDataConsumerSchemePublished(agencyID, resourceID, version);
 
             // Transform
-            DataConsumerScheme itemScheme = organisationsDo2RestMapper.toDataConsumerScheme(entitiesPagedResult.getValues().get(0));
+            DataConsumerScheme itemScheme = organisationsDo2RestMapper.toDataConsumerScheme(organisationSchemeVersion);
             return itemScheme;
         } catch (Exception e) {
             throw manageException(e);
@@ -714,14 +744,25 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         try {
             checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
-            // Find
-            SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-            PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_CONSUMER, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
-                    sculptorCriteria.getPagingParameter());
+            if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
+                // Find. Retrieve organisations paginated
+                SculptorCriteria sculptorCriteria = organisationsRest2DoMapper.getOrganisationCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+                PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_CONSUMER, agencyID, resourceID, version, null, sculptorCriteria.getConditions(),
+                        sculptorCriteria.getPagingParameter());
 
-            // Transform
-            DataConsumers items = organisationsDo2RestMapper.toDataConsumers(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
-            return items;
+                // Transform
+                DataConsumers dataConsumers = organisationsDo2RestMapper.toDataConsumers(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+                return dataConsumers;
+            } else {
+                // Retrieve all organisations of organisationScheme, without pagination
+                OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveDataConsumerSchemePublished(agencyID, resourceID, version);
+                List<ItemResult> items = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(),
+                        itemResultSelection);
+
+                // Transform
+                DataConsumers dataConsumers = organisationsDo2RestMapper.toDataConsumers(items, organisationSchemeVersion);
+                return dataConsumers;
+            }
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -734,7 +775,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
             // Find one
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_CONSUMER, agencyID, resourceID, version, organisationID, null,
-                    PagingParameter.pageAccess(1, 1, false));
+                    pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.DATA_CONSUMER_NOT_FOUND, organisationID, version, resourceID,
                         agencyID);
@@ -772,14 +813,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
 
             // Find one
-            PagedResult<CodelistVersionMetamac> entitiesPagedResult = findCodelistsCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
-            if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODELIST_NOT_FOUND, resourceID, version, agencyID);
-                throw new RestException(exception, Status.NOT_FOUND);
-            }
+            CodelistVersionMetamac codelistVersion = retrieveCodelistPublished(agencyID, resourceID, version);
 
             // Transform
-            Codelist codelist = codesDo2RestMapper.toCodelist(entitiesPagedResult.getValues().get(0));
+            Codelist codelist = codesDo2RestMapper.toCodelist(codelistVersion);
             return codelist;
         } catch (Exception e) {
             throw manageException(e);
@@ -791,13 +828,24 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         try {
             checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
-            // Find
-            SculptorCriteria sculptorCriteria = codesRest2DoMapper.getCodeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-            PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+            if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
+                // Find. Retrieve codes paginated
+                SculptorCriteria sculptorCriteria = codesRest2DoMapper.getCodeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+                PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
-            // Transform
-            Codes codes = codesDo2RestMapper.toCodes(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
-            return codes;
+                // Transform
+                Codes codes = codesDo2RestMapper.toCodes(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+                return codes;
+            } else {
+                // Retrieve all codes of codelist, without pagination
+                CodelistVersionMetamac codelistVersion = retrieveCodelistPublished(agencyID, resourceID, version);
+                // TODO order visualisation and openness
+                List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), itemResultSelection, null);
+
+                // Transform
+                Codes codes = codesDo2RestMapper.toCodes(items, codelistVersion);
+                return codes;
+            }
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -807,7 +855,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     public VariableFamily retrieveVariableFamilyById(String id) {
         try {
             // Find one
-            PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily> entitiesPagedResult = findVariableFamiliesCore(id, null, PagingParameter.pageAccess(1, 1, false));
+            PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily> entitiesPagedResult = findVariableFamiliesCore(id, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.VARIABLE_FAMILY_NOT_FOUND, id);
                 throw new RestException(exception, Status.NOT_FOUND);
@@ -863,7 +911,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     public Variable retrieveVariableById(String id) {
         try {
             // Find one
-            PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = findVariablesCore(id, null, null, PagingParameter.pageAccess(1, 1, false));
+            PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = findVariablesCore(id, null, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.VARIABLE_NOT_FOUND, id);
                 throw new RestException(exception, Status.NOT_FOUND);
@@ -898,7 +946,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     public CodelistFamily retrieveCodelistFamilyById(String id) {
         try {
             // Find one
-            PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> entitiesPagedResult = findCodelistFamiliesCore(id, null, PagingParameter.pageAccess(1, 1, false));
+            PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> entitiesPagedResult = findCodelistFamiliesCore(id, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODELIST_FAMILY_NOT_FOUND, id);
                 throw new RestException(exception, Status.NOT_FOUND);
@@ -937,7 +985,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, codeID, RestInternalConstants.PARAMETER_CODE_ID);
 
             // Find one
-            PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, codeID, null, PagingParameter.pageAccess(1, 1, false));
+            PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, codeID, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODE_NOT_FOUND, codeID, version, resourceID, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
@@ -974,7 +1022,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
 
             // Find one
-            PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = findDataStructuresCore(agencyID, resourceID, version, null, PagingParameter.pageAccess(1, 1, false));
+            PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = findDataStructuresCore(agencyID, resourceID, version, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.DATA_STRUCTURE_NOT_FOUND, resourceID, version, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
@@ -1002,6 +1050,15 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         } catch (Exception e) {
             throw manageException(e);
         }
+    }
+
+    private ConceptSchemeVersionMetamac retrieveConceptSchemePublished(String agencyID, String resourceID, String version) throws MetamacException {
+        PagedResult<ConceptSchemeVersionMetamac> entitiesPagedResult = findConceptSchemesCore(agencyID, resourceID, version, null, pagingParameterOneResult);
+        if (entitiesPagedResult.getValues().size() != 1) {
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONCEPT_SCHEME_NOT_FOUND, resourceID, version, agencyID);
+            throw new RestException(exception, Status.NOT_FOUND);
+        }
+        return entitiesPagedResult.getValues().get(0);
     }
 
     private PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
@@ -1060,6 +1117,15 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
     }
 
+    private CategorySchemeVersionMetamac retrieveCategorySchemePublished(String agencyID, String resourceID, String version) throws MetamacException {
+        PagedResult<CategorySchemeVersionMetamac> entitiesPagedResult = findCategorySchemesCore(agencyID, resourceID, version, null, pagingParameterOneResult);
+        if (entitiesPagedResult.getValues().size() != 1) {
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CATEGORY_SCHEME_NOT_FOUND, resourceID, version, agencyID);
+            throw new RestException(exception, Status.NOT_FOUND);
+        }
+        return entitiesPagedResult.getValues().get(0);
+    }
+
     private PagedResult<CategorySchemeVersionMetamac> findCategorySchemesCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
             PagingParameter pagingParameter) throws MetamacException {
 
@@ -1109,6 +1175,31 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         } catch (Exception e) {
             throw manageException(e);
         }
+    }
+
+    private OrganisationSchemeVersionMetamac retrieveOrganisationSchemePublished(String agencyID, String resourceID, String version) throws MetamacException {
+        return retrieveOrganisationSchemePublished(null, agencyID, resourceID, version, RestServiceExceptionType.ORGANISATION_SCHEME_NOT_FOUND);
+    }
+    private OrganisationSchemeVersionMetamac retrieveAgencySchemePublished(String agencyID, String resourceID, String version) throws MetamacException {
+        return retrieveOrganisationSchemePublished(OrganisationSchemeTypeEnum.AGENCY_SCHEME, agencyID, resourceID, version, RestServiceExceptionType.AGENCY_SCHEME_NOT_FOUND);
+    }
+    private OrganisationSchemeVersionMetamac retrieveDataConsumerSchemePublished(String agencyID, String resourceID, String version) throws MetamacException {
+        return retrieveOrganisationSchemePublished(OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME, agencyID, resourceID, version, RestServiceExceptionType.DATA_CONSUMER_SCHEME_NOT_FOUND);
+    }
+    private OrganisationSchemeVersionMetamac retrieveDataProviderSchemePublished(String agencyID, String resourceID, String version) throws MetamacException {
+        return retrieveOrganisationSchemePublished(OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME, agencyID, resourceID, version, RestServiceExceptionType.DATA_PROVIDER_SCHEME_NOT_FOUND);
+    }
+    private OrganisationSchemeVersionMetamac retrieveOrganisationUnitSchemePublished(String agencyID, String resourceID, String version) throws MetamacException {
+        return retrieveOrganisationSchemePublished(OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME, agencyID, resourceID, version, RestServiceExceptionType.ORGANISATION_UNIT_SCHEME_NOT_FOUND);
+    }
+    private OrganisationSchemeVersionMetamac retrieveOrganisationSchemePublished(OrganisationSchemeTypeEnum type, String agencyID, String resourceID, String version,
+            RestCommonServiceExceptionType exceptionType) throws MetamacException {
+        PagedResult<OrganisationSchemeVersionMetamac> entitiesPagedResult = findOrganisationSchemesCore(type, agencyID, resourceID, version, null, pagingParameterOneResult);
+        if (entitiesPagedResult.getValues().size() != 1) {
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(exceptionType, resourceID, version, agencyID);
+            throw new RestException(exception, Status.NOT_FOUND);
+        }
+        return entitiesPagedResult.getValues().get(0);
     }
 
     private PagedResult<OrganisationSchemeVersionMetamac> findOrganisationSchemesCore(OrganisationSchemeTypeEnum type, String agencyID, String resourceID, String version,
@@ -1204,6 +1295,15 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         } catch (Exception e) {
             throw manageException(e);
         }
+    }
+
+    private CodelistVersionMetamac retrieveCodelistPublished(String agencyID, String resourceID, String version) throws MetamacException {
+        PagedResult<CodelistVersionMetamac> entitiesPagedResult = findCodelistsCore(agencyID, resourceID, version, null, pagingParameterOneResult);
+        if (entitiesPagedResult.getValues().size() != 1) {
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODELIST_NOT_FOUND, resourceID, version, agencyID);
+            throw new RestException(exception, Status.NOT_FOUND);
+        }
+        return entitiesPagedResult.getValues().get(0);
     }
 
     private PagedResult<CodelistVersionMetamac> findCodelistsCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
@@ -1386,5 +1486,16 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, parameterName);
             throw new RestException(exception, Status.BAD_REQUEST);
         }
+    }
+
+    private boolean mustFindItemsInsteadRetrieveAllItemsOfItemScheme(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        if (RestInternalConstants.WILDCARD_ALL.equals(agencyID) || RestInternalConstants.WILDCARD_ALL.equals(resourceID) || RestInternalConstants.WILDCARD_ALL.equals(version)) {
+            return true;
+        }
+        if (query != null || orderBy != null || limit != null || offset != null) {
+            return true;
+        }
+        // can retrieve all items of itemScheme
+        return false;
     }
 }

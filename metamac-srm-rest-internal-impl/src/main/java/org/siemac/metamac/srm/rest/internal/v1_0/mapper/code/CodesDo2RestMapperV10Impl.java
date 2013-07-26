@@ -1,12 +1,12 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.code;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.Item;
@@ -45,6 +45,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
@@ -136,6 +137,24 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @Override
+    public Codes toCodes(List<ItemResult> sources, CodelistVersionMetamac codelistVersion) {
+
+        Codes targets = new Codes();
+        targets.setKind(RestInternalConstants.KIND_CODES);
+
+        // No pagination
+        targets.setSelfLink(toCodesLink(codelistVersion));
+        targets.setTotal(BigInteger.valueOf(sources.size()));
+
+        // Values
+        for (ItemResult source : sources) {
+            ResourceInternal target = toResource(source, codelistVersion);
+            targets.getCodes().add(target);
+        }
+        return targets;
+    }
+
+    @Override
     public Code toCode(CodeMetamac source) {
         if (source == null) {
             return null;
@@ -165,27 +184,19 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    // This method is only call when retrieve one codelist and return all children, so only return SDMX information, without metamac metadata
-    @Override
-    public void toCode(com.arte.statistic.sdmx.srm.core.code.domain.Code source, ItemResult sourceItemResult, ItemSchemeVersion itemSchemeVersion, CodeType target) {
-        if (source == null && sourceItemResult == null) {
-            return;
-        }
-        if (SrmRestInternalUtils.uriMustBeSelfLink(itemSchemeVersion.getMaintainableArtefact())) {
-            if (source != null) {
-                target.setUri(toCodeLink(source));
-            } else {
-                target.setUri(toCodeLink(itemSchemeVersion, sourceItemResult));
-            }
-        }
-    }
-
     @Override
     public ResourceInternal toResource(CodeMetamac source) {
         if (source == null) {
             return null;
         }
         return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source));
+    }
+
+    private ResourceInternal toResource(ItemResult source, CodelistVersionMetamac codelistVersion) {
+        if (source == null) {
+            return null;
+        }
+        return toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), toCodeManagementApplicationLink(codelistVersion, source));
     }
 
     @Override
@@ -357,6 +368,9 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     private ResourceLink toCodeSelfLink(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
         return toResourceLink(RestInternalConstants.KIND_CODE, toCodeLink(source));
     }
+    private ResourceLink toCodeSelfLink(ItemResult source, CodelistVersion codelistVersion) {
+        return toResourceLink(RestInternalConstants.KIND_CODE, toCodeLink(source, codelistVersion));
+    }
 
     private ResourceLink toCodeParentLink(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
         return toResourceLink(RestInternalConstants.KIND_CODES, toCodesLink(source.getItemSchemeVersion()));
@@ -410,10 +424,8 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     private String toCodeLink(com.arte.statistic.sdmx.srm.core.base.domain.Item item) {
         return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item);
     }
-    private String toCodeLink(ItemSchemeVersion itemSchemeVersion, ItemResult item) {
-        String link = toItemsLink(toSubpathItemSchemes(), toSubpathItems(), itemSchemeVersion);
-        link = RestUtils.createLink(link, item.getCode());
-        return link;
+    private String toCodeLink(ItemResult item, ItemSchemeVersion itemSchemeVersion) {
+        return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item, itemSchemeVersion);
     }
 
     private String toSubpathItemSchemes() {
@@ -558,6 +570,9 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
     private String toCodeManagementApplicationLink(CodeMetamac source) {
         return getInternalWebApplicationNavigation().buildCodeUrl(source);
+    }
+    private String toCodeManagementApplicationLink(CodelistVersion codelistVersion, ItemResult source) {
+        return getInternalWebApplicationNavigation().buildCodeUrl(codelistVersion.getMaintainableArtefact().getUrn(), source.getCode());
     }
 
     private String toCodelistFamilyManagementApplicationLink(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {

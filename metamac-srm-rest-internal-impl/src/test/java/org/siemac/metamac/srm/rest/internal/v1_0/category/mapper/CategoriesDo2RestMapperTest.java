@@ -1,19 +1,21 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.category.mapper;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks.mockCategorisation;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks.mockCategory;
+import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks.mockCategoryItemResult;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks.mockCategoryScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks.mockCategorySchemeWithCategories;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertEqualsInternationalString;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_2_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_3_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_3_CODE;
@@ -30,7 +32,6 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categories;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisations;
@@ -45,6 +46,8 @@ import org.siemac.metamac.srm.rest.internal.v1_0.mapper.category.CategoriesDo2Re
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm-rest-internal/applicationContext-test.xml"})
@@ -135,41 +138,8 @@ public class CategoriesDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CATEGORIES, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/categories", target.getChildLinks().getChildLinks().get(0).getHref());
 
-        // Categories (SDMX type) // IMPORTANT! categories are printed in hierarchy
-
-        assertEquals(2, target.getCategories().size());
-        int i = 0;
-        {
-            CategoryType category = target.getCategories().get(i++);
-            assertTrue(category instanceof CategoryType);
-            assertFalse(category instanceof Category);
-            assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).category1", category.getUrn());
-            assertEquals("category1", category.getId());
-            assertEquals(0, category.getCategories().size());
-        }
-        {
-            CategoryType category = target.getCategories().get(i++);
-            assertTrue(category instanceof CategoryType);
-            assertFalse(category instanceof Category);
-            assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).category2", category.getUrn());
-            assertEquals("category2", category.getId());
-            assertEquals(2, category.getCategories().size());
-            {
-                CategoryType categoryChild = category.getCategories().get(0);
-                assertTrue(categoryChild instanceof CategoryType);
-                assertFalse(categoryChild instanceof Category);
-                assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).category2.category2A", categoryChild.getUrn());
-                assertEquals("category2A", categoryChild.getId());
-            }
-            {
-                CategoryType categoryChild = category.getCategories().get(1);
-                assertTrue(categoryChild instanceof CategoryType);
-                assertFalse(categoryChild instanceof Category);
-                assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).category2.category2B", categoryChild.getUrn());
-                assertEquals("category2B", categoryChild.getId());
-            }
-        }
-        assertEquals(i, target.getCategories().size());
+        // Do not return categories
+        assertEquals(0, target.getCategories().size());
     }
 
     @Test
@@ -234,7 +204,42 @@ public class CategoriesDo2RestMapperTest {
 
         assertEquals(source.size(), target.getCategories().size());
         for (int i = 0; i < source.size(); i++) {
-            assertEqualsResource(source.get(i), target.getCategories().get(i));
+            assertEqualsResource(source.get(i).getItemSchemeVersion(), source.get(i), null, target.getCategories().get(i));
+        }
+    }
+
+    @Test
+    public void testToCategoriesItemResult() {
+
+        String agencyID = AGENCY_1;
+        String categorySchemeID = ITEM_SCHEME_1_CODE;
+        String version = VERSION_1;
+
+        CategorySchemeVersionMetamac categoryScheme1 = mockCategoryScheme(agencyID, categorySchemeID, version);
+        List<ItemResult> sources = new ArrayList<ItemResult>();
+        sources.add(mockCategoryItemResult(ITEM_1_CODE, null));
+        sources.add(mockCategoryItemResult(ITEM_2_CODE, null));
+        sources.add(mockCategoryItemResult(ITEM_3_CODE, null));
+
+        // Transform
+        Categories target = do2RestInternalMapper.toCategories(sources, categoryScheme1);
+
+        // Validate
+        assertEquals(RestInternalConstants.KIND_CATEGORIES, target.getKind());
+
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes" + "/" + agencyID + "/" + categorySchemeID + "/" + version + "/categories", target.getSelfLink());
+        assertEquals(null, target.getFirstLink());
+        assertEquals(null, target.getPreviousLink());
+        assertEquals(null, target.getNextLink());
+        assertEquals(null, target.getLastLink());
+
+        assertEquals(null, target.getLimit());
+        assertEquals(null, target.getOffset());
+        assertEquals(sources.size(), target.getTotal().intValue());
+
+        assertEquals(sources.size(), target.getCategories().size());
+        for (int i = 0; i < sources.size(); i++) {
+            assertEqualsResource(categoryScheme1, null, sources.get(i), target.getCategories().get(i));
         }
     }
 

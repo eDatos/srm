@@ -58,10 +58,12 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
+import com.arte.statistic.sdmx.srm.core.category.domain.CategoryRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.CategoriesService;
 import com.arte.statistic.sdmx.srm.core.category.serviceimpl.utils.CategoriesInvocationValidator;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
@@ -108,6 +110,9 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Autowired
     private ItemSchemeVersionRepository    itemSchemeVersionRepository;
+
+    @Autowired
+    private CategoryRepository             categoryRepository;
 
     @Autowired
     private CategorisationRepository       categorisationRepository;
@@ -443,6 +448,19 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         // Retrieve
         CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
         return getCategoryMetamacRepository().findCategoriesByCategorySchemeUnorderedToVisualisation(categorySchemeVersion.getId(), locale);
+    }
+
+    @Override
+    public List<ItemResult> retrieveCategoriesByCategorySchemeUrnUnordered(ServiceContext ctx, String categorySchemeUrn, ItemResultSelection itemResultSelection) throws MetamacException {
+
+        // Validation
+        CategoriesMetamacInvocationValidator.checkRetrieveCategoriesByCategorySchemeUrnUnordered(categorySchemeUrn, itemResultSelection, null);
+
+        if (itemResultSelection == null) {
+            itemResultSelection = ItemResultSelection.RETRIEVE; // default
+        }
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
+        return categoryRepository.findCategoriesByCategorySchemeUnordered(categorySchemeVersion.getId(), itemResultSelection);
     }
 
     @Override

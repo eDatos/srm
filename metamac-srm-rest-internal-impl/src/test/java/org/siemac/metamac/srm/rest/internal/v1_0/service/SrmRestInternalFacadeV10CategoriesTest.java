@@ -2,9 +2,10 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategories;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategorySchemes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyRetrieveCategory;
@@ -25,7 +26,9 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
@@ -38,6 +41,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
@@ -57,6 +61,8 @@ import org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMock
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 
 public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacadeV10BaseTest {
 
@@ -193,8 +199,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, categoryScheme.getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, categoryScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, categoryScheme.getParentLink().getKind());
-        assertTrue(categoryScheme.getCategories().get(0) instanceof CategoryType);
-        assertFalse(categoryScheme.getCategories().get(0) instanceof Category);
+        assertEquals(0, categoryScheme.getCategories().size());
 
         // Verify with Mockito
         verifyRetrieveCategoryScheme(categoriesService, agencyID, resourceID, version);
@@ -216,8 +221,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, categoryScheme.getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, categoryScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, categoryScheme.getParentLink().getKind());
-        assertTrue(categoryScheme.getCategories().get(0) instanceof CategoryType);
-        assertFalse(categoryScheme.getCategories().get(0) instanceof Category);
+        assertEquals(0, categoryScheme.getCategories().size());
 
         // Verify with Mockito
         verifyRetrieveCategoryScheme(categoriesService, agencyID, resourceID, version);
@@ -352,6 +356,36 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
     public void testFindCategoriesXml() throws Exception {
         String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10CategoriesTest.class.getResourceAsStream("/responses/categories/findCategories.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
+    @Test
+    public void testFindCategoriesRetrieveAll() throws Exception {
+
+        resetMocks();
+        Categories categories = getSrmRestInternalFacadeClientXml().findCategories(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null);
+
+        assertNotNull(categories);
+        assertEquals(RestInternalConstants.KIND_CATEGORIES, categories.getKind());
+        assertEquals(BigInteger.valueOf(4), categories.getTotal());
+
+        // Verify with mockito
+        ArgumentCaptor<String> categorySchemeUrnArgument = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<ItemResultSelection> itemResultSelectionArgument = ArgumentCaptor.forClass(ItemResultSelection.class);
+        verify(categoriesService).retrieveCategoriesByCategorySchemeUrnUnordered(any(ServiceContext.class), categorySchemeUrnArgument.capture(), itemResultSelectionArgument.capture());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agency1:itemScheme1(01.000)", categorySchemeUrnArgument.getValue());
+        assertEquals(true, itemResultSelectionArgument.getValue().isNames());
+        assertEquals(false, itemResultSelectionArgument.getValue().isDescriptions());
+        assertEquals(false, itemResultSelectionArgument.getValue().isComments());
+        assertEquals(false, itemResultSelectionArgument.getValue().isAnnotations());
+    }
+
+    @Test
+    public void testFindCategoriesRetrieveAllXml() throws Exception {
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null);
+        InputStream responseExpected = SrmRestInternalFacadeV10CategoriesTest.class.getResourceAsStream("/responses/categories/findCategoriesRetrieveAll.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
@@ -618,6 +652,21 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         });
     }
 
+    private void mockRetrieveCategoriesByCategoryScheme() throws MetamacException {
+        when(categoriesService.retrieveCategoriesByCategorySchemeUrnUnordered(any(ServiceContext.class), any(String.class), any(ItemResultSelection.class))).thenAnswer(new Answer<List<ItemResult>>() {
+
+            @Override
+            public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {
+                // any
+                ItemResult category1 = CategoriesDoMocks.mockCategoryItemResult("category1", null);
+                ItemResult category2 = CategoriesDoMocks.mockCategoryItemResult("category2", null);
+                ItemResult category2A = CategoriesDoMocks.mockCategoryItemResult("category2A", category2);
+                ItemResult category2B = CategoriesDoMocks.mockCategoryItemResult("category2B", category2);
+                return Arrays.asList(category1, category2, category2A, category2B);
+            };
+        });
+    }
+
     @Override
     protected void resetMocks() throws MetamacException {
         categoriesService = applicationContext.getBean(CategoriesMetamacService.class);
@@ -628,6 +677,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         mockRetrieveItemSchemeVersionByVersion();
         mockFindCategorySchemesByCondition();
         mockFindCategoriesByCondition();
+        mockRetrieveCategoriesByCategoryScheme();
     }
 
     @Override

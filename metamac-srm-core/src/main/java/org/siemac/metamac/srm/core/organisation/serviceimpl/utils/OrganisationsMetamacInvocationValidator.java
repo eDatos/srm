@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersion
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsInvocationValidator;
 
 public class OrganisationsMetamacInvocationValidator extends OrganisationsInvocationValidator {
@@ -93,6 +94,17 @@ public class OrganisationsMetamacInvocationValidator extends OrganisationsInvoca
 
         ValidationUtils.checkParameterRequired(organisationSchemeUrn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(locale, ServiceExceptionParameters.LOCALE, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkRetrieveOrganisationsByOrganisationSchemeUrnUnordered(String organisationSchemeUrn, ItemResultSelection itemResultSelection, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(organisationSchemeUrn, ServiceExceptionParameters.URN, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

@@ -6,9 +6,7 @@ import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistType;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodelistsType;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
-import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
@@ -21,12 +19,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
 
     @Autowired
-    private CodeMetamacRepository            codeRepository;
-
-    @Autowired
-    private CodesDo2RestMapperV10            codesDo2RestMapperV10;
-
-    private final ItemMetamacResultSelection codeMetamacResultSelection = new ItemMetamacResultSelection(true, false, true, false);
+    private CodesDo2RestMapperV10 codesDo2RestMapperV10;
 
     @Override
     public CodelistType createCodelistJaxb() {
@@ -39,18 +32,18 @@ public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
     }
 
     @Override
+    public boolean mustRetrieveCodesInsideCodelist() {
+        return false;
+    }
+
+    @Override
     public CodeType createCodeJaxb() {
-        // when retrieve Codelist, only return SDMX metadata
-        return new CodeType();
+        throw new IllegalArgumentException("createCodeJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
     public void fillCodeJaxb(Code source, ItemResult sourceItemResult, ItemSchemeVersion itemSchemeVersion, CodeType target) {
-        if (target instanceof org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code) {
-            // nothing more (mapping is done explicitly in toCode(CodeMetamac source))
-        } else {
-            codesDo2RestMapperV10.toCode(source, sourceItemResult, itemSchemeVersion, target);
-        }
+        throw new IllegalArgumentException("fillCodeJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
@@ -60,7 +53,6 @@ public class CodesDo2JaxbCallbackImpl implements CodesDo2JaxbCallback {
 
     @Override
     public List<ItemResult> findCodesByCodelistEfficiently(CodelistVersion codelistVersion) throws MetamacException {
-        return codeRepository.findCodesByCodelistOrderedInDepth(codelistVersion.getId(), ((CodelistVersionMetamac) codelistVersion).getDefaultOrderVisualisation().getColumnIndex(),
-                codeMetamacResultSelection);
+        throw new IllegalArgumentException("findCodesByCodelistEfficiently not supported: do not return codes when retrieve codelist");
     }
 }

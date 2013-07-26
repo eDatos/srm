@@ -30,7 +30,6 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Quantit
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RelatedConcepts;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RoleConcepts;
-import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -48,6 +47,7 @@ import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbCallback;
 
 @Component
@@ -134,6 +134,24 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
     }
 
     @Override
+    public Concepts toConcepts(List<ItemResult> sources, ConceptSchemeVersionMetamac conceptSchemeVersion) {
+
+        Concepts targets = new Concepts();
+        targets.setKind(RestInternalConstants.KIND_CONCEPTS);
+
+        // No pagination
+        targets.setSelfLink(toConceptsLink(conceptSchemeVersion));
+        targets.setTotal(BigInteger.valueOf(sources.size()));
+
+        // Values
+        for (ItemResult source : sources) {
+            ResourceInternal target = toResource(source, conceptSchemeVersion);
+            targets.getConcepts().add(target);
+        }
+        return targets;
+    }
+
+    @Override
     public Concept toConcept(ConceptMetamac source) {
         if (source == null) {
             return null;
@@ -166,22 +184,6 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         target.setQuantity(toQuantity(source.getQuantity()));
 
         return target;
-    }
-
-    // This method is only call when retrieve one concept scheme and return all children, so only return SDMX information, without metamac metadata
-    @Override
-    public void toConcept(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source, ItemResult sourceItemResult, ItemSchemeVersion itemSchemeVersion,
-            org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType target) {
-        if (source == null && sourceItemResult == null) {
-            return;
-        }
-        if (SrmRestInternalUtils.uriMustBeSelfLink(itemSchemeVersion.getMaintainableArtefact())) {
-            if (source != null) {
-                target.setUri(toConceptLink(source));
-            } else {
-                target.setUri(toConceptLink(itemSchemeVersion, sourceItemResult));
-            }
-        }
     }
 
     @Override
@@ -223,6 +225,10 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
 
     private ResourceLink toConceptSelfLink(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source) {
         return toResourceLink(RestInternalConstants.KIND_CONCEPT, toConceptLink(source));
+    }
+
+    private ResourceLink toConceptSelfLink(ItemResult source, ConceptSchemeVersion conceptSchemeVersion) {
+        return toResourceLink(RestInternalConstants.KIND_CONCEPT, toConceptLink(source, conceptSchemeVersion));
     }
 
     private ResourceLink toConceptParentLink(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source) {
@@ -277,6 +283,13 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             return null;
         }
         return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source), toConceptManagementApplicationLink(source));
+    }
+
+    private ResourceInternal toResource(ItemResult source, ConceptSchemeVersionMetamac conceptSchemeVersion) {
+        if (source == null) {
+            return null;
+        }
+        return toResource(source, RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source, conceptSchemeVersion), toConceptManagementApplicationLink(conceptSchemeVersion, source));
     }
 
     private RoleConcepts toRoleConcepts(ConceptMetamac concept) {
@@ -391,10 +404,8 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
     private String toConceptLink(com.arte.statistic.sdmx.srm.core.base.domain.Item item) {
         return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item);
     }
-    private String toConceptLink(ItemSchemeVersion itemSchemeVersion, ItemResult item) {
-        String link = toItemsLink(toSubpathItemSchemes(), toSubpathItems(), itemSchemeVersion);
-        link = RestUtils.createLink(link, item.getCode());
-        return link;
+    private String toConceptLink(ItemResult item, ItemSchemeVersion itemSchemeVersion) {
+        return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item, itemSchemeVersion);
     }
 
     private String toSubpathItemSchemes() {
@@ -410,6 +421,10 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
 
     private String toConceptManagementApplicationLink(ConceptMetamac source) {
         return getInternalWebApplicationNavigation().buildConceptUrl(source);
+    }
+
+    private String toConceptManagementApplicationLink(ConceptSchemeVersion conceptSchemeVersion, ItemResult source) {
+        return getInternalWebApplicationNavigation().buildConceptUrl(conceptSchemeVersion.getMaintainableArtefact().getUrn(), source.getCode());
     }
 
     private org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityUnitSymbolPosition toQuantityUnitSymbolPosition(QuantityUnitSymbolPositionEnum source) {

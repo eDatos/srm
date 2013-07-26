@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:organisationUnits xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#organisationUnits" total="4" selfLink="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemScheme1/01.000/organisationunits">
+    <sr:organisationUnit kind="structuralResources#organisationUnit">
+        <cdomain:id>organisation1</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#organisationUnit" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemScheme1/01.000/organisationunits/organisation1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-organisation1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-organisation1 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation1</sr:urnInternal>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=organisation1</sr:managementAppLink>
+    </sr:organisationUnit>
+    <sr:organisationUnit kind="structuralResources#organisationUnit">
+        <cdomain:id>organisation2</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#organisationUnit" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemScheme1/01.000/organisationunits/organisation2"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-organisation2 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-organisation2 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2</sr:urnInternal>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=organisation2</sr:managementAppLink>
+    </sr:organisationUnit>
+    <sr:organisationUnit kind="structuralResources#organisationUnit">
+        <cdomain:id>organisation2A</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2A</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#organisationUnit" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemScheme1/01.000/organisationunits/organisation2A"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-organisation2A in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-organisation2A en Español</cdomain:text>
+        </cdomain:name>
+        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2A</sr:urnInternal>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=organisation2A</sr:managementAppLink>
+    </sr:organisationUnit>
+    <sr:organisationUnit kind="structuralResources#organisationUnit">
+        <cdomain:id>organisation2B</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2B</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#organisationUnit" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemScheme1/01.000/organisationunits/organisation2B"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-organisation2B in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-organisation2B en Español</cdomain:text>
+        </cdomain:name>
+        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2B</sr:urnInternal>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=organisation2B</sr:managementAppLink>
+    </sr:organisationUnit>
+</sr:organisationUnits>

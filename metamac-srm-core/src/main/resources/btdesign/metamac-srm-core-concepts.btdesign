@@ -105,6 +105,8 @@ Application ConceptsMetamac {
     		deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme in locale requested"
     		List<ConceptMetamacVisualisationResult> retrieveConceptsByConceptSchemeUrn(String conceptSchemeUrn, String locale) throws MetamacException;
+    		"Retrieves concepts by concept scheme unordered"
+    		List<ItemResult> retrieveConceptsByConceptSchemeUrnUnordered(String conceptSchemeUrn, ItemResultSelection itemResultSelection) throws MetamacException;
     		"Adds a concepts relation"
     		addRelatedConcept(String urn1, String urn2) throws MetamacException;
     		"Deletes a concepts relation"

@@ -51,6 +51,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals(CODELIST_1_V2_CODE_1, code.getUrn());
             assertEquals(null, code.getUriProvider());
             assertEquals("CODE01", code.getCode());
+            assertEquals(null, code.getCodeFull());
             assertEquals(null, code.getParent());
             assertEquals(2, code.getName().size());
             CodesAsserts.assertEqualsInternationalString(code.getName(), "es", "Isla de Tenerife", "en", "Name codelist-1-v2-code-1");
@@ -91,6 +92,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_2_1, code.getUrn());
             assertEquals("CODE02", code.getParent().getCode());
+            assertEquals(null, code.getCodeFull());
             assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getUrn());
             CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "El Hierro", "en", "short name variableElement 2-1");
         }

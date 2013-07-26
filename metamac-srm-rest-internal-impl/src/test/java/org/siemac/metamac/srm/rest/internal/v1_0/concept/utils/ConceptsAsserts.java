@@ -14,7 +14,9 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public class ConceptsAsserts extends Asserts {
 
@@ -28,16 +30,25 @@ public class ConceptsAsserts extends Asserts {
         Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT_SCHEME, expectedSelfLink, expectedManagementLink, actual);
     }
 
-    public static void assertEqualsResource(ConceptMetamac expected, ResourceInternal actual) {
-        MaintainableArtefact maintainableArtefact = expected.getItemSchemeVersion().getMaintainableArtefact();
+    public static void assertEqualsResource(ItemSchemeVersion itemSchemeVersion, ConceptMetamac expected, ItemResult expectedItemResult, ResourceInternal actual) {
+        MaintainableArtefact maintainableArtefact = itemSchemeVersion.getMaintainableArtefact();
         String agency = maintainableArtefact.getMaintainer().getIdAsMaintainer();
         String codeItemScheme = maintainableArtefact.getCode();
         String version = maintainableArtefact.getVersionLogic();
-        String code = expected.getNameableArtefact().getCode();
+        String code = null;
+        if (expected != null) {
+            code = expected.getNameableArtefact().getCode();
+        } else if (expectedItemResult != null) {
+            code = expectedItemResult.getCode();
+        }
         String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/" + agency + "/" + codeItemScheme + "/" + version + "/concepts/" + code;
         String expectedManagementLink = "http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=" + agency + ":" + codeItemScheme + "(" + version + ")/concept;id="
                 + code;
-        Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT, expectedSelfLink, expectedManagementLink, actual);
+        if (expected != null) {
+            Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT, expectedSelfLink, expectedManagementLink, actual);
+        } else if (expectedItemResult != null) {
+            Asserts.assertEqualsResource(expectedItemResult, RestInternalConstants.KIND_CONCEPT, expectedSelfLink, expectedManagementLink, actual);
+        }
     }
 
     public static void assertEqualsRoleConcepts(List<ConceptMetamac> expecteds, RoleConcepts actuals) {
@@ -47,7 +58,7 @@ public class ConceptsAsserts extends Asserts {
         }
         assertEquals(expecteds.size(), actuals.getTotal().intValue());
         for (int i = 0; i < expecteds.size(); i++) {
-            assertEqualsResource(expecteds.get(i), actuals.getRoles().get(i));
+            assertEqualsResource(expecteds.get(i).getItemSchemeVersion(), expecteds.get(i), null, actuals.getRoles().get(i));
         }
     }
 
@@ -58,7 +69,7 @@ public class ConceptsAsserts extends Asserts {
         }
         assertEquals(expecteds.size(), actuals.getTotal().intValue());
         for (int i = 0; i < expecteds.size(); i++) {
-            assertEqualsResource(expecteds.get(i), actuals.getRelatedConcepts().get(i));
+            assertEqualsResource(expecteds.get(i).getItemSchemeVersion(), expecteds.get(i), null, actuals.getRelatedConcepts().get(i));
         }
     }
 }

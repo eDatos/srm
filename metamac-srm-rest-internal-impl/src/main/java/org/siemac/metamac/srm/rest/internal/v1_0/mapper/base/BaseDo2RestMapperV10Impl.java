@@ -2,10 +2,12 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.base;
 
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
@@ -31,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
+import com.arte.statistic.sdmx.srm.core.common.domain.IdentifiableArtefactResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxAlias;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 
@@ -70,6 +74,20 @@ public abstract class BaseDo2RestMapperV10Impl {
             LocalisedString target = new LocalisedString();
             target.setValue(source.getLabel());
             target.setLang(source.getLocale());
+            targets.getTexts().add(target);
+        }
+        return targets;
+    }
+
+    protected InternationalString toInternationalString(Map<String, String> sources) {
+        if (MapUtils.isEmpty(sources)) {
+            return null;
+        }
+        InternationalString targets = new InternationalString();
+        for (String locale : sources.keySet()) {
+            LocalisedString target = new LocalisedString();
+            target.setValue(sources.get(locale));
+            target.setLang(locale);
             targets.getTexts().add(target);
         }
         return targets;
@@ -119,6 +137,15 @@ public abstract class BaseDo2RestMapperV10Impl {
             return identifiableArtefact.getCode();
         }
     }
+
+    protected String getCode(IdentifiableArtefactResult identifiableArtefactResult) {
+        if (identifiableArtefactResult.getCodeFull() != null) {
+            return identifiableArtefactResult.getCodeFull();
+        } else {
+            return identifiableArtefactResult.getCode();
+        }
+    }
+
     protected String getUrn(IdentifiableArtefact identifiableArtefact) {
         return identifiableArtefact.getUrnProvider();
     }
@@ -136,12 +163,35 @@ public abstract class BaseDo2RestMapperV10Impl {
         return target;
     }
 
+    protected ResourceInternal toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl) {
+        if (source == null) {
+            return null;
+        }
+        ResourceInternal target = new ResourceInternal();
+        toResource(source, kind, selfLink, managementAppUrl, target);
+        return target;
+    }
+
     protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target) {
         if (source == null) {
             return;
         }
         target.setId(source.getCode());
-        // nestedId:  only filled to some resource
+        // nestedId: only filled to some resource
+        target.setUrn(source.getUrnProvider());
+        target.setUrnInternal(source.getUrn());
+        target.setKind(kind);
+        target.setSelfLink(selfLink);
+        target.setName(toInternationalString(source.getName()));
+        target.setManagementAppLink(managementAppUrl);
+    }
+
+    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target) {
+        if (source == null) {
+            return;
+        }
+        target.setId(source.getCode());
+        // nestedId: only filled to some resource
         target.setUrn(source.getUrnProvider());
         target.setUrnInternal(source.getUrn());
         target.setKind(kind);

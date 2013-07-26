@@ -9,6 +9,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsAs
 import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsAsserts.assertEqualsRoleConcepts;
 import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks.mockConcept;
+import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks.mockConceptItemResult;
 import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks.mockConceptScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks.mockConceptSchemeWithConcepts;
 import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks.mockConceptWithConceptRelations;
@@ -49,6 +50,8 @@ import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsDo2RestM
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm-rest-internal/applicationContext-test.xml"})
@@ -144,6 +147,9 @@ public class ConceptsDo2RestMapperTest {
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/concepts", target.getChildLinks().getChildLinks().get(0).getHref());
+
+        // do not retrieve concepts
+        assertEquals(0, target.getConcepts().size());
     }
 
     @Test
@@ -205,7 +211,42 @@ public class ConceptsDo2RestMapperTest {
 
         assertEquals(source.size(), target.getConcepts().size());
         for (int i = 0; i < source.size(); i++) {
-            assertEqualsResource(source.get(i), target.getConcepts().get(i));
+            assertEqualsResource(source.get(i).getItemSchemeVersion(), source.get(i), null, target.getConcepts().get(i));
+        }
+    }
+
+    @Test
+    public void testToConceptsItemResult() {
+
+        String agencyID = AGENCY_1;
+        String conceptSchemeID = ITEM_SCHEME_1_CODE;
+        String version = VERSION_1;
+
+        ConceptSchemeVersionMetamac conceptScheme1 = mockConceptScheme(agencyID, conceptSchemeID, version);
+        List<ItemResult> sources = new ArrayList<ItemResult>();
+        sources.add(mockConceptItemResult(ITEM_1_CODE, null));
+        sources.add(mockConceptItemResult(ITEM_2_CODE, null));
+        sources.add(mockConceptItemResult(ITEM_3_CODE, null));
+
+        // Transform
+        Concepts target = do2RestInternalMapper.toConcepts(sources, conceptScheme1);
+
+        // Validate
+        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getKind());
+
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes" + "/" + agencyID + "/" + conceptSchemeID + "/" + version + "/concepts", target.getSelfLink());
+        assertEquals(null, target.getFirstLink());
+        assertEquals(null, target.getPreviousLink());
+        assertEquals(null, target.getNextLink());
+        assertEquals(null, target.getLastLink());
+
+        assertEquals(null, target.getLimit());
+        assertEquals(null, target.getOffset());
+        assertEquals(sources.size(), target.getTotal().intValue());
+
+        assertEquals(sources.size(), target.getConcepts().size());
+        for (int i = 0; i < sources.size(); i++) {
+            assertEqualsResource(conceptScheme1, null, sources.get(i), target.getConcepts().get(i));
         }
     }
 
@@ -254,7 +295,7 @@ public class ConceptsDo2RestMapperTest {
         assertEquals("conceptParent1", target.getParent().getRef().getId());
         assertEqualsRoleConcepts(source.getRoleConcepts(), target.getRoles());
         assertEqualsRelatedConcepts(source.getRelatedConcepts(), target.getRelatedConcepts());
-        assertEqualsResource(source.getConceptExtends(), target.getExtends());
+        assertEqualsResource(source.getConceptExtends().getItemSchemeVersion(), source.getConceptExtends(), null, target.getExtends());
 
         assertTrue(target.getQuantity() instanceof QuantityChangeRate);
         QuantityChangeRate quantityChangeRate = (QuantityChangeRate) target.getQuantity();
@@ -288,4 +329,5 @@ public class ConceptsDo2RestMapperTest {
         assertEquals("urnProvider", target.getUrn());
         assertEquals("uriProviderDb", target.getUri());
     }
+
 }

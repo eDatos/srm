@@ -114,6 +114,9 @@ Application CodesMetamac {
     		deleteCode(String urn) throws MetamacException;
     		"Retrieves codes by codelist in locale and visualisation requested. If visualisation is not provided, tries retrieve codes in default visualisations"
     		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String codelistOrderVisualisationUrn, String codelistOpennessVisualisationUrn) throws MetamacException;
+    		"Retrieves codes by codelist unordered"
+    		List<ItemResult> retrieveCodesByCodelistUrnOrderedInDepth(String codelistUrn, ItemMetamacResultSelection itemResultSelection, String orderVisualisationUrn) throws MetamacException;
+    		
 			"Copy codes to another codelist"
 	   		copyCodesInCodelist(String codelistSourceUrn, String codelistTargetUrn, List<CodeToCopy> codesToCopy) throws MetamacException;
 			"Imports codes in tsv format"

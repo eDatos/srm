@@ -1,13 +1,12 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.organisation.mapper;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsDoMocks.mockOrganisation;
+import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsDoMocks.mockOrganisationItemResult;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsDoMocks.mockOrganisationScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertEqualsInternationalString;
@@ -32,7 +31,6 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agencies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
@@ -48,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -144,22 +143,8 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_AGENCIES, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/agencies", target.getChildLinks().getChildLinks().get(0).getHref());
 
-        // Agencies (SDMX type)
-        assertEquals(2, target.getAgencies().size());
-        int i = 0;
-        {
-            AgencyType agency = target.getAgencies().get(i++);
-            assertTrue(agency instanceof AgencyType);
-            assertFalse(agency instanceof Agency);
-            assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=agencyID1:AGENCIES(01.000).organisation1", agency.getUrn());
-        }
-        {
-            AgencyType agency = target.getAgencies().get(i++);
-            assertTrue(agency instanceof AgencyType);
-            assertFalse(agency instanceof Agency);
-            assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=agencyID1:AGENCIES(01.000).organisation2", agency.getUrn());
-        }
-        assertEquals(i, target.getAgencies().size());
+        // do not retrieve agencies
+        assertEquals(0, target.getAgencies().size());
     }
 
     @Test
@@ -226,7 +211,46 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         for (int i = 0; i < sources.size(); i++) {
             OrganisationMetamac source = sources.get(i);
             ResourceInternal target = targets.getAgencies().get(i);
-            assertEqualsResource(source, RestInternalConstants.KIND_AGENCY, RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES, RestInternalConstants.LINK_SUBPATH_AGENCIES, target);
+            assertEqualsResource(source.getItemSchemeVersion(), source, null, RestInternalConstants.KIND_AGENCY, RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES,
+                    RestInternalConstants.LINK_SUBPATH_AGENCIES, target);
+        }
+    }
+
+    @Test
+    public void testToAgenciesItemResult() throws MetamacException {
+
+        String agencyID = AGENCY_1;
+        String organisationSchemeID = "AGENCIES";
+        String version = VERSION_1;
+
+        OrganisationSchemeVersionMetamac organisationScheme = mockOrganisationScheme(agencyID, organisationSchemeID, version, OrganisationSchemeTypeEnum.AGENCY_SCHEME);
+        List<ItemResult> sources = new ArrayList<ItemResult>();
+        sources.add(mockOrganisationItemResult(ITEM_1_CODE, null, OrganisationTypeEnum.AGENCY));
+        sources.add(mockOrganisationItemResult(ITEM_2_CODE, null, OrganisationTypeEnum.AGENCY));
+        sources.add(mockOrganisationItemResult(ITEM_3_CODE, null, OrganisationTypeEnum.AGENCY));
+
+        // Transform
+        Agencies targets = do2RestInternalMapper.toAgencies(sources, organisationScheme);
+
+        // Validate
+        assertEquals(RestInternalConstants.KIND_AGENCIES, targets.getKind());
+
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes" + "/" + agencyID + "/" + organisationSchemeID + "/" + version + "/agencies", targets.getSelfLink());
+        assertEquals(null, targets.getFirstLink());
+        assertEquals(null, targets.getPreviousLink());
+        assertEquals(null, targets.getNextLink());
+        assertEquals(null, targets.getLastLink());
+
+        assertEquals(null, targets.getLimit());
+        assertEquals(null, targets.getOffset());
+        assertEquals(sources.size(), targets.getTotal().intValue());
+
+        assertEquals(sources.size(), targets.getAgencies().size());
+        for (int i = 0; i < sources.size(); i++) {
+            ItemResult source = sources.get(i);
+            ResourceInternal target = targets.getAgencies().get(i);
+            assertEqualsResource(organisationScheme, null, source, RestInternalConstants.KIND_AGENCY, RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES, RestInternalConstants.LINK_SUBPATH_AGENCIES,
+                    target);
         }
     }
 
@@ -284,4 +308,5 @@ public class OrganisationsTypeAgenciesDo2RestMapperTest {
         assertEquals("urnProvider", target.getUrn());
         assertEquals("uriProviderDb", target.getUri());
     }
+
 }

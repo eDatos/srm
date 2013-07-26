@@ -1,7 +1,9 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationSchemes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisations;
 import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisation;
@@ -17,14 +19,18 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_1;
 
 import java.io.InputStream;
+import java.math.BigInteger;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnit;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitSchemes;
@@ -32,10 +38,17 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest extends SrmRestInternalFacadeV10OrganisationsTest {
+
+    @Override
+    protected void resetMocks() throws MetamacException {
+        super.resetMocks();
+        mockRetrieveOrganisationsByOrganisationScheme(OrganisationTypeEnum.ORGANISATION_UNIT);
+    }
 
     @Test
     public void testErrorJsonNonAcceptable() throws Exception {
@@ -157,19 +170,18 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
         String version = VERSION_1;
-        OrganisationUnitScheme OrganisationUnitScheme = getSrmRestInternalFacadeClientXml().retrieveOrganisationUnitScheme(agencyID, resourceID, version);
+        OrganisationUnitScheme organisationUnitScheme = getSrmRestInternalFacadeClientXml().retrieveOrganisationUnitScheme(agencyID, resourceID, version);
 
         // Validation
-        assertNotNull(OrganisationUnitScheme);
+        assertNotNull(organisationUnitScheme);
         // other metadata are tested in mapper tests
-        assertEquals(agencyID, OrganisationUnitScheme.getAgencyID());
-        assertEquals(resourceID, OrganisationUnitScheme.getId());
-        assertEquals(version, OrganisationUnitScheme.getVersion());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, OrganisationUnitScheme.getKind());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, OrganisationUnitScheme.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, OrganisationUnitScheme.getParentLink().getKind());
-        assertTrue(OrganisationUnitScheme.getOrganisationUnits().get(0) instanceof OrganisationUnitType);
-        assertFalse(OrganisationUnitScheme.getOrganisationUnits().get(0) instanceof OrganisationUnit);
+        assertEquals(agencyID, organisationUnitScheme.getAgencyID());
+        assertEquals(resourceID, organisationUnitScheme.getId());
+        assertEquals(version, organisationUnitScheme.getVersion());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, organisationUnitScheme.getKind());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, organisationUnitScheme.getSelfLink().getKind());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, organisationUnitScheme.getParentLink().getKind());
+        assertEquals(0, organisationUnitScheme.getOrganisationUnits().size());
 
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
@@ -180,10 +192,10 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
         String agencyID = AGENCY_1;
         String resourceID = ITEM_SCHEME_1_CODE;
         String version = WILDCARD_LATEST;
-        OrganisationUnitScheme OrganisationUnitScheme = getSrmRestInternalFacadeClientXml().retrieveOrganisationUnitScheme(agencyID, resourceID, version);
+        OrganisationUnitScheme organisationUnitScheme = getSrmRestInternalFacadeClientXml().retrieveOrganisationUnitScheme(agencyID, resourceID, version);
 
         // Validation
-        assertNotNull(OrganisationUnitScheme);
+        assertNotNull(organisationUnitScheme);
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
     }
@@ -317,6 +329,36 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
     public void testFindOrganisationUnitsXml() throws Exception {
         String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest.class.getResourceAsStream("/responses/organisations/findOrganisationUnits.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
+    @Test
+    public void testFindOrganisationUnitsRetrieveAll() throws Exception {
+
+        resetMocks();
+        OrganisationUnits organisationUnits = getSrmRestInternalFacadeClientXml().findOrganisationUnits(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null);
+
+        assertNotNull(organisationUnits);
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNITS, organisationUnits.getKind());
+        assertEquals(BigInteger.valueOf(4), organisationUnits.getTotal());
+
+        // Verify with mockito
+        ArgumentCaptor<String> organisationSchemeUrnArgument = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<ItemResultSelection> itemResultSelectionArgument = ArgumentCaptor.forClass(ItemResultSelection.class);
+        verify(organisationsService).retrieveOrganisationsByOrganisationSchemeUrnUnordered(any(ServiceContext.class), organisationSchemeUrnArgument.capture(), itemResultSelectionArgument.capture());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agency1:itemScheme1(01.000)", organisationSchemeUrnArgument.getValue());
+        assertEquals(true, itemResultSelectionArgument.getValue().isNames());
+        assertEquals(false, itemResultSelectionArgument.getValue().isDescriptions());
+        assertEquals(false, itemResultSelectionArgument.getValue().isComments());
+        assertEquals(false, itemResultSelectionArgument.getValue().isAnnotations());
+    }
+
+    @Test
+    public void testFindOrganisationUnitsRetrieveAllXml() throws Exception {
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null);
+        InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTest.class.getResourceAsStream("/responses/organisations/findOrganisationUnitsRetrieveAll.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);

@@ -58,6 +58,8 @@ import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategoryProperties;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.serviceapi.utils.CategoriesDoMocks;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 
@@ -2050,6 +2052,89 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
                 ItemVisualisationResult category = getItemVisualisationResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1);
                 assertEquals("Name categoryScheme-1-v2-category-4-1-1", category.getName());
             }
+        }
+    }
+
+    @Override
+    @Test
+    public void testRetrieveCategoriesByCategorySchemeUrnUnordered() throws Exception {
+
+        // Retrieve
+        String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
+
+        ItemResultSelection itemResultSelection = new ItemResultSelection(true, false, false);
+        List<ItemResult> categories = categoriesService.retrieveCategoriesByCategorySchemeUrnUnordered(getServiceContextAdministrador(), categorySchemeUrn, itemResultSelection);
+
+        // Validate
+        assertEquals(8, categories.size());
+        {
+            // Category 01 (validate all metadata)
+            ItemResult category = getItemResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_1);
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, category.getUrn());
+            assertEquals("CATEGORY01", category.getCode());
+            assertEquals("CATEGORY01", category.getCodeFull());
+            assertEquals("Nombre categoryScheme-1-v2-category-1", category.getName().get("es"));
+            assertEquals("Name categoryScheme-1-v2-category-1", category.getName().get("en"));
+            assertEquals("Descripción categoryScheme-1-v2-category-1", category.getDescription().get("es"));
+            assertEquals(null, category.getDescription().get("en"));
+            assertEquals(Long.valueOf(121), category.getItemIdDatabase());
+            assertEquals(null, category.getParent());
+            assertEquals(null, category.getParentIdDatabase());
+        }
+        {
+            // Category 02
+            ItemResult category = getItemResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_2);
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getUrn());
+            assertEquals("CATEGORY02", category.getCode());
+            assertEquals("Nombre categoryScheme-1-v2-category-2", category.getName().get("es"));
+            assertEquals(null, category.getDescription().get("es"));
+        }
+        {
+            // Category 02 01 (validate parent)
+            ItemResult category = getItemResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_2_1);
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1, category.getUrn());
+            assertEquals("CATEGORY0201", category.getCode());
+            assertEquals("CATEGORY02.CATEGORY0201", category.getCodeFull());
+            assertEquals("CATEGORY02", category.getParent().getCode());
+            assertEquals("Nombre categoryScheme-1-v2-category-2-1", category.getName().get("es"));
+            assertEquals("Descripción cat2-1", category.getDescription().get("es"));
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2, category.getParent().getUrn());
+            assertEquals(Long.valueOf("122"), category.getParentIdDatabase());
+        }
+        {
+            // Category 02 01 01
+            ItemResult category = getItemResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1);
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_2_1_1, category.getUrn());
+            assertEquals("CATEGORY0201", category.getParent().getCode());
+            assertEquals("Nombre categoryScheme-1-v2-category-2-1-1", category.getName().get("es"));
+            assertEquals("Descripción cat2-1-1", category.getDescription().get("es"));
+            assertEquals(Long.valueOf("1221"), category.getParentIdDatabase());
+        }
+        {
+            // Category 03
+            ItemResult category = getItemResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_3);
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_3, category.getUrn());
+            assertEquals("nombre category-3", category.getName().get("es"));
+        }
+        {
+            // Category 04
+            ItemResult category = getItemResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_4);
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4, category.getUrn());
+            assertEquals("nombre category-4", category.getName().get("es"));
+        }
+        {
+            // Category 04 01
+            ItemResult category = getItemResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_4_1);
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1, category.getUrn());
+            assertEquals("nombre category 4-1", category.getName().get("es"));
+        }
+        {
+            // Category 04 01 01
+            ItemResult category = getItemResult(categories, CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1);
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1_1, category.getUrn());
+            assertEquals("CATEGORY0401", category.getParent().getCode());
+            assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_4_1, category.getParent().getUrn());
+            assertEquals("Nombre categoryScheme-1-v2-category-4-1-1", category.getName().get("es"));
         }
     }
 

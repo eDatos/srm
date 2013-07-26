@@ -20,6 +20,14 @@ public class ConceptsDoMocks {
         return ConceptsMetamacDoMocks.mockConceptFixedValues(resourceID, conceptScheme, parent);
     }
 
+    public static ItemResult mockConceptItemResult(String resourceID, ItemResult parent) {
+        ItemResult itemResult = ConceptsMetamacDoMocks.mockConceptResultFixedValues(resourceID, parent);
+        itemResult.setUriProvider(null);
+        itemResult.setUrn(itemResult.getUrn().replace("urn:sdmx:org.sdmx.infomodel.xxx=", "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000)."));
+        itemResult.setUrnProvider(itemResult.getUrn());
+        return itemResult;
+    }
+
     public static ConceptSchemeVersionMetamac mockConceptSchemeWithConcepts(String agencyID, String resourceID, String version) {
 
         ConceptSchemeVersionMetamac target = mockConceptScheme(agencyID, resourceID, version);
@@ -74,14 +82,6 @@ public class ConceptsDoMocks {
         target.addRelatedConcept(mockConcept("1_conceptRelated2", itemSchemeVersion, null));
         target.addRelatedConcept(mockConcept("1_conceptRelated3", itemSchemeVersion, null));
         return target;
-    }
-
-    public static ItemResult mockConceptResult(String resourceID, ItemResult parent) {
-        ItemResult itemResult = ConceptsMetamacDoMocks.mockConceptResultFixedValues(resourceID, parent);
-        itemResult.setUriProvider(null);
-        itemResult.setUrn(itemResult.getUrn().replace("urn:sdmx:org.sdmx.infomodel.xxx=", "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000)."));
-        itemResult.setUrnProvider(itemResult.getUrn());
-        return itemResult;
     }
 
     public static ConceptType mockConceptType(String identifier) {

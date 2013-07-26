@@ -29,9 +29,11 @@ public class CodesDoMocks {
         return CodesMetamacDoMocks.mockCodeFixedValues(resourceID, codelist, parent);
     }
 
-    public static ItemResult mockCodeResult(String resourceID, ItemResult parent) {
+    public static ItemResult mockCodeItemResult(String resourceID, ItemResult parent) {
         ItemResult itemResult = CodesMetamacDoMocks.mockCodeResultFixedValues(resourceID, parent);
         itemResult.setUriProvider(null);
+        itemResult.setUrn(itemResult.getUrn().replace("urn:sdmx:org.sdmx.infomodel.xxx=", "urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000)."));
+        itemResult.setUrnProvider(itemResult.getUrn());
         return itemResult;
     }
 

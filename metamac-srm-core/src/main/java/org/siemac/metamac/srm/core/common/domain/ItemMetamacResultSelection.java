@@ -9,6 +9,8 @@ public class ItemMetamacResultSelection extends ItemResultSelection {
     public static final ItemMetamacResultSelection COPY                        = new ItemMetamacResultSelection(true, false, true, true);
     public static final ItemMetamacResultSelection VERSIONING                  = new ItemMetamacResultSelection(true, false, true, true);
     public static final ItemMetamacResultSelection VERSIONING_DUMMY            = ALL;
+    public static final ItemMetamacResultSelection API                         = new ItemMetamacResultSelection(false, false, false, false);
+    public static final ItemMetamacResultSelection RETRIEVE                    = new ItemMetamacResultSelection(true, false, true, true);
 
     private boolean                                internationalStringsMetamac = false;
 

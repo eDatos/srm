@@ -9,7 +9,9 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public class CodesAsserts {
 
@@ -23,15 +25,24 @@ public class CodesAsserts {
         Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CODELIST, expectedSelfLink, expectedManagementLink, actual);
     }
 
-    public static void assertEqualsResource(CodeMetamac expected, ResourceInternal actual) {
-        MaintainableArtefact maintainableArtefact = expected.getItemSchemeVersion().getMaintainableArtefact();
+    public static void assertEqualsResource(ItemSchemeVersion itemSchemeVersion, CodeMetamac expected, ItemResult expectedItemResult, ResourceInternal actual) {
+        MaintainableArtefact maintainableArtefact = itemSchemeVersion.getMaintainableArtefact();
         String agency = maintainableArtefact.getMaintainer().getIdAsMaintainer();
         String codeItemScheme = maintainableArtefact.getCode();
         String version = maintainableArtefact.getVersionLogic();
-        String code = expected.getNameableArtefact().getCode();
+        String code = null;
+        if (expected != null) {
+            code = expected.getNameableArtefact().getCode();
+        } else if (expectedItemResult != null) {
+            code = expectedItemResult.getCode();
+        }
         String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/" + agency + "/" + codeItemScheme + "/" + version + "/codes/" + code;
         String expectedManagementLink = "http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=" + agency + ":" + codeItemScheme + "(" + version + ")/code;id=" + code;
-        Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CODE, expectedSelfLink, expectedManagementLink, actual);
+        if (expected != null) {
+            Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CODE, expectedSelfLink, expectedManagementLink, actual);
+        } else if (expectedItemResult != null) {
+            Asserts.assertEqualsResource(expectedItemResult, RestInternalConstants.KIND_CODE, expectedSelfLink, expectedManagementLink, actual);
+        }
     }
 
     public static void assertEqualsResource(VariableFamily expected, ResourceInternal actual) {

@@ -7,8 +7,10 @@ import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDa
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesAsserts.assertEqualsResource;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCode;
+import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCodeItemResult;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCodelist;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCodelistFamily;
+import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCodelistWithCodes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockVariable;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockVariableFamily;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertEqualsInternationalString;
@@ -56,6 +58,8 @@ import org.siemac.metamac.srm.rest.internal.v1_0.mapper.code.CodesDo2RestMapperV
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm-rest-internal/applicationContext-test.xml"})
@@ -110,7 +114,7 @@ public class CodesDo2RestMapperTest {
     @Test
     public void testToCodelist() throws MetamacException {
 
-        CodelistVersionMetamac source = mockCodelist("agencyID1", "resourceID1", "01.123");
+        CodelistVersionMetamac source = mockCodelistWithCodes("agencyID1", "resourceID1", "01.123");
 
         // Transform
         Codelist target = do2RestInternalMapper.toCodelist(source);
@@ -173,6 +177,9 @@ public class CodesDo2RestMapperTest {
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(RestInternalConstants.KIND_CODES, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/codes", target.getChildLinks().getChildLinks().get(0).getHref());
+
+        // Do not return codes
+        assertEquals(0, target.getCodes().size());
     }
 
     @Test
@@ -263,7 +270,42 @@ public class CodesDo2RestMapperTest {
 
         assertEquals(source.size(), target.getCodes().size());
         for (int i = 0; i < source.size(); i++) {
-            assertEqualsResource(source.get(i), target.getCodes().get(i));
+            assertEqualsResource(source.get(i).getItemSchemeVersion(), source.get(i), null, target.getCodes().get(i));
+        }
+    }
+
+    @Test
+    public void testToCodesItemResult() {
+
+        String agencyID = AGENCY_1;
+        String codelistID = ITEM_SCHEME_1_CODE;
+        String version = VERSION_1;
+
+        CodelistVersionMetamac codelist = mockCodelist(agencyID, codelistID, version);
+        List<ItemResult> sources = new ArrayList<ItemResult>();
+        sources.add(mockCodeItemResult(ITEM_1_CODE, null));
+        sources.add(mockCodeItemResult(ITEM_2_CODE, null));
+        sources.add(mockCodeItemResult(ITEM_3_CODE, null));
+
+        // Transform
+        Codes target = do2RestInternalMapper.toCodes(sources, codelist);
+
+        // Validate
+        assertEquals(RestInternalConstants.KIND_CODES, target.getKind());
+
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/codelists" + "/" + agencyID + "/" + codelistID + "/" + version + "/codes", target.getSelfLink());
+        assertEquals(null, target.getFirstLink());
+        assertEquals(null, target.getPreviousLink());
+        assertEquals(null, target.getNextLink());
+        assertEquals(null, target.getLastLink());
+
+        assertEquals(null, target.getLimit());
+        assertEquals(null, target.getOffset());
+        assertEquals(sources.size(), target.getTotal().intValue());
+
+        assertEquals(sources.size(), target.getCodes().size());
+        for (int i = 0; i < sources.size(); i++) {
+            assertEqualsResource(codelist, null, sources.get(i), target.getCodes().get(i));
         }
     }
 

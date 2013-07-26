@@ -7,6 +7,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.serviceapi.utils.OrganisationsMetamacDoMocks;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -52,6 +53,14 @@ public class OrganisationsDoMocks {
         }
 
         return organisationSchemeVersion;
+    }
+
+    public static ItemResult mockOrganisationItemResult(String resourceID, ItemResult parent, OrganisationTypeEnum organisationType) {
+        ItemResult itemResult = OrganisationsMetamacDoMocks.mockOrganisationResultFixedValues(resourceID, parent, organisationType);
+        itemResult.setUriProvider(null);
+        itemResult.setUrn(itemResult.getUrn().replace("urn:sdmx:org.sdmx.infomodel.xxx=", "urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000)."));
+        itemResult.setUrnProvider(itemResult.getUrn());
+        return itemResult;
     }
 
     private static OrganisationTypeEnum guessOrganisationTypeEnum(OrganisationSchemeTypeEnum schemeType) {

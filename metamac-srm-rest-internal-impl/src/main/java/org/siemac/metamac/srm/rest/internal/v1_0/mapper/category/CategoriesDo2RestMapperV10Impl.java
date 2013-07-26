@@ -1,9 +1,9 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.category;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
@@ -24,7 +24,9 @@ import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbCallback;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @Component
 public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements CategoriesDo2RestMapperV10 {
@@ -105,6 +107,24 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
     }
 
     @Override
+    public Categories toCategories(List<ItemResult> sources, CategorySchemeVersionMetamac categorySchemeVersion) {
+
+        Categories targets = new Categories();
+        targets.setKind(RestInternalConstants.KIND_CATEGORIES);
+
+        // No pagination
+        targets.setSelfLink(toCategoriesLink(categorySchemeVersion));
+        targets.setTotal(BigInteger.valueOf(sources.size()));
+
+        // Values
+        for (ItemResult source : sources) {
+            ResourceInternal target = toResource(source, categorySchemeVersion);
+            targets.getCategories().add(target);
+        }
+        return targets;
+    }
+
+    @Override
     public Category toCategory(CategoryMetamac source) {
         if (source == null) {
             return null;
@@ -125,16 +145,6 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
         target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         target.setChildLinks(toCategoryChildLinks(source));
         return target;
-    }
-
-    @Override
-    public void toCategory(com.arte.statistic.sdmx.srm.core.category.domain.Category source, CategoryType target) {
-        if (source == null) {
-            return;
-        }
-        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
-            target.setUri(toCategorySelfLink(source).getHref());
-        }
     }
 
     @Override
@@ -202,6 +212,9 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
     private ResourceLink toCategorySelfLink(com.arte.statistic.sdmx.srm.core.category.domain.Category source) {
         return toResourceLink(RestInternalConstants.KIND_CATEGORY, toCategoryLink(source));
     }
+    private ResourceLink toCategorySelfLink(ItemResult source, CategorySchemeVersion categorySchemeVersion) {
+        return toResourceLink(RestInternalConstants.KIND_CATEGORY, toCategoryLink(source, categorySchemeVersion));
+    }
 
     private ResourceLink toCategoryParentLink(com.arte.statistic.sdmx.srm.core.category.domain.Category source) {
         return toResourceLink(RestInternalConstants.KIND_CATEGORIES, toCategoriesLink(source.getItemSchemeVersion()));
@@ -240,6 +253,15 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
         target.setNestedId(source.getNameableArtefact().getCodeFull());
         return target;
     }
+    private ResourceInternal toResource(ItemResult source, CategorySchemeVersionMetamac categorySchemeVersion) {
+        if (source == null) {
+            return null;
+        }
+        ResourceInternal target = toResource(source, RestInternalConstants.KIND_CATEGORY, toCategorySelfLink(source, categorySchemeVersion),
+                toCategoryManagementApplicationLink(categorySchemeVersion, source));
+        target.setNestedId(source.getCodeFull());
+        return target;
+    }
 
     private ResourceInternal toResource(Categorisation source) {
         if (source == null) {
@@ -263,6 +285,10 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
     private String toCategoryLink(com.arte.statistic.sdmx.srm.core.base.domain.Item item) {
         return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item);
     }
+    private String toCategoryLink(ItemResult item, ItemSchemeVersion itemSchemeVersion) {
+        return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item, itemSchemeVersion);
+    }
+
     private String toCategorisationsLink(String agencyID, String resourceID, String version) {
         return toMaintainableArtefactLink(toSubpathCategorisations(), agencyID, resourceID, version);
     }
@@ -286,5 +312,8 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
 
     private String toCategoryManagementApplicationLink(CategoryMetamac source) {
         return getInternalWebApplicationNavigation().buildCategoryUrl(source);
+    }
+    private String toCategoryManagementApplicationLink(CategorySchemeVersion categorySchemeVersion, ItemResult source) {
+        return getInternalWebApplicationNavigation().buildCategoryUrl(categorySchemeVersion.getMaintainableArtefact().getUrn(), source.getCodeFull());
     }
 }

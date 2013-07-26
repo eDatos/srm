@@ -49,6 +49,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
@@ -56,6 +57,7 @@ import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmValidationUt
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationRepository;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsInvocationValidator;
@@ -85,6 +87,9 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
     @Autowired
     private SrmConfiguration              srmConfiguration;
+
+    @Autowired
+    private OrganisationRepository        organisationRepository;
 
     @Autowired
     private InternationalStringRepository internationalStringRepository;
@@ -470,6 +475,19 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         // Retrieve
         OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
         return getOrganisationMetamacRepository().findOrganisationsByOrganisationSchemeUnorderedToVisualisation(organisationSchemeVersion.getId(), locale);
+    }
+
+    @Override
+    public List<ItemResult> retrieveOrganisationsByOrganisationSchemeUrnUnordered(ServiceContext ctx, String organisationSchemeUrn, ItemResultSelection itemResultSelection) throws MetamacException {
+
+        // Validation
+        OrganisationsMetamacInvocationValidator.checkRetrieveOrganisationsByOrganisationSchemeUrnUnordered(organisationSchemeUrn, itemResultSelection, null);
+
+        if (itemResultSelection == null) {
+            itemResultSelection = ItemResultSelection.RETRIEVE; // default
+        }
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
+        return organisationRepository.findOrganisationsByOrganisationSchemeUnordered(organisationSchemeVersion.getId(), itemResultSelection);
     }
 
     @Override

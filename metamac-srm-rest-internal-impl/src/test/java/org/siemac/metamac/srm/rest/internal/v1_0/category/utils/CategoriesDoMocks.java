@@ -6,6 +6,7 @@ import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDo
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public class CategoriesDoMocks {
 
@@ -44,6 +45,14 @@ public class CategoriesDoMocks {
         category2.addChildren(category2B);
 
         return categorySchemeVersion;
+    }
+
+    public static ItemResult mockCategoryItemResult(String resourceID, ItemResult parent) {
+        ItemResult itemResult = CategoriesMetamacDoMocks.mockCategoryResultFixedValues(resourceID, parent);
+        itemResult.setUriProvider(null);
+        itemResult.setUrn(itemResult.getUrn().replace("urn:sdmx:org.sdmx.infomodel.xxx=", "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000)."));
+        itemResult.setUrnProvider(itemResult.getUrn());
+        return itemResult;
     }
 
     public static Categorisation mockCategorisation(String agencyID, String resourceID, String version) {

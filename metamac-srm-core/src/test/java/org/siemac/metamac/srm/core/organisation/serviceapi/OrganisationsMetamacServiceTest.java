@@ -58,11 +58,14 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationProperties;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationResultExtensionPoint;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.enume.domain.ContactItemTypeEnum;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.utils.OrganisationsDoMocks;
@@ -2501,6 +2504,121 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
                 OrganisationMetamacVisualisationResult organisation = getOrganisationVisualisationResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1);
                 assertEquals("Name organisationScheme-1-v2-organisation-4-1-1", organisation.getName());
             }
+        }
+    }
+
+    @Override
+    @Test
+    public void testRetrieveOrganisationsByOrganisationSchemeUrnUnordered() throws Exception {
+
+        // Retrieve
+        String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
+
+        ItemResultSelection itemResultSelection = new ItemResultSelection(true, false, false);
+        List<ItemResult> organisations = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(getServiceContextAdministrador(), organisationSchemeUrn, itemResultSelection);
+
+        // Validate
+        assertEquals(8, organisations.size());
+        {
+            // Organisation 01 (validate all metadata)
+            ItemResult organisation = getItemResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_1);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisation.getUrn());
+            assertEquals("ORGANISATION01", organisation.getCode());
+            assertEquals(null, organisation.getCodeFull());
+            assertEquals("Nombre organisationScheme-1-v2-organisation-1", organisation.getName().get("es"));
+            assertEquals("Name organisationScheme-1-v2-organisation-1", organisation.getName().get("en"));
+            assertEquals("Descripción organisationScheme-1-v2-organisation-1", organisation.getDescription().get("es"));
+            assertEquals(null, organisation.getDescription().get("en"));
+            assertEquals(Long.valueOf(121), organisation.getItemIdDatabase());
+            assertEquals(null, organisation.getParent());
+            assertEquals(null, organisation.getParentIdDatabase());
+            assertEquals(null, ((OrganisationResultExtensionPoint) organisation.getExtensionPoint()).getIdAsMaintainer());
+            assertEquals(OrganisationTypeEnum.ORGANISATION_UNIT, ((OrganisationResultExtensionPoint) organisation.getExtensionPoint()).getOrganisationType());
+        }
+        {
+            // Organisation 02
+            ItemResult organisation = getItemResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getUrn());
+            assertEquals("ORGANISATION02", organisation.getCode());
+            assertEquals("Nombre organisationScheme-1-v2-organisation-2", organisation.getName().get("es"));
+            assertEquals("Descripción organisationScheme-1-v2-organisation-2", organisation.getDescription().get("es"));
+            assertEquals(null, ((OrganisationResultExtensionPoint) organisation.getExtensionPoint()).getIdAsMaintainer());
+            assertEquals(OrganisationTypeEnum.ORGANISATION_UNIT, ((OrganisationResultExtensionPoint) organisation.getExtensionPoint()).getOrganisationType());
+        }
+        {
+            // Organisation 02 01 (validate parent)
+            ItemResult organisation = getItemResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1, organisation.getUrn());
+            assertEquals("ORGANISATION0201", organisation.getCode());
+            assertEquals(null, organisation.getCodeFull());
+            assertEquals("ORGANISATION02", organisation.getParent().getCode());
+            assertEquals("Nombre organisationScheme-1-v2-organisation-2-1", organisation.getName().get("es"));
+            assertEquals("Descripción organisationScheme-1-v2-organisation-2-1", organisation.getDescription().get("es"));
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2, organisation.getParent().getUrn());
+            assertEquals(Long.valueOf("122"), organisation.getParentIdDatabase());
+        }
+        {
+            // Organisation 02 01 01
+            ItemResult organisation = getItemResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_2_1_1, organisation.getUrn());
+            assertEquals("ORGANISATION0201", organisation.getParent().getCode());
+            assertEquals("Nombre organisationScheme-1-v2-organisation-2-1-1", organisation.getName().get("es"));
+            assertEquals(Long.valueOf("1221"), organisation.getParentIdDatabase());
+        }
+        {
+            // Organisation 03
+            ItemResult organisation = getItemResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_3);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_3, organisation.getUrn());
+            assertEquals("nombre organisation-3", organisation.getName().get("es"));
+        }
+        {
+            // Organisation 04
+            ItemResult organisation = getItemResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4, organisation.getUrn());
+            assertEquals("nombre organisation-4", organisation.getName().get("es"));
+        }
+        {
+            // Organisation 04 01
+            ItemResult organisation = getItemResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisation.getUrn());
+            assertEquals("nombre organisation 4-1", organisation.getName().get("es"));
+        }
+        {
+            // Organisation 04 01 01
+            ItemResult organisation = getItemResult(organisations, ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1);
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1_1, organisation.getUrn());
+            assertEquals("ORGANISATION0401", organisation.getParent().getCode());
+            assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_4_1, organisation.getParent().getUrn());
+            assertEquals("Nombre organisationScheme-1-v2-organisation-4-1-1", organisation.getName().get("es"));
+        }
+    }
+
+    @Test
+    public void testRetrieveOrganisationsByOrganisationSchemeUrnUnorderedTypeAgency() throws Exception {
+
+        // Retrieve
+        String organisationSchemeUrn = ORGANISATION_SCHEME_ROOT_1_V1;
+
+        ItemResultSelection itemResultSelection = new ItemResultSelection(true, false, false);
+        List<ItemResult> organisations = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(getServiceContextAdministrador(), organisationSchemeUrn, itemResultSelection);
+
+        // Validate
+        assertEquals(2, organisations.size());
+        {
+            // Organisation 01
+            ItemResult organisation = getItemResult(organisations, AGENCY_ROOT_1_V1);
+            assertEquals("SDMX01", organisation.getCode());
+            assertEquals(null, organisation.getCodeFull());
+            assertEquals("SDMX01", ((OrganisationResultExtensionPoint) organisation.getExtensionPoint()).getIdAsMaintainer());
+            assertEquals(OrganisationTypeEnum.AGENCY, ((OrganisationResultExtensionPoint) organisation.getExtensionPoint()).getOrganisationType());
+        }
+        {
+            // Organisation 02
+            ItemResult organisation = getItemResult(organisations, AGENCY_ROOT_2_V1);
+            assertEquals("SDMX02", organisation.getCode());
+            assertEquals(null, organisation.getCodeFull());
+            assertEquals("SDMX02", ((OrganisationResultExtensionPoint) organisation.getExtensionPoint()).getIdAsMaintainer());
+            assertEquals(OrganisationTypeEnum.AGENCY, ((OrganisationResultExtensionPoint) organisation.getExtensionPoint()).getOrganisationType());
         }
     }
 

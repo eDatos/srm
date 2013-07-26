@@ -1356,6 +1356,33 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
+    public List<ItemResult> retrieveCodesByCodelistUrnOrderedInDepth(ServiceContext ctx, String codelistUrn, ItemMetamacResultSelection itemResultSelection, String orderVisualisationUrn)
+            throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveCodesByCodelistUrnOrderedInDepth(codelistUrn, itemResultSelection, orderVisualisationUrn, null);
+
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+
+        if (itemResultSelection == null) {
+            itemResultSelection = ItemMetamacResultSelection.RETRIEVE; // default
+        }
+
+        Integer orderColumnIndex = null;
+        if (orderVisualisationUrn == null) {
+            orderVisualisationUrn = codelistVersion.getDefaultOrderVisualisation() != null ? codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn() : null;
+        }
+        if (orderVisualisationUrn != null) {
+            CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByUrn(ctx, orderVisualisationUrn);
+            orderColumnIndex = codelistOrderVisualisation.getColumnIndex();
+        }
+
+        // TODO openness
+
+        // Retrieve
+        return getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, itemResultSelection);
+    }
+
+    @Override
     public List<CodeVariableElementNormalisationResult> normaliseVariableElementsToCodes(ServiceContext ctx, String codelistUrn, String locale, boolean proposeOnlyWithoutVariableElement)
             throws MetamacException {
         // Validation

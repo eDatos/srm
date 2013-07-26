@@ -7,6 +7,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public abstract class ItemSchemeBaseDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl {
 
@@ -46,6 +47,11 @@ public abstract class ItemSchemeBaseDo2RestMapperV10Impl extends BaseDo2RestMapp
     protected String toItemLink(String schemesSubPath, String itemsSubPath, Item item) {
         String link = toItemsLink(schemesSubPath, itemsSubPath, item.getItemSchemeVersion());
         link = RestUtils.createLink(link, getCode(item.getNameableArtefact()));
+        return link;
+    }
+    protected String toItemLink(String schemesSubPath, String itemsSubPath, ItemResult item, ItemSchemeVersion itemSchemeVersion) {
+        String link = toItemsLink(schemesSubPath, itemsSubPath, itemSchemeVersion);
+        link = RestUtils.createLink(link, getCode(item));
         return link;
     }
 

@@ -30,6 +30,7 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.code.serviceimpl.utils.CodesInvocationValidator;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 
 public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
 
@@ -155,6 +156,17 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ValidationUtils.checkParameterRequired(locale, ServiceExceptionParameters.LOCALE, exceptions);
         // orderVisualisationUrn optional
         // opennessVisualisationUrn optional
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkRetrieveCodesByCodelistUrnOrderedInDepth(String codelistUrn, ItemResultSelection itemResultSelection, String orderVisualisationUrn, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

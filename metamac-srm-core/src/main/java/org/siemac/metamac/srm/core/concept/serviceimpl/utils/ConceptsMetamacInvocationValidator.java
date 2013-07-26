@@ -21,6 +21,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.shared.QuantityUtils;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsInvocationValidator;
 
 public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValidator {
@@ -83,6 +84,17 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
 
         ValidationUtils.checkParameterRequired(conceptSchemeUrn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(locale, ServiceExceptionParameters.LOCALE, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkRetrieveConceptsByConceptSchemeUrnUnordered(String conceptSchemeUrn, ItemResultSelection itemResultSelection, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(conceptSchemeUrn, ServiceExceptionParameters.URN, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
-import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
-import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbCallback;
 
@@ -22,9 +20,6 @@ public class ConceptsDo2JaxbCallbackImpl implements ConceptsDo2JaxbCallback {
 
     @Autowired
     private ConceptsDo2RestMapperV10 conceptsDo2RestMapperV10;
-
-    @Autowired
-    private ConceptRepository        conceptRepository;
 
     @Override
     public ConceptSchemeType createConceptSchemeJaxb() {
@@ -37,18 +32,18 @@ public class ConceptsDo2JaxbCallbackImpl implements ConceptsDo2JaxbCallback {
     }
 
     @Override
+    public boolean mustRetrieveConceptsInsideConceptScheme() {
+        return false;
+    }
+
+    @Override
     public ConceptType createConceptJaxb() {
-        // do not return Metamac type because when ItemScheme is retrieved, the items must be SDMX type
-        return new ConceptType();
+        throw new IllegalArgumentException("createConceptJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
     public void fillConceptJaxb(Concept source, ItemResult sourceItemResult, ItemSchemeVersion itemSchemeVersion, ConceptType target) {
-        if (target instanceof org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept) {
-            // nothing more (mapping is done explicitly in toConcept(ConceptMetamac source))
-        } else {
-            conceptsDo2RestMapperV10.toConcept(source, sourceItemResult, itemSchemeVersion, target);
-        }
+        throw new IllegalArgumentException("fillConceptJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
@@ -58,6 +53,6 @@ public class ConceptsDo2JaxbCallbackImpl implements ConceptsDo2JaxbCallback {
 
     @Override
     public List<ItemResult> findConceptsByConceptSchemeEfficiently(ConceptSchemeVersion conceptSchemeVersion) throws MetamacException {
-        return conceptRepository.findConceptsByConceptSchemeUnordered(conceptSchemeVersion.getId(), ItemResultSelection.SDMX_API);
+        throw new IllegalArgumentException("findConceptsByConceptSchemeEfficiently not supported: do not return concepts when retrieve conceptScheme");
     }
 }

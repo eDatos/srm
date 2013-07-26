@@ -2,9 +2,10 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodelistFamilies;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodelists;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodes;
@@ -36,6 +37,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +52,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
@@ -211,8 +214,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getKind());
         assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CODELISTS, codelist.getParentLink().getKind());
-        assertTrue(codelist.getCodes().get(0) instanceof CodeType);
-        assertFalse(codelist.getCodes().get(0) instanceof Code);
+        assertEquals(0, codelist.getCodes().size());
 
         // Verify with Mockito
         verifyRetrieveCodelist(codesService, agencyID, resourceID, version);
@@ -234,8 +236,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getKind());
         assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CODELISTS, codelist.getParentLink().getKind());
-        assertTrue(codelist.getCodes().get(0) instanceof CodeType);
-        assertFalse(codelist.getCodes().get(0) instanceof Code);
+        assertEquals(0, codelist.getCodes().size());
 
         // Verify with Mockito
         verifyRetrieveCodelist(codesService, agencyID, resourceID, version);
@@ -371,6 +372,38 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     public void testFindCodesXml() throws Exception {
         String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
         InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodes.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
+    @Test
+    public void testFindCodesRetrieveAll() throws Exception {
+
+        resetMocks();
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null);
+
+        assertNotNull(codes);
+        assertEquals(RestInternalConstants.KIND_CODES, codes.getKind());
+        assertEquals(BigInteger.valueOf(4), codes.getTotal());
+
+        // Verify with mockito
+        ArgumentCaptor<String> codeSchemeUrnArgument = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<ItemMetamacResultSelection> itemResultSelectionArgument = ArgumentCaptor.forClass(ItemMetamacResultSelection.class);
+        ArgumentCaptor<String> orderArgument = ArgumentCaptor.forClass(String.class);
+        verify(codesService).retrieveCodesByCodelistUrnOrderedInDepth(any(ServiceContext.class), codeSchemeUrnArgument.capture(), itemResultSelectionArgument.capture(), orderArgument.capture());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:itemScheme1(01.000)", codeSchemeUrnArgument.getValue());
+        assertEquals(true, itemResultSelectionArgument.getValue().isNames());
+        assertEquals(false, itemResultSelectionArgument.getValue().isDescriptions());
+        assertEquals(false, itemResultSelectionArgument.getValue().isComments());
+        assertEquals(false, itemResultSelectionArgument.getValue().isAnnotations());
+        assertEquals(null, orderArgument.getValue()); // TODO order
+    }
+
+    @Test
+    public void testFindCodesRetrieveAllXml() throws Exception {
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null);
+        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodesRetrieveAll.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
@@ -910,31 +943,19 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     }
 
     private void mockFindCodesByNativeSqlQuery() throws MetamacException {
-        when(codeRepository.findCodesByCodelistUnordered(any(Long.class), any(ItemMetamacResultSelection.class))).thenAnswer(new Answer<List<ItemResult>>() {
+        when(codesService.retrieveCodesByCodelistUrnOrderedInDepth(any(ServiceContext.class), any(String.class), any(ItemMetamacResultSelection.class), any(String.class))).thenAnswer(
+                new Answer<List<ItemResult>>() {
 
-            @Override
-            public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {
-                // any
-                ItemResult code1 = CodesDoMocks.mockCodeResult("code1", null);
-                ItemResult code2 = CodesDoMocks.mockCodeResult("code2", null);
-                ItemResult code2A = CodesDoMocks.mockCodeResult("code2A", code2);
-                ItemResult code2B = CodesDoMocks.mockCodeResult("code2B", code2);
-                return Arrays.asList(code1, code2, code2A, code2B);
-            };
-        });
-
-        when(codeMetamacRepository.findCodesByCodelistOrderedInDepth(any(Long.class), any(Integer.class), any(ItemMetamacResultSelection.class))).thenAnswer(new Answer<List<ItemResult>>() {
-
-            @Override
-            public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {
-                // any
-                ItemResult code1 = CodesDoMocks.mockCodeResult("code1", null);
-                ItemResult code2 = CodesDoMocks.mockCodeResult("code2", null);
-                ItemResult code2A = CodesDoMocks.mockCodeResult("code2A", code2);
-                ItemResult code2B = CodesDoMocks.mockCodeResult("code2B", code2);
-                return Arrays.asList(code1, code2, code2A, code2B);
-            };
-        });
+                    @Override
+                    public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {
+                        // any
+                        ItemResult code1 = CodesDoMocks.mockCodeItemResult("code1", null);
+                        ItemResult code2 = CodesDoMocks.mockCodeItemResult("code2", null);
+                        ItemResult code2A = CodesDoMocks.mockCodeItemResult("code2A", code2);
+                        ItemResult code2B = CodesDoMocks.mockCodeItemResult("code2B", code2);
+                        return Arrays.asList(code1, code2, code2A, code2B);
+                    };
+                });
     }
 
     @SuppressWarnings("unchecked")

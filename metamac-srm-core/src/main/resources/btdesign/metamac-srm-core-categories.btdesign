@@ -86,6 +86,8 @@ Application CategoriesMetamac {
     		deleteCategory(String urn) throws MetamacException;
     		"Retrieves categories by category scheme in locale requested"
     		List<ItemVisualisationResult> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn, String locale) throws MetamacException;
+    		"Retrieves categories by category scheme unordered"
+    		List<ItemResult> retrieveCategoriesByCategorySchemeUrnUnordered(String categorySchemeUrn, ItemResultSelection itemResultSelection) throws MetamacException;
     		
     		// Categorisations
     		"Creates categorisation"

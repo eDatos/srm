@@ -2,9 +2,10 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
 import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsMockitoVerify.verifyFindConceptSchemes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsMockitoVerify.verifyFindConcepts;
 import static org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsMockitoVerify.verifyRetrieveConcept;
@@ -26,6 +27,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +42,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType;
@@ -49,7 +52,6 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concepts;
-import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -62,12 +64,11 @@ import org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
-import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 
 public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV10BaseTest {
 
     private ConceptsMetamacService      conceptsService;
-    private ConceptRepository           conceptRepository;
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     @Test
@@ -201,8 +202,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
-        assertTrue(conceptScheme.getConcepts().get(0) instanceof ConceptType);
-        assertFalse(conceptScheme.getConcepts().get(0) instanceof Concept);
+        assertEquals(0, conceptScheme.getConcepts().size());
 
         // Verify with Mockito
         verifyRetrieveConceptScheme(conceptsService, agencyID, resourceID, version);
@@ -224,8 +224,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
-        assertTrue(conceptScheme.getConcepts().get(0) instanceof ConceptType);
-        assertFalse(conceptScheme.getConcepts().get(0) instanceof Concept);
+        assertEquals(0, conceptScheme.getConcepts().size());
 
         // Verify with Mockito
         verifyRetrieveConceptScheme(conceptsService, agencyID, resourceID, version);
@@ -322,6 +321,36 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         } catch (Exception e) {
             fail("Incorrect exception");
         }
+    }
+
+    @Test
+    public void testFindConceptsRetrieveAll() throws Exception {
+
+        resetMocks();
+        Concepts concepts = getSrmRestInternalFacadeClientXml().findConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null);
+
+        assertNotNull(concepts);
+        assertEquals(RestInternalConstants.KIND_CONCEPTS, concepts.getKind());
+        assertEquals(BigInteger.valueOf(4), concepts.getTotal());
+
+        // Verify with mockito
+        ArgumentCaptor<String> conceptSchemeUrnArgument = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<ItemResultSelection> itemResultSelectionArgument = ArgumentCaptor.forClass(ItemResultSelection.class);
+        verify(conceptsService).retrieveConceptsByConceptSchemeUrnUnordered(any(ServiceContext.class), conceptSchemeUrnArgument.capture(), itemResultSelectionArgument.capture());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=agency1:itemScheme1(01.000)", conceptSchemeUrnArgument.getValue());
+        assertEquals(true, itemResultSelectionArgument.getValue().isNames());
+        assertEquals(false, itemResultSelectionArgument.getValue().isDescriptions());
+        assertEquals(false, itemResultSelectionArgument.getValue().isComments());
+        assertEquals(false, itemResultSelectionArgument.getValue().isAnnotations());
+    }
+
+    @Test
+    public void testFindConceptsRetrieveAllXml() throws Exception {
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null);
+        InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptsRetrieveAll.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
     }
 
     @Test
@@ -599,16 +628,16 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         });
     }
 
-    private void mockFindConceptsByNativeSqlQuery() throws MetamacException {
-        when(conceptRepository.findConceptsByConceptSchemeUnordered(any(Long.class), any(ItemMetamacResultSelection.class))).thenAnswer(new Answer<List<ItemResult>>() {
+    private void mockRetrieveConceptsByConceptScheme() throws MetamacException {
+        when(conceptsService.retrieveConceptsByConceptSchemeUrnUnordered(any(ServiceContext.class), any(String.class), any(ItemResultSelection.class))).thenAnswer(new Answer<List<ItemResult>>() {
 
             @Override
             public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {
                 // any
-                ItemResult concept1 = ConceptsDoMocks.mockConceptResult("concept1", null);
-                ItemResult concept2 = ConceptsDoMocks.mockConceptResult("concept2", null);
-                ItemResult concept2A = ConceptsDoMocks.mockConceptResult("concept2A", concept2);
-                ItemResult concept2B = ConceptsDoMocks.mockConceptResult("concept2B", concept2);
+                ItemResult concept1 = ConceptsDoMocks.mockConceptItemResult("concept1", null);
+                ItemResult concept2 = ConceptsDoMocks.mockConceptItemResult("concept2", null);
+                ItemResult concept2A = ConceptsDoMocks.mockConceptItemResult("concept2A", concept2);
+                ItemResult concept2B = ConceptsDoMocks.mockConceptItemResult("concept2B", concept2);
                 return Arrays.asList(concept1, concept2, concept2A, concept2B);
             };
         });
@@ -675,13 +704,11 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         reset(conceptsService);
         itemSchemeVersionRepository = applicationContext.getBean(ItemSchemeVersionRepository.class);
         reset(itemSchemeVersionRepository);
-        conceptRepository = applicationContext.getBean(ConceptRepository.class);
-        reset(conceptRepository);
 
         mockRetrieveItemSchemeVersionByVersion();
         mockFindConceptSchemesByCondition();
         mockFindConceptsByCondition();
-        mockFindConceptsByNativeSqlQuery();
+        mockRetrieveConceptsByConceptScheme();
         mockRetrieveConceptTypes();
     }
 

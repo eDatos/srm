@@ -16,6 +16,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
@@ -38,6 +39,8 @@ import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUt
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -223,4 +226,23 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
             };
         });
     }
+
+    protected void mockRetrieveOrganisationsByOrganisationScheme(final OrganisationTypeEnum organisationType) throws MetamacException {
+        when(organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(any(ServiceContext.class), any(String.class), any(ItemResultSelection.class))).thenAnswer(
+                new Answer<List<ItemResult>>() {
+
+                    @Override
+                    public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {
+                        // any
+                        ItemResult organisation1 = OrganisationsDoMocks.mockOrganisationItemResult("organisation1", null, organisationType);
+                        ItemResult organisation2 = OrganisationsDoMocks.mockOrganisationItemResult("organisation2", null, organisationType);
+                        ItemResult organisation2A = OrganisationsDoMocks.mockOrganisationItemResult("organisation2A", OrganisationTypeEnum.AGENCY.equals(organisationType) ? organisation2 : null,
+                                organisationType);
+                        ItemResult organisation2B = OrganisationsDoMocks.mockOrganisationItemResult("organisation2B", OrganisationTypeEnum.AGENCY.equals(organisationType) ? organisation2 : null,
+                                organisationType);
+                        return Arrays.asList(organisation1, organisation2, organisation2A, organisation2B);
+                    };
+                });
+    }
+
 }

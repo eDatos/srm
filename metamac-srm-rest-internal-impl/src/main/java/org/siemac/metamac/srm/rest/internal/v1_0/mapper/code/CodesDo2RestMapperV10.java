@@ -1,7 +1,8 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.code;
 
+import java.util.List;
+
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
@@ -12,7 +13,6 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 
-import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public interface CodesDo2RestMapperV10 {
@@ -23,8 +23,8 @@ public interface CodesDo2RestMapperV10 {
     public void toCodelist(CodelistVersionMetamac source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist target);
 
     public Codes toCodes(PagedResult<CodeMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
+    public Codes toCodes(List<ItemResult> sources, CodelistVersionMetamac codelistVersion);
     public Code toCode(CodeMetamac source);
-    public void toCode(com.arte.statistic.sdmx.srm.core.code.domain.Code source, ItemResult sourceItemResult, ItemSchemeVersion itemSchemeVersion, CodeType target);
     public ResourceInternal toResource(CodeMetamac source);
 
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies toVariableFamilies(PagedResult<VariableFamily> sources, String query, String orderBy, Integer limit);

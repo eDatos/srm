@@ -3729,6 +3729,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Override
+    public void testRetrieveCodesByCodelistUrnOrderedInDepth() throws Exception {
+        // in CodesMetamacRepositoryTest
+    }
+
+    @Override
     @Test
     public void testFindCodesByCondition() throws Exception {
         // Find all

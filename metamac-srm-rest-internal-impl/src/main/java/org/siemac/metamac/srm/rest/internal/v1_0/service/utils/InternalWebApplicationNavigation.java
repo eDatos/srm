@@ -20,6 +20,8 @@ import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.navigation.shared.PlaceRequestParams;
 import org.springframework.web.util.UriTemplate;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
+
 public class InternalWebApplicationNavigation {
 
     private final String      PATH_STRUCTURAL_RESOURCES = "#" + NameTokens.structuralResourcesPage;
@@ -94,11 +96,15 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildOrganisationUrl(OrganisationMetamac organisation) {
-        String organisationSchemeUrlPart = UrnUtils.removePrefix(organisation.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-        String organisationUrlPart = organisation.getNameableArtefact().getCode();
+        return buildOrganisationUrl(organisation.getItemSchemeVersion().getMaintainableArtefact().getUrn(), organisation.getNameableArtefact().getCode(), organisation.getOrganisationType());
+    }
+
+    public String buildOrganisationUrl(String organisationSchemeUrn, String organisationCode, OrganisationTypeEnum organisationType) {
+        String organisationSchemeUrlPart = UrnUtils.removePrefix(organisationSchemeUrn);
+        String organisationUrlPart = organisationCode;
         Map<String, String> parameters = new HashMap<String, String>(3);
         parameters.put(ITEM_SCHEME_PARAMETER, organisationSchemeUrlPart);
-        parameters.put(RESOURCE_TYPE_PARAMETER, SrmRestInternalUtils.toOrganisationSchemeType(organisation.getOrganisationType()).getName());
+        parameters.put(RESOURCE_TYPE_PARAMETER, SrmRestInternalUtils.toOrganisationSchemeType(organisationType).getName());
         parameters.put(RESOURCE_ID_PARAMETER, organisationUrlPart);
         return organisationTemplate.expand(parameters).toString();
     }
@@ -111,8 +117,12 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildCategoryUrl(CategoryMetamac category) {
-        String categorySchemeUrlPart = UrnUtils.removePrefix(category.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-        String categoryUrlPart = category.getNameableArtefact().getCodeFull();
+        return buildCategoryUrl(category.getItemSchemeVersion().getMaintainableArtefact().getUrn(), category.getNameableArtefact().getCodeFull());
+    }
+
+    public String buildCategoryUrl(String categorySchemeUrn, String categoryCodeFull) {
+        String categorySchemeUrlPart = UrnUtils.removePrefix(categorySchemeUrn);
+        String categoryUrlPart = categoryCodeFull;
         Map<String, String> parameters = new HashMap<String, String>(2);
         parameters.put(ITEM_SCHEME_PARAMETER, categorySchemeUrlPart);
         parameters.put(RESOURCE_ID_PARAMETER, categoryUrlPart);
@@ -127,8 +137,12 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildConceptUrl(ConceptMetamac concept) {
-        String conceptSchemeUrlPart = UrnUtils.removePrefix(concept.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-        String conceptUrlPart = concept.getNameableArtefact().getCode();
+        return buildConceptUrl(concept.getItemSchemeVersion().getMaintainableArtefact().getUrn(), concept.getNameableArtefact().getCode());
+    }
+
+    public String buildConceptUrl(String conceptSchemeUrn, String conceptCode) {
+        String conceptSchemeUrlPart = UrnUtils.removePrefix(conceptSchemeUrn);
+        String conceptUrlPart = conceptCode;
         Map<String, String> parameters = new HashMap<String, String>(2);
         parameters.put(ITEM_SCHEME_PARAMETER, conceptSchemeUrlPart);
         parameters.put(RESOURCE_ID_PARAMETER, conceptUrlPart);
@@ -143,8 +157,12 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildCodeUrl(CodeMetamac code) {
-        String codelistUrlPart = UrnUtils.removePrefix(code.getItemSchemeVersion().getMaintainableArtefact().getUrn());
-        String codeUrlPart = code.getNameableArtefact().getCode();
+        return buildCodeUrl(code.getItemSchemeVersion().getMaintainableArtefact().getUrn(), code.getNameableArtefact().getCode());
+    }
+
+    public String buildCodeUrl(String codelistUrn, String codeCode) {
+        String codelistUrlPart = UrnUtils.removePrefix(codelistUrn);
+        String codeUrlPart = codeCode;
         Map<String, String> parameters = new HashMap<String, String>(2);
         parameters.put(ITEM_SCHEME_PARAMETER, codelistUrlPart);
         parameters.put(RESOURCE_ID_PARAMETER, codeUrlPart);

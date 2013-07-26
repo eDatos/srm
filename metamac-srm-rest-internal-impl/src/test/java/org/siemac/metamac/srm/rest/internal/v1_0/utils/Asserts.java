@@ -2,10 +2,13 @@ package org.siemac.metamac.srm.rest.internal.v1_0.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
+import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
 import org.joda.time.DateTime;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
@@ -20,6 +23,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public class Asserts extends MetamacRestAsserts {
 
@@ -47,6 +51,24 @@ public class Asserts extends MetamacRestAsserts {
         }
     }
 
+    public static void assertEqualsInternationalString(Map<String, String> expecteds, org.siemac.metamac.rest.common.v1_0.domain.InternationalString actuals) {
+        if (MapUtils.isEmpty(expecteds)) {
+            assertNull(actuals);
+            return;
+        }
+        assertEquals(expecteds.size(), actuals.getTexts().size());
+        for (String expectedLocale : expecteds.keySet()) {
+            boolean existsItem = false;
+            for (LocalisedString actual : actuals.getTexts()) {
+                if (expectedLocale.equals(actual.getLang())) {
+                    assertEquals(expecteds.get(expectedLocale), actual.getValue());
+                    existsItem = true;
+                }
+            }
+            assertTrue(existsItem);
+        }
+    }
+
     public static void assertEqualsInternationalString(String locale1, String label1, String locale2, String label2, InternationalString actual) {
         int count = 0;
         for (LocalisedString localisedString : actual.getTexts()) {
@@ -66,6 +88,17 @@ public class Asserts extends MetamacRestAsserts {
     }
 
     public static void assertEqualsResource(NameableArtefact expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual) {
+        assertEquals(expectedKind, actual.getKind());
+        assertEquals(expected.getCode(), actual.getId());
+        assertEquals(expected.getUrnProvider(), actual.getUrn());
+        assertEquals(expected.getUrn(), actual.getUrnInternal());
+        assertEquals(expectedKind, actual.getSelfLink().getKind());
+        assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
+        assertEquals(expectedManagementLink, actual.getManagementAppLink());
+        assertEqualsInternationalString(expected.getName(), actual.getName());
+    }
+
+    public static void assertEqualsResource(ItemResult expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual) {
         assertEquals(expectedKind, actual.getKind());
         assertEquals(expected.getCode(), actual.getId());
         assertEquals(expected.getUrnProvider(), actual.getUrn());

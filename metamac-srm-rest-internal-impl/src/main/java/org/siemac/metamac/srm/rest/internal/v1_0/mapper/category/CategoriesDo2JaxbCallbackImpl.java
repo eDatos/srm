@@ -33,14 +33,17 @@ public class CategoriesDo2JaxbCallbackImpl implements CategoriesDo2JaxbCallback 
 
     @Override
     public CategoryType createCategoryJaxb(com.arte.statistic.sdmx.srm.core.category.domain.Category source) {
-        // do not return Metamac type because when ItemScheme is retrieved, the items must be SDMX type
-        return new CategoryType();
+        throw new IllegalArgumentException("createCategoryJaxb not supported. Do not return items when itemScheme is retrieved");
+    }
+
+    @Override
+    public boolean mustRetrieveCategoriesInsideCategoryScheme() {
+        return false;
     }
 
     @Override
     public void fillCategoryJaxb(Category source, CategoryType target) {
-        // do not fill Metamac type because when ItemScheme is retrieved, the items must be SDMX type
-        categoriesDo2RestMapperV10.toCategory(source, target);
+        throw new IllegalArgumentException("fillCategoryJaxb not supported. Do not return items when itemScheme is retrieved");
     }
 
     @Override
