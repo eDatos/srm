@@ -26,15 +26,16 @@
     </sr:category>
     <sr:category kind="structuralResources#category">
         <cdomain:id>category2A</cdomain:id>
-        <cdomain:nestedId>category1.category2A</cdomain:nestedId>
-        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category1.category2A</cdomain:urn>
-        <cdomain:selfLink kind="structuralResources#category" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/category1.category2A"/>
+        <cdomain:nestedId>category2.category2A</cdomain:nestedId>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2.category2A</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#category" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/category2.category2A"/>
         <cdomain:name>
             <cdomain:text xml:lang="en">name-category2A in English</cdomain:text>
             <cdomain:text xml:lang="es">name-category2A en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category1.category2A</sr:urnInternal>
-        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme1(01.000)/category;id=category1.category2A</sr:managementAppLink>
+        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2.category2A</sr:urnInternal>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme1(01.000)/category;id=category2.category2A</sr:managementAppLink>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2</sr:parent>
     </sr:category>
     <sr:category kind="structuralResources#category">
         <cdomain:id>category1</cdomain:id>

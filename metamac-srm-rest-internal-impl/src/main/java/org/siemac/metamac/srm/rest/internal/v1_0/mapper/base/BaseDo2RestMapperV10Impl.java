@@ -18,6 +18,7 @@ import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.LifeCycle;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
@@ -31,6 +32,7 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.common.domain.IdentifiableArtefactResult;
@@ -154,24 +156,6 @@ public abstract class BaseDo2RestMapperV10Impl {
         return source.getFinalLogicClient();
     }
 
-    protected ResourceInternal toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl) {
-        if (source == null) {
-            return null;
-        }
-        ResourceInternal target = new ResourceInternal();
-        toResource(source, kind, selfLink, managementAppUrl, target);
-        return target;
-    }
-
-    protected ResourceInternal toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl) {
-        if (source == null) {
-            return null;
-        }
-        ResourceInternal target = new ResourceInternal();
-        toResource(source, kind, selfLink, managementAppUrl, target);
-        return target;
-    }
-
     protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target) {
         if (source == null) {
             return;
@@ -186,7 +170,17 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setManagementAppLink(managementAppUrl);
     }
 
-    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target) {
+    protected void toResource(Item source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target) {
+        if (source == null) {
+            return;
+        }
+        toResource(source.getNameableArtefact(), kind, selfLink, managementAppUrl, target);
+        if (source.getParent() != null) {
+            target.setParent(source.getParent().getNameableArtefact().getUrn());
+        }
+    }
+
+    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target) {
         if (source == null) {
             return;
         }
@@ -198,6 +192,9 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setSelfLink(selfLink);
         target.setName(toInternationalString(source.getName()));
         target.setManagementAppLink(managementAppUrl);
+        if (source.getParent() != null) {
+            target.setParent(source.getParent().getUrn());
+        }
     }
 
     protected ResourceInternal toResourceExternalItemStatisticalOperation(ExternalItem source) {

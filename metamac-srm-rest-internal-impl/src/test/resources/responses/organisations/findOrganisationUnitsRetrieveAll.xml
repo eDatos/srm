@@ -32,6 +32,7 @@
         </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2A</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=organisation2A</sr:managementAppLink>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2</sr:parent>
     </sr:organisationUnit>
     <sr:organisationUnit kind="structuralResources#organisationUnit">
         <cdomain:id>organisation2B</cdomain:id>
@@ -43,5 +44,6 @@
         </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2B</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=organisation2B</sr:managementAppLink>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2</sr:parent>
     </sr:organisationUnit>
 </sr:organisationUnits>

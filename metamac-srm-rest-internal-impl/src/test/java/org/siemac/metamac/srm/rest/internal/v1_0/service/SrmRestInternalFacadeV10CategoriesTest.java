@@ -643,7 +643,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
                     List<CategoryMetamac> categories = new ArrayList<CategoryMetamac>();
                     categories.add(CategoriesDoMocks.mockCategory("category1", categoryScheme1, null));
                     categories.add(CategoriesDoMocks.mockCategory("category2", categoryScheme1, null));
-                    categories.add(CategoriesDoMocks.mockCategory("category2A", categoryScheme1, categories.get(0)));
+                    categories.add(CategoriesDoMocks.mockCategory("category2A", categoryScheme1, categories.get(1)));
                     categories.add(CategoriesDoMocks.mockCategory("category1", categoryScheme2, null));
 
                     return new PagedResult<CategoryMetamac>(categories, categories.size(), categories.size(), categories.size(), categories.size() * 10, 0);

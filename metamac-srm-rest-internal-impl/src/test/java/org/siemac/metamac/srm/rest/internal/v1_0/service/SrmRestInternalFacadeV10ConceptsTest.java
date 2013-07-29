@@ -681,7 +681,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                     List<ConceptMetamac> concepts = new ArrayList<ConceptMetamac>();
                     concepts.add(ConceptsDoMocks.mockConcept(ITEM_1_CODE, conceptScheme1, null));
                     concepts.add(ConceptsDoMocks.mockConcept(ITEM_2_CODE, conceptScheme1, null));
-                    concepts.add(ConceptsDoMocks.mockConcept(ITEM_3_CODE, conceptScheme1, null));
+                    concepts.add(ConceptsDoMocks.mockConcept(ITEM_3_CODE, conceptScheme1, concepts.get(1)));
                     concepts.add(ConceptsDoMocks.mockConcept(ITEM_1_CODE, conceptScheme2, null));
 
                     return new PagedResult<ConceptMetamac>(concepts, concepts.size(), concepts.size(), concepts.size(), concepts.size() * 10, 0);

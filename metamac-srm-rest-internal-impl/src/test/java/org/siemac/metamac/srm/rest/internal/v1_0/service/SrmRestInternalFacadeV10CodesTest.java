@@ -933,7 +933,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
                     List<CodeMetamac> codes = new ArrayList<CodeMetamac>();
                     codes.add(CodesDoMocks.mockCode(ITEM_1_CODE, codelist1, null));
                     codes.add(CodesDoMocks.mockCode(ITEM_2_CODE, codelist1, null));
-                    codes.add(CodesDoMocks.mockCode(ITEM_3_CODE, codelist1, null));
+                    codes.add(CodesDoMocks.mockCode(ITEM_3_CODE, codelist1, codes.get(1)));
                     codes.add(CodesDoMocks.mockCode(ITEM_1_CODE, codelist2, null));
 
                     return new PagedResult<CodeMetamac>(codes, codes.size(), codes.size(), codes.size(), codes.size() * 10, 0);
@@ -942,7 +942,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         });
     }
 
-    private void mockFindCodesByNativeSqlQuery() throws MetamacException {
+    private void mockRetrieveCodesByCodelistUrnOrderedInDepth() throws MetamacException {
         when(codesService.retrieveCodesByCodelistUrnOrderedInDepth(any(ServiceContext.class), any(String.class), any(ItemMetamacResultSelection.class), any(String.class))).thenAnswer(
                 new Answer<List<ItemResult>>() {
 
@@ -1140,7 +1140,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         mockRetrieveItemSchemeVersionByVersion();
         mockFindCodelistsByCondition();
         mockFindCodesByCondition();
-        mockFindCodesByNativeSqlQuery();
+        mockRetrieveCodesByCodelistUrnOrderedInDepth();
         mockFindVariableFamiliesByCondition();
         mockFindVariablesByCondition();
         mockFindCodelistFamiliesByCondition();

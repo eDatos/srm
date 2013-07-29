@@ -6,6 +6,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
@@ -25,7 +26,7 @@ public interface CodesDo2RestMapperV10 {
     public Codes toCodes(PagedResult<CodeMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
     public Codes toCodes(List<ItemResult> sources, CodelistVersionMetamac codelistVersion);
     public Code toCode(CodeMetamac source);
-    public ResourceInternal toResource(CodeMetamac source);
+    public ItemResourceInternal toResource(CodeMetamac source);
 
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies toVariableFamilies(PagedResult<VariableFamily> sources, String query, String orderBy, Integer limit);
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily toVariableFamily(VariableFamily source) throws MetamacException;

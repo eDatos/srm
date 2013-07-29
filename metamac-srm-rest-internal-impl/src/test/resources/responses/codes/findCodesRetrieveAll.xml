@@ -32,6 +32,7 @@
         </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code2A</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=code2A</sr:managementAppLink>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code2</sr:parent>
     </sr:code>
     <sr:code kind="structuralResources#code">
         <cdomain:id>code2B</cdomain:id>
@@ -43,5 +44,6 @@
         </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code2B</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=code2B</sr:managementAppLink>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code2</sr:parent>
     </sr:code>
 </sr:codes>

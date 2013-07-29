@@ -179,7 +179,9 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         if (source == null) {
             return null;
         }
-        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_DATA_STRUCTURE, toDataStructureSelfLink(source), toDataStructureManagementApplicationLink(source));
+        ResourceInternal target = new ResourceInternal();
+        toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_DATA_STRUCTURE, toDataStructureSelfLink(source), toDataStructureManagementApplicationLink(source), target);
+        return target;
     }
 
     private String toDataStructuresLink(String agencyID, String resourceID, String version) {

@@ -21,6 +21,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ReplaceToCodelist;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ReplaceToVariable;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
@@ -130,7 +131,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (CodeMetamac source : sourcesPagedResult.getValues()) {
-            ResourceInternal target = toResource(source);
+            ItemResourceInternal target = toResource(source);
             targets.getCodes().add(target);
         }
         return targets;
@@ -148,7 +149,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (ItemResult source : sources) {
-            ResourceInternal target = toResource(source, codelistVersion);
+            ItemResourceInternal target = toResource(source, codelistVersion);
             targets.getCodes().add(target);
         }
         return targets;
@@ -185,18 +186,22 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @Override
-    public ResourceInternal toResource(CodeMetamac source) {
+    public ItemResourceInternal toResource(CodeMetamac source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source));
+        ItemResourceInternal target = new ItemResourceInternal();
+        toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target);
+        return target;
     }
 
-    private ResourceInternal toResource(ItemResult source, CodelistVersionMetamac codelistVersion) {
+    private ItemResourceInternal toResource(ItemResult source, CodelistVersionMetamac codelistVersion) {
         if (source == null) {
             return null;
         }
-        return toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), toCodeManagementApplicationLink(codelistVersion, source));
+        ItemResourceInternal target = new ItemResourceInternal();
+        toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), toCodeManagementApplicationLink(codelistVersion, source), target);
+        return target;
     }
 
     @Override
@@ -303,7 +308,9 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         if (source == null) {
             return null;
         }
-        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE, toVariableSelfLink(source), toVariableManagementApplicationLink(source));
+        ResourceInternal target = new ResourceInternal();
+        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE, toVariableSelfLink(source), toVariableManagementApplicationLink(source), target);
+        return target;
     }
 
     @Override
@@ -392,21 +399,27 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         if (source == null) {
             return null;
         }
-        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CODELIST, toCodelistSelfLink(source), toCodelistManagementApplicationLink(source));
+        ResourceInternal target = new ResourceInternal();
+        toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CODELIST, toCodelistSelfLink(source), toCodelistManagementApplicationLink(source), target);
+        return target;
     }
 
     private ResourceInternal toResource(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source), toVariableFamilyManagementApplicationLink(source));
+        ResourceInternal target = new ResourceInternal();
+        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source), toVariableFamilyManagementApplicationLink(source), target);
+        return target;
     }
 
     private ResourceInternal toResource(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source), toCodelistFamilyManagementApplicationLink(source));
+        ResourceInternal target = new ResourceInternal();
+        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source), toCodelistFamilyManagementApplicationLink(source), target);
+        return target;
     }
 
     private String toCodelistsLink(String agencyID, String resourceID, String version) {

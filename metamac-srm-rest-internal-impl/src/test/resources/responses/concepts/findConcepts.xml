@@ -32,6 +32,7 @@
         </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).item3</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency1:itemScheme1(01.000)/concept;id=item3</sr:managementAppLink>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).item2</sr:parent>
     </sr:concept>
     <sr:concept kind="structuralResources#concept">
         <cdomain:id>item1</cdomain:id>

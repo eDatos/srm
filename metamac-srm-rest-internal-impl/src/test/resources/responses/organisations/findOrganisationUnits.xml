@@ -32,6 +32,7 @@
         </cdomain:name>
         <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agency1:itemScheme1(01.000).item3</sr:urnInternal>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=item3</sr:managementAppLink>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agency1:itemScheme1(01.000).item2</sr:parent>
     </sr:organisationUnit>
     <sr:organisationUnit kind="structuralResources#organisationUnit">
         <cdomain:id>item1</cdomain:id>

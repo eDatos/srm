@@ -19,6 +19,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Quantity;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityAmount;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityChangeRate;
@@ -127,7 +128,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
 
         // Values
         for (ConceptMetamac source : sourcesPagedResult.getValues()) {
-            ResourceInternal target = toResource(source);
+            ItemResourceInternal target = toResource(source);
             targets.getConcepts().add(target);
         }
         return targets;
@@ -145,7 +146,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
 
         // Values
         for (ItemResult source : sources) {
-            ResourceInternal target = toResource(source, conceptSchemeVersion);
+            ItemResourceInternal target = toResource(source, conceptSchemeVersion);
             targets.getConcepts().add(target);
         }
         return targets;
@@ -275,21 +276,27 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         if (source == null) {
             return null;
         }
-        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CONCEPT_SCHEME, toConceptSchemeSelfLink(source), toConceptSchemeManagementApplicationLink(source));
+        ResourceInternal target = new ResourceInternal();
+        toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CONCEPT_SCHEME, toConceptSchemeSelfLink(source), toConceptSchemeManagementApplicationLink(source), target);
+        return target;
     }
 
-    private ResourceInternal toResource(ConceptMetamac source) {
+    private ItemResourceInternal toResource(ConceptMetamac source) {
         if (source == null) {
             return null;
         }
-        return toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source), toConceptManagementApplicationLink(source));
+        ItemResourceInternal target = new ItemResourceInternal();
+        toResource(source, RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source), toConceptManagementApplicationLink(source), target);
+        return target;
     }
 
-    private ResourceInternal toResource(ItemResult source, ConceptSchemeVersionMetamac conceptSchemeVersion) {
+    private ItemResourceInternal toResource(ItemResult source, ConceptSchemeVersionMetamac conceptSchemeVersion) {
         if (source == null) {
             return null;
         }
-        return toResource(source, RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source, conceptSchemeVersion), toConceptManagementApplicationLink(conceptSchemeVersion, source));
+        ItemResourceInternal target = new ItemResourceInternal();
+        toResource(source, RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source, conceptSchemeVersion), toConceptManagementApplicationLink(conceptSchemeVersion, source), target);
+        return target;
     }
 
     private RoleConcepts toRoleConcepts(ConceptMetamac concept) {
@@ -300,7 +307,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         targets.setKind(RestInternalConstants.KIND_CONCEPTS);
 
         for (ConceptMetamac source : concept.getRoleConcepts()) {
-            ResourceInternal target = toResource(source);
+            ItemResourceInternal target = toResource(source);
             targets.getRoles().add(target);
         }
         targets.setTotal(BigInteger.valueOf(targets.getRoles().size()));
@@ -315,7 +322,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         targets.setKind(RestInternalConstants.KIND_CONCEPTS);
 
         for (ConceptMetamac source : concept.getRelatedConcepts()) {
-            ResourceInternal target = toResource(source);
+            ItemResourceInternal target = toResource(source);
             targets.getRelatedConcepts().add(target);
         }
         targets.setTotal(BigInteger.valueOf(targets.getRelatedConcepts().size()));

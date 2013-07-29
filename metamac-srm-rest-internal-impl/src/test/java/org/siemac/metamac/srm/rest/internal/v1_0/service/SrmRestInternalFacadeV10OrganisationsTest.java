@@ -208,7 +208,8 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
 
                         items.add(OrganisationsDoMocks.mockOrganisation(ITEM_1_CODE, itemScheme1, null, organisationTypeEnum));
                         items.add(OrganisationsDoMocks.mockOrganisation(ITEM_2_CODE, itemScheme1, null, organisationTypeEnum));
-                        items.add(OrganisationsDoMocks.mockOrganisation(ITEM_3_CODE, itemScheme1, null, organisationTypeEnum));
+                        items.add(OrganisationsDoMocks.mockOrganisation(ITEM_3_CODE, itemScheme1, OrganisationTypeEnum.ORGANISATION_UNIT.equals(organisationTypeEnum) ? items.get(1) : null,
+                                organisationTypeEnum));
                         items.add(OrganisationsDoMocks.mockOrganisation(ITEM_1_CODE, itemScheme2, null, organisationTypeEnum));
                     } else {
                         // different types
@@ -236,10 +237,12 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
                         // any
                         ItemResult organisation1 = OrganisationsDoMocks.mockOrganisationItemResult("organisation1", null, organisationType);
                         ItemResult organisation2 = OrganisationsDoMocks.mockOrganisationItemResult("organisation2", null, organisationType);
-                        ItemResult organisation2A = OrganisationsDoMocks.mockOrganisationItemResult("organisation2A", OrganisationTypeEnum.AGENCY.equals(organisationType) ? organisation2 : null,
-                                organisationType);
-                        ItemResult organisation2B = OrganisationsDoMocks.mockOrganisationItemResult("organisation2B", OrganisationTypeEnum.AGENCY.equals(organisationType) ? organisation2 : null,
-                                organisationType);
+                        ItemResult organisation2A = OrganisationsDoMocks.mockOrganisationItemResult("organisation2A", OrganisationTypeEnum.ORGANISATION_UNIT.equals(organisationType)
+                                ? organisation2
+                                : null, organisationType);
+                        ItemResult organisation2B = OrganisationsDoMocks.mockOrganisationItemResult("organisation2B", OrganisationTypeEnum.ORGANISATION_UNIT.equals(organisationType)
+                                ? organisation2
+                                : null, organisationType);
                         return Arrays.asList(organisation1, organisation2, organisation2A, organisation2B);
                     };
                 });

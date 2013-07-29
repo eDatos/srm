@@ -12,6 +12,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categor
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Category;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategoryScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategorySchemes;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
@@ -100,7 +101,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
 
         // Values
         for (CategoryMetamac source : sourcesPagedResult.getValues()) {
-            ResourceInternal target = toResource(source);
+            ItemResourceInternal target = toResource(source);
             targets.getCategories().add(target);
         }
         return targets;
@@ -118,7 +119,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
 
         // Values
         for (ItemResult source : sources) {
-            ResourceInternal target = toResource(source, categorySchemeVersion);
+            ItemResourceInternal target = toResource(source, categorySchemeVersion);
             targets.getCategories().add(target);
         }
         return targets;
@@ -241,24 +242,27 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
         if (source == null) {
             return null;
         }
-        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CATEGORY_SCHEME, toCategorySchemeSelfLink(source), toCategorySchemeManagementApplicationLink(source));
+        ResourceInternal target = new ResourceInternal();
+        toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CATEGORY_SCHEME, toCategorySchemeSelfLink(source), toCategorySchemeManagementApplicationLink(source), target);
+        return target;
     }
 
-    private ResourceInternal toResource(CategoryMetamac source) {
+    private ItemResourceInternal toResource(CategoryMetamac source) {
         if (source == null) {
             return null;
         }
-        ResourceInternal target = new ResourceInternal();
-        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CATEGORY, toCategorySelfLink(source), toCategoryManagementApplicationLink(source), target);
+        ItemResourceInternal target = new ItemResourceInternal();
+        toResource(source, RestInternalConstants.KIND_CATEGORY, toCategorySelfLink(source), toCategoryManagementApplicationLink(source), target);
         target.setNestedId(source.getNameableArtefact().getCodeFull());
         return target;
     }
-    private ResourceInternal toResource(ItemResult source, CategorySchemeVersionMetamac categorySchemeVersion) {
+
+    private ItemResourceInternal toResource(ItemResult source, CategorySchemeVersionMetamac categorySchemeVersion) {
         if (source == null) {
             return null;
         }
-        ResourceInternal target = toResource(source, RestInternalConstants.KIND_CATEGORY, toCategorySelfLink(source, categorySchemeVersion),
-                toCategoryManagementApplicationLink(categorySchemeVersion, source));
+        ItemResourceInternal target = new ItemResourceInternal();
+        toResource(source, RestInternalConstants.KIND_CATEGORY, toCategorySelfLink(source, categorySchemeVersion), toCategoryManagementApplicationLink(categorySchemeVersion, source), target);
         target.setNestedId(source.getCodeFull());
         return target;
     }
@@ -267,7 +271,9 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
         if (source == null) {
             return null;
         }
-        return toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CATEGORISATION, toCategorisationSelfLink(source), null);
+        ResourceInternal target = new ResourceInternal();
+        toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CATEGORISATION, toCategorisationSelfLink(source), null, target);
+        return target;
     }
 
     private String toCategorySchemesLink(String agencyID, String resourceID, String version) {
