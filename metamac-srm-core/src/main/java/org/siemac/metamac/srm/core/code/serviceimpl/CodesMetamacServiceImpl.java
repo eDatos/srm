@@ -2137,6 +2137,17 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
+    public CodelistOrderVisualisation retrieveCodelistOrderVisualisationByCode(ServiceContext ctx, String codelistUrn, String code) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveCodelistOrderVisualisationByCode(codelistUrn, code, null);
+
+        // Retrieve
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+        CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByCode(codelistVersion, code);
+        return codelistOrderVisualisation;
+    }
+
+    @Override
     public CodelistOrderVisualisation updateCodelistOrderVisualisation(ServiceContext ctx, CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkUpdateCodelistOrderVisualisation(codelistOrderVisualisation, null);
@@ -2223,6 +2234,17 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Retrieve
         CodelistOpennessVisualisation codelistOpennessVisualisation = retrieveCodelistOpennessVisualisationByUrn(urn);
+        return codelistOpennessVisualisation;
+    }
+
+    @Override
+    public CodelistOpennessVisualisation retrieveCodelistOpennessVisualisationByCode(ServiceContext ctx, String codelistUrn, String code) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkRetrieveCodelistOpennessVisualisationByCode(codelistUrn, code, null);
+
+        // Retrieve
+        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+        CodelistOpennessVisualisation codelistOpennessVisualisation = retrieveCodelistOpennessVisualisationByCode(codelistVersion, code);
         return codelistOpennessVisualisation;
     }
 

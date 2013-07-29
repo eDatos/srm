@@ -6889,6 +6889,21 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     @Test
+    public void testRetrieveCodelistOrderVisualisationByCode() throws Exception {
+        // Retrieve
+        String codelistUrn = CODELIST_1_V2;
+        String orderVisualisationCode = "ALPHABETICAL";
+        CodelistOrderVisualisation codelistOrderVisualisation = codesService.retrieveCodelistOrderVisualisationByCode(getServiceContextAdministrador(), codelistUrn, orderVisualisationCode);
+
+        // Validate
+        assertNotNull(codelistOrderVisualisation);
+        assertEquals(orderVisualisationCode, codelistOrderVisualisation.getNameableArtefact().getCode());
+        assertEquals(CODELIST_1_V2_ORDER_VISUALISATION_01_ALPHABETICAL, codelistOrderVisualisation.getNameableArtefact().getUrn());
+        assertEquals(codelistUrn, codelistOrderVisualisation.getCodelistVersion().getMaintainableArtefact().getUrn());
+    }
+
+    @Override
+    @Test
     public void testCreateCodelistOrderVisualisation() throws Exception {
         ServiceContext ctx = getServiceContextAdministrador();
 
@@ -7650,6 +7665,22 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEqualsDate("2011-01-01 01:02:03", codelistOpennessVisualisation.getCreatedDate());
         assertEquals("user2", codelistOpennessVisualisation.getLastUpdatedBy());
         assertEqualsDate("2011-01-22 01:02:03", codelistOpennessVisualisation.getLastUpdated());
+    }
+
+    @Override
+    @Test
+    public void testRetrieveCodelistOpennessVisualisationByCode() throws Exception {
+        // Retrieve
+        String codelistUrn = CODELIST_1_V2;
+        String opennessVisualisationCode = "ALL_EXPANDED";
+        CodelistOpennessVisualisation codelistOpennessVisualisation = codesService
+                .retrieveCodelistOpennessVisualisationByCode(getServiceContextAdministrador(), codelistUrn, opennessVisualisationCode);
+
+        // Validate
+        assertNotNull(codelistOpennessVisualisation);
+        assertEquals(opennessVisualisationCode, codelistOpennessVisualisation.getNameableArtefact().getCode());
+        assertEquals(CODELIST_1_V2_OPENNESS_VISUALISATION_01_ALL_EXPANDED, codelistOpennessVisualisation.getNameableArtefact().getUrn());
+        assertEquals(codelistUrn, codelistOpennessVisualisation.getCodelistVersion().getMaintainableArtefact().getUrn());
     }
 
     @Override

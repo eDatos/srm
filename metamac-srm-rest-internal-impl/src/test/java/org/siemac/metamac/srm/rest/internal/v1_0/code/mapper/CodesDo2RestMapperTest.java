@@ -318,9 +318,9 @@ public class CodesDo2RestMapperTest {
 
         CodelistVersionMetamac codelist = mockCodelist(agencyID, codelistID, version);
         List<ItemResult> sources = new ArrayList<ItemResult>();
-        sources.add(mockCodeItemResult(ITEM_1_CODE, null));
-        sources.add(mockCodeItemResult(ITEM_2_CODE, null));
-        sources.add(mockCodeItemResult(ITEM_3_CODE, null));
+        sources.add(mockCodeItemResult(ITEM_1_CODE, null, 1, true));
+        sources.add(mockCodeItemResult(ITEM_2_CODE, null, 2, true));
+        sources.add(mockCodeItemResult(ITEM_3_CODE, null, 3, false));
 
         // Transform
         Codes target = do2RestInternalMapper.toCodes(sources, codelist);

@@ -381,7 +381,9 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     public void testFindCodesRetrieveAll() throws Exception {
 
         resetMocks();
-        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null);
+        String order = "ORDER1";
+        String openness = "OPENNESS1";
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null, order, openness);
 
         assertNotNull(codes);
         assertEquals(RestInternalConstants.KIND_CODES, codes.getKind());
@@ -391,13 +393,16 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         ArgumentCaptor<String> codeSchemeUrnArgument = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<ItemMetamacResultSelection> itemResultSelectionArgument = ArgumentCaptor.forClass(ItemMetamacResultSelection.class);
         ArgumentCaptor<String> orderArgument = ArgumentCaptor.forClass(String.class);
-        verify(codesService).retrieveCodesByCodelistUrnOrderedInDepth(any(ServiceContext.class), codeSchemeUrnArgument.capture(), itemResultSelectionArgument.capture(), orderArgument.capture());
+        ArgumentCaptor<String> opennessArgument = ArgumentCaptor.forClass(String.class);
+        verify(codesService).retrieveCodesByCodelistUrnOrderedInDepth(any(ServiceContext.class), codeSchemeUrnArgument.capture(), itemResultSelectionArgument.capture(), orderArgument.capture(),
+                opennessArgument.capture());
         assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:itemScheme1(01.000)", codeSchemeUrnArgument.getValue());
         assertEquals(true, itemResultSelectionArgument.getValue().isNames());
         assertEquals(false, itemResultSelectionArgument.getValue().isDescriptions());
         assertEquals(false, itemResultSelectionArgument.getValue().isComments());
         assertEquals(false, itemResultSelectionArgument.getValue().isAnnotations());
-        assertEquals(null, orderArgument.getValue()); // TODO order
+        assertEquals(order, orderArgument.getValue());
+        assertEquals(openness, opennessArgument.getValue());
     }
 
     @Test
@@ -835,7 +840,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     private void testFindCodes(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
-        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(agencyID, resourceID, version, query, orderBy, limit, offset);
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(agencyID, resourceID, version, query, orderBy, limit, offset, null, null);
 
         assertNotNull(codes);
         assertEquals(RestInternalConstants.KIND_CODES, codes.getKind());
@@ -943,16 +948,16 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     }
 
     private void mockRetrieveCodesByCodelistUrnOrderedInDepth() throws MetamacException {
-        when(codesService.retrieveCodesByCodelistUrnOrderedInDepth(any(ServiceContext.class), any(String.class), any(ItemMetamacResultSelection.class), any(String.class))).thenAnswer(
-                new Answer<List<ItemResult>>() {
+        when(codesService.retrieveCodesByCodelistUrnOrderedInDepth(any(ServiceContext.class), any(String.class), any(ItemMetamacResultSelection.class), any(String.class), any(String.class)))
+                .thenAnswer(new Answer<List<ItemResult>>() {
 
                     @Override
                     public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {
                         // any
-                        ItemResult code1 = CodesDoMocks.mockCodeItemResult("code1", null);
-                        ItemResult code2 = CodesDoMocks.mockCodeItemResult("code2", null);
-                        ItemResult code2A = CodesDoMocks.mockCodeItemResult("code2A", code2);
-                        ItemResult code2B = CodesDoMocks.mockCodeItemResult("code2B", code2);
+                        ItemResult code1 = CodesDoMocks.mockCodeItemResult("code1", null, 0, true);
+                        ItemResult code2 = CodesDoMocks.mockCodeItemResult("code2", null, 1, false);
+                        ItemResult code2A = CodesDoMocks.mockCodeItemResult("code2A", code2, 0, true);
+                        ItemResult code2B = CodesDoMocks.mockCodeItemResult("code2B", code2, 1, true);
                         return Arrays.asList(code1, code2, code2A, code2B);
                     };
                 });

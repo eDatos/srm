@@ -138,8 +138,10 @@ Application CodesMetamac {
     		@CodelistVersionMetamac createCodelistOrderVisualisationAlphabetical(@CodelistVersionMetamac codelistVersion) throws MetamacException;
 			"Updates order visualisation"
 			@CodelistOrderVisualisation updateCodelistOrderVisualisation(@CodelistOrderVisualisation codelistOrderVisualisation) throws MetamacException;
-    		"Retrieves order visualisation by identifier"
+    		"Retrieves order visualisation by urn"
     		@CodelistOrderVisualisation retrieveCodelistOrderVisualisationByUrn(String urn) throws MetamacException;
+    		"Retrieves order visualisation by identifier"
+    		@CodelistOrderVisualisation retrieveCodelistOrderVisualisationByCode(String codelistUrn, String code) throws MetamacException;
     		"Retrieve order visualisations by codelist"
     		List<@CodelistOrderVisualisation> retrieveCodelistOrderVisualisationsByCodelist(String codelistUrn)  throws MetamacException;
 			"Deletes order visualisation"
@@ -154,6 +156,8 @@ Application CodesMetamac {
 			@CodelistOpennessVisualisation updateCodelistOpennessVisualisation(@CodelistOpennessVisualisation codelistOpennessVisualisation) throws MetamacException;
     		"Retrieves openness visualisation by identifier"
     		@CodelistOpennessVisualisation retrieveCodelistOpennessVisualisationByUrn(String urn) throws MetamacException;
+    		"Retrieves openness visualisation by identifier"
+    		@CodelistOpennessVisualisation retrieveCodelistOpennessVisualisationByCode(String codelistUrn, String code) throws MetamacException;
     		"Retrieve openness visualisations by codelist"
     		List<@CodelistOpennessVisualisation> retrieveCodelistOpennessVisualisationsByCodelist(String codelistUrn)  throws MetamacException;
 			"Deletes openness visualisation"

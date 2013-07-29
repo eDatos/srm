@@ -123,6 +123,17 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkRetrieveCodelistOrderVisualisationByCode(String codelistUrn, String code, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(code, ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     public static void checkUpdateCodeInOrderVisualisation(String codeUrn, String codelistOrderVisualisationUrn, Integer newCodeIndex, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
@@ -131,6 +142,17 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ValidationUtils.checkParameterRequired(codeUrn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(codelistOrderVisualisationUrn, ServiceExceptionParameters.URN, exceptions);
         ValidationUtils.checkParameterRequired(newCodeIndex, ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION_INDEX, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkRetrieveCodelistOpennessVisualisationByCode(String codelistUrn, String code, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(code, ServiceExceptionParameters.CODELIST_OPENNESS_VISUALISATION, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

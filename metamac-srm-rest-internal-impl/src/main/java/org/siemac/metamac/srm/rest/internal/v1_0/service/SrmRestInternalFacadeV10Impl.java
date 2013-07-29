@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
@@ -67,6 +68,8 @@ import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
@@ -74,6 +77,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -824,11 +828,14 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public Codes findCodes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+    public Codes findCodes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset, String order, String openness) {
         try {
             checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
             if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
+                checkParameterEmpty(RestInternalConstants.PARAMETER_ORDER_ID, order);
+                checkParameterEmpty(RestInternalConstants.PARAMETER_OPENNESS_ID, openness);
+
                 // Find. Retrieve codes paginated
                 SculptorCriteria sculptorCriteria = codesRest2DoMapper.getCodeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
                 PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
@@ -839,8 +846,19 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             } else {
                 // Retrieve all codes of codelist, without pagination
                 CodelistVersionMetamac codelistVersion = retrieveCodelistPublished(agencyID, resourceID, version);
-                // TODO order visualisation and openness
-                List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), itemResultSelection, null);
+                if (order == null) {
+                    order = codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getCode();
+                } else {
+                    // check exist
+                    retrieveCodelistOrderVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), order);
+                }
+                if (openness == null) {
+                    openness = codelistVersion.getDefaultOpennessVisualisation().getNameableArtefact().getCode();
+                } else {
+                    // check exist
+                    retrieveCodelistOpennessVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), openness);
+                }
+                List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), itemResultSelection, order, openness);
 
                 // Transform
                 Codes codes = codesDo2RestMapper.toCodes(items, codelistVersion);
@@ -1306,6 +1324,36 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return entitiesPagedResult.getValues().get(0);
     }
 
+    private CodelistOrderVisualisation retrieveCodelistOrderVisualisation(String agencyID, String resourceID, String version, String codelistUrn, String order) throws MetamacException {
+        try {
+            CodelistOrderVisualisation codelistOrderVisualisation = codesService.retrieveCodelistOrderVisualisationByCode(ctx, codelistUrn, order);
+            return codelistOrderVisualisation;
+        } catch (MetamacException e) {
+            if (e.getExceptionItems().size() == 1 && ServiceExceptionType.CODELIST_ORDER_VISUALISATION_NOT_FOUND.getCode().equals(e.getExceptionItems().get(0).getCode())) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODELIST_ORDER_CONFIGURATION_NOT_FOUND, order, resourceID,
+                        version, agencyID);
+                throw new RestException(exception, Status.NOT_FOUND);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    private CodelistOpennessVisualisation retrieveCodelistOpennessVisualisation(String agencyID, String resourceID, String version, String codelistUrn, String openness) throws MetamacException {
+        try {
+            CodelistOpennessVisualisation codelistOpennessVisualisation = codesService.retrieveCodelistOpennessVisualisationByCode(ctx, codelistUrn, openness);
+            return codelistOpennessVisualisation;
+        } catch (MetamacException e) {
+            if (e.getExceptionItems().size() == 1 && ServiceExceptionType.CODELIST_OPENNESS_VISUALISATION_NOT_FOUND.getCode().equals(e.getExceptionItems().get(0).getCode())) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CODELIST_OPENNESS_CONFIGURATION_NOT_FOUND, openness,
+                        resourceID, version, agencyID);
+                throw new RestException(exception, Status.NOT_FOUND);
+            } else {
+                throw e;
+            }
+        }
+    }
+
     private PagedResult<CodelistVersionMetamac> findCodelistsCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
             PagingParameter pagingParameter) throws MetamacException {
 
@@ -1483,6 +1531,16 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
      */
     private void checkParameterNotWildcardAll(String parameterName, String parameterValue) {
         if (RestInternalConstants.WILDCARD_ALL.equals(parameterValue)) {
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, parameterName);
+            throw new RestException(exception, Status.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * Check parameter is empty
+     */
+    private void checkParameterEmpty(String parameterName, String parameterValue) {
+        if (!StringUtils.isBlank(parameterValue)) {
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, parameterName);
             throw new RestException(exception, Status.BAD_REQUEST);
         }

@@ -16,6 +16,7 @@ import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AccessType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodeResource;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamily;
@@ -41,6 +42,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
+import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
@@ -139,7 +141,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (CodeMetamac source : sourcesPagedResult.getValues()) {
-            ItemResourceInternal target = toResource(source);
+            CodeResource target = toCodeResource(source);
             targets.getCodes().add(target);
         }
         return targets;
@@ -157,7 +159,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (ItemResult source : sources) {
-            ItemResourceInternal target = toResource(source, codelistVersion);
+            CodeResource target = toCodeResource(source, codelistVersion);
             targets.getCodes().add(target);
         }
         return targets;
@@ -203,12 +205,26 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    private ItemResourceInternal toResource(ItemResult source, CodelistVersionMetamac codelistVersion) {
+    private CodeResource toCodeResource(CodeMetamac source) {
         if (source == null) {
             return null;
         }
-        ItemResourceInternal target = new ItemResourceInternal();
+        CodeResource target = new CodeResource();
+        toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target);
+        // following information is retrieved only one retrieve efficiently all codes in codelist
+        target.setOrder(null);
+        target.setOpen(null);
+        return target;
+    }
+
+    private CodeResource toCodeResource(ItemResult source, CodelistVersionMetamac codelistVersion) {
+        if (source == null) {
+            return null;
+        }
+        CodeResource target = new CodeResource();
         toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), toCodeManagementApplicationLink(codelistVersion, source), target);
+        target.setOrder(SrmServiceUtils.getCodeItemResultOrder(source) + 1); // add 1 to start in 1, instead of 0
+        target.setOpen(SrmServiceUtils.getCodeItemResultOpenness(source));
         return target;
     }
 

@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.code.utils;
 
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -35,11 +36,16 @@ public class CodesDoMocks {
         return CodesMetamacDoMocks.mockCodeFixedValues(resourceID, codelist, parent);
     }
 
-    public static ItemResult mockCodeItemResult(String resourceID, ItemResult parent) {
+    public static ItemResult mockCodeItemResult(String resourceID, ItemResult parent, Integer order, Boolean open) {
         ItemResult itemResult = CodesMetamacDoMocks.mockCodeResultFixedValues(resourceID, parent);
         itemResult.setUriProvider(null);
         itemResult.setUrn(itemResult.getUrn().replace("urn:sdmx:org.sdmx.infomodel.xxx=", "urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000)."));
         itemResult.setUrnProvider(itemResult.getUrn());
+
+        CodeMetamacResultExtensionPoint extensionPoint = new CodeMetamacResultExtensionPoint();
+        itemResult.setExtensionPoint(extensionPoint);
+        extensionPoint.setOpenness(open);
+        extensionPoint.setOrder(order);
         return itemResult;
     }
 
