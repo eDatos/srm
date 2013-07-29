@@ -8870,8 +8870,8 @@
     
     <TB_LOCALISED_STRINGS
         ID="1301"
-        LABEL="alfabético"
-        LOCALE="es"
+        LABEL="alphabetical"
+        LOCALE="en"
         VERSION="1"
         INTERNATIONAL_STRING_FK="130"
     />   

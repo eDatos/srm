@@ -289,7 +289,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (codelistVersionMetamac.getMaintainableArtefact().getIsCodeUpdated()) {
             // IMPORTANT: Update order and open urn efficiently to avoid one update for each code
             getCodelistOrderVisualisationRepository().updateUrnAllCodelistOrderVisualisationsByCodelistEfficiently(codelistVersionMetamac, oldUrn);
-            getCodelistOpennessVisualisationRepository().updateUrnAllCodelistOpenVisualisationsByCodelistEfficiently(codelistVersionMetamac, oldUrn);
+            getCodelistOpennessVisualisationRepository().updateUrnAllCodelistOpennessVisualisationsByCodelistEfficiently(codelistVersionMetamac, oldUrn);
         }
 
         // Save codelist
@@ -1437,6 +1437,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public void checkCodelistVersionTranslations(ServiceContext ctx, Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByResourceUrn) throws MetamacException {
         getCodelistVersionMetamacRepository().checkCodelistVersionTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
+        getCodelistOpennessVisualisationRepository().checkCodelistOpennessVisualisationTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
+        getCodelistOrderVisualisationRepository().checkCodelistOrderVisualisationTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
         getCodeMetamacRepository().checkCodeTranslations(itemSchemeVersionId, locale, exceptionItemsByResourceUrn);
     }
 

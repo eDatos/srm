@@ -1,14 +1,20 @@
 package org.siemac.metamac.srm.core.code.repositoryimpl;
 
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
+import static com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils.addTranslationExceptionToExceptionItemsByResource;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.util.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -33,7 +39,7 @@ public class CodelistOpennessVisualisationRepositoryImpl extends CodelistOpennes
     }
 
     @Override
-    public void updateUrnAllCodelistOpenVisualisationsByCodelistEfficiently(CodelistVersionMetamac codelistVersionMetamac, String oldUrnExample) {
+    public void updateUrnAllCodelistOpennessVisualisationsByCodelistEfficiently(CodelistVersionMetamac codelistVersionMetamac, String oldUrnExample) {
 
         // Extract versionable Substring
         String replaceText = GeneratorUrnUtils.extractVersionableArtefactFragment(codelistVersionMetamac.getMaintainableArtefact().getUrn());
@@ -59,6 +65,28 @@ public class CodelistOpennessVisualisationRepositoryImpl extends CodelistOpennes
             query = getEntityManager().createNativeQuery(sb.toString());
             query.setParameter("codelistVersion", codelistVersionMetamac.getId());
             query.executeUpdate();
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public void checkCodelistOpennessVisualisationTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT distinct(a.URN) ");
+        sb.append("FROM TB_M_CODELIST_OPENNESS_VIS ov ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on ov.NAMEABLE_ARTEFACT_FK = a.ID ");
+        sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls on ls.INTERNATIONAL_STRING_FK = a.NAME_FK and ls.LOCALE = :locale ");
+        sb.append("WHERE ");
+        sb.append("ov.CODELIST_FK = :itemSchemeVersionId ");
+        sb.append("AND a.NAME_FK IS NOT NULL AND ls.LABEL IS NULL ");
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        query.setParameter("locale", locale);
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            String urn = getString(resultSql);
+            addTranslationExceptionToExceptionItemsByResource(exceptionItemsByUrn, urn, ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME);
         }
     }
 }

@@ -407,6 +407,7 @@ Application CodesMetamac {
 				@CodelistOrderVisualisation findByCode(Long codelistId, String orderVisualisationCode);
 				findByCondition(PagingParameter pagingParameter);
 				updateUrnAllCodelistOrderVisualisationsByCodelistEfficiently(@CodelistVersionMetamac codelistVersionMetamac, String oldUrnExample);
+				checkCodelistOrderVisualisationTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
 			}			
 		}	
 		
@@ -429,7 +430,8 @@ Application CodesMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@CodelistOpennessVisualisation findByUrn(String opennessVisualisationUrn);
-				updateUrnAllCodelistOpenVisualisationsByCodelistEfficiently(@CodelistVersionMetamac codelistVersionMetamac, String oldUrnExample);
+				updateUrnAllCodelistOpennessVisualisationsByCodelistEfficiently(@CodelistVersionMetamac codelistVersionMetamac, String oldUrnExample);
+				checkCodelistOpennessVisualisationTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
 			}			
 		}						
 
