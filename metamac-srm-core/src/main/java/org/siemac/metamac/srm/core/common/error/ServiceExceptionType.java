@@ -39,8 +39,10 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_ALREADY_AS_TARGET_IN_OPERATION                               = create("exception.srm.codelists.variable_element.already_as_target_in_operation");
     public static final CommonServiceExceptionType CODELIST_ALPHABETICAL_ORDER_OPERATION_NOT_SUPPORTED                           = create("exception.srm.codelists.order_visualisation.alphabetical.operation_not_supported");
     public static final CommonServiceExceptionType CODELIST_ORDER_VISUALISATION_MAXIMUM_REACHED                                  = create("exception.srm.codelists.order_visualisation.maximum_reached");
+    public static final CommonServiceExceptionType CODELIST_ORDER_VISUALISATION_NOT_FOUND                                        = create("exception.srm.codelists.order_visualisation.not_found");
     public static final CommonServiceExceptionType CODELIST_ALL_EXPANDED_OPENNESS_VISUALISATION_OPERATION_NOT_SUPPORTED          = create("exception.srm.codelists.openness_visualisation.all_expanded.operation_not_supported");
     public static final CommonServiceExceptionType CODELIST_OPENNESS_VISUALISATION_MAXIMUM_REACHED                               = create("exception.srm.codelists.openness_visualisation.maximum_reached");
+    public static final CommonServiceExceptionType CODELIST_OPENNESS_VISUALISATION_NOT_FOUND                                     = create("exception.srm.codelists.openness_visualisation.not_found");
     public static final CommonServiceExceptionType CODE_NOT_EXTERNALLY_PUBLISHED                                                 = create("exception.srm.codelists.code_not_externally_published");
     public static final CommonServiceExceptionType CODELIST_NOT_EXTERNALLY_PUBLISHED                                             = create("exception.srm.codelists.codelist_not_externally_published");
     public static final CommonServiceExceptionType CODE_VARIABLE_ELEMENT_REQUIRED_WHEN_GEOGRAPHICAL                              = create("exception.srm.codelists.code_variable_element_required_when_geographical");

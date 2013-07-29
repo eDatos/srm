@@ -62,6 +62,6 @@ public class CodesDo2JaxbSoapCallbackImpl implements CodesDo2JaxbCallback {
     @Override
     public List<ItemResult> findCodesByCodelistEfficiently(CodelistVersion codelistVersion) throws MetamacException {
         return codeRepository.findCodesByCodelistOrderedInDepth(codelistVersion.getId(), ((CodelistVersionMetamac) codelistVersion).getDefaultOrderVisualisation().getColumnIndex(),
-                codeMetamacResultSelection);
+                ((CodelistVersionMetamac) codelistVersion).getDefaultOpennessVisualisation().getColumnIndex(), codeMetamacResultSelection);
     }
 }

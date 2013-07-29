@@ -414,12 +414,20 @@ public class SrmServiceUtils extends SdmxSrmUtils {
         return extensionPoint.getVariableElementCode();
     }
 
-    public static String getCodeItemResultOrder(ItemResult itemResult) {
+    public static Integer getCodeItemResultOrder(ItemResult itemResult) {
         if (itemResult.getExtensionPoint() == null) {
             return null;
         }
         CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) itemResult.getExtensionPoint();
         return extensionPoint.getOrder();
+    }
+
+    public static Boolean getCodeItemResultOpenness(ItemResult itemResult) {
+        if (itemResult.getExtensionPoint() == null) {
+            return null;
+        }
+        CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        return extensionPoint.getOpenness();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

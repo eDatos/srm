@@ -115,7 +115,7 @@ Application CodesMetamac {
     		"Retrieves codes by codelist in locale and visualisation requested. If visualisation is not provided, tries retrieve codes in default visualisations"
     		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String codelistOrderVisualisationUrn, String codelistOpennessVisualisationUrn) throws MetamacException;
     		"Retrieves codes by codelist unordered"
-    		List<ItemResult> retrieveCodesByCodelistUrnOrderedInDepth(String codelistUrn, ItemMetamacResultSelection itemResultSelection, String orderVisualisationUrn) throws MetamacException;
+    		List<ItemResult> retrieveCodesByCodelistUrnOrderedInDepth(String codelistUrn, ItemMetamacResultSelection itemResultSelection, String orderVisualisationCode, String opennessVisualisationCode) throws MetamacException;
     		
 			"Copy codes to another codelist"
 	   		copyCodesInCodelist(String codelistSourceUrn, String codelistTargetUrn, List<CodeToCopy> codesToCopy) throws MetamacException;
@@ -363,7 +363,7 @@ Application CodesMetamac {
 				findByCondition(PagingParameter pagingParameter);
 				List<CodeMetamacVisualisationResult> findCodesByCodelistUnorderedToVisualisation(Long codelistId, String locale, Integer orderColumnIndex, Integer opennessColumnIndex) throws MetamacException;
 				List<ItemResult> findCodesByCodelistUnordered(Long codelistId, ItemMetamacResultSelection resultSelection) throws MetamacException;
-				List<ItemResult> findCodesByCodelistOrderedInDepth(Long codelistId, Integer orderColumnIndex, ItemMetamacResultSelection resultSelection) throws MetamacException;
+				List<ItemResult> findCodesByCodelistOrderedInDepth(Long codelistId, Integer orderColumnIndex, Integer opennessColumnIndex, ItemMetamacResultSelection resultSelection) throws MetamacException;
 				
 				checkCodeTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
 				checkCodesWithVariableElements(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
@@ -429,6 +429,7 @@ Application CodesMetamac {
 				delete;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
+				@CodelistOpennessVisualisation findByCode(Long codelistId, String opennessVisualisationUrn);
 				@CodelistOpennessVisualisation findByUrn(String opennessVisualisationUrn);
 				updateUrnAllCodelistOpennessVisualisationsByCodelistEfficiently(@CodelistVersionMetamac codelistVersionMetamac, String oldUrnExample);
 				checkCodelistOpennessVisualisationTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;

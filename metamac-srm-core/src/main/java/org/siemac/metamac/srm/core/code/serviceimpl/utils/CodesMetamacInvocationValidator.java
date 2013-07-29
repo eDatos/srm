@@ -160,13 +160,15 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkRetrieveCodesByCodelistUrnOrderedInDepth(String codelistUrn, ItemResultSelection itemResultSelection, String orderVisualisationUrn, List<MetamacExceptionItem> exceptions)
-            throws MetamacException {
+    public static void checkRetrieveCodesByCodelistUrnOrderedInDepth(String codelistUrn, ItemResultSelection itemResultSelection, String orderVisualisationCode, String opennessVisualisationCode,
+            List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(orderVisualisationCode, ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION, exceptions);
+        ValidationUtils.checkParameterRequired(opennessVisualisationCode, ServiceExceptionParameters.CODELIST_OPENNESS_VISUALISATION, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

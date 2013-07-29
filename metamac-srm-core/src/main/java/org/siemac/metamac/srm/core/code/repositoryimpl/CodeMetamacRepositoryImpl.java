@@ -30,6 +30,7 @@ import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
@@ -45,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
@@ -452,9 +454,17 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         }
         return codes;
     }
+
     @SuppressWarnings("rawtypes")
     @Override
-    public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, ItemMetamacResultSelection resultSelection) throws MetamacException {
+    public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Integer opennessColumnIndex, ItemMetamacResultSelection resultSelection)
+            throws MetamacException {
+
+        // Validation
+        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
+        ValidationUtils.checkMetadataRequired(orderColumnIndex, ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION, exceptions);
+        ValidationUtils.checkMetadataRequired(opennessColumnIndex, ServiceExceptionParameters.CODELIST_OPENNESS_VISUALISATION, exceptions);
+        ExceptionUtils.throwIfException(exceptions);
 
         // Find codes
         List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, resultSelection);
@@ -498,10 +508,12 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             }
         }
 
-        // Order
+        // Order and openness selected
+        executeQueryCodeVisualisationAndUpdateCodeMetamacResult(idCodelist, orderColumnIndex, opennessColumnIndex, mapCodeByItemId);
+
+        // Retrieve items id ordered
         String orderColumn = getOrderColumnName(orderColumnIndex);
         StringBuilder sb = new StringBuilder();
-        // Retrieve items id ordered
         if (srmConfiguration.isDatabaseOracle()) {
             sb.append("SELECT ITEM_ID, SYS_CONNECT_BY_PATH(lpad(COD_ORDER, " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + ", '0'), '.') ORDER_PATH ");
             sb.append("FROM ");
@@ -545,7 +557,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             ItemResult code = mapCodeByItemId.get(codeId);
             Object order = resultOrderArray[1];
             if (order != null) {
-                ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).setOrder(order.toString());
+                ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).setOrderConcatenatedByLevel(order.toString());
             }
             ordered.add(code);
         }
@@ -615,6 +627,29 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             String variableElementCode = getString(variableElementResultSqlArray[1]);
             ItemResult target = mapCodeByItemId.get(actualItemId);
             ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).setVariableElementCode(variableElementCode);
+        }
+    }
+
+    @SuppressWarnings({"rawtypes"})
+    private void executeQueryCodeVisualisationAndUpdateCodeMetamacResult(Long idCodelist, Integer orderColumnIndex, Integer opennessColumnIndex, Map<Long, ItemResult> mapCodeByItemId)
+            throws MetamacException {
+        String orderColumn = getOrderColumnName(orderColumnIndex);
+        String opennessColumn = getOpennessColumnName(opennessColumnIndex);
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT cb.ID as ITEM_ID, c." + orderColumn + ", c." + opennessColumn + " ");
+        sb.append("FROM TB_M_CODES c ");
+        sb.append("INNER JOIN TB_CODES cb on cb.ID = c.TB_CODES ");
+        sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion");
+        Query queryCodes = getEntityManager().createNativeQuery(sb.toString());
+        queryCodes.setParameter("codelistVersion", idCodelist);
+        List codesResultSql = queryCodes.getResultList();
+        for (Object codeResultSql : codesResultSql) {
+            Object[] codeResultSqlArray = (Object[]) codeResultSql;
+            int i = 0;
+            Long actualItemId = getLong(codeResultSqlArray[i++]);
+            ItemResult target = mapCodeByItemId.get(actualItemId);
+            ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).setOrder(getInteger(codeResultSqlArray[i++]));
+            ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).setOpenness(getBoolean(codeResultSqlArray[i++]));
         }
     }
 

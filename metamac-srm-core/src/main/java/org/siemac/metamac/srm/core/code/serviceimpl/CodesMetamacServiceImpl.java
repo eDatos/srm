@@ -958,7 +958,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
 
             // codes
-            List<ItemResult> items = getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, CodeMetamacResultSelection.EXPORT);
+            List<ItemResult> items = getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, null, CodeMetamacResultSelection.EXPORT);
             for (ItemResult itemResult : items) {
                 writer.write(SrmConstants.TSV_LINE_SEPARATOR);
                 // Code
@@ -1018,7 +1018,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         String defaultLanguage = srmConfiguration.retrieveLanguageDefault();
 
         // Retrieve items in depth
-        List<ItemResult> itemsResult = getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, CodeMetamacResultSelection.EXPORT_ORDERS);
+        List<ItemResult> itemsResult = getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, null, CodeMetamacResultSelection.EXPORT_ORDERS);
         // Retrieve all items to retrieve all orders
         List<Code> codes = codelistVersion.getItems();
         Map<Long, CodeMetamac> codesById = new HashMap<Long, CodeMetamac>(codes.size());
@@ -1356,10 +1356,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public List<ItemResult> retrieveCodesByCodelistUrnOrderedInDepth(ServiceContext ctx, String codelistUrn, ItemMetamacResultSelection itemResultSelection, String orderVisualisationUrn)
-            throws MetamacException {
+    public List<ItemResult> retrieveCodesByCodelistUrnOrderedInDepth(ServiceContext ctx, String codelistUrn, ItemMetamacResultSelection itemResultSelection, String orderVisualisationCode,
+            String opennessVisualisationCode) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkRetrieveCodesByCodelistUrnOrderedInDepth(codelistUrn, itemResultSelection, orderVisualisationUrn, null);
+        CodesMetamacInvocationValidator.checkRetrieveCodesByCodelistUrnOrderedInDepth(codelistUrn, itemResultSelection, orderVisualisationCode, opennessVisualisationCode, null);
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
 
@@ -1367,19 +1367,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             itemResultSelection = ItemMetamacResultSelection.RETRIEVE; // default
         }
 
-        Integer orderColumnIndex = null;
-        if (orderVisualisationUrn == null) {
-            orderVisualisationUrn = codelistVersion.getDefaultOrderVisualisation() != null ? codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn() : null;
-        }
-        if (orderVisualisationUrn != null) {
-            CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByUrn(ctx, orderVisualisationUrn);
-            orderColumnIndex = codelistOrderVisualisation.getColumnIndex();
-        }
+        CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByCode(codelistVersion, orderVisualisationCode);
+        Integer orderColumnIndex = codelistOrderVisualisation.getColumnIndex();
 
-        // TODO openness
+        CodelistOpennessVisualisation codelistOpennessVisualisation = retrieveCodelistOpennessVisualisationByCode(codelistVersion, opennessVisualisationCode);
+        Integer opennessColumnIndex = codelistOpennessVisualisation.getColumnIndex();
 
         // Retrieve
-        return getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, itemResultSelection);
+        return getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, opennessColumnIndex, itemResultSelection);
     }
 
     @Override
@@ -2514,6 +2509,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         return variableElementOperation;
     }
+
     private CodelistOrderVisualisation retrieveCodelistOrderVisualisationByUrn(String urn) throws MetamacException {
         CodelistOrderVisualisation codelistOrderVisualisation = getCodelistOrderVisualisationRepository().findByUrn(urn);
         if (codelistOrderVisualisation == null) {
@@ -2522,10 +2518,28 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return codelistOrderVisualisation;
     }
 
+    private CodelistOrderVisualisation retrieveCodelistOrderVisualisationByCode(CodelistVersionMetamac codelistVersion, String code) throws MetamacException {
+        CodelistOrderVisualisation codelistOrderVisualisation = getCodelistOrderVisualisationRepository().findByCode(codelistVersion.getId(), code);
+        if (codelistOrderVisualisation == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CODELIST_ORDER_VISUALISATION_NOT_FOUND)
+                    .withMessageParameters(code, codelistVersion.getMaintainableArtefact().getUrn()).build();
+        }
+        return codelistOrderVisualisation;
+    }
+
     private CodelistOpennessVisualisation retrieveCodelistOpennessVisualisationByUrn(String urn) throws MetamacException {
         CodelistOpennessVisualisation codelistOpennessVisualisation = getCodelistOpennessVisualisationRepository().findByUrn(urn);
         if (codelistOpennessVisualisation == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
+        }
+        return codelistOpennessVisualisation;
+    }
+
+    private CodelistOpennessVisualisation retrieveCodelistOpennessVisualisationByCode(CodelistVersionMetamac codelistVersion, String code) throws MetamacException {
+        CodelistOpennessVisualisation codelistOpennessVisualisation = getCodelistOpennessVisualisationRepository().findByCode(codelistVersion.getId(), code);
+        if (codelistOpennessVisualisation == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.CODELIST_OPENNESS_VISUALISATION_NOT_FOUND)
+                    .withMessageParameters(code, codelistVersion.getMaintainableArtefact().getUrn()).build();
         }
         return codelistOpennessVisualisation;
     }

@@ -7,19 +7,37 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 
 public class CodeMetamacResultExtensionPoint {
 
-    private String                    order;
+    private Integer                   order;
+    private String                    orderConcatenatedByLevel;
+    private Boolean                   openness;
     private final Map<String, String> shortName = new HashMap<String, String>();
     private String                    variableElementCode;
 
-    public void setOrder(String order) {
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
         this.order = order;
+    }
+
+    public Boolean getOpenness() {
+        return openness;
+    }
+
+    public void setOpenness(Boolean openness) {
+        this.openness = openness;
+    }
+
+    public void setOrderConcatenatedByLevel(String orderConcatenatedByLevel) {
+        this.orderConcatenatedByLevel = orderConcatenatedByLevel;
     }
 
     /**
      * Get order. This order is a concatenation of orders of parents and this item, with X characteres by level
      */
-    public String getOrder() {
-        return order;
+    public String getOrderConcatenatedByLevel() {
+        return orderConcatenatedByLevel;
     }
 
     public Map<String, String> getShortName() {
@@ -35,6 +53,6 @@ public class CodeMetamacResultExtensionPoint {
     }
 
     public int getLevel() {
-        return order.length() / (SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + 1); // 6 of order + 1 of dot
+        return orderConcatenatedByLevel.length() / (SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + 1); // 6 of order + 1 of dot
     }
 }

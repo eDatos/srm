@@ -39,6 +39,20 @@ public class CodelistOpennessVisualisationRepositoryImpl extends CodelistOpennes
     }
 
     @Override
+    public CodelistOpennessVisualisation findByCode(Long codelistId, String opennessVisualisationCode) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("codelistId", codelistId);
+        parameters.put("opennessVisualisationCode", opennessVisualisationCode);
+        List<CodelistOpennessVisualisation> result = findByQuery("from CodelistOpennessVisualisation where nameableArtefact.code = :opennessVisualisationCode and codelistVersion.id = :codelistId",
+                parameters, 1);
+        if (result == null || result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
+    }
+
+    @Override
     public void updateUrnAllCodelistOpennessVisualisationsByCodelistEfficiently(CodelistVersionMetamac codelistVersionMetamac, String oldUrnExample) {
 
         // Extract versionable Substring

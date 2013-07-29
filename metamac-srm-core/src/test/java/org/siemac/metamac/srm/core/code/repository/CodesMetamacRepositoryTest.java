@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
@@ -39,7 +40,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
     public void testRetrieveCodesOrderedByCodelistUrn() throws Exception {
 
         // Retrieve
-        List<ItemResult> codes = codeMetamacRepository.findCodesByCodelistOrderedInDepth(Long.valueOf(12), Integer.valueOf(1), ItemMetamacResultSelection.ALL);
+        List<ItemResult> codes = codeMetamacRepository.findCodesByCodelistOrderedInDepth(Long.valueOf(12), Integer.valueOf(2), Integer.valueOf(2), ItemMetamacResultSelection.ALL);
 
         // Validate common metadata and SHORT_NAME
         assertEquals(9, codes.size());
@@ -57,6 +58,9 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             CodesAsserts.assertEqualsInternationalString(code.getName(), "es", "Isla de Tenerife", "en", "Name codelist-1-v2-code-1");
             CodesAsserts.assertEqualsInternationalString(code.getDescription(), "es", "Descripción codelist-1-v2-code-1", null, null);
             CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "Fuerteventura", "en", "Short name variableElement 2-2");
+            assertEquals(Integer.valueOf(0), SrmServiceUtils.getCodeItemResultOrder(code));
+            assertEquals(".000000", ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getOrderConcatenatedByLevel());
+            assertEquals(Boolean.FALSE, SrmServiceUtils.getCodeItemResultOpenness(code));
 
             assertEquals(2, code.getAnnotations().size());
             {
@@ -85,6 +89,9 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             CodesAsserts.assertEqualsInternationalString(code.getName(), "es", "Nombre codelist-1-v2-code-2 Canaria, Gran", null, null);
             CodesAsserts.assertEqualsInternationalString(code.getDescription(), null, null, null, null);
             CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "nombre corto code2", "en", "short name code2");
+            assertEquals(Integer.valueOf(1), SrmServiceUtils.getCodeItemResultOrder(code));
+            assertEquals(".000001", ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getOrderConcatenatedByLevel());
+            assertEquals(Boolean.TRUE, SrmServiceUtils.getCodeItemResultOpenness(code));
             assertEquals(0, code.getAnnotations().size());
         }
         {
@@ -95,6 +102,9 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals(null, code.getCodeFull());
             assertEquals(CODELIST_1_V2_CODE_2, code.getParent().getUrn());
             CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "El Hierro", "en", "short name variableElement 2-1");
+            assertEquals(Integer.valueOf(0), SrmServiceUtils.getCodeItemResultOrder(code));
+            assertEquals(".000001.000000", ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getOrderConcatenatedByLevel());
+            assertEquals(Boolean.TRUE, SrmServiceUtils.getCodeItemResultOpenness(code));
         }
         {
             // Code 02 01 01
@@ -102,6 +112,9 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals(CODELIST_1_V2_CODE_2_1_1, code.getUrn());
             assertEquals("CODE0201", code.getParent().getCode());
             CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "nombre corto 2-1-1", null, null);
+            assertEquals(Integer.valueOf(0), SrmServiceUtils.getCodeItemResultOrder(code));
+            assertEquals(".000001.000000.000000", ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getOrderConcatenatedByLevel());
+            assertEquals(Boolean.FALSE, SrmServiceUtils.getCodeItemResultOpenness(code));
         }
 
         {
@@ -109,24 +122,36 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_2_2, code.getUrn());
             CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), null, null, null, null);
+            assertEquals(Integer.valueOf(1), SrmServiceUtils.getCodeItemResultOrder(code));
+            assertEquals(".000001.000001", ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getOrderConcatenatedByLevel());
+            assertEquals(Boolean.TRUE, SrmServiceUtils.getCodeItemResultOpenness(code));
         }
         {
             // Code 03
             ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_3, code.getUrn());
             CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "Gran Canaria", null, null);
+            assertEquals(Integer.valueOf(2), SrmServiceUtils.getCodeItemResultOrder(code));
+            assertEquals(".000002", ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getOrderConcatenatedByLevel());
+            assertEquals(Boolean.TRUE, SrmServiceUtils.getCodeItemResultOpenness(code));
         }
         {
             // Code 04
             ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_4, code.getUrn());
             CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "Lanzarote", "en", "Lanzarote en");
+            assertEquals(Integer.valueOf(3), SrmServiceUtils.getCodeItemResultOrder(code));
+            assertEquals(".000003", ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getOrderConcatenatedByLevel());
+            assertEquals(Boolean.FALSE, SrmServiceUtils.getCodeItemResultOpenness(code));
         }
         {
             // Code 04 01
             ItemResult code = codes.get(i++);
             assertEquals(CODELIST_1_V2_CODE_4_1, code.getUrn());
             CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), null, null, null, null);
+            assertEquals(Integer.valueOf(0), SrmServiceUtils.getCodeItemResultOrder(code));
+            assertEquals(".000003.000000", ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getOrderConcatenatedByLevel());
+            assertEquals(Boolean.TRUE, SrmServiceUtils.getCodeItemResultOpenness(code));
         }
         {
             // Code 04 01 01
@@ -135,6 +160,9 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals("CODE0401", code.getParent().getCode());
             assertEquals(CODELIST_1_V2_CODE_4_1, code.getParent().getUrn());
             CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "El Hierro", "en", "short name variableElement 2-1");
+            assertEquals(Integer.valueOf(0), SrmServiceUtils.getCodeItemResultOrder(code));
+            assertEquals(".000003.000000.000000", ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).getOrderConcatenatedByLevel());
+            assertEquals(Boolean.FALSE, SrmServiceUtils.getCodeItemResultOpenness(code));
         }
     }
 
