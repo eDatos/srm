@@ -74,7 +74,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
             return;
         }
         target.setKind(RestInternalConstants.KIND_CATEGORY_SCHEME);
-        target.setUrnInternal(source.getMaintainableArtefact().getUrn());
+        target.setUrnSiemac(source.getMaintainableArtefact().getUrn());
         target.setSelfLink(toCategorySchemeSelfLink(source));
         target.setParentLink(toCategorySchemeParentLink(source));
         target.setChildLinks(toCategorySchemeChildLinks(source));
@@ -134,7 +134,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
         categoriesDo2JaxbSdmxMapper.categoryDoToJaxbWithoutChildren(source, target);
 
         target.setKind(RestInternalConstants.KIND_CATEGORY);
-        target.setUrnInternal(source.getNameableArtefact().getUrn());
+        target.setUrnSiemac(source.getNameableArtefact().getUrn());
         target.setNestedId(source.getNameableArtefact().getCodeFull());
         target.setSelfLink(toCategorySelfLink(source));
         target.setManagementAppLink(toCategoryManagementApplicationLink(source));
@@ -181,7 +181,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
             return;
         }
         target.setKind(RestInternalConstants.KIND_CATEGORISATION);
-        target.setUrnInternal(source.getMaintainableArtefact().getUrn());
+        target.setUrnSiemac(source.getMaintainableArtefact().getUrn());
         target.setSelfLink(toCategorisationSelfLink(source));
         target.setParentLink(toCategorisationParentLink(source));
         target.setChildLinks(toCategorisationChildLinks(source));

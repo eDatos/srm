@@ -25,7 +25,7 @@
     </structure:Parent>
     <cdomain:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes/item1"/>
     <cdomain:parentLink kind="structuralResources#codes" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes"/>
-    <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item1</sr:urnInternal>
+    <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item1</sr:urnSiemac>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=item1</sr:managementAppLink>
     <sr:comment>
         <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>

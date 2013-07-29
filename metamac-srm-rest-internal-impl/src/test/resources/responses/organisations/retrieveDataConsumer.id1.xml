@@ -46,7 +46,7 @@
     </structure:Contact>
     <cdomain:selfLink kind="structuralResources#dataConsumer" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agency1/itemScheme1/01.000/dataconsumers/item1"/>
     <cdomain:parentLink kind="structuralResources#dataConsumers" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agency1/itemScheme1/01.000/dataconsumers"/>
-    <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agency1:itemScheme1(01.000).item1</sr:urnInternal>
+    <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agency1:itemScheme1(01.000).item1</sr:urnSiemac>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_CONSUMER_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=item1</sr:managementAppLink>
     <sr:comment>
         <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>

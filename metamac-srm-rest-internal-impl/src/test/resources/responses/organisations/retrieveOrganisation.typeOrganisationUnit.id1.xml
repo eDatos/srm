@@ -50,7 +50,7 @@
         </structure:Contact>
         <cdomain:selfLink kind="structuralResources#organisationUnit" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemScheme1/01.000/organisationunits/itemOrganisationUnit1"/>
         <cdomain:parentLink kind="structuralResources#organisationUnits" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemScheme1/01.000/organisationunits"/>
-        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agency1:itemScheme1(01.000).itemOrganisationUnit1</sr:urnInternal>
+        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agency1:itemScheme1(01.000).itemOrganisationUnit1</sr:urnSiemac>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=itemOrganisationUnit1</sr:managementAppLink>
         <sr:comment>
             <cdomain:text xml:lang="en">comment-itemOrganisationUnit1 in English</cdomain:text>

@@ -109,7 +109,7 @@ public class DataStructuresDo2RestMapperTest {
         assertEquals("resourceID1", target.getId());
         assertEquals("01.123", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agencyID1:resourceID1(01.123)", target.getUrn());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agencyID1:resourceID1(01.123)", target.getUrnInternal());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agencyID1:resourceID1(01.123)", target.getUrnSiemac());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_DATA_STRUCTURE, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -175,7 +175,7 @@ public class DataStructuresDo2RestMapperTest {
         DataStructure target = do2RestInternalMapper.toDataStructure(source);
 
         // Validate
-        assertEquals("urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agencyID1:resourceID1(01.123)", target.getUrnInternal());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agencyID1:resourceID1(01.123)", target.getUrnSiemac());
         assertEquals("urnProvider", target.getUrn());
         assertEquals("uriProviderDb", target.getUri());
     }

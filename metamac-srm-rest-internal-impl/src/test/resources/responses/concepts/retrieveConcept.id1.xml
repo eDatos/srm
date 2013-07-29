@@ -31,7 +31,7 @@
     </structure:CoreRepresentation>
     <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/item1"/>
     <cdomain:parentLink kind="structuralResources#concepts" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts"/>
-    <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).item1</sr:urnInternal>
+    <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).item1</sr:urnSiemac>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency1:itemScheme1(01.000)/concept;id=item1</sr:managementAppLink>
     <sr:comment>
         <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
@@ -73,7 +73,7 @@
                 <cdomain:text xml:lang="en">name-1_conceptRole1 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-1_conceptRole1 en Español</cdomain:text>
             </cdomain:name>
-            <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID22(02.000).1_conceptRole1</sr:urnInternal>
+            <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID22(02.000).1_conceptRole1</sr:urnSiemac>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agencyID1:resourceID22(02.000)/concept;id=1_conceptRole1</sr:managementAppLink>
         </sr:role>
         <sr:role kind="structuralResources#concept">
@@ -84,7 +84,7 @@
                 <cdomain:text xml:lang="en">name-1_conceptRole2 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-1_conceptRole2 en Español</cdomain:text>
             </cdomain:name>
-            <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID33(03.000).1_conceptRole2</sr:urnInternal>
+            <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID33(03.000).1_conceptRole2</sr:urnSiemac>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agencyID1:resourceID33(03.000)/concept;id=1_conceptRole2</sr:managementAppLink>
         </sr:role>
     </sr:roles>
@@ -96,7 +96,7 @@
             <cdomain:text xml:lang="en">name-variable1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-variable1 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnInternal>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1</sr:urnInternal>
+        <sr:urnSiemac>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1</sr:urnSiemac>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable1</sr:managementAppLink>
     </sr:variable>
     <sr:derivation>
@@ -111,7 +111,7 @@
             <cdomain:text xml:lang="en">name-1_conceptExtends1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-1_conceptExtends1 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID11(01.000).1_conceptExtends1</sr:urnInternal>
+        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID11(01.000).1_conceptExtends1</sr:urnSiemac>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agencyID1:resourceID11(01.000)/concept;id=1_conceptExtends1</sr:managementAppLink>
     </sr:extends>
     <sr:relatedConcepts kind="structuralResources#concepts" total="3">
@@ -123,7 +123,7 @@
                 <cdomain:text xml:lang="es">name-1_conceptRelated1 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">name-1_conceptRelated1 in English</cdomain:text>
             </cdomain:name>
-            <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).1_conceptRelated1</sr:urnInternal>
+            <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).1_conceptRelated1</sr:urnSiemac>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency1:itemScheme1(01.000)/concept;id=1_conceptRelated1</sr:managementAppLink>
         </sr:relatedConcept>
         <sr:relatedConcept kind="structuralResources#concept">
@@ -134,7 +134,7 @@
                 <cdomain:text xml:lang="es">name-1_conceptRelated2 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">name-1_conceptRelated2 in English</cdomain:text>
             </cdomain:name>
-            <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).1_conceptRelated2</sr:urnInternal>
+            <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).1_conceptRelated2</sr:urnSiemac>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency1:itemScheme1(01.000)/concept;id=1_conceptRelated2</sr:managementAppLink>
         </sr:relatedConcept>
         <sr:relatedConcept kind="structuralResources#concept">
@@ -145,7 +145,7 @@
                 <cdomain:text xml:lang="en">name-1_conceptRelated3 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-1_conceptRelated3 en Español</cdomain:text>
             </cdomain:name>
-            <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).1_conceptRelated3</sr:urnInternal>
+            <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).1_conceptRelated3</sr:urnSiemac>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency1:itemScheme1(01.000)/concept;id=1_conceptRelated3</sr:managementAppLink>
         </sr:relatedConcept>
     </sr:relatedConcepts>
@@ -162,7 +162,7 @@
                 <cdomain:text xml:lang="en">name-unitCode01 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-unitCode01 en Español</cdomain:text>
             </cdomain:name>
-            <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency01:codelist01(01.000).unitCode01</sr:urnInternal>
+            <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency01:codelist01(01.000).unitCode01</sr:urnSiemac>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency01:codelist01(01.000)/code;id=unitCode01</sr:managementAppLink>
         </sr:unitCode>
         <sr:unitSymbolPosition>START</sr:unitSymbolPosition>
@@ -179,7 +179,7 @@
                 <cdomain:text xml:lang="en">name-numerator1 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-numerator1 en Español</cdomain:text>
             </cdomain:name>
-            <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme02(01.000).numerator1</sr:urnInternal>
+            <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme02(01.000).numerator1</sr:urnSiemac>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme02(01.000)/concept;id=numerator1</sr:managementAppLink>
         </sr:numerator>
         <sr:denominator kind="structuralResources#concept">
@@ -190,7 +190,7 @@
                 <cdomain:text xml:lang="es">name-denominator1 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">name-denominator1 in English</cdomain:text>
             </cdomain:name>
-            <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme03(01.000).denominator1</sr:urnInternal>
+            <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme03(01.000).denominator1</sr:urnSiemac>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme03(01.000)/concept;id=denominator1</sr:managementAppLink>
         </sr:denominator>
         <sr:isPercentage>false</sr:isPercentage>
@@ -206,7 +206,7 @@
                 <cdomain:text xml:lang="es">name-baseQuantity1 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">name-baseQuantity1 in English</cdomain:text>
             </cdomain:name>
-            <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme04(01.000).baseQuantity1</sr:urnInternal>
+            <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme04(01.000).baseQuantity1</sr:urnSiemac>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme04(01.000)/concept;id=baseQuantity1</sr:managementAppLink>
         </sr:baseQuantity>
     </sr:quantity>

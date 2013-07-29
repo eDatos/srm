@@ -6,7 +6,7 @@
     <sr:childLinks total="1">
         <cdomain:childLink kind="structuralResources#variables" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies/artefact1/variables"/>
     </sr:childLinks>
-    <sr:urnInternal>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=artefact1</sr:urnInternal>
+    <sr:urnSiemac>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=artefact1</sr:urnSiemac>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variableFamilies/variableFamily;id=artefact1</sr:managementAppLink>
     <sr:name>
         <cdomain:text xml:lang="es">name-artefact1 en Español</cdomain:text>

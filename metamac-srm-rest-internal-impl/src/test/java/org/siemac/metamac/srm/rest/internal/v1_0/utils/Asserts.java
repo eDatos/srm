@@ -91,7 +91,7 @@ public class Asserts extends MetamacRestAsserts {
         assertEquals(expectedKind, actual.getKind());
         assertEquals(expected.getCode(), actual.getId());
         assertEquals(expected.getUrnProvider(), actual.getUrn());
-        assertEquals(expected.getUrn(), actual.getUrnInternal());
+        assertEquals(expected.getUrn(), actual.getUrnSiemac());
         assertEquals(expectedKind, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
         assertEquals(expectedManagementLink, actual.getManagementAppLink());
@@ -102,7 +102,7 @@ public class Asserts extends MetamacRestAsserts {
         assertEquals(expectedKind, actual.getKind());
         assertEquals(expected.getCode(), actual.getId());
         assertEquals(expected.getUrnProvider(), actual.getUrn());
-        assertEquals(expected.getUrn(), actual.getUrnInternal());
+        assertEquals(expected.getUrn(), actual.getUrnSiemac());
         assertEquals(expectedKind, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
         assertEquals(expectedManagementLink, actual.getManagementAppLink());

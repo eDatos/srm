@@ -8,7 +8,7 @@
             <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
         </cdomain:name>
-        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item1</sr:urnInternal>
+        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item1</sr:urnSiemac>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=item1</sr:managementAppLink>
     </sr:code>
     <sr:code kind="structuralResources#code">
@@ -19,7 +19,7 @@
             <cdomain:text xml:lang="es">name-item2 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item2 in English</cdomain:text>
         </cdomain:name>
-        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item2</sr:urnInternal>
+        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item2</sr:urnSiemac>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=item2</sr:managementAppLink>
     </sr:code>
     <sr:code kind="structuralResources#code">
@@ -30,7 +30,7 @@
             <cdomain:text xml:lang="en">name-item3 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-item3 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item3</sr:urnInternal>
+        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item3</sr:urnSiemac>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=item3</sr:managementAppLink>
         <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item2</sr:parent>
     </sr:code>
@@ -42,7 +42,7 @@
             <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
         </cdomain:name>
-        <sr:urnInternal>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme2(01.000).item1</sr:urnInternal>
+        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme2(01.000).item1</sr:urnSiemac>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme2(01.000)/code;id=item1</sr:managementAppLink>
     </sr:code>
 </sr:codes>

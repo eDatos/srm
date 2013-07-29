@@ -163,7 +163,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setId(source.getCode());
         // nestedId: only filled to some resource
         target.setUrn(source.getUrnProvider());
-        target.setUrnInternal(source.getUrn());
+        target.setUrnSiemac(source.getUrn());
         target.setKind(kind);
         target.setSelfLink(selfLink);
         target.setName(toInternationalString(source.getName()));
@@ -187,7 +187,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setId(source.getCode());
         // nestedId: only filled to some resource
         target.setUrn(source.getUrnProvider());
-        target.setUrnInternal(source.getUrn());
+        target.setUrnSiemac(source.getUrn());
         target.setKind(kind);
         target.setSelfLink(selfLink);
         target.setName(toInternationalString(source.getName()));
@@ -212,7 +212,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setId(source.getCode());
         target.setNestedId(source.getCodeNested());
         target.setUrn(source.getUrn());
-        target.setUrnInternal(source.getUrnInternal());
+        target.setUrnSiemac(source.getUrnInternal());
         target.setKind(source.getType().getValue());
         target.setSelfLink(toResourceLink(target.getKind(), RestUtils.createLink(apiExternalItemBaseUrl, source.getUri())));
         if (source.getManagementAppUrl() != null) {
