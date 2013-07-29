@@ -1,7 +1,10 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.code.utils;
 
+import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
@@ -9,6 +12,7 @@ import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public class CodesDoMocks {
@@ -16,12 +20,14 @@ public class CodesDoMocks {
     public static CodelistVersionMetamac mockCodelist(String agencyID, String resourceID, String version) {
         CodelistVersionMetamac target = CodesMetamacDoMocks.mockCodelistFixedValues(agencyID, resourceID, version);
         addReplaceMetadatasToCodelist(target, agencyID);
+        addConfigurationsMetadatasToCodelist(target);
         return target;
     }
 
     public static CodelistVersionMetamac mockCodelistWithCodes(String agencyID, String resourceID, String version) {
         CodelistVersionMetamac target = CodesMetamacDoMocks.mockCodelistWithCodesFixedValues(agencyID, resourceID, version);
         addReplaceMetadatasToCodelist(target, agencyID);
+        addConfigurationsMetadatasToCodelist(target);
         return target;
     }
 
@@ -62,6 +68,32 @@ public class CodesDoMocks {
         target.addReplaceToCodelist(mockCodelistToReplaceMetadata(agencyID, "codelistReplaceTo3", "03.000", AccessTypeEnum.PUBLIC, true, true));
         target.addReplaceToCodelist(mockCodelistToReplaceMetadata(agencyID, "codelistReplaceTo4", "04.000", AccessTypeEnum.PUBLIC, false, false));
         target.addReplaceToCodelist(mockCodelistToReplaceMetadata(agencyID, "codelistReplaceTo5", "05.000", AccessTypeEnum.RESTRICTED, true, true));
+    }
+
+    private static void addConfigurationsMetadatasToCodelist(CodelistVersionMetamac target) {
+        target.addOrderVisualisation(mockCodelistOrderVisualisation("order1"));
+        target.addOrderVisualisation(mockCodelistOrderVisualisation("order2"));
+        target.addOrderVisualisation(mockCodelistOrderVisualisation("order3"));
+        target.setDefaultOrderVisualisation(target.getOrderVisualisations().get(0));
+        target.addOpennessVisualisation(mockCodelistOpennessVisualisation("openness1"));
+        target.addOpennessVisualisation(mockCodelistOpennessVisualisation("openness2"));
+        target.setDefaultOpennessVisualisation(target.getOpennessVisualisations().get(1));
+    }
+
+    private static CodelistOrderVisualisation mockCodelistOrderVisualisation(String code) {
+        CodelistOrderVisualisation target = new CodelistOrderVisualisation();
+        target.setNameableArtefact(new NameableArtefact());
+        target.getNameableArtefact().setCode(code);
+        target.getNameableArtefact().setName(BaseDoMocks.mockInternationalStringFixedValues("order", code));
+        return target;
+    }
+
+    private static CodelistOpennessVisualisation mockCodelistOpennessVisualisation(String code) {
+        CodelistOpennessVisualisation target = new CodelistOpennessVisualisation();
+        target.setNameableArtefact(new NameableArtefact());
+        target.getNameableArtefact().setCode(code);
+        target.getNameableArtefact().setName(BaseDoMocks.mockInternationalStringFixedValues("openness", code));
+        return target;
     }
 
     private static void addReplaceMetadatasToVariable(Variable target) {

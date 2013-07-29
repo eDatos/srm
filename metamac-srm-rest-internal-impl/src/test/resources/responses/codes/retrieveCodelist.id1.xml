@@ -112,4 +112,45 @@
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:codelistReplacedBy(01.000)</sr:managementAppLink>
     </sr:replacedBy>
     <sr:accessType>PUBLIC</sr:accessType>
+    <sr:orderConfigurations total="3">
+        <sr:visualisationConfiguration>
+            <cdomain:id>order1</cdomain:id>
+            <cdomain:name>
+                <cdomain:text xml:lang="es">order-order1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">order-order1 in English</cdomain:text>
+            </cdomain:name>
+            <sr:default>true</sr:default>
+        </sr:visualisationConfiguration>
+        <sr:visualisationConfiguration>
+            <cdomain:id>order2</cdomain:id>
+            <cdomain:name>
+                <cdomain:text xml:lang="es">order-order2 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">order-order2 in English</cdomain:text>
+            </cdomain:name>
+        </sr:visualisationConfiguration>
+        <sr:visualisationConfiguration>
+            <cdomain:id>order3</cdomain:id>
+            <cdomain:name>
+                <cdomain:text xml:lang="es">order-order3 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">order-order3 in English</cdomain:text>
+            </cdomain:name>
+        </sr:visualisationConfiguration>
+    </sr:orderConfigurations>
+    <sr:opennessConfigurations total="2">
+        <sr:visualisationConfiguration>
+            <cdomain:id>openness1</cdomain:id>
+            <cdomain:name>
+                <cdomain:text xml:lang="es">openness-openness1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">openness-openness1 in English</cdomain:text>
+            </cdomain:name>
+        </sr:visualisationConfiguration>
+        <sr:visualisationConfiguration>
+            <cdomain:id>openness2</cdomain:id>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">openness-openness2 in English</cdomain:text>
+                <cdomain:text xml:lang="es">openness-openness2 en Español</cdomain:text>
+            </cdomain:name>
+            <sr:default>true</sr:default>
+        </sr:visualisationConfiguration>
+    </sr:opennessConfigurations>
 </sr:codelist>

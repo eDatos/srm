@@ -31,8 +31,12 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variabl
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilyMetadata;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VisualisationConfiguration;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VisualisationConfigurations;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
+import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
@@ -46,6 +50,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
@@ -117,6 +122,9 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setReplacedBy(toCodelistReplacedBy(source));
         target.setReplaceTo(toCodelistReplaceTo(source));
         target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
+
+        target.setOrderConfigurations(toOrderConfigurations(source.getOrderVisualisations(), source.getDefaultOrderVisualisation()));
+        target.setOpennessConfigurations(toOpennessConfigurations(source.getOpennessVisualisations(), source.getDefaultOpennessVisualisation()));
     }
 
     @Override
@@ -611,5 +619,47 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private VisualisationConfigurations toOrderConfigurations(List<CodelistOrderVisualisation> sources, CodelistOrderVisualisation defaultOrderVisualisation) {
+        if (CollectionUtils.isEmpty(sources)) {
+            return null;
+        }
+        VisualisationConfigurations targets = new VisualisationConfigurations();
+        for (org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation source : sources) {
+            VisualisationConfiguration target = toVisualisationConfiguration(source.getNameableArtefact());
+            if (defaultOrderVisualisation.getNameableArtefact().getCode().equals(source.getNameableArtefact().getCode())) {
+                target.setDefault(Boolean.TRUE);
+            }
+            targets.getVisualisationConfigurations().add(target);
+        }
+        targets.setTotal(BigInteger.valueOf(sources.size()));
+        return targets;
+    }
+
+    private VisualisationConfigurations toOpennessConfigurations(List<CodelistOpennessVisualisation> sources, CodelistOpennessVisualisation defaultOpennessVisualisation) {
+        if (CollectionUtils.isEmpty(sources)) {
+            return null;
+        }
+        VisualisationConfigurations targets = new VisualisationConfigurations();
+        for (org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation source : sources) {
+            VisualisationConfiguration target = toVisualisationConfiguration(source.getNameableArtefact());
+            if (defaultOpennessVisualisation.getNameableArtefact().getCode().equals(source.getNameableArtefact().getCode())) {
+                target.setDefault(Boolean.TRUE);
+            }
+            targets.getVisualisationConfigurations().add(target);
+        }
+        targets.setTotal(BigInteger.valueOf(sources.size()));
+        return targets;
+    }
+
+    private VisualisationConfiguration toVisualisationConfiguration(NameableArtefact source) {
+        if (source == null) {
+            return null;
+        }
+        VisualisationConfiguration target = new VisualisationConfiguration();
+        target.setId(source.getCode());
+        target.setName(toInternationalString(source.getName()));
+        return target;
     }
 }
