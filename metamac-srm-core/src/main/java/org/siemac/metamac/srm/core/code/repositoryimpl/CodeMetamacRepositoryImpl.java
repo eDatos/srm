@@ -30,7 +30,6 @@ import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
-import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
@@ -46,7 +45,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
-import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
@@ -69,6 +67,9 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
     @Autowired
     private SrmConfiguration              srmConfiguration;
+
+    private final Integer                 ORDER_DEFAULT    = Integer.valueOf(1);
+    private final Integer                 OPENNESS_DEFAULT = Integer.valueOf(1);
 
     @Override
     public CodeMetamac findByUrn(String urn) {
@@ -365,10 +366,10 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             throws MetamacException {
         // Visualisations: default values, to execute same query, but in transformation to result they will be ignored
         if (orderColumnIndex == null) {
-            orderColumnIndex = Integer.valueOf(1);
+            orderColumnIndex = ORDER_DEFAULT;
         }
         if (opennessColumnIndex == null) {
-            opennessColumnIndex = Integer.valueOf(1);
+            opennessColumnIndex = OPENNESS_DEFAULT;
         }
         String orderColumn = getOrderColumnName(orderColumnIndex);
         String opennessColumn = getOpennessColumnName(opennessColumnIndex);
@@ -460,12 +461,6 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     public List<ItemResult> findCodesByCodelistOrderedInDepth(Long idCodelist, Integer orderColumnIndex, Integer opennessColumnIndex, ItemMetamacResultSelection resultSelection)
             throws MetamacException {
 
-        // Validation
-        List<MetamacExceptionItem> exceptions = new ArrayList<MetamacExceptionItem>();
-        ValidationUtils.checkMetadataRequired(orderColumnIndex, ServiceExceptionParameters.CODELIST_ORDER_VISUALISATION, exceptions);
-        ValidationUtils.checkMetadataRequired(opennessColumnIndex, ServiceExceptionParameters.CODELIST_OPENNESS_VISUALISATION, exceptions);
-        ExceptionUtils.throwIfException(exceptions);
-
         // Find codes
         List<ItemResult> codes = codeRepository.findCodesByCodelistUnordered(idCodelist, resultSelection);
 
@@ -509,10 +504,12 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         }
 
         // Order and openness selected
-        executeQueryCodeVisualisationAndUpdateCodeMetamacResult(idCodelist, orderColumnIndex, opennessColumnIndex, mapCodeByItemId);
+        if (orderColumnIndex != null || opennessColumnIndex != null) {
+            executeQueryCodeVisualisationAndUpdateCodeMetamacResult(idCodelist, orderColumnIndex, opennessColumnIndex, mapCodeByItemId);
+        }
 
         // Retrieve items id ordered
-        String orderColumn = getOrderColumnName(orderColumnIndex);
+        String orderColumn = getOrderColumnName(orderColumnIndex != null ? orderColumnIndex : ORDER_DEFAULT); // get column name. any if no order or openness is selected
         StringBuilder sb = new StringBuilder();
         if (srmConfiguration.isDatabaseOracle()) {
             sb.append("SELECT ITEM_ID, SYS_CONNECT_BY_PATH(lpad(COD_ORDER, " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + ", '0'), '.') ORDER_PATH ");
@@ -633,8 +630,11 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     @SuppressWarnings({"rawtypes"})
     private void executeQueryCodeVisualisationAndUpdateCodeMetamacResult(Long idCodelist, Integer orderColumnIndex, Integer opennessColumnIndex, Map<Long, ItemResult> mapCodeByItemId)
             throws MetamacException {
-        String orderColumn = getOrderColumnName(orderColumnIndex);
-        String opennessColumn = getOpennessColumnName(opennessColumnIndex);
+        // get column names. any if no order or openness is selected. NOT returned in result
+        String orderColumn = getOrderColumnName(orderColumnIndex != null ? orderColumnIndex : ORDER_DEFAULT);
+        String opennessColumn = getOpennessColumnName(opennessColumnIndex != null ? opennessColumnIndex : OPENNESS_DEFAULT);
+
+        // find
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT cb.ID as ITEM_ID, c." + orderColumn + ", c." + opennessColumn + " ");
         sb.append("FROM TB_M_CODES c ");
@@ -648,8 +648,16 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             int i = 0;
             Long actualItemId = getLong(codeResultSqlArray[i++]);
             ItemResult target = mapCodeByItemId.get(actualItemId);
-            ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).setOrder(getInteger(codeResultSqlArray[i++]));
-            ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).setOpenness(getBoolean(codeResultSqlArray[i++]));
+            if (orderColumnIndex != null) {
+                ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).setOrder(getInteger(codeResultSqlArray[i++]));
+            } else {
+                i++; // skip
+            }
+            if (opennessColumnIndex != null) {
+                ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).setOpenness(getBoolean(codeResultSqlArray[i++]));
+            } else {
+                i++; // skip
+            }
         }
     }
 

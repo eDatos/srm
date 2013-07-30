@@ -29,15 +29,11 @@ public class CodeMetamacResultExtensionPoint {
         this.openness = openness;
     }
 
+    /**
+     * This order is a concatenation of orders of parents and this item, with X characteres by level
+     */
     public void setOrderConcatenatedByLevel(String orderConcatenatedByLevel) {
         this.orderConcatenatedByLevel = orderConcatenatedByLevel;
-    }
-
-    /**
-     * Get order. This order is a concatenation of orders of parents and this item, with X characteres by level
-     */
-    public String getOrderConcatenatedByLevel() {
-        return orderConcatenatedByLevel;
     }
 
     public Map<String, String> getShortName() {

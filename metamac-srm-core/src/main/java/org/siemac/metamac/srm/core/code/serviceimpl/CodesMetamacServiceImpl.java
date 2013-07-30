@@ -926,9 +926,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkExportCodesTsv(codelistUrn, null);
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+
         CodelistOrderVisualisation orderVisualisationToRetrieveCodes = codelistVersion.getDefaultOrderVisualisation();
         if (orderVisualisationToRetrieveCodes == null) {
-            orderVisualisationToRetrieveCodes = codelistVersion.getOrderVisualisations().get(0); // any order
+            orderVisualisationToRetrieveCodes = codelistVersion.getOrderVisualisations().get(0); // any
         }
         Integer orderColumnIndex = orderVisualisationToRetrieveCodes.getColumnIndex();
 
@@ -1007,18 +1008,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkExportCodesTsv(codelistUrn, null);
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
-
         List<CodelistOrderVisualisation> orderVisualisations = codelistVersion.getOrderVisualisations();
-        CodelistOrderVisualisation orderVisualisationToRetrieveCodes = codelistVersion.getDefaultOrderVisualisation();
-        if (orderVisualisationToRetrieveCodes == null) {
-            orderVisualisationToRetrieveCodes = codelistVersion.getOrderVisualisations().get(0); // any order
-        }
-        Integer orderColumnIndex = orderVisualisationToRetrieveCodes.getColumnIndex();
-
         String defaultLanguage = srmConfiguration.retrieveLanguageDefault();
 
         // Retrieve items in depth
-        List<ItemResult> itemsResult = getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, null, CodeMetamacResultSelection.EXPORT_ORDERS);
+        List<ItemResult> itemsResult = getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), null, null, CodeMetamacResultSelection.EXPORT_ORDERS);
         // Retrieve all items to retrieve all orders
         List<Code> codes = codelistVersion.getItems();
         Map<Long, CodeMetamac> codesById = new HashMap<Long, CodeMetamac>(codes.size());
@@ -1362,10 +1356,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkRetrieveCodesByCodelistUrnOrderedInDepth(codelistUrn, itemResultSelection, orderVisualisationCode, opennessVisualisationCode, null);
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
-
-        if (itemResultSelection == null) {
-            itemResultSelection = ItemMetamacResultSelection.RETRIEVE; // default
-        }
 
         CodelistOrderVisualisation codelistOrderVisualisation = retrieveCodelistOrderVisualisationByCode(codelistVersion, orderVisualisationCode);
         Integer orderColumnIndex = codelistOrderVisualisation.getColumnIndex();
