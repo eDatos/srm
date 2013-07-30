@@ -72,7 +72,7 @@ public class DataStructureDefinitionMetamacDoMocks extends DataStructureDefiniti
         target.setCode(code);
         target.setUri("/operations/" + code);
         target.setUrn("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=" + code);
-        target.setUrnInternal(null);
+        target.setUrnProvider(null);
         target.setType(TypeExternalArtefactsEnum.STATISTICAL_OPERATION);
         target.setManagementAppUrl("/#operations;id=" + code);
         target.setTitle(null);

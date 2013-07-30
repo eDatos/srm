@@ -194,9 +194,8 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
             if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType())) {
                 ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getRelatedOperation(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
                 if (conceptSchemeVersion.getRelatedOperation() != null) {
-                    // urn in ExternalItems is optional, but it is required for statistical operation
                     ValidationUtils.checkMetadataRequired(conceptSchemeVersion.getRelatedOperation().getUrn(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
-                    ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getRelatedOperation().getUrnInternal(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
+                    ValidationUtils.checkMetadataEmpty(conceptSchemeVersion.getRelatedOperation().getUrnProvider(), ServiceExceptionParameters.CONCEPT_SCHEME_RELATED_OPERATION, exceptions);
                 }
             } else if (ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeVersion.getType())) {
                 // relatedOperation is optional

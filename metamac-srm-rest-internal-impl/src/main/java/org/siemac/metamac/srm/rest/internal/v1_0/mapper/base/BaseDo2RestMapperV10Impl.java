@@ -211,8 +211,9 @@ public abstract class BaseDo2RestMapperV10Impl {
         ResourceInternal target = new ResourceInternal();
         target.setId(source.getCode());
         target.setNestedId(source.getCodeNested());
+        // TODO revisar urn!! REFACTOR PENDIENTE
+        // TODO urnProvider??
         target.setUrn(source.getUrn());
-        target.setUrnSiemac(source.getUrnInternal());
         target.setKind(source.getType().getValue());
         target.setSelfLink(toResourceLink(target.getKind(), RestUtils.createLink(apiExternalItemBaseUrl, source.getUri())));
         if (source.getManagementAppUrl() != null) {
