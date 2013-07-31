@@ -148,10 +148,6 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
     }
 
-    protected String getUrn(IdentifiableArtefact identifiableArtefact) {
-        return identifiableArtefact.getUrnProvider();
-    }
-
     protected boolean canResourceBeProvidedByApi(MaintainableArtefact source) {
         return source.getFinalLogicClient();
     }
