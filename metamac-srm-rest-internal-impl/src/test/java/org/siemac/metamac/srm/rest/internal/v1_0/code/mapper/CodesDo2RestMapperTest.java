@@ -229,7 +229,7 @@ public class CodesDo2RestMapperTest {
         Codelist target = do2RestInternalMapper.toCodelist(source);
 
         // Validate
-        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agencyID1:codelistReplacedBy(01.000)", target.getReplacedBy().getUrn());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agencyID1:resourceID1(01.123)", target.getUrn());
         assertEquals("urnProvider", target.getUrnProvider());
         assertEquals("uriProviderDb", target.getUri());
     }

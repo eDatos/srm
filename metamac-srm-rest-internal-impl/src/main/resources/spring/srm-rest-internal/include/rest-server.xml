@@ -15,9 +15,9 @@
 
     <jaxrs:server id="restInternal" address="/structural-resources-internal">
 
-        <jaxrs:features>
-            <cxf:logging />
-        </jaxrs:features>
+<!--         <jaxrs:features> -->
+<!--             <cxf:logging /> -->
+<!--         </jaxrs:features> -->
 
         <jaxrs:serviceBeans>
             <ref bean="srmRestInternalFacadeV10" />
