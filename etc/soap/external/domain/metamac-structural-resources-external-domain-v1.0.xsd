@@ -12,6 +12,7 @@
     <xs:complexType name="VariableFamily">
         <xs:sequence>
             <xs:element name="name" type="common:InternationalString" />
+            <xs:element name="urnProvider" type="xs:string" />
         </xs:sequence>
         <xs:attribute name="id" type="xs:string" use="required"/>
         <xs:attribute name="urn" type="xs:string" use="required"/>
@@ -29,6 +30,7 @@
     
     <xs:complexType name="Variable">
         <xs:sequence>
+            <xs:element name="urnProvider" type="xs:string" />
             <xs:element name="name" type="common:InternationalString" />
             <xs:element name="shortName" type="common:InternationalString" />
             <xs:element name="validFrom" type="xs:dateTime" minOccurs="0" />
@@ -53,6 +55,7 @@
     
     <xs:complexType name="CodelistFamily">
         <xs:sequence>
+            <xs:element name="urnProvider" type="xs:string" />
             <xs:element name="name" type="common:InternationalString" />
         </xs:sequence>
         <xs:attribute name="id" type="xs:string" use="required"/>
@@ -83,6 +86,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:CodelistType">
                 <xs:sequence>
+                    <xs:element name="urnProvider" type="xs:string" minOccurs="0" />
                     <xs:element name="shortName" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="isRecommended" type="xs:boolean" minOccurs="0" />
@@ -101,6 +105,7 @@
         <xs:complexContent>
             <xs:extension base="sdmx:CodeType">
                 <xs:sequence>
+                    <xs:element name="urnProvider" type="xs:string" minOccurs="0" />
                     <xs:element name="shortName" type="common:InternationalString" minOccurs="0" />
                 </xs:sequence>
             </xs:extension>

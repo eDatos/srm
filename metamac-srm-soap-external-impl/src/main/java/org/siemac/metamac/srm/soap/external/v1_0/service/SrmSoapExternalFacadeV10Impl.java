@@ -159,8 +159,8 @@ public class SrmSoapExternalFacadeV10Impl implements MetamacStructuralResourcesI
             }
             // urn
             if (urn != null) {
-                conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().urnProvider()).eq(urn)
-                        .buildSingle());
+                conditions.addAll(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).lbrace().withProperty(CodelistVersionMetamacProperties.maintainableArtefact().urn()).eq(urn)
+                        .or().withProperty(CodelistVersionMetamacProperties.maintainableArtefact().urnProvider()).eq(urn).rbrace().build());
             }
             // externally published
             conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.maintainableArtefact().publicLogic()).eq(Boolean.TRUE)

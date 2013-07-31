@@ -202,7 +202,7 @@ public class SrmSoapExternalFacadeV10CodesTest extends SrmSoapExternalFacadeV10B
             public org.fornax.cartridges.sculptor.framework.domain.PagedResult<CodelistVersionMetamac> answer(InvocationOnMock invocation) throws Throwable {
 
                 List<ConditionalCriteria> conditions = (List<ConditionalCriteria>) invocation.getArguments()[1];
-                ConditionalCriteria propertyUrn = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, CodelistVersionMetamacProperties.maintainableArtefact()
+                ConditionalCriteria propertyUrn = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Or, CodelistVersionMetamacProperties.maintainableArtefact()
                         .urnProvider());
                 if (propertyUrn == null) {
                     // any

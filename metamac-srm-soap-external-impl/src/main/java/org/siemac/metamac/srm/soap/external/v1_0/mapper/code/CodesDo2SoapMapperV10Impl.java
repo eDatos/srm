@@ -50,7 +50,8 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         VariableFamily target = new VariableFamily();
-        target.setUrn(getUrn(source.getNameableArtefact()));
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setId(getCode(source.getNameableArtefact()));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
 
@@ -77,7 +78,8 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         Variable target = new Variable();
-        target.setUrn(getUrn(source.getNameableArtefact()));
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setId(getCode(source.getNameableArtefact()));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
         target.setShortName(toInternationalString(source.getShortName()));
@@ -109,7 +111,8 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         CodelistFamily target = new CodelistFamily();
-        target.setUrn(getUrn(source.getNameableArtefact()));
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setId(getCode(source.getNameableArtefact()));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
 
@@ -158,6 +161,8 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
         if (source == null) {
             return;
         }
+        target.setUrn(source.getMaintainableArtefact().getUrn());
+        target.setUrnProvider(source.getMaintainableArtefact().getUrnProvider());
         target.setShortName(toInternationalString(source.getShortName()));
         target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
         target.setIsRecommended(source.getIsRecommended());
@@ -173,8 +178,12 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
     public void toCode(CodeMetamac source, ItemResult sourceItemResult, Code target) {
         if (sourceItemResult != null) {
             CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) sourceItemResult.getExtensionPoint();
+            target.setUrn(sourceItemResult.getUrn());
+            target.setUrnProvider(sourceItemResult.getUrnProvider());
             target.setShortName(toInternationalString(extensionPoint.getShortName()));
         } else if (source != null) {
+            target.setUrn(source.getNameableArtefact().getUrn());
+            target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
             if (source.getVariableElement() == null) {
                 target.setShortName(toInternationalString(source.getShortName()));
             } else {
@@ -227,7 +236,7 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         Resource target = new Resource();
-        target.setUrn(getUrn(source.getNameableArtefact()));
+        target.setUrn(source.getNameableArtefact().getUrn());
         target.setId(getCode(source.getNameableArtefact()));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
         return target;
@@ -238,7 +247,7 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         Resource target = new Resource();
-        target.setUrn(getUrn(source.getNameableArtefact()));
+        target.setUrn(source.getNameableArtefact().getUrn());
         target.setId(getCode(source.getNameableArtefact()));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
         return target;
@@ -249,7 +258,7 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
             return null;
         }
         Resource target = new Resource();
-        target.setUrn(getUrn(source.getNameableArtefact()));
+        target.setUrn(source.getNameableArtefact().getUrn());
         target.setId(getCode(source.getNameableArtefact()));
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
         return target;
@@ -261,7 +270,7 @@ public class CodesDo2SoapMapperV10Impl extends ItemSchemeBaseDo2SoapMapperV10Imp
         }
         Resource target = new Resource();
         target.setId(getCode(source.getMaintainableArtefact()));
-        target.setUrn(getUrn(source.getMaintainableArtefact()));
+        target.setUrn(source.getMaintainableArtefact().getUrn());
         target.setName(toInternationalString(source.getMaintainableArtefact().getName()));
         return target;
     }

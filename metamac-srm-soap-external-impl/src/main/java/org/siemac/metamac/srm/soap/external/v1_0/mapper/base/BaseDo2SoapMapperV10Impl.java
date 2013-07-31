@@ -53,14 +53,6 @@ public abstract class BaseDo2SoapMapperV10Impl {
         }
     }
 
-    protected String getUrn(NameableArtefact nameableArtefact) {
-        if (nameableArtefact.getUrnProvider() != null) {
-            return nameableArtefact.getUrnProvider();
-        } else {
-            return nameableArtefact.getUrn();
-        }
-    }
-
     protected boolean canResourceBeProvidedByApi(MaintainableArtefact source) {
         return source.getPublicLogic();
     }

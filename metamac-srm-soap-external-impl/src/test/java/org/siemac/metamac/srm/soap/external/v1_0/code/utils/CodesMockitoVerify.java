@@ -44,16 +44,20 @@ public class CodesMockitoVerify {
         assertEquals(AccessTypeEnum.PUBLIC, propertyAccessTypePublic.getFirstOperant());
 
         if (urn != null) {
-            ConditionalCriteria propertyUrn = getPropertyFromConditionalCriteria(conditions.getValue(), CodelistVersionMetamacProperties.maintainableArtefact().urnProvider());
+            ConditionalCriteria propertyUrn = getPropertyOrFromConditionalCriteria(conditions.getValue(), CodelistVersionMetamacProperties.maintainableArtefact().urnProvider());
             assertNotNull(propertyUrn);
             assertEquals(urn, propertyUrn.getFirstOperant());
         }
     }
 
     @SuppressWarnings("rawtypes")
+    private static ConditionalCriteria getPropertyOrFromConditionalCriteria(List<ConditionalCriteria> conditions, Property property) {
+        return ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Or, property);
+    }
+
+    @SuppressWarnings("rawtypes")
     private static ConditionalCriteria getPropertyFromConditionalCriteria(List<ConditionalCriteria> conditions, Property property) {
-        ConditionalCriteria conditionalCriteria = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, property);
-        return conditionalCriteria;
+        return ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, property);
     }
 
 }

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCode;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCodelist;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCodelistFamily;
+import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockCodelistWithCodes;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockVariable;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockVariableFamily;
 import static org.siemac.metamac.srm.soap.external.v1_0.code.utils.CodesDoMocks.mockVariableWithFamilies;
@@ -327,6 +328,23 @@ public class CodesDo2SoapMapperTest {
     }
 
     @Test
+    public void testToCodelistImported() throws MetamacException {
+
+        CodelistVersionMetamac source = mockCodelistWithCodes("agencyID1", "resourceID1", "01.123");
+        source.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        source.getMaintainableArtefact().setUriProvider("uriProviderDb");
+        source.getMaintainableArtefact().setUrnProvider("urnProvider");
+
+        // Transform
+        Codelist target = do2SoapExternalMapper.toCodelist(source);
+
+        // Validate
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agencyID1:resourceID1(01.123)", target.getUrn());
+        assertEquals("urnProvider", target.getUrnProvider());
+        assertEquals("uriProviderDb", target.getUri());
+    }
+
+    @Test
     public void testToCodelistReplacedBy() throws MetamacException {
 
         CodelistVersionMetamac source = mockCodelist("agencyID1", "resourceID1", "01.123");
@@ -356,9 +374,9 @@ public class CodesDo2SoapMapperTest {
 
     @Test
     public void testToCode() {
-        CodelistVersionMetamac codeScheme = mockCodelist("agencyID1", "resourceID1", "01.123");
-        CodeMetamac parent = mockCode("codeParent1", codeScheme, null);
-        CodeMetamac source = mockCode("code2", codeScheme, parent);
+        CodelistVersionMetamac codelist = mockCodelist("agencyID1", "resourceID1", "01.123");
+        CodeMetamac parent = mockCode("codeParent1", codelist, null);
+        CodeMetamac source = mockCode("code2", codelist, parent);
 
         // Transform
         Code target = do2SoapExternalMapper.toCode(source);
@@ -370,10 +388,27 @@ public class CodesDo2SoapMapperTest {
     }
 
     @Test
+    public void testToCodeImported() {
+        CodelistVersionMetamac codelist = mockCodelist("agencyID1", "resourceID1", "01.123");
+        codelist.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        CodeMetamac source = mockCode("code2", codelist, null);
+        source.getNameableArtefact().setUrnProvider("urnProvider");
+        source.getNameableArtefact().setUriProvider("uriProviderDb");
+
+        // Transform
+        Code target = do2SoapExternalMapper.toCode(source);
+
+        // Validate
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=agencyID1:resourceID1(01.123).code2", target.getUrn());
+        assertEquals("urnProvider", target.getUrnProvider());
+        assertEquals("uriProviderDb", target.getUri());
+    }
+
+    @Test
     public void testToCodeWithoutVariableElement() {
-        CodelistVersionMetamac codeScheme = mockCodelist("agencyID1", "resourceID1", "01.123");
-        codeScheme.getMaintainableArtefact().setIsImported(Boolean.TRUE);
-        CodeMetamac source = mockCode("code2", codeScheme, null);
+        CodelistVersionMetamac codelist = mockCodelist("agencyID1", "resourceID1", "01.123");
+        codelist.getMaintainableArtefact().setIsImported(Boolean.TRUE);
+        CodeMetamac source = mockCode("code2", codelist, null);
         source.setVariableElement(null);
 
         // Transform
