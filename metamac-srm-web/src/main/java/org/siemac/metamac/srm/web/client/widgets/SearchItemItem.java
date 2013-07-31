@@ -26,6 +26,8 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
     protected CustomCheckboxItem                                            isLastVersionItem;
     protected Boolean                                                       isLastVersionItemVisible = Boolean.TRUE;
 
+    protected Boolean                                                       hideItemSchemeFilter     = Boolean.FALSE;
+
     private ClickHandler                                                    saveClickHandler;
 
     private String                                                          informationLabelMessage;
@@ -61,6 +63,10 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
 
                 searchItemWindow = new SearchRelatedResourcePaginatedWithRelatedResourceFilterWindow(windowTitle, windowFilterListTitle, windowFilterTextTitle, windowSelectionListTitle, MAX_RESULTS,
                         filterListAction, selectionListAction);
+
+                if (BooleanUtils.isTrue(hideItemSchemeFilter)) {
+                    searchItemWindow.getFilterForm().hide();
+                }
 
                 // Add an information message (if it has been specified")
                 if (!StringUtils.isBlank(informationLabelMessage)) {
@@ -179,7 +185,10 @@ public abstract class SearchItemItem extends SearchRelatedResourceLinkItem {
         this.isLastVersionItemVisible = isLastVersionItemVisible;
     }
 
+    public void setHideItemSchemeFilter(Boolean hideItemSchemeFilter) {
+        this.hideItemSchemeFilter = hideItemSchemeFilter;
+    }
+
     protected abstract void retrieveItemSchemes(int firstResult, int maxResults, String filterListCriteria, boolean isLastVersion);
     protected abstract void retrieveItems(int firstResult, int maxResults, String selectionListCriteria, String selectedRelatedResourceUrnAsFilter, boolean isLastVersion);
-
 }

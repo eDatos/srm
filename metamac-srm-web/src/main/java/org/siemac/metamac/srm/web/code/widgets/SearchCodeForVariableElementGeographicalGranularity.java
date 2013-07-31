@@ -16,6 +16,7 @@ public class SearchCodeForVariableElementGeographicalGranularity extends SearchC
         setRequired(true);
         setInformationLabelMessage(getConstants().variableElementGeographicalGranularityInfoMessage());
         setIsLastVersionItemVisible(false); // Do not show isLastVersion item (the codelist is specified in the data directory)
+        setHideItemSchemeFilter(true); // Do not show the item scheme filter because the codes will always belong to the same codelist (it is specified in the data directory)
     }
 
     @Override
