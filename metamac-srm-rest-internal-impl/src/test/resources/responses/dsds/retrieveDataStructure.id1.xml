@@ -400,4 +400,27 @@
             <sr:showDecimals>5</sr:showDecimals>
         </sr:showDecimalPrecision>
     </sr:showDecimalsPrecisions>
+    <sr:dimensionVisualisations total="3">
+        <sr:dimensionVisualisation>
+            <sr:dimension>
+                <Ref id="dimension01" class="Dimension"/>
+            </sr:dimension>
+            <sr:order>order01</sr:order>
+            <sr:openness>openness01</sr:openness>
+        </sr:dimensionVisualisation>
+        <sr:dimensionVisualisation>
+            <sr:dimension>
+                <Ref id="dimension02" class="Dimension"/>
+            </sr:dimension>
+            <sr:order>order02</sr:order>
+            <sr:openness>openness02</sr:openness>
+        </sr:dimensionVisualisation>
+        <sr:dimensionVisualisation>
+            <sr:dimension>
+                <Ref id="dimension05" class="Dimension"/>
+            </sr:dimension>
+            <sr:order>order05</sr:order>
+            <sr:openness>openness05</sr:openness>
+        </sr:dimensionVisualisation>
+    </sr:dimensionVisualisations>    
 </sr:dataStructure>

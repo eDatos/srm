@@ -16,12 +16,15 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Attribu
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AttributeQualifierType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStructure;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStructures;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DimensionVisualisation;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DimensionVisualisations;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimensions;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ShowDecimalPrecision;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ShowDecimalPrecisions;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
+import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualisationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
@@ -106,6 +109,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         target.setStub(toDimensions(source.getStubDimensions()));
         target.setShowDecimals(source.getShowDecimals() != null ? BigInteger.valueOf(source.getShowDecimals()) : null);
         target.setShowDecimalsPrecisions(toShowDecimalPrecisions(source.getShowDecimalsPrecisions()));
+        target.setDimensionVisualisations(toDimensionVisualisations(source.getDimensionVisualisationInfos()));
 
         target.setCreatedDate(toDate(source.getStructure().getResourceCreatedDate()));
     }
@@ -160,6 +164,28 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
             target.setShowDecimals(BigInteger.valueOf(source.getShowDecimalPrecision()));
             target.setConcept(commonDo2JaxbMapper.conceptReferenceTypeDoToJaxb(source.getConcept(), null));
             targets.getShowDecimalPrecisions().add(target);
+        }
+        return targets;
+    }
+
+    private DimensionVisualisations toDimensionVisualisations(List<DimensionVisualisationInfo> sources) {
+        if (CollectionUtils.isEmpty(sources)) {
+            return null;
+        }
+        DimensionVisualisations targets = new DimensionVisualisations();
+        targets.setTotal(BigInteger.valueOf(sources.size()));
+
+        // Values
+        for (DimensionVisualisationInfo source : sources) {
+            DimensionVisualisation target = new DimensionVisualisation();
+            target.setDimension(commonDo2JaxbMapper.localDimensionReferenceDoToJaxb(source.getDimension()));
+            if (source.getDisplayOrder() != null) {
+                target.setOrder(source.getDisplayOrder().getNameableArtefact().getCode());
+            }
+            if (source.getHierarchyLevelsOpen() != null) {
+                target.setOpenness(source.getHierarchyLevelsOpen().getNameableArtefact().getCode());
+            }
+            targets.getDimensionVisualisations().add(target);
         }
         return targets;
     }

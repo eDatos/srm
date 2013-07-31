@@ -32,6 +32,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Attribu
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AttributeQualifierType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStructure;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStructures;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DimensionVisualisation;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -145,6 +146,27 @@ public class DataStructuresDo2RestMapperTest {
         // attribute
         assertTrue(target.getDataStructureComponents().getAttributeList().getAttributesAndReportingYearStartDaies().get(0) instanceof Attribute);
         assertEquals(AttributeQualifierType.SPATIAL, ((Attribute) target.getDataStructureComponents().getAttributeList().getAttributesAndReportingYearStartDaies().get(0)).getType());
+        // visualisation
+        assertEquals(3, target.getDimensionVisualisations().getTotal().intValue());
+        {
+            DimensionVisualisation dimensionVisualisation = target.getDimensionVisualisations().getDimensionVisualisations().get(0);
+            assertEquals("dimension01", dimensionVisualisation.getDimension().getRef().getId());
+            assertEquals("order01", dimensionVisualisation.getOrder());
+            assertEquals("openness01", dimensionVisualisation.getOpenness());
+        }
+        {
+            DimensionVisualisation dimensionVisualisation = target.getDimensionVisualisations().getDimensionVisualisations().get(1);
+            assertEquals("dimension02", dimensionVisualisation.getDimension().getRef().getId());
+            assertEquals("order02", dimensionVisualisation.getOrder());
+            assertEquals("openness02", dimensionVisualisation.getOpenness());
+        }
+        {
+            DimensionVisualisation dimensionVisualisation = target.getDimensionVisualisations().getDimensionVisualisations().get(2);
+            assertEquals("dimension05", dimensionVisualisation.getDimension().getRef().getId());
+            assertEquals("order05", dimensionVisualisation.getOrder());
+            assertEquals("openness05", dimensionVisualisation.getOpenness());
+        }
+
         // others
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
