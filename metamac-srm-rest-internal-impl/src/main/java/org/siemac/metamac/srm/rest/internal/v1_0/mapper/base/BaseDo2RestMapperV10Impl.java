@@ -1,6 +1,5 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.base;
 
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.Map;
 
@@ -123,13 +122,6 @@ public abstract class BaseDo2RestMapperV10Impl {
 
     protected Date toDate(DateTime source) {
         return RestCommonUtil.transformDateTimeToDate(source);
-    }
-
-    protected BigInteger toBigInteger(Integer source) {
-        if (source == null) {
-            return null;
-        }
-        return BigInteger.valueOf(source.longValue());
     }
 
     protected String getCode(IdentifiableArtefact identifiableArtefact) {

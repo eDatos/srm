@@ -130,10 +130,10 @@ public class DataStructuresDo2RestMapperTest {
         assertEquals(2, target.getShowDecimalsPrecisions().getTotal().intValue());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01", target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(0).getConcept()
                 .getURN());
-        assertEquals(2, target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(0).getShowDecimals().intValue());
+        assertEquals(2, target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(0).getShowDecimals());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02", target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(1).getConcept()
                 .getURN());
-        assertEquals(5, target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(1).getShowDecimals().intValue());
+        assertEquals(5, target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(1).getShowDecimals());
         // heading
         assertEquals(2, target.getHeading().getTotal().intValue());
         assertEquals("dimension01", target.getHeading().getDimensions().get(0).getRef().getId());

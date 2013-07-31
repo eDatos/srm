@@ -107,7 +107,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         target.setAutoOpen(source.getAutoOpen());
         target.setHeading(toDimensions(source.getHeadingDimensions()));
         target.setStub(toDimensions(source.getStubDimensions()));
-        target.setShowDecimals(source.getShowDecimals() != null ? BigInteger.valueOf(source.getShowDecimals()) : null);
+        target.setShowDecimals(source.getShowDecimals());
         target.setShowDecimalsPrecisions(toShowDecimalPrecisions(source.getShowDecimalsPrecisions()));
         target.setDimensionVisualisations(toDimensionVisualisations(source.getDimensionVisualisationInfos()));
 
@@ -161,7 +161,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         // Values
         for (MeasureDimensionPrecision source : sources) {
             ShowDecimalPrecision target = new ShowDecimalPrecision();
-            target.setShowDecimals(BigInteger.valueOf(source.getShowDecimalPrecision()));
+            target.setShowDecimals(source.getShowDecimalPrecision());
             target.setConcept(commonDo2JaxbMapper.conceptReferenceTypeDoToJaxb(source.getConcept(), null));
             targets.getShowDecimalPrecisions().add(target);
         }

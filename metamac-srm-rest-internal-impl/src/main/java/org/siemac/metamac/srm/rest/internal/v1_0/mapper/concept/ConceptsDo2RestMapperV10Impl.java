@@ -365,16 +365,16 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         if (QuantityUtils.isQuantityOrExtension(source.getQuantityType())) {
             target.setUnitCode(codesDo2RestMapper.toResource(source.getUnitCode()));
             target.setUnitSymbolPosition(toQuantityUnitSymbolPosition(source.getUnitSymbolPosition()));
-            target.setSignificantDigits(toBigInteger(source.getSignificantDigits()));
-            target.setDecimalPlaces(toBigInteger(source.getDecimalPlaces()));
-            target.setUnitMultiplier(toBigInteger(source.getUnitMultiplier()));
+            target.setSignificantDigits(source.getSignificantDigits());
+            target.setDecimalPlaces(source.getDecimalPlaces());
+            target.setUnitMultiplier(source.getUnitMultiplier());
         }
         if (QuantityUtils.isAmountOrExtension(source.getQuantityType())) {
             // nothing
         }
         if (QuantityUtils.isMagnitudeOrExtension(source.getQuantityType())) {
-            ((QuantityMagnitude) target).setMin(toBigInteger(source.getMinimum()));
-            ((QuantityMagnitude) target).setMax(toBigInteger(source.getMaximum()));
+            ((QuantityMagnitude) target).setMin(source.getMinimum());
+            ((QuantityMagnitude) target).setMax(source.getMaximum());
         }
         if (QuantityUtils.isFractionOrExtension(source.getQuantityType())) {
             ((QuantityFraction) target).setNumerator(toResource(source.getNumerator()));
@@ -388,7 +388,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             // nothing
         }
         if (QuantityUtils.isIndexOrExtension(source.getQuantityType())) {
-            ((QuantityIndex) target).setBaseValue(toBigInteger(source.getBaseValue()));
+            ((QuantityIndex) target).setBaseValue(source.getBaseValue());
             ((QuantityIndex) target).setBaseTime(source.getBaseTime());
             ((QuantityIndex) target).setBaseLocation(codesDo2RestMapper.toResource(source.getBaseLocation()));
         }
