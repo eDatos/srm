@@ -9,7 +9,7 @@
             <cdomain:text xml:lang="en">name-organisation1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-organisation1 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation1</sr:urnSiemac>
+        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation1</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=AGENCY_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=organisation1</sr:managementAppLink>
     </sr:agency>
     <sr:agency kind="structuralResources#agency">
@@ -21,7 +21,7 @@
             <cdomain:text xml:lang="en">name-organisation2 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-organisation2 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2</sr:urnSiemac>
+        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=AGENCY_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=organisation2</sr:managementAppLink>
     </sr:agency>
     <sr:agency kind="structuralResources#agency">
@@ -33,7 +33,7 @@
             <cdomain:text xml:lang="en">name-organisation2A in English</cdomain:text>
             <cdomain:text xml:lang="es">name-organisation2A en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2A</sr:urnSiemac>
+        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2A</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=AGENCY_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=organisation2A</sr:managementAppLink>
     </sr:agency>
     <sr:agency kind="structuralResources#agency">
@@ -45,7 +45,7 @@
             <cdomain:text xml:lang="en">name-organisation2B in English</cdomain:text>
             <cdomain:text xml:lang="es">name-organisation2B en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2B</sr:urnSiemac>
+        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation2B</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=AGENCY_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=organisation2B</sr:managementAppLink>
     </sr:agency>
 </sr:agencies>

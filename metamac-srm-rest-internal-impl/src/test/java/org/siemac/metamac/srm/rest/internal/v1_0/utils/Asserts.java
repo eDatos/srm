@@ -90,8 +90,8 @@ public class Asserts extends MetamacRestAsserts {
     public static void assertEqualsResource(NameableArtefact expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual) {
         assertEquals(expectedKind, actual.getKind());
         assertEquals(expected.getCode(), actual.getId());
-        assertEquals(expected.getUrnProvider(), actual.getUrn());
-        assertEquals(expected.getUrn(), actual.getUrnSiemac());
+        assertEquals(expected.getUrn(), actual.getUrn());
+        assertEquals(expected.getUrnProvider(), actual.getUrnProvider());
         assertEquals(expectedKind, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
         assertEquals(expectedManagementLink, actual.getManagementAppLink());
@@ -101,8 +101,8 @@ public class Asserts extends MetamacRestAsserts {
     public static void assertEqualsResource(ItemResult expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual) {
         assertEquals(expectedKind, actual.getKind());
         assertEquals(expected.getCode(), actual.getId());
-        assertEquals(expected.getUrnProvider(), actual.getUrn());
-        assertEquals(expected.getUrn(), actual.getUrnSiemac());
+        assertEquals(expected.getUrn(), actual.getUrn());
+        assertEquals(expected.getUrnProvider(), actual.getUrnProvider());
         assertEquals(expectedKind, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
         assertEquals(expectedManagementLink, actual.getManagementAppLink());

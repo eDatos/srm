@@ -9,7 +9,7 @@
             <cdomain:text xml:lang="en">name-category1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-category1 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category1</sr:urnSiemac>
+        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category1</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme1(01.000)/category;id=category1</sr:managementAppLink>
     </sr:category>
     <sr:category kind="structuralResources#category">
@@ -21,7 +21,7 @@
             <cdomain:text xml:lang="es">name-category2 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-category2 in English</cdomain:text>
         </cdomain:name>
-        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2</sr:urnSiemac>
+        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme1(01.000)/category;id=category2</sr:managementAppLink>
     </sr:category>
     <sr:category kind="structuralResources#category">
@@ -33,7 +33,7 @@
             <cdomain:text xml:lang="en">name-category2A in English</cdomain:text>
             <cdomain:text xml:lang="es">name-category2A en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2.category2A</sr:urnSiemac>
+        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2.category2A</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme1(01.000)/category;id=category2.category2A</sr:managementAppLink>
         <sr:parent>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2</sr:parent>
     </sr:category>
@@ -46,7 +46,7 @@
             <cdomain:text xml:lang="en">name-category1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-category1 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme2(01.000).category1</sr:urnSiemac>
+        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme2(01.000).category1</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme2(01.000)/category;id=category1</sr:managementAppLink>
     </sr:category>
 </sr:categories>

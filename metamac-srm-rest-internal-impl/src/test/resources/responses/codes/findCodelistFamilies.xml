@@ -8,7 +8,7 @@
             <cdomain:text xml:lang="en">name-artefact1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-artefact1 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnSiemac>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=artefact1</sr:urnSiemac>
+        <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=artefact1</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelistFamilies/codelistFamily;id=artefact1</sr:managementAppLink>
     </sr:codelistFamily>
     <sr:codelistFamily kind="structuralResources#codelistFamily">
@@ -19,7 +19,7 @@
             <cdomain:text xml:lang="en">name-artefact2 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-artefact2 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnSiemac>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=artefact2</sr:urnSiemac>
+        <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=artefact2</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelistFamilies/codelistFamily;id=artefact2</sr:managementAppLink>
     </sr:codelistFamily>
     <sr:codelistFamily kind="structuralResources#codelistFamily">
@@ -30,7 +30,7 @@
             <cdomain:text xml:lang="en">name-artefact3 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-artefact3 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnSiemac>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=artefact3</sr:urnSiemac>
+        <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=artefact3</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelistFamilies/codelistFamily;id=artefact3</sr:managementAppLink>
     </sr:codelistFamily>
     <sr:codelistFamily kind="structuralResources#codelistFamily">
@@ -41,7 +41,7 @@
             <cdomain:text xml:lang="es">name-artefact4 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-artefact4 in English</cdomain:text>
         </cdomain:name>
-        <sr:urnSiemac>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=artefact4</sr:urnSiemac>
+        <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=artefact4</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelistFamilies/codelistFamily;id=artefact4</sr:managementAppLink>
     </sr:codelistFamily>
 </sr:codelistFamilies>

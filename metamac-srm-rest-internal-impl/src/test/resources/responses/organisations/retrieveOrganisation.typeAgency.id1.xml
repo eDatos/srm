@@ -48,7 +48,7 @@
         <sr:nestedId>idAsMaintaineritemAgency1</sr:nestedId>
         <cdomain:selfLink kind="structuralResources#agency" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies/itemAgency1"/>
         <cdomain:parentLink kind="structuralResources#agencies" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies"/>
-        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.base.Agency=agency1:itemScheme1(01.000).itemAgency1</sr:urnSiemac>
+        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.base.Agency=agency1:itemScheme1(01.000).itemAgency1</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=AGENCY_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=itemAgency1</sr:managementAppLink>
         <sr:comment>
             <cdomain:text xml:lang="es">comment-itemAgency1 en Español</cdomain:text>

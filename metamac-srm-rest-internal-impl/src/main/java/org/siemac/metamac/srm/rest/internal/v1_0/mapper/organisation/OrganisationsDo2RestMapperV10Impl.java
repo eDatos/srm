@@ -239,7 +239,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             return;
         }
         target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
-        target.setUrnSiemac(source.getMaintainableArtefact().getUrn());
+        target.setUrn(source.getMaintainableArtefact().getUrn());
+        target.setUrnProvider(source.getMaintainableArtefact().getUrnProvider());
         target.setSelfLink(toOrganisationSchemeSelfLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
@@ -261,7 +262,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             return;
         }
         target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
-        target.setUrnSiemac(source.getMaintainableArtefact().getUrn());
+        target.setUrn(source.getMaintainableArtefact().getUrn());
+        target.setUrnProvider(source.getMaintainableArtefact().getUrnProvider());
         target.setSelfLink(toOrganisationSchemeSelfLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
@@ -283,7 +285,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             return;
         }
         target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
-        target.setUrnSiemac(source.getMaintainableArtefact().getUrn());
+        target.setUrn(source.getMaintainableArtefact().getUrn());
+        target.setUrnProvider(source.getMaintainableArtefact().getUrnProvider());
         target.setSelfLink(toOrganisationSchemeSelfLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
@@ -305,7 +308,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             return;
         }
         target.setKind(toKindItemScheme(source.getOrganisationSchemeType()));
-        target.setUrnSiemac(source.getMaintainableArtefact().getUrn());
+        target.setUrn(source.getMaintainableArtefact().getUrn());
+        target.setUrnProvider(source.getMaintainableArtefact().getUrnProvider());
         target.setSelfLink(toOrganisationSchemeSelfLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
@@ -536,7 +540,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         organisationsDo2JaxbSdmxMapper.agencyDoToJaxb(source, target, IS_INTERNAL_API, srmConfiguration.retrieveMaintainerUrnDefault());
 
         target.setKind(toKindItem(source.getOrganisationType()));
-        target.setUrnSiemac(source.getNameableArtefact().getUrn());
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setSelfLink(toOrganisationSelfLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
@@ -558,7 +563,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         organisationsDo2JaxbSdmxMapper.organisationUnitDoToJaxb(source, target);
 
         target.setKind(toKindItem(source.getOrganisationType()));
-        target.setUrnSiemac(source.getNameableArtefact().getUrn());
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setSelfLink(toOrganisationSelfLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
@@ -580,7 +586,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         organisationsDo2JaxbSdmxMapper.dataProviderDoToJaxb(source, target);
 
         target.setKind(toKindItem(source.getOrganisationType()));
-        target.setUrnSiemac(source.getNameableArtefact().getUrn());
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setSelfLink(toOrganisationSelfLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
@@ -602,7 +609,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         organisationsDo2JaxbSdmxMapper.dataConsumerDoToJaxb(source, target);
 
         target.setKind(toKindItem(source.getOrganisationType()));
-        target.setUrnSiemac(source.getNameableArtefact().getUrn());
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setSelfLink(toOrganisationSelfLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());

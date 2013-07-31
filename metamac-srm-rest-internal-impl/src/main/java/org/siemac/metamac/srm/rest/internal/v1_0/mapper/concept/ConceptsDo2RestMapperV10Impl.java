@@ -99,7 +99,8 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             return;
         }
         target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEME);
-        target.setUrnSiemac(source.getMaintainableArtefact().getUrn());
+        target.setUrn(source.getMaintainableArtefact().getUrn());
+        target.setUrnProvider(source.getMaintainableArtefact().getUrnProvider());
         target.setSelfLink(toConceptSchemeSelfLink(source));
         target.setParentLink(toConceptSchemeParentLink(source));
         target.setChildLinks(toConceptSchemeChildLinks(source));
@@ -161,7 +162,8 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         conceptsDo2JaxbSdmxMapper.conceptDoToJaxb(source, null, target, null);
 
         target.setKind(RestInternalConstants.KIND_CONCEPT);
-        target.setUrnSiemac(source.getNameableArtefact().getUrn());
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setSelfLink(toConceptSelfLink(source));
         target.setParentLink(toConceptParentLink(source));
         target.setChildLinks(toConceptChildLinks(source));

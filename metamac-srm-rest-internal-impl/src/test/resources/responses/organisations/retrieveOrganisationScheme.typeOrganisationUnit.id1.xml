@@ -26,7 +26,7 @@
         <cdomain:childLinks total="1">
             <cdomain:childLink kind="structuralResources#organisationUnits" href="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemSchemeOrganisationUnit1/01.000/organisationunits"/>
         </cdomain:childLinks>
-        <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agency1:itemSchemeOrganisationUnit1(01.000)</sr:urnSiemac>
+        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agency1:itemSchemeOrganisationUnit1(01.000)</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemSchemeOrganisationUnit1(01.000)</sr:managementAppLink>
         <sr:lifeCycle>
             <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>

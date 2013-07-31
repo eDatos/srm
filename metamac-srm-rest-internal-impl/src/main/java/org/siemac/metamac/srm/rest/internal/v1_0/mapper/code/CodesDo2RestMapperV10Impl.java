@@ -102,7 +102,8 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return;
         }
         target.setKind(RestInternalConstants.KIND_CODELIST);
-        target.setUrnSiemac(source.getMaintainableArtefact().getUrn());
+        target.setUrn(source.getMaintainableArtefact().getUrn());
+        target.setUrnProvider(source.getMaintainableArtefact().getUrnProvider());
         target.setSelfLink(toCodelistSelfLink(source));
         target.setManagementAppLink(toCodelistManagementApplicationLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
@@ -175,7 +176,8 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // All metamac information
         target.setKind(RestInternalConstants.KIND_CODE);
-        target.setUrnSiemac(source.getNameableArtefact().getUrn());
+        target.setUrn(source.getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setSelfLink(toCodeSelfLink(source));
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
@@ -260,7 +262,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         VariableFamily target = new VariableFamily();
         target.setId(source.getNameableArtefact().getCode());
         target.setUrn(source.getNameableArtefact().getUrn());
-        target.setUrnSiemac(source.getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setKind(RestInternalConstants.KIND_VARIABLE_FAMILY);
         target.setSelfLink(toVariableFamilySelfLink(source));
         target.setChildLinks(toVariableFamilyChildLinks(source));
@@ -312,7 +314,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         Variable target = new Variable();
         target.setId(source.getNameableArtefact().getCode());
         target.setUrn(source.getNameableArtefact().getUrn());
-        target.setUrnSiemac(source.getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setKind(RestInternalConstants.KIND_VARIABLE);
         target.setSelfLink(toVariableSelfLink(source));
         target.setManagementAppLink(toVariableManagementApplicationLink(source));
@@ -363,7 +365,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         CodelistFamily target = new CodelistFamily();
         target.setId(source.getNameableArtefact().getCode());
         target.setUrn(source.getNameableArtefact().getUrn());
-        target.setUrnSiemac(source.getNameableArtefact().getUrn());
+        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setKind(RestInternalConstants.KIND_CODELIST_FAMILY);
         target.setSelfLink(toCodelistFamilySelfLink(source));
         target.setManagementAppLink(toCodelistFamilyManagementApplicationLink(source));

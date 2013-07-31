@@ -25,7 +25,7 @@
     <cdomain:childLinks total="1">
         <cdomain:childLink kind="structuralResources#categories" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories"/>
     </cdomain:childLinks>
-    <sr:urnSiemac>urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agency1:itemScheme1(01.000)</sr:urnSiemac>
+    <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agency1:itemScheme1(01.000)</sr:urnProvider>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme1(01.000)</sr:managementAppLink>
     <sr:lifeCycle>
         <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>

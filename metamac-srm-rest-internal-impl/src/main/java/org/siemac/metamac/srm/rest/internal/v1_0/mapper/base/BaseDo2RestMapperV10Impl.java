@@ -162,8 +162,8 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
         target.setId(source.getCode());
         // nestedId: only filled to some resource
-        target.setUrn(source.getUrnProvider());
-        target.setUrnSiemac(source.getUrn());
+        target.setUrn(source.getUrn());
+        target.setUrnProvider(source.getUrnProvider());
         target.setKind(kind);
         target.setSelfLink(selfLink);
         target.setName(toInternationalString(source.getName()));
@@ -186,8 +186,8 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
         target.setId(source.getCode());
         // nestedId: only filled to some resource
-        target.setUrn(source.getUrnProvider());
-        target.setUrnSiemac(source.getUrn());
+        target.setUrn(source.getUrn());
+        target.setUrnProvider(source.getUrnProvider());
         target.setKind(kind);
         target.setSelfLink(selfLink);
         target.setName(toInternationalString(source.getName()));
@@ -211,9 +211,8 @@ public abstract class BaseDo2RestMapperV10Impl {
         ResourceInternal target = new ResourceInternal();
         target.setId(source.getCode());
         target.setNestedId(source.getCodeNested());
-        // TODO revisar urn!! REFACTOR PENDIENTE
-        // TODO urnProvider??
         target.setUrn(source.getUrn());
+        target.setUrnProvider(source.getUrnProvider());
         target.setKind(source.getType().getValue());
         target.setSelfLink(toResourceLink(target.getKind(), RestUtils.createLink(apiExternalItemBaseUrl, source.getUri())));
         if (source.getManagementAppUrl() != null) {
