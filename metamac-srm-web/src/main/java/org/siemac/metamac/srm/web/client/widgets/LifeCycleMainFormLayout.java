@@ -55,7 +55,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         createTemporalVersion = new MainFormLayoutButton(getConstants().lifeCycleCreateVersion(), GlobalResources.RESOURCE.version().getURL());
         consolidateVersion = new MainFormLayoutButton(getConstants().lifeCycleConsolidateVersion(), GlobalResources.RESOURCE.version().getURL());
         cancelValidity = new MainFormLayoutButton(getConstants().lifeCycleCancelValidity(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.disable().getURL());
-        export = new MainFormLayoutButton(getConstants().actionExport(), GlobalResources.RESOURCE.exportResource().getURL());
+        export = new MainFormLayoutButton(getConstants().actionExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         copy = new MainFormLayoutButton(getConstants().actionCopy(), GlobalResources.RESOURCE.copy().getURL());
         // announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
 

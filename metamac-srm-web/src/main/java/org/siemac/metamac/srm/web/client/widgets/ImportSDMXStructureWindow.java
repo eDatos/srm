@@ -2,8 +2,10 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.shared.ImportableResourceTypeEnum;
 import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
+import org.siemac.metamac.web.common.client.widgets.ImportResourceWindow;
 
 import com.smartgwt.client.widgets.form.fields.HiddenItem;
 
@@ -26,5 +28,10 @@ public class ImportSDMXStructureWindow extends ImportResourceWindow {
 
             addFieldsInThePenultimePosition(fileTypeItem);
         }
+    }
+
+    @Override
+    public String getRelativeURL(String url) {
+        return MetamacSrmWeb.getRelativeURL(url);
     }
 }

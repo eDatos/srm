@@ -3,10 +3,9 @@ package org.siemac.metamac.srm.web.client.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
-import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.MainPageUiHandlers;
-import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
+import org.siemac.metamac.web.common.client.listener.UploadListener;
 import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.RadioToolStripButton;
 
@@ -119,7 +118,8 @@ public class StructuralResourcesMenu extends ToolStrip {
 
         // Button
 
-        importSDMXResourceButton = new CustomToolStripButton(getConstants().actionImportSDMXResource(), GlobalResources.RESOURCE.importResource().getURL());
+        importSDMXResourceButton = new CustomToolStripButton(getConstants().actionImportSDMXResource(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource()
+                .getURL());
         importSDMXResourceButton.setVisible(TasksClientSecurityUtils.canImportStructure());
         importSDMXResourceButton.addClickHandler(new ClickHandler() {
 

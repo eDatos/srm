@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.code.widgets;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
-import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
@@ -30,7 +29,7 @@ public class VariableMainFormLayout extends InternationalMainFormLayout {
     }
 
     private void common() {
-        importShape = new MainFormLayoutButton(getConstants().actionImportVariableElementShape(), GlobalResources.RESOURCE.importResource().getURL());
+        importShape = new MainFormLayoutButton(getConstants().actionImportVariableElementShape(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource().getURL());
         toolStrip.addButton(importShape);
     }
 

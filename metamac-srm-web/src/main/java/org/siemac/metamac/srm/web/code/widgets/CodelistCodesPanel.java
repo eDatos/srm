@@ -6,11 +6,10 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
-import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
+import org.siemac.metamac.web.common.client.listener.UploadListener;
 import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -52,7 +51,7 @@ public class CodelistCodesPanel extends VLayout {
 
         toolStrip = new ToolStrip();
 
-        importCodesButton = new CustomToolStripButton(getConstants().actionImportCodes(), GlobalResources.RESOURCE.importResource().getURL());
+        importCodesButton = new CustomToolStripButton(getConstants().actionImportCodes(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource().getURL());
         importCodesButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -62,7 +61,7 @@ public class CodelistCodesPanel extends VLayout {
         });
         toolStrip.addButton(importCodesButton);
 
-        exportCodesButton = new CustomToolStripButton(getConstants().codesExport(), GlobalResources.RESOURCE.exportResource().getURL());
+        exportCodesButton = new CustomToolStripButton(getConstants().codesExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         exportCodesButton.addClickHandler(new ClickHandler() {
 
             @Override

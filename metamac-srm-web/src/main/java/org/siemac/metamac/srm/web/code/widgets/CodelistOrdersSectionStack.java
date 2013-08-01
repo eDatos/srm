@@ -13,7 +13,7 @@ import org.siemac.metamac.srm.web.code.model.ds.CodelistVisualisationDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistVisualisationRecord;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
-import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
+import org.siemac.metamac.web.common.client.listener.UploadListener;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 

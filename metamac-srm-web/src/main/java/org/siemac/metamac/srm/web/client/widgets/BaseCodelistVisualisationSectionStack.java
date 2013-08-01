@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
-import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistVisualisationDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistVisualisationRecord;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
@@ -89,9 +88,10 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomListGr
         deleteCodelistVisualisationButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteCodelistVisualisationButton.setVisible(false);
 
-        importCodelistVisualisationButton = new ToolStripButton(getConstants().actionImportCodeOrders(), GlobalResources.RESOURCE.importResource().getURL());
+        importCodelistVisualisationButton = new ToolStripButton(getConstants().actionImportCodeOrders(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource()
+                .getURL());
 
-        exportCodelistVisualisationButton = new ToolStripButton(getConstants().codesOrderExport(), GlobalResources.RESOURCE.exportResource().getURL());
+        exportCodelistVisualisationButton = new ToolStripButton(getConstants().codesOrderExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
 
         toolStrip.addButton(newCodelistVisualisationButton);
         toolStrip.addButton(editCodelistVisualisationButton);

@@ -19,14 +19,6 @@ public interface GlobalResources extends ClientBundleWithLookup {
     ImageResource addAnnotation();
 
     @ImageOptions(repeatStyle = RepeatStyle.Both)
-    @Source("images/import.png")
-    ImageResource importResource();
-
-    @ImageOptions(repeatStyle = RepeatStyle.Both)
-    @Source("images/export.png")
-    ImageResource exportResource();
-
-    @ImageOptions(repeatStyle = RepeatStyle.Both)
     @Source("images/resultsetnext.png")
     ImageResource resultSetNext();
 

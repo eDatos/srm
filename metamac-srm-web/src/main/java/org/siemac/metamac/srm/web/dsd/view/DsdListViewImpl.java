@@ -9,7 +9,6 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDt
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
-import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.DsdPaginatedListGrid;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
@@ -89,7 +88,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         });
         newToolStripButton.setVisible(DsdClientSecurityUtils.canCreateDsd());
 
-        exportToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), GlobalResources.RESOURCE.exportResource().getURL());
+        exportToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         exportToolStripButton.setVisible(false);
         exportToolStripButton.addClickHandler(new ClickHandler() {
 

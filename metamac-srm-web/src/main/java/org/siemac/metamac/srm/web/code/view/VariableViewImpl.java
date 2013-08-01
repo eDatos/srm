@@ -30,13 +30,13 @@ import org.siemac.metamac.srm.web.code.widgets.ImportVariableElementsWindow;
 import org.siemac.metamac.srm.web.code.widgets.NewVariableElementWindow;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementOperationLayout;
 import org.siemac.metamac.srm.web.code.widgets.VariableMainFormLayout;
-import org.siemac.metamac.srm.web.dsd.listener.UploadListener;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.listener.UploadListener;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -707,7 +707,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     }
 
     private CustomToolStripButton createImportVariableElementsButton() {
-        CustomToolStripButton importButton = new CustomToolStripButton(getConstants().actionImportVariableElements(), GlobalResources.RESOURCE.importResource().getURL());
+        CustomToolStripButton importButton = new CustomToolStripButton(getConstants().actionImportVariableElements(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE
+                .importResource().getURL());
         importButton.setVisible(CodesClientSecurityUtils.canImportVariableElements());
         importButton.addClickHandler(new ClickHandler() {
 
