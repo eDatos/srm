@@ -62,6 +62,7 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
     private final String                  CONCEPTSCHEME_SDMX01_CROSS_DOMAIN_CONCEPTS_V1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CROSS_DOMAIN_CONCEPTS(1.0)";
     private final String                  CONCEPTSCHEME_SDMX01_DEMO_CONCEPTS_V1         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_CONCEPTS(1.0)";
     private final String                  CONCEPTSCHEME_SDMX01_DEMO_MEASURES_V1         = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:DEMO_MEASURES(1.0)";
+    private final String                  CONCEPTSCHEME_SDMX01_CS_DEMO_V1               = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CS_DEMO(1.0)";
 
     @Autowired
     protected SrmCoreServiceFacade        srmCoreServiceFacade;
@@ -229,18 +230,9 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
             }
         });
         waitUntilJobFinished();
-        // ConceptSchemeVersionMetamac conceptSchemeVersion = null;
-        // conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_CROSS_DOMAIN_CONCEPTS_V1);
-        // assertEquals(12, conceptSchemeVersion.getItems().size());
-        // conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_DEMO_CONCEPTS_V1);
-        // assertEquals(3, conceptSchemeVersion.getItems().size());
-        // assertFalse(conceptSchemeVersion.getMaintainableArtefact().getIsLastVersion());
-        // conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_DEMO_CONCEPTS_V2);
-        // assertEquals(4, conceptSchemeVersion.getItems().size());
-        // assertTrue(conceptSchemeVersion.getMaintainableArtefact().getIsLastVersion());
-        // assertEquals(2, conceptSchemeVersion.getItemScheme().getVersions().size());
-        // conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_DEMO_MEASURES_V1);
-        // assertEquals(14, conceptSchemeVersion.getItems().size());
+        ConceptSchemeVersionMetamac conceptSchemeVersion = null;
+        conceptSchemeVersion = conceptsMetamacService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPTSCHEME_SDMX01_CS_DEMO_V1);
+        assertEquals(14, conceptSchemeVersion.getItems().size());
     }
 
     @Test

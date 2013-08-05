@@ -115,7 +115,6 @@ public class SrmCoreServiceFacadeImportationCodesTest extends SrmBaseTest {
         assertEquals(8, codelistVersion.getItems().size());
         codelistVersion = codesMetamacService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_SDMX01_CL_UNIT_MULT_V1);
         assertEquals(9, codelistVersion.getItems().size());
-        // TODO testear las condiciones de importacion de METAMAC, así como la herencia en el versionado
     }
 
     @Test

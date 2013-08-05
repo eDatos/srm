@@ -106,8 +106,6 @@ public class SrmCoreServiceFacadeImportationOrganisationTest extends SrmBaseTest
         organisationSchemeVersion = organisationsMetamacService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), AGENCYSCHEME_SDMX01_ORGANISATION_UNIT_SCHEME_01_V1);
         assertEquals(2, organisationSchemeVersion.getItems().size());
         assertTrue(organisationSchemeVersion.getMaintainableArtefact().getIsLastVersion());
-
-        // TODO testear las condiciones de importacion de METAMAC, así como la herencia en el versionado
     }
 
     @Test
