@@ -1145,18 +1145,18 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         if (component.getLocalRepresentation() != null) {
             representation = component.getLocalRepresentation();
             if (!representationTypeEnum.equals(representation.getRepresentationType())) {
-                exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType, component.getUrn()));
+                exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType));
                 representation = null;
             }
         } else {
             if (component.getCptIdRef().getCoreRepresentation() != null) {
                 representation = component.getCptIdRef().getCoreRepresentation();
                 if (!representationTypeEnum.equals(representation.getRepresentationType())) {
-                    exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType, component.getUrn()));
+                    exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType));
                     representation = null;
                 }
             } else {
-                exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType, component.getUrn()));
+                exceptions.add(new MetamacExceptionItem(candidateSeviceExceptionType));
                 representation = null;
             }
         }
