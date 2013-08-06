@@ -24,8 +24,6 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.Test;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencyScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisation;
@@ -153,19 +151,15 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         // Validation
         assertNotNull(organisationScheme);
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, organisationScheme.getKind());
-        assertNotNull(organisationScheme.getAgencyScheme());
-        assertNull(organisationScheme.getOrganisationUnitScheme());
-        assertNull(organisationScheme.getDataConsumerScheme());
-        assertNull(organisationScheme.getDataProviderScheme());
+        assertTrue(organisationScheme instanceof AgencyScheme);
 
-        AgencyScheme itemScheme = organisationScheme.getAgencyScheme();
         // other metadata are tested in mapper tests
-        assertEquals(agencyID, itemScheme.getAgencyID());
-        assertEquals(resourceID, itemScheme.getId());
-        assertEquals(version, itemScheme.getVersion());
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, itemScheme.getKind());
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, itemScheme.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, itemScheme.getParentLink().getKind());
+        assertEquals(agencyID, organisationScheme.getAgencyID());
+        assertEquals(resourceID, organisationScheme.getId());
+        assertEquals(version, organisationScheme.getVersion());
+        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, organisationScheme.getKind());
+        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, organisationScheme.getSelfLink().getKind());
+        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, organisationScheme.getParentLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, null);
@@ -194,19 +188,15 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         // Validation
         assertNotNull(organisationScheme);
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, organisationScheme.getKind());
-        assertNotNull(organisationScheme.getOrganisationUnitScheme());
-        assertNull(organisationScheme.getAgencyScheme());
-        assertNull(organisationScheme.getDataConsumerScheme());
-        assertNull(organisationScheme.getDataProviderScheme());
+        assertTrue(organisationScheme instanceof OrganisationUnitScheme);
 
-        OrganisationUnitScheme itemScheme = organisationScheme.getOrganisationUnitScheme();
         // other metadata are tested in mapper tests
-        assertEquals(agencyID, itemScheme.getAgencyID());
-        assertEquals(resourceID, itemScheme.getId());
-        assertEquals(version, itemScheme.getVersion());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, itemScheme.getKind());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, itemScheme.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, itemScheme.getParentLink().getKind());
+        assertEquals(agencyID, organisationScheme.getAgencyID());
+        assertEquals(resourceID, organisationScheme.getId());
+        assertEquals(version, organisationScheme.getVersion());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, organisationScheme.getKind());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, organisationScheme.getSelfLink().getKind());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, organisationScheme.getParentLink().getKind());
     }
 
     @Test
@@ -219,20 +209,6 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         assertEquals(getApiEndpoint() + "/organisationschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", organisationSchemes.getPreviousLink());
         assertEquals(getApiEndpoint() + "/organisationschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=36", organisationSchemes.getLastLink());
         assertEquals(RestInternalConstants.KIND_ORGANISATION_SCHEMES, organisationSchemes.getKind());
-    }
-
-    @Test
-    public void testRetrieveOrganisationSchemeTypeOrganisationUnitXml() throws Exception {
-
-        String requestBase = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE, VERSION_1, null, null, null);
-        String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
-
-        for (int i = 0; i < requestUris.length; i++) {
-            String requestUri = requestUris[i];
-            InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsNoTypeTest.class
-                    .getResourceAsStream("/responses/organisations/retrieveOrganisationScheme.typeOrganisationUnit.id1.xml");
-            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
-        }
     }
 
     @Test
@@ -367,18 +343,12 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         // Validation
         assertNotNull(organisation);
         assertEquals(RestInternalConstants.KIND_AGENCY, organisation.getKind());
-        assertNotNull(organisation.getAgency());
-        assertNull(organisation.getOrganisationUnit());
-        assertNull(organisation.getDataConsumer());
-        assertNull(organisation.getDataProvider());
+        assertTrue(organisation instanceof Agency);
 
-        Agency item = organisation.getAgency();
-        assertEquals(organsationID, item.getId());
-        assertEquals(RestInternalConstants.KIND_AGENCY, item.getKind());
-        assertEquals(RestInternalConstants.KIND_AGENCY, item.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_AGENCIES, item.getParentLink().getKind());
-        assertTrue(item instanceof AgencyType);
-        assertTrue(item instanceof Agency);
+        assertEquals(organsationID, organisation.getId());
+        assertEquals(RestInternalConstants.KIND_AGENCY, organisation.getKind());
+        assertEquals(RestInternalConstants.KIND_AGENCY, organisation.getSelfLink().getKind());
+        assertEquals(RestInternalConstants.KIND_AGENCIES, organisation.getParentLink().getKind());
         // other metadata are tested in transformation tests
 
         // Verify with Mockito
@@ -396,46 +366,16 @@ public class SrmRestInternalFacadeV10OrganisationsNoTypeTest extends SrmRestInte
         // Validation
         assertNotNull(organisation);
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, organisation.getKind());
-        assertNotNull(organisation.getOrganisationUnit());
-        assertNull(organisation.getAgency());
-        assertNull(organisation.getDataConsumer());
-        assertNull(organisation.getDataProvider());
+        assertTrue(organisation instanceof OrganisationUnit);
 
-        OrganisationUnit item = organisation.getOrganisationUnit();
-        assertEquals(organsationID, item.getId());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, item.getKind());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, item.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNITS, item.getParentLink().getKind());
-        assertTrue(item instanceof OrganisationUnitType);
-        assertTrue(item instanceof OrganisationUnit);
+        assertEquals(organsationID, organisation.getId());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, organisation.getKind());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, organisation.getSelfLink().getKind());
+        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNITS, organisation.getParentLink().getKind());
         // other metadata are tested in transformation tests
 
         // Verify with Mockito
         verifyRetrieveOrganisation(organisationsService, agencyID, resourceID, version, organsationID, null);
-    }
-
-    @Test
-    public void testRetrieveOrganisationTypeAgencyXml() throws Exception {
-
-        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_ORGANISATION_TYPE_AGENCY_1_CODE);
-        String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
-        for (int i = 0; i < requestUris.length; i++) {
-            String requestUri = requestUris[i];
-            InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsNoTypeTest.class.getResourceAsStream("/responses/organisations/retrieveOrganisation.typeAgency.id1.xml");
-            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
-        }
-    }
-
-    @Test
-    public void testRetrieveOrganisationTypeOrganisationUnitXml() throws Exception {
-
-        String requestBase = getUriItem(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, ITEM_ORGANISATION_TYPE_ORGANISATION_UNIT_1_CODE);
-        String[] requestUris = new String[]{requestBase, requestBase + ".xml", requestBase + "?_type=xml"};
-        for (int i = 0; i < requestUris.length; i++) {
-            String requestUri = requestUris[i];
-            InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsNoTypeTest.class.getResourceAsStream("/responses/organisations/retrieveOrganisation.typeOrganisationUnit.id1.xml");
-            testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
-        }
     }
 
     @Test

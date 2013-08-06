@@ -137,9 +137,6 @@ public class CategoriesDo2RestMapperTest {
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(RestInternalConstants.KIND_CATEGORIES, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/categories", target.getChildLinks().getChildLinks().get(0).getHref());
-
-        // Do not return categories
-        assertEquals(0, target.getCategories().size());
     }
 
     @Test
@@ -351,5 +348,8 @@ public class CategoriesDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
+
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agencyID1:categoryScheme-resourceID1(01.123)", target.getSource());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:categoryScheme-resourceID1(01.123).category-resourceID1", target.getTarget());
     }
 }

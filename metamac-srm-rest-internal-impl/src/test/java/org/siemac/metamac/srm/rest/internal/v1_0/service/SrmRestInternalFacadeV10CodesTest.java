@@ -55,7 +55,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CodeType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.constants.RestConstants;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
@@ -214,7 +213,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getKind());
         assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CODELISTS, codelist.getParentLink().getKind());
-        assertEquals(0, codelist.getCodes().size());
 
         // Verify with Mockito
         verifyRetrieveCodelist(codesService, agencyID, resourceID, version);
@@ -236,7 +234,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getKind());
         assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CODELISTS, codelist.getParentLink().getKind());
-        assertEquals(0, codelist.getCodes().size());
 
         // Verify with Mockito
         verifyRetrieveCodelist(codesService, agencyID, resourceID, version);
@@ -428,7 +425,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(RestInternalConstants.KIND_CODE, code.getKind());
         assertEquals(RestInternalConstants.KIND_CODE, code.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CODES, code.getParentLink().getKind());
-        assertTrue(code instanceof CodeType);
         assertTrue(code instanceof Code);
         // other metadata are tested in transformation tests
 

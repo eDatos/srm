@@ -22,7 +22,6 @@ import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Annotation;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Annotations;
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.LifeCycle;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
@@ -48,7 +47,6 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxAlias;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.structure.mapper.StructureDo2JaxbMapper;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 public abstract class BaseDo2RestMapperV10Impl {
@@ -95,7 +93,6 @@ public abstract class BaseDo2RestMapperV10Impl {
         toAnnotableArtefact(source, target);
 
         target.setId(source.getCode());
-        // TODO codeFull
         target.setUrn(source.getUrn());
         target.setUrnProvider(source.getUrnProvider());
         target.setUri(source.getUriProvider());
@@ -182,13 +179,13 @@ public abstract class BaseDo2RestMapperV10Impl {
     // target.setIsMultiLingual(CoreCommonUtil.transformBooleanLexicalRepresentationToBoolean(source.getIsMultiLingual()));
     // return target;
     // }
-
-    private DataType toDataType(FacetValueTypeEnum source) {
-        if (source == null) {
-            return null;
-        }
-        return DataType.fromValue(source.getValue());
-    }
+    // TODO toDataType
+    // private DataType toDataType(FacetValueTypeEnum source) {
+    // if (source == null) {
+    // return null;
+    // }
+    // return DataType.fromValue(source.getValue());
+    // }
 
     protected InternationalString toInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString sources) {
         if (sources == null) {
@@ -245,6 +242,9 @@ public abstract class BaseDo2RestMapperV10Impl {
     }
 
     protected org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.LifeCycle toLifeCycle(org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata source) {
+        if (source == null) {
+            return null;
+        }
         LifeCycle target = new LifeCycle();
         target.setProcStatus(toProcStatus(source.getProcStatus()));
         target.setProductionValidationDate(toDate(source.getProductionValidationDate()));

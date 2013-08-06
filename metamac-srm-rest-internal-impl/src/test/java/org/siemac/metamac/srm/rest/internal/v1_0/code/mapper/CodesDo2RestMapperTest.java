@@ -212,9 +212,6 @@ public class CodesDo2RestMapperTest {
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(RestInternalConstants.KIND_CODES, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/codes", target.getChildLinks().getChildLinks().get(0).getHref());
-
-        // Do not return codes
-        assertEquals(0, target.getCodes().size());
     }
 
     @Test
@@ -373,7 +370,7 @@ public class CodesDo2RestMapperTest {
         assertEqualsInternationalString("es", "shortName-variableElement1 en Español", "en", "shortName-variableElement1 in English", target.getShortName());
         assertEquals("variableElement1", target.getVariableElement().getId());
         assertEqualsInternationalString("es", "shortName-variableElement1 en Español", "en", "shortName-variableElement1 in English", target.getVariableElement().getName());
-        assertEquals("codeParent1", target.getParent().getRef().getId());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=agencyID1:resourceID1(01.123).codeParent1", target.getParent());
     }
 
     @Test

@@ -18,28 +18,15 @@ import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
-import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
-import com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @Component
 public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements CategoriesDo2RestMapperV10 {
-
-    private final boolean                                                            AS_STUB = false;
-
-    @Autowired
-    private com.arte.statistic.sdmx.srm.core.category.mapper.CategoriesDo2JaxbMapper categoriesDo2JaxbSdmxMapper;
-
-    @Autowired
-    @Qualifier("categoriesDo2JaxbRestInternalCallbackMetamac")
-    private CategoriesDo2JaxbCallback                                                categoriesDo2JaxbCallback;
 
     @Override
     public CategorySchemes toCategorySchemes(PagedResult<CategorySchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
@@ -64,30 +51,18 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
         if (source == null) {
             return null;
         }
-        // following method will call toCategoryScheme(CategorySchemeVersionMetamac source, CategoryScheme target) method, thank to callback
-        return (CategoryScheme) categoriesDo2JaxbSdmxMapper.categorySchemeDoToJaxb(source, categoriesDo2JaxbCallback, AS_STUB);
-    }
 
-    @Override
-    public void toCategoryScheme(CategorySchemeVersionMetamac source, CategoryScheme target) {
-        if (source == null) {
-            return;
-        }
+        CategoryScheme target = new CategoryScheme();
+
         target.setKind(RestInternalConstants.KIND_CATEGORY_SCHEME);
-        target.setUrn(source.getMaintainableArtefact().getUrn());
-        target.setUrnProvider(source.getMaintainableArtefact().getUrnProvider());
         target.setSelfLink(toCategorySchemeSelfLink(source));
         target.setParentLink(toCategorySchemeParentLink(source));
         target.setChildLinks(toCategorySchemeChildLinks(source));
         target.setManagementAppLink(toCategorySchemeManagementApplicationLink(source));
-        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
-            target.setUri(target.getSelfLink().getHref());
-        }
-        target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
-        target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
-        target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
-        target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
-        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
+
+        toItemScheme(source, source.getLifeCycleMetadata(), target);
+
+        return target;
     }
 
     @Override
@@ -132,21 +107,17 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
             return null;
         }
         Category target = new Category();
-        categoriesDo2JaxbSdmxMapper.categoryDoToJaxbWithoutChildren(source, target);
 
         target.setKind(RestInternalConstants.KIND_CATEGORY);
-        target.setUrn(source.getNameableArtefact().getUrn());
-        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
-        target.setNestedId(source.getNameableArtefact().getCodeFull());
         target.setSelfLink(toCategorySelfLink(source));
-        target.setManagementAppLink(toCategoryManagementApplicationLink(source));
-        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
-            target.setUri(target.getSelfLink().getHref());
-        }
         target.setParentLink(toCategoryParentLink(source));
-        target.setParent(source.getParent() != null ? source.getParent().getNameableArtefact().getUrn() : null);
-        target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         target.setChildLinks(toCategoryChildLinks(source));
+        target.setManagementAppLink(toCategoryManagementApplicationLink(source));
+
+        toItem(source, target);
+
+        target.setNestedId(source.getNameableArtefact().getCodeFull());
+
         return target;
     }
 
@@ -173,24 +144,20 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
         if (source == null) {
             return null;
         }
-        // following method will call toCategorisation(Categorisation source, Categorisation target) method, thank to callback
-        return (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation) categoriesDo2JaxbSdmxMapper.categorisationDoToJaxb(source, categoriesDo2JaxbCallback, AS_STUB, null);
-    }
 
-    @Override
-    public void toCategorisation(Categorisation source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation target) {
-        if (source == null) {
-            return;
-        }
+        org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation target = new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation();
+
         target.setKind(RestInternalConstants.KIND_CATEGORISATION);
-        target.setUrn(source.getMaintainableArtefact().getUrn());
-        target.setUrnProvider(source.getMaintainableArtefact().getUrnProvider());
         target.setSelfLink(toCategorisationSelfLink(source));
         target.setParentLink(toCategorisationParentLink(source));
         target.setChildLinks(toCategorisationChildLinks(source));
-        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
-            target.setUri(target.getSelfLink().getHref());
-        }
+
+        toMaintainableArtefact(source.getMaintainableArtefact(), null, target);
+
+        target.setSource(source.getArtefactCategorised().getUrn());
+        target.setTarget(source.getCategory().getNameableArtefact().getUrn());
+
+        return target;
     }
 
     @Override

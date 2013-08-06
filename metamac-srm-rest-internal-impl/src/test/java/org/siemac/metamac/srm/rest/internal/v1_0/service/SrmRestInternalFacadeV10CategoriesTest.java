@@ -44,7 +44,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.CategoryType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categories;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Category;
@@ -199,7 +198,6 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, categoryScheme.getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, categoryScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, categoryScheme.getParentLink().getKind());
-        assertEquals(0, categoryScheme.getCategories().size());
 
         // Verify with Mockito
         verifyRetrieveCategoryScheme(categoriesService, agencyID, resourceID, version);
@@ -221,7 +219,6 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, categoryScheme.getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, categoryScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEMES, categoryScheme.getParentLink().getKind());
-        assertEquals(0, categoryScheme.getCategories().size());
 
         // Verify with Mockito
         verifyRetrieveCategoryScheme(categoriesService, agencyID, resourceID, version);
@@ -405,7 +402,6 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertEquals(RestInternalConstants.KIND_CATEGORY, category.getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORY, category.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CATEGORIES, category.getParentLink().getKind());
-        assertTrue(category instanceof CategoryType);
         assertTrue(category instanceof Category);
         // other metadata are tested in transformation tests
 

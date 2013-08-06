@@ -24,7 +24,6 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.Test;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataConsumerType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumer;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumerScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumerSchemes;
@@ -166,7 +165,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEME, dataConsumerScheme.getKind());
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEME, dataConsumerScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, dataConsumerScheme.getParentLink().getKind());
-        assertEquals(0, dataConsumerScheme.getDataConsumers().size());
 
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
@@ -333,7 +331,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER, dataConsumer.getKind());
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMER, dataConsumer.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_DATA_CONSUMERS, dataConsumer.getParentLink().getKind());
-        assertTrue(dataConsumer instanceof DataConsumerType);
         assertTrue(dataConsumer instanceof DataConsumer);
         // other metadata are tested in transformation tests
 

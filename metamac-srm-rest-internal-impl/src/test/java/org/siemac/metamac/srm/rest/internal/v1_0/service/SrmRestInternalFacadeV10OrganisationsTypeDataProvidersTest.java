@@ -24,7 +24,6 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.Test;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.DataProviderType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProvider;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataProviderSchemes;
@@ -166,7 +165,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEME, dataProviderScheme.getKind());
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEME, dataProviderScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES, dataProviderScheme.getParentLink().getKind());
-        assertEquals(0, dataProviderScheme.getDataProviders().size());
 
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
@@ -333,7 +331,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER, dataProvider.getKind());
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER, dataProvider.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDERS, dataProvider.getParentLink().getKind());
-        assertTrue(dataProvider instanceof DataProviderType);
         assertTrue(dataProvider instanceof DataProvider);
         // other metadata are tested in transformation tests
 

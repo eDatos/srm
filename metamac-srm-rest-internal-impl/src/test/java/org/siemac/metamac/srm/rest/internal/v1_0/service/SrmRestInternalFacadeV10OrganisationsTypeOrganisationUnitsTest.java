@@ -29,7 +29,6 @@ import org.apache.cxf.jaxrs.client.WebClient;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.OrganisationUnitType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnit;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitScheme;
@@ -181,7 +180,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, organisationUnitScheme.getKind());
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, organisationUnitScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, organisationUnitScheme.getParentLink().getKind());
-        assertEquals(0, organisationUnitScheme.getOrganisationUnits().size());
 
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
@@ -378,7 +376,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, OrganisationUnit.getKind());
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, OrganisationUnit.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNITS, OrganisationUnit.getParentLink().getKind());
-        assertTrue(OrganisationUnit instanceof OrganisationUnitType);
         assertTrue(OrganisationUnit instanceof OrganisationUnit);
         // other metadata are tested in transformation tests
 

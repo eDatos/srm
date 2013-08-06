@@ -29,7 +29,6 @@ import org.apache.cxf.jaxrs.client.WebClient;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.AgencyType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agencies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
@@ -178,7 +177,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, agencyScheme.getKind());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, agencyScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, agencyScheme.getParentLink().getKind());
-        assertEquals(0, agencyScheme.getAgencies().size());
 
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.AGENCY_SCHEME);
@@ -200,7 +198,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, agencyScheme.getKind());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, agencyScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, agencyScheme.getParentLink().getKind());
-        assertEquals(0, agencyScheme.getAgencies().size());
 
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.AGENCY_SCHEME);
@@ -384,7 +381,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         assertEquals(RestInternalConstants.KIND_AGENCY, agency.getKind());
         assertEquals(RestInternalConstants.KIND_AGENCY, agency.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_AGENCIES, agency.getParentLink().getKind());
-        assertTrue(agency instanceof AgencyType);
         assertTrue(agency instanceof Agency);
         // other metadata are tested in transformation tests
 

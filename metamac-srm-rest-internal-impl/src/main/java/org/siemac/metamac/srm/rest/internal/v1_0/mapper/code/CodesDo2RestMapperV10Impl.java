@@ -16,7 +16,7 @@ import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AccessType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodeResource;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodeResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamily;
@@ -46,28 +46,15 @@ import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
-import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
-import com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @Component
 public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements CodesDo2RestMapperV10 {
-
-    private final boolean                                                   AS_STUB = false;
-
-    @Autowired
-    private com.arte.statistic.sdmx.srm.core.code.mapper.CodesDo2JaxbMapper codesDo2JaxbSdmxMapper;
-
-    @Autowired
-    @Qualifier("codesDo2JaxbRestInternalCallbackMetamac")
-    private CodesDo2JaxbCallback                                            codesDo2JaxbCallback;
 
     @Override
     public Codelists toCodelists(PagedResult<CodelistVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
@@ -92,42 +79,27 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         if (source == null) {
             return null;
         }
-        // following method will call toCodelist(CodelistVersionMetamac source, Codelist target) method, thank to callback
-        return (Codelist) codesDo2JaxbSdmxMapper.codelistDoToJaxb(source, codesDo2JaxbCallback, AS_STUB);
-    }
-
-    @Override
-    public void toCodelist(CodelistVersionMetamac source, Codelist target) {
-        if (source == null) {
-            return;
-        }
+        Codelist target = new Codelist();
         target.setKind(RestInternalConstants.KIND_CODELIST);
-        target.setUrn(source.getMaintainableArtefact().getUrn());
-        target.setUrnProvider(source.getMaintainableArtefact().getUrnProvider());
         target.setSelfLink(toCodelistSelfLink(source));
-        target.setManagementAppLink(toCodelistManagementApplicationLink(source));
-        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
-            target.setUri(target.getSelfLink().getHref());
-        }
         target.setParentLink(toCodelistParentLink(source));
         target.setChildLinks(toCodelistChildLinks(source));
+        target.setManagementAppLink(toCodelistManagementApplicationLink(source));
+
+        toItemScheme(source, source.getLifeCycleMetadata(), target);
 
         target.setShortName(toInternationalString(source.getShortName()));
         target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
-        target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
         target.setIsRecommended(source.getIsRecommended());
         target.setFamily(toResource(source.getFamily()));
         target.setVariable(toResource(source.getVariable()));
         target.setAccessType(toAccessType(source.getAccessType()));
-        target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
-        target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
-        target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
         target.setReplacedBy(toCodelistReplacedBy(source));
         target.setReplaceTo(toCodelistReplaceTo(source));
-        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
-
         target.setOrderConfigurations(toOrderConfigurations(source.getOrderVisualisations(), source.getDefaultOrderVisualisation()));
         target.setOpennessConfigurations(toOpennessConfigurations(source.getOpennessVisualisations(), source.getDefaultOpennessVisualisation()));
+
+        return target;
     }
 
     @Override
@@ -142,7 +114,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (CodeMetamac source : sourcesPagedResult.getValues()) {
-            CodeResource target = toCodeResource(source);
+            CodeResourceInternal target = toCodeResource(source);
             targets.getCodes().add(target);
         }
         return targets;
@@ -160,7 +132,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (ItemResult source : sources) {
-            CodeResource target = toCodeResource(source, codelistVersion);
+            CodeResourceInternal target = toCodeResource(source, codelistVersion);
             targets.getCodes().add(target);
         }
         return targets;
@@ -172,21 +144,15 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         Code target = new Code();
-        codesDo2JaxbSdmxMapper.codeDoToJaxb(source, null, target);
 
-        // All metamac information
         target.setKind(RestInternalConstants.KIND_CODE);
-        target.setUrn(source.getNameableArtefact().getUrn());
-        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setSelfLink(toCodeSelfLink(source));
-        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
-            target.setUri(target.getSelfLink().getHref());
-        }
         target.setParentLink(toCodeParentLink(source));
         target.setChildLinks(toCodeChildLinks(source));
         target.setManagementAppLink(toCodeManagementApplicationLink(source));
 
-        target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
+        toItem(source, target);
+
         if (source.getVariableElement() == null) {
             target.setShortName(toInternationalString(source.getShortName()));
         } else {
@@ -207,11 +173,11 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    private CodeResource toCodeResource(CodeMetamac source) {
+    private CodeResourceInternal toCodeResource(CodeMetamac source) {
         if (source == null) {
             return null;
         }
-        CodeResource target = new CodeResource();
+        CodeResourceInternal target = new CodeResourceInternal();
         toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target);
         // following information is retrieved only one retrieve efficiently all codes in codelist
         target.setOrder(null);
@@ -219,11 +185,11 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    private CodeResource toCodeResource(ItemResult source, CodelistVersionMetamac codelistVersion) {
+    private CodeResourceInternal toCodeResource(ItemResult source, CodelistVersionMetamac codelistVersion) {
         if (source == null) {
             return null;
         }
-        CodeResource target = new CodeResource();
+        CodeResourceInternal target = new CodeResourceInternal();
         toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), toCodeManagementApplicationLink(codelistVersion, source), target);
         target.setOrder(SrmServiceUtils.getCodeItemResultOrder(source) + 1); // add 1 to start in 1, instead of 0
         target.setOpen(SrmServiceUtils.getCodeItemResultOpenness(source));

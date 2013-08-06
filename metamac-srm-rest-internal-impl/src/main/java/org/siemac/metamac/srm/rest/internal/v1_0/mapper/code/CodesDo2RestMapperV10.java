@@ -21,7 +21,6 @@ public interface CodesDo2RestMapperV10 {
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists toCodelists(PagedResult<CodelistVersionMetamac> sources, String agencyID, String resourceID, String query,
             String orderBy, Integer limit);
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist toCodelist(CodelistVersionMetamac source) throws MetamacException;
-    public void toCodelist(CodelistVersionMetamac source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist target);
 
     public Codes toCodes(PagedResult<CodeMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
     public Codes toCodes(List<ItemResult> sources, CodelistVersionMetamac codelistVersion);

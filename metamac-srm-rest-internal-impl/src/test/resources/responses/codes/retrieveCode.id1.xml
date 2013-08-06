@@ -1,36 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sr:code xmlns:messagefooter="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message/footer" xmlns:metadatastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/structurespecific" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:datageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:metadatageneric="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/metadata/generic" xmlns:datastructurespecific="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/structurespecific" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:registry="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/registry" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#code" id="item1" urn="urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item1" uri="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes/item1">
-    <common:Annotations>
-        <common:Annotation id="code2">
-            <common:AnnotationTitle>title-code2</common:AnnotationTitle>
-            <common:AnnotationType>type-code2</common:AnnotationType>
-            <common:AnnotationURL>url-code2</common:AnnotationURL>
-            <common:AnnotationText xml:lang="en">text-code2 in English</common:AnnotationText>
-            <common:AnnotationText xml:lang="es">text-code2 en Español</common:AnnotationText>
-        </common:Annotation>
-        <common:Annotation id="code1">
-            <common:AnnotationTitle>title-code1</common:AnnotationTitle>
-            <common:AnnotationType>type-code1</common:AnnotationType>
-            <common:AnnotationURL>url-code1</common:AnnotationURL>
-            <common:AnnotationText xml:lang="es">text-code1 en Español</common:AnnotationText>
-            <common:AnnotationText xml:lang="en">text-code1 in English</common:AnnotationText>
-        </common:Annotation>
-    </common:Annotations>
-    <common:Name xml:lang="es">name-item1 en Español</common:Name>
-    <common:Name xml:lang="en">name-item1 in English</common:Name>
-    <common:Description xml:lang="es">description-item1 en Español</common:Description>
-    <common:Description xml:lang="en">description-item1 in English</common:Description>
-    <structure:Parent>
-        <Ref id="item2"/>
-    </structure:Parent>
-    <cdomain:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes/item1"/>
-    <cdomain:parentLink kind="structuralResources#codes" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes"/>
+<sr:code xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common"   xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure"  xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#code">
+    <sr:annotations total="2">
+        <sr:annotation>
+            <sr:id>code1</sr:id>
+            <sr:title>title-code1</sr:title>
+            <sr:type>type-code1</sr:type>
+            <sr:url>url-code1</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+        <sr:annotation>
+            <sr:id>code2</sr:id>
+            <sr:title>title-code2</sr:title>
+            <sr:type>type-code2</sr:type>
+            <sr:url>url-code2</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+    </sr:annotations>
+    <sr:id>item1</sr:id>
+    <sr:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item1</sr:urn>
     <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item1</sr:urnProvider>
+    <sr:uri>http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes/item1</sr:uri>
+    <sr:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes/item1"/>
+    <sr:parentLink kind="structuralResources#codes" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes"/>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=item1</sr:managementAppLink>
+    <sr:name>
+        <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
+    </sr:name>
+    <sr:description>
+        <cdomain:text xml:lang="es">description-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">description-item1 in English</cdomain:text>
+    </sr:description>
     <sr:comment>
-        <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
     </sr:comment>
+    <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item2</sr:parent>
     <sr:shortName>
         <cdomain:text xml:lang="es">shortName-variableElement1 en Español</cdomain:text>
         <cdomain:text xml:lang="en">shortName-variableElement1 in English</cdomain:text>
