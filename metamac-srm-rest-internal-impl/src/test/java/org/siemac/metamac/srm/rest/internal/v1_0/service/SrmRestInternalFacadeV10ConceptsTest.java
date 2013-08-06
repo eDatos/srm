@@ -45,7 +45,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.sdmx.resources.sdmxml.schemas.v2_1.structure.ConceptType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptScheme;
@@ -202,7 +201,6 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
-        assertEquals(0, conceptScheme.getConcepts().size());
 
         // Verify with Mockito
         verifyRetrieveConceptScheme(conceptsService, agencyID, resourceID, version);
@@ -224,7 +222,6 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
-        assertEquals(0, conceptScheme.getConcepts().size());
 
         // Verify with Mockito
         verifyRetrieveConceptScheme(conceptsService, agencyID, resourceID, version);
@@ -409,7 +406,6 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(RestInternalConstants.KIND_CONCEPT, concept.getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPT, concept.getSelfLink().getKind());
         assertEquals(RestInternalConstants.KIND_CONCEPTS, concept.getParentLink().getKind());
-        assertTrue(concept instanceof ConceptType);
         assertTrue(concept instanceof Concept);
         // other metadata are tested in transformation tests
 

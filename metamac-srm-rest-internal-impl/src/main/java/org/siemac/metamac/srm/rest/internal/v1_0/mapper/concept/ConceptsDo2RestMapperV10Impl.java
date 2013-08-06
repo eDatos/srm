@@ -7,7 +7,6 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
-import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.Item;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
@@ -41,30 +40,18 @@ import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.code.CodesDo2RestMapperV10;
-import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
-import com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbCallback;
 
 @Component
 public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements ConceptsDo2RestMapperV10 {
 
-    private final boolean                                                         AS_STUB = false;
-
     @Autowired
-    private com.arte.statistic.sdmx.srm.core.concept.mapper.ConceptsDo2JaxbMapper conceptsDo2JaxbSdmxMapper;
-
-    @Autowired
-    @Qualifier("conceptsDo2JaxbRestInternalCallbackMetamac")
-    private ConceptsDo2JaxbCallback                                               conceptsDo2JaxbCallback;
-
-    @Autowired
-    private CodesDo2RestMapperV10                                                 codesDo2RestMapper;
+    private CodesDo2RestMapperV10 codesDo2RestMapper;
 
     @Override
     public ConceptSchemes toConceptSchemes(PagedResult<ConceptSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
@@ -85,36 +72,22 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
     }
 
     @Override
-    public ConceptScheme toConceptScheme(ConceptSchemeVersionMetamac source) throws MetamacException {
+    public ConceptScheme toConceptScheme(ConceptSchemeVersionMetamac source) {
         if (source == null) {
             return null;
         }
-        // following method will call toConceptScheme(ConceptSchemeVersionMetamac source, ConceptScheme target) method, thank to callback
-        return (ConceptScheme) conceptsDo2JaxbSdmxMapper.conceptSchemeDoToJaxb(source, conceptsDo2JaxbCallback, AS_STUB, null);
-    }
-
-    @Override
-    public void toConceptScheme(ConceptSchemeVersionMetamac source, ConceptScheme target) {
-        if (source == null) {
-            return;
-        }
+        ConceptScheme target = new ConceptScheme();
         target.setKind(RestInternalConstants.KIND_CONCEPT_SCHEME);
-        target.setUrn(source.getMaintainableArtefact().getUrn());
-        target.setUrnProvider(source.getMaintainableArtefact().getUrnProvider());
         target.setSelfLink(toConceptSchemeSelfLink(source));
         target.setParentLink(toConceptSchemeParentLink(source));
         target.setChildLinks(toConceptSchemeChildLinks(source));
         target.setManagementAppLink(toConceptSchemeManagementApplicationLink(source));
-        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
-            target.setUri(target.getSelfLink().getHref());
-        }
+
+        toItemScheme(source, source.getLifeCycleMetadata(), target);
+
         target.setType(toConceptSchemeTypeEnum(source.getType()));
         target.setStatisticalOperation(toResourceExternalItemStatisticalOperation(source.getRelatedOperation()));
-        target.setComment(toInternationalString(source.getMaintainableArtefact().getComment()));
-        target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
-        target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
-        target.setLifeCycle(toLifeCycle(source.getLifeCycleMetadata()));
-        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
+        return target;
     }
 
     @Override
@@ -159,18 +132,16 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             return null;
         }
         Concept target = new Concept();
-        conceptsDo2JaxbSdmxMapper.conceptDoToJaxb(source, null, target, null);
 
         target.setKind(RestInternalConstants.KIND_CONCEPT);
-        target.setUrn(source.getNameableArtefact().getUrn());
-        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
         target.setSelfLink(toConceptSelfLink(source));
         target.setParentLink(toConceptParentLink(source));
         target.setChildLinks(toConceptChildLinks(source));
         target.setManagementAppLink(toConceptManagementApplicationLink(source));
-        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
-            target.setUri(target.getSelfLink().getHref());
-        }
+
+        toItem(source, target);
+
+        target.setCoreRepresentation(toRepresentation(source.getCoreRepresentation()));
         target.setPluralName(toInternationalString(source.getPluralName()));
         target.setAcronym(toInternationalString(source.getAcronym()));
         target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));

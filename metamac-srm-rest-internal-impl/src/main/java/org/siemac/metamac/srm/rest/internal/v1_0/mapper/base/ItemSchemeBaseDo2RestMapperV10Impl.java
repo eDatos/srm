@@ -1,6 +1,8 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.base;
 
 import org.siemac.metamac.rest.utils.RestUtils;
+import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
@@ -13,6 +15,33 @@ public abstract class ItemSchemeBaseDo2RestMapperV10Impl extends BaseDo2RestMapp
 
     @Autowired
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
+
+    protected void toItemScheme(ItemSchemeVersion source, SrmLifeCycleMetadata lifeCycleSource, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemScheme target) {
+
+        toMaintainableArtefact(source.getMaintainableArtefact(), lifeCycleSource, target);
+
+        target.setIsPartial(source.getIsPartial());
+        target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
+        target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
+        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
+
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
+    }
+
+    protected void toItem(Item source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Item target) {
+
+        toNameableArtefact(source.getNameableArtefact(), target);
+
+        if (source.getParent() != null) {
+            target.setParent(source.getParent().getNameableArtefact().getUrn());
+        }
+
+        if (SrmRestInternalUtils.uriMustBeSelfLink(source.getItemSchemeVersion().getMaintainableArtefact())) {
+            target.setUri(target.getSelfLink().getHref());
+        }
+    }
 
     protected boolean canResourceBeProvidedByApi(ItemSchemeVersion source) {
         return canResourceBeProvidedByApi(source.getMaintainableArtefact()) && canItemSchemeVersionBeProvidedByApi(source);

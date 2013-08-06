@@ -147,9 +147,6 @@ public class ConceptsDo2RestMapperTest {
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/concepts", target.getChildLinks().getChildLinks().get(0).getHref());
-
-        // do not retrieve concepts
-        assertEquals(0, target.getConcepts().size());
     }
 
     @Test
@@ -292,7 +289,7 @@ public class ConceptsDo2RestMapperTest {
 
         assertEquals("conceptType1", target.getType().getId());
         assertEqualsInternationalString("es", "description-conceptType1 en Español", "en", "description-conceptType1 in English", target.getType().getName());
-        assertEquals("conceptParent1", target.getParent().getRef().getId());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).conceptParent1", target.getParent());
         assertEqualsRoleConcepts(source.getRoleConcepts(), target.getRoles());
         assertEqualsRelatedConcepts(source.getRelatedConcepts(), target.getRelatedConcepts());
         assertEqualsResource(source.getConceptExtends().getItemSchemeVersion(), source.getConceptExtends(), null, target.getExtends());
