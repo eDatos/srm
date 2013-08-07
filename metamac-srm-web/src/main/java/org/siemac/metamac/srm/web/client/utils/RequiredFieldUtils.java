@@ -26,6 +26,8 @@ public class RequiredFieldUtils {
         switch (currentProcStatus) {
             case DRAFT:
                 return conceptSchemeFieldsToProductionValidation;
+            case VALIDATION_REJECTED:
+                return conceptSchemeFieldsToProductionValidation;
             case PRODUCTION_VALIDATION:
                 return conceptSchemeFieldsToDiffusionValidation;
             case DIFFUSION_VALIDATION:
@@ -51,6 +53,8 @@ public class RequiredFieldUtils {
         switch (currentProcStatus) {
             case DRAFT:
                 return codelistFieldsToProductionValidation;
+            case VALIDATION_REJECTED:
+                return codelistFieldsToProductionValidation;
             case PRODUCTION_VALIDATION:
                 return codelistFieldsToDiffusionValidation;
             case DIFFUSION_VALIDATION:
@@ -74,6 +78,8 @@ public class RequiredFieldUtils {
     public static String[] getDsdRequiredFieldsToNextProcStatus(ProcStatusEnum currentProcStatus) {
         switch (currentProcStatus) {
             case DRAFT:
+                return dsdFieldsToProductionValidation;
+            case VALIDATION_REJECTED:
                 return dsdFieldsToProductionValidation;
             case PRODUCTION_VALIDATION:
                 return dsdFieldsToDiffusionValidation;
@@ -99,6 +105,8 @@ public class RequiredFieldUtils {
         switch (currentProcStatus) {
             case DRAFT:
                 return organisationSchemeFieldsToProductionValidation;
+            case VALIDATION_REJECTED:
+                return organisationSchemeFieldsToProductionValidation;
             case PRODUCTION_VALIDATION:
                 return organisationSchemeFieldsToDiffusionValidation;
             case DIFFUSION_VALIDATION:
@@ -122,6 +130,8 @@ public class RequiredFieldUtils {
     public static String[] getCategorySchemeRequiredFieldsToNextProcStatus(ProcStatusEnum currentProcStatus) {
         switch (currentProcStatus) {
             case DRAFT:
+                return categorySchemeFieldsToProductionValidation;
+            case VALIDATION_REJECTED:
                 return categorySchemeFieldsToProductionValidation;
             case PRODUCTION_VALIDATION:
                 return categorySchemeFieldsToDiffusionValidation;
