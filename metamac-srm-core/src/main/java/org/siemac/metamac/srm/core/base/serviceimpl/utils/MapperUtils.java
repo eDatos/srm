@@ -6,7 +6,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
-public class MapperUtils {
+public class MapperUtils extends com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.MapperUtils {
 
     public static boolean isCoreRepresentationExtends(RepresentationDto representationDto) throws MetamacException {
         if (representationDto == null) {
