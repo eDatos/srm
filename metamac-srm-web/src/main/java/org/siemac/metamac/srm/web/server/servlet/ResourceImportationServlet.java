@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -25,16 +26,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.core.common.lang.shared.LocaleConstants;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
+import org.siemac.metamac.srm.web.server.utils.WebTranslateExceptions;
 import org.siemac.metamac.srm.web.shared.ImportableResourceTypeEnum;
+import org.siemac.metamac.srm.web.shared.WebMessageExceptionsConstants;
 import org.siemac.metamac.srm.web.shared.code.enums.VariableElementShapeTypeEnum;
 import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.v2_1.domain.dto.task.ContentInputDto;
 import com.google.inject.Singleton;
 
@@ -106,9 +112,14 @@ public class ResourceImportationServlet extends HttpServlet {
                 }
             }
 
+            String successMessage = "";
+
             if (ImportableResourceTypeEnum.SDMX_STRUCTURE.name().equals(args.get(SrmSharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
 
-                importSDMXStructure(srmCoreServiceFacade, fileName, inputStream);
+                TaskInfo taskInfo = importSDMXStructure(srmCoreServiceFacade, fileName, inputStream);
+                if (BooleanUtils.isFalse(taskInfo.getIsPlannedInBackground())) { // It was a synchronous importation
+                    successMessage = getTranslatedMessage(WebMessageExceptionsConstants.SDMX_RESOURCE_SUCCESSFUL_IMPORTATION);
+                }
 
             } else if (ImportableResourceTypeEnum.CODES.name().equals(args.get(SrmSharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
 
@@ -127,7 +138,7 @@ public class ResourceImportationServlet extends HttpServlet {
                 importVariableElementShape(srmCoreServiceFacade, fileName, inputStream, args);
             }
 
-            sendSuccessImportationResponse(response, fileName);
+            sendSuccessImportationResponse(response, successMessage);
 
         } catch (Exception e) {
             String errorMessage = null;
@@ -151,13 +162,13 @@ public class ResourceImportationServlet extends HttpServlet {
 
     // SDMX Structure
 
-    private void importSDMXStructure(SrmCoreServiceFacade srmCoreServiceFacade, String fileName, InputStream inputStream) throws MetamacException {
+    private TaskInfo importSDMXStructure(SrmCoreServiceFacade srmCoreServiceFacade, String fileName, InputStream inputStream) throws MetamacException {
 
         ContentInputDto contentInputDto = new ContentInputDto();
         contentInputDto.setName(fileName);
         contentInputDto.setInput(inputStream);
 
-        srmCoreServiceFacade.importSDMXStructureMsg(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
+        return srmCoreServiceFacade.importSDMXStructureMsg(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
     }
 
     // Codes
@@ -304,8 +315,8 @@ public class ResourceImportationServlet extends HttpServlet {
         return shpFileURL;
     }
 
-    private void sendSuccessImportationResponse(HttpServletResponse response, String fileName) throws IOException {
-        String action = "if (parent.uploadComplete) parent.uploadComplete('" + fileName + "');";
+    private void sendSuccessImportationResponse(HttpServletResponse response, String message) throws IOException {
+        String action = "if (parent.uploadComplete) parent.uploadComplete('" + message + "');";
         sendResponse(response, action);
     }
 
@@ -349,5 +360,13 @@ public class ResourceImportationServlet extends HttpServlet {
             return message.replace("'", "");
         }
         return message;
+    }
+
+    private String getTranslatedMessage(String messageCode) {
+
+        WebTranslateExceptions webTranslateExceptions = (WebTranslateExceptions) ApplicationContextProvider.getApplicationContext().getBean("webTranslateExceptions");
+
+        Locale locale = (Locale) ServiceContextHolder.getCurrentServiceContext().getProperty(LocaleConstants.locale);
+        return webTranslateExceptions.getTranslatedMessage(messageCode, locale);
     }
 }

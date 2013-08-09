@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.client.presenter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
@@ -26,11 +27,11 @@ import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 import org.siemac.metamac.web.common.shared.CloseSessionAction;
 import org.siemac.metamac.web.common.shared.CloseSessionResult;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -214,8 +215,9 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
     }
 
     @Override
-    public void sDMXResourceImportationSucceed(String fileName) {
-        ShowMessageEvent.fireSuccessMessage(MainPagePresenter.this, MetamacSrmWeb.getMessages().resourceImportationPlanned());
+    public void sDMXResourceImportationSucceed(String successMessage) {
+        String message = !StringUtils.isBlank(successMessage) ? successMessage : MetamacSrmWeb.getMessages().resourceImportationPlanned();
+        ShowMessageEvent.fireSuccessMessage(MainPagePresenter.this, message);
     }
 
     //
