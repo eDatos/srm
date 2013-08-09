@@ -30,8 +30,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -3889,11 +3891,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(3, codesPagedResult.getTotalRows());
         assertEquals(3, codesPagedResult.getValues().size());
 
-        int i = 0;
-        assertEquals(CODELIST_13_V1_CODE_1, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-        assertEquals(CODELIST_13_V1_CODE_2, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-        assertEquals(CODELIST_13_V1_CODE_3, codesPagedResult.getValues().get(i++).getNameableArtefact().getUrn());
-        assertEquals(codesPagedResult.getValues().size(), i);
+        Set<String> urnsToCheck = new HashSet<String>(Arrays.asList(CODELIST_13_V1_CODE_1, CODELIST_13_V1_CODE_2, CODELIST_13_V1_CODE_3));
+        for (CodeMetamac codeMetamac : codesPagedResult.getValues()) {
+            assertTrue(urnsToCheck.contains(codeMetamac.getNameableArtefact().getUrn()));
+        }
     }
 
     @Override
