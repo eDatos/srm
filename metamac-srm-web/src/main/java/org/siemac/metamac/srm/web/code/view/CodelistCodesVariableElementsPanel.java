@@ -71,6 +71,7 @@ public class CodelistCodesVariableElementsPanel extends VLayout {
     public void setCodes(CodelistMetamacDto codelist, List<CodeMetamacVisualisationResult> codes) {
         this.codelistMetamacDto = codelist;
         codesVariableElementsAssignmentTreeGrid.setItems(codelist, codes);
+        codesVariableElementsAssignmentTreeGrid.setAutoFitMaxRecords(codes.size() + 1);
         setViewMode();
     }
 

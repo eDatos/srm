@@ -94,6 +94,7 @@ public class CodelistCodesPanel extends VLayout {
     public void setCodes(CodelistMetamacDto codelist, List<CodeMetamacVisualisationResult> codes) {
         this.codelistMetamacDto = codelist;
         codesTreeGrid.setItems(codelist, codes);
+        codesTreeGrid.setAutoFitMaxRecords(codes.size() + 1);
     }
 
     public void setCodelistsToCreateComplexCodelist(GetCodelistsResult result) {

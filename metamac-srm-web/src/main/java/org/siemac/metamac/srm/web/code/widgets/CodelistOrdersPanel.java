@@ -42,6 +42,7 @@ public class CodelistOrdersPanel extends VLayout {
         codelistOrdersSectionStack.selectCodelistVisualisation(codelistOrderVisualisationDto.getUrn());
         orderTitle.setContents(CommonWebUtils.getElementName(codelistOrderVisualisationDto.getCode(), codelistOrderVisualisationDto.getName()));
         codesOrderTreeGrid.setItems(codelistMetamacDto, codes, codelistOrderVisualisationDto);
+        codesOrderTreeGrid.setAutoFitMaxRecords(codes.size() + 1);
 
         showCodes();
     }

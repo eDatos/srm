@@ -98,6 +98,7 @@ public class CodelistOpennessLevelTreePanel extends VLayout {
 
         opennessLevelTitle.setContents(CommonWebUtils.getElementName(codelistVisualisationDto.getCode(), codelistVisualisationDto.getName()));
         codesOpennessLevelVisualisationTreeGrid.setItems(codelistMetamacDto, codes, codelistVisualisationDto);
+        codesOpennessLevelVisualisationTreeGrid.setAutoFitMaxRecords(codes.size() + 1);
 
         // Security
         editButton.setVisible(canCodeOpennessLevelBeModified(codelistMetamacDto, codelistVisualisationDto));

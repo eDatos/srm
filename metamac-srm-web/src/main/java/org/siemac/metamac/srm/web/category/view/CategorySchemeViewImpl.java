@@ -639,6 +639,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         // Category hierarchy
         categoriesTreeGrid.setUiHandlers(getUiHandlers()); // UiHandlers cannot be set in constructor because is still null
         categoriesTreeGrid.setCategories(categorySchemeDto, categoryDtos);
+        // Set the max records to the size of the items list (plus the item scheme node)
+        categoriesTreeGrid.setAutoFitMaxRecords(categoryDtos.size() + 1);
     }
 
     public CategorySchemeMetamacDto getCategorySchemeDto() {

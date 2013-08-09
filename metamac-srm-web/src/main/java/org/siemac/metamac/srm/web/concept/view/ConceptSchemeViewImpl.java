@@ -407,6 +407,8 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     @Override
     public void setConcepts(List<ConceptMetamacVisualisationResult> itemHierarchyDtos) {
         conceptsTreeGrid.setConcepts(conceptSchemeDto, itemHierarchyDtos);
+        // Set the max records to the size of the items list (plus the item scheme node)
+        conceptsTreeGrid.setAutoFitMaxRecords(itemHierarchyDtos.size() + 1);
     }
 
     @Override

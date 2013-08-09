@@ -626,6 +626,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
             // Organisation hierarchy
             organisationsTreeGrid.setOrganisations(organisationSchemeDto, organisations);
+            organisationsTreeGrid.setAutoFitMaxRecords(organisations.size() + 1);
         } else {
             // Organisation list
             OrganisationTypeEnum organisationTypeEnum = CommonUtils.getOrganisationTypeEnum(organisationSchemeDto.getType());
@@ -634,6 +635,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 records[i] = org.siemac.metamac.srm.web.organisation.utils.OrganisationsRecordUtils.getOrganisationRecord(organisations.get(i), organisationTypeEnum);
             }
             organisationListGrid.setData(records);
+            organisationListGrid.setAutoFitMaxRecords(organisations.size() + 1);
         }
     }
 
