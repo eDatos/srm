@@ -157,7 +157,7 @@ public class ResourceImportationServlet extends HttpServlet {
         contentInputDto.setName(fileName);
         contentInputDto.setInput(inputStream);
 
-        srmCoreServiceFacade.importSDMXStructureMsgInBackground(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
+        srmCoreServiceFacade.importSDMXStructureMsg(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
     }
 
     // Codes
