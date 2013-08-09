@@ -63,7 +63,7 @@ public class SrmCoreServiceFacadeImportationCategorisationTest extends SrmBaseTe
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), TasksDtoMocks.createContentInput(new File(SdmxResources.ECB_CATEGORISATIONS)));
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), TasksDtoMocks.createContentInput(new File(SdmxResources.ECB_CATEGORISATIONS)));
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

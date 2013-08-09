@@ -533,12 +533,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
      * Import/Export
      **************************************************************************/
     @Override
-    public void importSDMXStructureMsgInBackground(ServiceContext ctx, ContentInputDto contentDto) throws MetamacException {
+    public TaskInfo importSDMXStructureMsg(ServiceContext ctx, ContentInputDto contentDto) throws MetamacException {
         // Security
         TasksSecurityUtils.canImportStructure(ctx);
 
         // Import
-        getTasksMetamacService().importSDMXStructureInBackground(ctx, contentDto.getInput(), contentDto.getName());
+        return getTasksMetamacService().importSDMXStructure(ctx, contentDto.getInput(), contentDto.getName());
     }
 
     @Override

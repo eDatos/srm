@@ -12,7 +12,7 @@ Application TaskMetamac {
 		Service TasksMetamacService {
 			// IMPORTATION
 			"Imports file in sdmx format"
-			String importSDMXStructureInBackground(InputStream inputMessage, String fileName) throws MetamacException;
+			TaskInfo importSDMXStructure(InputStream inputMessage, String fileName) throws MetamacException;
 			"Prepares importation of codes in tsv format"
     		String plannifyImportCodesTsvInBackground(String codelistUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 			"Prepares importation of code orders in tsv format"

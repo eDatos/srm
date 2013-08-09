@@ -104,8 +104,7 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
                 @Override
                 public void doInTransactionWithoutResult(TransactionStatus status) {
                     try {
-                        srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(),
-                                TasksDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CONCEPTS_CODELIST)));
+                        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), TasksDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CONCEPTS_CODELIST)));
                     } catch (MetamacException e) {
                         logger.error("Job thread failed: ", e);
                     } catch (FileNotFoundException e) {
@@ -187,7 +186,7 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
                 @Override
                 public void doInTransactionWithoutResult(TransactionStatus status) {
                     try {
-                        srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), TasksDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CONCEPTS)));
+                        srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), TasksDtoMocks.createContentInput(new File(SdmxResources.DEMOGRAPHY_CONCEPTS)));
                     } catch (MetamacException e) {
                         logger.error("Job thread failed: ", e);
                     } catch (FileNotFoundException e) {
@@ -220,7 +219,7 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), TasksDtoMocks.createContentInput(new File(SdmxResources.CS_DEMO_1_0_FINAL_NO_PARTIAL)));
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), TasksDtoMocks.createContentInput(new File(SdmxResources.CS_DEMO_1_0_FINAL_NO_PARTIAL)));
                 } catch (MetamacException e) {
                     logger.error("Job thread failed: ", e);
                 } catch (FileNotFoundException e) {
@@ -246,8 +245,7 @@ public class SrmCoreServiceFacadeImportationConceptTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(),
-                            TasksDtoMocks.createContentInput(new File("src/test/resources/sdmx/2_1/concepts/CS_DEMO_2_0.xml")));
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), TasksDtoMocks.createContentInput(new File("src/test/resources/sdmx/2_1/concepts/CS_DEMO_2_0.xml")));
                 } catch (Exception e) {
                     logger.error("Job thread failed: ", e);
                 }

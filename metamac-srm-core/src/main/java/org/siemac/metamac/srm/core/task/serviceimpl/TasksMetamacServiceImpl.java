@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.task.domain.Task;
 import com.arte.statistic.sdmx.srm.core.task.serviceapi.TasksService;
 import com.arte.statistic.sdmx.srm.core.task.serviceimpl.utils.ImportationJaxb2DoCallback;
@@ -60,7 +61,7 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
     }
 
     @Override
-    public String importSDMXStructureInBackground(ServiceContext ctx, InputStream inputMessage, String fileName) throws MetamacException {
+    public TaskInfo importSDMXStructure(ServiceContext ctx, InputStream inputMessage, String fileName) throws MetamacException {
         return tasksService.importSDMXStructure(ctx, inputMessage, fileName, importationJaxb2DoCallback);
     }
 

@@ -64,8 +64,7 @@ public class SrmCoreServiceFacadeImportationCategoriesTest extends SrmBaseTest {
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    srmCoreServiceFacade.importSDMXStructureMsgInBackground(getServiceContextAdministrador(), TasksDtoMocks.createContentInput(new File(SdmxResources.ECB_CATEGORIES)));
-
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), TasksDtoMocks.createContentInput(new File(SdmxResources.ECB_CATEGORIES)));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (MetamacException e) {
