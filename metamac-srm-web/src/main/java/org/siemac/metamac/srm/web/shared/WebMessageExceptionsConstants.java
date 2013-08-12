@@ -8,4 +8,6 @@ public class WebMessageExceptionsConstants {
     public static final String REST_API_STATISTICAL_OPERATIONS_INVOCATION_ERROR_UNKNOWN               = "exception.access_control.api.statistical_operations.invocation.unknown";
 
     public static final String SDMX_RESOURCE_SUCCESSFUL_IMPORTATION                                   = "message.resource.successful_importation";
+
+    public static final String IMPORTATION_SHAPE_NOT_FOUND_IN_ZIP                                     = "exception.resource.importation.shp_not_found";
 }
