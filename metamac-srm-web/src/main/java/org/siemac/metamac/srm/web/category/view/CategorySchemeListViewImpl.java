@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.web.category.widgets.NewCategorySchemeWindow;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -216,6 +217,11 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
     @Override
     public void clearSearchSection() {
         searchSectionStack.clearSearchSection();
+    }
+
+    @Override
+    public CategorySchemeWebCriteria getCategorySchemeWebCriteria() {
+        return searchSectionStack.getCategorySchemeWebCriteria();
     }
 
     private List<String> getUrnsFromSelectedCategorySchemes() {

@@ -231,6 +231,11 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
         searchSectionStack.reset();
     }
 
+    @Override
+    public String getVariableCriteria() {
+        return searchSectionStack.getSearchCriteria();
+    }
+
     private void showListGridDeleteButton(ListGridRecord[] records) {
         if (CodesClientSecurityUtils.canDeleteVariable()) {
             deleteVariableButton.show();

@@ -21,6 +21,7 @@ import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeSearchSectionStac
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
+import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -248,6 +249,11 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
     @Override
     public void setOperationsForSearchSection(GetStatisticalOperationsResult result) {
         searchSectionStack.setOperations(result);
+    }
+
+    @Override
+    public ConceptSchemeWebCriteria getConceptSchemeWebCriteria() {
+        return searchSectionStack.getConceptSchemeWebCriteria();
     }
 
     private void showListGridDeleteButton(ListGridRecord[] records) {

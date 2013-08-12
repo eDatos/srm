@@ -31,9 +31,9 @@ import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -81,7 +81,10 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
     public interface VariableListView extends View, HasUiHandlers<VariableListUiHandlers> {
 
         void setVariablePaginatedList(GetVariablesResult variablesPaginatedList);
+
+        // Search
         void clearSearchSection();
+        String getVariableCriteria();
 
         void setVariableFamilies(List<RelatedResourceDto> families, int firstResult, int totalResults);
     }
@@ -136,7 +139,7 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
             @Override
             public void onWaitSuccess(SaveVariableResult result) {
                 ShowMessageEvent.fireSuccessMessage(VariableListPresenter.this, getMessages().variableSaved());
-                retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null);
+                retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, getView().getVariableCriteria());
             }
         });
     }
@@ -148,12 +151,12 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fireErrorMessage(VariableListPresenter.this, caught);
-                retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null);
+                retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, getView().getVariableCriteria());
             }
             @Override
             public void onWaitSuccess(DeleteVariablesResult result) {
                 ShowMessageEvent.fireSuccessMessage(VariableListPresenter.this, getMessages().variableDeleted());
-                retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null);
+                retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, getView().getVariableCriteria());
             }
         });
     }

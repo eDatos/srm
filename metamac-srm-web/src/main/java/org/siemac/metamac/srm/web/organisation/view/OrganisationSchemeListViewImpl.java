@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurity
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.organisation.widgets.NewOrganisationSchemeWindow;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeSearchSectionStack;
+import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -209,6 +210,11 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         setOrganisationSchemeList(result.getOrganisationSchemeMetamacDtos());
         organisationSchemeList.refreshPaginationInfo(result.getFirstResultOut(), result.getOrganisationSchemeMetamacDtos().size(), result.getTotalResults());
         hideSelectionDependentButtons();
+    }
+
+    @Override
+    public OrganisationSchemeWebCriteria getOrganisationSchemeWebCriteria() {
+        return searchSectionStack.getOrganisationSchemeWebCriteria();
     }
 
     private void setOrganisationSchemeList(List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDtos) {

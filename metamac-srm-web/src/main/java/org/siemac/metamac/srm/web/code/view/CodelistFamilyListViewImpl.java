@@ -223,6 +223,11 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
         searchSectionStack.reset();
     }
 
+    @Override
+    public String getCodelistFamilyCriteria() {
+        return searchSectionStack.getSearchCriteria();
+    }
+
     private List<String> getUrnsFromSelectedFamilies() {
         List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : codelistFamilyList.getListGrid().getSelectedRecords()) {

@@ -27,9 +27,9 @@ import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -76,7 +76,10 @@ public class VariableFamilyListPresenter extends Presenter<VariableFamilyListPre
     public interface VariableFamilyListView extends View, HasUiHandlers<VariableFamilyListUiHandlers> {
 
         void setVariableFamilyPaginatedList(GetVariableFamiliesResult variableFamiliesPaginatedList);
+
+        // Search
         void clearSearchSection();
+        String getVariableFamilyCriteria();
     }
 
     @Inject
@@ -140,7 +143,7 @@ public class VariableFamilyListPresenter extends Presenter<VariableFamilyListPre
             @Override
             public void onWaitSuccess(SaveVariableFamilyResult result) {
                 ShowMessageEvent.fireSuccessMessage(VariableFamilyListPresenter.this, getMessages().variableFamilySaved());
-                retrieveVariableFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
+                retrieveVariableFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, getView().getVariableFamilyCriteria());
             }
         });
     }
@@ -152,12 +155,12 @@ public class VariableFamilyListPresenter extends Presenter<VariableFamilyListPre
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fireErrorMessage(VariableFamilyListPresenter.this, caught);
-                retrieveVariableFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
+                retrieveVariableFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, getView().getVariableFamilyCriteria());
             }
             @Override
             public void onWaitSuccess(DeleteVariableFamiliesResult result) {
                 ShowMessageEvent.fireSuccessMessage(VariableFamilyListPresenter.this, getMessages().variableFamilyDeleted());
-                retrieveVariableFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
+                retrieveVariableFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, getView().getVariableFamilyCriteria());
             }
         });
     }

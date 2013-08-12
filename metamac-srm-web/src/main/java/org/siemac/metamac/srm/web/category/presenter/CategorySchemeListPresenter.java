@@ -32,9 +32,9 @@ import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -82,7 +82,10 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
     public interface CategorySchemeListView extends View, HasUiHandlers<CategorySchemeListUiHandlers> {
 
         void setCategorySchemePaginatedList(GetCategorySchemesResult categorySchemesPaginatedList);
+
+        // Search
         void clearSearchSection();
+        CategorySchemeWebCriteria getCategorySchemeWebCriteria();
     }
 
     @Inject
@@ -148,7 +151,7 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
             public void onWaitSuccess(SaveCategorySchemeResult result) {
                 ShowMessageEvent.fireSuccessMessage(CategorySchemeListPresenter.this, getMessages().categorySchemeSaved());
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(new CategorySchemeWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(getView().getCategorySchemeWebCriteria()));
             }
         });
     }
@@ -161,13 +164,13 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fireErrorMessage(CategorySchemeListPresenter.this, caught);
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(new CategorySchemeWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(getView().getCategorySchemeWebCriteria()));
             }
             @Override
             public void onWaitSuccess(DeleteCategorySchemesResult result) {
                 ShowMessageEvent.fireSuccessMessage(CategorySchemeListPresenter.this, getMessages().categorySchemeDeleted());
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(new CategorySchemeWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(getView().getCategorySchemeWebCriteria()));
             }
         });
     }
@@ -180,13 +183,13 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fireErrorMessage(CategorySchemeListPresenter.this, caught);
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(new CategorySchemeWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(getView().getCategorySchemeWebCriteria()));
             }
             @Override
             public void onWaitSuccess(CancelCategorySchemeValidityResult result) {
                 ShowMessageEvent.fireSuccessMessage(CategorySchemeListPresenter.this, getMessages().categorySchemeCanceledValidity());
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(new CategorySchemeWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(getView().getCategorySchemeWebCriteria()));
             }
         });
     }

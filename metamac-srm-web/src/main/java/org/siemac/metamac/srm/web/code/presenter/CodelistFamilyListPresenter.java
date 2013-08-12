@@ -27,9 +27,9 @@ import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -76,7 +76,10 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
     public interface CodelistFamilyListView extends View, HasUiHandlers<CodelistFamilyListUiHandlers> {
 
         void setCodelistFamilyPaginatedList(GetCodelistFamiliesResult codelistFamiliesPaginatedList);
+
+        // Search
         void clearSearchSection();
+        String getCodelistFamilyCriteria();
     }
 
     @Inject
@@ -140,7 +143,7 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
             @Override
             public void onWaitSuccess(SaveCodelistFamilyResult result) {
                 ShowMessageEvent.fireSuccessMessage(CodelistFamilyListPresenter.this, getMessages().codelistFamilySaved());
-                retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
+                retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, getView().getCodelistFamilyCriteria());
             }
         });
     }
@@ -152,12 +155,12 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
             @Override
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fireErrorMessage(CodelistFamilyListPresenter.this, caught);
-                retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
+                retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, getView().getCodelistFamilyCriteria());
             }
             @Override
             public void onWaitSuccess(DeleteCodelistFamiliesResult result) {
                 ShowMessageEvent.fireSuccessMessage(CodelistFamilyListPresenter.this, getMessages().codelistFamilyDeleted());
-                retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, null);
+                retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, getView().getCodelistFamilyCriteria());
             }
         });
     }

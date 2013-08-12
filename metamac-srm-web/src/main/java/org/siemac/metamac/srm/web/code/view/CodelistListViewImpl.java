@@ -19,6 +19,7 @@ import org.siemac.metamac.srm.web.code.widgets.CodelistSearchSectionStack;
 import org.siemac.metamac.srm.web.code.widgets.NewCodelistWindow;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -225,6 +226,11 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     @Override
     public void clearSearchSection() {
         searchSectionStack.clearSearchSection();
+    }
+
+    @Override
+    public CodelistWebCriteria getCodelistWebCriteria() {
+        return searchSectionStack.getCodelistWebCriteria();
     }
 
     private void showListGridDeleteButton(ListGridRecord[] records) {

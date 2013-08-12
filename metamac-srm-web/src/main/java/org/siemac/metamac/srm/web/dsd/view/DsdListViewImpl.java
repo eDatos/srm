@@ -20,6 +20,7 @@ import org.siemac.metamac.srm.web.dsd.widgets.DsdSearchSectionStack;
 import org.siemac.metamac.srm.web.dsd.widgets.NewDsdWindow;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
+import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
@@ -250,6 +251,11 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     @Override
     public void setAttributeConceptsForSearchSection(GetConceptsResult result) {
         searchSectionStack.setAttributeConcepts(result);
+    }
+
+    @Override
+    public DataStructureDefinitionWebCriteria getDataStructureDefinitionWebCriteria() {
+        return searchSectionStack.getDataStructureDefinitionWebCriteria();
     }
 
     private void showDeleteToolStripButton(ListGridRecord[] records) {

@@ -41,9 +41,9 @@ import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -101,6 +101,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
         void setDimensionConceptsForSearchSection(GetConceptsResult result);
         void setAttributeConceptsForSearchSection(GetConceptsResult result);
         void clearSearchSection();
+        DataStructureDefinitionWebCriteria getDataStructureDefinitionWebCriteria();
     }
 
     @Inject
@@ -177,7 +178,7 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             @Override
             public void onWaitSuccess(SaveDsdResult result) {
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(new DataStructureDefinitionWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(getView().getDataStructureDefinitionWebCriteria()));
                 ShowMessageEvent.fireSuccessMessage(DsdListPresenter.this, MetamacSrmWeb.getMessages().dsdSaved());
             }
         });
@@ -190,13 +191,13 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             @Override
             public void onWaitFailure(Throwable caught) {
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(new DataStructureDefinitionWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(getView().getDataStructureDefinitionWebCriteria()));
                 ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
             }
             @Override
             public void onWaitSuccess(DeleteDsdsResult result) {
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(new DataStructureDefinitionWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(getView().getDataStructureDefinitionWebCriteria()));
                 ShowMessageEvent.fireSuccessMessage(DsdListPresenter.this, MetamacSrmWeb.getMessages().dsdDeleted());
             }
         });
@@ -243,13 +244,13 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(new DataStructureDefinitionWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(getView().getDataStructureDefinitionWebCriteria()));
             }
             @Override
             public void onWaitSuccess(CancelDsdValidityResult result) {
                 ShowMessageEvent.fireSuccessMessage(DsdListPresenter.this, getMessages().dsdCanceledValidity());
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(new DataStructureDefinitionWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(getView().getDataStructureDefinitionWebCriteria()));
             }
         });
     }

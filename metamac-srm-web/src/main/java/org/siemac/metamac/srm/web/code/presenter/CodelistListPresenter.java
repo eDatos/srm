@@ -34,9 +34,9 @@ import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -83,6 +83,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
         // Search
         void clearSearchSection();
+        CodelistWebCriteria getCodelistWebCriteria();
     }
 
     @Inject
@@ -133,7 +134,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             public void onWaitSuccess(SaveCodelistResult result) {
                 ShowMessageEvent.fireSuccessMessage(CodelistListPresenter.this, getMessages().codelistSaved());
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(getView().getCodelistWebCriteria()));
             }
         });
     }
@@ -146,13 +147,13 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fireErrorMessage(CodelistListPresenter.this, caught);
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(getView().getCodelistWebCriteria()));
             }
             @Override
             public void onWaitSuccess(DeleteCodelistsResult result) {
                 ShowMessageEvent.fireSuccessMessage(CodelistListPresenter.this, getMessages().codelistDeleted());
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(getView().getCodelistWebCriteria()));
             }
         });
     }
@@ -180,13 +181,13 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fireErrorMessage(CodelistListPresenter.this, caught);
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(getView().getCodelistWebCriteria()));
             }
             @Override
             public void onWaitSuccess(CancelCodelistValidityResult result) {
                 ShowMessageEvent.fireSuccessMessage(CodelistListPresenter.this, getMessages().codelistCanceledValidity());
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(new CodelistWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(getView().getCodelistWebCriteria()));
             }
         });
     }

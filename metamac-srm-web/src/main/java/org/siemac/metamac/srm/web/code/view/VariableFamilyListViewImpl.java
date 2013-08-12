@@ -222,6 +222,11 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
         searchSectionStack.reset();
     }
 
+    @Override
+    public String getVariableFamilyCriteria() {
+        return searchSectionStack.getSearchCriteria();
+    }
+
     private List<String> getUrnsFromSelectedFamilies() {
         List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : variableFamilyList.getListGrid().getSelectedRecords()) {

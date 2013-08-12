@@ -35,9 +35,9 @@ import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -86,6 +86,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
         // Search
         void clearSearchSection();
         void setOperationsForSearchSection(GetStatisticalOperationsResult result);
+        ConceptSchemeWebCriteria getConceptSchemeWebCriteria();
     }
 
     @Inject
@@ -151,7 +152,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             public void onWaitSuccess(SaveConceptSchemeResult result) {
                 ShowMessageEvent.fireSuccessMessage(ConceptSchemeListPresenter.this, getMessages().conceptSchemeSaved());
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(new ConceptSchemeWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(getView().getConceptSchemeWebCriteria()));
             }
         });
     }
@@ -164,13 +165,13 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fireErrorMessage(ConceptSchemeListPresenter.this, caught);
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(new ConceptSchemeWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(getView().getConceptSchemeWebCriteria()));
             }
             @Override
             public void onWaitSuccess(DeleteConceptSchemesResult result) {
                 ShowMessageEvent.fireSuccessMessage(ConceptSchemeListPresenter.this, getMessages().conceptSchemeDeleted());
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(new ConceptSchemeWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(getView().getConceptSchemeWebCriteria()));
             }
         });
     }
@@ -183,13 +184,13 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             public void onWaitFailure(Throwable caught) {
                 ShowMessageEvent.fireErrorMessage(ConceptSchemeListPresenter.this, caught);
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(new ConceptSchemeWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(getView().getConceptSchemeWebCriteria()));
             }
             @Override
             public void onWaitSuccess(CancelConceptSchemeValidityResult result) {
                 ShowMessageEvent.fireSuccessMessage(ConceptSchemeListPresenter.this, getMessages().conceptSchemeCanceledValidity());
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(new ConceptSchemeWebCriteria()));
+                        MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(getView().getConceptSchemeWebCriteria()));
             }
         });
     }
