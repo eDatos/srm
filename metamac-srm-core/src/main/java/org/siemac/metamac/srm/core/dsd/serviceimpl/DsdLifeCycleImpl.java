@@ -43,6 +43,7 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.DataAttribute;
 import com.arte.statistic.sdmx.srm.core.structure.domain.Dimension;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
+import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension;
 import com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.DataStructureDefinitionService;
@@ -120,17 +121,19 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
             }
             // Check related resources constraints
             for (ComponentList componentList : dataStructureDefinitionVersionMetamac.getGrouping()) {
-                for (Component component : componentList.getComponents()) {
-                    List<MetamacExceptionItem> relatedResourceExceptions = new LinkedList<MetamacExceptionItem>();
+                if (!(componentList instanceof GroupDimensionDescriptor)) {
+                    for (Component component : componentList.getComponents()) {
+                        List<MetamacExceptionItem> relatedResourceExceptions = new LinkedList<MetamacExceptionItem>();
 
-                    dataStructureDefinitionMetamacService.checkPrimaryMeasure(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    dataStructureDefinitionMetamacService.checkTimeDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    dataStructureDefinitionMetamacService.checkMeasureDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    dataStructureDefinitionMetamacService.checkDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
-                    dataStructureDefinitionMetamacService.checkAttribute(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                        dataStructureDefinitionMetamacService.checkPrimaryMeasure(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                        dataStructureDefinitionMetamacService.checkTimeDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                        dataStructureDefinitionMetamacService.checkMeasureDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                        dataStructureDefinitionMetamacService.checkDimension(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
+                        dataStructureDefinitionMetamacService.checkAttribute(ctx, dataStructureDefinitionVersionMetamac, component, relatedResourceExceptions);
 
-                    // Group exceptions by component
-                    addOrUpdateExceptionItemByResourceUrnWhenExceptionsNonZero(exceptionsByResourceUrn, component.getUrn(), relatedResourceExceptions);
+                        // Group exceptions by component
+                        addOrUpdateExceptionItemByResourceUrnWhenExceptionsNonZero(exceptionsByResourceUrn, component.getUrn(), relatedResourceExceptions);
+                    }
                 }
             }
             // Check translations
@@ -338,18 +341,18 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                     }
                     break;
                 }
+            }
 
-                if (!isDsdWithMeasureDimension && !foundSpecialAttributeOfMeasure) {
-                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_MEASUREDIM_SPECIAL_ATTR));
-                }
+            if (!isDsdWithMeasureDimension && !foundSpecialAttributeOfMeasure) {
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_MEASUREDIM_SPECIAL_ATTR));
+            }
 
-                if (!isDsdWithSpatialDimension && !foundSpecialAttributeOfSpatial) {
-                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_SPATIALDIM_SPECIAL_ATTR));
-                }
+            if (!isDsdWithSpatialDimension && !foundSpecialAttributeOfSpatial) {
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_SPATIALDIM_SPECIAL_ATTR));
+            }
 
-                if (!isDsdWithTimeDimension && !foundSpecialAttributeOfTime) {
-                    exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_TIMEDIM_SPECIAL_ATTR));
-                }
+            if (!isDsdWithTimeDimension && !foundSpecialAttributeOfTime) {
+                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.DATA_STRUCTURE_DEFINITION_WITHOUT_TIMEDIM_SPECIAL_ATTR));
             }
         }
 
