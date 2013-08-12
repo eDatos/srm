@@ -4,6 +4,7 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.Date;
 
+import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
@@ -153,6 +154,14 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
     protected void updateVisibility() {
         // Hide all buttons
         hideAllLifeCycleButtons();
+
+        // If the version is a temporal one, the "Publish internally" button should show the text "Replace published version"
+        if (VersionUtil.isTemporalVersion(versionLogic)) {
+            publishInternally.setTitle(getConstants().lifeCycleReplacePublishedVersion());
+        } else {
+            publishInternally.setTitle(getConstants().lifeCyclePublishInternally());
+        }
+
         // Show buttons depending on the status
         if (ProcStatusEnum.DRAFT.equals(procStatus)) {
             showSendToProductionValidation();
