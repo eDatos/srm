@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.web.server.servlet;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,17 +8,12 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -31,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -45,6 +37,7 @@ import org.siemac.metamac.srm.web.shared.WebMessageExceptionsConstants;
 import org.siemac.metamac.srm.web.shared.code.enums.VariableElementShapeTypeEnum;
 import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.utils.ZipUtils;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebExceptionItem;
 
@@ -286,7 +279,7 @@ public class ResourceImportationServlet extends HttpServlet {
 
         File outputFolder = (File) getServletContext().getAttribute("javax.servlet.context.tempdir");
 
-        List<File> unzipFiles = unzipArchive(new File(zipFile), outputFolder);
+        List<File> unzipFiles = ZipUtils.unzipArchive(new File(zipFile), outputFolder);
 
         return getShapeUrl(unzipFiles);
     }
@@ -300,57 +293,6 @@ public class ResourceImportationServlet extends HttpServlet {
         }
         throwMetamacWebException(WebMessageExceptionsConstants.IMPORTATION_SHAPE_NOT_FOUND_IN_ZIP);
         return null;
-    }
-
-    @SuppressWarnings("rawtypes")
-    public List<File> unzipArchive(File archive, File outputDir) throws ZipException, IOException {
-
-        List<File> unzipFiles = new ArrayList<File>();
-
-        ZipFile zipfile = new ZipFile(archive);
-        for (Enumeration e = zipfile.entries(); e.hasMoreElements();) {
-            ZipEntry entry = (ZipEntry) e.nextElement();
-            if (entry.isDirectory()) {
-                createDir(new File(outputDir, entry.getName()));
-            } else {
-                File file = unzipEntry(zipfile, entry, outputDir);
-                unzipFiles.add(file);
-            }
-
-        }
-
-        return unzipFiles;
-    }
-
-    private File unzipEntry(ZipFile zipfile, ZipEntry entry, File outputDir) throws IOException {
-
-        File outputFile = new File(outputDir, entry.getName());
-
-        if (!outputFile.getParentFile().exists()) {
-            createDir(outputFile.getParentFile());
-        }
-
-        logger.log(Level.INFO, "Extracting: " + entry);
-        BufferedInputStream inputStream = new BufferedInputStream(zipfile.getInputStream(entry));
-        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
-
-        try {
-            IOUtils.copy(inputStream, outputStream);
-        } finally {
-            outputStream.close();
-            inputStream.close();
-        }
-
-        return outputFile;
-    }
-
-    private void createDir(File dir) {
-        logger.log(Level.INFO, "Creating dir " + dir.getName());
-        if (!dir.exists()) {
-            if (!dir.mkdirs()) {
-                throw new RuntimeException("Can not create dir " + dir);
-            }
-        }
     }
 
     private void sendSuccessImportationResponse(HttpServletResponse response, String message) throws IOException {
