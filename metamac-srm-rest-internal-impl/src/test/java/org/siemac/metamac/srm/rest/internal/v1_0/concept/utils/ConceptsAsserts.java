@@ -47,7 +47,8 @@ public class ConceptsAsserts extends Asserts {
         if (expected != null) {
             Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT, expectedSelfLink, expectedManagementLink, actual);
         } else if (expectedItemResult != null) {
-            Asserts.assertEqualsResource(expectedItemResult, RestInternalConstants.KIND_CONCEPT, expectedSelfLink, expectedManagementLink, actual);
+            Asserts.assertEqualsResource(expectedItemResult, RestInternalConstants.KIND_CONCEPT, expectedSelfLink, expectedManagementLink, actual, itemSchemeVersion.getMaintainableArtefact()
+                    .getIsImported());
         }
     }
 

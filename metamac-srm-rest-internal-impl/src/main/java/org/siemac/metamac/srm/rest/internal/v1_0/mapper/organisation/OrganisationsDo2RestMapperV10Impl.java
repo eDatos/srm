@@ -580,7 +580,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         OrganisationTypeEnum organisationType = getOrganisationTypeEnum(source);
         ItemResourceInternal target = new ItemResourceInternal();
         toResource(source, toKindItem(organisationType), toOrganisationSelfLink(source, organisationSchemeVersion),
-                toOrganisationManagementApplicationLink(organisationSchemeVersion, source, organisationType), target);
+                toOrganisationManagementApplicationLink(organisationSchemeVersion, source, organisationType), target, organisationSchemeVersion.getMaintainableArtefact().getIsImported());
         if (OrganisationTypeEnum.AGENCY.equals(organisationType)) {
             target.setNestedId(getIdAsMaintainer(source));
         }

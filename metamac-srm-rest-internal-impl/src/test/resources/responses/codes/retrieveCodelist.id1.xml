@@ -24,7 +24,6 @@
     </sr:annotations>
     <sr:id>itemScheme1</sr:id>
     <sr:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:itemScheme1(01.000)</sr:urn>
-    <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:itemScheme1(01.000)</sr:urnProvider>
     <sr:uri>http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000</sr:uri>
     <sr:createdDate>2013-10-01T10:12:13.014+01:00</sr:createdDate>
     <sr:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000"/>
@@ -84,7 +83,6 @@
             <cdomain:text xml:lang="en">name-family1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-family1 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=family1</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelistFamilies/codelistFamily;id=family1</sr:managementAppLink>
     </sr:family>
     <sr:variable kind="structuralResources#variable">
@@ -95,7 +93,6 @@
             <cdomain:text xml:lang="en">name-variable1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-variable1 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable1</sr:managementAppLink>
     </sr:variable>
     <sr:replaceTo kind="structuralResources#codelists" total="2">
@@ -107,7 +104,6 @@
                 <cdomain:text xml:lang="es">name-codelistReplaceTo1v01.000 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">name-codelistReplaceTo1v01.000 in English</cdomain:text>
             </cdomain:name>
-            <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplaceTo1(01.000)</sr:urnProvider>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:codelistReplaceTo1(01.000)</sr:managementAppLink>
         </sr:replaceTo>
         <sr:replaceTo kind="structuralResources#codelist">
@@ -118,7 +114,6 @@
                 <cdomain:text xml:lang="en">name-codelistReplaceTo3v03.000 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-codelistReplaceTo3v03.000 en Español</cdomain:text>
             </cdomain:name>
-            <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplaceTo3(03.000)</sr:urnProvider>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:codelistReplaceTo3(03.000)</sr:managementAppLink>
         </sr:replaceTo>
     </sr:replaceTo>
@@ -130,7 +125,6 @@
             <cdomain:text xml:lang="en">name-codelistReplacedByv01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-codelistReplacedByv01.000 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplacedBy(01.000)</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:codelistReplacedBy(01.000)</sr:managementAppLink>
     </sr:replacedBy>
     <sr:accessType>PUBLIC</sr:accessType>

@@ -290,7 +290,8 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             return null;
         }
         ItemResourceInternal target = new ItemResourceInternal();
-        toResource(source, RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source, conceptSchemeVersion), toConceptManagementApplicationLink(conceptSchemeVersion, source), target);
+        toResource(source, RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source, conceptSchemeVersion), toConceptManagementApplicationLink(conceptSchemeVersion, source), target,
+                conceptSchemeVersion.getMaintainableArtefact().getIsImported());
         return target;
     }
 

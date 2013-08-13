@@ -2,7 +2,6 @@
 <sr:variable xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain"       xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#variable">
     <sr:id>artefact1</sr:id>
     <sr:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=artefact1</sr:urn>
-    <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=artefact1</sr:urnProvider>
     <sr:selfLink kind="structuralResources#variable" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/artefact1"/>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=artefact1</sr:managementAppLink>
     <sr:name>
@@ -24,7 +23,6 @@
             <cdomain:text xml:lang="es">name-variableReplacedBy1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-variableReplacedBy1 in English</cdomain:text>
         </cdomain:name>
-        <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplacedBy1</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variableReplacedBy1</sr:managementAppLink>
     </sr:replacedBy>
     <sr:replaceTo kind="structuralResources#variables" total="2">
@@ -36,7 +34,6 @@
                 <cdomain:text xml:lang="es">name-variableReplaceTo1 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">name-variableReplaceTo1 in English</cdomain:text>
             </cdomain:name>
-            <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplaceTo1</sr:urnProvider>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variableReplaceTo1</sr:managementAppLink>
         </sr:replaceTo>
         <sr:replaceTo kind="structuralResources#variable">
@@ -47,7 +44,6 @@
                 <cdomain:text xml:lang="en">name-variableReplaceTo2 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-variableReplaceTo2 en Español</cdomain:text>
             </cdomain:name>
-            <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplaceTo2</sr:urnProvider>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variableReplaceTo2</sr:managementAppLink>
         </sr:replaceTo>
     </sr:replaceTo>
@@ -60,7 +56,6 @@
                 <cdomain:text xml:lang="en">name-variableFamily1 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-variableFamily1 en Español</cdomain:text>
             </cdomain:name>
-            <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily1</sr:urnProvider>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variableFamilies/variableFamily;id=variableFamily1</sr:managementAppLink>
         </sr:family>
         <sr:family kind="structuralResources#variableFamily">
@@ -71,7 +66,6 @@
                 <cdomain:text xml:lang="en">name-variableFamily2 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-variableFamily2 en Español</cdomain:text>
             </cdomain:name>
-            <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily2</sr:urnProvider>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variableFamilies/variableFamily;id=variableFamily2</sr:managementAppLink>
         </sr:family>
         <sr:family kind="structuralResources#variableFamily">
@@ -82,7 +76,6 @@
                 <cdomain:text xml:lang="en">name-variableFamily3 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-variableFamily3 en Español</cdomain:text>
             </cdomain:name>
-            <sr:urnProvider>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily3</sr:urnProvider>
             <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variableFamilies/variableFamily;id=variableFamily3</sr:managementAppLink>
         </sr:family>
     </sr:family>

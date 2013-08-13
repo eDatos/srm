@@ -24,7 +24,6 @@
     </sr:annotations>
     <sr:id>categorisation1</sr:id>
     <sr:urn>urn:sdmx:org.sdmx.infomodel.xxx=categorisation1(01.000)</sr:urn>
-    <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.xxx=categorisation1(01.000)</sr:urnProvider>
     <sr:uri>uriProvider:categorisation1v01.000</sr:uri>
     <sr:selfLink kind="structuralResources#categorisation" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations/agency1/categorisation1/01.000"/>
     <sr:parentLink kind="structuralResources#categorisations" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations"/>

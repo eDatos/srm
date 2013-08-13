@@ -24,7 +24,6 @@
     </sr:annotations>
     <sr:id>item1</sr:id>
     <sr:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item1</sr:urn>
-    <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item1</sr:urnProvider>
     <sr:uri>http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes/item1</sr:uri>
     <sr:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes/item1"/>
     <sr:parentLink kind="structuralResources#codes" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes"/>

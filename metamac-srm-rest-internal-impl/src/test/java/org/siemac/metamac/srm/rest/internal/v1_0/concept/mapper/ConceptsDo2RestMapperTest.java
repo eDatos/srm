@@ -116,7 +116,7 @@ public class ConceptsDo2RestMapperTest {
         assertEquals("resourceID1", target.getId());
         assertEquals("01.123", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=agencyID1:resourceID1(01.123)", target.getUrn());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=agencyID1:resourceID1(01.123)", target.getUrnProvider());
+        assertEquals(null, target.getUrnProvider());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -260,7 +260,7 @@ public class ConceptsDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_CONCEPT, target.getKind());
         assertEquals("concept2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2", target.getUrn());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2", target.getUrnProvider());
+        assertEquals(null, target.getUrnProvider());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agencyID1/resourceID1/01.123/concepts";
         String selfLink = parentLink + "/concept2";

@@ -199,7 +199,8 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         CodeResourceInternal target = new CodeResourceInternal();
-        toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), toCodeManagementApplicationLink(codelistVersion, source), target);
+        toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), toCodeManagementApplicationLink(codelistVersion, source), target, codelistVersion
+                .getMaintainableArtefact().getIsImported());
         target.setOrder(SrmServiceUtils.getCodeItemResultOrder(source) + 1); // add 1 to start in 1, instead of 0
         target.setOpen(SrmServiceUtils.getCodeItemResultOpenness(source));
         return target;
@@ -237,7 +238,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         VariableFamily target = new VariableFamily();
         target.setId(source.getNameableArtefact().getCode());
         target.setUrn(source.getNameableArtefact().getUrn());
-        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
+        target.setUrnProvider(null);
         target.setKind(RestInternalConstants.KIND_VARIABLE_FAMILY);
         target.setSelfLink(toVariableFamilySelfLink(source));
         target.setChildLinks(toVariableFamilyChildLinks(source));
@@ -289,7 +290,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         Variable target = new Variable();
         target.setId(source.getNameableArtefact().getCode());
         target.setUrn(source.getNameableArtefact().getUrn());
-        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
+        target.setUrnProvider(null);
         target.setKind(RestInternalConstants.KIND_VARIABLE);
         target.setSelfLink(toVariableSelfLink(source));
         target.setManagementAppLink(toVariableManagementApplicationLink(source));
@@ -310,7 +311,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE, toVariableSelfLink(source), toVariableManagementApplicationLink(source), target);
+        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE, toVariableSelfLink(source), toVariableManagementApplicationLink(source), target, false);
         return target;
     }
 
@@ -340,7 +341,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         CodelistFamily target = new CodelistFamily();
         target.setId(source.getNameableArtefact().getCode());
         target.setUrn(source.getNameableArtefact().getUrn());
-        target.setUrnProvider(source.getNameableArtefact().getUrnProvider());
+        target.setUrnProvider(null);
         target.setKind(RestInternalConstants.KIND_CODELIST_FAMILY);
         target.setSelfLink(toCodelistFamilySelfLink(source));
         target.setManagementAppLink(toCodelistFamilyManagementApplicationLink(source));
@@ -401,7 +402,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source), toVariableFamilyManagementApplicationLink(source), target);
+        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source), toVariableFamilyManagementApplicationLink(source), target, false);
         return target;
     }
 
@@ -410,7 +411,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source), toCodelistFamilyManagementApplicationLink(source), target);
+        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source), toCodelistFamilyManagementApplicationLink(source), target, false);
         return target;
     }
 

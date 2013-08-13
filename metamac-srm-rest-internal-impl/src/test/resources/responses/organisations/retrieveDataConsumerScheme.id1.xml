@@ -24,7 +24,6 @@
     </sr:annotations>
     <sr:id>itemScheme1</sr:id>
     <sr:urn>urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=agency1:itemScheme1(01.000)</sr:urn>
-    <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=agency1:itemScheme1(01.000)</sr:urnProvider>
     <sr:uri>http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agency1/itemScheme1/01.000</sr:uri>
     <sr:createdDate>2013-10-01T10:12:13.014+01:00</sr:createdDate>
     <sr:selfLink kind="structuralResources#dataConsumerScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agency1/itemScheme1/01.000"/>

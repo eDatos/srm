@@ -8,7 +8,6 @@
             <cdomain:text xml:lang="en">name-artefact1v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-artefact1v01.000 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact1(01.000)</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency1:artefact1(01.000)</sr:managementAppLink>
     </sr:dataStructures>
     <sr:dataStructures kind="structuralResources#dataStructure">
@@ -19,7 +18,6 @@
             <cdomain:text xml:lang="en">name-artefact2v01.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-artefact2v01.000 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact2(01.000)</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency1:artefact2(01.000)</sr:managementAppLink>
     </sr:dataStructures>
     <sr:dataStructures kind="structuralResources#dataStructure">
@@ -30,7 +28,6 @@
             <cdomain:text xml:lang="en">name-artefact2v02.000 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-artefact2v02.000 en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact2(02.000)</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency1:artefact2(02.000)</sr:managementAppLink>
     </sr:dataStructures>
     <sr:dataStructures kind="structuralResources#dataStructure">
@@ -41,7 +38,6 @@
             <cdomain:text xml:lang="es">name-artefact3v01.000 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-artefact3v01.000 in English</cdomain:text>
         </cdomain:name>
-        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency2:artefact3(01.000)</sr:urnProvider>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency2:artefact3(01.000)</sr:managementAppLink>
     </sr:dataStructures>
 </sr:dataStructures>

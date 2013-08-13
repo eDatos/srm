@@ -25,7 +25,6 @@
     <sr:id>item1</sr:id>
     <sr:nestedId>item2.item1</sr:nestedId>
     <sr:urn>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).item2.item1</sr:urn>
-    <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).item2.item1</sr:urnProvider>
     <sr:uri>http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/item2.item1</sr:uri>
     <sr:selfLink kind="structuralResources#category" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/item2.item1"/>
     <sr:parentLink kind="structuralResources#categories" href="http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories"/>

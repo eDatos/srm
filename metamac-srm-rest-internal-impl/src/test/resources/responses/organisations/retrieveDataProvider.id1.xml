@@ -24,7 +24,6 @@
     </sr:annotations>
     <sr:id>item1</sr:id>
     <sr:urn>urn:sdmx:org.sdmx.infomodel.base.DataProvider=agency1:itemScheme1(01.000).item1</sr:urn>
-    <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.base.DataProvider=agency1:itemScheme1(01.000).item1</sr:urnProvider>
     <sr:uri>http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes/agency1/itemScheme1/01.000/dataproviders/item1</sr:uri>
     <sr:selfLink kind="structuralResources#dataProvider" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes/agency1/itemScheme1/01.000/dataproviders/item1"/>
     <sr:parentLink kind="structuralResources#dataProviders" href="http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes/agency1/itemScheme1/01.000/dataproviders"/>

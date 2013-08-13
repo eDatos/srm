@@ -16,6 +16,7 @@ public class DataStructuresAsserts extends Asserts {
         String version = maintainableArtefact.getVersionLogic();
         String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/" + agency + "/" + code + "/" + version;
         String expectedManagementLink = "http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=" + agency + ":" + code + "(" + version + ")";
-        assertEqualsResource(expected.getMaintainableArtefact(), RestInternalConstants.KIND_DATA_STRUCTURE, expectedSelfLink, expectedManagementLink, actual);
+        assertEqualsResource(expected.getMaintainableArtefact(), RestInternalConstants.KIND_DATA_STRUCTURE, expectedSelfLink, expectedManagementLink, actual, expected.getMaintainableArtefact()
+                .getIsImported());
     }
 }

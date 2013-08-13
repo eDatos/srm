@@ -194,7 +194,7 @@ public class OrganisationsDo2RestMapperTest {
         assertEquals("AGENCIES", target.getId());
         assertEquals("01.000", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=agencyID1:AGENCIES(01.000)", target.getUrn());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=agencyID1:AGENCIES(01.000)", target.getUrnProvider());
+        assertEquals(null, target.getUrnProvider());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agencyID1/AGENCIES/01.000";
         assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -517,7 +517,7 @@ public class OrganisationsDo2RestMapperTest {
         assertEquals("organisation2", target.getId());
         assertEquals("idAsMaintainerorganisation2", target.getNestedId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=agencyID1:AGENCIES(01.000).organisation2", target.getUrn());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=agencyID1:AGENCIES(01.000).organisation2", target.getUrnProvider());
+        assertEquals(null, target.getUrnProvider());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agencyID1/AGENCIES/01.000/agencies";
         String selfLink = parentLink + "/organisation2";
@@ -594,7 +594,7 @@ public class OrganisationsDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_DATA_PROVIDER, target.getKind());
         assertEquals("organisation2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataProvider=agencyID1:DATAPROVIDERS(01.000).organisation2", target.getUrn());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataProvider=agencyID1:DATAPROVIDERS(01.000).organisation2", target.getUrnProvider());
+        assertEquals(null, target.getUrnProvider());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes/agencyID1/DATAPROVIDERS/01.000/dataproviders";
         String selfLink = parentLink + "/organisation2";
@@ -621,7 +621,7 @@ public class OrganisationsDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, target.getKind());
         assertEquals("organisation2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agencyID1:resourceID1(01.000).organisation2", target.getUrn());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agencyID1:resourceID1(01.000).organisation2", target.getUrnProvider());
+        assertEquals(null, target.getUrnProvider());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agencyID1/resourceID1/01.000/organisationunits";
         String selfLink = parentLink + "/organisation2";

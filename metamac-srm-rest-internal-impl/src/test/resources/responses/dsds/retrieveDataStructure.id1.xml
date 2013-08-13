@@ -14,7 +14,6 @@
     </sr:annotations>
     <sr:id>artefact1</sr:id>
     <sr:urn>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact1(01.000)</sr:urn>
-    <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact1(01.000)</sr:urnProvider>
     <sr:uri>http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency1/artefact1/01.000</sr:uri>
     <sr:createdDate>2012-10-01T10:12:13.014+01:00</sr:createdDate>
     <sr:selfLink kind="structuralResources#dataStructure" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency1/artefact1/01.000"/>
@@ -71,7 +70,6 @@
                 </sr:annotations>
                 <sr:id>dimension01</sr:id>
                 <sr:urn>urn:sdmx:org.sdmx.infomodel.xxx=dimension01</sr:urn>
-                <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.xxx=dimension01</sr:urnProvider>
                 <sr:uri>uriProvider:dimension01</sr:uri>
                 <sr:conceptIdentity kind="structuralResources#concept">
                     <cdomain:id>concept01</cdomain:id>
@@ -81,7 +79,6 @@
                         <cdomain:text xml:lang="es">name-concept01 en Español</cdomain:text>
                         <cdomain:text xml:lang="en">name-concept01 in English</cdomain:text>
                     </cdomain:name>
-                    <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01</sr:urnProvider>
                     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept01</sr:managementAppLink>
                 </sr:conceptIdentity>
                 <sr:localRepresentation>
@@ -93,7 +90,6 @@
                             <cdomain:text xml:lang="en">name-codelist01v01.000 in English</cdomain:text>
                             <cdomain:text xml:lang="es">name-codelist01v01.000 en Español</cdomain:text>
                         </cdomain:name>
-                        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</sr:urnProvider>
                         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency01:codelist01(01.000)</sr:managementAppLink>
                     </sr:enumerationCodelist>
                 </sr:localRepresentation>
@@ -106,7 +102,6 @@
                             <cdomain:text xml:lang="en">name-concept02b in English</cdomain:text>
                             <cdomain:text xml:lang="es">name-concept02b en Español</cdomain:text>
                         </cdomain:name>
-                        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02b</sr:urnProvider>
                         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02b</sr:managementAppLink>
                     </sr:role>
                     <sr:role kind="structuralResources#concept">
@@ -117,7 +112,6 @@
                             <cdomain:text xml:lang="es">name-concept02a en Español</cdomain:text>
                             <cdomain:text xml:lang="en">name-concept02a in English</cdomain:text>
                         </cdomain:name>
-                        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02a</sr:urnProvider>
                         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02a</sr:managementAppLink>
                     </sr:role>
                 </sr:roleConcepts>
@@ -137,7 +131,6 @@
                 </sr:annotations>
                 <sr:id>TIME_PERIOD</sr:id>
                 <sr:urn>urn:sdmx:org.sdmx.infomodel.xxx=timeDimension01</sr:urn>
-                <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.xxx=timeDimension01</sr:urnProvider>
                 <sr:uri>uriProvider:timeDimension01</sr:uri>
                 <sr:conceptIdentity kind="structuralResources#concept">
                     <cdomain:id>concept01</cdomain:id>
@@ -147,7 +140,6 @@
                         <cdomain:text xml:lang="en">name-concept01 in English</cdomain:text>
                         <cdomain:text xml:lang="es">name-concept01 en Español</cdomain:text>
                     </cdomain:name>
-                    <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01</sr:urnProvider>
                     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept01</sr:managementAppLink>
                 </sr:conceptIdentity>
                 <sr:localRepresentation>
@@ -159,7 +151,6 @@
                             <cdomain:text xml:lang="en">name-codelist01v01.000 in English</cdomain:text>
                             <cdomain:text xml:lang="es">name-codelist01v01.000 en Español</cdomain:text>
                         </cdomain:name>
-                        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</sr:urnProvider>
                         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency01:codelist01(01.000)</sr:managementAppLink>
                     </sr:enumerationCodelist>
                 </sr:localRepresentation>
@@ -190,7 +181,6 @@
                 </sr:annotations>
                 <sr:id>dataAttribute01</sr:id>
                 <sr:urn>urn:sdmx:org.sdmx.infomodel.xxx=dataAttribute01</sr:urn>
-                <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.xxx=dataAttribute01</sr:urnProvider>
                 <sr:uri>uriProvider:dataAttribute01</sr:uri>
                 <sr:conceptIdentity kind="structuralResources#concept">
                     <cdomain:id>concept01</cdomain:id>
@@ -200,7 +190,6 @@
                         <cdomain:text xml:lang="en">name-concept01 in English</cdomain:text>
                         <cdomain:text xml:lang="es">name-concept01 en Español</cdomain:text>
                     </cdomain:name>
-                    <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01</sr:urnProvider>
                     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept01</sr:managementAppLink>
                 </sr:conceptIdentity>
                 <sr:localRepresentation>
@@ -212,7 +201,6 @@
                             <cdomain:text xml:lang="en">name-codelist01v01.000 in English</cdomain:text>
                             <cdomain:text xml:lang="es">name-codelist01v01.000 en Español</cdomain:text>
                         </cdomain:name>
-                        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</sr:urnProvider>
                         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency01:codelist01(01.000)</sr:managementAppLink>
                     </sr:enumerationCodelist>
                 </sr:localRepresentation>
@@ -226,7 +214,6 @@
                             <cdomain:text xml:lang="en">name-concept02b in English</cdomain:text>
                             <cdomain:text xml:lang="es">name-concept02b en Español</cdomain:text>
                         </cdomain:name>
-                        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02b</sr:urnProvider>
                         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02b</sr:managementAppLink>
                     </sr:role>
                     <sr:role kind="structuralResources#concept">
@@ -237,7 +224,6 @@
                             <cdomain:text xml:lang="es">name-concept02a en Español</cdomain:text>
                             <cdomain:text xml:lang="en">name-concept02a in English</cdomain:text>
                         </cdomain:name>
-                        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02a</sr:urnProvider>
                         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02a</sr:managementAppLink>
                     </sr:role>
                 </sr:roleConcepts>
@@ -274,7 +260,6 @@
                     <cdomain:text xml:lang="es">name-concept01 en Español</cdomain:text>
                     <cdomain:text xml:lang="en">name-concept01 in English</cdomain:text>
                 </cdomain:name>
-                <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01</sr:urnProvider>
                 <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept01</sr:managementAppLink>
             </sr:concept>
             <sr:showDecimals>2</sr:showDecimals>
@@ -288,7 +273,6 @@
                     <cdomain:text xml:lang="es">name-concept02 en Español</cdomain:text>
                     <cdomain:text xml:lang="en">name-concept02 in English</cdomain:text>
                 </cdomain:name>
-                <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02</sr:urnProvider>
                 <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02</sr:managementAppLink>
             </sr:concept>
             <sr:showDecimals>5</sr:showDecimals>

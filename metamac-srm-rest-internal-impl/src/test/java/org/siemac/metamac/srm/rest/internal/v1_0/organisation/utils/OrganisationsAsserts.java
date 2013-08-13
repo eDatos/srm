@@ -51,7 +51,7 @@ public class OrganisationsAsserts extends Asserts {
         if (expected != null) {
             Asserts.assertEqualsResource(expected, kindExpected, expectedSelfLink, expectedManagementLink, actual);
         } else if (expectedItemResult != null) {
-            Asserts.assertEqualsResource(expectedItemResult, kindExpected, expectedSelfLink, expectedManagementLink, actual);
+            Asserts.assertEqualsResource(expectedItemResult, kindExpected, expectedSelfLink, expectedManagementLink, actual, itemSchemeVersion.getMaintainableArtefact().getIsImported());
         }
         if (OrganisationTypeEnum.AGENCY.equals(organisationTypeExpected)) {
             assertNotNull(actual.getNestedId());

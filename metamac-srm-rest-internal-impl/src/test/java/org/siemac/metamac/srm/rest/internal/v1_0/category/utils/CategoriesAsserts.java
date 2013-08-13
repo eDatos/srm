@@ -43,7 +43,8 @@ public class CategoriesAsserts extends Asserts {
         if (expected != null) {
             Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CATEGORY, expectedSelfLink, expectedManagementLink, actual);
         } else if (expectedItemResult != null) {
-            Asserts.assertEqualsResource(expectedItemResult, RestInternalConstants.KIND_CATEGORY, expectedSelfLink, expectedManagementLink, actual);
+            Asserts.assertEqualsResource(expectedItemResult, RestInternalConstants.KIND_CATEGORY, expectedSelfLink, expectedManagementLink, actual, itemSchemeVersion.getMaintainableArtefact()
+                    .getIsImported());
         }
         assertEquals(codeFullExpected, actual.getNestedId());
     }
@@ -56,7 +57,11 @@ public class CategoriesAsserts extends Asserts {
         assertEquals(RestInternalConstants.KIND_CATEGORISATION, actual.getKind());
         assertEquals(expected.getMaintainableArtefact().getCode(), actual.getId());
         assertEquals(expected.getMaintainableArtefact().getUrn(), actual.getUrn());
-        assertEquals(expected.getMaintainableArtefact().getUrnProvider(), actual.getUrnProvider());
+        if (expected.getMaintainableArtefact().getIsImported()) {
+            assertEquals(expected.getMaintainableArtefact().getUrnProvider(), actual.getUrnProvider());
+        } else {
+            assertEquals(null, actual.getUrnProvider());
+        }
         assertEquals(RestInternalConstants.KIND_CATEGORISATION, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
         assertEqualsInternationalString(expected.getMaintainableArtefact().getName(), actual.getName());

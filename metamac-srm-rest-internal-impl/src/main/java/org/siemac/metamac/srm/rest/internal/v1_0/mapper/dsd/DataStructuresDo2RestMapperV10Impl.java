@@ -98,6 +98,8 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
             return null;
         }
 
+        boolean isImported = source.getMaintainableArtefact().getIsImported();
+
         DataStructure target = new DataStructure();
         target.setKind(RestInternalConstants.KIND_DATA_STRUCTURE);
         target.setSelfLink(toDataStructureSelfLink(source));
@@ -107,7 +109,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
 
         toStructure(source, source.getLifeCycleMetadata(), target);
 
-        target.setDataStructureComponents(toDataStructureComponents(source.getGrouping()));
+        target.setDataStructureComponents(toDataStructureComponents(source.getGrouping(), isImported));
         target.setStatisticalOperation(toResourceExternalItemStatisticalOperation(source.getStatisticalOperation()));
         target.setAutoOpen(source.getAutoOpen());
         target.setHeading(toDimensionReferences(source.getHeadingDimensions()));
@@ -119,20 +121,20 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private DataStructureComponents toDataStructureComponents(Set<ComponentList> sources) {
+    private DataStructureComponents toDataStructureComponents(Set<ComponentList> sources, boolean isImported) {
         DataStructureComponents target = new DataStructureComponents();
         for (ComponentList source : sources) {
             if (source instanceof DimensionDescriptor) {
-                target.setDimensions(toDimensions((DimensionDescriptor) source));
+                target.setDimensions(toDimensions((DimensionDescriptor) source, isImported));
             } else if (source instanceof GroupDimensionDescriptor) {
                 if (target.getGroups() == null) {
                     target.setGroups(new Groups());
                 }
-                target.getGroups().getGroups().add(toGroup((GroupDimensionDescriptor) source));
+                target.getGroups().getGroups().add(toGroup((GroupDimensionDescriptor) source, isImported));
             } else if (source instanceof MeasureDescriptor) {
-                target.setMeasure(toMeasure((MeasureDescriptor) source));
+                target.setMeasure(toMeasure((MeasureDescriptor) source, isImported));
             } else if (source instanceof AttributeDescriptor) {
-                target.setAttributes(toAttributes((AttributeDescriptor) source));
+                target.setAttributes(toAttributes((AttributeDescriptor) source, isImported));
             } else {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
@@ -141,23 +143,23 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private Dimensions toDimensions(DimensionDescriptor source) {
+    private Dimensions toDimensions(DimensionDescriptor source, boolean isImported) {
         if (source == null) {
             return null;
         }
         Dimensions target = new Dimensions();
-        toComponentList(source, target);
+        toComponentList(source, target, isImported);
 
         // Dimensions must be returned in order
         List<Component> componentsSorted = new ArrayList<Component>(source.getComponents());
         Collections.sort(componentsSorted, StructuresComparator.STRUCTURE_COMPOENTN_ID_COMPARATOR);
         for (Component component : componentsSorted) {
             if (component instanceof com.arte.statistic.sdmx.srm.core.structure.domain.Dimension) {
-                target.getDimensions().add(toDimension((com.arte.statistic.sdmx.srm.core.structure.domain.Dimension) component));
+                target.getDimensions().add(toDimension((com.arte.statistic.sdmx.srm.core.structure.domain.Dimension) component, isImported));
             } else if (component instanceof com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension) {
-                target.getDimensions().add(toTimeDimension((com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension) component));
+                target.getDimensions().add(toTimeDimension((com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension) component, isImported));
             } else if (component instanceof com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension) {
-                target.getDimensions().add(toMeasureDimension((com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension) component));
+                target.getDimensions().add(toMeasureDimension((com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension) component, isImported));
             } else {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
@@ -166,51 +168,53 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private Measure toMeasure(MeasureDescriptor source) {
+    private Measure toMeasure(MeasureDescriptor source, boolean isImported) {
         if (source == null) {
             return null;
         }
         Measure target = new Measure();
-        toComponentList(source, target);
+        toComponentList(source, target, isImported);
 
         if (CollectionUtils.isEmpty(source.getComponents())) {
-            target.setPrimaryMeasure(toPrimaryMeasure((com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure) source.getComponents().iterator().next())); // only one
+            com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure component = (com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure) source.getComponents().iterator().next(); // only
+                                                                                                                                                                                                      // one
+            target.setPrimaryMeasure(toPrimaryMeasure(component, isImported));
         }
         return target;
     }
 
-    private PrimaryMeasure toPrimaryMeasure(com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure source) {
+    private PrimaryMeasure toPrimaryMeasure(com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure source, boolean isImported) {
         if (source == null) {
             return null;
         }
 
         PrimaryMeasure target = new PrimaryMeasure();
-        toComponent(source, target);
+        toComponent(source, target, isImported);
         return target;
     }
 
-    private Group toGroup(GroupDimensionDescriptor source) {
+    private Group toGroup(GroupDimensionDescriptor source, boolean isImported) {
         if (source == null) {
             return null;
         }
 
         Group target = new Group();
-        toComponentList(source, target);
+        toComponentList(source, target, isImported);
         target.setDimensions(toDimensionReferences(source.getComponents()));
         return target;
     }
 
-    private Attributes toAttributes(AttributeDescriptor source) {
+    private Attributes toAttributes(AttributeDescriptor source, boolean isImported) {
         if (source == null) {
             return null;
         }
 
         Attributes target = new Attributes();
-        toComponentList(source, target);
+        toComponentList(source, target, isImported);
 
         for (Component sourceComponent : source.getComponents()) {
             if (sourceComponent instanceof DataAttribute) {
-                target.getAttributes().add(toAttribute((DataAttribute) sourceComponent));
+                target.getAttributes().add(toAttribute((DataAttribute) sourceComponent, isImported));
             } else {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
@@ -219,11 +223,11 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private void toAttributeCommon(DataAttribute source, Attribute target) {
+    private void toAttributeCommon(DataAttribute source, Attribute target, boolean isImported) {
         if (source == null) {
             return;
         }
-        toComponent(source, target);
+        toComponent(source, target, isImported);
 
         target.setAssignmentStatus(toAttributeUsageStatusType(source.getUsageStatus()));
         target.setRoleConcepts(conceptsDo2RestMapper.toRoleConcepts(source.getRole()));
@@ -231,12 +235,12 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         target.setType(toAttributeQualifierType(source.getSpecialAttributeType()));
     }
 
-    private Attribute toAttribute(DataAttribute source) {
+    private Attribute toAttribute(DataAttribute source, boolean isImported) {
         if (source == null) {
             return null;
         }
         Attribute target = new Attribute();
-        toAttributeCommon(source, target);
+        toAttributeCommon(source, target, isImported);
         return target;
     }
 
@@ -267,13 +271,13 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private void toDimensionCommon(com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent source, DimensionBase target) {
-        toComponent(source, target);
+    private void toDimensionCommon(com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent source, DimensionBase target, boolean isImported) {
+        toComponent(source, target, isImported);
     }
 
-    private Dimension toDimension(com.arte.statistic.sdmx.srm.core.structure.domain.Dimension source) {
+    private Dimension toDimension(com.arte.statistic.sdmx.srm.core.structure.domain.Dimension source, boolean isImported) {
         Dimension target = new Dimension();
-        toDimensionCommon(source, target);
+        toDimensionCommon(source, target, isImported);
 
         target.setType(DimensionType.DIMENSION);
         target.setRoleConcepts(conceptsDo2RestMapper.toRoleConcepts(source.getRole()));
@@ -283,18 +287,18 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private MeasureDimension toMeasureDimension(com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension source) {
+    private MeasureDimension toMeasureDimension(com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension source, boolean isImported) {
         MeasureDimension target = new MeasureDimension();
-        toDimensionCommon(source, target);
+        toDimensionCommon(source, target, isImported);
 
         target.setType(DimensionType.MEASURE_DIMENSION);
         target.setRoleConcepts(conceptsDo2RestMapper.toRoleConcepts(source.getRole()));
         return target;
     }
 
-    private TimeDimension toTimeDimension(com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension source) {
+    private TimeDimension toTimeDimension(com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension source, boolean isImported) {
         TimeDimension target = new TimeDimension();
-        toDimensionCommon(source, target);
+        toDimensionCommon(source, target, isImported);
         target.setType(DimensionType.TIME_DIMENSION);
         return target;
     }
@@ -437,21 +441,21 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         }
     }
 
-    private void toComponentList(ComponentList source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Components target) {
+    private void toComponentList(ComponentList source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Components target, boolean isImported) {
         if (source == null) {
             return;
         }
-        toIdentifiableArtefact(source, target);
+        toIdentifiableArtefact(source, target, isImported);
     }
 
-    private void toComponent(Component source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Component target) {
+    private void toComponent(Component source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Component target, boolean isImported) {
         if (source == null) {
             return;
         }
         target.setConceptIdentity(conceptsDo2RestMapper.toResource(source.getCptIdRef()));
         target.setLocalRepresentation(commonDo2RestMapper.toRepresentation(source.getLocalRepresentation()));
 
-        toIdentifiableArtefact(source, target);
+        toIdentifiableArtefact(source, target, isImported);
     }
 
     private String toDimensionReference(DimensionComponent source) {

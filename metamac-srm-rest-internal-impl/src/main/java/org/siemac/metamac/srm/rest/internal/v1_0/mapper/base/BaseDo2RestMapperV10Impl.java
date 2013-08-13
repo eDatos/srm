@@ -38,7 +38,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.AnnotableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
-import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.common.domain.IdentifiableArtefactResult;
@@ -80,7 +79,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setAnnotations(toAnnotations(source.getAnnotations()));
     }
 
-    public void toIdentifiableArtefact(IdentifiableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.IdentifiableArtefact target) {
+    public void toIdentifiableArtefact(IdentifiableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.IdentifiableArtefact target, boolean isImported) {
         if (source == null) {
             return;
         }
@@ -88,26 +87,30 @@ public abstract class BaseDo2RestMapperV10Impl {
 
         target.setId(source.getCode());
         target.setUrn(source.getUrn());
-        target.setUrnProvider(source.getUrnProvider());
+        if (isImported) {
+            target.setUrnProvider(source.getUrnProvider());
+        } else {
+            target.setUrnProvider(null);
+        }
         target.setUri(source.getUriProvider());
     }
 
-    public void toNameableArtefact(NameableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.NameableArtefact target) {
+    public void toNameableArtefact(NameableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.NameableArtefact target, boolean isImported) {
         if (source == null) {
             return;
         }
-        toIdentifiableArtefact(source, target);
+        toIdentifiableArtefact(source, target, isImported);
 
         target.setName(toInternationalString(source.getName()));
         target.setDescription(toInternationalString(source.getDescription()));
         target.setComment(toInternationalString(source.getComment()));
     }
 
-    public void toVersionableArtefact(MaintainableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VersionableArtefact target) {
+    public void toVersionableArtefact(MaintainableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VersionableArtefact target, boolean isImported) {
         if (source == null) {
             return;
         }
-        toNameableArtefact(source, target);
+        toNameableArtefact(source, target, isImported);
 
         target.setVersion(source.getVersionLogic());
     }
@@ -117,7 +120,7 @@ public abstract class BaseDo2RestMapperV10Impl {
             return;
         }
 
-        toVersionableArtefact(source, target);
+        toVersionableArtefact(source, target, source.getIsImported());
 
         target.setLifeCycle(toLifeCycle(lifeCycleSource));
         target.setAgencyID(source.getMaintainer().getIdAsMaintainer());
@@ -237,38 +240,40 @@ public abstract class BaseDo2RestMapperV10Impl {
         return source.getFinalLogicClient();
     }
 
-    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target) {
+    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, boolean isImported) {
         if (source == null) {
             return;
         }
         target.setId(source.getCode());
         // nestedId: only filled to some resource
         target.setUrn(source.getUrn());
-        target.setUrnProvider(source.getUrnProvider());
+        if (isImported) {
+            target.setUrnProvider(source.getUrnProvider());
+        } else {
+            target.setUrnProvider(null);
+        }
         target.setKind(kind);
         target.setSelfLink(selfLink);
         target.setName(toInternationalString(source.getName()));
         target.setManagementAppLink(managementAppUrl);
     }
 
-    protected void toResource(Item source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target) {
-        if (source == null) {
-            return;
-        }
-        toResource(source.getNameableArtefact(), kind, selfLink, managementAppUrl, target);
-        if (source.getParent() != null) {
-            target.setParent(source.getParent().getNameableArtefact().getUrn());
-        }
+    protected void toResource(MaintainableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target) {
+        toResource(source, kind, selfLink, managementAppUrl, target, source.getIsImported());
     }
 
-    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target) {
+    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target, boolean isImported) {
         if (source == null) {
             return;
         }
         target.setId(source.getCode());
         // nestedId: only filled to some resource
         target.setUrn(source.getUrn());
-        target.setUrnProvider(source.getUrnProvider());
+        if (isImported) {
+            target.setUrnProvider(source.getUrnProvider());
+        } else {
+            target.setUrnProvider(null);
+        }
         target.setKind(kind);
         target.setSelfLink(selfLink);
         target.setName(toInternationalString(source.getName()));

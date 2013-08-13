@@ -112,7 +112,7 @@ public class CategoriesDo2RestMapperTest {
         assertEquals("resourceID1", target.getId());
         assertEquals("01.123", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agencyID1:resourceID1(01.123)", target.getUrn());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agencyID1:resourceID1(01.123)", target.getUrnProvider());
+        assertEquals(null, target.getUrnProvider());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_CATEGORY_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
@@ -254,7 +254,7 @@ public class CategoriesDo2RestMapperTest {
         assertEquals("category2", target.getId());
         assertEquals("categoryParent1.category2", target.getNestedId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).categoryParent1.category2", target.getUrn());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).categoryParent1.category2", target.getUrnProvider());
+        assertEquals(null, target.getUrnProvider());
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/agencyID1/resourceID1/01.123/categories";
         String selfLink = parentLink + "/categoryParent1.category2";
         assertEquals(RestInternalConstants.KIND_CATEGORY, target.getSelfLink().getKind());

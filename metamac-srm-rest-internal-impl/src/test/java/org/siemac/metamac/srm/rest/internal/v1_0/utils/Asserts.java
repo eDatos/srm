@@ -84,25 +84,33 @@ public class Asserts extends MetamacRestAsserts {
     }
 
     public static void assertEqualsResource(ItemSchemeVersion expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual) {
-        assertEqualsResource(expected.getMaintainableArtefact(), expectedKind, expectedSelfLink, expectedManagementLink, actual);
+        assertEqualsResource(expected.getMaintainableArtefact(), expectedKind, expectedSelfLink, expectedManagementLink, actual, expected.getMaintainableArtefact().getIsImported());
     }
 
-    public static void assertEqualsResource(NameableArtefact expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual) {
+    public static void assertEqualsResource(NameableArtefact expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual, boolean isImported) {
         assertEquals(expectedKind, actual.getKind());
         assertEquals(expected.getCode(), actual.getId());
         assertEquals(expected.getUrn(), actual.getUrn());
-        assertEquals(expected.getUrnProvider(), actual.getUrnProvider());
+        if (isImported) {
+            assertEquals(expected.getUrnProvider(), actual.getUrnProvider());
+        } else {
+            assertEquals(null, actual.getUrnProvider());
+        }
         assertEquals(expectedKind, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
         assertEquals(expectedManagementLink, actual.getManagementAppLink());
         assertEqualsInternationalString(expected.getName(), actual.getName());
     }
 
-    public static void assertEqualsResource(ItemResult expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual) {
+    public static void assertEqualsResource(ItemResult expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual, boolean isImported) {
         assertEquals(expectedKind, actual.getKind());
         assertEquals(expected.getCode(), actual.getId());
         assertEquals(expected.getUrn(), actual.getUrn());
-        assertEquals(expected.getUrnProvider(), actual.getUrnProvider());
+        if (isImported) {
+            assertEquals(expected.getUrnProvider(), actual.getUrnProvider());
+        } else {
+            assertEquals(null, actual.getUrnProvider());
+        }
         assertEquals(expectedKind, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
         assertEquals(expectedManagementLink, actual.getManagementAppLink());
@@ -110,7 +118,7 @@ public class Asserts extends MetamacRestAsserts {
     }
 
     public static void assertEqualsResource(Item expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual) {
-        assertEqualsResource(expected.getNameableArtefact(), expectedKind, expectedSelfLink, expectedManagementLink, actual);
+        assertEqualsResource(expected.getNameableArtefact(), expectedKind, expectedSelfLink, expectedManagementLink, actual, expected.getItemSchemeVersion().getMaintainableArtefact().getIsImported());
     }
 
     public static void assertUriProviderExpected(MaintainableArtefact maintainableArtefact, String uriActual) {
