@@ -1,0 +1,28 @@
+<enunciate xsi:noNamespaceSchemaLocation="http://enunciate.codehaus.org/schemas/enunciate-1.26.xsd">
+
+    <namespaces>
+        <namespace uri="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" id="srm"/>
+        <namespace uri="http://www.siemac.org/metamac/rest/common/v1.0/domain" id="cdomain"/>
+    </namespaces>
+    
+    <api-import class="org.siemac.metamac.srm.rest.internal.v1_0.service.SrmRestInternalFacadeV10" />
+
+    <services>
+        <rest defaultRestSubcontext="apis/structural-resources-internal/" />
+    </services>
+
+    <modules>
+        <docs title="Metamac Structural Resources Internal API"
+              includeExampleJson="false" includeExampleXml="true"
+              docsDir="../../" 
+              groupRestResources="byDocumentationGroup"  />
+        <spring-app disabled="true" />
+        <jersey disabled="true" />
+        <csharp disabled="true" />
+        <c disabled="true"/>
+        <xml disabled="false" disableWadl="true"/>
+        <obj-c disabled="true" />
+        <java-client generateJsonJar="false" />
+        <jaxws-client generateJsonJar="false" />
+    </modules>
+</enunciate>
