@@ -175,7 +175,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         Measure target = new Measure();
         toComponentList(source, target, isImported);
 
-        if (CollectionUtils.isEmpty(source.getComponents())) {
+        if (!CollectionUtils.isEmpty(source.getComponents())) {
             com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure component = (com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure) source.getComponents().iterator().next(); // only
                                                                                                                                                                                                       // one
             target.setPrimaryMeasure(toPrimaryMeasure(component, isImported));
