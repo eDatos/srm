@@ -23,8 +23,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemResourceInternal;
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ReplaceToCodelist;
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ReplaceToVariable;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ReplaceToResources;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
@@ -526,12 +525,12 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return toResource(source.getReplacedByCodelist());
     }
 
-    private ReplaceToCodelist toCodelistReplaceTo(CodelistVersionMetamac source) {
-        ReplaceToCodelist target = null;
+    private ReplaceToResources toCodelistReplaceTo(CodelistVersionMetamac source) {
+        ReplaceToResources target = null;
         for (CodelistVersionMetamac replaceToCodelist : source.getReplaceToCodelists()) {
             if (canResourceBeProvidedByApi(replaceToCodelist)) {
                 if (target == null) {
-                    target = new ReplaceToCodelist();
+                    target = new ReplaceToResources();
 
                 }
                 target.getReplaceTos().add(toResource(replaceToCodelist));
@@ -544,11 +543,11 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    private ReplaceToVariable toVariableReplaceTo(org.siemac.metamac.srm.core.code.domain.Variable source) {
+    private ReplaceToResources toVariableReplaceTo(org.siemac.metamac.srm.core.code.domain.Variable source) {
         if (CollectionUtils.isEmpty(source.getReplaceToVariables())) {
             return null;
         }
-        ReplaceToVariable target = new ReplaceToVariable();
+        ReplaceToResources target = new ReplaceToResources();
         target.setKind(RestInternalConstants.KIND_VARIABLES);
         target.setTotal(BigInteger.valueOf(source.getReplaceToVariables().size()));
         for (org.siemac.metamac.srm.core.code.domain.Variable replaceToSource : source.getReplaceToVariables()) {
