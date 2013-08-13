@@ -98,7 +98,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
             return null;
         }
 
-        boolean isImported = source.getMaintainableArtefact().getIsImported();
+        Boolean isImported = source.getMaintainableArtefact().getIsImported();
 
         DataStructure target = new DataStructure();
         target.setKind(RestInternalConstants.KIND_DATA_STRUCTURE);
@@ -121,7 +121,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private DataStructureComponents toDataStructureComponents(Set<ComponentList> sources, boolean isImported) {
+    private DataStructureComponents toDataStructureComponents(Set<ComponentList> sources, Boolean isImported) {
         DataStructureComponents target = new DataStructureComponents();
         for (ComponentList source : sources) {
             if (source instanceof DimensionDescriptor) {
@@ -143,7 +143,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private Dimensions toDimensions(DimensionDescriptor source, boolean isImported) {
+    private Dimensions toDimensions(DimensionDescriptor source, Boolean isImported) {
         if (source == null) {
             return null;
         }
@@ -168,7 +168,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private Measure toMeasure(MeasureDescriptor source, boolean isImported) {
+    private Measure toMeasure(MeasureDescriptor source, Boolean isImported) {
         if (source == null) {
             return null;
         }
@@ -183,7 +183,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private PrimaryMeasure toPrimaryMeasure(com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure source, boolean isImported) {
+    private PrimaryMeasure toPrimaryMeasure(com.arte.statistic.sdmx.srm.core.structure.domain.PrimaryMeasure source, Boolean isImported) {
         if (source == null) {
             return null;
         }
@@ -193,7 +193,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private Group toGroup(GroupDimensionDescriptor source, boolean isImported) {
+    private Group toGroup(GroupDimensionDescriptor source, Boolean isImported) {
         if (source == null) {
             return null;
         }
@@ -204,7 +204,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private Attributes toAttributes(AttributeDescriptor source, boolean isImported) {
+    private Attributes toAttributes(AttributeDescriptor source, Boolean isImported) {
         if (source == null) {
             return null;
         }
@@ -223,7 +223,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private void toAttributeCommon(DataAttribute source, Attribute target, boolean isImported) {
+    private void toAttributeCommon(DataAttribute source, Attribute target, Boolean isImported) {
         if (source == null) {
             return;
         }
@@ -235,7 +235,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         target.setType(toAttributeQualifierType(source.getSpecialAttributeType()));
     }
 
-    private Attribute toAttribute(DataAttribute source, boolean isImported) {
+    private Attribute toAttribute(DataAttribute source, Boolean isImported) {
         if (source == null) {
             return null;
         }
@@ -271,11 +271,11 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private void toDimensionCommon(com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent source, DimensionBase target, boolean isImported) {
+    private void toDimensionCommon(com.arte.statistic.sdmx.srm.core.structure.domain.DimensionComponent source, DimensionBase target, Boolean isImported) {
         toComponent(source, target, isImported);
     }
 
-    private Dimension toDimension(com.arte.statistic.sdmx.srm.core.structure.domain.Dimension source, boolean isImported) {
+    private Dimension toDimension(com.arte.statistic.sdmx.srm.core.structure.domain.Dimension source, Boolean isImported) {
         Dimension target = new Dimension();
         toDimensionCommon(source, target, isImported);
 
@@ -287,7 +287,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private MeasureDimension toMeasureDimension(com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension source, boolean isImported) {
+    private MeasureDimension toMeasureDimension(com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDimension source, Boolean isImported) {
         MeasureDimension target = new MeasureDimension();
         toDimensionCommon(source, target, isImported);
 
@@ -296,7 +296,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return target;
     }
 
-    private TimeDimension toTimeDimension(com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension source, boolean isImported) {
+    private TimeDimension toTimeDimension(com.arte.statistic.sdmx.srm.core.structure.domain.TimeDimension source, Boolean isImported) {
         TimeDimension target = new TimeDimension();
         toDimensionCommon(source, target, isImported);
         target.setType(DimensionType.TIME_DIMENSION);
@@ -441,14 +441,14 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         }
     }
 
-    private void toComponentList(ComponentList source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Components target, boolean isImported) {
+    private void toComponentList(ComponentList source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Components target, Boolean isImported) {
         if (source == null) {
             return;
         }
         toIdentifiableArtefact(source, target, isImported);
     }
 
-    private void toComponent(Component source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Component target, boolean isImported) {
+    private void toComponent(Component source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Component target, Boolean isImported) {
         if (source == null) {
             return;
         }

@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
@@ -79,7 +80,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setAnnotations(toAnnotations(source.getAnnotations()));
     }
 
-    public void toIdentifiableArtefact(IdentifiableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.IdentifiableArtefact target, boolean isImported) {
+    public void toIdentifiableArtefact(IdentifiableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.IdentifiableArtefact target, Boolean isImported) {
         if (source == null) {
             return;
         }
@@ -87,7 +88,7 @@ public abstract class BaseDo2RestMapperV10Impl {
 
         target.setId(source.getCode());
         target.setUrn(source.getUrn());
-        if (isImported) {
+        if (BooleanUtils.isTrue(isImported)) {
             target.setUrnProvider(source.getUrnProvider());
         } else {
             target.setUrnProvider(null);
@@ -95,7 +96,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setUri(source.getUriProvider());
     }
 
-    public void toNameableArtefact(NameableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.NameableArtefact target, boolean isImported) {
+    public void toNameableArtefact(NameableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.NameableArtefact target, Boolean isImported) {
         if (source == null) {
             return;
         }
@@ -106,7 +107,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setComment(toInternationalString(source.getComment()));
     }
 
-    public void toVersionableArtefact(MaintainableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VersionableArtefact target, boolean isImported) {
+    public void toVersionableArtefact(MaintainableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VersionableArtefact target, Boolean isImported) {
         if (source == null) {
             return;
         }
@@ -240,14 +241,14 @@ public abstract class BaseDo2RestMapperV10Impl {
         return source.getFinalLogicClient();
     }
 
-    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, boolean isImported) {
+    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, Boolean isImported) {
         if (source == null) {
             return;
         }
         target.setId(source.getCode());
         // nestedId: only filled to some resource
         target.setUrn(source.getUrn());
-        if (isImported) {
+        if (BooleanUtils.isTrue(isImported)) {
             target.setUrnProvider(source.getUrnProvider());
         } else {
             target.setUrnProvider(null);
@@ -262,14 +263,14 @@ public abstract class BaseDo2RestMapperV10Impl {
         toResource(source, kind, selfLink, managementAppUrl, target, source.getIsImported());
     }
 
-    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target, boolean isImported) {
+    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target, Boolean isImported) {
         if (source == null) {
             return;
         }
         target.setId(source.getCode());
         // nestedId: only filled to some resource
         target.setUrn(source.getUrn());
-        if (isImported) {
+        if (BooleanUtils.isTrue(isImported)) {
             target.setUrnProvider(source.getUrnProvider());
         } else {
             target.setUrnProvider(null);
