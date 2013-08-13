@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sr:codes xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common"   xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure"  xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#codes" total="4" selfLink="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes">
+<sr:codes xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain"       xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#codes" total="4" selfLink="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency1/itemScheme1/01.000/codes">
     <sr:code kind="structuralResources#code">
         <cdomain:id>code1</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code1</cdomain:urn>

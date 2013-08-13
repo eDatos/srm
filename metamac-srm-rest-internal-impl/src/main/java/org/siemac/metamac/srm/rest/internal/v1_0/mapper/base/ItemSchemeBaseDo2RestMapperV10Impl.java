@@ -14,6 +14,9 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 public abstract class ItemSchemeBaseDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl {
 
     @Autowired
+    protected CommonDo2RestMapperV10    commonDo2RestMapper;
+
+    @Autowired
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     protected void toItemScheme(ItemSchemeVersion source, SrmLifeCycleMetadata lifeCycleSource, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemScheme target) {

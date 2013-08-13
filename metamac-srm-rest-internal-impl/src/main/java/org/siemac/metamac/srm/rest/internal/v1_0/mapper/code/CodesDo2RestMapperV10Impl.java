@@ -103,6 +103,16 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @Override
+    public ResourceInternal toResource(CodelistVersion source) {
+        if (source == null) {
+            return null;
+        }
+        ResourceInternal target = new ResourceInternal();
+        toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CODELIST, toCodelistSelfLink(source), toCodelistManagementApplicationLink(source), target);
+        return target;
+    }
+
+    @Override
     public Codes toCodes(PagedResult<CodeMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
 
         Codes targets = new Codes();
@@ -349,7 +359,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    private ResourceLink toCodelistSelfLink(CodelistVersionMetamac source) {
+    private ResourceLink toCodelistSelfLink(CodelistVersion source) {
         return toResourceLink(RestInternalConstants.KIND_CODELIST, toCodelistLink(source));
     }
 
@@ -385,15 +395,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         targets.getChildLinks().add(toResourceLink(RestInternalConstants.KIND_VARIABLES, toVariablesByFamilyLink(source)));
         targets.setTotal(BigInteger.valueOf(targets.getChildLinks().size()));
         return targets;
-    }
-
-    private ResourceInternal toResource(CodelistVersionMetamac source) {
-        if (source == null) {
-            return null;
-        }
-        ResourceInternal target = new ResourceInternal();
-        toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CODELIST, toCodelistSelfLink(source), toCodelistManagementApplicationLink(source), target);
-        return target;
     }
 
     private ResourceInternal toResource(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
@@ -569,7 +570,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    private String toCodelistManagementApplicationLink(CodelistVersionMetamac source) {
+    private String toCodelistManagementApplicationLink(CodelistVersion source) {
         return getInternalWebApplicationNavigation().buildCodelistUrl(source);
     }
 

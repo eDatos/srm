@@ -25,7 +25,6 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Annotat
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.LifeCycle;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Representation;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.utils.RestCommonUtil;
 import org.siemac.metamac.rest.utils.RestUtils;
@@ -46,8 +45,6 @@ import com.arte.statistic.sdmx.srm.core.common.domain.IdentifiableArtefactResult
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxAlias;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
-import com.arte.statistic.sdmx.srm.core.structure.mapper.StructureDo2JaxbMapper;
-import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 public abstract class BaseDo2RestMapperV10Impl {
 
@@ -60,9 +57,6 @@ public abstract class BaseDo2RestMapperV10Impl {
     private String                           statisticalOperationsApiInternalEndpoint;
 
     private InternalWebApplicationNavigation internalWebApplicationNavigation;
-
-    @Autowired
-    private StructureDo2JaxbMapper           structureDo2JaxbMapper;                     // TODO QUITAR
 
     @PostConstruct
     public void init() throws Exception {
@@ -135,57 +129,6 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setServiceUrl(source.getServiceURL());
         target.setStructureUrl(source.getStructureURL());
     }
-
-    protected Representation toRepresentation(com.arte.statistic.sdmx.srm.core.base.domain.Representation source) {
-        if (source == null) {
-            return null;
-        }
-        Representation target = new Representation();
-
-        if (RepresentationTypeEnum.TEXT_FORMAT.equals(source.getRepresentationType())) {
-            // target.setTextFormat(toRepresentationTextFormat(source.getTextFormat())); // TODO
-            target.setTextFormat(structureDo2JaxbMapper.facetBasicComponentTextFormatDoToJaxb(source.getTextFormat()));
-        } else if (RepresentationTypeEnum.ENUMERATION.equals(source.getRepresentationType())) {
-            if (source.getEnumerationCodelist() != null) {
-                target.setEnumerationCodelist(source.getEnumerationCodelist().getMaintainableArtefact().getUrn());
-            } else if (source.getEnumerationConceptScheme() != null) {
-                target.setEnumerationConceptScheme(source.getEnumerationConceptScheme().getMaintainableArtefact().getUrn());
-            }
-        }
-        return target;
-    }
-
-    // TODO toRepresentationTextFormat
-    // private TextFormat toRepresentationTextFormat(Facet source) {
-    // if (source == null) {
-    // return null;
-    // }
-    //
-    // TextFormat target = new TextFormat();
-    // target.setTextType(toDataType(source.getFacetValue()));
-    // target.setIsSequence(CoreCommonUtil.transformBooleanLexicalRepresentationToBoolean(source.getIsSequenceFT()));
-    // target.setInterval(CoreCommonUtil.doubleLexicalRepresentation2BigDecimal(source.getIntervalFT()));
-    // target.setStartValue(CoreCommonUtil.doubleLexicalRepresentation2BigDecimal(source.getStartValueFT()));
-    // target.setEndValue(CoreCommonUtil.doubleLexicalRepresentation2BigDecimal(source.getEndValueFT()));
-    // target.setTimeInterval(CoreCommonUtil.transformLexicalRepresentationToDuration(source.getTimeIntervalFT()));
-    // target.setStartTime(source.getStartTimeFT());
-    // target.setEndTime(source.getEndTimeFT());
-    // target.setMinLength(CoreCommonUtil.integerLexicalRepresentation2BigInteger(source.getMinLengthFT()));
-    // target.setMaxLength(CoreCommonUtil.integerLexicalRepresentation2BigInteger(source.getMaxLengthFT()));
-    // target.setMinValue(CoreCommonUtil.doubleLexicalRepresentation2BigDecimal(source.getMinValueFT()));
-    // target.setMaxValue(CoreCommonUtil.doubleLexicalRepresentation2BigDecimal(source.getMaxValueFT()));
-    // target.setDecimals(CoreCommonUtil.integerLexicalRepresentation2BigInteger(source.getDecimalsFT()));
-    // target.setPattern(source.getPatternFT());
-    // target.setIsMultiLingual(CoreCommonUtil.transformBooleanLexicalRepresentationToBoolean(source.getIsMultiLingual()));
-    // return target;
-    // }
-    // TODO toDataType
-    // private DataType toDataType(FacetValueTypeEnum source) {
-    // if (source == null) {
-    // return null;
-    // }
-    // return DataType.fromValue(source.getValue());
-    // }
 
     protected InternationalString toInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString sources) {
         if (sources == null) {

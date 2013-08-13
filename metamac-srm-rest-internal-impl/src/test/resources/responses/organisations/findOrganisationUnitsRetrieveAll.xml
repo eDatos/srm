@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sr:organisationUnits xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:query="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/query" xmlns:common="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/common" xmlns:structure="http://www.sdmx.org/resources/sdmxml/schemas/v2_1/structure" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#organisationUnits" total="4" selfLink="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemScheme1/01.000/organisationunits">
+<sr:organisationUnits xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain"    xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#organisationUnits" total="4" selfLink="http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agency1/itemScheme1/01.000/organisationunits">
     <sr:organisationUnit kind="structuralResources#organisationUnit">
         <cdomain:id>organisation1</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.base.Organisation=agency1:itemScheme1(01.000).organisation1</cdomain:urn>

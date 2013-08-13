@@ -27,6 +27,12 @@
             <artifactId>metamac-srm-core</artifactId>
             <classifier>client</classifier>
             <version>${project.version}</version>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>statistic-sdmx-v2_1-domain</artifactId>
+            		<groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac</groupId>
@@ -99,6 +105,12 @@
             <type>test-jar</type>
             <version>${statistic-sdmx-srm.version}</version>
             <scope>test</scope>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>statistic-sdmx-v2_1-domain</artifactId>
+            		<groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>

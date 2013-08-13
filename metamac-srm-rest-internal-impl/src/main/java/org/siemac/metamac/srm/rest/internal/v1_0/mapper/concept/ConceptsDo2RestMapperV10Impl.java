@@ -1,6 +1,8 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept;
 
 import java.math.BigInteger;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ws.rs.core.Response.Status;
@@ -91,6 +93,16 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
     }
 
     @Override
+    public ResourceInternal toResource(ConceptSchemeVersion source) {
+        if (source == null) {
+            return null;
+        }
+        ResourceInternal target = new ResourceInternal();
+        toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CONCEPT_SCHEME, toConceptSchemeSelfLink(source), toConceptSchemeManagementApplicationLink(source), target);
+        return target;
+    }
+
+    @Override
     public Concepts toConcepts(PagedResult<ConceptMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
 
         Concepts targets = new Concepts();
@@ -141,7 +153,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
 
         toItem(source, target);
 
-        target.setCoreRepresentation(toRepresentation(source.getCoreRepresentation()));
+        target.setCoreRepresentation(commonDo2RestMapper.toRepresentation(source.getCoreRepresentation()));
         target.setPluralName(toInternationalString(source.getPluralName()));
         target.setAcronym(toInternationalString(source.getAcronym()));
         target.setDescriptionSource(toInternationalString(source.getDescriptionSource()));
@@ -151,13 +163,41 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         target.setDerivation(toInternationalString(source.getDerivation()));
         target.setLegalActs(toInternationalString(source.getLegalActs()));
         target.setExtends(toResource(source.getConceptExtends()));
-        target.setRoles(toRoleConcepts(source));
+        target.setRoles(toRoleConcepts(source.getRoleConcepts()));
         target.setRelatedConcepts(toRelatedConcepts(source));
         target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         target.setVariable(codesDo2RestMapper.toResource(source.getVariable()));
         target.setQuantity(toQuantity(source.getQuantity()));
 
         return target;
+    }
+
+    @Override
+    public ItemResourceInternal toResource(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source) {
+        if (source == null) {
+            return null;
+        }
+        ItemResourceInternal target = new ItemResourceInternal();
+        toResource(source, RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source), toConceptManagementApplicationLink(source), target);
+        return target;
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public RoleConcepts toRoleConcepts(Collection sources) {
+        if (CollectionUtils.isEmpty(sources)) {
+            return null;
+        }
+        RoleConcepts targets = new RoleConcepts();
+        targets.setKind(RestInternalConstants.KIND_CONCEPTS);
+
+        for (Iterator iterator = sources.iterator(); iterator.hasNext();) {
+            com.arte.statistic.sdmx.srm.core.concept.domain.Concept source = (com.arte.statistic.sdmx.srm.core.concept.domain.Concept) iterator.next();
+            ItemResourceInternal target = toResource(source);
+            targets.getRoles().add(target);
+        }
+        targets.setTotal(BigInteger.valueOf(targets.getRoles().size()));
+        return targets;
     }
 
     @Override
@@ -182,7 +222,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         return true; // no additional conditions
     }
 
-    private ResourceLink toConceptSchemeSelfLink(ConceptSchemeVersionMetamac source) {
+    private ResourceLink toConceptSchemeSelfLink(ConceptSchemeVersion source) {
         return toResourceLink(RestInternalConstants.KIND_CONCEPT_SCHEME, toConceptSchemeLink(source));
     }
 
@@ -245,24 +285,6 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         return target;
     }
 
-    private ResourceInternal toResource(ConceptSchemeVersionMetamac source) {
-        if (source == null) {
-            return null;
-        }
-        ResourceInternal target = new ResourceInternal();
-        toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CONCEPT_SCHEME, toConceptSchemeSelfLink(source), toConceptSchemeManagementApplicationLink(source), target);
-        return target;
-    }
-
-    private ItemResourceInternal toResource(ConceptMetamac source) {
-        if (source == null) {
-            return null;
-        }
-        ItemResourceInternal target = new ItemResourceInternal();
-        toResource(source, RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source), toConceptManagementApplicationLink(source), target);
-        return target;
-    }
-
     private ItemResourceInternal toResource(ItemResult source, ConceptSchemeVersionMetamac conceptSchemeVersion) {
         if (source == null) {
             return null;
@@ -270,21 +292,6 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         ItemResourceInternal target = new ItemResourceInternal();
         toResource(source, RestInternalConstants.KIND_CONCEPT, toConceptSelfLink(source, conceptSchemeVersion), toConceptManagementApplicationLink(conceptSchemeVersion, source), target);
         return target;
-    }
-
-    private RoleConcepts toRoleConcepts(ConceptMetamac concept) {
-        if (CollectionUtils.isEmpty(concept.getRoleConcepts())) {
-            return null;
-        }
-        RoleConcepts targets = new RoleConcepts();
-        targets.setKind(RestInternalConstants.KIND_CONCEPTS);
-
-        for (ConceptMetamac source : concept.getRoleConcepts()) {
-            ItemResourceInternal target = toResource(source);
-            targets.getRoles().add(target);
-        }
-        targets.setTotal(BigInteger.valueOf(targets.getRoles().size()));
-        return targets;
     }
 
     private RelatedConcepts toRelatedConcepts(ConceptMetamac concept) {
@@ -395,11 +402,11 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         return RestInternalConstants.LINK_SUBPATH_CONCEPTS;
     }
 
-    private String toConceptSchemeManagementApplicationLink(ConceptSchemeVersionMetamac source) {
+    private String toConceptSchemeManagementApplicationLink(ConceptSchemeVersion source) {
         return getInternalWebApplicationNavigation().buildConceptSchemeUrl(source);
     }
 
-    private String toConceptManagementApplicationLink(ConceptMetamac source) {
+    private String toConceptManagementApplicationLink(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source) {
         return getInternalWebApplicationNavigation().buildConceptUrl(source);
     }
 

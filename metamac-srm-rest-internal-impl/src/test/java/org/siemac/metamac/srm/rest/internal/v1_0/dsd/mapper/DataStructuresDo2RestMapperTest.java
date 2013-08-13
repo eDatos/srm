@@ -129,40 +129,40 @@ public class DataStructuresDo2RestMapperTest {
         // show decimals
         assertEquals(2, target.getShowDecimalsPrecisions().getTotal().intValue());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01", target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(0).getConcept()
-                .getURN());
+                .getUrn());
         assertEquals(2, target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(0).getShowDecimals());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02", target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(1).getConcept()
-                .getURN());
+                .getUrn());
         assertEquals(5, target.getShowDecimalsPrecisions().getShowDecimalPrecisions().get(1).getShowDecimals());
         // heading
         assertEquals(2, target.getHeading().getTotal().intValue());
-        assertEquals("dimension01", target.getHeading().getDimensions().get(0).getRef().getId());
-        assertEquals("dimension02", target.getHeading().getDimensions().get(1).getRef().getId());
+        assertEquals("dimension01", target.getHeading().getDimensions().get(0));
+        assertEquals("dimension02", target.getHeading().getDimensions().get(1));
         // stub
         assertEquals(3, target.getStub().getTotal().intValue());
-        assertEquals("dimension03", target.getStub().getDimensions().get(0).getRef().getId());
-        assertEquals("dimension04", target.getStub().getDimensions().get(1).getRef().getId());
-        assertEquals("dimension05", target.getStub().getDimensions().get(2).getRef().getId());
+        assertEquals("dimension03", target.getStub().getDimensions().get(0));
+        assertEquals("dimension04", target.getStub().getDimensions().get(1));
+        assertEquals("dimension05", target.getStub().getDimensions().get(2));
         // attribute
-        assertTrue(target.getDataStructureComponents().getAttributeList().getAttributesAndReportingYearStartDaies().get(0) instanceof Attribute);
-        assertEquals(AttributeQualifierType.SPATIAL, ((Attribute) target.getDataStructureComponents().getAttributeList().getAttributesAndReportingYearStartDaies().get(0)).getType());
+        assertTrue(target.getDataStructureComponents().getAttributes().getAttributes().get(0) instanceof Attribute);
+        assertEquals(AttributeQualifierType.SPATIAL, ((Attribute) target.getDataStructureComponents().getAttributes().getAttributes().get(0)).getType());
         // visualisation
         assertEquals(3, target.getDimensionVisualisations().getTotal().intValue());
         {
             DimensionVisualisation dimensionVisualisation = target.getDimensionVisualisations().getDimensionVisualisations().get(0);
-            assertEquals("dimension01", dimensionVisualisation.getDimension().getRef().getId());
+            assertEquals("dimension01", dimensionVisualisation.getDimension());
             assertEquals("order01", dimensionVisualisation.getOrder());
             assertEquals("openness01", dimensionVisualisation.getOpenness());
         }
         {
             DimensionVisualisation dimensionVisualisation = target.getDimensionVisualisations().getDimensionVisualisations().get(1);
-            assertEquals("dimension02", dimensionVisualisation.getDimension().getRef().getId());
+            assertEquals("dimension02", dimensionVisualisation.getDimension());
             assertEquals("order02", dimensionVisualisation.getOrder());
             assertEquals("openness02", dimensionVisualisation.getOpenness());
         }
         {
             DimensionVisualisation dimensionVisualisation = target.getDimensionVisualisations().getDimensionVisualisations().get(2);
-            assertEquals("dimension05", dimensionVisualisation.getDimension().getRef().getId());
+            assertEquals("dimension05", dimensionVisualisation.getDimension());
             assertEquals("order05", dimensionVisualisation.getOrder());
             assertEquals("openness05", dimensionVisualisation.getOpenness());
         }
@@ -226,7 +226,7 @@ public class DataStructuresDo2RestMapperTest {
 
         // Transform
         DataStructure target = do2RestInternalMapper.toDataStructure(source);
-        assertEquals(3, target.getDataStructureComponents().getDimensionList().getDimensionsAndMeasureDimensionsAndTimeDimensions().size());
+        assertEquals(3, target.getDataStructureComponents().getDimensions().getDimensions().size());
         assertEquals(null, getDimension(target, "dimension01").isIsSpatial());
         assertEquals(true, getDimension(target, "dimension02").isIsSpatial());
         assertEquals(true, getDimension(target, "dimension03").isIsSpatial());
@@ -234,7 +234,7 @@ public class DataStructuresDo2RestMapperTest {
 
     @SuppressWarnings("rawtypes")
     private org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension getDimension(DataStructure target, String dimensionId) {
-        for (Iterator iterator = target.getDataStructureComponents().getDimensionList().getDimensionsAndMeasureDimensionsAndTimeDimensions().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = target.getDataStructureComponents().getDimensions().getDimensions().iterator(); iterator.hasNext();) {
             Object dimensionObject = iterator.next();
             if (dimensionObject instanceof org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension) {
                 org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension dimension = (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension) dimensionObject;

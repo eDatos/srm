@@ -8,11 +8,8 @@ import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
-import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
-import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
-import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -20,6 +17,9 @@ import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.navigation.shared.PlaceRequestParams;
 import org.springframework.web.util.UriTemplate;
 
+import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
+import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class InternalWebApplicationNavigation {
@@ -129,14 +129,14 @@ public class InternalWebApplicationNavigation {
         return categoryTemplate.expand(parameters).toString();
     }
 
-    public String buildConceptSchemeUrl(ConceptSchemeVersionMetamac conceptScheme) {
+    public String buildConceptSchemeUrl(ConceptSchemeVersion conceptScheme) {
         Map<String, String> parameters = new HashMap<String, String>(1);
         String conceptSchemeUrlPart = UrnUtils.removePrefix(conceptScheme.getMaintainableArtefact().getUrn());
         parameters.put(RESOURCE_ID_PARAMETER, conceptSchemeUrlPart);
         return conceptSchemeTemplate.expand(parameters).toString();
     }
 
-    public String buildConceptUrl(ConceptMetamac concept) {
+    public String buildConceptUrl(Concept concept) {
         return buildConceptUrl(concept.getItemSchemeVersion().getMaintainableArtefact().getUrn(), concept.getNameableArtefact().getCode());
     }
 
@@ -149,7 +149,7 @@ public class InternalWebApplicationNavigation {
         return conceptTemplate.expand(parameters).toString();
     }
 
-    public String buildCodelistUrl(CodelistVersionMetamac codelist) {
+    public String buildCodelistUrl(CodelistVersion codelist) {
         Map<String, String> parameters = new HashMap<String, String>(1);
         String codelistUrlPart = UrnUtils.removePrefix(codelist.getMaintainableArtefact().getUrn());
         parameters.put(RESOURCE_ID_PARAMETER, codelistUrlPart);
