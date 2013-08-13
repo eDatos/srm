@@ -119,6 +119,9 @@ public class DataStructuresDo2RestMapperTest {
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures", target.getParentLink().getHref());
         assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agencyID1:resourceID1(01.123)", target.getManagementAppLink());
         assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
+
+        assertEquals(2, target.getDataStructureComponents().getDimensions().getDimensions().size());
+
         assertEquals(Boolean.TRUE, target.isAutoOpen());
         assertEquals(3, target.getShowDecimals().intValue());
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-resourceID1", target.getStatisticalOperation().getUrn());
