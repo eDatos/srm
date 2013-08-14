@@ -91,7 +91,7 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
         footerLayout = new VLayout();
         footerLayout.addMember(this.successMessagePanel);
         footerLayout.addMember(this.errorMessagePanel);
-        footerLayout.addMember(new VersionFooter(MetamacSrmWeb.getConstants().appVersion()));
+        footerLayout.addMember(new VersionFooter(MetamacSrmWeb.getProjectVersion()));
         // footerLayout.setBackgroundColor("SeaShell");
 
         // Set user name
