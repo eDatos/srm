@@ -1092,7 +1092,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariables(FIRST_RESULT, MAX_RESULTS, searchVariableWindow.getRelatedResourceCriteria(), searchVariableWindow.getInitialSelectionValue());
+                        getUiHandlers().retrieveVariables(firstResult, maxResults, searchVariableWindow.getRelatedResourceCriteria(), searchVariableWindow.getInitialSelectionValue());
                     }
                 });
 
