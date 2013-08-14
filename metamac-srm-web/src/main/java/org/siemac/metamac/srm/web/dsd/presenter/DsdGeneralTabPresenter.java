@@ -62,8 +62,8 @@ import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -322,7 +322,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                 ShowMessageEvent.fireSuccessMessage(DsdGeneralTabPresenter.this, MetamacSrmWeb.getMessages().dsdPublishedInternally());
                 retrieveCompleteDsd(result.getDataStructureDefinitionMetamacDto().getUrn());
 
-                // If the version published was a temporal version, reload the version list and the URL. Wwhen a temporal version is published, is automatically converted into a normal version (the
+                // If the version published was a temporal version, reload the version list and the URL. When a temporal version is published, is automatically converted into a normal version (the
                 // URN changes!).
                 goToDsd(result.getDataStructureDefinitionMetamacDto().getUrn()); // To update the URL (the method placeManager.updateHistory only allow to update the last placeRequest)
             }

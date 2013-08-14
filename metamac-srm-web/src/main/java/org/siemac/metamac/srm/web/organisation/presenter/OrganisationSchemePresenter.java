@@ -78,9 +78,9 @@ import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -442,6 +442,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                         // If the version published was a temporal version, reload the complete organisation scheme and the URL. When a temporal version is published, is automatically converted into a
                         // normal version (the URN changes!).
                         if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
+                            retrieveOrganisationSchemeVersions(organisationSchemeMetamacDto.getUrn());
                             retrieveCompleteOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
                             updateUrl();
                         }
