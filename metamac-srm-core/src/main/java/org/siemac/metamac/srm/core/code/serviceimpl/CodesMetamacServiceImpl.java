@@ -2168,6 +2168,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Check codelist
         CodelistVersionMetamac codelistVersion = codelistOrderVisualisationToDelete.getCodelistVersion();
         checkCodelistCanBeModified(codelistVersion);
+        SrmValidationUtils.checkArtefactIsNotTemporal(codelistVersion.getMaintainableArtefact());
+        
         // Clear if it is default visualisation
         if (codelistVersion.getDefaultOrderVisualisation() != null && codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn().equals(urn)) {
             codelistVersion.setDefaultOrderVisualisation(null);
@@ -2269,6 +2271,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Check codelist
         CodelistVersionMetamac codelistVersion = codelistOpennessVisualisationToDelete.getCodelistVersion();
         checkCodelistCanBeModified(codelistVersion);
+        SrmValidationUtils.checkArtefactIsNotTemporal(codelistVersion.getMaintainableArtefact());
+        
         // Clear if it is default visualisation
         if (codelistVersion.getDefaultOpennessVisualisation() != null && codelistVersion.getDefaultOpennessVisualisation().getNameableArtefact().getUrn().equals(urn)) {
             codelistVersion.setDefaultOpennessVisualisation(null);
