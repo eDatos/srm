@@ -2155,7 +2155,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         checkCodelistCanBeModified(codelistVersion);
 
         // Check visualisation is not in original version
-        if (codelistVersion.getMaintainableArtefact().getIsTemporal()) {
+        if (BooleanUtils.isTrue(codelistVersion.getMaintainableArtefact().getIsTemporal())) {
             CodelistVersionMetamac codelistOriginalVersion = retrieveCodelistOriginalFromUrnTemporal(ctx, codelistVersion.getMaintainableArtefact().getUrn());
             CodelistOrderVisualisation codelistOrderVisualisationOriginal = getCodelistOrderVisualisationRepository().findByCode(codelistOriginalVersion.getId(),
                     codelistOrderVisualisationToDelete.getNameableArtefact().getCode());
@@ -2267,7 +2267,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         checkCodelistCanBeModified(codelistVersion);
 
         // Check visualisation is not in original version
-        if (codelistVersion.getMaintainableArtefact().getIsTemporal()) {
+        if (BooleanUtils.isTrue(codelistVersion.getMaintainableArtefact().getIsTemporal())) {
             CodelistVersionMetamac codelistOriginalVersion = retrieveCodelistOriginalFromUrnTemporal(ctx, codelistVersion.getMaintainableArtefact().getUrn());
             CodelistOpennessVisualisation codelistOpennessVisualisationOriginal = getCodelistOpennessVisualisationRepository().findByCode(codelistOriginalVersion.getId(),
                     codelistOpennessVisualisationToDelete.getNameableArtefact().getCode());
