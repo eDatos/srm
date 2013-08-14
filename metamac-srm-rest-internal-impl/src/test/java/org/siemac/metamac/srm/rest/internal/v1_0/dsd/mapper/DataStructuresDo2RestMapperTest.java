@@ -10,6 +10,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructures
 import static org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresDoMocks.mockDataStructure;
 import static org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresDoMocks.mockDataStructureWithComponents;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertEqualsInternationalString;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertListContainsItemResourceInternal;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ARTEFACT_1_CODE;
@@ -21,7 +22,6 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.VERSION_2;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -29,10 +29,15 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Attribute;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AttributeBase;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AttributeQualifierType;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AttributeUsageStatusType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStructure;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStructures;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataType;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DimensionBase;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DimensionVisualisation;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Group;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -110,6 +115,7 @@ public class DataStructuresDo2RestMapperTest {
         assertEquals("resourceID1", target.getId());
         assertEquals("01.123", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agencyID1:resourceID1(01.123)", target.getUrn());
+        assertEquals("agencyID1", target.getAgencyID());
         assertEquals(null, target.getUrnProvider());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agencyID1/resourceID1/01.123";
         assertEquals(RestInternalConstants.KIND_DATA_STRUCTURE, target.getSelfLink().getKind());
@@ -118,9 +124,61 @@ public class DataStructuresDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_DATA_STRUCTURES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures", target.getParentLink().getHref());
         assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agencyID1:resourceID1(01.123)", target.getManagementAppLink());
+        assertEqualsInternationalString("es", "name-resourceID1v01.123 en Español", "en", "name-resourceID1v01.123 in English", target.getName());
+        assertEqualsInternationalString("es", "description-resourceID1v01.123 en Español", "en", "description-resourceID1v01.123 in English", target.getDescription());
         assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
 
+        assertEquals(true, target.isIsFinal());
+        assertEquals(false, target.isIsExternalReference());
+        assertEquals("serviceUrl-resourceID1", target.getServiceUrl());
+        assertEquals("structureUrl-resourceID1", target.getStructureUrl());
+
+        assertEquals("DimensionDescriptor", target.getDataStructureComponents().getDimensions().getId());
         assertEquals(2, target.getDataStructureComponents().getDimensions().getDimensions().size());
+        {
+            org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension dimension = (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension) getDimension(target,
+                    "dimension01");
+            assertEquals("dimension01", dimension.getId());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)", dimension.getLocalRepresentation().getEnumerationCodelist().getUrn());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01", dimension.getConceptIdentity().getUrn());
+
+            assertEquals(2, dimension.getRoleConcepts().getRoles().size());
+            assertListContainsItemResourceInternal("concept02a", dimension.getRoleConcepts().getRoles());
+            assertListContainsItemResourceInternal("concept02b", dimension.getRoleConcepts().getRoles());
+        }
+        {
+            org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.TimeDimension dimension = (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.TimeDimension) getDimension(
+                    target, "TIME_PERIOD");
+            assertEquals("TIME_PERIOD", dimension.getId());
+            assertEquals(DataType.REPORTING_YEAR, dimension.getLocalRepresentation().getTextFormat().getTextType());
+        }
+
+        assertEquals(1, target.getDataStructureComponents().getGroups().getGroups().size());
+        {
+            Group group = target.getDataStructureComponents().getGroups().getGroups().get(0);
+            assertEquals(1, group.getDimensions().getDimensions().size());
+            assertTrue(group.getDimensions().getDimensions().contains("dimension01"));
+        }
+
+        assertEquals("MeasureDescriptor", target.getDataStructureComponents().getMeasure().getId());
+        assertEquals("OBS_VALUE", target.getDataStructureComponents().getMeasure().getPrimaryMeasure().getId());
+        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01", target.getDataStructureComponents().getMeasure().getPrimaryMeasure()
+                .getConceptIdentity().getUrn());
+
+        assertEquals("AttributeDescriptor", target.getDataStructureComponents().getAttributes().getId());
+        assertEquals(1, target.getDataStructureComponents().getAttributes().getAttributes().size());
+        {
+            Attribute attribute = (Attribute) getAttribute(target, "dataAttribute01");
+            assertEquals("dataAttribute01", attribute.getId());
+            assertEquals(AttributeUsageStatusType.CONDITIONAL, attribute.getAssignmentStatus());
+            assertEquals(AttributeQualifierType.SPATIAL, attribute.getType());
+            assertEquals("codelist01", attribute.getLocalRepresentation().getEnumerationCodelist().getId());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01", attribute.getConceptIdentity().getUrn());
+
+            assertEquals(2, attribute.getRoleConcepts().getRoles().size());
+            assertListContainsItemResourceInternal("concept02a", attribute.getRoleConcepts().getRoles());
+            assertListContainsItemResourceInternal("concept02b", attribute.getRoleConcepts().getRoles());
+        }
 
         assertEquals(Boolean.TRUE, target.isAutoOpen());
         assertEquals(3, target.getShowDecimals().intValue());
@@ -183,7 +241,10 @@ public class DataStructuresDo2RestMapperTest {
         assertEquals("internal-publication-user", target.getLifeCycle().getInternalPublicationUser());
         assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getExternalPublicationDate());
         assertEquals("external-publication-user", target.getLifeCycle().getExternalPublicationUser());
+
         assertEqualsDate(new DateTime(2012, 10, 1, 10, 12, 13, 14), target.getCreatedDate());
+        assertEqualsDate(new DateTime(2012, 11, 5, 10, 12, 13, 14), target.getValidFrom());
+        assertEqualsDate(new DateTime(2013, 10, 4, 10, 12, 13, 14), target.getValidTo());
 
         assertEquals(null, target.getChildLinks());
     }
@@ -230,23 +291,28 @@ public class DataStructuresDo2RestMapperTest {
         // Transform
         DataStructure target = do2RestInternalMapper.toDataStructure(source);
         assertEquals(3, target.getDataStructureComponents().getDimensions().getDimensions().size());
-        assertEquals(null, getDimension(target, "dimension01").isIsSpatial());
-        assertEquals(true, getDimension(target, "dimension02").isIsSpatial());
-        assertEquals(true, getDimension(target, "dimension03").isIsSpatial());
+        assertEquals(null, ((org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension) getDimension(target, "dimension01")).isIsSpatial());
+        assertEquals(true, ((org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension) getDimension(target, "dimension02")).isIsSpatial());
+        assertEquals(true, ((org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension) getDimension(target, "dimension03")).isIsSpatial());
     }
 
-    @SuppressWarnings("rawtypes")
-    private org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension getDimension(DataStructure target, String dimensionId) {
-        for (Iterator iterator = target.getDataStructureComponents().getDimensions().getDimensions().iterator(); iterator.hasNext();) {
-            Object dimensionObject = iterator.next();
-            if (dimensionObject instanceof org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension) {
-                org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension dimension = (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimension) dimensionObject;
-                if (dimension.getId().equals(dimensionId)) {
-                    return dimension;
-                }
+    private org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DimensionBase getDimension(DataStructure target, String dimensionId) {
+        for (DimensionBase dimension : target.getDataStructureComponents().getDimensions().getDimensions()) {
+            if (dimension.getId().equals(dimensionId)) {
+                return dimension;
             }
         }
         fail("dimension not found");
+        return null;
+    }
+
+    private org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AttributeBase getAttribute(DataStructure target, String attributeId) {
+        for (AttributeBase attribute : target.getDataStructureComponents().getAttributes().getAttributes()) {
+            if (attribute.getId().equals(attributeId)) {
+                return attribute;
+            }
+        }
+        fail("attribute not found");
         return null;
     }
 

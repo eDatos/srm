@@ -7,21 +7,20 @@
             <sr:type>type-code1</sr:type>
             <sr:url>url-code1</sr:url>
             <sr:text>
-                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
             </sr:text>
         </sr:annotation>
     </sr:annotations>
     <sr:id>artefact1</sr:id>
     <sr:urn>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact1(01.000)</sr:urn>
     <sr:uri>http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency1/artefact1/01.000</sr:uri>
-    <sr:createdDate>2012-10-01T10:12:13.014+01:00</sr:createdDate>
-    <sr:selfLink kind="structuralResources#dataStructure" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency1/artefact1/01.000" />
-    <sr:parentLink kind="structuralResources#dataStructures" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures" />
+    <sr:selfLink kind="structuralResources#dataStructure" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency1/artefact1/01.000"/>
+    <sr:parentLink kind="structuralResources#dataStructures" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures"/>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency1:artefact1(01.000)</sr:managementAppLink>
     <sr:name>
-        <cdomain:text xml:lang="en">name-artefact1v01.000 in English</cdomain:text>
         <cdomain:text xml:lang="es">name-artefact1v01.000 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">name-artefact1v01.000 in English</cdomain:text>
     </sr:name>
     <sr:description>
         <cdomain:text xml:lang="es">description-artefact1v01.000 en Español</cdomain:text>
@@ -32,6 +31,7 @@
         <cdomain:text xml:lang="es">comment-artefact1v01.000 en Español</cdomain:text>
     </sr:comment>
     <sr:version>01.000</sr:version>
+    <sr:createdDate>2012-10-01T10:12:13.014+01:00</sr:createdDate>
     <sr:validFrom>2012-11-05T10:12:13.014Z</sr:validFrom>
     <sr:validTo>2013-10-04T10:12:13.014+01:00</sr:validTo>
     <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
@@ -63,8 +63,8 @@
                         <sr:type>type-code1</sr:type>
                         <sr:url>url-code1</sr:url>
                         <sr:text>
-                            <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
                             <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+                            <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
                         </sr:text>
                     </sr:annotation>
                 </sr:annotations>
@@ -74,7 +74,7 @@
                 <sr:conceptIdentity kind="structuralResources#concept">
                     <cdomain:id>concept01</cdomain:id>
                     <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01</cdomain:urn>
-                    <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept01" />
+                    <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept01"/>
                     <cdomain:name>
                         <cdomain:text xml:lang="es">name-concept01 en Español</cdomain:text>
                         <cdomain:text xml:lang="en">name-concept01 in English</cdomain:text>
@@ -85,7 +85,7 @@
                     <sr:enumerationCodelist kind="structuralResources#codelist">
                         <cdomain:id>codelist01</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</cdomain:urn>
-                        <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency01/codelist01/01.000" />
+                        <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency01/codelist01/01.000"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="en">name-codelist01v01.000 in English</cdomain:text>
                             <cdomain:text xml:lang="es">name-codelist01v01.000 en Español</cdomain:text>
@@ -95,26 +95,24 @@
                 </sr:localRepresentation>
                 <sr:roleConcepts kind="structuralResources#concepts" total="2">
                     <sr:role kind="structuralResources#concept">
-                        <cdomain:id>concept02b</cdomain:id>
-                        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02b</cdomain:urn>
-                        <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept02b" />
-                        <cdomain:name>
-                            <cdomain:text xml:lang="en">name-concept02b in English</cdomain:text>
-                            <cdomain:text xml:lang="es">name-concept02b en Español</cdomain:text>
-                        </cdomain:name>
-                        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02b
-                        </sr:managementAppLink>
-                    </sr:role>
-                    <sr:role kind="structuralResources#concept">
                         <cdomain:id>concept02a</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02a</cdomain:urn>
-                        <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept02a" />
+                        <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept02a"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="es">name-concept02a en Español</cdomain:text>
                             <cdomain:text xml:lang="en">name-concept02a in English</cdomain:text>
                         </cdomain:name>
-                        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02a
-                        </sr:managementAppLink>
+                        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02a</sr:managementAppLink>
+                    </sr:role>
+                    <sr:role kind="structuralResources#concept">
+                        <cdomain:id>concept02b</cdomain:id>
+                        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02b</cdomain:urn>
+                        <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept02b"/>
+                        <cdomain:name>
+                            <cdomain:text xml:lang="es">name-concept02b en Español</cdomain:text>
+                            <cdomain:text xml:lang="en">name-concept02b in English</cdomain:text>
+                        </cdomain:name>
+                        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02b</sr:managementAppLink>
                     </sr:role>
                 </sr:roleConcepts>
             </sr:dimension>
@@ -137,7 +135,7 @@
                 <sr:conceptIdentity kind="structuralResources#concept">
                     <cdomain:id>concept01</cdomain:id>
                     <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01</cdomain:urn>
-                    <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept01" />
+                    <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept01"/>
                     <cdomain:name>
                         <cdomain:text xml:lang="en">name-concept01 in English</cdomain:text>
                         <cdomain:text xml:lang="es">name-concept01 en Español</cdomain:text>
@@ -145,22 +143,15 @@
                     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept01</sr:managementAppLink>
                 </sr:conceptIdentity>
                 <sr:localRepresentation>
-                    <sr:enumerationCodelist kind="structuralResources#codelist">
-                        <cdomain:id>codelist01</cdomain:id>
-                        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</cdomain:urn>
-                        <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency01/codelist01/01.000" />
-                        <cdomain:name>
-                            <cdomain:text xml:lang="en">name-codelist01v01.000 in English</cdomain:text>
-                            <cdomain:text xml:lang="es">name-codelist01v01.000 en Español</cdomain:text>
-                        </cdomain:name>
-                        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency01:codelist01(01.000)</sr:managementAppLink>
-                    </sr:enumerationCodelist>
+                    <sr:textFormat>
+                        <sr:textType>ReportingYear</sr:textType>
+                    </sr:textFormat>
                 </sr:localRepresentation>
             </sr:dimension>
         </sr:dimensions>
         <sr:groups>
             <sr:group>
-                <sr:id>componentList-vH44PhKhEn</sr:id>
+                <sr:id>componentList-z1MEB7h1Y6</sr:id>
                 <sr:dimensions total="1">
                     <sr:dimension>dimension01</sr:dimension>
                 </sr:dimensions>
@@ -176,8 +167,8 @@
                         <sr:type>type-code1</sr:type>
                         <sr:url>url-code1</sr:url>
                         <sr:text>
-                            <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
                             <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+                            <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
                         </sr:text>
                     </sr:annotation>
                 </sr:annotations>
@@ -187,10 +178,10 @@
                 <sr:conceptIdentity kind="structuralResources#concept">
                     <cdomain:id>concept01</cdomain:id>
                     <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01</cdomain:urn>
-                    <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept01" />
+                    <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept01"/>
                     <cdomain:name>
-                        <cdomain:text xml:lang="en">name-concept01 in English</cdomain:text>
                         <cdomain:text xml:lang="es">name-concept01 en Español</cdomain:text>
+                        <cdomain:text xml:lang="en">name-concept01 in English</cdomain:text>
                     </cdomain:name>
                     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept01</sr:managementAppLink>
                 </sr:conceptIdentity>
@@ -198,7 +189,7 @@
                     <sr:enumerationCodelist kind="structuralResources#codelist">
                         <cdomain:id>codelist01</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</cdomain:urn>
-                        <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency01/codelist01/01.000" />
+                        <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency01/codelist01/01.000"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="en">name-codelist01v01.000 in English</cdomain:text>
                             <cdomain:text xml:lang="es">name-codelist01v01.000 en Español</cdomain:text>
@@ -209,26 +200,24 @@
                 <sr:type>SPATIAL</sr:type>
                 <sr:roleConcepts kind="structuralResources#concepts" total="2">
                     <sr:role kind="structuralResources#concept">
-                        <cdomain:id>concept02b</cdomain:id>
-                        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02b</cdomain:urn>
-                        <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept02b" />
-                        <cdomain:name>
-                            <cdomain:text xml:lang="en">name-concept02b in English</cdomain:text>
-                            <cdomain:text xml:lang="es">name-concept02b en Español</cdomain:text>
-                        </cdomain:name>
-                        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02b
-                        </sr:managementAppLink>
-                    </sr:role>
-                    <sr:role kind="structuralResources#concept">
                         <cdomain:id>concept02a</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02a</cdomain:urn>
-                        <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept02a" />
+                        <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept02a"/>
                         <cdomain:name>
-                            <cdomain:text xml:lang="es">name-concept02a en Español</cdomain:text>
                             <cdomain:text xml:lang="en">name-concept02a in English</cdomain:text>
+                            <cdomain:text xml:lang="es">name-concept02a en Español</cdomain:text>
                         </cdomain:name>
-                        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02a
-                        </sr:managementAppLink>
+                        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02a</sr:managementAppLink>
+                    </sr:role>
+                    <sr:role kind="structuralResources#concept">
+                        <cdomain:id>concept02b</cdomain:id>
+                        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02b</cdomain:urn>
+                        <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept02b"/>
+                        <cdomain:name>
+                            <cdomain:text xml:lang="es">name-concept02b en Español</cdomain:text>
+                            <cdomain:text xml:lang="en">name-concept02b in English</cdomain:text>
+                        </cdomain:name>
+                        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02b</sr:managementAppLink>
                     </sr:role>
                 </sr:roleConcepts>
             </sr:attribute>
@@ -243,21 +232,21 @@
                         <sr:type>type-code1</sr:type>
                         <sr:url>url-code1</sr:url>
                         <sr:text>
-                            <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
                             <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+                            <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
                         </sr:text>
                     </sr:annotation>
                 </sr:annotations>
-                <sr:id>primaryMeasure</sr:id>
-                <sr:urn>urn:sdmx:org.sdmx.infomodel.xxx=primaryMeasure</sr:urn>
-                <sr:uri>uriProvider:primaryMeasure</sr:uri>
+                <sr:id>OBS_VALUE</sr:id>
+                <sr:urn>urn:sdmx:org.sdmx.infomodel.xxx=OBS_VALUE</sr:urn>
+                <sr:uri>uriProvider:OBS_VALUE</sr:uri>
                 <sr:conceptIdentity kind="structuralResources#concept">
                     <cdomain:id>concept01</cdomain:id>
                     <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01</cdomain:urn>
-                    <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept01" />
+                    <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept01"/>
                     <cdomain:name>
-                        <cdomain:text xml:lang="es">name-concept01 en Español</cdomain:text>
                         <cdomain:text xml:lang="en">name-concept01 in English</cdomain:text>
+                        <cdomain:text xml:lang="es">name-concept01 en Español</cdomain:text>
                     </cdomain:name>
                     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept01</sr:managementAppLink>
                 </sr:conceptIdentity>
@@ -265,10 +254,10 @@
                     <sr:enumerationCodelist kind="structuralResources#codelist">
                         <cdomain:id>codelist01</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</cdomain:urn>
-                        <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency01/codelist01/01.000" />
+                        <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/agency01/codelist01/01.000"/>
                         <cdomain:name>
-                            <cdomain:text xml:lang="en">name-codelist01v01.000 in English</cdomain:text>
                             <cdomain:text xml:lang="es">name-codelist01v01.000 en Español</cdomain:text>
+                            <cdomain:text xml:lang="en">name-codelist01v01.000 in English</cdomain:text>
                         </cdomain:name>
                         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency01:codelist01(01.000)</sr:managementAppLink>
                     </sr:enumerationCodelist>
@@ -279,7 +268,7 @@
     <sr:statisticalOperation kind="statisticalOperations#operation">
         <cdomain:id>operation-artefact1</cdomain:id>
         <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-artefact1</cdomain:urn>
-        <cdomain:selfLink kind="statisticalOperations#operation" href="http://data.istac.es/apis/operations-internal/operations/operation-artefact1" />
+        <cdomain:selfLink kind="statisticalOperations#operation" href="http://data.istac.es/apis/operations-internal/operations/operation-artefact1"/>
         <sr:managementAppLink>http://localhost:8080/metamac-statistical-operations-web/#operations;id=operation-artefact1</sr:managementAppLink>
     </sr:statisticalOperation>
     <sr:autoOpen>true</sr:autoOpen>
@@ -298,7 +287,7 @@
             <sr:concept kind="structuralResources#concept">
                 <cdomain:id>concept01</cdomain:id>
                 <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01</cdomain:urn>
-                <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept01" />
+                <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept01"/>
                 <cdomain:name>
                     <cdomain:text xml:lang="es">name-concept01 en Español</cdomain:text>
                     <cdomain:text xml:lang="en">name-concept01 in English</cdomain:text>
@@ -311,10 +300,10 @@
             <sr:concept kind="structuralResources#concept">
                 <cdomain:id>concept02</cdomain:id>
                 <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept02</cdomain:urn>
-                <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept02" />
+                <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agency01/conceptScheme01/01.000/concepts/concept02"/>
                 <cdomain:name>
-                    <cdomain:text xml:lang="es">name-concept02 en Español</cdomain:text>
                     <cdomain:text xml:lang="en">name-concept02 in English</cdomain:text>
+                    <cdomain:text xml:lang="es">name-concept02 en Español</cdomain:text>
                 </cdomain:name>
                 <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme01(01.000)/concept;id=concept02</sr:managementAppLink>
             </sr:concept>

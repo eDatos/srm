@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
@@ -13,6 +15,7 @@ import org.joda.time.DateTime;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.LifeCycle;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
@@ -151,5 +154,15 @@ public class Asserts extends MetamacRestAsserts {
         assertEquals(expected.getInternalPublicationUser(), actual.getInternalPublicationUser());
         assertEqualsDate(expected.getExternalPublicationDate(), actual.getExternalPublicationDate());
         assertEquals(expected.getExternalPublicationUser(), actual.getExternalPublicationUser());
+    }
+
+    public static ItemResourceInternal assertListContainsItemResourceInternal(String expected, List<ItemResourceInternal> actuals) {
+        for (ItemResourceInternal actual : actuals) {
+            if (actual.getId().equals(expected)) {
+                return actual;
+            }
+        }
+        fail("item not found");
+        return null;
     }
 }
