@@ -27,6 +27,11 @@
     <!-- if proxy-target-class is false, error in actionHandlers beans (spring cannot find them) -->
     <aop:aspectj-autoproxy proxy-target-class="true" />
 
+    <!-- Component to translate exceptions in web, but in server side -->
+    <bean id="webTranslateExceptions" class="org.siemac.metamac.web.common.server.utils.WebTranslateExceptions">
+        <property name="bundleName" value="messages-srm-web" />
+    </bean>
+
     <!-- Logger aspect for logging exceptions thrown by actionHandlers -->
     <bean id="logAspect" class="org.siemac.metamac.srm.web.server.aspects.ActionHandlerLoggerAspect" />
 
