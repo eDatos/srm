@@ -69,6 +69,9 @@ public class DsdRecordUtils extends org.siemac.metamac.srm.web.client.utils.Reco
         record.setUsageStatus(CommonUtils.getUsageStatusName(dataAttributeDto.getUsageStatus()));
         record.setConcept(dataAttributeDto.getCptIdRef());
         record.setSpecialAttributeType(CommonUtils.getSpecialAttributeTypeName(dataAttributeDto.getSpecialAttributeType()));
+        if (dataAttributeDto.getRelateTo() != null) {
+            record.setRelatedTo(CommonUtils.getTypeRelationshipName(dataAttributeDto.getRelateTo().getTypeRelathionship()));
+        }
         record.setDataAttributeDto(dataAttributeDto);
         return record;
     }

@@ -182,8 +182,9 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         CustomListGridField codeField = new CustomListGridField(DataAttributeDS.CODE, getConstants().dsdAttributeId());
         CustomListGridField usageField = new CustomListGridField(DataAttributeDS.USAGE_STATUS, getConstants().dsdAttributeUsageStatus());
         CustomListGridField specialAttributeTypeField = new CustomListGridField(DataAttributeDS.SPECIAL_ATTRIBUTE_TYPE, getConstants().dsdAttributeType());
+        CustomListGridField relatedTo = new CustomListGridField(DataAttributeDS.RELATED_TO, getConstants().dsdAttributeRelatedWith());
         CustomLinkListGridField conceptField = new CustomLinkListGridField(DataAttributeDS.CONCEPT, getConstants().concept());
-        attributesGrid.setFields(codeField, specialAttributeTypeField, usageField, conceptField);
+        attributesGrid.setFields(codeField, specialAttributeTypeField, usageField, relatedTo, conceptField);
 
         // Show attribute details when record clicked
         attributesGrid.addSelectionChangedHandler(new SelectionChangedHandler() {

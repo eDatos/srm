@@ -27,6 +27,10 @@ public class DataAttributeRecord extends NavigableListGridRecord {
         setRelatedResource(DataAttributeDS.CONCEPT, relatedResourceDto);
     }
 
+    public void setRelatedTo(String value) {
+        setAttribute(DataAttributeDS.RELATED_TO, value);
+    }
+
     public void setDataAttributeDto(DataAttributeDto value) {
         setAttribute(DataAttributeDS.DTO, value);
     }
