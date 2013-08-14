@@ -83,6 +83,7 @@ import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTyp
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesMetamacInvocationValidator;
+import org.siemac.metamac.srm.core.code.serviceimpl.utils.CodesUtils;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
@@ -544,33 +545,18 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         }
 
-        // OpennessVisualisation: Copy all OrderVisualizations and set the OrderVisualizations by default . Not update the codes index, this was updates before.
-        codelistVersion.setDefaultOpennessVisualisation(null);
-        codelistVersion.removeAllOpennessVisualisations();
-        itemSchemeVersionRepository.flush();
-        codelistVersion = versioningCodelistOpennessVisualisations(ctx, codelistTemporalVersion, codelistVersion);
-
-        // OrderVisualisation: Copy all OpennessVisualisation and set the OpennessVisualisation by default . Not update the codes index, this was updates before.
-        codelistVersion.setDefaultOrderVisualisation(null);
-        codelistVersion.removeAllOrderVisualisations();
-        itemSchemeVersionRepository.flush();
-        codelistVersion = versioningCodelistOrderVisualisations(ctx, codelistTemporalVersion, codelistVersion);
-
-        // Add Categorisations
-        boolean thereAreNewCategorisations = false;
-        thereAreNewCategorisations = CategorisationsUtils.addCategorisationsTemporalToItemScheme(codelistTemporalVersion, codelistVersion);
-        if (thereAreNewCategorisations) {
-            // ===============================================================
-            // DANGEROUS CODE: In spite of to remove item from temporal scheme and then associate to another scheme, hibernate delete this item when delete item scheme. For this, we need to clear the
-            // context to avoid delete the temporary scheme with the previous temporary item when delete the temporary item scheme.
-            entityManager.flush();
-            entityManager.clear();
-            // ===============================================================
-        }
+        // ===============================================================
+        // DANGEROUS CODE: In spite of to remove item from temporal scheme and then associate to another scheme, hibernate delete this item when delete item scheme. For this, we need to clear the
+        // context to avoid delete the temporary scheme with the previous temporary item when delete the temporary item scheme.
+        CodesUtils.addCodelistOpennessVisualisationTemporalToItemScheme(codelistTemporalVersion, codelistVersion, internationalStringRepository);
+        CodesUtils.addCodelistOrderVisualisationTemporalToItemScheme(codelistTemporalVersion, codelistVersion, internationalStringRepository);
+        CategorisationsUtils.addCategorisationsTemporalToItemScheme(codelistTemporalVersion, codelistVersion);
+        // FLUSH AND CLEAR NEEDED, see the next lines
+        // ===============================================================
 
         // Delete temporal version
         // ===============================================================
-        // DANGEROUS CODE: clear is necessary because items are already loaded
+        // DANGEROUS CODE: Also clear is necessary because items are already loaded
         entityManager.flush();
         entityManager.clear();
         // ===============================================================
@@ -580,7 +566,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion = retrieveCodelistByUrn(ctx, codelistVersion.getMaintainableArtefact().getUrn());
         return codelistVersion;
     }
-
     @Override
     public CodelistVersionMetamac startCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
 
@@ -2169,7 +2154,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistVersionMetamac codelistVersion = codelistOrderVisualisationToDelete.getCodelistVersion();
         checkCodelistCanBeModified(codelistVersion);
         SrmValidationUtils.checkArtefactIsNotTemporal(codelistVersion.getMaintainableArtefact());
-        
+
         // Clear if it is default visualisation
         if (codelistVersion.getDefaultOrderVisualisation() != null && codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn().equals(urn)) {
             codelistVersion.setDefaultOrderVisualisation(null);
@@ -2272,7 +2257,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistVersionMetamac codelistVersion = codelistOpennessVisualisationToDelete.getCodelistVersion();
         checkCodelistCanBeModified(codelistVersion);
         SrmValidationUtils.checkArtefactIsNotTemporal(codelistVersion.getMaintainableArtefact());
-        
+
         // Clear if it is default visualisation
         if (codelistVersion.getDefaultOpennessVisualisation() != null && codelistVersion.getDefaultOpennessVisualisation().getNameableArtefact().getUrn().equals(urn)) {
             codelistVersion.setDefaultOpennessVisualisation(null);

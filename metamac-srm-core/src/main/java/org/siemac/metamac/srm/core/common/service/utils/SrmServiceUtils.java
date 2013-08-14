@@ -491,6 +491,24 @@ public class SrmServiceUtils extends SdmxSrmUtils {
         return result;
     }
 
+    public static Map<String, CodelistOpennessVisualisation> createMapOfCodelistOpennessVisualisationByOriginalUrn(List<CodelistOpennessVisualisation> openess) {
+        Map<String, CodelistOpennessVisualisation> result = new HashMap<String, CodelistOpennessVisualisation>(openess.size());
+        for (CodelistOpennessVisualisation codelistOpennessVisualisation : openess) {
+            String originalUrn = GeneratorUrnUtils.makeUrnFromTemporal(codelistOpennessVisualisation.getNameableArtefact().getUrn());
+            result.put(originalUrn, codelistOpennessVisualisation);
+        }
+        return result;
+    }
+
+    public static Map<String, CodelistOrderVisualisation> createMapOfCodelistOrderVisualisationByOriginalUrn(List<CodelistOrderVisualisation> orders) {
+        Map<String, CodelistOrderVisualisation> result = new HashMap<String, CodelistOrderVisualisation>(orders.size());
+        for (CodelistOrderVisualisation codelistOrderVisualisation : orders) {
+            String originalUrn = GeneratorUrnUtils.makeUrnFromTemporal(codelistOrderVisualisation.getNameableArtefact().getUrn());
+            result.put(originalUrn, codelistOrderVisualisation);
+        }
+        return result;
+    }
+
     public static ItemMetamacResultSelection getItemResultSelection(CopyOperationTypeEnum copyOperationType) {
         ItemMetamacResultSelection resultSelection = null;
         switch (copyOperationType) {
