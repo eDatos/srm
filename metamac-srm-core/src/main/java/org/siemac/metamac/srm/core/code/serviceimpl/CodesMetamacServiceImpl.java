@@ -456,7 +456,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         SrmValidationUtils.checkArtefactIsTemporal(codelistVersionTemporal.getMaintainableArtefact());
 
         // Retrieve the original artifact
-        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(urnToCopy));
+        CodelistVersionMetamac codelistVersion = retrieveCodelistOriginalFromUrnTemporal(ctx, urnToCopy);
 
         // Set the new version in the temporal artifact
         codelistVersionTemporal.getMaintainableArtefact().setVersionLogic(
@@ -486,7 +486,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         SrmValidationUtils.checkArtefactProcStatus(codelistTemporalVersion.getLifeCycleMetadata(), codelistTemporalVersion.getMaintainableArtefact().getUrn(), ProcStatusEnum.DIFFUSION_VALIDATION);
 
         // Load original version
-        CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, GeneratorUrnUtils.makeUrnFromTemporal(codelistTemporalVersion.getMaintainableArtefact().getUrn()));
+        CodelistVersionMetamac codelistVersion = retrieveCodelistOriginalFromUrnTemporal(ctx, codelistTemporalVersion.getMaintainableArtefact().getUrn());
 
         // Inherit InternationalStrings
         BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItemSchemeVersionWithoutItems(codelistVersion, codelistTemporalVersion, internationalStringRepository);
@@ -2153,7 +2153,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Check codelist
         CodelistVersionMetamac codelistVersion = codelistOrderVisualisationToDelete.getCodelistVersion();
         checkCodelistCanBeModified(codelistVersion);
-        SrmValidationUtils.checkArtefactIsNotTemporal(codelistVersion.getMaintainableArtefact());
+
+        // Check visualisation is not in original version
+        if (codelistVersion.getMaintainableArtefact().getIsTemporal()) {
+            CodelistVersionMetamac codelistOriginalVersion = retrieveCodelistOriginalFromUrnTemporal(ctx, codelistVersion.getMaintainableArtefact().getUrn());
+            CodelistOrderVisualisation codelistOrderVisualisationOriginal = getCodelistOrderVisualisationRepository().findByCode(codelistOriginalVersion.getId(),
+                    codelistOrderVisualisationToDelete.getNameableArtefact().getCode());
+            if (codelistOrderVisualisationOriginal != null) {
+                throw new MetamacException(ServiceExceptionType.CODELIST_ORDER_VISUALISATION_DELETING_NOT_SUPPORTED_CODELIST_WAS_EVER_PUBLISHED, urn);
+            }
+        }
 
         // Clear if it is default visualisation
         if (codelistVersion.getDefaultOrderVisualisation() != null && codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getUrn().equals(urn)) {
@@ -2164,7 +2173,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Delete
         baseService.updateItemSchemeLastUpdated(ctx, codelistVersion);
         getCodelistOrderVisualisationRepository().delete(codelistOrderVisualisationToDelete);
-        // Clear ordenations in code columns
+        // Clear orders in code columns
         getCodeMetamacRepository().clearCodesOrderColumn(codelistVersion, codelistOrderVisualisationToDelete.getColumnIndex());
     }
 
@@ -2256,7 +2265,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Check codelist
         CodelistVersionMetamac codelistVersion = codelistOpennessVisualisationToDelete.getCodelistVersion();
         checkCodelistCanBeModified(codelistVersion);
-        SrmValidationUtils.checkArtefactIsNotTemporal(codelistVersion.getMaintainableArtefact());
+
+        // Check visualisation is not in original version
+        if (codelistVersion.getMaintainableArtefact().getIsTemporal()) {
+            CodelistVersionMetamac codelistOriginalVersion = retrieveCodelistOriginalFromUrnTemporal(ctx, codelistVersion.getMaintainableArtefact().getUrn());
+            CodelistOpennessVisualisation codelistOpennessVisualisationOriginal = getCodelistOpennessVisualisationRepository().findByCode(codelistOriginalVersion.getId(),
+                    codelistOpennessVisualisationToDelete.getNameableArtefact().getCode());
+            if (codelistOpennessVisualisationOriginal != null) {
+                throw new MetamacException(ServiceExceptionType.CODELIST_OPENNESS_VISUALISATION_DELETING_NOT_SUPPORTED_CODELIST_WAS_EVER_PUBLISHED, urn);
+            }
+        }
 
         // Clear if it is default visualisation
         if (codelistVersion.getDefaultOpennessVisualisation() != null && codelistVersion.getDefaultOpennessVisualisation().getNameableArtefact().getUrn().equals(urn)) {
@@ -3657,4 +3675,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
         }
     }
+
+    private CodelistVersionMetamac retrieveCodelistOriginalFromUrnTemporal(ServiceContext ctx, String urnTemporal) throws MetamacException {
+        String urnOriginal = GeneratorUrnUtils.makeUrnFromTemporal(urnTemporal);
+        return retrieveCodelistByUrn(ctx, urnOriginal);
+    }
+
 }
