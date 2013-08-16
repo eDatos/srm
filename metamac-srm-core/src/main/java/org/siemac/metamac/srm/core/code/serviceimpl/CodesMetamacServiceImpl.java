@@ -42,6 +42,7 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.geojson.geom.GeometryJSON;
 import org.joda.time.DateTime;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -3633,6 +3634,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = dataStore.getFeatureSource(typeName);
             FeatureCollection<SimpleFeatureType, SimpleFeature> collection = featureSource.getFeatures();
             FeatureIterator<SimpleFeature> iterator = collection.features();
+
+            GeometryJSON geometryJSON = new GeometryJSON();
+
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 Geometry geometry = (Geometry) feature.getDefaultGeometry();
@@ -3652,7 +3656,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 }
 
                 if (geometry instanceof MultiPolygon || geometry instanceof Polygon) {
-                    variableElement.setShape(geometry.toText()); // Transform Geometry to well-known text
+                    variableElement.setShape(geometry.toText()); // well-known text format
+                    variableElement.setShapeGeojson(geometryJSON.toString(geometry)); // geoJSON format
                     variableElementsToPersist.add(variableElement);
                 } else if (geometry instanceof Point) {
                     Point point = (Point) geometry;

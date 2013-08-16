@@ -5884,6 +5884,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNotNull(variableElement.getLatitude());
             assertNotNull(variableElement.getLongitude());
             assertNotNull(variableElement.getShape());
+            assertNotNull(variableElement.getShapeGeojson());
             assertNotNull(variableElement.getGeographicalGranularity());
         }
         {
@@ -5891,6 +5892,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNotNull(variableElement.getLatitude());
             assertNotNull(variableElement.getLongitude());
             assertNotNull(variableElement.getShape());
+            assertNotNull(variableElement.getShapeGeojson());
             assertNotNull(variableElement.getGeographicalGranularity());
         }
 
@@ -5906,6 +5908,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(variableElement.getLatitude());
             assertNull(variableElement.getLongitude());
             assertNull(variableElement.getShape());
+            assertNull(variableElement.getShapeGeojson());
             assertNull(variableElement.getGeographicalGranularity());
         }
         {
@@ -5913,6 +5916,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNull(variableElement.getLatitude());
             assertNull(variableElement.getLongitude());
             assertNull(variableElement.getShape());
+            assertNull(variableElement.getShapeGeojson());
             assertNull(variableElement.getGeographicalGranularity());
         }
 
@@ -5922,6 +5926,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertNotNull(variableElement.getLatitude());
             assertNotNull(variableElement.getLongitude());
             assertNotNull(variableElement.getShape());
+            assertNotNull(variableElement.getShapeGeojson());
             assertNotNull(variableElement.getGeographicalGranularity());
         }
     }
@@ -6368,6 +6373,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         variableElement.setLatitude(null);
         variableElement.setLongitude(null);
         variableElement.setShape(null);
+        variableElement.setShapeGeojson(null);
         variableElement.setGeographicalGranularity(null);
         try {
             codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
@@ -6386,17 +6392,19 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         variableElement.setLatitude(Double.valueOf(1));
         variableElement.setLongitude(Double.valueOf(2));
         variableElement.setShape("3");
+        variableElement.setShapeGeojson("3json");
         variableElement.setGeographicalGranularity(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1));
         try {
             codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
             fail("metadata required");
         } catch (MetamacException e) {
-            assertEquals(4, e.getExceptionItems().size());
+            assertEquals(5, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_LATITUDE}, e.getExceptionItems().get(0));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_LONGITUDE}, e.getExceptionItems().get(1));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHAPE}, e.getExceptionItems().get(2));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHAPE_GEOJSON}, e.getExceptionItems().get(3));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY}, e.getExceptionItems()
-                    .get(3));
+                    .get(4));
         }
     }
 
@@ -6539,6 +6547,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNull(variableElement.getLatitude());
         assertNull(variableElement.getLongitude());
         assertNull(variableElement.getShape());
+        assertNull(variableElement.getShapeGeojson());
         assertNull(variableElement.getGeographicalGranularity());
 
         assertEquals("variable-element-22", variableElement.getUuid());
@@ -6558,6 +6567,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(Double.valueOf(70.5559), variableElement.getLatitude());
         assertEquals(Double.valueOf(90.3045), variableElement.getLongitude());
         assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
+        assertEquals("{(((-17.91900240266335 28.856725761393726)))}", variableElement.getShapeGeojson());
         assertEquals(CODELIST_10_V1_CODE_1, variableElement.getGeographicalGranularity().getNameableArtefact().getUrn());
     }
 
@@ -9392,23 +9402,33 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(
                     "MULTIPOLYGON (((-17.91683252750836 27.84729983929485, -17.893904180037357 27.83153207983529, -17.895640080161346 27.82350354176185, -17.885513996104752 27.816270624578568, -17.883344120949765 27.802962056961327, -17.91343305643222 27.77048625880839, -17.909454951981417 27.764916912577263, -17.92724792825229 27.73157316436233, -17.948657363114805 27.72846300997352, -17.957047547047413 27.719638851009915, -17.958638788827734 27.69208143654161, -17.972019685616807 27.672263243459415, -17.970500773008318 27.64897325012925, -17.9777336901916 27.639136482759984, -17.990969928637007 27.63834086186982, -18.009630854969874 27.649407225160246, -18.028581097990074 27.678338893893375, -18.04999053285259 27.69208143654161, -18.145392710500083 27.70365410403486, -18.16014786155398 27.71573307573094, -18.15891826563282 27.728896985004518, -18.15168534844954 27.731862481049664, -18.15327659022986 27.756454399472823, -18.132084142882846 27.770920233839387, -18.11378486240914 27.75898592048697, -18.082321672661863 27.75276561170935, -18.03639264854802 27.761662099844784, -17.98880005348202 27.79963491505702, -17.99154856201167 27.822129287497027, -17.971947356444975 27.826975342009824, -17.957698509593907 27.84144117637639, -17.91683252750836 27.84729983929485)))",
                     variableElement.getShape());
+            assertEquals(
+                    "{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-17.9168,27.8473],[-17.8939,27.8315],[-17.8956,27.8235],[-17.8855,27.8163],[-17.8833,27.803],[-17.9134,27.7705],[-17.9095,27.7649],[-17.9272,27.7316],[-17.9487,27.7285],[-17.957,27.7196],[-17.9586,27.6921],[-17.972,27.6723],[-17.9705,27.649],[-17.9777,27.6391],[-17.991,27.6383],[-18.0096,27.6494],[-18.0286,27.6783],[-18.05,27.6921],[-18.1454,27.7037],[-18.1601,27.7157],[-18.1589,27.7289],[-18.1517,27.7319],[-18.1533,27.7565],[-18.1321,27.7709],[-18.1138,27.759],[-18.0823,27.7528],[-18.0364,27.7617],[-17.9888,27.7996],[-17.9915,27.8221],[-17.9719,27.827],[-17.9577,27.8414],[-17.9168,27.8473]]]]}",
+                    variableElement.getShapeGeojson());
         }
         {
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_2);
             assertEquals(
                     "MULTIPOLYGON (((-13.878043901535358 28.751993120579797, -13.872980859507061 28.742156353210536, -13.86502465060545 28.74533883677118, -13.86654356321394 28.733187535903266, -13.842964253196438 28.72609927706365, -13.837684223652643 28.713514001164736, -13.822567426739583 28.59265195503209, -13.830234318953861 28.57522062462038, -13.825605251956562 28.554896127335358, -13.838841490401968 28.538477405329306, -13.83500804429483 28.5250241793684, -13.843542886571102 28.50325309864672, -13.862637787934966 28.493705647964788, -13.867773159135098 28.480397080347547, -13.856996112532007 28.45992792471886, -13.861552850357475 28.43099625598573, -13.849256891145895 28.41378191308952, -13.8532349955967 28.392010832367838, -13.859961608577153 28.392661794914336, -13.886217097952468 28.324961690078812, -13.895402902775237 28.323587435813987, -13.893811660994913 28.313967655960223, -13.90343144084868 28.300369771655653, -13.897789765445719 28.285686949773588, -13.910519699688296 28.273029344702845, -13.917463300184247 28.251547580668497, -13.945888664714547 28.228185258166494, -13.987405609346586 28.227606624791832, -14.012937807003572 28.207426785850473, -14.073983628030476 28.201061818729187, -14.219075946727118 28.16475257446911, -14.260665220530992 28.112458583233977, -14.256470128564688 28.1140498250143, -14.330390542177833 28.04461382005479, -14.36105811103495 28.047073011897105, -14.368652674077397 28.054016612393056, -14.409446326991109 28.058284033531194, -14.477508077685796 28.077523593238723, -14.507958659027414 28.065589279886307, -14.501666021077959 28.079548810050042, -14.492407887083356 28.083526914500847, -14.499206829235643 28.10066892822523, -14.49146760784953 28.10913144132967, -14.481052207105604 28.099583990647734, -14.455520009448618 28.104647032676034, -14.450095321561156 28.099583990647734, -14.368508015733731 28.118027929465104, -14.30825781559699 28.14804453577573, -14.22319870952159 28.21422572800276, -14.208298900124028 28.259648447913772, -14.213361942152325 28.287133533210245, -14.20395914981406 28.327782527780293, -14.176474064517587 28.34644345411316, -14.161501925948192 28.371469347567317, -14.16273152186935 28.389262323838192, -14.155643263029733 28.394542353381986, -14.15839177155938 28.40741694596823, -14.146674445722462 28.43866314820001, -14.100383775749457 28.47555102583475, -14.063785214802047 28.542817155639273, -14.066606052503527 28.550411718681723, -14.033479291804095 28.592507296688424, -14.038397675488726 28.6149293399566, -14.00874271503727 28.676770781873664, -14.017566874000874 28.693406491395212, -14.016047961392385 28.71488825542956, -14.005053927273796 28.710693163463258, -13.998978276839837 28.723712414393166, -13.989213838642407 28.723567756049498, -13.976917879430827 28.734417131824422, -13.956882698833136 28.734778777683587, -13.942055218607406 28.745700482630344, -13.938511089187598 28.738539894618892, -13.926721434178848 28.75119749968964, -13.916161375091257 28.746496103520503, -13.891931102527261 28.75654985840527, -13.878043901535358 28.751993120579797)), ((-13.81403258446331 28.741143744804877, -13.819240284835272 28.735646727745582, -13.830812952328525 28.739263186337222, -13.835875994356822 28.752137778923466, -13.812947646885817 28.765301688197038, -13.81403258446331 28.741143744804877)))",
                     variableElement.getShape());
+            assertEquals(
+                    "{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-13.878,28.752],[-13.873,28.7422],[-13.865,28.7453],[-13.8665,28.7332],[-13.843,28.7261],[-13.8377,28.7135],[-13.8226,28.5927],[-13.8302,28.5752],[-13.8256,28.5549],[-13.8388,28.5385],[-13.835,28.525],[-13.8435,28.5033],[-13.8626,28.4937],[-13.8678,28.4804],[-13.857,28.4599],[-13.8616,28.431],[-13.8493,28.4138],[-13.8532,28.392],[-13.86,28.3927],[-13.8862,28.325],[-13.8954,28.3236],[-13.8938,28.314],[-13.9034,28.3004],[-13.8978,28.2857],[-13.9105,28.273],[-13.9175,28.2515],[-13.9459,28.2282],[-13.9874,28.2276],[-14.0129,28.2074],[-14.074,28.2011],[-14.2191,28.1648],[-14.2607,28.1125],[-14.2565,28.114],[-14.3304,28.0446],[-14.3611,28.0471],[-14.3687,28.054],[-14.4094,28.0583],[-14.4775,28.0775],[-14.508,28.0656],[-14.5017,28.0795],[-14.4924,28.0835],[-14.4992,28.1007],[-14.4915,28.1091],[-14.4811,28.0996],[-14.4555,28.1046],[-14.4501,28.0996],[-14.3685,28.118],[-14.3083,28.148],[-14.2232,28.2142],[-14.2083,28.2596],[-14.2134,28.2871],[-14.204,28.3278],[-14.1765,28.3464],[-14.1615,28.3715],[-14.1627,28.3893],[-14.1556,28.3945],[-14.1584,28.4074],[-14.1467,28.4387],[-14.1004,28.4756],[-14.0638,28.5428],[-14.0666,28.5504],[-14.0335,28.5925],[-14.0384,28.6149],[-14.0087,28.6768],[-14.0176,28.6934],[-14.016,28.7149],[-14.0051,28.7107],[-13.999,28.7237],[-13.9892,28.7236],[-13.9769,28.7344],[-13.9569,28.7348],[-13.9421,28.7457],[-13.9385,28.7385],[-13.9267,28.7512],[-13.9162,28.7465],[-13.8919,28.7565],[-13.878,28.752]]],[[[-13.814,28.7411],[-13.8192,28.7356],[-13.8308,28.7393],[-13.8359,28.7521],[-13.8129,28.7653],[-13.814,28.7411]]]]}",
+                    variableElement.getShapeGeojson());
         }
         {
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_3);
             assertEquals(
                     "MULTIPOLYGON (((-17.91900240266335 28.856725761393726, -17.904898214155946 28.854194240379577, -17.89549542181768 28.841608964480667, -17.85781192329278 28.83227850131423, -17.80710917383797 28.842621572886326, -17.777526542558345 28.837992505889027, -17.752355990760524 28.775789418112797, -17.724436930433054 28.742011694866868, -17.732393139334665 28.719806639114193, -17.759154932912807 28.696733633299523, -17.76378399991011 28.67076746061154, -17.768630054422907 28.67691544021733, -17.750113786433705 28.622089927968048, -17.75633409521133 28.61218083142695, -17.75995055380297 28.569506620045587, -17.786278372350118 28.543829764044933, -17.832858359010455 28.456673111986383, -17.840742238740233 28.452405690848245, -17.86678074060005 28.471572921383945, -17.883995083496263 28.548386501870404, -17.911190852105403 28.586142329567135, -17.925873673987464 28.596413071967397, -17.923414482145148 28.60907067703814, -17.938386620714542 28.64002756258259, -17.96413580588703 28.66751264787906, -17.981494807126907 28.72812449387497, -18.00695467561206 28.757490137639092, -18.00471247128524 28.783890285358073, -17.981494807126907 28.800381336535956, -17.966667326901177 28.826130521708443, -17.94540255038233 28.841464306137002, -17.926886282393124 28.84580405644697, -17.91900240266335 28.856725761393726)))",
                     variableElement.getShape());
+            assertEquals(
+                    "{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-17.919,28.8567],[-17.9049,28.8542],[-17.8955,28.8416],[-17.8578,28.8323],[-17.8071,28.8426],[-17.7775,28.838],[-17.7524,28.7758],[-17.7244,28.742],[-17.7324,28.7198],[-17.7592,28.6967],[-17.7638,28.6708],[-17.7686,28.6769],[-17.7501,28.6221],[-17.7563,28.6122],[-17.76,28.5695],[-17.7863,28.5438],[-17.8329,28.4567],[-17.8407,28.4524],[-17.8668,28.4716],[-17.884,28.5484],[-17.9112,28.5861],[-17.9259,28.5964],[-17.9234,28.6091],[-17.9384,28.64],[-17.9641,28.6675],[-17.9815,28.7281],[-18.007,28.7575],[-18.0047,28.7839],[-17.9815,28.8004],[-17.9667,28.8261],[-17.9454,28.8415],[-17.9269,28.8458],[-17.919,28.8567]]]]}",
+                    variableElement.getShapeGeojson());
         }
         {
             // Not updated (not exist in shapefile)
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_4);
-            assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
+            assertEquals("MULTIPOLYGON (((-20.91900240266335 31.856725761393726)))", variableElement.getShape());
+            assertEquals("{(((-20.91900240266335 31.856725761393726)))}", variableElement.getShapeGeojson());
         }
     }
 
@@ -9450,25 +9470,29 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(Double.valueOf("90.3045"), variableElement.getLongitude());
             assertEquals(Double.valueOf("70.5559"), variableElement.getLatitude());
             assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
+            assertEquals("{(((-17.91900240266335 28.856725761393726)))}", variableElement.getShapeGeojson());
         }
         {
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_2);
             assertEquals(Double.valueOf("-16.61153654488294"), variableElement.getLongitude());
             assertEquals(Double.valueOf("28.26462033711757"), variableElement.getLatitude());
-            assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
+            assertEquals("MULTIPOLYGON (((-18.91900240266335 29.856725761393726)))", variableElement.getShape());
+            assertEquals("{(((-18.91900240266335 29.856725761393726)))}", variableElement.getShapeGeojson());
         }
         {
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_3);
             assertEquals(Double.valueOf("-17.23229859783003"), variableElement.getLongitude());
             assertEquals(Double.valueOf("28.120675513245782"), variableElement.getLatitude());
-            assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
+            assertEquals("MULTIPOLYGON (((-19.91900240266335 30.856725761393726)))", variableElement.getShape());
+            assertEquals("{(((-19.91900240266335 30.856725761393726)))}", variableElement.getShapeGeojson());
         }
         {
             // Not updated (not exist in shapefile)
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_4);
             assertEquals(Double.valueOf("91.3245"), variableElement.getLongitude());
             assertEquals(Double.valueOf("71.5559"), variableElement.getLatitude());
-            assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", variableElement.getShape());
+            assertEquals("MULTIPOLYGON (((-20.91900240266335 31.856725761393726)))", variableElement.getShape());
+            assertEquals("{(((-20.91900240266335 31.856725761393726)))}", variableElement.getShapeGeojson());
         }
     }
 

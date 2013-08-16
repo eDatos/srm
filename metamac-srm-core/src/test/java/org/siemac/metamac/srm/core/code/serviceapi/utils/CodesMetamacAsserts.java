@@ -402,6 +402,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEquals(expected.getLatitude(), actual.getLatitude());
         assertEquals(expected.getLongitude(), actual.getLongitude());
         assertEquals(expected.getShape(), actual.getShape());
+        assertEquals(expected.getShapeGeojson(), actual.getShapeGeojson());
         assertEqualsNullability(expected.getGeographicalGranularity(), actual.getGeographicalGranularity());
         if (expected.getGeographicalGranularity() != null) {
             assertEqualsCode(expected.getGeographicalGranularity(), actual.getGeographicalGranularity());
@@ -427,6 +428,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEquals(expected.getLatitude(), actual.getLatitude());
         assertEquals(expected.getLongitude(), actual.getLongitude());
         assertEquals(expected.getShape(), actual.getShape());
+        assertEquals(expected.getShapeGeojson(), actual.getShapeGeojson());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getGeographicalGranularity(), actual.getGeographicalGranularity());
         assertEquals(expected.getValidFrom(), actual.getValidFrom());
         assertEquals(expected.getValidTo(), actual.getValidTo());
@@ -475,6 +477,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEquals(entity.getLatitude(), dto.getLatitude());
         assertEquals(entity.getLongitude(), dto.getLongitude());
         assertEquals(entity.getShape(), dto.getShape());
+        assertEquals(entity.getShapeGeojson(), dto.getShapeGeojson());
         assertEqualsNullability(entity.getGeographicalGranularity(), dto.getGeographicalGranularity());
         if (entity.getGeographicalGranularity() != null) {
             assertEquals(entity.getGeographicalGranularity().getNameableArtefact().getUrn(), dto.getGeographicalGranularity().getUrn());

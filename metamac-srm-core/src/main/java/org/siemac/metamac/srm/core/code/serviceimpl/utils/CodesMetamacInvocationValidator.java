@@ -719,6 +719,7 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
                 ValidationUtils.checkMetadataEmpty(variableElement.getLatitude(), ServiceExceptionParameters.VARIABLE_ELEMENT_LATITUDE, exceptions);
                 ValidationUtils.checkMetadataEmpty(variableElement.getLongitude(), ServiceExceptionParameters.VARIABLE_ELEMENT_LONGITUDE, exceptions);
                 ValidationUtils.checkMetadataEmpty(variableElement.getShape(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHAPE, exceptions);
+                ValidationUtils.checkMetadataEmpty(variableElement.getShapeGeojson(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHAPE_GEOJSON, exceptions);
                 ValidationUtils.checkMetadataEmpty(variableElement.getGeographicalGranularity(), ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, exceptions);
             }
         }

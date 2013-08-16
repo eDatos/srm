@@ -15,6 +15,7 @@
     <name>SIEMAC :: METAMAC :: SRM :: CORE</name>
 
     <dependencies>
+
         <!-- METAMAC -->
         <dependency>
             <groupId>org.siemac.metamac</groupId>
@@ -90,7 +91,7 @@
                 <!-- <exclusion> -->
                 <!-- <groupId>xml-apis</groupId> -->
                 <!-- <artifactId>xml-apis</artifactId> -->
-<!-- </exclusion> -->
+                <!-- </exclusion> -->
             </exclusions>
         </dependency>
         <dependency>
@@ -243,8 +244,8 @@
                     <groupId>junit</groupId>
                 </exclusion>
                 <exclusion>
-                	<artifactId>aspectjrt</artifactId>
-                	<groupId>org.aspectj</groupId>
+                    <artifactId>aspectjrt</artifactId>
+                    <groupId>org.aspectj</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -405,8 +406,23 @@
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
+            <artifactId>gt-geojson</artifactId>
+            <version>${geotools.version}</version>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>jai_core</artifactId>
+            		<groupId>javax.media</groupId>
+            	</exclusion>
+                <exclusion>
+                    <artifactId>jdom</artifactId>
+                    <groupId>jdom</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>        
+        <dependency>
+            <groupId>org.geotools</groupId>
             <artifactId>gt-shapefile</artifactId>
-            <version>${geotools-gt-shapefile.version}</version>
+            <version>${geotools.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>jgridshift</artifactId>

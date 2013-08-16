@@ -74,7 +74,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
     @Override
     public void clearGeographicalInformationByVariable(Long variableId) {
         StringBuilder sb = new StringBuilder();
-        sb.append("UPDATE TB_M_VARIABLE_ELEMENTS set LATITUDE = null, LONGITUDE = null, SHAPE = null, GEOGRAPHICAL_GRANULARITY_FK = null ");
+        sb.append("UPDATE TB_M_VARIABLE_ELEMENTS set LATITUDE = null, LONGITUDE = null, SHAPE = null, SHAPE_GEOJSON = null, GEOGRAPHICAL_GRANULARITY_FK = null ");
         sb.append("WHERE VARIABLE_FK = :variableId");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("variableId", variableId);

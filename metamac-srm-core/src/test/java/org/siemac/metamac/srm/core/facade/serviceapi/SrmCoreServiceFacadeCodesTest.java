@@ -1918,6 +1918,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertNotNull(variableElementDto.getLatitude());
             assertNotNull(variableElementDto.getLongitude());
             assertNotNull(variableElementDto.getShape());
+            assertNotNull(variableElementDto.getShapeGeojson());
             assertNotNull(variableElementDto.getGeographicalGranularity());
         }
 
@@ -1932,6 +1933,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             assertNull(variableElementDto.getLatitude());
             assertNull(variableElementDto.getLongitude());
             assertNull(variableElementDto.getShape());
+            assertNull(variableElementDto.getShapeGeojson());
             assertNull(variableElementDto.getGeographicalGranularity());
         }
     }

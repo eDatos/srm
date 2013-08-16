@@ -288,6 +288,7 @@ public class CodesDto2DoMapperImpl extends BaseDto2DoMapperImpl implements Codes
         target.setLatitude(source.getLatitude());
         target.setLongitude(source.getLongitude());
         target.setShape(source.getShape());
+        target.setShapeGeojson(source.getShapeGeojson());
         if (source.getGeographicalGranularity() != null) {
             target.setGeographicalGranularity(retrieveCode(source.getGeographicalGranularity().getUrn()));
         } else {

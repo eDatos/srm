@@ -144,6 +144,7 @@ public class CodesMetamacDtoMocks {
         variableElementDto.setLatitude(Double.valueOf(1));
         variableElementDto.setLongitude(Double.valueOf(2));
         variableElementDto.setShape("shape1");
+        variableElementDto.setShapeGeojson("shape1Geojson");
         variableElementDto.setGeographicalGranularity(mockCodeRelatedResourceDto(code, codeUrn));
         return variableElementDto;
     }
