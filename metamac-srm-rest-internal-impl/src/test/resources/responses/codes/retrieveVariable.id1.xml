@@ -3,6 +3,9 @@
     <sr:id>artefact1</sr:id>
     <sr:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=artefact1</sr:urn>
     <sr:selfLink kind="structuralResources#variable" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/artefact1"/>
+    <sr:childLinks total="1">
+        <cdomain:childLink kind="structuralResources#variableElements" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/artefact1/variableelements"/>
+    </sr:childLinks>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=artefact1</sr:managementAppLink>
     <sr:name>
         <cdomain:text xml:lang="en">name-artefact1 in English</cdomain:text>

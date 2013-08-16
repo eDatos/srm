@@ -241,7 +241,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         return source.getFinalLogicClient();
     }
 
-    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, Boolean isImported) {
+    protected void toResource(IdentifiableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, Boolean isImported) {
         if (source == null) {
             return;
         }
@@ -255,8 +255,15 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
         target.setKind(kind);
         target.setSelfLink(selfLink);
-        target.setName(toInternationalString(source.getName()));
         target.setManagementAppLink(managementAppUrl);
+    }
+
+    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, Boolean isImported) {
+        if (source == null) {
+            return;
+        }
+        toResource((IdentifiableArtefact) source, kind, selfLink, managementAppUrl, target, isImported);
+        target.setName(toInternationalString(source.getName()));
     }
 
     protected void toResource(MaintainableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target) {

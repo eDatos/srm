@@ -58,6 +58,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnits;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisations;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElement;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables;
@@ -72,6 +74,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
@@ -960,6 +963,87 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             throw manageException(e);
         }
     }
+
+    @Override
+    public VariableElement retrieveVariableElementById(String variableID, String resourceID) {
+        try {
+            checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_VARIABLE_ID, variableID);
+            checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
+
+            // Find one
+            PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(variableID, resourceID, null, pagingParameterOneResult);
+            if (entitiesPagedResult.getValues().size() != 1) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.VARIABLE_ELEMENT_NOT_FOUND, resourceID, variableID);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            org.siemac.metamac.srm.core.code.domain.VariableElement variableElementEntity = entitiesPagedResult.getValues().get(0);
+            VariableElement variableElement = codesDo2RestMapper.toVariableElement(variableElementEntity);
+            return variableElement;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public VariableElements findVariableElements(String variableID, String query, String orderBy, String limit, String offset) {
+        // TODO findVariableElements
+        return null;
+        // try {
+        // // Retrieve variables by criteria
+        // SculptorCriteria sculptorCriteria = codesRest2DoMapper.getVariableCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+        //
+        // // Retrieve
+        // PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = findVariablesCore(null, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+        //
+        // // Transform
+        // Variables variables = codesDo2RestMapper.toVariables(entitiesPagedResult, query, orderBy, sculptorCriteria.getLimit());
+        // return variables;
+        // } catch (Exception e) {
+        // throw manageException(e);
+        // }
+
+        // try {
+        // checkParameterNotWildcardFindItems(agencyID, resourceID, version);
+        //
+        // if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
+        // checkParameterEmpty(RestInternalConstants.PARAMETER_ORDER_ID, order);
+        // checkParameterEmpty(RestInternalConstants.PARAMETER_OPENNESS_ID, openness);
+        //
+        // // Find. Retrieve codes paginated
+        // SculptorCriteria sculptorCriteria = codesRest2DoMapper.getCodeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+        // PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+        //
+        // // Transform
+        // Codes codes = codesDo2RestMapper.toCodes(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+        // return codes;
+        // } else {
+        // // Retrieve all codes of codelist, without pagination
+        // CodelistVersionMetamac codelistVersion = retrieveCodelistPublished(agencyID, resourceID, version);
+        // if (order == null) {
+        // order = codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getCode();
+        // } else {
+        // // check exist
+        // retrieveCodelistOrderVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), order);
+        // }
+        // if (openness == null) {
+        // openness = codelistVersion.getDefaultOpennessVisualisation().getNameableArtefact().getCode();
+        // } else {
+        // // check exist
+        // retrieveCodelistOpennessVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), openness);
+        // }
+        // List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), itemResultSelection, order, openness);
+        //
+        // // Transform
+        // Codes codes = codesDo2RestMapper.toCodes(items, codelistVersion);
+        // return codes;
+        // }
+        // } catch (Exception e) {
+        // throw manageException(e);
+        // }
+    }
+
     @Override
     public CodelistFamily retrieveCodelistFamilyById(String id) {
         try {
@@ -1382,19 +1466,26 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return entitiesPagedResult;
     }
 
-    private PagedResult<CodeMetamac> findCodesCore(String agencyID, String resourceID, String version, String codeID, List<ConditionalCriteria> conditionalCriteriaQuery,
+    private PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> findVariableElementsCore(String variableID, String resourceID, List<ConditionalCriteria> conditionalCriteriaQuery,
             PagingParameter pagingParameter) throws MetamacException {
 
-        // Criteria to find items by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, codeID, CodeMetamacProperties.itemSchemeVersion()
-                .maintainableArtefact(), CodeMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, CodeMetamac.class);
-        // Only codelists with access == public
-        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
-                .withProperty(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.accessType().getName(), false, CodeMetamac.class))
-                .eq(AccessTypeEnum.PUBLIC).buildSingle());
-
+        List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
+        if (CollectionUtils.isNotEmpty(conditionalCriteriaQuery)) {
+            conditionalCriteria.addAll(conditionalCriteriaQuery);
+        } else {
+            // init
+            conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.VariableElement.class).distinctRoot().build());
+        }
+        if (variableID != null && !RestInternalConstants.WILDCARD_ALL.equals(variableID)) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.VariableElement.class)
+                    .withProperty(VariableElementProperties.variable().nameableArtefact().code()).eq(variableID).buildSingle());
+        }
+        if (resourceID != null) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.VariableElement.class)
+                    .withProperty(VariableElementProperties.identifiableArtefact().code()).eq(resourceID).buildSingle());
+        }
         // Find
-        PagedResult<CodeMetamac> entitiesPagedResult = codesService.findCodesByCondition(ctx, conditionalCriteria, pagingParameter);
+        PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = codesService.findVariableElementsByCondition(ctx, conditionalCriteria, pagingParameter);
         return entitiesPagedResult;
     }
 
@@ -1459,12 +1550,28 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.Variable.class).withProperty(VariableProperties.nameableArtefact().code())
                     .eq(variableID).buildSingle());
         }
-        if (familyID != null) {
+        if (familyID != null && !RestInternalConstants.WILDCARD_ALL.equals(familyID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.Variable.class)
                     .withProperty(VariableProperties.families().nameableArtefact().code()).eq(familyID).buildSingle());
         }
         // Find
         PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = codesService.findVariablesByCondition(ctx, conditionalCriteria, pagingParameter);
+        return entitiesPagedResult;
+    }
+
+    private PagedResult<CodeMetamac> findCodesCore(String agencyID, String resourceID, String version, String codeID, List<ConditionalCriteria> conditionalCriteriaQuery,
+            PagingParameter pagingParameter) throws MetamacException {
+
+        // Criteria to find items by criteria
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, codeID, CodeMetamacProperties.itemSchemeVersion()
+                .maintainableArtefact(), CodeMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, CodeMetamac.class);
+        // Only codelists with access == public
+        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
+                .withProperty(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.accessType().getName(), false, CodeMetamac.class))
+                .eq(AccessTypeEnum.PUBLIC).buildSingle());
+
+        // Find
+        PagedResult<CodeMetamac> entitiesPagedResult = codesService.findCodesByCondition(ctx, conditionalCriteria, pagingParameter);
         return entitiesPagedResult;
     }
 

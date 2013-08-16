@@ -25,6 +25,7 @@ import org.siemac.metamac.rest.constants.RestConstants;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.springframework.context.ApplicationContext;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefactProperties.IdentifiableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
 
@@ -145,6 +146,12 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
     @SuppressWarnings("rawtypes")
     protected String getNameableArtefactCodeFromConditionalCriteria(List<ConditionalCriteria> conditions, NameableArtefactProperty nameableArtefactProperty) {
         ConditionalCriteria conditionalCriteria = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, nameableArtefactProperty.code());
+        return conditionalCriteria != null ? (String) conditionalCriteria.getFirstOperant() : null;
+    }
+
+    @SuppressWarnings("rawtypes")
+    protected String getIdentifiableArtefactCodeFromConditionalCriteria(List<ConditionalCriteria> conditions, IdentifiableArtefactProperty identifiableArtefactProperty) {
+        ConditionalCriteria conditionalCriteria = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Equal, identifiableArtefactProperty.code());
         return conditionalCriteria != null ? (String) conditionalCriteria.getFirstOperant() : null;
     }
 

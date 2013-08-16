@@ -9,6 +9,7 @@ import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
@@ -29,6 +30,7 @@ public class InternalWebApplicationNavigation {
     private final String      ITEM_SCHEME_PARAMETER     = "itemSchemeParam";
     private final String      RESOURCE_ID_PARAMETER     = "resourceParam";
     private final String      RESOURCE_TYPE_PARAMETER   = "resourceTypeParam";
+    private final String      VARIABLE_PARAMETER        = "variableParam";
 
     private final UriTemplate dataStructureTemplate;
     private final UriTemplate organisationSchemeTemplate;
@@ -40,6 +42,7 @@ public class InternalWebApplicationNavigation {
     private final UriTemplate codelistTemplate;
     private final UriTemplate codeTemplate;
     private final UriTemplate variableTemplate;
+    private final UriTemplate variableElementTemplate;
     private final UriTemplate variableFamilyTemplate;
     private final UriTemplate codelistFamilyTemplate;
 
@@ -78,6 +81,9 @@ public class InternalWebApplicationNavigation {
                 + ";" + PlaceRequestParams.codelistFamilyParamId + "=" + "{" + RESOURCE_ID_PARAMETER + "}");
         variableTemplate = new UriTemplate(webApplicationPath + SEPARATOR + PATH_STRUCTURAL_RESOURCES + SEPARATOR + NameTokens.variableListPage + SEPARATOR + NameTokens.variablePage + ";"
                 + PlaceRequestParams.variableParamId + "=" + "{" + RESOURCE_ID_PARAMETER + "}");
+        variableElementTemplate = new UriTemplate(webApplicationPath + SEPARATOR + PATH_STRUCTURAL_RESOURCES + SEPARATOR + NameTokens.variableListPage + SEPARATOR + NameTokens.variablePage + ";"
+                + PlaceRequestParams.variableParamId + "=" + "{" + VARIABLE_PARAMETER + "}" + SEPARATOR + NameTokens.variableElementPage + ";" + PlaceRequestParams.variableElementParamId + "=" + "{"
+                + RESOURCE_ID_PARAMETER + "}");
     }
 
     public String buildDataStructureDefinitionUrl(DataStructureDefinitionVersionMetamac dataStructureDefinition) {
@@ -185,5 +191,12 @@ public class InternalWebApplicationNavigation {
         Map<String, String> parameters = new HashMap<String, String>(1);
         parameters.put(RESOURCE_ID_PARAMETER, variable.getNameableArtefact().getCode());
         return variableTemplate.expand(parameters).toString();
+    }
+
+    public String buildVariableElementUrl(VariableElement variableElement) {
+        Map<String, String> parameters = new HashMap<String, String>(2);
+        parameters.put(VARIABLE_PARAMETER, variableElement.getVariable().getNameableArtefact().getCode());
+        parameters.put(RESOURCE_ID_PARAMETER, variableElement.getIdentifiableArtefact().getCode());
+        return variableElementTemplate.expand(parameters).toString();
     }
 }

@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
@@ -63,6 +64,12 @@ public class CodesDoMocks {
         return target;
     }
 
+    public static VariableElement mockVariableElement(String resourceID) {
+        VariableElement target = CodesMetamacDoMocks.mockVariableElementFixedValues(resourceID);
+        addReplaceMetadatasToVariableElement(target);
+        return target;
+    }
+
     public static CodelistFamily mockCodelistFamily(String resourceID) {
         return CodesMetamacDoMocks.mockCodelistFamilyFixedValues(resourceID);
     }
@@ -106,6 +113,12 @@ public class CodesDoMocks {
         target.setReplacedByVariable(CodesMetamacDoMocks.mockVariableFixedValues("variableReplacedBy1"));
         target.addReplaceToVariable(CodesMetamacDoMocks.mockVariableFixedValues("variableReplaceTo1"));
         target.addReplaceToVariable(CodesMetamacDoMocks.mockVariableFixedValues("variableReplaceTo2"));
+    }
+
+    private static void addReplaceMetadatasToVariableElement(VariableElement target) {
+        target.setReplacedByVariableElement(CodesMetamacDoMocks.mockVariableElementFixedValues("variableElementReplacedBy1"));
+        target.addReplaceToVariableElement(CodesMetamacDoMocks.mockVariableElementFixedValues("variableElementReplaceTo1"));
+        target.addReplaceToVariableElement(CodesMetamacDoMocks.mockVariableElementFixedValues("variableElementReplaceTo2"));
     }
 
     private static CodelistVersionMetamac mockCodelistToReplaceMetadata(String agencyID, String resourceID, String version, AccessTypeEnum accessType, boolean finalLogic, boolean publicLogic) {

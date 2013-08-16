@@ -45,11 +45,14 @@
         <cdomain:text xml:lang="es">shortName-variableElement1 en Español</cdomain:text>
         <cdomain:text xml:lang="en">shortName-variableElement1 in English</cdomain:text>
     </sr:shortName>
-    <sr:variableElement>
+    <sr:variableElement kind="structuralResources#variableElement">
         <cdomain:id>variableElement1</cdomain:id>
+        <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElement1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable01/variableelements/variableElement1"/>
         <cdomain:name>
-            <cdomain:text xml:lang="es">shortName-variableElement1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">shortName-variableElement1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">shortName-variableElement1 en Español</cdomain:text>
         </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=variableElement1</sr:managementAppLink>
     </sr:variableElement>
 </sr:code>
