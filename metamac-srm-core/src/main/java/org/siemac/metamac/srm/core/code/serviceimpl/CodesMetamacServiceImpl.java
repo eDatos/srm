@@ -134,6 +134,7 @@ import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Implementation of CodesMetamacService.
@@ -3614,7 +3615,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
      * Adds geographical information of specific type. Modify existing variable element from map, and adds updated variable element to list to mark to execute save operation
      */
     private void addVariableElementGeographicalInformationFromShapeFile(URL shapeFileUrl, Map<String, VariableElement> variableElementsByCode, List<VariableElement> variableElementsToPersist,
-            String... geometryType) throws MetamacException {
+            String... geometryTypes) throws MetamacException {
 
         DataStore dataStore = null;
         try {
@@ -3635,7 +3636,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 Geometry geometry = (Geometry) feature.getDefaultGeometry();
-                if (!ArrayUtils.contains(geometryType, geometry.getGeometryType().toUpperCase())) {
+                if (!ArrayUtils.contains(geometryTypes, geometry.getGeometryType().toUpperCase())) {
                     continue;
                 }
 
@@ -3650,7 +3651,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                     continue;
                 }
 
-                if (geometry instanceof MultiPolygon) {
+                if (geometry instanceof MultiPolygon || geometry instanceof Polygon) {
                     variableElement.setShape(geometry.toText()); // Transform Geometry to well-known text
                     variableElementsToPersist.add(variableElement);
                 } else if (geometry instanceof Point) {
