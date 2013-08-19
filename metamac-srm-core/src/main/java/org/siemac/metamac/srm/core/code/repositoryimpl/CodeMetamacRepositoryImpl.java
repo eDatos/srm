@@ -34,6 +34,7 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisationResult;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
@@ -497,9 +498,11 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
 
         if (resultSelection instanceof CodeMetamacResultSelection) {
             CodeMetamacResultSelection codeResultSelection = (CodeMetamacResultSelection) resultSelection;
-            if (codeResultSelection.isVariableElement()) {
-                // Variable element. Execute one independent query to retrieve variable elements is more efficient than do a global query
+            // Variable element. Execute one independent query to retrieve variable elements is more efficient than do a global query
+            if (codeResultSelection.isVariableElementCode()) {
                 executeQueryCodeVariableElementAndUpdateCodeMetamacResult(idCodelist, mapCodeByItemId);
+            } else if (codeResultSelection.isVariableElementFull()) {
+                executeQueryFullVariableElementAndUpdateCodeMetamacResult(idCodelist, mapCodeByItemId);
             }
         }
 
@@ -624,6 +627,45 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             String variableElementCode = getString(variableElementResultSqlArray[1]);
             ItemResult target = mapCodeByItemId.get(actualItemId);
             ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).setVariableElementCode(variableElementCode);
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    private void executeQueryFullVariableElementAndUpdateCodeMetamacResult(Long idCodelist, Map<Long, ItemResult> mapCodeByItemId) {
+        StringBuilder sbVariableElements = new StringBuilder();
+        sbVariableElements.append("SELECT c.TB_CODES as ITEM_ID, ave.URN as VE_URN, ave.CODE as VE_CODE, ls.LOCALE as SHORT_NAME_LOCALE, ls.LABEL as SHORT_NAME_LABEL ");
+        sbVariableElements.append("FROM TB_M_CODES c ");
+        sbVariableElements.append("INNER JOIN TB_CODES cb on c.TB_CODES = cb.ID ");
+        sbVariableElements.append("INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK ");
+        sbVariableElements.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS ave on ve.IDENTIFIABLE_ARTEFACT_FK = ave.ID ");
+        sbVariableElements.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls ON ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK ");
+        sbVariableElements.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+
+        Query queryVariableElements = getEntityManager().createNativeQuery(sbVariableElements.toString());
+        queryVariableElements.setParameter("codelistVersion", idCodelist);
+        List variableElementsResultSql = queryVariableElements.getResultList();
+        for (Object variableElementResultSql : variableElementsResultSql) {
+            Object[] variableElementResultSqlArray = (Object[]) variableElementResultSql;
+            int i = 0;
+            Long actualItemId = getLong(variableElementResultSqlArray[i++]);
+            ItemResult target = mapCodeByItemId.get(actualItemId);
+            VariableElementResult variableElementResult = ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).getVariableElement();
+            if (variableElementResult == null) {
+                variableElementResult = new VariableElementResult();
+                ((CodeMetamacResultExtensionPoint) target.getExtensionPoint()).setVariableElement(variableElementResult);
+                variableElementResult.setUrn(getString(variableElementResultSqlArray[i++]));
+                variableElementResult.setCode(getString(variableElementResultSqlArray[i++]));
+            } else {
+                i++;
+                i++;
+            }
+            String locale = getString(variableElementResultSqlArray[i++]);
+            if (locale == null) {
+                i++;
+            } else {
+                String label = getString(variableElementResultSqlArray[i++]);
+                variableElementResult.getShortName().put(locale, label);
+            }
         }
     }
 

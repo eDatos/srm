@@ -11,6 +11,7 @@ public class CodeMetamacResultExtensionPoint {
     private String                    orderConcatenatedByLevel;
     private Boolean                   openness;
     private final Map<String, String> shortName = new HashMap<String, String>();
+    private VariableElementResult     variableElement;
     private String                    variableElementCode;
 
     public Integer getOrder() {
@@ -46,6 +47,14 @@ public class CodeMetamacResultExtensionPoint {
 
     public String getVariableElementCode() {
         return variableElementCode;
+    }
+
+    public VariableElementResult getVariableElement() {
+        return variableElement;
+    }
+
+    public void setVariableElement(VariableElementResult variableElement) {
+        this.variableElement = variableElement;
     }
 
     public int getLevel() {

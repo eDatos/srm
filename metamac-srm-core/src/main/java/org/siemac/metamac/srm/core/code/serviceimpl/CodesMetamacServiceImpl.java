@@ -959,7 +959,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 }
                 // Variable element
                 writer.write(SrmConstants.TSV_SEPARATOR);
-                String variableElement = SrmServiceUtils.getCodeItemResultVariableElement(itemResult);
+                String variableElement = SrmServiceUtils.getCodeItemResultVariableElementCode(itemResult);
                 if (variableElement != null) {
                     writer.write(variableElement);
                 }

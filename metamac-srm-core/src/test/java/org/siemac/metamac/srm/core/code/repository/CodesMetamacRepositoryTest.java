@@ -7,6 +7,8 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
@@ -38,8 +40,9 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
     @Test
     public void testRetrieveCodesOrderedByCodelistUrn() throws Exception {
 
+        ItemMetamacResultSelection selection = new CodeMetamacResultSelection(true, true, true, true, false, true);
         // Retrieve
-        List<ItemResult> codes = codeMetamacRepository.findCodesByCodelistOrderedInDepth(Long.valueOf(12), Integer.valueOf(2), Integer.valueOf(2), ItemMetamacResultSelection.ALL);
+        List<ItemResult> codes = codeMetamacRepository.findCodesByCodelistOrderedInDepth(Long.valueOf(12), Integer.valueOf(2), Integer.valueOf(2), selection);
 
         // Validate common metadata and SHORT_NAME
         assertEquals(9, codes.size());
@@ -59,6 +62,12 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "Fuerteventura", "en", "Short name variableElement 2-2");
             assertEquals(Integer.valueOf(0), SrmServiceUtils.getCodeItemResultOrder(code));
             assertEquals(Boolean.FALSE, SrmServiceUtils.getCodeItemResultOpenness(code));
+            {
+                VariableElementResult variableElement = SrmServiceUtils.getCodeItemResultVariableElementFull(code);
+                assertEquals("VARIABLE_ELEMENT_02", variableElement.getCode());
+                assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_02", variableElement.getUrn());
+                CodesAsserts.assertEqualsInternationalString(variableElement.getShortName(), "es", "Fuerteventura", "en", "Short name variableElement 2-2");
+            }
 
             assertEquals(2, code.getAnnotations().size());
             {
@@ -90,6 +99,7 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             assertEquals(Integer.valueOf(1), SrmServiceUtils.getCodeItemResultOrder(code));
             assertEquals(Boolean.TRUE, SrmServiceUtils.getCodeItemResultOpenness(code));
             assertEquals(0, code.getAnnotations().size());
+            assertEquals(null, SrmServiceUtils.getCodeItemResultVariableElementFull(code));
         }
         {
             // Code 02 01
@@ -101,6 +111,12 @@ public class CodesMetamacRepositoryTest extends SrmBaseTest {
             CodesAsserts.assertEqualsInternationalString(SrmServiceUtils.getCodeItemResultShortName(code), "es", "El Hierro", "en", "short name variableElement 2-1");
             assertEquals(Integer.valueOf(0), SrmServiceUtils.getCodeItemResultOrder(code));
             assertEquals(Boolean.TRUE, SrmServiceUtils.getCodeItemResultOpenness(code));
+            {
+                VariableElementResult variableElement = SrmServiceUtils.getCodeItemResultVariableElementFull(code);
+                assertEquals("VARIABLE_ELEMENT_01", variableElement.getCode());
+                assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_02.VARIABLE_ELEMENT_01", variableElement.getUrn());
+                CodesAsserts.assertEqualsInternationalString(variableElement.getShortName(), "es", "El Hierro", "en", "short name variableElement 2-1");
+            }
         }
         {
             // Code 02 01 01

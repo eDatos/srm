@@ -37,6 +37,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Visuali
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VisualisationConfigurations;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
@@ -142,8 +143,9 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         targets.setTotal(BigInteger.valueOf(sources.size()));
 
         // Values
+        String variableID = codelistVersion.getVariable() != null ? codelistVersion.getVariable().getNameableArtefact().getCode() : null;
         for (ItemResult source : sources) {
-            CodeResourceInternal target = toCodeResource(source, codelistVersion);
+            CodeResourceInternal target = toCodeResource(source, codelistVersion, variableID);
             targets.getCodes().add(target);
         }
         return targets;
@@ -190,19 +192,22 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
         CodeResourceInternal target = new CodeResourceInternal();
         toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target);
-        // following information is retrieved only one retrieve efficiently all codes in codelist
+        target.setVariableElement(toResource(source.getVariableElement()));
+
+        // order and open are retrieved only one retrieve efficiently all codes in codelist
         target.setOrder(null);
         target.setOpen(null);
         return target;
     }
 
-    private CodeResourceInternal toCodeResource(ItemResult source, CodelistVersionMetamac codelistVersion) {
+    private CodeResourceInternal toCodeResource(ItemResult source, CodelistVersionMetamac codelistVersion, String variableID) {
         if (source == null) {
             return null;
         }
         CodeResourceInternal target = new CodeResourceInternal();
         toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), toCodeManagementApplicationLink(codelistVersion, source), target, codelistVersion
                 .getMaintainableArtefact().getIsImported());
+        target.setVariableElement(toResource(variableID, ((CodeMetamacResultExtensionPoint) source.getExtensionPoint()).getVariableElement()));
         target.setOrder(SrmServiceUtils.getCodeItemResultOrder(source) + 1); // add 1 to start in 1, instead of 0
         target.setOpen(SrmServiceUtils.getCodeItemResultOpenness(source));
         return target;

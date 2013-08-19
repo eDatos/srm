@@ -71,6 +71,7 @@ import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
@@ -169,7 +170,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     private final ServiceContext                  ctx                      = new ServiceContext("restInternal", "restInternal", "restInternal");
     private final Logger                          logger                   = LoggerFactory.getLogger(SrmRestInternalFacadeV10Impl.class);
-    private final ItemMetamacResultSelection      itemResultSelection      = ItemMetamacResultSelection.API;
     private final PagingParameter                 pagingParameterOneResult = PagingParameter.pageAccess(1, 1, false);
 
     @Override
@@ -221,7 +221,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             } else {
                 // Retrieve all concepts of conceptScheme, without pagination
                 ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemePublished(agencyID, resourceID, version);
-                List<ItemResult> items = conceptsService.retrieveConceptsByConceptSchemeUrnUnordered(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn(), itemResultSelection);
+                List<ItemResult> items = conceptsService.retrieveConceptsByConceptSchemeUrnUnordered(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn(), ItemMetamacResultSelection.API);
 
                 // Transform
                 Concepts concepts = conceptsDo2RestMapper.toConcepts(items, conceptSchemeVersion);
@@ -315,7 +315,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             } else {
                 // Retrieve all categories of categoryScheme, without pagination
                 CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemePublished(agencyID, resourceID, version);
-                List<ItemResult> items = categoriesService.retrieveCategoriesByCategorySchemeUrnUnordered(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn(), itemResultSelection);
+                List<ItemResult> items = categoriesService
+                        .retrieveCategoriesByCategorySchemeUrnUnordered(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn(), ItemMetamacResultSelection.API);
 
                 // Transform
                 Categories categories = categoriesDo2RestMapper.toCategories(items, categorySchemeVersion);
@@ -435,7 +436,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 // Retrieve all organisations of organisationScheme, without pagination
                 OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemePublished(agencyID, resourceID, version);
                 List<ItemResult> items = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(),
-                        itemResultSelection);
+                        ItemMetamacResultSelection.API);
 
                 // Transform
                 Organisations organisations = organisationsDo2RestMapper.toOrganisations(items, organisationSchemeVersion);
@@ -517,7 +518,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 // Retrieve all organisations of organisationScheme, without pagination
                 OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveAgencySchemePublished(agencyID, resourceID, version);
                 List<ItemResult> items = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(),
-                        itemResultSelection);
+                        ItemMetamacResultSelection.API);
 
                 // Transform
                 Agencies agencies = organisationsDo2RestMapper.toAgencies(items, organisationSchemeVersion);
@@ -600,7 +601,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 // Retrieve all organisations of organisationScheme, without pagination
                 OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationUnitSchemePublished(agencyID, resourceID, version);
                 List<ItemResult> items = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(),
-                        itemResultSelection);
+                        ItemMetamacResultSelection.API);
 
                 // Transform
                 OrganisationUnits organisationUnits = organisationsDo2RestMapper.toOrganisationUnits(items, organisationSchemeVersion);
@@ -684,7 +685,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 // Retrieve all organisations of organisationScheme, without pagination
                 OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveDataProviderSchemePublished(agencyID, resourceID, version);
                 List<ItemResult> items = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(),
-                        itemResultSelection);
+                        ItemMetamacResultSelection.API);
 
                 // Transform
                 DataProviders dataProviders = organisationsDo2RestMapper.toDataProviders(items, organisationSchemeVersion);
@@ -768,7 +769,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 // Retrieve all organisations of organisationScheme, without pagination
                 OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveDataConsumerSchemePublished(agencyID, resourceID, version);
                 List<ItemResult> items = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(ctx, organisationSchemeVersion.getMaintainableArtefact().getUrn(),
-                        itemResultSelection);
+                        ItemMetamacResultSelection.API);
 
                 // Transform
                 DataConsumers dataConsumers = organisationsDo2RestMapper.toDataConsumers(items, organisationSchemeVersion);
@@ -865,7 +866,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                     // check exist
                     retrieveCodelistOpennessVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), openness);
                 }
-                List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), itemResultSelection, order, openness);
+                List<ItemResult> items = codesService
+                        .retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), CodeMetamacResultSelection.API, order, openness);
 
                 // Transform
                 Codes codes = codesDo2RestMapper.toCodes(items, codelistVersion);

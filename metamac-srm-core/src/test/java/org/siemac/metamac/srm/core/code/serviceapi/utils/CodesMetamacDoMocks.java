@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
@@ -238,6 +239,16 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.setShapeWkt("shape1");
         target.setShapeGeojson("shape1Geojson");
         target.setGeographicalGranularity(mockCodeFixedValues("code1", mockCodelistFixedValues("agency01", "codelist01", "01.000"), null));
+        return target;
+    }
+
+    public static VariableElementResult mockVariableElementResultFixedValues(String resourceID) {
+        VariableElementResult target = new VariableElementResult();
+        target.setCode(resourceID);
+        target.setUrn("urn:sdmx:org.sdmx.infomodel.xxx=" + resourceID);
+        target.getShortName().putAll(mockInternationalStringResultFixedValues("shortName", resourceID));
+        target.getAnnotations().add(mockAnnotationResultFixedValues("code1"));
+        target.getAnnotations().add(mockAnnotationResultFixedValues("code2"));
         return target;
     }
 

@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -406,7 +407,7 @@ public class SrmServiceUtils extends SdmxSrmUtils {
         return extensionPoint.getShortName();
     }
 
-    public static String getCodeItemResultVariableElement(ItemResult itemResult) {
+    public static String getCodeItemResultVariableElementCode(ItemResult itemResult) {
         if (itemResult.getExtensionPoint() == null) {
             return null;
         }
@@ -428,6 +429,14 @@ public class SrmServiceUtils extends SdmxSrmUtils {
         }
         CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) itemResult.getExtensionPoint();
         return extensionPoint.getOpenness();
+    }
+
+    public static VariableElementResult getCodeItemResultVariableElementFull(ItemResult itemResult) {
+        if (itemResult.getExtensionPoint() == null) {
+            return null;
+        }
+        CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        return extensionPoint.getVariableElement();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

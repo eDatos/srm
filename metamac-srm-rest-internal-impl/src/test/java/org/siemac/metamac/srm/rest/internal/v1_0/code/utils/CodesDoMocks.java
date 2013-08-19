@@ -34,7 +34,9 @@ public class CodesDoMocks {
     }
 
     public static CodeMetamac mockCode(String resourceID, CodelistVersionMetamac codelist, CodeMetamac parent) {
-        return CodesMetamacDoMocks.mockCodeFixedValues(resourceID, codelist, parent);
+        CodeMetamac target = CodesMetamacDoMocks.mockCodeFixedValues(resourceID, codelist, parent);
+        target.setVariableElement(CodesMetamacDoMocks.mockVariableElementFixedValues("variableElement-" + resourceID));
+        return target;
     }
 
     public static ItemResult mockCodeItemResult(String resourceID, ItemResult parent, Integer order, Boolean open) {
@@ -47,6 +49,7 @@ public class CodesDoMocks {
         itemResult.setExtensionPoint(extensionPoint);
         extensionPoint.setOpenness(open);
         extensionPoint.setOrder(order);
+        extensionPoint.setVariableElement(CodesMetamacDoMocks.mockVariableElementResultFixedValues("variableElement-" + resourceID));
         return itemResult;
     }
 
