@@ -284,7 +284,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                     return buildSculptorPropertyCriteria(VariableElementProperties.identifiableArtefact().code(), PropertyTypeEnum.STRING, propertyRestriction);
                 case URN:
                     return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, VariableElementProperties.identifiableArtefact());
-                case SHORT_NAME:
+                case NAME:
                     return buildSculptorPropertyCriteria(VariableElementProperties.shortName().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());

@@ -609,7 +609,7 @@ public class CodesDo2RestMapperTest {
         assertEquals(RestInternalConstants.KIND_VARIABLE_ELEMENT, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=variableElement1", target.getManagementAppLink());
-        assertEqualsInternationalString("es", "shortName-variableElement1 en Español", "en", "shortName-variableElement1 in English", target.getShortName());
+        assertEqualsInternationalString("es", "shortName-variableElement1 en Español", "en", "shortName-variableElement1 in English", target.getName());
         assertEqualsInternationalString("es", "comment-variableElement1 en Español", "en", "comment-variableElement1 in English", target.getComment());
         MetamacAsserts.assertEqualsDate("2012-10-01 10:12:13", target.getValidFrom());
         MetamacAsserts.assertEqualsDate("2013-10-01 10:12:13", target.getValidTo());

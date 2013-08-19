@@ -8,10 +8,10 @@
         <cdomain:childLink href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable01/variableelements/artefact1/geographicalinformation"/>
     </sr:childLinks>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=artefact1</sr:managementAppLink>
-    <sr:shortName>
+    <sr:name>
         <cdomain:text xml:lang="en">shortName-artefact1 in English</cdomain:text>
         <cdomain:text xml:lang="es">shortName-artefact1 en Español</cdomain:text>
-    </sr:shortName>
+    </sr:name>
     <sr:comment>
         <cdomain:text xml:lang="es">comment-artefact1 en Español</cdomain:text>
         <cdomain:text xml:lang="en">comment-artefact1 in English</cdomain:text>
