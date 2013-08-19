@@ -366,9 +366,9 @@ public class CodesDo2RestMapperTest {
         assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agencyID1:resourceID1(01.123)/code;id=code2", target.getManagementAppLink());
 
         assertEqualsInternationalString("es", "comment-code2 en Español", "en", "comment-code2 in English", target.getComment());
-        assertEqualsInternationalString("es", "shortName-variableElement1 en Español", "en", "shortName-variableElement1 in English", target.getShortName());
-        assertEquals("variableElement1", target.getVariableElement().getId());
-        assertEqualsInternationalString("es", "shortName-variableElement1 en Español", "en", "shortName-variableElement1 in English", target.getVariableElement().getName());
+        assertEqualsInternationalString("es", "shortName-variableElement-code2 en Español", "en", "shortName-variableElement-code2 in English", target.getShortName());
+        assertEquals("variableElement-code2", target.getVariableElement().getId());
+        assertEqualsInternationalString("es", "shortName-variableElement-code2 en Español", "en", "shortName-variableElement-code2 in English", target.getVariableElement().getName());
         assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=agencyID1:resourceID1(01.123).codeParent1", target.getParent());
     }
 
