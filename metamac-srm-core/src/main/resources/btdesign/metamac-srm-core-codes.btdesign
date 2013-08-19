@@ -227,7 +227,7 @@ Application CodesMetamac {
     		"Finds variable elements can be for codes of codelist"
     		PagedResult<@VariableElement> findVariableElementsForCodesByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String codelistUrn) throws MetamacException;
     		"Finds efficiently variable elements by variable"
-    		List<VariableElementResult> retrieveVariableElementsByVariable(String variableUrn, String locale) throws MetamacException;
+    		List<VariableElementVisualisationResult> retrieveVariableElementsByVariable(String variableUrn, String locale) throws MetamacException;
 			"Deletes variable element"
     		deleteVariableElement(String urn) throws MetamacException;
     		"Adds variable element to a variable"
@@ -565,7 +565,7 @@ Application CodesMetamac {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				findByCondition(PagingParameter pagingParameter);
 				@VariableElement findByUrn(String urn);
-				List<VariableElementResult> retrieveVariableElementsByVariableEfficiently(Long variableId, String locale);
+				List<VariableElementVisualisationResult> retrieveVariableElementsByVariableEfficiently(Long variableId, String locale);
 				Long countVariableElementsByVariable(Long variableId);
 				clearGeographicalInformationByVariable(Long variableId);
 			}

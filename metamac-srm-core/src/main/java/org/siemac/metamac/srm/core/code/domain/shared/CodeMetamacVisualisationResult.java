@@ -6,18 +6,18 @@ public class CodeMetamacVisualisationResult extends ItemVisualisationResult {
 
     private static final long     serialVersionUID = 1L;
 
-    private VariableElementResult variableElement;
+    private VariableElementVisualisationResult variableElement;
     private Integer               order;
     private Boolean               openness;
 
     public CodeMetamacVisualisationResult() {
     }
 
-    public VariableElementResult getVariableElement() {
+    public VariableElementVisualisationResult getVariableElement() {
         return variableElement;
     }
 
-    public void setVariableElement(VariableElementResult variableElement) {
+    public void setVariableElement(VariableElementVisualisationResult variableElement) {
         this.variableElement = variableElement;
     }
 

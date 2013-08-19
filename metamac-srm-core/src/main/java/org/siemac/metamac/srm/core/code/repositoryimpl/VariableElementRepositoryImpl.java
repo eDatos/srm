@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.persistence.Query;
 
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
-import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
+import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisationResult;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -37,7 +37,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List<VariableElementResult> retrieveVariableElementsByVariableEfficiently(Long variableId, String locale) {
+    public List<VariableElementVisualisationResult> retrieveVariableElementsByVariableEfficiently(Long variableId, String locale) {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ve.ID as VARIABLE_ELEMENT_ID, a.URN, a.CODE, ls.LABEL as SHORT_NAME_LABEL ");
         sb.append("FROM TB_M_VARIABLE_ELEMENTS ve ");
@@ -51,10 +51,10 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
         List variableElementsResultSql = query.getResultList();
 
         // Transform object[] results
-        List<VariableElementResult> targets = new ArrayList<VariableElementResult>(variableElementsResultSql.size());
+        List<VariableElementVisualisationResult> targets = new ArrayList<VariableElementVisualisationResult>(variableElementsResultSql.size());
         for (Object variableElementResultSql : variableElementsResultSql) {
             Object[] variableElementResultSqlArray = (Object[]) variableElementResultSql;
-            VariableElementResult target = variableElementResultSqlToVariableElementResult(variableElementResultSqlArray);
+            VariableElementVisualisationResult target = variableElementResultSqlToVariableElementVisualisationResult(variableElementResultSqlArray);
             targets.add(target);
         }
         return targets;
@@ -81,8 +81,8 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
         queryUpdate.executeUpdate();
     }
 
-    private VariableElementResult variableElementResultSqlToVariableElementResult(Object[] source) {
-        VariableElementResult target = new VariableElementResult();
+    private VariableElementVisualisationResult variableElementResultSqlToVariableElementVisualisationResult(Object[] source) {
+        VariableElementVisualisationResult target = new VariableElementVisualisationResult();
         int i = 0;
         target.setIdDatabase(getLong(source[i++]));
         target.setUrn(getString(source[i++]));

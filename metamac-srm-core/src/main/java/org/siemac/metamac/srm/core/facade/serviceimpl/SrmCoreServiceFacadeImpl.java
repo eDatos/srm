@@ -42,7 +42,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
-import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
+import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyBasicDto;
@@ -2137,7 +2137,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public List<VariableElementResult> retrieveVariableElementsByVariable(ServiceContext ctx, String variableUrn, String locale) throws MetamacException {
+    public List<VariableElementVisualisationResult> retrieveVariableElementsByVariable(ServiceContext ctx, String variableUrn, String locale) throws MetamacException {
         // Security
         CodesSecurityUtils.canRetrieveOrFindVariableElement(ctx);
 

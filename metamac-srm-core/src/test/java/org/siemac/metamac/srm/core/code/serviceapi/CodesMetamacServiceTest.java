@@ -77,7 +77,7 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationRe
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.TaskImportationInfo;
-import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
+import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisationResult;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
@@ -6671,65 +6671,65 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             String variableUrn = VARIABLE_6;
             String locale = "es";
-            List<VariableElementResult> result = codesService.retrieveVariableElementsByVariable(getServiceContextAdministrador(), variableUrn, locale);
+            List<VariableElementVisualisationResult> result = codesService.retrieveVariableElementsByVariable(getServiceContextAdministrador(), variableUrn, locale);
             assertEquals(0, result.size());
         }
         {
             String variableUrn = VARIABLE_2;
             String locale = "es";
-            List<VariableElementResult> result = codesService.retrieveVariableElementsByVariable(getServiceContextAdministrador(), variableUrn, locale);
+            List<VariableElementVisualisationResult> result = codesService.retrieveVariableElementsByVariable(getServiceContextAdministrador(), variableUrn, locale);
             assertEquals(8, result.size());
             {
-                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_1, result);
+                VariableElementVisualisationResult ve = assertContainsVariableElementVisualisationResult(VARIABLE_2_VARIABLE_ELEMENT_1, result);
                 assertEquals(Long.valueOf(21), ve.getIdDatabase());
                 assertEquals("VARIABLE_ELEMENT_01", ve.getCode());
                 assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, ve.getUrn());
                 assertEquals("El Hierro", ve.getShortName());
             }
             {
-                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_2, result);
+                VariableElementVisualisationResult ve = assertContainsVariableElementVisualisationResult(VARIABLE_2_VARIABLE_ELEMENT_2, result);
                 assertEquals(Long.valueOf(22), ve.getIdDatabase());
                 assertEquals("VARIABLE_ELEMENT_02", ve.getCode());
                 assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, ve.getUrn());
                 assertEquals("Fuerteventura", ve.getShortName());
             }
             {
-                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_3, result);
+                VariableElementVisualisationResult ve = assertContainsVariableElementVisualisationResult(VARIABLE_2_VARIABLE_ELEMENT_3, result);
                 assertEquals(Long.valueOf(23), ve.getIdDatabase());
                 assertEquals("VARIABLE_ELEMENT_03", ve.getCode());
                 assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, ve.getUrn());
                 assertEquals("Gran Canaria", ve.getShortName());
             }
             {
-                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_4, result);
+                VariableElementVisualisationResult ve = assertContainsVariableElementVisualisationResult(VARIABLE_2_VARIABLE_ELEMENT_4, result);
                 assertEquals(Long.valueOf(24), ve.getIdDatabase());
                 assertEquals("VARIABLE_ELEMENT_04", ve.getCode());
                 assertEquals(VARIABLE_2_VARIABLE_ELEMENT_4, ve.getUrn());
                 assertEquals(null, ve.getShortName());
             }
             {
-                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_5, result);
+                VariableElementVisualisationResult ve = assertContainsVariableElementVisualisationResult(VARIABLE_2_VARIABLE_ELEMENT_5, result);
                 assertEquals(Long.valueOf(25), ve.getIdDatabase());
                 assertEquals("VARIABLE_ELEMENT_05", ve.getCode());
                 assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, ve.getUrn());
                 assertEquals("La Palma", ve.getShortName());
             }
             {
-                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_6, result);
+                VariableElementVisualisationResult ve = assertContainsVariableElementVisualisationResult(VARIABLE_2_VARIABLE_ELEMENT_6, result);
                 assertEquals(Long.valueOf(26), ve.getIdDatabase());
                 assertEquals("VARIABLE_ELEMENT_06", ve.getCode());
                 assertEquals(VARIABLE_2_VARIABLE_ELEMENT_6, ve.getUrn());
                 assertEquals("La Gomera", ve.getShortName());
             }
             {
-                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_7, result);
+                VariableElementVisualisationResult ve = assertContainsVariableElementVisualisationResult(VARIABLE_2_VARIABLE_ELEMENT_7, result);
                 assertEquals(Long.valueOf(27), ve.getIdDatabase());
                 assertEquals("VARIABLE_ELEMENT_07", ve.getCode());
                 assertEquals(VARIABLE_2_VARIABLE_ELEMENT_7, ve.getUrn());
                 assertEquals("Tenerife", ve.getShortName());
             }
             {
-                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_8, result);
+                VariableElementVisualisationResult ve = assertContainsVariableElementVisualisationResult(VARIABLE_2_VARIABLE_ELEMENT_8, result);
                 assertEquals(Long.valueOf(28), ve.getIdDatabase());
                 assertEquals("VARIABLE_ELEMENT_08", ve.getCode());
                 assertEquals(VARIABLE_2_VARIABLE_ELEMENT_8, ve.getUrn());
@@ -6738,31 +6738,31 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             String variableUrn = VARIABLE_5;
             String locale = "en";
-            List<VariableElementResult> result = codesService.retrieveVariableElementsByVariable(getServiceContextAdministrador(), variableUrn, locale);
+            List<VariableElementVisualisationResult> result = codesService.retrieveVariableElementsByVariable(getServiceContextAdministrador(), variableUrn, locale);
             assertEquals(4, result.size());
             {
-                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_1, result);
+                VariableElementVisualisationResult ve = assertContainsVariableElementVisualisationResult(VARIABLE_5_VARIABLE_ELEMENT_1, result);
                 assertEquals(Long.valueOf(51), ve.getIdDatabase());
                 assertEquals("VARIABLE_ELEMENT_01", ve.getCode());
                 assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, ve.getUrn());
                 assertEquals("Short name 5-1", ve.getShortName());
             }
             {
-                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_2, result);
+                VariableElementVisualisationResult ve = assertContainsVariableElementVisualisationResult(VARIABLE_5_VARIABLE_ELEMENT_2, result);
                 assertEquals(Long.valueOf(52), ve.getIdDatabase());
                 assertEquals("VARIABLE_ELEMENT_02", ve.getCode());
                 assertEquals(VARIABLE_5_VARIABLE_ELEMENT_2, ve.getUrn());
                 assertEquals(null, ve.getShortName());
             }
             {
-                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_3, result);
+                VariableElementVisualisationResult ve = assertContainsVariableElementVisualisationResult(VARIABLE_5_VARIABLE_ELEMENT_3, result);
                 assertEquals(Long.valueOf(53), ve.getIdDatabase());
                 assertEquals("VARIABLE_ELEMENT_03", ve.getCode());
                 assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, ve.getUrn());
                 assertEquals("short name ve5-3", ve.getShortName());
             }
             {
-                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_4, result);
+                VariableElementVisualisationResult ve = assertContainsVariableElementVisualisationResult(VARIABLE_5_VARIABLE_ELEMENT_4, result);
                 assertEquals(Long.valueOf(54), ve.getIdDatabase());
                 assertEquals("VARIABLE_ELEMENT_04", ve.getCode());
             }
@@ -9554,8 +9554,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals(typeExpected, actual.getResultType());
     }
 
-    private VariableElementResult assertContainsVariableElementResult(String variableElementUrnExpected, List<VariableElementResult> actuals) {
-        for (VariableElementResult actual : actuals) {
+    private VariableElementVisualisationResult assertContainsVariableElementVisualisationResult(String variableElementUrnExpected, List<VariableElementVisualisationResult> actuals) {
+        for (VariableElementVisualisationResult actual : actuals) {
             if (actual.getUrn().equals(variableElementUrnExpected)) {
                 return actual;
             }

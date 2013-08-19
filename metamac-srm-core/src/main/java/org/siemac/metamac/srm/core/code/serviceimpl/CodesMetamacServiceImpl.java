@@ -78,7 +78,7 @@ import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationRe
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.TaskImportationInfo;
-import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
+import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisationResult;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
@@ -1365,15 +1365,15 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Find codes and variable elements
         List<CodeMetamacVisualisationResult> codes = retrieveCodesByCodelistUrn(ctx, codelistUrn, locale, null, null);
-        List<VariableElementResult> variableElements = retrieveVariableElementsByVariable(ctx, variableUrn, locale);
-        Map<String, VariableElementResult> variableElementsByUrn = new HashMap<String, VariableElementResult>(variableElements.size());
-        for (VariableElementResult variableElement : variableElements) {
+        List<VariableElementVisualisationResult> variableElements = retrieveVariableElementsByVariable(ctx, variableUrn, locale);
+        Map<String, VariableElementVisualisationResult> variableElementsByUrn = new HashMap<String, VariableElementVisualisationResult>(variableElements.size());
+        for (VariableElementVisualisationResult variableElement : variableElements) {
             variableElementsByUrn.put(variableElement.getUrn(), variableElement);
         }
 
         // Init dictionary with variable elements
         Map<String, String> dictionary = new HashMap<String, String>(variableElements.size());
-        for (VariableElementResult variableElement : variableElements) {
+        for (VariableElementVisualisationResult variableElement : variableElements) {
             if (variableElement.getShortName() != null) {
                 dictionary.put(variableElement.getUrn(), variableElement.getShortName());
             }
@@ -1394,7 +1394,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 if (name != null) {
                     List<MatchResult> suggestedVariableElements = luceneMatch.getSuggestedWords(name, 1);
                     if (suggestedVariableElements.size() != 0) {
-                        VariableElementResult variableElement = variableElementsByUrn.get(suggestedVariableElements.get(0).getDictionaryKey());
+                        VariableElementVisualisationResult variableElement = variableElementsByUrn.get(suggestedVariableElements.get(0).getDictionaryKey());
                         result.setVariableElementProposed(variableElement);
                     }
                 }
@@ -1873,7 +1873,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public List<VariableElementResult> retrieveVariableElementsByVariable(ServiceContext ctx, String variableUrn, String locale) throws MetamacException {
+    public List<VariableElementVisualisationResult> retrieveVariableElementsByVariable(ServiceContext ctx, String variableUrn, String locale) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkRetrieveVariableElementsByVariable(variableUrn, locale, null);
 

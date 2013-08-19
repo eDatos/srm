@@ -35,7 +35,7 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
-import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
+import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisationResult;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -417,7 +417,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             Object[] variableElementResultSqlArray = (Object[]) variableElementResultSql;
             Long actualItemId = getLong(variableElementResultSqlArray[0]);
             CodeMetamacVisualisationResult target = (CodeMetamacVisualisationResult) mapCodeByItemId.get(actualItemId);
-            VariableElementResult variableElement = variableElementResultSqlToVariableElementResult(variableElementResultSqlArray);
+            VariableElementVisualisationResult variableElement = variableElementResultSqlToVariableElementVisualisationResult(variableElementResultSqlArray);
             target.setVariableElement(variableElement);
         }
 
@@ -686,8 +686,8 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         return target;
     }
 
-    private VariableElementResult variableElementResultSqlToVariableElementResult(Object[] source) {
-        VariableElementResult target = new VariableElementResult();
+    private VariableElementVisualisationResult variableElementResultSqlToVariableElementVisualisationResult(Object[] source) {
+        VariableElementVisualisationResult target = new VariableElementVisualisationResult();
         int i = 0;
         i++; // itemId
         target.setIdDatabase(getLong(source[i++]));

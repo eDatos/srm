@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.core.code.domain.shared;
 
 import java.io.Serializable;
 
-public class VariableElementResult implements Serializable {
+public class VariableElementVisualisationResult implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -11,7 +11,7 @@ public class VariableElementResult implements Serializable {
     private String            urn;
     private String            shortName;
 
-    public VariableElementResult() {
+    public VariableElementVisualisationResult() {
     }
 
     public Long getIdDatabase() {

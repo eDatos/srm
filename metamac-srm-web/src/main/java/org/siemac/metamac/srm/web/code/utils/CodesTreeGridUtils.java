@@ -4,7 +4,7 @@ import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
-import org.siemac.metamac.srm.core.code.domain.shared.VariableElementResult;
+import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisationResult;
 import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.utils.ItemsTreeGridUtils;
@@ -59,7 +59,7 @@ public class CodesTreeGridUtils extends ItemsTreeGridUtils {
 
     public static CodeTreeNode createCodeTreeNode(String schemeNodeName, CodeVariableElementNormalisationResult result) {
         CodeMetamacVisualisationResult code = result.getCode();
-        VariableElementResult variableElement = result.getVariableElementProposed();
+        VariableElementVisualisationResult variableElement = result.getVariableElementProposed();
         CodeTreeNode node = createCodeTreeNode(schemeNodeName, code);
         node.setVariableElement(variableElement);
         return node;
