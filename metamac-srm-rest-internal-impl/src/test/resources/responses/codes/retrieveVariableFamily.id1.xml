@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sr:variableFamily xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain"       xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#variableFamily">
+<sr:variableFamily xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#variableFamily">
+    <sr:annotations total="2">
+        <sr:annotation>
+            <sr:id>code1</sr:id>
+            <sr:title>title-code1</sr:title>
+            <sr:type>type-code1</sr:type>
+            <sr:url>url-code1</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+        <sr:annotation>
+            <sr:id>code2</sr:id>
+            <sr:title>title-code2</sr:title>
+            <sr:type>type-code2</sr:type>
+            <sr:url>url-code2</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
+                <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+    </sr:annotations>
     <sr:id>artefact1</sr:id>
     <sr:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=artefact1</sr:urn>
+    <sr:uri>uriProvider:artefact1</sr:uri>
     <sr:selfLink kind="structuralResources#variableFamily" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies/artefact1"/>
     <sr:childLinks total="1">
         <cdomain:childLink kind="structuralResources#variables" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies/artefact1/variables"/>
@@ -11,4 +34,12 @@
         <cdomain:text xml:lang="es">name-artefact1 en Español</cdomain:text>
         <cdomain:text xml:lang="en">name-artefact1 in English</cdomain:text>
     </sr:name>
+    <sr:description>
+        <cdomain:text xml:lang="en">description-artefact1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">description-artefact1 en Español</cdomain:text>
+    </sr:description>
+    <sr:comment>
+        <cdomain:text xml:lang="es">comment-artefact1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">comment-artefact1 in English</cdomain:text>
+    </sr:comment>
 </sr:variableFamily>

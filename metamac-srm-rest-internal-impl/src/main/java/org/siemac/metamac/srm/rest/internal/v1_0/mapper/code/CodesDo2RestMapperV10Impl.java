@@ -238,14 +238,14 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         VariableFamily target = new VariableFamily();
-        target.setId(source.getNameableArtefact().getCode());
-        target.setUrn(source.getNameableArtefact().getUrn());
-        target.setUrnProvider(null);
+        toNameableArtefact(source.getNameableArtefact(), target, false);
+
         target.setKind(RestInternalConstants.KIND_VARIABLE_FAMILY);
         target.setSelfLink(toVariableFamilySelfLink(source));
+        target.setParentLink(toVariableFamilyParentLink(source));
         target.setChildLinks(toVariableFamilyChildLinks(source));
         target.setManagementAppLink(toVariableFamilyManagementApplicationLink(source));
-        target.setName(toInternationalString(source.getNameableArtefact().getName()));
+
         return target;
     }
 
@@ -291,14 +291,14 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         Variable target = new Variable();
-        target.setId(source.getNameableArtefact().getCode());
-        target.setUrn(source.getNameableArtefact().getUrn());
-        target.setUrnProvider(null);
+        toNameableArtefact(source.getNameableArtefact(), target, false);
+
         target.setKind(RestInternalConstants.KIND_VARIABLE);
         target.setSelfLink(toVariableSelfLink(source));
+        target.setParentLink(toVariableParentLink(source));
         target.setChildLinks(toVariableChildLinks(source));
         target.setManagementAppLink(toVariableManagementApplicationLink(source));
-        target.setName(toInternationalString(source.getNameableArtefact().getName()));
+
         target.setShortName(toInternationalString(source.getShortName()));
         target.setType(toVariableType(source.getType()));
         target.setValidFrom(toDate(source.getValidFrom()));
@@ -350,14 +350,14 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         VariableElement target = new VariableElement();
-        target.setId(source.getIdentifiableArtefact().getCode());
-        target.setUrn(source.getIdentifiableArtefact().getUrn());
-        target.setUrnProvider(null);
+        toIdentifiableArtefact(source.getIdentifiableArtefact(), target, false);
+
         target.setKind(RestInternalConstants.KIND_VARIABLE_ELEMENT);
         target.setSelfLink(toVariableElementSelfLink(source));
         target.setParentLink(toVariableElementParentLink(source));
         target.setChildLinks(toVariableElementChildLinks(source));
         target.setManagementAppLink(toVariableElementManagementApplicationLink(source));
+
         target.setName(toInternationalString(source.getShortName()));
         target.setComment(toInternationalString(source.getComment()));
         target.setValidFrom(toDate(source.getValidFrom()));
@@ -402,12 +402,14 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         CodelistFamily target = new CodelistFamily();
-        target.setId(source.getNameableArtefact().getCode());
-        target.setUrn(source.getNameableArtefact().getUrn());
-        target.setUrnProvider(null);
+        toNameableArtefact(source.getNameableArtefact(), target, false);
+
         target.setKind(RestInternalConstants.KIND_CODELIST_FAMILY);
         target.setSelfLink(toCodelistFamilySelfLink(source));
+        target.setParentLink(toCodelistFamilyParentLink(source));
+        target.setChildLinks(toCodelistFamilyChildLinks(source));
         target.setManagementAppLink(toCodelistFamilyManagementApplicationLink(source));
+
         target.setName(toInternationalString(source.getNameableArtefact().getName()));
         return target;
     }
@@ -463,11 +465,19 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return null;
     }
 
+    private ResourceLink toVariableFamilyParentLink(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
+        return null;
+    }
+
     private ChildLinks toVariableFamilyChildLinks(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
         ChildLinks targets = new ChildLinks();
         targets.getChildLinks().add(toResourceLink(RestInternalConstants.KIND_VARIABLES, toVariablesByFamilyLink(source)));
         targets.setTotal(BigInteger.valueOf(targets.getChildLinks().size()));
         return targets;
+    }
+
+    private ResourceLink toVariableParentLink(org.siemac.metamac.srm.core.code.domain.Variable source) {
+        return null;
     }
 
     private ChildLinks toVariableChildLinks(org.siemac.metamac.srm.core.code.domain.Variable source) {
@@ -486,6 +496,14 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         targets.getChildLinks().add(toResourceLink(null, toVariableElementGeoLink(source)));
         targets.setTotal(BigInteger.valueOf(targets.getChildLinks().size()));
         return targets;
+    }
+
+    private ResourceLink toCodelistFamilyParentLink(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
+        return null;
+    }
+
+    private ChildLinks toCodelistFamilyChildLinks(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
+        return null;
     }
 
     private ResourceInternal toResource(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
