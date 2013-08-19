@@ -70,6 +70,7 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
@@ -6769,6 +6770,114 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    @Test
+    @Override
+    public void testFindVariableElementsByVariableEfficiently() throws Exception {
+        {
+            String variableUrn = VARIABLE_6;
+            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null);
+            assertEquals(0, result.size());
+        }
+        {
+            String variableUrn = VARIABLE_2;
+            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null);
+            assertEquals(8, result.size());
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_1, result);
+                assertEquals(Long.valueOf(21), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_01", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, ve.getUrn());
+                assertEquals("El Hierro", ve.getShortName().get("es"));
+                assertEquals("short name variableElement 2-1", ve.getShortName().get("en"));
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_2, result);
+                assertEquals(Long.valueOf(22), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_02", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, ve.getUrn());
+                assertEquals("Fuerteventura", ve.getShortName().get("es"));
+                assertEquals("Short name variableElement 2-2", ve.getShortName().get("en"));
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_3, result);
+                assertEquals(Long.valueOf(23), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_03", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_3, ve.getUrn());
+                assertEquals("Gran Canaria", ve.getShortName().get("es"));
+                assertEquals(null, ve.getShortName().get("en"));
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_4, result);
+                assertEquals(Long.valueOf(24), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_04", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_4, ve.getUrn());
+                assertEquals(null, ve.getShortName().get("es"));
+                assertEquals("short name v2-4", ve.getShortName().get("en"));
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_5, result);
+                assertEquals(Long.valueOf(25), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_05", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_5, ve.getUrn());
+                assertEquals("La Palma", ve.getShortName().get("es"));
+                assertEquals("short name v2-5", ve.getShortName().get("en"));
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_6, result);
+                assertEquals(Long.valueOf(26), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_06", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_6, ve.getUrn());
+                assertEquals("La Gomera", ve.getShortName().get("es"));
+                assertEquals(null, ve.getShortName().get("en"));
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_7, result);
+                assertEquals(Long.valueOf(27), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_07", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_7, ve.getUrn());
+                assertEquals("Tenerife", ve.getShortName().get("es"));
+                assertEquals("Tenerife it", ve.getShortName().get("it"));
+                assertEquals("Teneriffa", ve.getShortName().get("en"));
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_8, result);
+                assertEquals(Long.valueOf(28), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_08", ve.getCode());
+                assertEquals(VARIABLE_2_VARIABLE_ELEMENT_8, ve.getUrn());
+                assertEquals("ncorto ve28", ve.getShortName().get("es"));
+            }
+        }
+        {
+            String variableUrn = VARIABLE_5;
+            List<String> variableElementsCodes = Arrays.asList("VARIABLE_ELEMENT_01", "VARIABLE_ELEMENT_03", "VARIABLE_ELEMENT_04");
+            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, variableElementsCodes);
+            assertEquals(3, result.size());
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_1, result);
+                assertEquals(Long.valueOf(51), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_01", ve.getCode());
+                assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, ve.getUrn());
+                assertEquals("Nombre corto 5-1", ve.getShortName().get("es"));
+                assertEquals("Short name 5-1", ve.getShortName().get("en"));
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_3, result);
+                assertEquals(Long.valueOf(53), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_03", ve.getCode());
+                assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, ve.getUrn());
+                assertEquals("título ve5-3", ve.getShortName().get("es"));
+                assertEquals("short name ve5-3", ve.getShortName().get("en"));
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_4, result);
+                assertEquals(Long.valueOf(54), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_04", ve.getCode());
+                assertEquals("nombre", ve.getShortName().get("es"));
+                assertEquals(null, ve.getShortName().get("en"));
+            }
+        }
+    }
+
     @Override
     @Test
     public void testDeleteVariableElement() throws Exception {
@@ -9556,6 +9665,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     private VariableElementVisualisationResult assertContainsVariableElementVisualisationResult(String variableElementUrnExpected, List<VariableElementVisualisationResult> actuals) {
         for (VariableElementVisualisationResult actual : actuals) {
+            if (actual.getUrn().equals(variableElementUrnExpected)) {
+                return actual;
+            }
+        }
+        fail("variable element not found");
+        return null;
+    }
+
+    private VariableElementResult assertContainsVariableElementResult(String variableElementUrnExpected, List<VariableElementResult> actuals) {
+        for (VariableElementResult actual : actuals) {
             if (actual.getUrn().equals(variableElementUrnExpected)) {
                 return actual;
             }

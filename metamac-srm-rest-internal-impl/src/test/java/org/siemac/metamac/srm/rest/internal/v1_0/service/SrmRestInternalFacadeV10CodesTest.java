@@ -10,6 +10,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoV
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodelists;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariableElements;
+import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariableElementsRetrieveAll;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariableFamilies;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariables;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveCode;
@@ -748,7 +749,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(RestInternalConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
         // Verify with Mockito
         verifyFindVariableElements(codesService, null, null, limit, offset, query, orderBy);
-
     }
 
     @Test
@@ -758,7 +758,32 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
 
+    @Test
+    public void testFindVariableElementsRetrieveAll() throws Exception {
+        String orderBy = null;
+        String limit = null;
+        String offset = null;
+        String variableID = "variable01";
+        {
+            String query = null;
+            VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
+            assertEquals(RestInternalConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
+            verifyFindVariableElementsRetrieveAll(codesService, variableID, null);
+        }
+        resetMocks();
+        {
+            String query = "ID IN ('code1', 'code2')";
+            getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
+            verifyFindVariableElementsRetrieveAll(codesService, variableID, Arrays.asList("code1", "code2"));
+        }
+        resetMocks();
+        {
+            String query = "ID EQ 'code1'";
+            getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
+            verifyFindVariableElementsRetrieveAll(codesService, variableID, Arrays.asList("code1"));
+        }
     }
 
     @Test

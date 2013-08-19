@@ -270,7 +270,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         toResource(source, kind, selfLink, managementAppUrl, target, source.getIsImported());
     }
 
-    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target, Boolean isImported) {
+    protected void toResource(IdentifiableArtefactResult source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, Boolean isImported) {
         if (source == null) {
             return;
         }
@@ -284,8 +284,15 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
         target.setKind(kind);
         target.setSelfLink(selfLink);
-        target.setName(toInternationalString(source.getName()));
         target.setManagementAppLink(managementAppUrl);
+    }
+
+    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target, Boolean isImported) {
+        if (source == null) {
+            return;
+        }
+        toResource((IdentifiableArtefactResult) source, kind, selfLink, managementAppUrl, target, isImported);
+        target.setName(toInternationalString(source.getName()));
         if (source.getParent() != null) {
             target.setParent(source.getParent().getUrn());
         }

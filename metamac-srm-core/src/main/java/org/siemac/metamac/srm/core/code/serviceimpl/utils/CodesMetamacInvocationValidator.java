@@ -657,6 +657,16 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkFindVariableElementsByVariableEfficiently(String variableUrn, List<String> variableElementCodes, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     public static void checkImportVariableElementsTsv(String variableUrn, InputStream stream, String charset, String fileName, Boolean updateAlreadyExisting,
             List<MetamacExceptionItem> informationItems, Boolean canBeBackground, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {

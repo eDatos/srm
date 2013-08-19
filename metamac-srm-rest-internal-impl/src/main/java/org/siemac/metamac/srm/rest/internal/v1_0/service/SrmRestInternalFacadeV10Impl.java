@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.core.Response.Status;
@@ -8,6 +9,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria.Operator;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -75,12 +77,14 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -992,13 +996,27 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Retrieve by criteria
             SculptorCriteria sculptorCriteria = codesRest2DoMapper.getVariableElementCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
 
-            // Retrieve
-            PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(null, null, sculptorCriteria.getConditions(),
-                    sculptorCriteria.getPagingParameter());
+            if (mustFindVariableElementsInsteadRetrieveAllVariableElementsOfVariable(variableID, query, sculptorCriteria.getConditions(), orderBy, limit, offset)) {
+                // Find. Retrieve variable elements paginated
+                PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(null, null, sculptorCriteria.getConditions(),
+                        sculptorCriteria.getPagingParameter());
 
-            // Transform
-            VariableElements variableElements = codesDo2RestMapper.toVariableElements(entitiesPagedResult, variableID, query, orderBy, sculptorCriteria.getLimit());
-            return variableElements;
+                // Transform
+                VariableElements variableElements = codesDo2RestMapper.toVariableElements(entitiesPagedResult, variableID, query, orderBy, sculptorCriteria.getLimit());
+                return variableElements;
+            } else {
+                // Retrieve all variable elements of variable, without pagination
+                String variableUrn = GeneratorUrnUtils.generateVariableUrn(variableID);
+                List<String> variableElementsCodes = null;
+                if (query != null) {
+                    variableElementsCodes = extractVariableElementCodesIfOnlyQueryByCode(sculptorCriteria.getConditions());
+                }
+                List<VariableElementResult> entities = codesService.findVariableElementsByVariableEfficiently(ctx, variableUrn, variableElementsCodes);
+
+                // Transform
+                VariableElements variableElements = codesDo2RestMapper.toVariableElements(entities, variableID, query);
+                return variableElements;
+            }
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -1622,5 +1640,51 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
         // can retrieve all items of itemScheme
         return false;
+    }
+
+    private boolean mustFindVariableElementsInsteadRetrieveAllVariableElementsOfVariable(String variableID, String query, List<ConditionalCriteria> queries, String orderBy, String limit, String offset) {
+        if (variableID == null || RestInternalConstants.WILDCARD_ALL.equals(variableID)) {
+            return true;
+        }
+        if (orderBy != null || limit != null || offset != null) {
+            return true;
+        }
+        if (query != null && !isQueryOnlyByVariableElementCodes(queries)) {
+            return true;
+        }
+        // can retrieve all
+        return false;
+    }
+
+    /**
+     * If query != null, query must have three sentences to can find all variable elements: order, distinctRoot and code (id)
+     */
+    private boolean isQueryOnlyByVariableElementCodes(List<ConditionalCriteria> queries) {
+        if (queries.size() != 3) {
+            return false;
+        }
+        ConditionalCriteria query = extractQueryVariableElementWhenOnlyQueryByCode(queries);
+        if (!query.getPropertyFullName().equals(VariableElementProperties.identifiableArtefact().code().getName())) {
+            return false;
+        }
+        if (!query.getOperator().equals(Operator.In) && !query.getOperator().equals(Operator.Equal)) {
+            return false;
+        }
+        return true;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private List<String> extractVariableElementCodesIfOnlyQueryByCode(List<ConditionalCriteria> queries) {
+        ConditionalCriteria query = extractQueryVariableElementWhenOnlyQueryByCode(queries);
+        if (query.getOperator().equals(Operator.In)) {
+            return (List) query.getFirstOperant();
+        } else if (query.getOperator().equals(Operator.Equal)) {
+            return Arrays.asList((String) query.getFirstOperant());
+        }
+        return null;
+    }
+
+    private ConditionalCriteria extractQueryVariableElementWhenOnlyQueryByCode(List<ConditionalCriteria> queries) {
+        return queries.get(1);
     }
 }

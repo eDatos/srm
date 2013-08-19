@@ -194,9 +194,12 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildVariableElementUrl(VariableElement variableElement) {
+        return buildVariableElementUrl(variableElement.getVariable().getNameableArtefact().getCode(), variableElement.getIdentifiableArtefact().getCode());
+    }
+    public String buildVariableElementUrl(String variableID, String variableElementID) {
         Map<String, String> parameters = new HashMap<String, String>(2);
-        parameters.put(VARIABLE_PARAMETER, variableElement.getVariable().getNameableArtefact().getCode());
-        parameters.put(RESOURCE_ID_PARAMETER, variableElement.getIdentifiableArtefact().getCode());
+        parameters.put(VARIABLE_PARAMETER, variableID);
+        parameters.put(RESOURCE_ID_PARAMETER, variableElementID);
         return variableElementTemplate.expand(parameters).toString();
     }
 }

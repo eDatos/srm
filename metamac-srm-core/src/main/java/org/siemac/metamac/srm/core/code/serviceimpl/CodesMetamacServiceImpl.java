@@ -73,6 +73,7 @@ import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
@@ -1880,6 +1881,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Find
         Variable variable = retrieveVariableByUrn(variableUrn);
         return getVariableElementRepository().retrieveVariableElementsByVariableEfficientlyToVisualisation(variable.getId(), locale);
+    }
+
+    @Override
+    public List<VariableElementResult> findVariableElementsByVariableEfficiently(ServiceContext ctx, String variableUrn, List<String> variableElementCodes) throws MetamacException {
+        // Validation
+        CodesMetamacInvocationValidator.checkFindVariableElementsByVariableEfficiently(variableUrn, variableElementCodes, null);
+
+        // Find
+        Variable variable = retrieveVariableByUrn(variableUrn);
+        return getVariableElementRepository().findVariableElementsByVariableEfficiently(variable.getId(), variableElementCodes);
     }
 
     @Override

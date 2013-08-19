@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.code.utils;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
@@ -12,6 +13,7 @@ import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.mockito.ArgumentCaptor;
+import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.rest.common.test.utils.MetamacRestAsserts;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
@@ -72,6 +74,18 @@ public class CodesMockitoVerify extends MockitoVerify {
 
     public static void verifyFindVariableElements(CodesMetamacService codesService, String resourceID, String variableID, String limit, String offset, String query, String orderBy) throws Exception {
         verifyFindVariableElements(codesService, resourceID, variableID, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
+    }
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static void verifyFindVariableElementsRetrieveAll(CodesMetamacService codesService, String variableID, List<String> variableElementCodes) throws Exception {
+        ArgumentCaptor<String> variableUrnArgument = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<List> variableElementCodesArgument = ArgumentCaptor.forClass(List.class);
+        verify(codesService).findVariableElementsByVariableEfficiently(any(ServiceContext.class), variableUrnArgument.capture(), variableElementCodesArgument.capture());
+
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=" + variableID, variableUrnArgument.getValue());
+        MetamacAsserts.assertEqualsNullability(variableElementCodes, variableElementCodesArgument.getValue());
+        if (variableElementCodes != null) {
+            assertEquals(variableElementCodes.toString(), variableElementCodesArgument.getValue().toString());
+        }
     }
 
     public static void verifyRetrieveCodelistFamily(CodesMetamacService codesService, String resourceID) throws Exception {
