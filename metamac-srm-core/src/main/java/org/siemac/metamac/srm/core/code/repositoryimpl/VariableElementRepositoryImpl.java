@@ -37,7 +37,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List<VariableElementVisualisationResult> retrieveVariableElementsByVariableEfficiently(Long variableId, String locale) {
+    public List<VariableElementVisualisationResult> retrieveVariableElementsByVariableEfficientlyToVisualisation(Long variableId, String locale) {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ve.ID as VARIABLE_ELEMENT_ID, a.URN, a.CODE, ls.LABEL as SHORT_NAME_LABEL ");
         sb.append("FROM TB_M_VARIABLE_ELEMENTS ve ");

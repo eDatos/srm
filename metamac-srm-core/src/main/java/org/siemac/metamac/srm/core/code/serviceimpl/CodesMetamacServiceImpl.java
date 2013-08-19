@@ -1879,7 +1879,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Find
         Variable variable = retrieveVariableByUrn(variableUrn);
-        return getVariableElementRepository().retrieveVariableElementsByVariableEfficiently(variable.getId(), locale);
+        return getVariableElementRepository().retrieveVariableElementsByVariableEfficientlyToVisualisation(variable.getId(), locale);
     }
 
     @Override
