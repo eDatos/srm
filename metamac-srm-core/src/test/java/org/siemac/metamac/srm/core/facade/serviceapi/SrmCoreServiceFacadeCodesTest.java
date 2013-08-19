@@ -1917,7 +1917,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             VariableElementDto variableElementDto = srmCoreServiceFacade.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_1);
             assertNotNull(variableElementDto.getLatitude());
             assertNotNull(variableElementDto.getLongitude());
-            assertNotNull(variableElementDto.getShape());
+            assertNotNull(variableElementDto.getShapeWkt());
             assertNotNull(variableElementDto.getShapeGeojson());
             assertNotNull(variableElementDto.getGeographicalGranularity());
         }
@@ -1932,7 +1932,7 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             VariableElementDto variableElementDto = srmCoreServiceFacade.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_1);
             assertNull(variableElementDto.getLatitude());
             assertNull(variableElementDto.getLongitude());
-            assertNull(variableElementDto.getShape());
+            assertNull(variableElementDto.getShapeWkt());
             assertNull(variableElementDto.getShapeGeojson());
             assertNull(variableElementDto.getGeographicalGranularity());
         }

@@ -99,7 +99,7 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String  VARIABLE_ELEMENT_VARIABLE                                  = createCode(VARIABLE_ELEMENT_PREFIX, "variable");
     public static final String  VARIABLE_ELEMENT_LATITUDE                                  = createCode(VARIABLE_ELEMENT_PREFIX, "latitude");
     public static final String  VARIABLE_ELEMENT_LONGITUDE                                 = createCode(VARIABLE_ELEMENT_PREFIX, "longitude");
-    public static final String  VARIABLE_ELEMENT_SHAPE                                     = createCode(VARIABLE_ELEMENT_PREFIX, "shape");
+    public static final String  VARIABLE_ELEMENT_SHAPE_WKT                                 = createCode(VARIABLE_ELEMENT_PREFIX, "shape_wkt");
     public static final String  VARIABLE_ELEMENT_SHAPE_GEOJSON                             = createCode(VARIABLE_ELEMENT_PREFIX, "shape_geojson");
     public static final String  VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY                  = createCode(VARIABLE_ELEMENT_PREFIX, "geographical_granularity");
 

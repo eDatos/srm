@@ -550,7 +550,7 @@ Application CodesMetamac {
 			// Geographical information
 			Double latitude nullable;
 			Double longitude nullable;
-			Clob shape nullable;
+			Clob shapeWkt nullable;
 			Clob shapeGeojson nullable;
 			- @CodeMetamac geographicalGranularity nullable cascade="none" fetch="lazy" databaseColumn="GEOGRAPHICAL_GRANULARITY_FK";
 			

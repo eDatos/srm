@@ -124,7 +124,7 @@ Application DtosMetamacCodeDomain {
 			- @VariableRelatedResourceDto variable not nullable;
 			Double latitude nullable;
 			Double longitude nullable;
-			String shape nullable;
+			String shapeWkt nullable;
 			String shapeGeojson nullable;
 			- @RelatedResourceDto geographicalGranularity nullable;
 			"Version to optimistic locking"

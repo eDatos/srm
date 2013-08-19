@@ -3667,7 +3667,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 }
 
                 if (geometry instanceof MultiPolygon || geometry instanceof Polygon) {
-                    variableElement.setShape(geometry.toText()); // well-known text format
+                    variableElement.setShapeWkt(geometry.toText()); // well-known text format
                     variableElement.setShapeGeojson(geometryJSON.toString(geometry)); // geoJSON format
                     variableElementsToPersist.add(variableElement);
                 } else if (geometry instanceof Point) {

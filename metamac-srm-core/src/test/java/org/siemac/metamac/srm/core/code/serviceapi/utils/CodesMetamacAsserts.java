@@ -401,7 +401,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEquals(expected.getVariable().getNameableArtefact().getUrn(), actual.getVariable().getNameableArtefact().getUrn());
         assertEquals(expected.getLatitude(), actual.getLatitude());
         assertEquals(expected.getLongitude(), actual.getLongitude());
-        assertEquals(expected.getShape(), actual.getShape());
+        assertEquals(expected.getShapeWkt(), actual.getShapeWkt());
         assertEquals(expected.getShapeGeojson(), actual.getShapeGeojson());
         assertEqualsNullability(expected.getGeographicalGranularity(), actual.getGeographicalGranularity());
         if (expected.getGeographicalGranularity() != null) {
@@ -427,7 +427,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsInternationalStringDto(expected.getComment(), actual.getComment());
         assertEquals(expected.getLatitude(), actual.getLatitude());
         assertEquals(expected.getLongitude(), actual.getLongitude());
-        assertEquals(expected.getShape(), actual.getShape());
+        assertEquals(expected.getShapeWkt(), actual.getShapeWkt());
         assertEquals(expected.getShapeGeojson(), actual.getShapeGeojson());
         BaseAsserts.assertEqualsRelatedResourceDto(expected.getGeographicalGranularity(), actual.getGeographicalGranularity());
         assertEquals(expected.getValidFrom(), actual.getValidFrom());
@@ -476,7 +476,7 @@ public class CodesMetamacAsserts extends CodesAsserts {
         assertEqualsInternationalString(entity.getComment(), dto.getComment());
         assertEquals(entity.getLatitude(), dto.getLatitude());
         assertEquals(entity.getLongitude(), dto.getLongitude());
-        assertEquals(entity.getShape(), dto.getShape());
+        assertEquals(entity.getShapeWkt(), dto.getShapeWkt());
         assertEquals(entity.getShapeGeojson(), dto.getShapeGeojson());
         assertEqualsNullability(entity.getGeographicalGranularity(), dto.getGeographicalGranularity());
         if (entity.getGeographicalGranularity() != null) {

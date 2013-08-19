@@ -5455,7 +5455,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="1"
                 LONGITUDE="2"
-                SHAPE="3"
+                SHAPE_WKT="3"
                 SHAPE_GEOJSON="{3}"
                 GEOGRAPHICAL_GRANULARITY_FK="1011"
                                 
@@ -5599,7 +5599,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="[null]"
                 LONGITUDE="[null]"
-                SHAPE="[null]"
+                SHAPE_WKT="[null]"
                 SHAPE_GEOJSON="[null]"
                 GEOGRAPHICAL_GRANULARITY_FK="[null]"
                                 
@@ -5699,7 +5699,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="[null]"
                 LONGITUDE="[null]"
-                SHAPE="[null]"
+                SHAPE_WKT="[null]"
                 SHAPE_GEOJSON="[null]"
                 GEOGRAPHICAL_GRANULARITY_FK="[null]"
                 
@@ -5750,7 +5750,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="23"
                 LATITUDE="[null]"
                 LONGITUDE="[null]"
-                SHAPE="[null]"
+                SHAPE_WKT="[null]"
                 SHAPE_GEOJSON="[null]"
                 GEOGRAPHICAL_GRANULARITY_FK="[null]"
                                 
@@ -5800,7 +5800,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="22"
                 LATITUDE="[null]"
                 LONGITUDE="[null]"
-                SHAPE="[null]"
+                SHAPE_WKT="[null]"
                 SHAPE_GEOJSON="[null]"
                 GEOGRAPHICAL_GRANULARITY_FK="[null]"
                                 
@@ -5850,7 +5850,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="[null]"
                 LONGITUDE="[null]"
-                SHAPE="[null]"
+                SHAPE_WKT="[null]"
                 SHAPE_GEOJSON="[null]"
                 GEOGRAPHICAL_GRANULARITY_FK="[null]"
                 
@@ -5900,7 +5900,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="[null]"
                 LONGITUDE="[null]"
-                SHAPE="[null]"
+                SHAPE_WKT="[null]"
                 SHAPE_GEOJSON="[null]"
                 GEOGRAPHICAL_GRANULARITY_FK="[null]"
                 
@@ -5950,7 +5950,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="[null]"
                 LONGITUDE="[null]"
-                SHAPE="[null]"
+                SHAPE_WKT="[null]"
                 SHAPE_GEOJSON="[null]"
                 GEOGRAPHICAL_GRANULARITY_FK="[null]"
                 
@@ -6000,7 +6000,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="[null]"
                 LONGITUDE="[null]"
-                SHAPE="[null]"
+                SHAPE_WKT="[null]"
                 SHAPE_GEOJSON="[null]"
                 GEOGRAPHICAL_GRANULARITY_FK="[null]"
                 
@@ -6050,7 +6050,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="[null]"
                 LONGITUDE="[null]"
-                SHAPE="[null]"
+                SHAPE_WKT="[null]"
                 SHAPE_GEOJSON="[null]"
                 GEOGRAPHICAL_GRANULARITY_FK="[null]"
                 
@@ -6239,7 +6239,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="70.5559"
                 LONGITUDE="90.3045"
-                SHAPE="MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))"
+                SHAPE_WKT="MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))"
                 SHAPE_GEOJSON="{(((-17.91900240266335 28.856725761393726)))}"
                 GEOGRAPHICAL_GRANULARITY_FK="1011"
                 
@@ -6289,7 +6289,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="70.5559"
                 LONGITUDE="90.3045"
-                SHAPE="MULTIPOLYGON (((-18.91900240266335 29.856725761393726)))"
+                SHAPE_WKT="MULTIPOLYGON (((-18.91900240266335 29.856725761393726)))"
                 SHAPE_GEOJSON="{(((-18.91900240266335 29.856725761393726)))}"
                 GEOGRAPHICAL_GRANULARITY_FK="1011"
                 
@@ -6339,7 +6339,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="70.5559"
                 LONGITUDE="90.3045"
-                SHAPE="MULTIPOLYGON (((-19.91900240266335 30.856725761393726)))"
+                SHAPE_WKT="MULTIPOLYGON (((-19.91900240266335 30.856725761393726)))"
                 SHAPE_GEOJSON="{(((-19.91900240266335 30.856725761393726)))}"
                 GEOGRAPHICAL_GRANULARITY_FK="1011"
                 
@@ -6389,7 +6389,7 @@
                 REPLACED_BY_VAR_ELEMENT_FK="[null]"
                 LATITUDE="71.5559"
                 LONGITUDE="91.3245"
-                SHAPE="MULTIPOLYGON (((-20.91900240266335 31.856725761393726)))"
+                SHAPE_WKT="MULTIPOLYGON (((-20.91900240266335 31.856725761393726)))"
                 SHAPE_GEOJSON="{(((-20.91900240266335 31.856725761393726)))}"
                 GEOGRAPHICAL_GRANULARITY_FK="1011"
                 

@@ -260,7 +260,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         ViewTextItem latitude = new ViewTextItem(VariableElementDS.LATITUDE, getConstants().variableElementLatitude());
         latitude.setStartRow(true);
         ViewTextItem longitude = new ViewTextItem(VariableElementDS.LONGITUDE, getConstants().variableElementLongitude());
-        ViewTextItem hasShape = new ViewTextItem(VariableElementDS.SHAPE, getConstants().variableElementHasPolygonShape());
+        ViewTextItem hasShape = new ViewTextItem(VariableElementDS.SHAPE_WKT, getConstants().variableElementHasPolygonShape());
         geographicalInformationForm.setFields(geographicalGranularity, latitude, longitude, hasShape);
 
         // Diffusion descriptors
@@ -306,7 +306,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         DoubleItem latitude = new DoubleItem(VariableElementDS.LATITUDE, getConstants().variableElementLatitude());
         latitude.setStartRow(true);
         DoubleItem longitude = new DoubleItem(VariableElementDS.LONGITUDE, getConstants().variableElementLongitude());
-        ViewTextItem hasShape = new ViewTextItem(VariableElementDS.SHAPE, getConstants().variableElementHasPolygonShape());
+        ViewTextItem hasShape = new ViewTextItem(VariableElementDS.SHAPE_WKT, getConstants().variableElementHasPolygonShape());
         geographicalInformationEditionForm.setFields(geographicalGranularity, latitude, longitude, hasShape);
 
         // Diffusion descriptors
@@ -347,7 +347,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         geographicalInformationForm.setValue(VariableElementDS.LATITUDE, variableElementDto.getLatitude() != null ? variableElementDto.getLatitude().toString() : StringUtils.EMPTY);
         geographicalInformationForm.setValue(VariableElementDS.LONGITUDE, variableElementDto.getLongitude() != null ? variableElementDto.getLongitude().toString() : StringUtils.EMPTY);
         geographicalInformationForm
-                .setValue(VariableElementDS.SHAPE, StringUtils.isBlank(variableElementDto.getShape()) ? MetamacWebCommon.getConstants().no() : MetamacWebCommon.getConstants().yes());
+                .setValue(VariableElementDS.SHAPE_WKT, StringUtils.isBlank(variableElementDto.getShapeWkt()) ? MetamacWebCommon.getConstants().no() : MetamacWebCommon.getConstants().yes());
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(VariableElementDS.VALID_FROM, DateUtils.getFormattedDate(variableElementDto.getValidFrom()));
@@ -373,7 +373,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
                 .getGeographicalGranularity());
         geographicalInformationEditionForm.setValue(VariableElementDS.LATITUDE, variableElementDto.getLatitude() != null ? variableElementDto.getLatitude().toString() : StringUtils.EMPTY);
         geographicalInformationEditionForm.setValue(VariableElementDS.LONGITUDE, variableElementDto.getLongitude() != null ? variableElementDto.getLongitude().toString() : StringUtils.EMPTY);
-        geographicalInformationEditionForm.setValue(VariableElementDS.SHAPE, StringUtils.isBlank(variableElementDto.getShape()) ? MetamacWebCommon.getConstants().no() : MetamacWebCommon
+        geographicalInformationEditionForm.setValue(VariableElementDS.SHAPE_WKT, StringUtils.isBlank(variableElementDto.getShapeWkt()) ? MetamacWebCommon.getConstants().no() : MetamacWebCommon
                 .getConstants().yes());
 
         // Diffusion descriptors
