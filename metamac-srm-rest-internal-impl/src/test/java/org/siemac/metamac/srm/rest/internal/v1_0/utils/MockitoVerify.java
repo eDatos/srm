@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefactProperties.IdentifiableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
@@ -149,6 +150,18 @@ public class MockitoVerify {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
+    public static List<ConditionalCriteria> buildFindExpectedOrder(String orderBy, Class entityClass, IdentifiableArtefactProperty identifiableArtefactProperty) {
+        if (orderBy == null) {
+            return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(identifiableArtefactProperty.code()).ascending().build();
+        }
+        if (ORDER_BY_ID_DESC.equals(orderBy)) {
+            return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(identifiableArtefactProperty.code()).descending().build();
+        }
+        fail();
+        return null;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private static List<ConditionalCriteria> buildFindItemSchemesExpectedOrder(String orderBy, Class entityClass) {
         if (orderBy == null) {
             return ConditionalCriteriaBuilder.criteriaFor(entityClass).orderBy(ItemSchemeVersionProperties.maintainableArtefact().code()).ascending().build();
@@ -190,6 +203,18 @@ public class MockitoVerify {
         } else if (QUERY_ID_LIKE_1_NAME_LIKE_2.equals(query)) {
             return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(nameableArtefactProperty.code()).like("%1%").withProperty(nameableArtefactProperty.name().texts().label())
                     .like("%2%").build();
+        }
+        fail();
+        return null;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static List<ConditionalCriteria> buildFindExpectedQuery(String query, Class entityClass, IdentifiableArtefactProperty identifiableArtefactProperty) {
+        if (query == null) {
+            return new ArrayList<ConditionalCriteria>();
+        }
+        if (QUERY_ID_LIKE_1.equals(query)) {
+            return ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(identifiableArtefactProperty.code()).like("%1%").build();
         }
         fail();
         return null;

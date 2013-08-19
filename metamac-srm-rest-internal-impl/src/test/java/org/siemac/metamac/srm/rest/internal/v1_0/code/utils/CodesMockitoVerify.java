@@ -20,11 +20,14 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
+import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.MockitoVerify;
 
 public class CodesMockitoVerify extends MockitoVerify {
@@ -61,6 +64,14 @@ public class CodesMockitoVerify extends MockitoVerify {
 
     public static void verifyFindVariables(CodesMetamacService codesService, String resourceID, String familyID, String limit, String offset, String query, String orderBy) throws Exception {
         verifyFindVariables(codesService, resourceID, familyID, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
+    }
+
+    public static void verifyRetrieveVariableElement(CodesMetamacService codesService, String resourceID, String variableID) throws Exception {
+        verifyFindVariableElements(codesService, resourceID, variableID, null, null, buildExpectedPagingParameterRetrieveOne(), RestOperationEnum.RETRIEVE);
+    }
+
+    public static void verifyFindVariableElements(CodesMetamacService codesService, String resourceID, String variableID, String limit, String offset, String query, String orderBy) throws Exception {
+        verifyFindVariableElements(codesService, resourceID, variableID, query, orderBy, buildExpectedPagingParameter(offset, limit), RestOperationEnum.FIND);
     }
 
     public static void verifyRetrieveCodelistFamily(CodesMetamacService codesService, String resourceID) throws Exception {
@@ -158,6 +169,35 @@ public class CodesMockitoVerify extends MockitoVerify {
         }
         if (familyID != null) {
             conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(Variable.class).withProperty(VariableProperties.families().nameableArtefact().code()).eq(familyID).buildSingle());
+        }
+        MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
+
+        MetamacRestAsserts.assertEqualsPagingParameter(pagingParameterExpected, pagingParameter.getValue());
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static void verifyFindVariableElements(CodesMetamacService codesService, String resourceID, String variableID, String query, String orderBy, PagingParameter pagingParameterExpected,
+            RestOperationEnum restOperation) throws Exception {
+
+        // Verify
+        ArgumentCaptor<List> conditions = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<PagingParameter> pagingParameter = ArgumentCaptor.forClass(PagingParameter.class);
+        verify(codesService).findVariableElementsByCondition(any(ServiceContext.class), conditions.capture(), pagingParameter.capture());
+
+        // Validate
+        List<ConditionalCriteria> conditionalCriteriaExpected = new ArrayList<ConditionalCriteria>();
+        if (RestOperationEnum.FIND.equals(restOperation)) {
+            conditionalCriteriaExpected.addAll(buildFindExpectedOrder(orderBy, VariableElement.class, VariableElementProperties.identifiableArtefact()));
+            conditionalCriteriaExpected.addAll(buildFindExpectedQuery(query, VariableElement.class, VariableElementProperties.identifiableArtefact()));
+        }
+        conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).distinctRoot().buildSingle());
+        if (resourceID != null) {
+            conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.identifiableArtefact().code()).eq(resourceID)
+                    .buildSingle());
+        }
+        if (variableID != null && !RestInternalConstants.WILDCARD_ALL.equals(variableID)) {
+            conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.variable().nameableArtefact().code()).eq(variableID)
+                    .buildSingle());
         }
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());
 

@@ -17,6 +17,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilyCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableCriteriaPropertyOrder;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableCriteriaPropertyRestriction;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElementCriteriaPropertyOrder;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElementCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilyCriteriaPropertyOrder;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilyCriteriaPropertyRestriction;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
@@ -26,6 +28,8 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
@@ -35,11 +39,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements CodesRest2DoMapper {
 
-    private RestCriteria2SculptorCriteria<CodelistVersionMetamac> codelistCriteriaMapper       = null;
-    private RestCriteria2SculptorCriteria<CodeMetamac>            codeCriteriaMapper           = null;
-    private RestCriteria2SculptorCriteria<VariableFamily>         variableFamilyCriteriaMapper = null;
-    private RestCriteria2SculptorCriteria<Variable>               variableCriteriaMapper       = null;
-    private RestCriteria2SculptorCriteria<CodelistFamily>         codelistFamilyCriteriaMapper = null;
+    private RestCriteria2SculptorCriteria<CodelistVersionMetamac> codelistCriteriaMapper        = null;
+    private RestCriteria2SculptorCriteria<CodeMetamac>            codeCriteriaMapper            = null;
+    private RestCriteria2SculptorCriteria<VariableFamily>         variableFamilyCriteriaMapper  = null;
+    private RestCriteria2SculptorCriteria<Variable>               variableCriteriaMapper        = null;
+    private RestCriteria2SculptorCriteria<VariableElement>        variableElementCriteriaMapper = null;
+    private RestCriteria2SculptorCriteria<CodelistFamily>         codelistFamilyCriteriaMapper  = null;
 
     public CodesRest2DoMapperImpl() {
         codelistCriteriaMapper = new RestCriteria2SculptorCriteria<CodelistVersionMetamac>(CodelistVersionMetamac.class, CodelistCriteriaPropertyOrder.class,
@@ -49,6 +54,8 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 VariableFamilyCriteriaPropertyRestriction.class, new VariableFamilyCriteriaCallback());
         variableCriteriaMapper = new RestCriteria2SculptorCriteria<Variable>(Variable.class, VariableCriteriaPropertyOrder.class, VariableCriteriaPropertyRestriction.class,
                 new VariableCriteriaCallback());
+        variableElementCriteriaMapper = new RestCriteria2SculptorCriteria<VariableElement>(VariableElement.class, VariableElementCriteriaPropertyOrder.class,
+                VariableElementCriteriaPropertyRestriction.class, new VariableElementCriteriaCallback());
         codelistFamilyCriteriaMapper = new RestCriteria2SculptorCriteria<CodelistFamily>(CodelistFamily.class, CodelistFamilyCriteriaPropertyOrder.class,
                 CodelistFamilyCriteriaPropertyRestriction.class, new CodelistFamilyCriteriaCallback());
     }
@@ -71,6 +78,11 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
     @Override
     public RestCriteria2SculptorCriteria<Variable> getVariableCriteriaMapper() {
         return variableCriteriaMapper;
+    }
+
+    @Override
+    public RestCriteria2SculptorCriteria<VariableElement> getVariableElementCriteriaMapper() {
+        return variableElementCriteriaMapper;
     }
 
     @Override
@@ -158,7 +170,8 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case CODELIST_URN:
                     return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CodeMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 case CODELIST_PROC_STATUS:
-                    return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.PROC_STATUS_ITEM_SCHEME_FROM_ITEM, propertyRestriction);
+                    return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.PROC_STATUS_ITEM_SCHEME_FROM_ITEM,
+                            propertyRestriction);
                 case CODELIST_LATEST:
                     return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
@@ -258,6 +271,42 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
         @Override
         public Property retrievePropertyOrderDefault() throws RestException {
             return VariableProperties.nameableArtefact().code();
+        }
+    }
+
+    private class VariableElementCriteriaCallback implements CriteriaCallback {
+
+        @Override
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+            VariableElementCriteriaPropertyRestriction propertyNameCriteria = VariableElementCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return buildSculptorPropertyCriteria(VariableElementProperties.identifiableArtefact().code(), PropertyTypeEnum.STRING, propertyRestriction);
+                case URN:
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, VariableElementProperties.identifiableArtefact());
+                case SHORT_NAME:
+                    return buildSculptorPropertyCriteria(VariableElementProperties.shortName().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+            VariableElementCriteriaPropertyOrder propertyNameCriteria = VariableElementCriteriaPropertyOrder.fromValue(order.getPropertyName());
+            switch (propertyNameCriteria) {
+                case ID:
+                    return VariableElementProperties.identifiableArtefact().code();
+                default:
+                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+            }
+        }
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Property retrievePropertyOrderDefault() throws RestException {
+            return VariableElementProperties.identifiableArtefact().code();
         }
     }
 

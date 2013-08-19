@@ -22,6 +22,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Resourc
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
@@ -90,7 +91,7 @@ public class Asserts extends MetamacRestAsserts {
         assertEqualsResource(expected.getMaintainableArtefact(), expectedKind, expectedSelfLink, expectedManagementLink, actual, expected.getMaintainableArtefact().getIsImported());
     }
 
-    public static void assertEqualsResource(NameableArtefact expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual, boolean isImported) {
+    public static void assertEqualsResource(IdentifiableArtefact expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual, boolean isImported) {
         assertEquals(expectedKind, actual.getKind());
         assertEquals(expected.getCode(), actual.getId());
         assertEquals(expected.getUrn(), actual.getUrn());
@@ -102,6 +103,10 @@ public class Asserts extends MetamacRestAsserts {
         assertEquals(expectedKind, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
         assertEquals(expectedManagementLink, actual.getManagementAppLink());
+    }
+
+    public static void assertEqualsResource(NameableArtefact expected, String expectedKind, String expectedSelfLink, String expectedManagementLink, ResourceInternal actual, boolean isImported) {
+        assertEqualsResource((IdentifiableArtefact) expected, expectedKind, expectedSelfLink, expectedManagementLink, actual, isImported);
         assertEqualsInternationalString(expected.getName(), actual.getName());
     }
 

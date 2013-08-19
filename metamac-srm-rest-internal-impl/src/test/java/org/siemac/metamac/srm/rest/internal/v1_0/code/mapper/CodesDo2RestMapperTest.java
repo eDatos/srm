@@ -48,6 +48,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElement;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableType;
@@ -552,44 +553,43 @@ public class CodesDo2RestMapperTest {
 
     @Test
     public void testToVariableElements() {
-        // TODO testToVariableElements
-        // String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
-        // String orderBy = ORDER_BY_ID_DESC;
-        // Integer limit = Integer.valueOf(4);
-        // Integer offset = Integer.valueOf(4);
-        //
-        // List<org.siemac.metamac.srm.core.code.domain.VariableElement> source = new ArrayList<org.siemac.metamac.srm.core.code.domain.VariableElement>();
-        // source.add(mockVariableElement("variableElement1"));
-        // source.add(mockVariableElement("variableElement2"));
-        // source.add(mockVariableElement("variableElement3"));
-        // source.add(mockVariableElement("variableElement4"));
-        //
-        // Integer totalRows = source.size() * 5;
-        // PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources = new PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement>(source, offset, source.size(), limit,
-        // totalRows, 0);
-        //
-        // // Transform
-        // VariableElements target = do2RestInternalMapper.toVariableElements(sources, query, orderBy, limit);
-        //
-        // // Validate
-        // assertEquals(RestInternalConstants.KIND_VARIABLES, target.getKind());
-        //
-        // String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/variableElements?query=" + query + "&orderBy=" + orderBy;
-        //
-        // assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
-        // assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
-        // assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
-        // assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
-        // assertEquals(baseLink + "&limit=" + limit + "&offset=16", target.getLastLink());
-        //
-        // assertEquals(limit.intValue(), target.getLimit().intValue());
-        // assertEquals(offset.intValue(), target.getOffset().intValue());
-        // assertEquals(totalRows.intValue(), target.getTotal().intValue());
-        //
-        // assertEquals(source.size(), target.getVariableElements().size());
-        // for (int i = 0; i < source.size(); i++) {
-        // assertEqualsResource(source.get(i), target.getVariableElements().get(i));
-        // }
+        String query = QUERY_ID_LIKE_1_NAME_LIKE_2;
+        String orderBy = ORDER_BY_ID_DESC;
+        Integer limit = Integer.valueOf(4);
+        Integer offset = Integer.valueOf(4);
+
+        List<org.siemac.metamac.srm.core.code.domain.VariableElement> source = new ArrayList<org.siemac.metamac.srm.core.code.domain.VariableElement>();
+        source.add(mockVariableElement("variableElement1"));
+        source.add(mockVariableElement("variableElement2"));
+        source.add(mockVariableElement("variableElement3"));
+        source.add(mockVariableElement("variableElement4"));
+
+        Integer totalRows = source.size() * 5;
+        PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources = new PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement>(source, offset, source.size(), limit,
+                totalRows, 0);
+
+        // Transform
+        VariableElements target = do2RestInternalMapper.toVariableElements(sources, "variable01", query, orderBy, limit);
+
+        // Validate
+        assertEquals(RestInternalConstants.KIND_VARIABLE_ELEMENTS, target.getKind());
+
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable01/variableelements?query=" + query + "&orderBy=" + orderBy;
+
+        assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getFirstLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=0", target.getPreviousLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=8", target.getNextLink());
+        assertEquals(baseLink + "&limit=" + limit + "&offset=16", target.getLastLink());
+
+        assertEquals(limit.intValue(), target.getLimit().intValue());
+        assertEquals(offset.intValue(), target.getOffset().intValue());
+        assertEquals(totalRows.intValue(), target.getTotal().intValue());
+
+        assertEquals(source.size(), target.getVariableElements().size());
+        for (int i = 0; i < source.size(); i++) {
+            assertEqualsResource(source.get(i), target.getVariableElements().get(i));
+        }
     }
 
     @Test

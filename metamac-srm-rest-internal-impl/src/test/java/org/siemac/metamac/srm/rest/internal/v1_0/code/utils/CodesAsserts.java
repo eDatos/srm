@@ -5,6 +5,7 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
+import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts;
@@ -58,6 +59,14 @@ public class CodesAsserts {
         String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/variables/" + code;
         String expectedManagementLink = "http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=" + code;
         Asserts.assertEqualsResource(expected.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE, expectedSelfLink, expectedManagementLink, actual, false);
+    }
+
+    public static void assertEqualsResource(VariableElement expected, ResourceInternal actual) {
+        String code = expected.getIdentifiableArtefact().getCode();
+        String variableID = expected.getVariable().getNameableArtefact().getCode();
+        String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/variables/" + variableID + "/variableelements/" + code;
+        String expectedManagementLink = "http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=" + variableID + "/variableElement;id=" + code;
+        Asserts.assertEqualsResource(expected.getIdentifiableArtefact(), RestInternalConstants.KIND_VARIABLE_ELEMENT, expectedSelfLink, expectedManagementLink, actual, false);
     }
 
     public static void assertEqualsResource(CodelistFamily expected, ResourceInternal actual) {

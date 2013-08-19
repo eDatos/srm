@@ -26,6 +26,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Replace
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElement;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilyMetadata;
@@ -307,7 +308,25 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @Override
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElement toVariableElement(org.siemac.metamac.srm.core.code.domain.VariableElement source) {
+    public VariableElements toVariableElements(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, String variableID, String query, String orderBy, Integer limit) {
+
+        VariableElements targets = new VariableElements();
+        targets.setKind(RestInternalConstants.KIND_VARIABLE_ELEMENTS);
+
+        // Pagination
+        String baseLink = toVariableElementsLink(variableID);
+        SculptorCriteria2RestCriteria.toPagedResult(sources, targets, query, orderBy, limit, baseLink);
+
+        // Values
+        for (org.siemac.metamac.srm.core.code.domain.VariableElement source : sources.getValues()) {
+            ResourceInternal target = toResource(source);
+            targets.getVariableElements().add(target);
+        }
+        return targets;
+    }
+
+    @Override
+    public VariableElement toVariableElement(org.siemac.metamac.srm.core.code.domain.VariableElement source) {
         if (source == null) {
             return null;
         }
@@ -519,9 +538,12 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     // API/variables/VARIABLE_ID
-    private String toVariableLink(org.siemac.metamac.srm.core.code.domain.Variable variable) {
+    private String toVariableLink(String variableID) {
         String linkVariables = toVariablesLink();
-        return RestUtils.createLink(linkVariables, variable.getNameableArtefact().getCode());
+        return RestUtils.createLink(linkVariables, variableID);
+    }
+    private String toVariableLink(org.siemac.metamac.srm.core.code.domain.Variable variable) {
+        return toVariableLink(variable.getNameableArtefact().getCode());
     }
     private ResourceLink toVariableSelfLink(org.siemac.metamac.srm.core.code.domain.Variable source) {
         ResourceLink target = new ResourceLink();
@@ -531,9 +553,12 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     // API/variables/VARIABLE_ID/variableelements
-    private String toVariableElementsLink(org.siemac.metamac.srm.core.code.domain.Variable variable) {
-        String linkVariable = toVariableLink(variable);
+    private String toVariableElementsLink(String variableID) {
+        String linkVariable = toVariableLink(variableID);
         return RestUtils.createLink(linkVariable, RestInternalConstants.LINK_SUBPATH_VARIABLE_ELEMENTS);
+    }
+    private String toVariableElementsLink(org.siemac.metamac.srm.core.code.domain.Variable variable) {
+        return toVariableElementsLink(variable.getNameableArtefact().getCode());
     }
 
     // API/variables/VARIABLE_ID/variableelements/VARIABLE_ELEMENT_ID

@@ -9,6 +9,7 @@ import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LA
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodelistFamilies;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodelists;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodes;
+import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariableElements;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariableFamilies;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariables;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveCode;
@@ -64,6 +65,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables;
@@ -734,12 +736,29 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @Test
     public void testFindVariableElements() throws Exception {
-        // TODO testFindVariableElements
+        String query = QUERY_ID_LIKE_1;
+        String orderBy = ORDER_BY_ID_DESC;
+        String limit = "4";
+        String offset = "4";
+
+        // Find
+        VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements("variable01", query, orderBy, limit, offset);
+
+        assertNotNull(variableElements);
+        assertEquals(RestInternalConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
+        // Verify with Mockito
+        verifyFindVariableElements(codesService, null, null, limit, offset, query, orderBy);
+
     }
 
     @Test
     public void testFindVariableElementsXml() throws Exception {
-        // TODO testFindVariableElementsXml
+        String requestUri = getUriVariableElements("variable01", null, null, "4", "4");
+        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findVariableElements.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+
     }
 
     @Test

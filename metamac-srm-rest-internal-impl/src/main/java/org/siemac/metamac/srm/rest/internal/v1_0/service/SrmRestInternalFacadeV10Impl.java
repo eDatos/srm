@@ -988,60 +988,20 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Override
     public VariableElements findVariableElements(String variableID, String query, String orderBy, String limit, String offset) {
-        // TODO findVariableElements
-        return null;
-        // try {
-        // // Retrieve variables by criteria
-        // SculptorCriteria sculptorCriteria = codesRest2DoMapper.getVariableCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-        //
-        // // Retrieve
-        // PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = findVariablesCore(null, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
-        //
-        // // Transform
-        // Variables variables = codesDo2RestMapper.toVariables(entitiesPagedResult, query, orderBy, sculptorCriteria.getLimit());
-        // return variables;
-        // } catch (Exception e) {
-        // throw manageException(e);
-        // }
+        try {
+            // Retrieve by criteria
+            SculptorCriteria sculptorCriteria = codesRest2DoMapper.getVariableElementCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
 
-        // try {
-        // checkParameterNotWildcardFindItems(agencyID, resourceID, version);
-        //
-        // if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
-        // checkParameterEmpty(RestInternalConstants.PARAMETER_ORDER_ID, order);
-        // checkParameterEmpty(RestInternalConstants.PARAMETER_OPENNESS_ID, openness);
-        //
-        // // Find. Retrieve codes paginated
-        // SculptorCriteria sculptorCriteria = codesRest2DoMapper.getCodeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-        // PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
-        //
-        // // Transform
-        // Codes codes = codesDo2RestMapper.toCodes(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
-        // return codes;
-        // } else {
-        // // Retrieve all codes of codelist, without pagination
-        // CodelistVersionMetamac codelistVersion = retrieveCodelistPublished(agencyID, resourceID, version);
-        // if (order == null) {
-        // order = codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getCode();
-        // } else {
-        // // check exist
-        // retrieveCodelistOrderVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), order);
-        // }
-        // if (openness == null) {
-        // openness = codelistVersion.getDefaultOpennessVisualisation().getNameableArtefact().getCode();
-        // } else {
-        // // check exist
-        // retrieveCodelistOpennessVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), openness);
-        // }
-        // List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), itemResultSelection, order, openness);
-        //
-        // // Transform
-        // Codes codes = codesDo2RestMapper.toCodes(items, codelistVersion);
-        // return codes;
-        // }
-        // } catch (Exception e) {
-        // throw manageException(e);
-        // }
+            // Retrieve
+            PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(null, null, sculptorCriteria.getConditions(),
+                    sculptorCriteria.getPagingParameter());
+
+            // Transform
+            VariableElements variableElements = codesDo2RestMapper.toVariableElements(entitiesPagedResult, variableID, query, orderBy, sculptorCriteria.getLimit());
+            return variableElements;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
     }
 
     @Override
