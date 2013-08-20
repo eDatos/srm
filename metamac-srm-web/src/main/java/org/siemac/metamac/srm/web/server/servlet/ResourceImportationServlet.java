@@ -25,9 +25,9 @@ import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.lang.shared.LocaleConstants;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
@@ -36,6 +36,7 @@ import org.siemac.metamac.srm.web.shared.WebMessageExceptionsConstants;
 import org.siemac.metamac.srm.web.shared.code.enums.VariableElementShapeTypeEnum;
 import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
+import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.siemac.metamac.web.common.server.utils.WebTranslateExceptions;
 import org.siemac.metamac.web.common.server.utils.ZipUtils;
 import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
@@ -144,11 +145,13 @@ public class ResourceImportationServlet extends HttpServlet {
         } catch (Exception e) {
             String errorMessage = null;
             if (e instanceof MetamacException) {
-                errorMessage = getMessageFromMetamacException((MetamacException) e);
+                errorMessage = WebExceptionUtils.serializeToJson((MetamacException) e);
             } else if (e instanceof MetamacWebException) {
                 errorMessage = getMessageFromMetamacWebException((MetamacWebException) e);
+                errorMessage = StringEscapeUtils.escapeJavaScript(errorMessage);
             } else {
                 errorMessage = e.getMessage();
+                errorMessage = StringEscapeUtils.escapeJavaScript(errorMessage);
             }
             logger.log(Level.SEVERE, "Error importing file = " + fileName + ". " + e.getMessage());
             logger.log(Level.SEVERE, e.getMessage());
@@ -301,10 +304,7 @@ public class ResourceImportationServlet extends HttpServlet {
     }
 
     private void sendFailedImportationResponse(HttpServletResponse response, String errorMessage) throws IOException {
-
-        String processedErrorMessage = escapeUnsupportedCharacters(errorMessage);
-
-        String action = "if (parent.uploadFailed) parent.uploadFailed('" + processedErrorMessage + "');";
+        String action = "if (parent.uploadFailed) parent.uploadFailed('" + errorMessage + "');";
         sendResponse(response, action);
     }
 
@@ -324,30 +324,12 @@ public class ResourceImportationServlet extends HttpServlet {
         out.flush();
     }
 
-    private String getMessageFromMetamacException(MetamacException e) {
-        if (e.getPrincipalException() != null) {
-            return e.getPrincipalException().getMessage();
-        }
-        List<MetamacExceptionItem> items = e.getExceptionItems();
-        if (items != null && !items.isEmpty()) {
-            return items.get(0).getMessage(); // only return the first message error
-        }
-        return null;
-    }
-
     private String getMessageFromMetamacWebException(MetamacWebException e) {
         List<MetamacWebExceptionItem> items = e.getWebExceptionItems();
         if (items != null && !items.isEmpty()) {
             return items.get(0).getMessage(); // only return the first message error
         }
         return null;
-    }
-
-    private String escapeUnsupportedCharacters(String message) {
-        if (!StringUtils.isBlank(message)) {
-            return message.replace("'", "");
-        }
-        return message;
     }
 
     private void throwMetamacWebException(String exceptionCode) throws MetamacWebException {
