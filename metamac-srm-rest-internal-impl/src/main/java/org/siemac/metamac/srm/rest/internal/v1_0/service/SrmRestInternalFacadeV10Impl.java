@@ -64,6 +64,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElement;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElementsGeoInfo;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables;
@@ -1031,18 +1032,33 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Override
     public Response findVariableElementsGeoInfoJson(String variableID, String resourceID, String query, String orderBy, String limit, String offset) {
+        String target = (String) findVariableElementsGeoInfoCommon(variableID, resourceID, query, orderBy, limit, offset, MediaType.APPLICATION_JSON);
+        return Response.status(Status.OK).type(MediaType.APPLICATION_JSON).entity(target).build();
+    }
+
+    @Override
+    public VariableElementsGeoInfo findVariableElementsGeoInfoXml(String variableID, String resourceID, String query, String orderBy, String limit, String offset) {
+        VariableElementsGeoInfo target = (VariableElementsGeoInfo) findVariableElementsGeoInfoCommon(variableID, resourceID, query, orderBy, limit, offset, MediaType.APPLICATION_XML);
+        return target;
+    }
+
+    private Object findVariableElementsGeoInfoCommon(String variableID, String resourceID, String query, String orderBy, String limit, String offset, String mediaType) {
         try {
             // Retrieve by criteria
             SculptorCriteria sculptorCriteria = codesRest2DoMapper.getVariableElementCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
 
-            String target = null;
+            Object target = null;
             if (mustFindVariableElementsInsteadRetrieveAllVariableElementsOfVariable(variableID, resourceID, query, sculptorCriteria.getConditions(), orderBy, limit, offset)) {
                 // Find. Retrieve variable elements paginated
                 PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(variableID, resourceID, sculptorCriteria.getConditions(),
                         sculptorCriteria.getPagingParameter());
 
                 // Transform
-                target = codesDo2RestMapper.toVariableElementsGeoJson(entitiesPagedResult);
+                if (MediaType.APPLICATION_JSON.equals(mediaType)) {
+                    target = codesDo2RestMapper.toVariableElementsGeoJson(entitiesPagedResult);
+                } else if (MediaType.APPLICATION_XML.equals(mediaType)) {
+                    target = codesDo2RestMapper.toVariableElementsGeoXml(entitiesPagedResult);
+                }
             } else {
                 // Retrieve all variable elements of variable, without pagination
                 String variableUrn = GeneratorUrnUtils.generateVariableUrn(variableID);
@@ -1055,9 +1071,13 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 List<VariableElementResult> entities = codesService.findVariableElementsByVariableEfficiently(ctx, variableUrn, variableElementsCodes, selection);
 
                 // Transform
-                target = codesDo2RestMapper.toVariableElementsGeoJson(entities);
+                if (MediaType.APPLICATION_JSON.equals(mediaType)) {
+                    target = codesDo2RestMapper.toVariableElementsGeoJson(entities);
+                } else if (MediaType.APPLICATION_XML.equals(mediaType)) {
+                    target = codesDo2RestMapper.toVariableElementsGeoXml(entities);
+                }
             }
-            return Response.status(Status.OK).type(MediaType.APPLICATION_JSON).entity(target).build();
+            return target;
         } catch (Exception e) {
             throw manageException(e);
         }

@@ -18,6 +18,8 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertEqualsInternationalString;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ARTEFACT_1_CODE;
+import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ARTEFACT_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_2_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_3_CODE;
@@ -50,6 +52,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcSta
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElement;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElementsGeoInfo;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElementsGeoInfoFeature;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableType;
@@ -597,16 +601,51 @@ public class CodesDo2RestMapperTest {
     public void testToVariableElementsGeoJson() {
 
         List<org.siemac.metamac.srm.core.code.domain.VariableElementResult> sources = new ArrayList<org.siemac.metamac.srm.core.code.domain.VariableElementResult>();
-        sources.add(mockVariableElementResult("variableElement1"));
-        sources.add(mockVariableElementResult("variableElement2"));
+        sources.add(mockVariableElementResult(ARTEFACT_1_CODE));
+        sources.add(mockVariableElementResult(ARTEFACT_2_CODE));
 
         // Transform
         String target = do2RestInternalMapper.toVariableElementsGeoJson(sources);
 
         // Validate
         assertEquals(
-                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"id\":\"variableElement1\",\"geometry\":{(((-17.9 28.8)))}},{\"type\":\"Feature\",\"id\":\"variableElement2\",\"geometry\":{(((-17.9 28.8)))}}]}",
+                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"id\":\"artefact1\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-17, 28],[-15, 50]]]]},\"properties\": {\"urn\": \"urn:sdmx:org.sdmx.infomodel.xxx=artefact1\",\"longitude\": 1.0,\"latitude\": 2.0}},{\"type\":\"Feature\",\"id\":\"artefact2\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-19, 30],[-17.90, 28.85],[-14, 15]]]]},\"properties\": {\"urn\": \"urn:sdmx:org.sdmx.infomodel.xxx=artefact2\",\"longitude\": 3.0,\"latitude\": 4.0}}]}",
                 target);
+    }
+
+    @Test
+    public void testToVariableElementsGeoXml() {
+
+        List<org.siemac.metamac.srm.core.code.domain.VariableElementResult> sources = new ArrayList<org.siemac.metamac.srm.core.code.domain.VariableElementResult>();
+        sources.add(mockVariableElementResult(ARTEFACT_1_CODE));
+        sources.add(mockVariableElementResult(ARTEFACT_2_CODE));
+
+        // Transform
+        VariableElementsGeoInfo target = do2RestInternalMapper.toVariableElementsGeoXml(sources);
+
+        // Validate
+        assertEquals("FeatureCollection", target.getType());
+        assertEquals(BigInteger.valueOf(2), target.getFeatures().getTotal());
+        {
+            VariableElementsGeoInfoFeature feature = target.getFeatures().getFeatures().get(0);
+            assertEquals("Feature", feature.getType());
+            assertEquals("artefact1", feature.getId());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.xxx=artefact1", feature.getProperties().getUrn());
+            assertEquals("MULTIPOLYGON [[[[-17, 28],[-15, 50]]]]", feature.getGeometryWKT());
+            assertEquals(Double.valueOf(1.0D), feature.getProperties().getLongitude());
+            assertEquals(Double.valueOf(2.0D), feature.getProperties().getLatitude());
+            // assertEquals("aa", feature.getProperties().getGeographicGranularity()); // TODO granularity
+        }
+        {
+            VariableElementsGeoInfoFeature feature = target.getFeatures().getFeatures().get(1);
+            assertEquals("Feature", feature.getType());
+            assertEquals("artefact2", feature.getId());
+            assertEquals("urn:sdmx:org.sdmx.infomodel.xxx=artefact2", feature.getProperties().getUrn());
+            assertEquals("MULTIPOLYGON [[[[-17, 28],[-15, 50]]]]", feature.getGeometryWKT());
+            assertEquals(Double.valueOf(3.0D), feature.getProperties().getLongitude());
+            assertEquals(Double.valueOf(4.0D), feature.getProperties().getLatitude());
+            // assertEquals("aa", feature.getProperties().getGeographicGranularity()); // TODO granularity
+        }
     }
 
     @Test

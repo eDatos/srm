@@ -80,8 +80,14 @@ public class CodesDoMocks {
         VariableElementResult target = CodesMetamacDoMocks.mockVariableElementResultGeographicalFixedValues(resourceID);
         if (RestTestConstants.ARTEFACT_1_CODE.equals(resourceID)) {
             target.setShapeGeojson("{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-17, 28],[-15, 50]]]]}");
+            target.setShapeWkt("MULTIPOLYGON [[[[-17, 28],[-15, 50]]]]");
+            target.setLongitude(1.0D);
+            target.setLatitude(2.0D);
         } else if (RestTestConstants.ARTEFACT_2_CODE.equals(resourceID)) {
             target.setShapeGeojson("{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-19, 30],[-17.90, 28.85],[-14, 15]]]]}");
+            target.setShapeWkt("MULTIPOLYGON [[[[-17, 28],[-15, 50]]]]");
+            target.setLongitude(3.0D);
+            target.setLatitude(4.0D);
         }
         return target;
     }

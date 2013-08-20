@@ -1,5 +1,15 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.code;
 
+import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_FEATURES;
+import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_FEATURE_COLLECTION_VALUE;
+import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_FEATURE_VALUE;
+import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_GEOMETRY;
+import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_LATITUDE;
+import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_LONGITUDE;
+import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_PROPERTIES;
+import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_TYPE;
+import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_URN;
+
 import java.math.BigInteger;
 import java.util.List;
 
@@ -28,6 +38,10 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Resourc
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElement;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElementsGeoInfo;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElementsGeoInfoFeature;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElementsGeoInfoFeatureProperties;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElementsGeoInfoFeatures;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilyMetadata;
@@ -363,49 +377,14 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return toVariableElementsGeoJsonCommon(sources.getValues());
     }
 
-    @SuppressWarnings("rawtypes")
-    public String toVariableElementsGeoJsonCommon(List sources) {
-        StringBuilder target = new StringBuilder();
-        target.append("{");
-        target.append("\"type\":\"FeatureCollection\"");
-        if (!CollectionUtils.isEmpty(sources)) {
-            target.append(",");
-            target.append("\"features\":[");
-            for (int j = 0; j < sources.size(); j++) {
-                Object variableElementObject = sources.get(j);
-                String code = null;
-                String urn = null;
-                Double longitude = null;
-                Double latitude = null;
-                String shapeGeojson = null;
-                if (variableElementObject instanceof VariableElementResult) {
-                    VariableElementResult variableElement = (VariableElementResult) variableElementObject;
-                    code = variableElement.getCode();
-                    urn = variableElement.getUrn();
-                    shapeGeojson = variableElement.getShapeGeojson();
-                    longitude = variableElement.getLongitude();
-                    latitude = variableElement.getLatitude();
-                } else if (variableElementObject instanceof org.siemac.metamac.srm.core.code.domain.VariableElement) {
-                    org.siemac.metamac.srm.core.code.domain.VariableElement variableElement = (org.siemac.metamac.srm.core.code.domain.VariableElement) variableElementObject;
-                    code = variableElement.getIdentifiableArtefact().getCode();
-                    urn = variableElement.getIdentifiableArtefact().getUrn();
-                    shapeGeojson = variableElement.getShapeGeojson();
-                    longitude = variableElement.getLongitude();
-                    latitude = variableElement.getLatitude();
-                } else {
-                    logger.error("VariableElement object unsupported: " + variableElementObject.getClass().getCanonicalName());
-                    org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
-                    throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
-                }
-                toVariableElementGeoJson(code, urn, shapeGeojson, longitude, latitude, target);
-                if (j != sources.size() - 1) {
-                    target.append(",");
-                }
-            }
-            target.append("]");
-        }
-        target.append("}");
-        return target.toString();
+    @Override
+    public VariableElementsGeoInfo toVariableElementsGeoXml(List<VariableElementResult> sources) {
+        return toVariableElementsGeoXmlCommon(sources);
+    }
+
+    @Override
+    public VariableElementsGeoInfo toVariableElementsGeoXml(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources) {
+        return toVariableElementsGeoXmlCommon(sources.getValues());
     }
 
     @Override
@@ -886,29 +865,135 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    // TODO granularidad?
-    private void toVariableElementGeoJson(String code, String urn, String geoJson, Double longitude, Double latitude, StringBuilder target) {
+    @SuppressWarnings("rawtypes")
+    private String toVariableElementsGeoJsonCommon(List sources) {
+        StringBuilder target = new StringBuilder();
         target.append("{");
-        target.append("\"type\":\"Feature\"");
+        target.append("\"" + VARIABLE_ELEMENT_TYPE + "\":\"" + VARIABLE_ELEMENT_FEATURE_COLLECTION_VALUE + "\"");
+        if (!CollectionUtils.isEmpty(sources)) {
+            target.append(",");
+            target.append("\"" + VARIABLE_ELEMENT_FEATURES + "\":[");
+            for (int i = 0; i < sources.size(); i++) {
+                Object variableElementObject = sources.get(i);
+                String code = null;
+                String urn = null;
+                Double longitude = null;
+                Double latitude = null;
+                String shapeGeojson = null;
+                if (variableElementObject instanceof VariableElementResult) {
+                    VariableElementResult variableElement = (VariableElementResult) variableElementObject;
+                    code = variableElement.getCode();
+                    urn = variableElement.getUrn();
+                    shapeGeojson = variableElement.getShapeGeojson();
+                    longitude = variableElement.getLongitude();
+                    latitude = variableElement.getLatitude();
+                } else if (variableElementObject instanceof org.siemac.metamac.srm.core.code.domain.VariableElement) {
+                    org.siemac.metamac.srm.core.code.domain.VariableElement variableElement = (org.siemac.metamac.srm.core.code.domain.VariableElement) variableElementObject;
+                    code = variableElement.getIdentifiableArtefact().getCode();
+                    urn = variableElement.getIdentifiableArtefact().getUrn();
+                    shapeGeojson = variableElement.getShapeGeojson();
+                    longitude = variableElement.getLongitude();
+                    latitude = variableElement.getLatitude();
+                } else {
+                    logger.error("VariableElement object unsupported: " + variableElementObject.getClass().getCanonicalName());
+                    org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
+                    throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+                }
+                toVariableElementGeoJson(code, urn, shapeGeojson, longitude, latitude, target);
+                if (i != sources.size() - 1) {
+                    target.append(",");
+                }
+            }
+            target.append("]");
+        }
+        target.append("}");
+        return target.toString();
+    }
+
+    // TODO granularidad
+    private void toVariableElementGeoJson(String code, String urn, String shapeGeoJson, Double longitude, Double latitude, StringBuilder target) {
+        target.append("{");
+        target.append("\"" + VARIABLE_ELEMENT_TYPE + "\":\"" + VARIABLE_ELEMENT_FEATURE_VALUE + "\"");
         target.append(",");
         target.append("\"id\":\"" + code + "\"");
-        if (geoJson != null) {
+        if (shapeGeoJson != null) {
             target.append(",");
-            target.append("\"geometry\":" + geoJson);
+            target.append("\"" + VARIABLE_ELEMENT_GEOMETRY + "\":" + shapeGeoJson);
         }
         target.append(",");
-        target.append("\"properties\": ");
+        target.append("\"" + VARIABLE_ELEMENT_PROPERTIES + "\": ");
         target.append("{");
-        target.append("\"urn\": \"" + urn + "\"");
+        target.append("\"" + VARIABLE_ELEMENT_URN + "\": \"" + urn + "\"");
         if (longitude != null) {
             target.append(",");
-            target.append("\"longitude\": " + longitude);
+            target.append("\"" + VARIABLE_ELEMENT_LONGITUDE + "\": " + longitude);
         }
         if (latitude != null) {
             target.append(",");
-            target.append("\"latitude\": " + latitude);
+            target.append("\"" + VARIABLE_ELEMENT_LATITUDE + "\": " + latitude);
         }
         target.append("}");
         target.append("}");
+    }
+
+    @SuppressWarnings("rawtypes")
+    private VariableElementsGeoInfo toVariableElementsGeoXmlCommon(List sources) {
+        VariableElementsGeoInfo target = new VariableElementsGeoInfo();
+        target.setType(VARIABLE_ELEMENT_FEATURE_COLLECTION_VALUE);
+
+        if (!CollectionUtils.isEmpty(sources)) {
+            VariableElementsGeoInfoFeatures features = new VariableElementsGeoInfoFeatures();
+            target.setFeatures(features);
+            for (int i = 0; i < sources.size(); i++) {
+                Object variableElementObject = sources.get(i);
+                String code = null;
+                String urn = null;
+                Double longitude = null;
+                Double latitude = null;
+                String shapeWkt = null;
+                if (variableElementObject instanceof VariableElementResult) {
+                    VariableElementResult variableElement = (VariableElementResult) variableElementObject;
+                    code = variableElement.getCode();
+                    urn = variableElement.getUrn();
+                    shapeWkt = variableElement.getShapeWkt();
+                    longitude = variableElement.getLongitude();
+                    latitude = variableElement.getLatitude();
+                } else if (variableElementObject instanceof org.siemac.metamac.srm.core.code.domain.VariableElement) {
+                    org.siemac.metamac.srm.core.code.domain.VariableElement variableElement = (org.siemac.metamac.srm.core.code.domain.VariableElement) variableElementObject;
+                    code = variableElement.getIdentifiableArtefact().getCode();
+                    urn = variableElement.getIdentifiableArtefact().getUrn();
+                    shapeWkt = variableElement.getShapeWkt();
+                    longitude = variableElement.getLongitude();
+                    latitude = variableElement.getLatitude();
+                } else {
+                    logger.error("VariableElement object unsupported: " + variableElementObject.getClass().getCanonicalName());
+                    org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
+                    throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+                }
+                VariableElementsGeoInfoFeature feature = toVariableElementGeoXml(code, urn, shapeWkt, longitude, latitude);
+                target.getFeatures().getFeatures().add(feature);
+            }
+            target.getFeatures().setTotal(BigInteger.valueOf(target.getFeatures().getFeatures().size()));
+        }
+        return target;
+    }
+
+    // TODO granularidad
+    private VariableElementsGeoInfoFeature toVariableElementGeoXml(String code, String urn, String shapeWkt, Double longitude, Double latitude) {
+        VariableElementsGeoInfoFeature target = new VariableElementsGeoInfoFeature();
+        target.setType(VARIABLE_ELEMENT_FEATURE_VALUE);
+        target.setId(code);
+        if (shapeWkt != null) {
+            target.setGeometryWKT(shapeWkt);
+        }
+        target.setProperties(new VariableElementsGeoInfoFeatureProperties());
+        target.getProperties().setUrn(urn);
+        if (longitude != null) {
+            target.getProperties().setLongitude(longitude);
+        }
+        if (latitude != null) {
+            target.getProperties().setLatitude(latitude);
+        }
+        return target;
     }
 }

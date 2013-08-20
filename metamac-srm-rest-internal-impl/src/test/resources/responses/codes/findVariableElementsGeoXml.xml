@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:variableElementsGeoInfo xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain">
+    <sr:type>FeatureCollection</sr:type>
+    <sr:features total="2">
+        <sr:feature>
+            <sr:id>artefact1</sr:id>
+            <sr:type>Feature</sr:type>
+            <sr:geometryWKT>MULTIPOLYGON [[[[-17, 28],[-15, 50]]]]</sr:geometryWKT>
+            <sr:properties>
+                <sr:urn>urn:sdmx:org.sdmx.infomodel.xxx=artefact1</sr:urn>
+                <sr:longitude>1.0</sr:longitude>
+                <sr:latitude>2.0</sr:latitude>
+            </sr:properties>
+        </sr:feature>
+        <sr:feature>
+            <sr:id>artefact2</sr:id>
+            <sr:type>Feature</sr:type>
+            <sr:geometryWKT>MULTIPOLYGON [[[[-17, 28],[-15, 50]]]]</sr:geometryWKT>
+            <sr:properties>
+                <sr:urn>urn:sdmx:org.sdmx.infomodel.xxx=artefact2</sr:urn>
+                <sr:longitude>3.0</sr:longitude>
+                <sr:latitude>4.0</sr:latitude>
+            </sr:properties>
+        </sr:feature>
+    </sr:features>
+</sr:variableElementsGeoInfo>
