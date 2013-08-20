@@ -252,6 +252,16 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         return target;
     }
 
+    public static VariableElementResult mockVariableElementResultGeographicalFixedValues(String resourceID) {
+        VariableElementResult target = mockVariableElementResultFixedValues(resourceID);
+        target.setLatitude(Double.valueOf(1));
+        target.setLongitude(Double.valueOf(2));
+        target.setShapeWkt("MULTIPOLYGON (((-17.9 28.8)))");
+        target.setShapeGeojson("{(((-17.9 28.8)))}");
+        // target.setGeographicalGranularity(mockCodeResultFixedValues("code1", null)); // TODO VariableElementResult.geographicalGranularity
+        return target;
+    }
+
     // ------------------------------------------------------------------------------------
     // CODELIST ORDER VISUALISATIONS
     // ------------------------------------------------------------------------------------

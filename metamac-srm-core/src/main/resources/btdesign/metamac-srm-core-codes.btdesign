@@ -229,7 +229,7 @@ Application CodesMetamac {
     		"Finds efficiently variable elements by variable"
     		List<VariableElementVisualisationResult> retrieveVariableElementsByVariable(String variableUrn, String locale) throws MetamacException;
     		"Finds efficiently variable elements by variable"
-    		List<VariableElementResult> findVariableElementsByVariableEfficiently(String variableUrn, List<String> variableElementCodes) throws MetamacException;
+    		List<VariableElementResult> findVariableElementsByVariableEfficiently(String variableUrn, List<String> variableElementCodes, VariableElementResultSelection selection) throws MetamacException;
 			"Deletes variable element"
     		deleteVariableElement(String urn) throws MetamacException;
     		"Adds variable element to a variable"
@@ -568,7 +568,7 @@ Application CodesMetamac {
 				findByCondition(PagingParameter pagingParameter);
 				@VariableElement findByUrn(String urn);
 				List<VariableElementVisualisationResult> retrieveVariableElementsByVariableEfficientlyToVisualisation(Long variableId, String locale);
-				List<VariableElementResult> findVariableElementsByVariableEfficiently(Long variableId, List<String> variableElementCodes);
+				List<VariableElementResult> findVariableElementsByVariableEfficiently(Long variableId, List<String> variableElementCodes, VariableElementResultSelection selection);
 				Long countVariableElementsByVariable(Long variableId);
 				clearGeographicalInformationByVariable(Long variableId);
 			}

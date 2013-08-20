@@ -28,7 +28,7 @@
     <sr:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable01/variableelements/artefact1"/>
     <sr:parentLink kind="structuralResources#variableElements" href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable01/variableelements"/>
     <sr:childLinks total="1">
-        <cdomain:childLink href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable01/variableelements/artefact1/geographicalinformation"/>
+        <cdomain:childLink href="http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable01/variableelements/artefact1/geoinfo"/>
     </sr:childLinks>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=artefact1</sr:managementAppLink>
     <sr:name>

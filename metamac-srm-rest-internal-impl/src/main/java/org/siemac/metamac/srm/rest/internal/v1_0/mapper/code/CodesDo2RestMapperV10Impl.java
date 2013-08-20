@@ -48,6 +48,8 @@ import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
@@ -57,6 +59,8 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 @Component
 public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements CodesDo2RestMapperV10 {
+
+    private final Logger logger = LoggerFactory.getLogger(CodesDo2RestMapperV10Impl.class);
 
     @Override
     public Codelists toCodelists(PagedResult<CodelistVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
@@ -350,6 +354,52 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @Override
+    public String toVariableElementsGeoJson(List<VariableElementResult> sources) {
+        return toVariableElementsGeoJsonCommon(sources);
+    }
+
+    @Override
+    public String toVariableElementsGeoJson(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources) {
+        return toVariableElementsGeoJsonCommon(sources.getValues());
+    }
+
+    @SuppressWarnings("rawtypes")
+    public String toVariableElementsGeoJsonCommon(List sources) {
+        StringBuilder target = new StringBuilder();
+        target.append("{");
+        target.append("\"type\":\"FeatureCollection\"");
+        if (!CollectionUtils.isEmpty(sources)) {
+            target.append(",");
+            target.append("\"features\":[");
+            for (int j = 0; j < sources.size(); j++) {
+                Object variableElementObject = sources.get(j);
+                String code = null;
+                String shapeGeojson = null;
+                if (variableElementObject instanceof VariableElementResult) {
+                    VariableElementResult variableElement = (VariableElementResult) variableElementObject;
+                    code = variableElement.getCode();
+                    shapeGeojson = variableElement.getShapeGeojson();
+                } else if (variableElementObject instanceof org.siemac.metamac.srm.core.code.domain.VariableElement) {
+                    org.siemac.metamac.srm.core.code.domain.VariableElement variableElement = (org.siemac.metamac.srm.core.code.domain.VariableElement) variableElementObject;
+                    code = variableElement.getIdentifiableArtefact().getCode();
+                    shapeGeojson = variableElement.getShapeGeojson();
+                } else {
+                    logger.error("VariableElement object unsupported: " + variableElementObject.getClass().getCanonicalName());
+                    org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
+                    throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+                }
+                toVariableElementGeoJson(code, shapeGeojson, target);
+                if (j != sources.size() - 1) {
+                    target.append(",");
+                }
+            }
+            target.append("]");
+        }
+        target.append("}");
+        return target.toString();
+    }
+
+    @Override
     public VariableElement toVariableElement(org.siemac.metamac.srm.core.code.domain.VariableElement source) {
         if (source == null) {
             return null;
@@ -497,9 +547,12 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     private ChildLinks toVariableElementChildLinks(org.siemac.metamac.srm.core.code.domain.VariableElement source) {
-        ChildLinks targets = new ChildLinks();
-        targets.getChildLinks().add(toResourceLink(null, toVariableElementGeoLink(source)));
-        targets.setTotal(BigInteger.valueOf(targets.getChildLinks().size()));
+        ChildLinks targets = null;
+        if (VariableTypeEnum.GEOGRAPHICAL.equals(source.getVariable().getType())) {
+            targets = new ChildLinks();
+            targets.getChildLinks().add(toResourceLink(null, toVariableElementGeoLink(source)));
+            targets.setTotal(BigInteger.valueOf(targets.getChildLinks().size()));
+        }
         return targets;
     }
 
@@ -822,5 +875,19 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setId(source.getCode());
         target.setName(toInternationalString(source.getName()));
         return target;
+    }
+
+    // TODO latitud, longitud, granularidad?
+    private void toVariableElementGeoJson(String variableElementCode, String geoJson, StringBuilder target) {
+        target.append("{");
+        target.append("\"type\":\"Feature\"");
+        target.append(",");
+        target.append("\"id\":\"" + variableElementCode + "\"");
+        if (geoJson != null) {
+            // TODO el shape es opcional
+            target.append(",");
+            target.append("\"geometry\":" + geoJson);
+        }
+        target.append("}");
     }
 }

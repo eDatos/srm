@@ -1,7 +1,9 @@
 package org.siemac.metamac.srm.core.code.repositoryimpl;
 
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getDouble;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getLong;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getStringFromClob;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.siemac.metamac.core.common.constants.CoreCommonConstants;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResultSelection;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisationResult;
 import org.springframework.stereotype.Repository;
 
@@ -65,7 +68,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
 
     @Override
     @SuppressWarnings("rawtypes")
-    public List<VariableElementResult> findVariableElementsByVariableEfficiently(Long variableId, List<String> variableElementCodes) {
+    public List<VariableElementResult> findVariableElementsByVariableEfficiently(Long variableId, List<String> variableElementCodes, VariableElementResultSelection selection) {
         if (CollectionUtils.isEmpty(variableElementCodes)) {
             variableElementCodes = new ArrayList<String>();
         }
@@ -116,6 +119,37 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
                 variableElementResultSqlToVariableElementResult(variableElementResultSqlArray, variableElementResult);
             }
 
+            if (selection.isGeographicalInformation()) {
+
+                // latitude, longitude, shape...
+                {
+                    StringBuilder sbGeo = new StringBuilder();
+                    sbGeo.append("SELECT ve.ID as VARIABLE_ELEMENT_ID, ve.SHAPE_WKT, ve.SHAPE_GEOJSON, ve.LATITUDE, ve.LONGITUDE ");
+                    sbGeo.append("FROM TB_M_VARIABLE_ELEMENTS ve ");
+                    sbGeo.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on ve.IDENTIFIABLE_ARTEFACT_FK = a.ID ");
+                    sbGeo.append("WHERE ve.VARIABLE_FK = :variableId ");
+                    if (!CollectionUtils.isEmpty(variableElementCodes)) {
+                        sbGeo.append("AND a.CODE IN (:variableElementCodes) ");
+                    }
+                    Query queryGeo = getEntityManager().createNativeQuery(sbGeo.toString());
+                    queryGeo.setParameter("variableId", variableId);
+                    if (!CollectionUtils.isEmpty(variableElementCodes)) {
+                        queryGeo.setParameter("variableElementCodes", variableElementCodes.subList(startIndex, endIndex));
+                    }
+                    List variableElementsResultSqlGeo = queryGeo.getResultList();
+
+                    // Transform object[] results
+                    for (Object variableElementResultSql : variableElementsResultSqlGeo) {
+                        Object[] variableElementResultSqlArray = (Object[]) variableElementResultSql;
+                        Long id = getLong(variableElementResultSqlArray[0]);
+                        VariableElementResult variableElementResult = variableElementsById.get(id);
+                        variableElementGeoResultSqlToVariableElementResult(variableElementResultSqlArray, variableElementResult);
+                    }
+                }
+                // geographic granularity TODO geographicalGranularity
+
+            }
+
             if (CollectionUtils.isEmpty(variableElementCodes)) {
                 break;
             }
@@ -137,7 +171,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
     @Override
     public void clearGeographicalInformationByVariable(Long variableId) {
         StringBuilder sb = new StringBuilder();
-        sb.append("UPDATE TB_M_VARIABLE_ELEMENTS set LATITUDE = null, LONGITUDE = null, SHAPE_WKT = null, SHAPE_GEOJSON = null, GEOGRAPHICAL_GRANULARITY_FK = null ");
+        sb.append("UPDATE TB_M_VARIABLE_ELEMENTS set LATITUDE = null, LONGITUDE = null, SHAPE = null, SHAPE_GEOJSON = null, GEOGRAPHICAL_GRANULARITY_FK = null ");
         sb.append("WHERE VARIABLE_FK = :variableId");
         Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
         queryUpdate.setParameter("variableId", variableId);
@@ -166,6 +200,14 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
             String label = getString(source[i++]);
             target.getShortName().put(locale, label);
         }
+    }
+
+    private void variableElementGeoResultSqlToVariableElementResult(Object[] source, VariableElementResult target) {
+        int i = 1; // skip id
+        target.setShapeWkt(getStringFromClob(source[i++]));
+        target.setShapeGeojson(getStringFromClob(source[i++]));
+        target.setLatitude(getDouble(source[i++]));
+        target.setLongitude(getDouble(source[i++]));
     }
 
 }

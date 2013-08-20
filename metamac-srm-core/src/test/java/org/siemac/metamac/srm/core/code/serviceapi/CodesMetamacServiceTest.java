@@ -71,6 +71,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
 import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResultSelection;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
@@ -6773,14 +6774,17 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     @Override
     public void testFindVariableElementsByVariableEfficiently() throws Exception {
+        VariableElementResultSelection selection = new VariableElementResultSelection();
+        selection.setGeographicalInformation(true);
+
         {
             String variableUrn = VARIABLE_6;
-            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null);
+            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null, selection);
             assertEquals(0, result.size());
         }
         {
             String variableUrn = VARIABLE_2;
-            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null);
+            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null, selection);
             assertEquals(8, result.size());
             {
                 VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_1, result);
@@ -6789,6 +6793,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, ve.getUrn());
                 assertEquals("El Hierro", ve.getShortName().get("es"));
                 assertEquals("short name variableElement 2-1", ve.getShortName().get("en"));
+                assertEquals(null, ve.getShapeWkt());
+                assertEquals(null, ve.getShapeGeojson());
+                assertEquals(null, ve.getLatitude());
+                assertEquals(null, ve.getLongitude());
             }
             {
                 VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_2, result);
@@ -6850,7 +6858,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             String variableUrn = VARIABLE_5;
             List<String> variableElementsCodes = Arrays.asList("VARIABLE_ELEMENT_01", "VARIABLE_ELEMENT_03", "VARIABLE_ELEMENT_04");
-            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, variableElementsCodes);
+            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, variableElementsCodes, selection);
             assertEquals(3, result.size());
             {
                 VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_1, result);
@@ -6859,6 +6867,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, ve.getUrn());
                 assertEquals("Nombre corto 5-1", ve.getShortName().get("es"));
                 assertEquals("Short name 5-1", ve.getShortName().get("en"));
+                assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", ve.getShapeWkt());
+                assertEquals("{(((-17.91900240266335 28.856725761393726)))}", ve.getShapeGeojson());
+                assertEquals(Double.valueOf("70.5559"), ve.getLatitude());
+                assertEquals(Double.valueOf("90.3045"), ve.getLongitude());
             }
             {
                 VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_3, result);
@@ -6867,6 +6879,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, ve.getUrn());
                 assertEquals("título ve5-3", ve.getShortName().get("es"));
                 assertEquals("short name ve5-3", ve.getShortName().get("en"));
+                assertEquals("MULTIPOLYGON (((-19.91900240266335 30.856725761393726)))", ve.getShapeWkt());
+                assertEquals("{(((-19.91900240266335 30.856725761393726)))}", ve.getShapeGeojson());
+                assertEquals(Double.valueOf("70.5559"), ve.getLatitude());
+                assertEquals(Double.valueOf("90.3045"), ve.getLongitude());
             }
             {
                 VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_4, result);

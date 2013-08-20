@@ -1,0 +1,14 @@
+{"type": "FeatureCollection",
+"features":[
+    {
+        "type":"Feature",
+        "id":"artefact1",
+        "geometry":{"type":"MultiPolygon","coordinates":[[[[-17, 28],[-15, 50]]]]}
+    },
+    {
+        "type":"Feature",
+        "id":"artefact2",
+        "geometry":{"type":"MultiPolygon","coordinates":[[[[-19, 30],[-17.90, 28.85],[-14, 15]]]]}
+    }
+    ]
+}

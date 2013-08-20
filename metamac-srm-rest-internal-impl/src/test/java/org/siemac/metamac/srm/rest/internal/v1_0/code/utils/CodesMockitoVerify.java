@@ -24,6 +24,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResultSelection;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
@@ -79,7 +80,8 @@ public class CodesMockitoVerify extends MockitoVerify {
     public static void verifyFindVariableElementsRetrieveAll(CodesMetamacService codesService, String variableID, List<String> variableElementCodes) throws Exception {
         ArgumentCaptor<String> variableUrnArgument = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<List> variableElementCodesArgument = ArgumentCaptor.forClass(List.class);
-        verify(codesService).findVariableElementsByVariableEfficiently(any(ServiceContext.class), variableUrnArgument.capture(), variableElementCodesArgument.capture());
+        verify(codesService).findVariableElementsByVariableEfficiently(any(ServiceContext.class), variableUrnArgument.capture(), variableElementCodesArgument.capture(),
+                any(VariableElementResultSelection.class));
 
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=" + variableID, variableUrnArgument.getValue());
         MetamacAsserts.assertEqualsNullability(variableElementCodes, variableElementCodesArgument.getValue());
@@ -205,12 +207,12 @@ public class CodesMockitoVerify extends MockitoVerify {
             conditionalCriteriaExpected.addAll(buildFindExpectedQuery(query, VariableElement.class, VariableElementProperties.identifiableArtefact()));
         }
         conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).distinctRoot().buildSingle());
-        if (resourceID != null) {
-            conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.identifiableArtefact().code()).eq(resourceID)
-                    .buildSingle());
-        }
         if (variableID != null && !RestInternalConstants.WILDCARD_ALL.equals(variableID)) {
             conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.variable().nameableArtefact().code()).eq(variableID)
+                    .buildSingle());
+        }
+        if (resourceID != null && !RestInternalConstants.WILDCARD_ALL.equals(resourceID)) {
+            conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.identifiableArtefact().code()).eq(resourceID)
                     .buildSingle());
         }
         MetamacRestAsserts.assertEqualsConditionalCriteria(conditionalCriteriaExpected, conditions.getValue());

@@ -13,6 +13,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockCodelistWithCodes;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockVariable;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockVariableElement;
+import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockVariableElementResult;
 import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks.mockVariableFamily;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts.assertEqualsInternationalString;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
@@ -593,6 +594,22 @@ public class CodesDo2RestMapperTest {
     }
 
     @Test
+    public void testToVariableElementsGeoJson() {
+
+        List<org.siemac.metamac.srm.core.code.domain.VariableElementResult> sources = new ArrayList<org.siemac.metamac.srm.core.code.domain.VariableElementResult>();
+        sources.add(mockVariableElementResult("variableElement1"));
+        sources.add(mockVariableElementResult("variableElement2"));
+
+        // Transform
+        String target = do2RestInternalMapper.toVariableElementsGeoJson(sources);
+
+        // Validate
+        assertEquals(
+                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"id\":\"variableElement1\",\"geometry\":{(((-17.9 28.8)))}},{\"type\":\"Feature\",\"id\":\"variableElement2\",\"geometry\":{(((-17.9 28.8)))}}]}",
+                target);
+    }
+
+    @Test
     public void testToVariableElement() throws MetamacException {
 
         org.siemac.metamac.srm.core.code.domain.VariableElement source = mockVariableElement("variableElement1");
@@ -634,7 +651,7 @@ public class CodesDo2RestMapperTest {
 
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(null, target.getChildLinks().getChildLinks().get(0).getKind());
-        assertEquals(selfLink + "/geographicalinformation", target.getChildLinks().getChildLinks().get(0).getHref());
+        assertEquals(selfLink + "/geoinfo", target.getChildLinks().getChildLinks().get(0).getHref());
     }
 
     @Test

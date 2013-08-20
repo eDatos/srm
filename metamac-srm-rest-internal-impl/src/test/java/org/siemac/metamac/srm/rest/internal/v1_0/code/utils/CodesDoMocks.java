@@ -9,10 +9,12 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
+import org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
@@ -69,7 +71,18 @@ public class CodesDoMocks {
 
     public static VariableElement mockVariableElement(String resourceID) {
         VariableElement target = CodesMetamacDoMocks.mockVariableElementFixedValues(resourceID);
+        target.getVariable().setType(VariableTypeEnum.GEOGRAPHICAL);
         addReplaceMetadatasToVariableElement(target);
+        return target;
+    }
+
+    public static VariableElementResult mockVariableElementResult(String resourceID) {
+        VariableElementResult target = CodesMetamacDoMocks.mockVariableElementResultGeographicalFixedValues(resourceID);
+        if (RestTestConstants.ARTEFACT_1_CODE.equals(resourceID)) {
+            target.setShapeGeojson("{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-17, 28],[-15, 50]]]]}");
+        } else if (RestTestConstants.ARTEFACT_2_CODE.equals(resourceID)) {
+            target.setShapeGeojson("{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-19, 30],[-17.90, 28.85],[-14, 15]]]]}");
+        }
         return target;
     }
 

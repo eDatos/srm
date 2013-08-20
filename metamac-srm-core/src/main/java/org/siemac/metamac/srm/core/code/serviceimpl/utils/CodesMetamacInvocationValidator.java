@@ -19,6 +19,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResultSelection;
 import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
@@ -657,12 +658,14 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkFindVariableElementsByVariableEfficiently(String variableUrn, List<String> variableElementCodes, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkFindVariableElementsByVariableEfficiently(String variableUrn, List<String> variableElementCodes, VariableElementResultSelection selection,
+            List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(selection, ServiceExceptionParameters.QUERY_SELECTION, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

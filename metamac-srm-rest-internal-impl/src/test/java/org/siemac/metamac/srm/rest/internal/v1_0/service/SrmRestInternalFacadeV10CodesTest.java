@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -77,6 +78,7 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResultSelection;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
@@ -741,14 +743,14 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         String orderBy = ORDER_BY_ID_DESC;
         String limit = "4";
         String offset = "4";
-
+        String variableID = "variable01";
         // Find
-        VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements("variable01", query, orderBy, limit, offset);
+        VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
 
         assertNotNull(variableElements);
         assertEquals(RestInternalConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
         // Verify with Mockito
-        verifyFindVariableElements(codesService, null, null, limit, offset, query, orderBy);
+        verifyFindVariableElements(codesService, null, variableID, limit, offset, query, orderBy);
     }
 
     @Test
@@ -784,6 +786,16 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
             verifyFindVariableElementsRetrieveAll(codesService, variableID, Arrays.asList("code1"));
         }
+    }
+
+    @Test
+    public void testFindVariableElementsGeoXml() throws Exception {
+        String requestUri = getUriVariableElementsGeo("variable01");
+        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findVariableElementsGeo.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, MediaType.APPLICATION_JSON, Status.OK, responseExpected);
+
     }
 
     @Test
@@ -1175,6 +1187,22 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     }
 
     @SuppressWarnings("unchecked")
+    private void mockFindVariableElementsByVariableEfficiently() throws MetamacException {
+        when(codesService.findVariableElementsByVariableEfficiently(any(ServiceContext.class), any(String.class), any(List.class), any(VariableElementResultSelection.class))).thenAnswer(
+                new Answer<List<org.siemac.metamac.srm.core.code.domain.VariableElementResult>>() {
+
+                    @Override
+                    public List<org.siemac.metamac.srm.core.code.domain.VariableElementResult> answer(InvocationOnMock invocation) throws Throwable {
+                        // any
+                        List<org.siemac.metamac.srm.core.code.domain.VariableElementResult> variableElements = new ArrayList<org.siemac.metamac.srm.core.code.domain.VariableElementResult>();
+                        variableElements.add(CodesDoMocks.mockVariableElementResult(ARTEFACT_1_CODE));
+                        variableElements.add(CodesDoMocks.mockVariableElementResult(ARTEFACT_2_CODE));
+                        return variableElements;
+                    };
+                });
+    }
+
+    @SuppressWarnings("unchecked")
     private void mockFindCodelistFamiliesByCondition() throws MetamacException {
         when(codesService.findCodelistFamiliesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(
                 new Answer<PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily>>() {
@@ -1262,6 +1290,10 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         return uri.toString();
     }
 
+    private String getUriVariableElementsGeo(String variableID) throws Exception {
+        return baseApi + "/" + "variables/" + variableID + "/variableelements/~all/geoinfo";
+    }
+
     private String getUriVariableElement(String variableID, String resourceID) throws Exception {
         return getUriVariableElements(variableID, resourceID, null, null, null);
     }
@@ -1298,6 +1330,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         mockFindVariableFamiliesByCondition();
         mockFindVariablesByCondition();
         mockFindVariableElementsByCondition();
+        mockFindVariableElementsByVariableEfficiently();
         mockFindCodelistFamiliesByCondition();
     }
 
