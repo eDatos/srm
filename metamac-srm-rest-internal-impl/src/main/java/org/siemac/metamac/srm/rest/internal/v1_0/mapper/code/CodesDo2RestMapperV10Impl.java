@@ -56,6 +56,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResultSelection;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
@@ -368,23 +369,23 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @Override
-    public String toVariableElementsGeoJson(List<VariableElementResult> sources) {
-        return toVariableElementsGeoJsonCommon(sources);
+    public String toVariableElementsGeoJson(List<VariableElementResult> sources, VariableElementResultSelection selection) {
+        return toVariableElementsGeoJsonCommon(sources, selection);
     }
 
     @Override
-    public String toVariableElementsGeoJson(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources) {
-        return toVariableElementsGeoJsonCommon(sources.getValues());
+    public String toVariableElementsGeoJson(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection) {
+        return toVariableElementsGeoJsonCommon(sources.getValues(), selection);
     }
 
     @Override
-    public VariableElementsGeoInfo toVariableElementsGeoXml(List<VariableElementResult> sources) {
-        return toVariableElementsGeoXmlCommon(sources);
+    public VariableElementsGeoInfo toVariableElementsGeoXml(List<VariableElementResult> sources, VariableElementResultSelection selection) {
+        return toVariableElementsGeoXmlCommon(sources, selection);
     }
 
     @Override
-    public VariableElementsGeoInfo toVariableElementsGeoXml(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources) {
-        return toVariableElementsGeoXmlCommon(sources.getValues());
+    public VariableElementsGeoInfo toVariableElementsGeoXml(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection) {
+        return toVariableElementsGeoXmlCommon(sources.getValues(), selection);
     }
 
     @Override
@@ -866,7 +867,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @SuppressWarnings("rawtypes")
-    private String toVariableElementsGeoJsonCommon(List sources) {
+    private String toVariableElementsGeoJsonCommon(List sources, VariableElementResultSelection selection) {
         StringBuilder target = new StringBuilder();
         target.append("{");
         target.append("\"" + VARIABLE_ELEMENT_TYPE + "\":\"" + VARIABLE_ELEMENT_FEATURE_COLLECTION_VALUE + "\"");
@@ -899,7 +900,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
                     org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                     throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
                 }
-                toVariableElementGeoJson(code, urn, shapeGeojson, longitude, latitude, target);
+                toVariableElementGeoJson(code, urn, shapeGeojson, longitude, latitude, selection, target);
                 if (i != sources.size() - 1) {
                     target.append(",");
                 }
@@ -911,12 +912,12 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     // TODO granularidad
-    private void toVariableElementGeoJson(String code, String urn, String shapeGeoJson, Double longitude, Double latitude, StringBuilder target) {
+    private void toVariableElementGeoJson(String code, String urn, String shapeGeoJson, Double longitude, Double latitude, VariableElementResultSelection selection, StringBuilder target) {
         target.append("{");
         target.append("\"" + VARIABLE_ELEMENT_TYPE + "\":\"" + VARIABLE_ELEMENT_FEATURE_VALUE + "\"");
         target.append(",");
         target.append("\"id\":\"" + code + "\"");
-        if (shapeGeoJson != null) {
+        if (selection.isShapeGeojson() && shapeGeoJson != null) {
             target.append(",");
             target.append("\"" + VARIABLE_ELEMENT_GEOMETRY + "\":" + shapeGeoJson);
         }
@@ -924,20 +925,22 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.append("\"" + VARIABLE_ELEMENT_PROPERTIES + "\": ");
         target.append("{");
         target.append("\"" + VARIABLE_ELEMENT_URN + "\": \"" + urn + "\"");
-        if (longitude != null) {
-            target.append(",");
-            target.append("\"" + VARIABLE_ELEMENT_LONGITUDE + "\": " + longitude);
-        }
-        if (latitude != null) {
-            target.append(",");
-            target.append("\"" + VARIABLE_ELEMENT_LATITUDE + "\": " + latitude);
+        if (selection.isLongitudeLatitude()) {
+            if (longitude != null) {
+                target.append(",");
+                target.append("\"" + VARIABLE_ELEMENT_LONGITUDE + "\": " + longitude);
+            }
+            if (latitude != null) {
+                target.append(",");
+                target.append("\"" + VARIABLE_ELEMENT_LATITUDE + "\": " + latitude);
+            }
         }
         target.append("}");
         target.append("}");
     }
 
     @SuppressWarnings("rawtypes")
-    private VariableElementsGeoInfo toVariableElementsGeoXmlCommon(List sources) {
+    private VariableElementsGeoInfo toVariableElementsGeoXmlCommon(List sources, VariableElementResultSelection selection) {
         VariableElementsGeoInfo target = new VariableElementsGeoInfo();
         target.setType(VARIABLE_ELEMENT_FEATURE_COLLECTION_VALUE);
 
@@ -970,7 +973,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
                     org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                     throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
                 }
-                VariableElementsGeoInfoFeature feature = toVariableElementGeoXml(code, urn, shapeWkt, longitude, latitude);
+                VariableElementsGeoInfoFeature feature = toVariableElementGeoXml(code, urn, shapeWkt, longitude, latitude, selection);
                 target.getFeatures().getFeatures().add(feature);
             }
             target.getFeatures().setTotal(BigInteger.valueOf(target.getFeatures().getFeatures().size()));
@@ -979,19 +982,17 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     // TODO granularidad
-    private VariableElementsGeoInfoFeature toVariableElementGeoXml(String code, String urn, String shapeWkt, Double longitude, Double latitude) {
+    private VariableElementsGeoInfoFeature toVariableElementGeoXml(String code, String urn, String shapeWkt, Double longitude, Double latitude, VariableElementResultSelection selection) {
         VariableElementsGeoInfoFeature target = new VariableElementsGeoInfoFeature();
         target.setType(VARIABLE_ELEMENT_FEATURE_VALUE);
         target.setId(code);
-        if (shapeWkt != null) {
+        if (selection.isShapeWkt()) {
             target.setGeometryWKT(shapeWkt);
         }
         target.setProperties(new VariableElementsGeoInfoFeatureProperties());
         target.getProperties().setUrn(urn);
-        if (longitude != null) {
+        if (selection.isLongitudeLatitude()) {
             target.getProperties().setLongitude(longitude);
-        }
-        if (latitude != null) {
             target.getProperties().setLatitude(latitude);
         }
         return target;

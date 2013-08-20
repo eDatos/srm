@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
+import static org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils.hasField;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -86,6 +88,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableElementResultSelection;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -981,7 +984,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
 
             // Find one
-            PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(variableID, resourceID, null, pagingParameterOneResult);
+            PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(variableID, resourceID, false, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.VARIABLE_ELEMENT_NOT_FOUND, resourceID, variableID);
                 throw new RestException(exception, Status.NOT_FOUND);
@@ -1004,7 +1007,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
             if (mustFindVariableElementsInsteadRetrieveAllVariableElementsOfVariable(variableID, null, query, sculptorCriteria.getConditions(), orderBy, limit, offset)) {
                 // Find. Retrieve variable elements paginated
-                PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(variableID, null, sculptorCriteria.getConditions(),
+                PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(variableID, null, false, sculptorCriteria.getConditions(),
                         sculptorCriteria.getPagingParameter());
 
                 // Transform
@@ -1017,8 +1020,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 if (query != null) {
                     variableElementsCodes = extractVariableElementCodesIfOnlyQueryByCode(sculptorCriteria.getConditions());
                 }
-                VariableElementResultSelection selection = new VariableElementResultSelection();
-                selection.setGeographicalInformation(false);
+                VariableElementResultSelection selection = new VariableElementResultSelection(); // do not retrieve nothing extra metadata as default
                 List<VariableElementResult> entities = codesService.findVariableElementsByVariableEfficiently(ctx, variableUrn, variableElementsCodes, selection);
 
                 // Transform
@@ -1031,33 +1033,43 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public Response findVariableElementsGeoInfoJson(String variableID, String resourceID, String query, String orderBy, String limit, String offset) {
-        String target = (String) findVariableElementsGeoInfoCommon(variableID, resourceID, query, orderBy, limit, offset, MediaType.APPLICATION_JSON);
+    public Response findVariableElementsGeoInfoJson(String variableID, String resourceID, String query, String orderBy, String limit, String offset, String fields) {
+        String target = (String) findVariableElementsGeoInfoCommon(variableID, resourceID, query, orderBy, limit, offset, fields, MediaType.APPLICATION_JSON);
         return Response.status(Status.OK).type(MediaType.APPLICATION_JSON).entity(target).build();
     }
 
     @Override
-    public VariableElementsGeoInfo findVariableElementsGeoInfoXml(String variableID, String resourceID, String query, String orderBy, String limit, String offset) {
-        VariableElementsGeoInfo target = (VariableElementsGeoInfo) findVariableElementsGeoInfoCommon(variableID, resourceID, query, orderBy, limit, offset, MediaType.APPLICATION_XML);
+    public VariableElementsGeoInfo findVariableElementsGeoInfoXml(String variableID, String resourceID, String query, String orderBy, String limit, String offset, String fields) {
+        VariableElementsGeoInfo target = (VariableElementsGeoInfo) findVariableElementsGeoInfoCommon(variableID, resourceID, query, orderBy, limit, offset, fields, MediaType.APPLICATION_XML);
         return target;
     }
 
-    private Object findVariableElementsGeoInfoCommon(String variableID, String resourceID, String query, String orderBy, String limit, String offset, String mediaType) {
+    private Object findVariableElementsGeoInfoCommon(String variableID, String resourceID, String query, String orderBy, String limit, String offset, String fields, String mediaType) {
         try {
-            // Retrieve by criteria
+            // Build criteria and selection
             SculptorCriteria sculptorCriteria = codesRest2DoMapper.getVariableElementCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+
+            VariableElementResultSelection selection = new VariableElementResultSelection();
+            selection.setReturnOnlyGeographicalVariableElements(true);
+            selection.setLongitudeLatitude(!hasField(fields, RestInternalConstants.FIELD_EXCLUDE_LONGITUDE_LATITUDE));
+            if (MediaType.APPLICATION_JSON.equals(mediaType)) {
+                selection.setShapeGeojson(!hasField(fields, RestInternalConstants.FIELD_EXCLUDE_GEOMETRY));
+            }
+            if (MediaType.APPLICATION_XML.equals(mediaType)) {
+                selection.setShapeWkt(!hasField(fields, RestInternalConstants.FIELD_EXCLUDE_GEOMETRY));
+            }
 
             Object target = null;
             if (mustFindVariableElementsInsteadRetrieveAllVariableElementsOfVariable(variableID, resourceID, query, sculptorCriteria.getConditions(), orderBy, limit, offset)) {
                 // Find. Retrieve variable elements paginated
-                PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(variableID, resourceID, sculptorCriteria.getConditions(),
+                PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(variableID, resourceID, true, sculptorCriteria.getConditions(),
                         sculptorCriteria.getPagingParameter());
 
                 // Transform
                 if (MediaType.APPLICATION_JSON.equals(mediaType)) {
-                    target = codesDo2RestMapper.toVariableElementsGeoJson(entitiesPagedResult);
+                    target = codesDo2RestMapper.toVariableElementsGeoJson(entitiesPagedResult, selection);
                 } else if (MediaType.APPLICATION_XML.equals(mediaType)) {
-                    target = codesDo2RestMapper.toVariableElementsGeoXml(entitiesPagedResult);
+                    target = codesDo2RestMapper.toVariableElementsGeoXml(entitiesPagedResult, selection);
                 }
             } else {
                 // Retrieve all variable elements of variable, without pagination
@@ -1066,15 +1078,14 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 if (query != null) {
                     variableElementsCodes = extractVariableElementCodesIfOnlyQueryByCode(sculptorCriteria.getConditions());
                 }
-                VariableElementResultSelection selection = new VariableElementResultSelection();
-                selection.setGeographicalInformation(true);
+
                 List<VariableElementResult> entities = codesService.findVariableElementsByVariableEfficiently(ctx, variableUrn, variableElementsCodes, selection);
 
                 // Transform
                 if (MediaType.APPLICATION_JSON.equals(mediaType)) {
-                    target = codesDo2RestMapper.toVariableElementsGeoJson(entities);
+                    target = codesDo2RestMapper.toVariableElementsGeoJson(entities, selection);
                 } else if (MediaType.APPLICATION_XML.equals(mediaType)) {
-                    target = codesDo2RestMapper.toVariableElementsGeoXml(entities);
+                    target = codesDo2RestMapper.toVariableElementsGeoXml(entities, selection);
                 }
             }
             return target;
@@ -1082,7 +1093,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             throw manageException(e);
         }
     }
-
     @Override
     public CodelistFamily retrieveCodelistFamilyById(String id) {
         try {
@@ -1505,8 +1515,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return entitiesPagedResult;
     }
 
-    private PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> findVariableElementsCore(String variableID, String resourceID, List<ConditionalCriteria> conditionalCriteriaQuery,
-            PagingParameter pagingParameter) throws MetamacException {
+    private PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> findVariableElementsCore(String variableID, String resourceID, boolean onlyGeographical,
+            List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter) throws MetamacException {
 
         List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
         if (CollectionUtils.isNotEmpty(conditionalCriteriaQuery)) {
@@ -1518,6 +1528,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         if (variableID != null && !RestInternalConstants.WILDCARD_ALL.equals(variableID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.VariableElement.class)
                     .withProperty(VariableElementProperties.variable().nameableArtefact().code()).eq(variableID).buildSingle());
+        }
+        if (onlyGeographical) {
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.VariableElement.class).withProperty(VariableElementProperties.variable().type())
+                    .eq(VariableTypeEnum.GEOGRAPHICAL).buildSingle());
         }
         if (resourceID != null && !RestInternalConstants.WILDCARD_ALL.equals(resourceID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.VariableElement.class)

@@ -6775,14 +6775,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     public void testFindVariableElementsByVariableEfficiently() throws Exception {
         VariableElementResultSelection selection = new VariableElementResultSelection();
-        selection.setGeographicalInformation(true);
+        selection.setShapeGeojson(true);
+        selection.setShapeWkt(true);
+        selection.setLongitudeLatitude(true);
 
         {
+            selection.setReturnOnlyGeographicalVariableElements(false);
             String variableUrn = VARIABLE_6;
             List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null, selection);
             assertEquals(0, result.size());
         }
         {
+            selection.setReturnOnlyGeographicalVariableElements(false);
             String variableUrn = VARIABLE_2;
             List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null, selection);
             assertEquals(8, result.size());
@@ -6856,6 +6860,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             }
         }
         {
+            selection.setReturnOnlyGeographicalVariableElements(true);
+            String variableUrn = VARIABLE_2;
+            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null, selection);
+            assertEquals(0, result.size());
+        }
+        {
+            selection.setReturnOnlyGeographicalVariableElements(true);
             String variableUrn = VARIABLE_5;
             List<String> variableElementsCodes = Arrays.asList("VARIABLE_ELEMENT_01", "VARIABLE_ELEMENT_03", "VARIABLE_ELEMENT_04");
             List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, variableElementsCodes, selection);

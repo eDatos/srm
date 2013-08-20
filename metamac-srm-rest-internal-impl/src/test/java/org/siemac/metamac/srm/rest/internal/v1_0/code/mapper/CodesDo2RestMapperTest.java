@@ -61,6 +61,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variabl
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VisualisationConfiguration;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResultSelection;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.code.CodesDo2RestMapperV10;
@@ -604,8 +605,12 @@ public class CodesDo2RestMapperTest {
         sources.add(mockVariableElementResult(ARTEFACT_1_CODE));
         sources.add(mockVariableElementResult(ARTEFACT_2_CODE));
 
+        VariableElementResultSelection selection = new VariableElementResultSelection();
+        selection.setLongitudeLatitude(true);
+        selection.setShapeGeojson(true);
+
         // Transform
-        String target = do2RestInternalMapper.toVariableElementsGeoJson(sources);
+        String target = do2RestInternalMapper.toVariableElementsGeoJson(sources, selection);
 
         // Validate
         assertEquals(
@@ -620,8 +625,12 @@ public class CodesDo2RestMapperTest {
         sources.add(mockVariableElementResult(ARTEFACT_1_CODE));
         sources.add(mockVariableElementResult(ARTEFACT_2_CODE));
 
+        VariableElementResultSelection selection = new VariableElementResultSelection();
+        selection.setLongitudeLatitude(true);
+        selection.setShapeWkt(true);
+
         // Transform
-        VariableElementsGeoInfo target = do2RestInternalMapper.toVariableElementsGeoXml(sources);
+        VariableElementsGeoInfo target = do2RestInternalMapper.toVariableElementsGeoXml(sources, selection);
 
         // Validate
         assertEquals("FeatureCollection", target.getType());

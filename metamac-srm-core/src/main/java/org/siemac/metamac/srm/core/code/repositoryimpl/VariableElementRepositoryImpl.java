@@ -18,6 +18,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
 import org.siemac.metamac.srm.core.code.domain.VariableElementResultSelection;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisationResult;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -94,15 +95,24 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
             sb.append("SELECT ve.ID as VARIABLE_ELEMENT_ID, a.URN, a.CODE, ls.LOCALE as SHORT_NAME_LOCALE, ls.LABEL as SHORT_NAME_LABEL ");
             sb.append("FROM TB_M_VARIABLE_ELEMENTS ve ");
             sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on ve.IDENTIFIABLE_ARTEFACT_FK = a.ID ");
+            if (selection.isReturnOnlyGeographicalVariableElements()) {
+                sb.append("INNER JOIN TB_M_VARIABLES v on ve.VARIABLE_FK = v.ID ");
+            }
             sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls ON ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK ");
             sb.append("WHERE ve.VARIABLE_FK = :variableId ");
             if (!CollectionUtils.isEmpty(variableElementCodes)) {
                 sb.append("AND a.CODE IN (:variableElementCodes) ");
             }
+            if (selection.isReturnOnlyGeographicalVariableElements()) {
+                sb.append("AND v.VARIABLE_TYPE = :variableType ");
+            }
             Query query = getEntityManager().createNativeQuery(sb.toString());
             query.setParameter("variableId", variableId);
             if (!CollectionUtils.isEmpty(variableElementCodes)) {
                 query.setParameter("variableElementCodes", variableElementCodes.subList(startIndex, endIndex));
+            }
+            if (selection.isReturnOnlyGeographicalVariableElements()) {
+                query.setParameter("variableType", VariableTypeEnum.GEOGRAPHICAL.getName());
             }
             List variableElementsResultSql = query.getResultList();
 
@@ -119,12 +129,21 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
                 variableElementResultSqlToVariableElementResult(variableElementResultSqlArray, variableElementResult);
             }
 
-            if (selection.isGeographicalInformation()) {
-
+            if (!CollectionUtils.isEmpty(variableElementsResultSql)) {
                 // latitude, longitude, shape...
-                {
+                if (selection.isLongitudeLatitude() || selection.isShapeGeojson() || selection.isShapeWkt()) {
                     StringBuilder sbGeo = new StringBuilder();
-                    sbGeo.append("SELECT ve.ID as VARIABLE_ELEMENT_ID, ve.SHAPE_WKT, ve.SHAPE_GEOJSON, ve.LATITUDE, ve.LONGITUDE ");
+                    sbGeo.append("SELECT ve.ID as VARIABLE_ELEMENT_ID");
+                    if (selection.isShapeWkt()) {
+                        sbGeo.append(", ve.SHAPE_WKT");
+                    }
+                    if (selection.isShapeGeojson()) {
+                        sbGeo.append(", ve.SHAPE_GEOJSON");
+                    }
+                    if (selection.isLongitudeLatitude()) {
+                        sbGeo.append(", ve.LATITUDE, ve.LONGITUDE");
+                    }
+                    sbGeo.append(" ");
                     sbGeo.append("FROM TB_M_VARIABLE_ELEMENTS ve ");
                     sbGeo.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on ve.IDENTIFIABLE_ARTEFACT_FK = a.ID ");
                     sbGeo.append("WHERE ve.VARIABLE_FK = :variableId ");
@@ -143,13 +162,15 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
                         Object[] variableElementResultSqlArray = (Object[]) variableElementResultSql;
                         Long id = getLong(variableElementResultSqlArray[0]);
                         VariableElementResult variableElementResult = variableElementsById.get(id);
-                        variableElementGeoResultSqlToVariableElementResult(variableElementResultSqlArray, variableElementResult);
+                        variableElementGeoResultSqlToVariableElementResult(variableElementResultSqlArray, variableElementResult, selection);
                     }
                 }
                 // geographic granularity TODO geographicalGranularity
+                if (selection.isGeographicalGranularity()) {
+
+                }
 
             }
-
             if (CollectionUtils.isEmpty(variableElementCodes)) {
                 break;
             }
@@ -202,12 +223,18 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
         }
     }
 
-    private void variableElementGeoResultSqlToVariableElementResult(Object[] source, VariableElementResult target) {
+    private void variableElementGeoResultSqlToVariableElementResult(Object[] source, VariableElementResult target, VariableElementResultSelection selection) {
         int i = 1; // skip id
-        target.setShapeWkt(getStringFromClob(source[i++]));
-        target.setShapeGeojson(getStringFromClob(source[i++]));
-        target.setLatitude(getDouble(source[i++]));
-        target.setLongitude(getDouble(source[i++]));
+        if (selection.isShapeWkt()) {
+            target.setShapeWkt(getStringFromClob(source[i++]));
+        }
+        if (selection.isShapeGeojson()) {
+            target.setShapeGeojson(getStringFromClob(source[i++]));
+        }
+        if (selection.isLongitudeLatitude()) {
+            target.setLatitude(getDouble(source[i++]));
+            target.setLongitude(getDouble(source[i++]));
+        }
     }
 
 }

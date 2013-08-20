@@ -24,6 +24,10 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 
 public class SrmRestInternalUtils {
 
+    public static boolean hasField(String fields, String field) {
+        return fields != null && fields.contains(field);
+    }
+
     @SuppressWarnings({"rawtypes"})
     public static List<ConditionalCriteria> buildConditionalCriteriaItemSchemes(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity)
             throws MetamacException {
