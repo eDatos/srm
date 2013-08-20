@@ -374,21 +374,30 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             for (int j = 0; j < sources.size(); j++) {
                 Object variableElementObject = sources.get(j);
                 String code = null;
+                String urn = null;
+                Double longitude = null;
+                Double latitude = null;
                 String shapeGeojson = null;
                 if (variableElementObject instanceof VariableElementResult) {
                     VariableElementResult variableElement = (VariableElementResult) variableElementObject;
                     code = variableElement.getCode();
+                    urn = variableElement.getUrn();
                     shapeGeojson = variableElement.getShapeGeojson();
+                    longitude = variableElement.getLongitude();
+                    latitude = variableElement.getLatitude();
                 } else if (variableElementObject instanceof org.siemac.metamac.srm.core.code.domain.VariableElement) {
                     org.siemac.metamac.srm.core.code.domain.VariableElement variableElement = (org.siemac.metamac.srm.core.code.domain.VariableElement) variableElementObject;
                     code = variableElement.getIdentifiableArtefact().getCode();
+                    urn = variableElement.getIdentifiableArtefact().getUrn();
                     shapeGeojson = variableElement.getShapeGeojson();
+                    longitude = variableElement.getLongitude();
+                    latitude = variableElement.getLatitude();
                 } else {
                     logger.error("VariableElement object unsupported: " + variableElementObject.getClass().getCanonicalName());
                     org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                     throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
                 }
-                toVariableElementGeoJson(code, shapeGeojson, target);
+                toVariableElementGeoJson(code, urn, shapeGeojson, longitude, latitude, target);
                 if (j != sources.size() - 1) {
                     target.append(",");
                 }
@@ -877,17 +886,29 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    // TODO latitud, longitud, granularidad?
-    private void toVariableElementGeoJson(String variableElementCode, String geoJson, StringBuilder target) {
+    // TODO granularidad?
+    private void toVariableElementGeoJson(String code, String urn, String geoJson, Double longitude, Double latitude, StringBuilder target) {
         target.append("{");
         target.append("\"type\":\"Feature\"");
         target.append(",");
-        target.append("\"id\":\"" + variableElementCode + "\"");
+        target.append("\"id\":\"" + code + "\"");
         if (geoJson != null) {
-            // TODO el shape es opcional
             target.append(",");
             target.append("\"geometry\":" + geoJson);
         }
+        target.append(",");
+        target.append("\"properties\": ");
+        target.append("{");
+        target.append("\"urn\": \"" + urn + "\"");
+        if (longitude != null) {
+            target.append(",");
+            target.append("\"longitude\": " + longitude);
+        }
+        if (latitude != null) {
+            target.append(",");
+            target.append("\"latitude\": " + latitude);
+        }
+        target.append("}");
         target.append("}");
     }
 }
