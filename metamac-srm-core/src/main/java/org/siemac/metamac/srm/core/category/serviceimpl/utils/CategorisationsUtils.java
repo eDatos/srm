@@ -23,7 +23,7 @@ public class CategorisationsUtils {
                 itemSchemeVersion.getMaintainableArtefact().addCategorisation(categorisationTemp);
 
                 categorisationTemp.getMaintainableArtefact().setUrn(urnFromTemporal);
-                categorisationTemp.getMaintainableArtefact().setUrnProvider(urnFromTemporal);
+                categorisationTemp.getMaintainableArtefact().setUrnProvider(GeneratorUrnUtils.makeUrnFromTemporal(categorisationTemp.getMaintainableArtefact().getUrnProvider()));
                 categorisationTemp.getMaintainableArtefact().setVersionLogic(SdmxSrmUtils.buildVersionFromTemporalVersion(categorisationTemp.getMaintainableArtefact().getVersionLogic()));
                 thereAreNewCategorisations = true;
             }
@@ -41,7 +41,7 @@ public class CategorisationsUtils {
                 structureVersion.getMaintainableArtefact().addCategorisation(categorisationTemp);
 
                 categorisationTemp.getMaintainableArtefact().setUrn(urnFromTemporal);
-                categorisationTemp.getMaintainableArtefact().setUrnProvider(urnFromTemporal);
+                categorisationTemp.getMaintainableArtefact().setUrnProvider(GeneratorUrnUtils.makeUrnFromTemporal(categorisationTemp.getMaintainableArtefact().getUrnProvider()));
                 categorisationTemp.getMaintainableArtefact().setVersionLogic(SdmxSrmUtils.buildVersionFromTemporalVersion(categorisationTemp.getMaintainableArtefact().getVersionLogic()));
                 thereAreNewCategorisations = true;
             }

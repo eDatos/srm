@@ -26,7 +26,7 @@ public class CodesUtils {
                 codelist.addOpennessVisualisation(codelistOpenessVisualizationTemp);
 
                 codelistOpenessVisualizationTemp.getNameableArtefact().setUrn(urnFromTemporal);
-                codelistOpenessVisualizationTemp.getNameableArtefact().setUrnProvider(urnFromTemporal);
+                codelistOpenessVisualizationTemp.getNameableArtefact().setUrnProvider(GeneratorUrnUtils.makeUrnFromTemporal(codelistOpenessVisualizationTemp.getNameableArtefact().getUrnProvider()));
                 thereAreNewOpeness = true;
             } else {
                 // Update International Strings is permitted
@@ -49,7 +49,7 @@ public class CodesUtils {
                 itemSchemeVersion.addOrderVisualisation(codelistOrderVisualisationTemp);
 
                 codelistOrderVisualisationTemp.getNameableArtefact().setUrn(urnFromTemporal);
-                codelistOrderVisualisationTemp.getNameableArtefact().setUrnProvider(urnFromTemporal);
+                codelistOrderVisualisationTemp.getNameableArtefact().setUrnProvider(GeneratorUrnUtils.makeUrnFromTemporal(codelistOrderVisualisationTemp.getNameableArtefact().getUrnProvider()));
                 thereAreNewOpeness = true;
             } else {
                 // Update International Strings is permitted
