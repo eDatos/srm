@@ -258,7 +258,8 @@ public class CodesMetamacDoMocks extends CodesDoMocks {
         target.setLongitude(Double.valueOf(2));
         target.setShapeWkt("MULTIPOLYGON (((-17.9 28.8)))");
         target.setShapeGeojson("{(((-17.9 28.8)))}");
-        // target.setGeographicalGranularity(mockCodeResultFixedValues("code1", null)); // TODO VariableElementResult.geographicalGranularity
+        target.setGeographicalGranularity(mockCodeResultFixedValues("geo-" + resourceID, null));
+        target.getGeographicalGranularity().setUrn("urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000)." + target.getGeographicalGranularity().getCode());
         return target;
     }
 

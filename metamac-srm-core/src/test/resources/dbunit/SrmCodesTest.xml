@@ -3782,7 +3782,7 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="155"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -3831,7 +3831,7 @@
                 REPLACED_BY_VERSION="[null]"
                 REPLACE_TO_VERSION="[null]"
                 
-                NAME_FK="[null]"
+                NAME_FK="156"
                 DESCRIPTION_FK="[null]"
                 COMMENT_FK="[null]"
                 
@@ -6391,7 +6391,7 @@
                 LONGITUDE="91.3245"
                 SHAPE_WKT="MULTIPOLYGON (((-20.91900240266335 31.856725761393726)))"
                 SHAPE_GEOJSON="{(((-20.91900240266335 31.856725761393726)))}"
-                GEOGRAPHICAL_GRANULARITY_FK="1011"
+                GEOGRAPHICAL_GRANULARITY_FK="1012"
                 
                 UUID="variable-element-54"
                 CREATED_DATE_TZ="Europe/London"
@@ -9267,5 +9267,48 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="154"
+    />   
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="155"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1551"
+        LABEL="code1 es"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="155"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1552"
+        LABEL="code1 en"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="155"
+    />         
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="156"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1561"
+        LABEL="code2 es"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="156"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1562"
+        LABEL="code2 en"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="156"
     />    
+             
 </dataset>

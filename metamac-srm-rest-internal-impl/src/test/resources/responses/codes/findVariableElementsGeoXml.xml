@@ -10,6 +10,16 @@
                 <sr:urn>urn:sdmx:org.sdmx.infomodel.xxx=artefact1</sr:urn>
                 <sr:longitude>1.0</sr:longitude>
                 <sr:latitude>2.0</sr:latitude>
+                <sr:geographicalGranularity kind="structuralResources#code">
+                    <cdomain:id>geo-artefact1</cdomain:id>
+                    <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact1</cdomain:urn>
+                    <cdomain:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/ISTAC/codelist01/01.000/codes/geo-artefact1"/>
+                    <cdomain:name>
+                        <cdomain:text xml:lang="en">name-geo-artefact1 in English</cdomain:text>
+                        <cdomain:text xml:lang="es">name-geo-artefact1 en Español</cdomain:text>
+                    </cdomain:name>
+                    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=ISTAC:codelist01(01.000)/code;id=geo-artefact1</sr:managementAppLink>
+                </sr:geographicalGranularity>
             </sr:properties>
         </sr:feature>
         <sr:feature>
@@ -20,6 +30,16 @@
                 <sr:urn>urn:sdmx:org.sdmx.infomodel.xxx=artefact2</sr:urn>
                 <sr:longitude>3.0</sr:longitude>
                 <sr:latitude>4.0</sr:latitude>
+                <sr:geographicalGranularity kind="structuralResources#code">
+                    <cdomain:id>geo-artefact2</cdomain:id>
+                    <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact2</cdomain:urn>
+                    <cdomain:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources-internal/v1.0/codelists/ISTAC/codelist01/01.000/codes/geo-artefact2"/>
+                    <cdomain:name>
+                        <cdomain:text xml:lang="en">name-geo-artefact2 in English</cdomain:text>
+                        <cdomain:text xml:lang="es">name-geo-artefact2 en Español</cdomain:text>
+                    </cdomain:name>
+                    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=ISTAC:codelist01(01.000)/code;id=geo-artefact2</sr:managementAppLink>
+                </sr:geographicalGranularity>
             </sr:properties>
         </sr:feature>
     </sr:features>

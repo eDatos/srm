@@ -24,7 +24,8 @@
          "properties":{
             "urn":"urn:sdmx:org.sdmx.infomodel.xxx=artefact1",
             "longitude":1.0,
-            "latitude":2.0
+            "latitude":2.0,
+            "geographicalGranularity":"urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact1"
          }
       },
       {
@@ -54,7 +55,8 @@
          "properties":{
             "urn":"urn:sdmx:org.sdmx.infomodel.xxx=artefact2",
             "longitude":3.0,
-            "latitude":4.0
+            "latitude":4.0,
+            "geographicalGranularity":"urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact2"
          }
       }
    ]

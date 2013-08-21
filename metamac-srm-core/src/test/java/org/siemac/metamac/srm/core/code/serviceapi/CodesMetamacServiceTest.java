@@ -6778,6 +6778,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         selection.setShapeGeojson(true);
         selection.setShapeWkt(true);
         selection.setLongitudeLatitude(true);
+        selection.setGeographicalGranularity(true);
 
         {
             selection.setReturnOnlyGeographicalVariableElements(false);
@@ -6801,6 +6802,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(null, ve.getShapeGeojson());
                 assertEquals(null, ve.getLatitude());
                 assertEquals(null, ve.getLongitude());
+                assertEquals(null, ve.getGeographicalGranularity());
             }
             {
                 VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_2, result);
@@ -6882,6 +6884,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals("{(((-17.91900240266335 28.856725761393726)))}", ve.getShapeGeojson());
                 assertEquals(Double.valueOf("70.5559"), ve.getLatitude());
                 assertEquals(Double.valueOf("90.3045"), ve.getLongitude());
+                assertEquals("CODE01", ve.getGeographicalGranularity().getCode());
+                assertEquals(CODELIST_10_V1_CODE_1, ve.getGeographicalGranularity().getUrn());
+                assertEquals("code1 es", ve.getGeographicalGranularity().getName().get("es"));
+                assertEquals("code1 en", ve.getGeographicalGranularity().getName().get("en"));
+
             }
             {
                 VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_3, result);
@@ -6894,6 +6901,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals("{(((-19.91900240266335 30.856725761393726)))}", ve.getShapeGeojson());
                 assertEquals(Double.valueOf("70.5559"), ve.getLatitude());
                 assertEquals(Double.valueOf("90.3045"), ve.getLongitude());
+                assertEquals("CODE01", ve.getGeographicalGranularity().getCode());
+                assertEquals(CODELIST_10_V1_CODE_1, ve.getGeographicalGranularity().getUrn());
+                assertEquals("code1 es", ve.getGeographicalGranularity().getName().get("es"));
+                assertEquals("code1 en", ve.getGeographicalGranularity().getName().get("en"));
             }
             {
                 VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_4, result);
@@ -6901,6 +6912,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals("VARIABLE_ELEMENT_04", ve.getCode());
                 assertEquals("nombre", ve.getShortName().get("es"));
                 assertEquals(null, ve.getShortName().get("en"));
+                assertEquals("CODE02", ve.getGeographicalGranularity().getCode());
+                assertEquals(CODELIST_10_V1_CODE_2, ve.getGeographicalGranularity().getUrn());
+                assertEquals("code2 es", ve.getGeographicalGranularity().getName().get("es"));
+                assertEquals("code2 en", ve.getGeographicalGranularity().getName().get("en"));
             }
         }
     }

@@ -608,13 +608,14 @@ public class CodesDo2RestMapperTest {
         VariableElementResultSelection selection = new VariableElementResultSelection();
         selection.setLongitudeLatitude(true);
         selection.setShapeGeojson(true);
+        selection.setGeographicalGranularity(true);
 
         // Transform
         String target = do2RestInternalMapper.toVariableElementsGeoJson(sources, selection);
 
         // Validate
         assertEquals(
-                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"id\":\"artefact1\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-17, 28],[-15, 50]]]]},\"properties\": {\"urn\": \"urn:sdmx:org.sdmx.infomodel.xxx=artefact1\",\"longitude\": 1.0,\"latitude\": 2.0}},{\"type\":\"Feature\",\"id\":\"artefact2\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-19, 30],[-17.90, 28.85],[-14, 15]]]]},\"properties\": {\"urn\": \"urn:sdmx:org.sdmx.infomodel.xxx=artefact2\",\"longitude\": 3.0,\"latitude\": 4.0}}]}",
+                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"id\":\"artefact1\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-17, 28],[-15, 50]]]]},\"properties\": {\"urn\": \"urn:sdmx:org.sdmx.infomodel.xxx=artefact1\",\"longitude\": 1.0,\"latitude\": 2.0,\"geographicalGranularity\": \"urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact1\"}},{\"type\":\"Feature\",\"id\":\"artefact2\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-19, 30],[-17.90, 28.85],[-14, 15]]]]},\"properties\": {\"urn\": \"urn:sdmx:org.sdmx.infomodel.xxx=artefact2\",\"longitude\": 3.0,\"latitude\": 4.0,\"geographicalGranularity\": \"urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact2\"}}]}",
                 target);
     }
 
@@ -628,6 +629,7 @@ public class CodesDo2RestMapperTest {
         VariableElementResultSelection selection = new VariableElementResultSelection();
         selection.setLongitudeLatitude(true);
         selection.setShapeWkt(true);
+        selection.setGeographicalGranularity(true);
 
         // Transform
         VariableElementsGeoInfo target = do2RestInternalMapper.toVariableElementsGeoXml(sources, selection);
@@ -643,7 +645,7 @@ public class CodesDo2RestMapperTest {
             assertEquals("MULTIPOLYGON [[[[-17, 28],[-15, 50]]]]", feature.getGeometryWKT());
             assertEquals(Double.valueOf(1.0D), feature.getProperties().getLongitude());
             assertEquals(Double.valueOf(2.0D), feature.getProperties().getLatitude());
-            // assertEquals("aa", feature.getProperties().getGeographicGranularity()); // TODO granularity
+            assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact1", feature.getProperties().getGeographicalGranularity().getUrn());
         }
         {
             VariableElementsGeoInfoFeature feature = target.getFeatures().getFeatures().get(1);
@@ -653,7 +655,7 @@ public class CodesDo2RestMapperTest {
             assertEquals("MULTIPOLYGON [[[[-17, 28],[-15, 50]]]]", feature.getGeometryWKT());
             assertEquals(Double.valueOf(3.0D), feature.getProperties().getLongitude());
             assertEquals(Double.valueOf(4.0D), feature.getProperties().getLatitude());
-            // assertEquals("aa", feature.getProperties().getGeographicGranularity()); // TODO granularity
+            assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact2", feature.getProperties().getGeographicalGranularity().getUrn());
         }
     }
 

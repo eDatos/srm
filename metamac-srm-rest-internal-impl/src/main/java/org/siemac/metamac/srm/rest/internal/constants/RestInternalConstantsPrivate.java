@@ -14,5 +14,6 @@ public class RestInternalConstantsPrivate extends RestInternalConstants {
     public static final String VARIABLE_ELEMENT_URN                      = "urn";
     public static final String VARIABLE_ELEMENT_LONGITUDE                = "longitude";
     public static final String VARIABLE_ELEMENT_LATITUDE                 = "latitude";
+    public static final String VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY = "geographicalGranularity";
 
 }

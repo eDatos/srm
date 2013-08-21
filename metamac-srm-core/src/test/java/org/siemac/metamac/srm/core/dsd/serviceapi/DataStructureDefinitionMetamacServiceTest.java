@@ -1153,13 +1153,13 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
     @Override
     public void testFindCodelistsCanBeEnumeratedRepresentationForDsdSpatialDimensionByCondition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO testFindCodelistsCanBeEnumeratedRepresentationForDsdSpatialDimensionByCondition
 
     }
 
     @Override
     public void testFindCodelistsCanBeEnumeratedRepresentationForDsdSpatialAttributeByCondition() throws Exception {
-        // TODO Auto-generated method stub
+        // TODO testFindCodelistsCanBeEnumeratedRepresentationForDsdSpatialAttributeByCondition
 
     }
 

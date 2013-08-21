@@ -3,7 +3,9 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.code;
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_FEATURES;
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_FEATURE_COLLECTION_VALUE;
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_FEATURE_VALUE;
+import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY;
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_GEOMETRY;
+import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_ID;
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_LATITUDE;
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_LONGITUDE;
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_PROPERTIES;
@@ -16,8 +18,11 @@ import java.util.List;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.constants.RestConstants;
@@ -71,6 +76,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 
 @Component
 public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements CodesDo2RestMapperV10 {
@@ -499,6 +505,12 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     private ResourceLink toCodeSelfLink(ItemResult source, CodelistVersion codelistVersion) {
         return toResourceLink(RestInternalConstants.KIND_CODE, toCodeLink(source, codelistVersion));
     }
+    private ResourceLink toCodeSelfLink(ItemResult source) {
+        String[] codeUrnSplited = UrnUtils.splitUrnItem(source.getUrn());
+        String codesLink = toItemsLink(toSubpathItemSchemes(), toSubpathItems(), codeUrnSplited[0], codeUrnSplited[1], codeUrnSplited[2]);
+        String codeLink = RestUtils.createLink(codesLink, getCode(source));
+        return toResourceLink(RestInternalConstants.KIND_CODE, codeLink);
+    }
 
     private ResourceLink toCodeParentLink(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
         return toResourceLink(RestInternalConstants.KIND_CODES, toCodesLink(source.getItemSchemeVersion()));
@@ -792,6 +804,16 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return getInternalWebApplicationNavigation().buildCodeUrl(codelistVersion.getMaintainableArtefact().getUrn(), source.getCode());
     }
 
+    private String toCodeManagementApplicationLink(String codeUrn) {
+        String[] codeUrnSplited = UrnUtils.splitUrnItem(codeUrn);
+        String[] agency = StringUtils.splitPreserveAllTokens(codeUrnSplited[0], UrnConstants.DOT);
+        String codelistCode = codeUrnSplited[1];
+        String codelistVersion = codeUrnSplited[2];
+        String codeCode = codeUrnSplited[3];
+        String codelistUrn = GeneratorUrnUtils.generateSdmxCodelistUrn(agency, codelistCode, codelistVersion);
+        return getInternalWebApplicationNavigation().buildCodeUrl(codelistUrn, codeCode);
+    }
+
     private String toCodelistFamilyManagementApplicationLink(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
         return getInternalWebApplicationNavigation().buildCodelistFamilyUrl(source);
     }
@@ -875,32 +897,9 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             target.append(",");
             target.append("\"" + VARIABLE_ELEMENT_FEATURES + "\":[");
             for (int i = 0; i < sources.size(); i++) {
-                Object variableElementObject = sources.get(i);
-                String code = null;
-                String urn = null;
-                Double longitude = null;
-                Double latitude = null;
-                String shapeGeojson = null;
-                if (variableElementObject instanceof VariableElementResult) {
-                    VariableElementResult variableElement = (VariableElementResult) variableElementObject;
-                    code = variableElement.getCode();
-                    urn = variableElement.getUrn();
-                    shapeGeojson = variableElement.getShapeGeojson();
-                    longitude = variableElement.getLongitude();
-                    latitude = variableElement.getLatitude();
-                } else if (variableElementObject instanceof org.siemac.metamac.srm.core.code.domain.VariableElement) {
-                    org.siemac.metamac.srm.core.code.domain.VariableElement variableElement = (org.siemac.metamac.srm.core.code.domain.VariableElement) variableElementObject;
-                    code = variableElement.getIdentifiableArtefact().getCode();
-                    urn = variableElement.getIdentifiableArtefact().getUrn();
-                    shapeGeojson = variableElement.getShapeGeojson();
-                    longitude = variableElement.getLongitude();
-                    latitude = variableElement.getLatitude();
-                } else {
-                    logger.error("VariableElement object unsupported: " + variableElementObject.getClass().getCanonicalName());
-                    org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
-                    throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
-                }
-                toVariableElementGeoJson(code, urn, shapeGeojson, longitude, latitude, selection, target);
+                Object source = sources.get(i);
+                VariableElementMetadataExtraction variableElementMetadataExtraction = buildVariableElementMetadataExtraction(source);
+                toVariableElementGeoJson(variableElementMetadataExtraction, selection, target);
                 if (i != sources.size() - 1) {
                     target.append(",");
                 }
@@ -911,69 +910,17 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target.toString();
     }
 
-    // TODO granularidad
-    private void toVariableElementGeoJson(String code, String urn, String shapeGeoJson, Double longitude, Double latitude, VariableElementResultSelection selection, StringBuilder target) {
-        target.append("{");
-        target.append("\"" + VARIABLE_ELEMENT_TYPE + "\":\"" + VARIABLE_ELEMENT_FEATURE_VALUE + "\"");
-        target.append(",");
-        target.append("\"id\":\"" + code + "\"");
-        if (selection.isShapeGeojson() && shapeGeoJson != null) {
-            target.append(",");
-            target.append("\"" + VARIABLE_ELEMENT_GEOMETRY + "\":" + shapeGeoJson);
-        }
-        target.append(",");
-        target.append("\"" + VARIABLE_ELEMENT_PROPERTIES + "\": ");
-        target.append("{");
-        target.append("\"" + VARIABLE_ELEMENT_URN + "\": \"" + urn + "\"");
-        if (selection.isLongitudeLatitude()) {
-            if (longitude != null) {
-                target.append(",");
-                target.append("\"" + VARIABLE_ELEMENT_LONGITUDE + "\": " + longitude);
-            }
-            if (latitude != null) {
-                target.append(",");
-                target.append("\"" + VARIABLE_ELEMENT_LATITUDE + "\": " + latitude);
-            }
-        }
-        target.append("}");
-        target.append("}");
-    }
-
     @SuppressWarnings("rawtypes")
     private VariableElementsGeoInfo toVariableElementsGeoXmlCommon(List sources, VariableElementResultSelection selection) {
         VariableElementsGeoInfo target = new VariableElementsGeoInfo();
         target.setType(VARIABLE_ELEMENT_FEATURE_COLLECTION_VALUE);
-
         if (!CollectionUtils.isEmpty(sources)) {
             VariableElementsGeoInfoFeatures features = new VariableElementsGeoInfoFeatures();
             target.setFeatures(features);
             for (int i = 0; i < sources.size(); i++) {
-                Object variableElementObject = sources.get(i);
-                String code = null;
-                String urn = null;
-                Double longitude = null;
-                Double latitude = null;
-                String shapeWkt = null;
-                if (variableElementObject instanceof VariableElementResult) {
-                    VariableElementResult variableElement = (VariableElementResult) variableElementObject;
-                    code = variableElement.getCode();
-                    urn = variableElement.getUrn();
-                    shapeWkt = variableElement.getShapeWkt();
-                    longitude = variableElement.getLongitude();
-                    latitude = variableElement.getLatitude();
-                } else if (variableElementObject instanceof org.siemac.metamac.srm.core.code.domain.VariableElement) {
-                    org.siemac.metamac.srm.core.code.domain.VariableElement variableElement = (org.siemac.metamac.srm.core.code.domain.VariableElement) variableElementObject;
-                    code = variableElement.getIdentifiableArtefact().getCode();
-                    urn = variableElement.getIdentifiableArtefact().getUrn();
-                    shapeWkt = variableElement.getShapeWkt();
-                    longitude = variableElement.getLongitude();
-                    latitude = variableElement.getLatitude();
-                } else {
-                    logger.error("VariableElement object unsupported: " + variableElementObject.getClass().getCanonicalName());
-                    org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
-                    throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
-                }
-                VariableElementsGeoInfoFeature feature = toVariableElementGeoXml(code, urn, shapeWkt, longitude, latitude, selection);
+                Object source = sources.get(i);
+                VariableElementMetadataExtraction variableElementMetadataExtraction = buildVariableElementMetadataExtraction(source);
+                VariableElementsGeoInfoFeature feature = toVariableElementGeoXml(variableElementMetadataExtraction, selection);
                 target.getFeatures().getFeatures().add(feature);
             }
             target.getFeatures().setTotal(BigInteger.valueOf(target.getFeatures().getFeatures().size()));
@@ -981,20 +928,204 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    // TODO granularidad
-    private VariableElementsGeoInfoFeature toVariableElementGeoXml(String code, String urn, String shapeWkt, Double longitude, Double latitude, VariableElementResultSelection selection) {
+    private void toVariableElementGeoJson(VariableElementMetadataExtraction variableElementMetadataExtraction, VariableElementResultSelection selection, StringBuilder target) {
+        target.append("{");
+        target.append("\"" + VARIABLE_ELEMENT_TYPE + "\":\"" + VARIABLE_ELEMENT_FEATURE_VALUE + "\"");
+        target.append(",");
+        target.append("\"" + VARIABLE_ELEMENT_ID + "\":\"" + variableElementMetadataExtraction.getCode() + "\"");
+        if (selection.isShapeGeojson()) {
+            Object shapeGeojson = variableElementMetadataExtraction.getShapeGeoJson();
+            if (shapeGeojson != null) {
+                target.append(",");
+                target.append("\"" + VARIABLE_ELEMENT_GEOMETRY + "\":" + shapeGeojson);
+            }
+        }
+        target.append(",");
+        target.append("\"" + VARIABLE_ELEMENT_PROPERTIES + "\": ");
+        target.append("{");
+        target.append("\"" + VARIABLE_ELEMENT_URN + "\": \"" + variableElementMetadataExtraction.getUrn() + "\"");
+        if (selection.isLongitudeLatitude()) {
+            Double longitude = variableElementMetadataExtraction.getLongitude();
+            if (longitude != null) {
+                target.append(",");
+                target.append("\"" + VARIABLE_ELEMENT_LONGITUDE + "\": " + longitude);
+            }
+            Double latitude = variableElementMetadataExtraction.getLatitude();
+            if (latitude != null) {
+                target.append(",");
+                target.append("\"" + VARIABLE_ELEMENT_LATITUDE + "\": " + latitude);
+            }
+        }
+        if (selection.isGeographicalGranularity()) {
+            String geographicalGranularityUrn = variableElementMetadataExtraction.getGeographicalGranularityUrn();
+            if (geographicalGranularityUrn != null) {
+                target.append(",");
+                target.append("\"" + VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY + "\": \"" + geographicalGranularityUrn + "\"");
+            }
+        }
+        target.append("}");
+        target.append("}");
+    }
+
+    private VariableElementMetadataExtraction buildVariableElementMetadataExtraction(Object source) {
+        if (source instanceof VariableElementResult) {
+            return new VariableElementMetadataExtractionResult((VariableElementResult) source);
+        } else if (source instanceof org.siemac.metamac.srm.core.code.domain.VariableElement) {
+            return new VariableElementMetadataExtractionEntity((org.siemac.metamac.srm.core.code.domain.VariableElement) source);
+        } else {
+            logger.error("VariableElement object unsupported: " + source.getClass().getCanonicalName());
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
+            throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private VariableElementsGeoInfoFeature toVariableElementGeoXml(VariableElementMetadataExtraction variableElementMetadataExtraction, VariableElementResultSelection selection) {
         VariableElementsGeoInfoFeature target = new VariableElementsGeoInfoFeature();
         target.setType(VARIABLE_ELEMENT_FEATURE_VALUE);
-        target.setId(code);
+        target.setId(variableElementMetadataExtraction.getCode());
         if (selection.isShapeWkt()) {
-            target.setGeometryWKT(shapeWkt);
+            target.setGeometryWKT(variableElementMetadataExtraction.getShapeWkt());
         }
         target.setProperties(new VariableElementsGeoInfoFeatureProperties());
-        target.getProperties().setUrn(urn);
+        target.getProperties().setUrn(variableElementMetadataExtraction.getUrn());
         if (selection.isLongitudeLatitude()) {
-            target.getProperties().setLongitude(longitude);
-            target.getProperties().setLatitude(latitude);
+            target.getProperties().setLongitude(variableElementMetadataExtraction.getLongitude());
+            target.getProperties().setLatitude(variableElementMetadataExtraction.getLatitude());
+        }
+        if (selection.isGeographicalGranularity()) {
+            target.getProperties().setGeographicalGranularity(variableElementMetadataExtraction.getGeographicalGranularityAsResource());
         }
         return target;
     }
+
+    private ItemResourceInternal toResource(ItemResult source) {
+        if (source == null) {
+            return null;
+        }
+        ItemResourceInternal target = new ItemResourceInternal();
+        toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source.getUrn()), target, false);
+        return target;
+    }
+
+    private interface VariableElementMetadataExtraction {
+
+        public String getCode();
+        public String getUrn();
+        public String getShapeWkt();
+        public String getShapeGeoJson();
+        public Double getLongitude();
+        public Double getLatitude();
+        public Object getGeographicalGranularity();
+        public String getGeographicalGranularityUrn();
+        public ItemResourceInternal getGeographicalGranularityAsResource();
+    }
+
+    private class VariableElementMetadataExtractionEntity implements VariableElementMetadataExtraction {
+
+        private final org.siemac.metamac.srm.core.code.domain.VariableElement variableElement;
+
+        public VariableElementMetadataExtractionEntity(org.siemac.metamac.srm.core.code.domain.VariableElement variableElement) {
+            this.variableElement = variableElement;
+        }
+
+        @Override
+        public String getCode() {
+            return variableElement.getIdentifiableArtefact().getCode();
+        }
+
+        @Override
+        public String getUrn() {
+            return variableElement.getIdentifiableArtefact().getUrn();
+        }
+
+        @Override
+        public String getShapeWkt() {
+            return variableElement.getShapeWkt();
+        }
+
+        @Override
+        public String getShapeGeoJson() {
+            return variableElement.getShapeGeojson();
+        }
+
+        @Override
+        public Double getLongitude() {
+            return variableElement.getLongitude();
+        }
+
+        @Override
+        public Double getLatitude() {
+            return variableElement.getLatitude();
+        }
+
+        @Override
+        public Object getGeographicalGranularity() {
+            return variableElement.getGeographicalGranularity();
+        }
+
+        @Override
+        public String getGeographicalGranularityUrn() {
+            return variableElement.getGeographicalGranularity() != null ? variableElement.getGeographicalGranularity().getNameableArtefact().getUrn() : null;
+        }
+
+        @Override
+        public ItemResourceInternal getGeographicalGranularityAsResource() {
+            return toResource(variableElement.getGeographicalGranularity());
+        }
+    }
+
+    private class VariableElementMetadataExtractionResult implements VariableElementMetadataExtraction {
+
+        private final org.siemac.metamac.srm.core.code.domain.VariableElementResult variableElement;
+
+        public VariableElementMetadataExtractionResult(VariableElementResult variableElement) {
+            this.variableElement = variableElement;
+        }
+
+        @Override
+        public String getCode() {
+            return variableElement.getCode();
+        }
+
+        @Override
+        public String getUrn() {
+            return variableElement.getUrn();
+        }
+
+        @Override
+        public String getShapeWkt() {
+            return variableElement.getShapeWkt();
+        }
+
+        @Override
+        public String getShapeGeoJson() {
+            return variableElement.getShapeGeojson();
+        }
+
+        @Override
+        public Double getLongitude() {
+            return variableElement.getLongitude();
+        }
+
+        @Override
+        public Double getLatitude() {
+            return variableElement.getLatitude();
+        }
+
+        @Override
+        public Object getGeographicalGranularity() {
+            return variableElement.getGeographicalGranularity();
+        }
+
+        @Override
+        public String getGeographicalGranularityUrn() {
+            return variableElement.getGeographicalGranularity() != null ? variableElement.getGeographicalGranularity().getUrn() : null;
+        }
+
+        @Override
+        public ItemResourceInternal getGeographicalGranularityAsResource() {
+            return toResource(variableElement.getGeographicalGranularity());
+        }
+    }
+
 }

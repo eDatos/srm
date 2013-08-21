@@ -21,6 +21,8 @@ import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisati
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.springframework.stereotype.Repository;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+
 /**
  * Repository implementation for VariableElement
  */
@@ -165,11 +167,34 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
                         variableElementGeoResultSqlToVariableElementResult(variableElementResultSqlArray, variableElementResult, selection);
                     }
                 }
-                // geographic granularity TODO geographicalGranularity
+                // geographical granularity
                 if (selection.isGeographicalGranularity()) {
+                    StringBuilder sbGeo = new StringBuilder();
+                    sbGeo.append("SELECT ve.ID as VARIABLE_ELEMENT_ID, ac.CODE, ac.URN, ls.LOCALE as CODE_NAME_LOCALE, ls.LABEL as CODE_NAME_LABEL  ");
+                    sbGeo.append("FROM TB_M_VARIABLE_ELEMENTS ve ");
+                    sbGeo.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on ve.IDENTIFIABLE_ARTEFACT_FK = a.ID ");
+                    sbGeo.append("INNER JOIN TB_CODES c on ve.GEOGRAPHICAL_GRANULARITY_FK = c.ID ");
+                    sbGeo.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS ac on c.NAMEABLE_ARTEFACT_FK = ac.ID ");
+                    sbGeo.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls ON ls.INTERNATIONAL_STRING_FK = ac.NAME_FK ");
+                    sbGeo.append("WHERE ve.VARIABLE_FK = :variableId ");
+                    if (!CollectionUtils.isEmpty(variableElementCodes)) {
+                        sbGeo.append("AND a.CODE IN (:variableElementCodes) ");
+                    }
+                    Query queryGeo = getEntityManager().createNativeQuery(sbGeo.toString());
+                    queryGeo.setParameter("variableId", variableId);
+                    if (!CollectionUtils.isEmpty(variableElementCodes)) {
+                        queryGeo.setParameter("variableElementCodes", variableElementCodes.subList(startIndex, endIndex));
+                    }
+                    List variableElementsResultSqlGeo = queryGeo.getResultList();
 
+                    // Transform object[] results
+                    for (Object variableElementResultSql : variableElementsResultSqlGeo) {
+                        Object[] variableElementResultSqlArray = (Object[]) variableElementResultSql;
+                        Long id = getLong(variableElementResultSqlArray[0]);
+                        VariableElementResult variableElementResult = variableElementsById.get(id);
+                        variableElementGeographicGranularityResultSqlToVariableElementResult(variableElementResultSqlArray, variableElementResult, selection);
+                    }
                 }
-
             }
             if (CollectionUtils.isEmpty(variableElementCodes)) {
                 break;
@@ -216,7 +241,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
         target.setCode(getString(source[i++]));
         String locale = getString(source[i++]);
         if (locale == null) {
-            i++;
+            i++; // label
         } else {
             String label = getString(source[i++]);
             target.getShortName().put(locale, label);
@@ -234,6 +259,27 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
         if (selection.isLongitudeLatitude()) {
             target.setLatitude(getDouble(source[i++]));
             target.setLongitude(getDouble(source[i++]));
+        }
+    }
+
+    private void variableElementGeographicGranularityResultSqlToVariableElementResult(Object[] source, VariableElementResult target, VariableElementResultSelection selection) {
+        int i = 1; // skip id
+        ItemResult geographicGranularity = target.getGeographicalGranularity();
+        if (geographicGranularity == null) {
+            geographicGranularity = new ItemResult();
+            target.setGeographicalGranularity(geographicGranularity);
+            geographicGranularity.setCode(getString(source[i++]));
+            geographicGranularity.setUrn(getString(source[i++]));
+        } else {
+            i++; // code
+            i++; // urn
+        }
+        String locale = getString(source[i++]);
+        if (locale == null) {
+            i++; // label
+        } else {
+            String label = getString(source[i++]);
+            geographicGranularity.getName().put(locale, label);
         }
     }
 
