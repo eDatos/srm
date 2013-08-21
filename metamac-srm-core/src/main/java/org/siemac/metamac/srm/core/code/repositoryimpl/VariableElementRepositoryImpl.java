@@ -192,7 +192,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
                         Object[] variableElementResultSqlArray = (Object[]) variableElementResultSql;
                         Long id = getLong(variableElementResultSqlArray[0]);
                         VariableElementResult variableElementResult = variableElementsById.get(id);
-                        variableElementGeographicGranularityResultSqlToVariableElementResult(variableElementResultSqlArray, variableElementResult, selection);
+                        variableElementGeographicalGranularityResultSqlToVariableElementResult(variableElementResultSqlArray, variableElementResult, selection);
                     }
                 }
             }
@@ -262,14 +262,14 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
         }
     }
 
-    private void variableElementGeographicGranularityResultSqlToVariableElementResult(Object[] source, VariableElementResult target, VariableElementResultSelection selection) {
+    private void variableElementGeographicalGranularityResultSqlToVariableElementResult(Object[] source, VariableElementResult target, VariableElementResultSelection selection) {
         int i = 1; // skip id
-        ItemResult geographicGranularity = target.getGeographicalGranularity();
-        if (geographicGranularity == null) {
-            geographicGranularity = new ItemResult();
-            target.setGeographicalGranularity(geographicGranularity);
-            geographicGranularity.setCode(getString(source[i++]));
-            geographicGranularity.setUrn(getString(source[i++]));
+        ItemResult geographicalGranularity = target.getGeographicalGranularity();
+        if (geographicalGranularity == null) {
+            geographicalGranularity = new ItemResult();
+            target.setGeographicalGranularity(geographicalGranularity);
+            geographicalGranularity.setCode(getString(source[i++]));
+            geographicalGranularity.setUrn(getString(source[i++]));
         } else {
             i++; // code
             i++; // urn
@@ -279,7 +279,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
             i++; // label
         } else {
             String label = getString(source[i++]);
-            geographicGranularity.getName().put(locale, label);
+            geographicalGranularity.getName().put(locale, label);
         }
     }
 
