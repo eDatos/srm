@@ -1,11 +1,14 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
-import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxrs.provider.JAXBElementProvider;
@@ -67,7 +70,13 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
     @Test
     public void testErrorWithoutMatchError404() throws Exception {
         String requestUri = baseApi + "/nomatch";
-        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, new ByteArrayInputStream(new byte[0]));
+
+        WebClient webClient = WebClient.create(requestUri).accept(APPLICATION_XML);
+        Response response = webClient.get();
+
+        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        InputStream responseActual = (InputStream) response.getEntity();
+        assertTrue(StringUtils.isBlank(IOUtils.toString(responseActual)));
     }
 
     protected SrmRestInternalFacadeV10 getSrmRestInternalFacadeClientXml() {
