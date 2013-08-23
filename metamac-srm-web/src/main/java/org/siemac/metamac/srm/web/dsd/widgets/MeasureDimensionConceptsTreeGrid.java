@@ -24,6 +24,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationRe
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -58,6 +59,7 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
         showDecimalsPrecisionField.setEditorType(new SelectItem(DataStructureDefinitionDS.SHOW_DECIMALS, getConstants().dsdShowDecimals()));
         showDecimalsPrecisionField.setValueMap(org.siemac.metamac.srm.web.dsd.utils.CommonUtils.getDsdShowDecimalsHashMap());
         showDecimalsPrecisionField.setShowHover(false);
+        showDecimalsPrecisionField.setAlign(Alignment.CENTER);
 
         setFields(codeField, showDecimalsPrecisionField);
 
