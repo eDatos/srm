@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <override>
-        <system />
-        <properties fileName="conf/metamac-registry-web-configuration.xml" basePath="" config-optional="false" />
-    </override>
-</configuration>
