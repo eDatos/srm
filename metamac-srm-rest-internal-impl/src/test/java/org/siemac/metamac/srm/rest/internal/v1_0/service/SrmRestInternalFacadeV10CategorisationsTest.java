@@ -3,8 +3,8 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategorisations;
 import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyRetrieveCategorisation;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
@@ -53,7 +53,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
     public static String             CATEGORISATION_3_VERSION_1 = "01.000";
 
     @Test
-    public void testErrorJsonNonAcceptable() throws Exception {
+    public void testJsonAcceptable() throws Exception {
 
         String requestUri = getUriItemSchemes(AGENCY_1, CATEGORISATION_1_CODE, CATEGORISATION_1_VERSION_1);
 
@@ -61,7 +61,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
         WebClient webClient = WebClient.create(requestUri).accept("application/json");
         Response response = webClient.get();
 
-        assertEquals(Status.NOT_ACCEPTABLE.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test

@@ -3,8 +3,8 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.internal.RestInternalConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
+import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
 import static org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresMockitoVerify.verifyFindDataStructures;
 import static org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresMockitoVerify.verifyRetrieveDataStructure;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
@@ -51,11 +51,11 @@ import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 
 public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalFacadeV10BaseTest {
 
-    private DataStructureDefinitionMetamacService         dsdsService;
-    private StructureVersionRepository structureVersionRepository;
+    private DataStructureDefinitionMetamacService dsdsService;
+    private StructureVersionRepository            structureVersionRepository;
 
     @Test
-    public void testErrorJsonNonAcceptable() throws Exception {
+    public void testJsonAcceptable() throws Exception {
 
         String requestUri = getUriStructures(AGENCY_1, ARTEFACT_1_CODE, VERSION_1);
 
@@ -63,7 +63,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
         WebClient webClient = WebClient.create(requestUri).accept("application/json");
         Response response = webClient.get();
 
-        assertEquals(Status.NOT_ACCEPTABLE.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test

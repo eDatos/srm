@@ -37,7 +37,7 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends SrmRestInternalFacadeV10OrganisationsTest {
 
     @Test
-    public void testErrorJsonNonAcceptable() throws Exception {
+    public void testJsonAcceptable() throws Exception {
 
         String requestUri = getUriItemSchemes(AGENCY_1, ITEM_SCHEME_1_CODE, null, null, null, null);
 
@@ -45,7 +45,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         WebClient webClient = WebClient.create(requestUri).accept("application/json");
         Response response = webClient.get();
 
-        assertEquals(Status.NOT_ACCEPTABLE.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test

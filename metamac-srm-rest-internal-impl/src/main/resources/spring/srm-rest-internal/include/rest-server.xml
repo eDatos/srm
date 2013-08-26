@@ -24,11 +24,13 @@
         </jaxrs:serviceBeans>
         
         <jaxrs:extensionMappings>
+            <entry key="json" value="application/json" />
             <entry key="xml" value="application/xml" />
         </jaxrs:extensionMappings>
         
         <jaxrs:providers>
             <ref bean="jaxbProvider" />
+            <ref bean="jsonProvider" />
         </jaxrs:providers>
 
     </jaxrs:server>
@@ -36,6 +38,8 @@
     <bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider">
         <property name="marshallerProperties" ref="marshallerProperties" />
     </bean>
+    
+    <bean id="jsonProvider" class="org.siemac.metamac.rest.json.MetamacJacksonJaxbJsonProvider" />
 
     <util:map id="marshallerProperties">
         <entry key="jaxb.formatted.output">
