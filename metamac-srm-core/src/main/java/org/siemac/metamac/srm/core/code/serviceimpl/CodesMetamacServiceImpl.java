@@ -2665,7 +2665,13 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Check geographical information
         checkVariableElementGeographicalGranularity(ctx, variableElement);
 
-        // No translation to check
+        // Check translations
+        String locale = srmConfiguration.retrieveLanguageDefault();
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        SrmServiceUtils.checkInternationalStringTranslationsWithoutSql(variableElement.getShortName(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME, locale, exceptionItems);
+        if (exceptionItems.size() != 0) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(exceptionItems).build();
+        }
     }
 
     private void checkVariableElementGeographicalGranularity(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
