@@ -184,7 +184,7 @@ public class ResourceImportationServlet extends HttpServlet {
         String codelistUrn = args.get(SrmSharedTokens.UPLOAD_PARAM_CODELIST_URN);
         Boolean updateAlreadyExisting = Boolean.parseBoolean(args.get(SrmSharedTokens.UPLOAD_PARAM_UPDATE_EXISTING));
 
-        srmCoreServiceFacade.importCodesTsvInBackground(ServiceContextHolder.getCurrentServiceContext(), codelistUrn, inputStream, fileName, updateAlreadyExisting);
+        srmCoreServiceFacade.importCodesTsv(ServiceContextHolder.getCurrentServiceContext(), codelistUrn, inputStream, fileName, updateAlreadyExisting);
     }
 
     // Code orders
@@ -193,7 +193,7 @@ public class ResourceImportationServlet extends HttpServlet {
 
         String codelistUrn = args.get(SrmSharedTokens.UPLOAD_PARAM_CODELIST_URN);
 
-        srmCoreServiceFacade.importCodeOrdersTsvInBackground(ServiceContextHolder.getCurrentServiceContext(), codelistUrn, inputStream, fileName);
+        srmCoreServiceFacade.importCodeOrdersTsv(ServiceContextHolder.getCurrentServiceContext(), codelistUrn, inputStream, fileName);
     }
 
     // Variable elements
@@ -203,7 +203,7 @@ public class ResourceImportationServlet extends HttpServlet {
         String variableUrn = args.get(SrmSharedTokens.UPLOAD_PARAM_VARIABLE_URN);
         Boolean updateAlreadyExisting = Boolean.parseBoolean(args.get(SrmSharedTokens.UPLOAD_PARAM_UPDATE_EXISTING));
 
-        srmCoreServiceFacade.importVariableElementsTsvInBackground(ServiceContextHolder.getCurrentServiceContext(), variableUrn, inputStream, fileName, updateAlreadyExisting);
+        srmCoreServiceFacade.importVariableElementsTsv(ServiceContextHolder.getCurrentServiceContext(), variableUrn, inputStream, fileName, updateAlreadyExisting);
     }
 
     // Variable element shape
@@ -218,9 +218,9 @@ public class ResourceImportationServlet extends HttpServlet {
         URL shapeFileUrl = unZipCompressedShapefile(tempZipFilePathName);
 
         if (VariableElementShapeTypeEnum.POLYGON.equals(shapeType)) {
-            srmCoreServiceFacade.importVariableElementsShapeInBackground(ServiceContextHolder.getCurrentServiceContext(), variableUrn, shapeFileUrl);
+            srmCoreServiceFacade.importVariableElementsShape(ServiceContextHolder.getCurrentServiceContext(), variableUrn, shapeFileUrl);
         } else if (VariableElementShapeTypeEnum.POINT.equals(shapeType)) {
-            srmCoreServiceFacade.importVariableElementsPointsInBackground(ServiceContextHolder.getCurrentServiceContext(), variableUrn, shapeFileUrl);
+            srmCoreServiceFacade.importVariableElementsPoints(ServiceContextHolder.getCurrentServiceContext(), variableUrn, shapeFileUrl);
         }
     }
 
