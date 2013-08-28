@@ -145,7 +145,6 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     // MISC internal
     public static final String  CHARSET                                                    = createCode("charset");
     public static final String  CAN_BE_BACKGROUND                                          = createCode("can_be_background");
-    public static final String  INFORMATION_ITEMS                                          = createCode("information_items");
 
     private static String createCode(String fieldCode) {
         return PREFIX_PARAMETER_SRM + "." + fieldCode;

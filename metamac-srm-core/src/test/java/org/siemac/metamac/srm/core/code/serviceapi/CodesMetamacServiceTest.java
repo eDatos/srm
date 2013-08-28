@@ -22,7 +22,6 @@ import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsse
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.URL;
@@ -39,6 +38,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -66,6 +66,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
@@ -78,7 +79,6 @@ import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
-import org.siemac.metamac.srm.core.code.domain.shared.TaskImportationInfo;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisationResult;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
@@ -3904,50 +3904,27 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @DirtyDatabase
     public void testImportCodesTsv() throws Exception {
 
-        final String codelistUrn = CODELIST_1_V2;
-        final String fileName = "importation-code-01.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
-        final boolean updateAlreadyExisting = true;
+        String codelistUrn = CODELIST_1_V2;
+        String fileName = "importation-code-01.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = true;
 
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
-
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null,
-                            Boolean.TRUE);
-                    assertEquals(true, taskImportTsvInfo.getIsPlannedInBackground());
-                    assertNotNull(taskImportTsvInfo.getJobKey());
-
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-
-                    CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
-                    assertEquals(true, codelistVersion.getItemScheme().getIsTaskInBackground());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
+        TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
 
         // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
-        assertEquals(6, task.getTaskResults().size());
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(6, taskImportTsvInfo.getInformationItems().size());
         int i = 0;
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED.getCode(), "CODE01", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED.getCode(), "CODE02", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND.getCode(), "VARIABLE_ELEMENT_NOT_EXISTS#@#code01b", Boolean.FALSE, TaskResultTypeEnum.INFO, task
-                .getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND.getCode(), "VARIABLE_ELEMENT_NOT_EXISTS#@#code8", Boolean.FALSE, TaskResultTypeEnum.INFO, task
-                .getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED.getCode(), "CODE03", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED.getCode(), "CODE0201", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
-        assertEquals(task.getTaskResults().size(), i);
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, 1, new Serializable[]{"CODE01"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, 1, new Serializable[]{"CODE02"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, 2, new Serializable[]{"VARIABLE_ELEMENT_NOT_EXISTS", "code01b"}, taskImportTsvInfo
+                .getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, 2, new Serializable[]{"VARIABLE_ELEMENT_NOT_EXISTS", "code8"}, taskImportTsvInfo
+                .getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, 1, new Serializable[]{"CODE03"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, 1, new Serializable[]{"CODE0201"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEquals(taskImportTsvInfo.getInformationItems().size(), i);
 
         // Validate item scheme
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
@@ -4346,13 +4323,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     @DirtyDatabase
-    public void testImportCodesTsvCharsetIso() throws Exception {
+    public void testImportCodesTsvInBackground() throws Exception {
 
+        // Import
         final String codelistUrn = CODELIST_1_V2;
-        final String fileName = "importation-code-01-charset-iso.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
+        final String fileName = "importation-code-01.tsv";
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        final boolean updateAlreadyExisting = false;
+
+        // force background
+        long numBytesPlannifyPrevious = SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION;
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION = 1;
         final StringBuilder jobKey = new StringBuilder();
-        final boolean updateAlreadyExisting = true;
 
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);
         tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -4361,9 +4343,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null,
-                            Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
+
+                    CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+                    assertEquals(true, codelistVersion.getItemScheme().getIsTaskInBackground());
                 } catch (MetamacException e) {
                     fail("importation failed: " + e.getHumanReadableMessage());
                 }
@@ -4371,11 +4355,34 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         });
         waitUntilJobFinished();
 
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION = numBytesPlannifyPrevious;
+
         // Validate
         Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
         assertNotNull(task);
         assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
-        assertEquals(0, task.getTaskResults().size());
+        assertEquals(6, task.getTaskResults().size()); // item testImportCodesTsv
+
+        // Validate item scheme
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(false, codelistVersion.getItemScheme().getIsTaskInBackground());
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportCodesTsvCharsetIso() throws Exception {
+
+        String codelistUrn = CODELIST_1_V2;
+        String fileName = "importation-code-01-charset-iso.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = true;
+
+        TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+
+        // Validate
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(0, taskImportTsvInfo.getInformationItems().size());
 
         // Validate codes
         String codelistUrnPart = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST01(02.000).";
@@ -4401,46 +4408,27 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @DirtyDatabase
     public void testImportCodesTsvNotUpdatingAlreadyExistingCodes() throws Exception {
 
-        final String codelistUrn = CODELIST_1_V2;
-        final String fileName = "importation-code-01.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
-        final boolean updateAlreadyExisting = false;
+        String codelistUrn = CODELIST_1_V2;
+        String fileName = "importation-code-01.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
 
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
-
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null,
-                            Boolean.TRUE);
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
-
-        entityManager.clear();
+        TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
 
         // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
-        assertEquals(6, task.getTaskResults().size());
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(6, taskImportTsvInfo.getInformationItems().size());
         int i = 0;
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "CODE01", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "CODE02", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND.getCode(), "VARIABLE_ELEMENT_NOT_EXISTS#@#code01b", Boolean.FALSE, TaskResultTypeEnum.INFO, task
-                .getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND.getCode(), "VARIABLE_ELEMENT_NOT_EXISTS#@#code8", Boolean.FALSE, TaskResultTypeEnum.INFO, task
-                .getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "CODE03", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "CODE0201", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
-        assertEquals(task.getTaskResults().size(), i);
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"CODE01"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"CODE02"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, 2, new Serializable[]{"VARIABLE_ELEMENT_NOT_EXISTS", "code01b"}, taskImportTsvInfo
+                .getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, 2, new Serializable[]{"VARIABLE_ELEMENT_NOT_EXISTS", "code8"}, taskImportTsvInfo
+                .getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"CODE03"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"CODE0201"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEquals(taskImportTsvInfo.getInformationItems().size(), i);
 
         // Validate codes (only check that existing codes not updated)
 
@@ -4534,13 +4522,45 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @DirtyDatabase
     public void testImportCodesTsvErrorWithHeaderIncorrect() throws Exception {
 
+        String codelistUrn = CODELIST_1_V2;
+
+        // Import
+        String fileName = "importation-code-02-errors-header.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        try {
+            codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+        } catch (MetamacException e) {
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
+            assertEquals(1, e.getExceptionItems().size());
+            int i = 0;
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, 1, new Serializable[]{ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE}, e
+                    .getExceptionItems().get(i++));
+            assertEquals(e.getExceptionItems().size(), i);
+        }
+
+        // Validate item scheme
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertTrue(BooleanUtils.isNotTrue(codelistVersion.getItemScheme().getIsTaskInBackground()));
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportCodesTsvErrorWithHeaderIncorrectInBackground() throws Exception {
+
         final String codelistUrn = CODELIST_1_V2;
 
         // Import
         final String fileName = "importation-code-02-errors-header.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
         final boolean updateAlreadyExisting = false;
+
+        // force background
+        long numBytesPlannifyPrevious = SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION;
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION = 1;
+        final StringBuilder jobKey = new StringBuilder();
+
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);
         tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
         tt.execute(new TransactionCallbackWithoutResult() {
@@ -4548,15 +4568,19 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null,
-                            Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
+
+                    CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+                    assertEquals(true, codelistVersion.getItemScheme().getIsTaskInBackground());
                 } catch (MetamacException e) {
                     fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
         waitUntilJobFinished();
+
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION = numBytesPlannifyPrevious;
 
         // Validate
         Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
@@ -4579,45 +4603,28 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @DirtyDatabase
     public void testImportCodesTsvErrorWithBodyIncorrect() throws Exception {
 
-        final String codelistUrn = CODELIST_1_V2;
+        String codelistUrn = CODELIST_1_V2;
 
         // Import
-        final String fileName = "importation-code-03-errors-body.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
-        final boolean updateAlreadyExisting = false;
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
+        String fileName = "importation-code-03-errors-body.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
 
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, updateAlreadyExisting, null,
-                            Boolean.TRUE);
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
-
-        // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
-        assertEquals(5, task.getTaskResults().size());
-        int i = 0;
-        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "%code1#@#parameter.srm.importation.code", Boolean.FALSE, type, task
-                .getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR_PARENT_NOT_FOUND.getCode(), "parentNotExists#@#codeParentNotExists", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "codeWithoutName#@#parameter.srm.importation.name", Boolean.FALSE, type, task.getTaskResults()
-                .get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), "5", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEquals(task.getTaskResults().size(), i);
+        try {
+            codesService.importCodesTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+        } catch (MetamacException e) {
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
+            assertEquals(4, e.getExceptionItems().size());
+            int i = 0;
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, 2, new Serializable[]{"%code1", "parameter.srm.importation.code"}, e
+                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_PARENT_NOT_FOUND, 2, new Serializable[]{"parentNotExists", "codeParentNotExists"},
+                    e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2, new Serializable[]{"codeWithoutName", "parameter.srm.importation.name"}, e.getExceptionItems()
+                    .get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, 1, new Serializable[]{5}, e.getExceptionItems().get(i++));
+            assertEquals(e.getExceptionItems().size(), i);
+        }
     }
 
     @Override
@@ -4625,38 +4632,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @DirtyDatabase
     public void testImportCodeOrdersTsv() throws Exception {
 
-        final String codelistUrn = CODELIST_1_V2;
-        final String fileName = "importation-code-orders-01.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
+        String codelistUrn = CODELIST_1_V2;
+        String fileName = "importation-code-orders-01.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
 
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
-
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
-                    assertEquals(true, taskImportTsvInfo.getIsPlannedInBackground());
-                    assertNotNull(taskImportTsvInfo.getJobKey());
-
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-
-                    CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
-                    assertEquals(true, codelistVersion.getItemScheme().getIsTaskInBackground());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
+        TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, Boolean.TRUE);
 
         // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
-        assertEquals(0, task.getTaskResults().size());
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(0, taskImportTsvInfo.getInformationItems().size());
 
         // Validate item scheme
         CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
@@ -4732,11 +4717,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     @DirtyDatabase
-    public void testImportCodeOrdersTsvErrorHeaderIncorrectCodeNotFound() throws Exception {
+    public void testImportCodeOrdersTsvInBackground() throws Exception {
 
+        // Import
         final String codelistUrn = CODELIST_1_V2;
-        final String fileName = "importation-code-orders-02-errors-header-01.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
+        final String fileName = "importation-code-orders-01.tsv";
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+
+        // force background
+        long numBytesPlannifyPrevious = SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_ORDERS_IMPORTATION;
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_ORDERS_IMPORTATION = 1;
         final StringBuilder jobKey = new StringBuilder();
 
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);
@@ -4746,14 +4736,90 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
+
+                    CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+                    assertEquals(true, codelistVersion.getItemScheme().getIsTaskInBackground());
                 } catch (MetamacException e) {
                     fail("importation failed: " + e.getHumanReadableMessage());
                 }
             }
         });
         waitUntilJobFinished();
+
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_ORDERS_IMPORTATION = numBytesPlannifyPrevious;
+
+        // Validate
+        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(0, task.getTaskResults().size()); // item testImportCodeOrdersTsv
+
+        // Validate item scheme
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertEquals(false, codelistVersion.getItemScheme().getIsTaskInBackground());
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportCodeOrdersTsvErrorHeaderIncorrectCodeNotFound() throws Exception {
+
+        String codelistUrn = CODELIST_1_V2;
+        String fileName = "importation-code-orders-02-errors-header-01.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+
+        try {
+            codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, Boolean.TRUE);
+        } catch (MetamacException e) {
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
+            assertEquals(1, e.getExceptionItems().size());
+            int i = 0;
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, 1, new Serializable[]{ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE}, e
+                    .getExceptionItems().get(i++));
+            assertEquals(e.getExceptionItems().size(), i);
+        }
+
+        // Validate item scheme
+        CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+        assertTrue(BooleanUtils.isNotTrue(codelistVersion.getItemScheme().getIsTaskInBackground()));
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportCodeOrdersTsvErrorHeaderIncorrectCodeNotFoundInBackground() throws Exception {
+
+        final String codelistUrn = CODELIST_1_V2;
+
+        // Import
+        final String fileName = "importation-code-orders-02-errors-header-01.tsv";
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+
+        // force background
+        long numBytesPlannifyPrevious = SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_ORDERS_IMPORTATION;
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_ORDERS_IMPORTATION = 1;
+        final StringBuilder jobKey = new StringBuilder();
+
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, Boolean.TRUE);
+                    jobKey.append(taskImportTsvInfo.getJobKey());
+
+                    CodelistVersionMetamac codelistVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistUrn);
+                    assertEquals(true, codelistVersion.getItemScheme().getIsTaskInBackground());
+                } catch (MetamacException e) {
+                    fail("importation failed: " + e.getHumanReadableMessage());
+                }
+            }
+        });
+        waitUntilJobFinished();
+
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_ORDERS_IMPORTATION = numBytesPlannifyPrevious;
 
         // Validate
         Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
@@ -4776,75 +4842,39 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @DirtyDatabase
     public void testImportCodeOrdersTsvErrorHeaderColumnVisualisationNotFound() throws Exception {
 
-        final String codelistUrn = CODELIST_1_V2;
-        final String fileName = "importation-code-orders-02-errors-header-02.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
+        String codelistUrn = CODELIST_1_V2;
+        String fileName = "importation-code-orders-02-errors-header-02.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
 
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
-
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
-
-        // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
-        assertEquals(2, task.getTaskResults().size());
-        int i = 0;
-        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN.getCode(), ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_ORDER, Boolean.FALSE, type, task
-                .getTaskResults().get(i++));
-        assertEquals(task.getTaskResults().size(), i);
+        try {
+            codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, Boolean.TRUE);
+        } catch (MetamacException e) {
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
+            assertEquals(1, e.getExceptionItems().size());
+            int i = 0;
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, 1, new Serializable[]{ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_ORDER}, e
+                    .getExceptionItems().get(i++));
+            assertEquals(e.getExceptionItems().size(), i);
+        }
     }
 
     @Test
     @DirtyDatabase
     public void testImportCodeOrdersTsvErrorHeaderIncorrectVisualisationAlphabetical() throws Exception {
 
-        final String codelistUrn = CODELIST_1_V2;
-        final String fileName = "importation-code-orders-02-errors-header-03-alphabetical.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
+        String codelistUrn = CODELIST_1_V2;
+        String fileName = "importation-code-orders-02-errors-header-03-alphabetical.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
 
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
-
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
-
-        // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
-        assertEquals(2, task.getTaskResults().size());
-        int i = 0;
-        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR_ALPHABETICAL_VISUALISATION_NOT_SUPPORTED.getCode(), null, Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEquals(task.getTaskResults().size(), i);
+        try {
+            codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, Boolean.TRUE);
+        } catch (MetamacException e) {
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
+            assertEquals(1, e.getExceptionItems().size());
+            int i = 0;
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_ALPHABETICAL_VISUALISATION_NOT_SUPPORTED, 0, null, e.getExceptionItems().get(i++));
+            assertEquals(e.getExceptionItems().size(), i);
+        }
     }
 
     @Test
@@ -4853,35 +4883,17 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         final String codelistUrn = CODELIST_1_V2;
         final String fileName = "importation-code-orders-03-errors-body-01.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
 
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
-
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
-
-        // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
-        assertEquals(2, task.getTaskResults().size());
-        int i = 0;
-        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR_INCORRECT_NUMBER_CODES.getCode(), "9#@#6", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEquals(task.getTaskResults().size(), i);
+        try {
+            codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, Boolean.TRUE);
+        } catch (MetamacException e) {
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
+            assertEquals(1, e.getExceptionItems().size());
+            int i = 0;
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_INCORRECT_NUMBER_CODES, 2, new Serializable[]{9, 6}, e.getExceptionItems().get(i++));
+            assertEquals(e.getExceptionItems().size(), i);
+        }
     }
 
     @Test
@@ -4890,36 +4902,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         final String codelistUrn = CODELIST_1_V2;
         final String fileName = "importation-code-orders-03-errors-body-02.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
 
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
-
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
-
-        // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
-        assertEquals(2, task.getTaskResults().size());
-        int i = 0;
-        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR_ORDER_VISUALISATION_NOT_FOUND.getCode(),
-                "VISUALISATION001#@#urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(02.000)", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEquals(task.getTaskResults().size(), i);
+        try {
+            codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, Boolean.TRUE);
+        } catch (MetamacException e) {
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
+            assertEquals(1, e.getExceptionItems().size());
+            int i = 0;
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_ORDER_VISUALISATION_NOT_FOUND, 2, new Serializable[]{"VISUALISATION001",
+                    "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(02.000)"}, e.getExceptionItems().get(i++));
+            assertEquals(e.getExceptionItems().size(), i);
+        }
     }
 
     @Test
@@ -4928,36 +4922,19 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         final String codelistUrn = CODELIST_1_V2;
         final String fileName = "importation-code-orders-03-errors-body-03.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
 
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
-
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, stream, null, fileName, null, Boolean.TRUE);
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
-
-        // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
-        assertEquals(3, task.getTaskResults().size());
-        int i = 0;
-        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "CODE0201#@#parameter.srm.importation.order", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "CODE04#@#parameter.srm.importation.order", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEquals(task.getTaskResults().size(), i);
+        try {
+            codesService.importCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn, file, fileName, Boolean.TRUE);
+        } catch (MetamacException e) {
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
+            assertEquals(2, e.getExceptionItems().size());
+            int i = 0;
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2, new Serializable[]{"CODE0201", "parameter.srm.importation.order"},
+                    e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2, new Serializable[]{"CODE04", "parameter.srm.importation.order"}, e.getExceptionItems().get(i++));
+            assertEquals(e.getExceptionItems().size(), i);
+        }
     }
 
     @DirtyDatabase
@@ -9007,36 +8984,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @DirtyDatabase
     public void testImportVariableElementsTsv() throws Exception {
 
-        final String variableUrn = VARIABLE_2;
-        final String fileName = "importation-variable-element-01.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
-        final boolean updateAlreadyExisting = false;
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
+        String variableUrn = VARIABLE_2;
+        String fileName = "importation-variable-element-01.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
 
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
-                            Boolean.TRUE);
-                    assertEquals(true, taskImportTsvInfo.getIsPlannedInBackground());
-                    assertNotNull(taskImportTsvInfo.getJobKey());
-
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
+        TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
 
         // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
-        assertEquals(0, task.getTaskResults().size());
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(0, taskImportTsvInfo.getInformationItems().size());
+
         // Validate variable elements
         {
             // variableElement1;Nombre corto 1;Short name 1;Nombre corto it 1
@@ -9094,15 +9053,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     @DirtyDatabase
-    public void testImportVariableElementsTsvUpdatingAlreadyExistingCodes() throws Exception {
+    public void testImportVariableElementsTsvInBackground() throws Exception {
 
-        final boolean updateAlreadyExisting = true;
-
-        // Import
         final String variableUrn = VARIABLE_2;
-        final String fileName = "importation-variable-element-04.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
+        final String fileName = "importation-variable-element-01.tsv";
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        final boolean updateAlreadyExisting = false;
+
+        // force background
+        long numBytesPlannifyPrevious = SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_IMPORTATION;
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_IMPORTATION = 1;
         final StringBuilder jobKey = new StringBuilder();
+
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);
         tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
         tt.execute(new TransactionCallbackWithoutResult() {
@@ -9110,8 +9072,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
-                            Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+                    assertEquals(true, taskImportTsvInfo.getIsPlannedInBackground());
+                    assertNotNull(taskImportTsvInfo.getJobKey());
+
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
                     fail("importation failed: " + e.getHumanReadableMessage());
@@ -9120,16 +9084,36 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         });
         waitUntilJobFinished();
 
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_IMPORTATION = numBytesPlannifyPrevious;
+
         // Validate
-        entityManager.clear();
         Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
         assertNotNull(task);
         assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
-        assertEquals(2, task.getTaskResults().size());
+        assertEquals(0, task.getTaskResults().size());
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportVariableElementsTsvUpdatingAlreadyExistingCodes() throws Exception {
+
+        final boolean updateAlreadyExisting = true;
+
+        // Import
+        final String variableUrn = VARIABLE_2;
+        final String fileName = "importation-variable-element-04.tsv";
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+
+        TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+
+        // Validate
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(2, taskImportTsvInfo.getInformationItems().size());
         int i = 0;
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED.getCode(), "VARIABLE_ELEMENT_02", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED.getCode(), "VARIABLE_ELEMENT_04", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
-        assertEquals(task.getTaskResults().size(), i);
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, 1, new Serializable[]{"VARIABLE_ELEMENT_02"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, 1, new Serializable[]{"VARIABLE_ELEMENT_04"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEquals(taskImportTsvInfo.getInformationItems().size(), i);
 
         // Validate variable elements
         {
@@ -9199,34 +9183,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Import
         final String variableUrn = VARIABLE_2;
         final String fileName = "importation-variable-element-04.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
 
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
-                            Boolean.TRUE);
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
+        TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
 
         // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
-        assertEquals(2, task.getTaskResults().size());
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(2, taskImportTsvInfo.getInformationItems().size());
         int i = 0;
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "VARIABLE_ELEMENT_02", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED.getCode(), "VARIABLE_ELEMENT_04", Boolean.FALSE, TaskResultTypeEnum.INFO, task.getTaskResults().get(i++));
-        assertEquals(task.getTaskResults().size(), i);
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"VARIABLE_ELEMENT_02"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"VARIABLE_ELEMENT_04"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEquals(taskImportTsvInfo.getInformationItems().size(), i);
 
         // Validate variable elements
         {
@@ -9292,12 +9260,38 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testImportVariableElementsTsvErrorWithHeaderIncorrect() throws Exception {
 
         final String variableUrn = VARIABLE_1;
+        final String fileName = "importation-variable-element-02-errors-header.tsv";
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        final boolean updateAlreadyExisting = false;
+
+        try {
+            codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+        } catch (MetamacException e) {
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
+            assertEquals(1, e.getExceptionItems().size());
+            int i = 0;
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, 1, new Serializable[]{ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE}, e
+                    .getExceptionItems().get(i++));
+            assertEquals(e.getExceptionItems().size(), i);
+        }
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportVariableElementsTsvErrorWithHeaderIncorrectInBackground() throws Exception {
+
+        final String variableUrn = VARIABLE_1;
 
         // Import
         final String fileName = "importation-variable-element-02-errors-header.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
         final boolean updateAlreadyExisting = false;
+
+        // force background
+        long numBytesPlannifyPrevious = SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_IMPORTATION;
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_IMPORTATION = 1;
+        final StringBuilder jobKey = new StringBuilder();
+
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);
         tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
         tt.execute(new TransactionCallbackWithoutResult() {
@@ -9305,8 +9299,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
-                            Boolean.TRUE);
+                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
                     jobKey.append(taskImportTsvInfo.getJobKey());
                 } catch (MetamacException e) {
                     fail("importation failed: " + e.getHumanReadableMessage());
@@ -9314,6 +9307,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             }
         });
         waitUntilJobFinished();
+
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_IMPORTATION = numBytesPlannifyPrevious;
 
         // Validate
         Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
@@ -9336,41 +9331,23 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Import
         final String fileName = "importation-variable-element-03-errors-body.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
         final boolean updateAlreadyExisting = false;
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
 
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
-                            Boolean.TRUE);
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
-
-        // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
-        assertEquals(5, task.getTaskResults().size());
-        int i = 0;
-        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), "3", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "variableElement4WithoutShortName#@#parameter.srm.importation.short_name", Boolean.FALSE, type, task
-                .getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER.getCode(), "#variableNotSemanticCode#@#parameter.srm.importation.code", Boolean.FALSE, type,
-                task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), "7", Boolean.FALSE, type, task.getTaskResults().get(i++));
-        assertEquals(task.getTaskResults().size(), i);
+        try {
+            codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+        } catch (MetamacException e) {
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
+            assertEquals(4, e.getExceptionItems().size());
+            int i = 0;
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, 1, new Serializable[]{3}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2, new Serializable[]{"variableElement4WithoutShortName", "parameter.srm.importation.short_name"},
+                    e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, 2, new Serializable[]{"#variableNotSemanticCode",
+                    "parameter.srm.importation.code"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, 1, new Serializable[]{7}, e.getExceptionItems().get(i++));
+            assertEquals(e.getExceptionItems().size(), i);
+        }
     }
 
     @Test
@@ -9379,33 +9356,15 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         final String variableUrn = VARIABLE_5;
         final String fileName = "importation-variable-element-05.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
         final boolean updateAlreadyExisting = true;
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
 
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
-                            Boolean.TRUE);
-                    assertEquals(true, taskImportTsvInfo.getIsPlannedInBackground());
-                    assertNotNull(taskImportTsvInfo.getJobKey());
-
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
+        TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
 
         // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+
         // Validate variable elements
         {
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_1);
@@ -9430,40 +9389,20 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testImportVariableElementsTsvGeographicalErrorWithBodyIncorrect() throws Exception {
 
         final String variableUrn = VARIABLE_5;
-
-        // Import
         final String fileName = "importation-variable-element-06-errors-body.tsv";
-        final InputStream stream = this.getClass().getResourceAsStream("/tsv/" + fileName);
-        final StringBuilder jobKey = new StringBuilder();
+        final File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
         final boolean updateAlreadyExisting = true;
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
 
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, stream, null, fileName, updateAlreadyExisting, null,
-                            Boolean.TRUE);
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
-
-        // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FAILED, task.getStatus());
-        assertEquals(2, task.getTaskResults().size());
-        int i = 0;
-        TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED.getCode(), "VARIABLE_ELEMENT_04#@#parameter.srm.importation.geographical_granularity", Boolean.FALSE, type, task
-                .getTaskResults().get(i++));
-        assertEquals(task.getTaskResults().size(), i);
+        try {
+            codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+        } catch (MetamacException e) {
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
+            assertEquals(1, e.getExceptionItems().size());
+            int i = 0;
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2,
+                    new Serializable[]{"VARIABLE_ELEMENT_04", "parameter.srm.importation.geographical_granularity"}, e.getExceptionItems().get(i++));
+            assertEquals(e.getExceptionItems().size(), i);
+        }
     }
 
     @Override
@@ -9520,33 +9459,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     @DirtyDatabase
     public void testImportVariableElementsShape() throws Exception {
-        final String variableUrn = VARIABLE_5;
-        final URL shapeFileUrl = this.getClass().getResource("/shape/comarcas_n1/comarcas_n1.shp");
-        final StringBuilder jobKey = new StringBuilder();
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
+        String variableUrn = VARIABLE_5;
+        URL shapeFileUrl = this.getClass().getResource("/shape/comarcas_n1/comarcas_n1.shp");
 
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsShape(getServiceContextAdministrador(), variableUrn, shapeFileUrl, Boolean.TRUE);
-                    assertEquals(true, taskImportTsvInfo.getIsPlannedInBackground());
-                    assertNotNull(taskImportTsvInfo.getJobKey());
-
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
+        TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsShape(getServiceContextAdministrador(), variableUrn, shapeFileUrl, Boolean.TRUE);
 
         // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
-        assertEquals(0, task.getTaskResults().size());
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(0, taskImportTsvInfo.getInformationItems().size());
+
         // Validate variable elements
         {
             VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_1);
@@ -9589,31 +9511,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testImportVariableElementsPoints() throws Exception {
         final String variableUrn = VARIABLE_5;
         final URL shapeFileUrl = this.getClass().getResource("/shape/comarcas_n1/comarcas_n1_point.shp");
-        final StringBuilder jobKey = new StringBuilder();
-        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
-        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        tt.execute(new TransactionCallbackWithoutResult() {
 
-            @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) {
-                try {
-                    TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsPoints(getServiceContextAdministrador(), variableUrn, shapeFileUrl, Boolean.TRUE);
-                    assertEquals(true, taskImportTsvInfo.getIsPlannedInBackground());
-                    assertNotNull(taskImportTsvInfo.getJobKey());
-
-                    jobKey.append(taskImportTsvInfo.getJobKey());
-                } catch (MetamacException e) {
-                    fail("importation failed: " + e.getHumanReadableMessage());
-                }
-            }
-        });
-        waitUntilJobFinished();
+        TaskImportationInfo taskImportTsvInfo = codesService.importVariableElementsPoints(getServiceContextAdministrador(), variableUrn, shapeFileUrl, Boolean.TRUE);
 
         // Validate
-        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
-        assertNotNull(task);
-        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
-        assertEquals(0, task.getTaskResults().size());
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(0, taskImportTsvInfo.getInformationItems().size());
+
         // Validate variable elements
         {
             // Not updated (not exist in shapefile)

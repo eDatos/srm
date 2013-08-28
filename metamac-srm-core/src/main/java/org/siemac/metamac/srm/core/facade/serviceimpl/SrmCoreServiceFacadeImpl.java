@@ -21,6 +21,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.io.FileUtils;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
@@ -35,6 +36,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
@@ -80,6 +82,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDt
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDo2DtoMapper;
 import org.siemac.metamac.srm.core.dsd.mapper.DataStructureDefinitionDto2DoMapper;
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
@@ -95,6 +98,8 @@ import org.siemac.metamac.srm.core.security.ConceptsSecurityUtils;
 import org.siemac.metamac.srm.core.security.DataStructureDefinitionSecurityUtils;
 import org.siemac.metamac.srm.core.security.OrganisationsSecurityUtils;
 import org.siemac.metamac.srm.core.security.TasksSecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -176,6 +181,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     private final static Comparator<ItemSchemeVersion> ITEM_SCHEME_CREATED_DATE_DESC_COMPARATOR = new ItemSchemeCreatedDateDescComparator();
     private final static Comparator<StructureVersion>  STRUCTURE_CREATED_DATE_DESC_COMPARATOR   = new StructureCreatedDateDescComparator();
+
+    private static Logger                              logger                                   = LoggerFactory.getLogger(SrmCoreServiceFacade.class);
 
     public Jaxb2Marshaller getMarshallerWithValidation() {
         return marshallerWithValidation;
@@ -1416,23 +1423,25 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void importCodesTsvInBackground(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+    public TaskImportationInfo importCodesTsv(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistUrn);
         CodesSecurityUtils.canImportCodes(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
-        // Import in background
-        getCodesMetamacService().importCodesTsv(ctx, codelistUrn, tsvStream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
+        // Import (can be in background)
+        File file = createTempFile(tsvStream, fileName);
+        return getCodesMetamacService().importCodesTsv(ctx, codelistUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
     }
 
     @Override
-    public void importCodeOrdersTsvInBackground(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String fileName) throws MetamacException {
+    public TaskImportationInfo importCodeOrdersTsv(ServiceContext ctx, String codelistUrn, InputStream tsvStream, String fileName) throws MetamacException {
         // Security
         CodelistVersionMetamac codelistVersion = getCodesMetamacService().retrieveCodelistByUrn(ctx, codelistUrn);
         CodesSecurityUtils.canImportCodelistOrderVisualisations(ctx, codelistVersion.getLifeCycleMetadata().getProcStatus());
 
-        // Import in background
-        getCodesMetamacService().importCodeOrdersTsv(ctx, codelistUrn, tsvStream, null, fileName, null, Boolean.TRUE);
+        // Import (can be in background)
+        File file = createTempFile(tsvStream, fileName);
+        return getCodesMetamacService().importCodeOrdersTsv(ctx, codelistUrn, file, fileName, Boolean.TRUE);
     }
 
     @Override
@@ -2048,30 +2057,31 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public void importVariableElementsTsvInBackground(ServiceContext ctx, String variableUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+    public TaskImportationInfo importVariableElementsTsv(ServiceContext ctx, String variableUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
         // Security
         CodesSecurityUtils.canImportVariableElements(ctx);
 
-        // Import in background
-        getCodesMetamacService().importVariableElementsTsv(ctx, variableUrn, tsvStream, null, fileName, updateAlreadyExisting, null, Boolean.TRUE);
+        // Import (can be in background)
+        File file = createTempFile(tsvStream, fileName);
+        return getCodesMetamacService().importVariableElementsTsv(ctx, variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
     }
 
     @Override
-    public void importVariableElementsShapeInBackground(ServiceContext ctx, String variableUrn, URL shapeFileUrl) throws MetamacException {
+    public TaskImportationInfo importVariableElementsShape(ServiceContext ctx, String variableUrn, URL shapeFileUrl) throws MetamacException {
         // Security
         CodesSecurityUtils.canImportVariableElements(ctx);
 
         // Import in background
-        getCodesMetamacService().importVariableElementsShape(ctx, variableUrn, shapeFileUrl, Boolean.TRUE);
+        return getCodesMetamacService().importVariableElementsShape(ctx, variableUrn, shapeFileUrl, Boolean.TRUE);
     }
 
     @Override
-    public void importVariableElementsPointsInBackground(ServiceContext ctx, String variableUrn, URL shapeFileUrl) throws MetamacException {
+    public TaskImportationInfo importVariableElementsPoints(ServiceContext ctx, String variableUrn, URL shapeFileUrl) throws MetamacException {
         // Security
         CodesSecurityUtils.canImportVariableElements(ctx);
 
         // Import in background
-        getCodesMetamacService().importVariableElementsPoints(ctx, variableUrn, shapeFileUrl, Boolean.TRUE);
+        return getCodesMetamacService().importVariableElementsPoints(ctx, variableUrn, shapeFileUrl, Boolean.TRUE);
     }
 
     @Override
@@ -3774,6 +3784,18 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
             return s1.getCreatedDate().compareTo(s2.getCreatedDate());
         }
 
+    }
+
+    private File createTempFile(InputStream stream, String fileName) throws MetamacException {
+        try {
+            File file = FileUtils.createTempFile(stream, fileName);
+            file.deleteOnExit();
+            return file;
+        } catch (Exception e) {
+            logger.error("Error creating temporal file", e);
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
     }
 
 }

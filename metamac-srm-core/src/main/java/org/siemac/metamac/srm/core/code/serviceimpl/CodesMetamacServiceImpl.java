@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.code.serviceimpl;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,10 +52,12 @@ import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
+import org.siemac.metamac.core.common.exception.ExceptionLevelEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
+import org.siemac.metamac.core.common.io.FileUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
@@ -69,6 +72,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementOperation;
@@ -79,7 +83,6 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeToCopy;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeVariableElementNormalisationResult;
-import org.siemac.metamac.srm.core.code.domain.shared.TaskImportationInfo;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisationResult;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
@@ -697,33 +700,37 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public TaskImportationInfo importCodesTsv(ServiceContext ctx, String codelistUrn, InputStream stream, String charset, String fileName, boolean updateAlreadyExisting,
-            List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException {
+    public TaskImportationInfo importCodesTsv(ServiceContext ctx, String codelistUrn, File file, String fileName, boolean updateAlreadyExisting, Boolean canBeBackground) throws MetamacException {
 
         // Validation
-        CodesMetamacInvocationValidator.checkImportCodesTsv(codelistUrn, stream, charset, fileName, updateAlreadyExisting, informationItems, canBeBackground, null);
+        CodesMetamacInvocationValidator.checkImportCodesTsv(codelistUrn, file, fileName, updateAlreadyExisting, canBeBackground, null);
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
         checkCodelistCanExecuteImportation(codelistVersion, canBeBackground);
         srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersion);
 
-        // Plannify task if can be in background
-        if (canBeBackground) {
+        // Decide if task must be executed in background
+        boolean executeInBackground = taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION);
+
+        // Plannify task if background
+        if (executeInBackground) {
             codelistVersion.getItemScheme().setIsTaskInBackground(Boolean.TRUE);
             itemSchemeRepository.save(codelistVersion.getItemScheme());
 
-            // execute in background
-            String jobKey = tasksMetamacService.plannifyImportCodesTsvInBackground(ctx, codelistUrn, stream, fileName, updateAlreadyExisting);
+            String jobKey = tasksMetamacService.plannifyImportCodesTsvInBackground(ctx, codelistUrn, file, fileName, updateAlreadyExisting);
             return new TaskImportationInfo(Boolean.TRUE, jobKey);
         }
 
         // Execute importation now
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
         InputStreamReader inputStreamReader = null;
         BufferedReader bufferedReader = null;
         List<CodeMetamac> codesToPersist = null;
         Map<String, CodeMetamac> codesToPersistByCode = null;
         Map<String, CodeMetamac> codesPreviousInCodelistByCode = null;
         try {
+            InputStream stream = new FileInputStream(file);
+            String charset = FileUtils.guessCharset(file);
             inputStreamReader = new InputStreamReader(stream, charset);
             bufferedReader = new BufferedReader(inputStreamReader);
 
@@ -767,7 +774,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                     lineNumber++;
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("Error importing tsv file", e);
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_FILE_PARSING, e.getMessage()));
         } finally {
@@ -799,36 +806,39 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion.getItemScheme().setIsTaskInBackground(Boolean.FALSE);
         itemSchemeRepository.save(codelistVersion.getItemScheme());
 
-        return new TaskImportationInfo(Boolean.FALSE, null);
+        return new TaskImportationInfo(Boolean.FALSE, informationItems);
     }
 
     @Override
-    public TaskImportationInfo importCodeOrdersTsv(ServiceContext ctx, String codelistUrn, InputStream stream, String charset, String fileName, List<MetamacExceptionItem> informationItems,
-            Boolean canBeBackground) throws MetamacException {
+    public TaskImportationInfo importCodeOrdersTsv(ServiceContext ctx, String codelistUrn, File file, String fileName, Boolean canBeBackground) throws MetamacException {
 
         // Validation
-        CodesMetamacInvocationValidator.checkImportCodeOrdersTsv(codelistUrn, stream, charset, fileName, informationItems, canBeBackground, null);
+        CodesMetamacInvocationValidator.checkImportCodeOrdersTsv(codelistUrn, file, fileName, canBeBackground, null);
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
         checkCodelistCanExecuteImportation(codelistVersion, canBeBackground);
 
-        // Plannify task if background
-        if (canBeBackground) {
+        // Decide if task must be executed in background
+        boolean executeInBackground = taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_ORDERS_IMPORTATION);
+
+        // Plannify task if can be in background
+        if (executeInBackground) {
             codelistVersion.getItemScheme().setIsTaskInBackground(Boolean.TRUE);
             itemSchemeRepository.save(codelistVersion.getItemScheme());
 
-            // execute in background
-            String jobKey = tasksMetamacService.plannifyImportCodeOrdersTsvInBackground(ctx, codelistUrn, stream, fileName);
-
+            String jobKey = tasksMetamacService.plannifyImportCodeOrdersTsvInBackground(ctx, codelistUrn, file, fileName);
             return new TaskImportationInfo(Boolean.TRUE, jobKey);
         }
 
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
         InputStreamReader inputStreamReader = null;
         BufferedReader bufferedReader = null;
         List<Code> codesInCodelist = null;
         Set<String> codesInTsvToCheckAllCodesAreUpdated = null;
         List<CodelistOrderVisualisation> orderVisualisations = null;
         try {
+            InputStream stream = new FileInputStream(file);
+            String charset = FileUtils.guessCharset(file);
             inputStreamReader = new InputStreamReader(stream, charset);
             bufferedReader = new BufferedReader(inputStreamReader);
 
@@ -871,7 +881,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("Error importing tsv file", e);
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_FILE_PARSING, e.getMessage()));
         } finally {
@@ -906,7 +916,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion.getItemScheme().setIsTaskInBackground(Boolean.FALSE);
         itemSchemeRepository.save(codelistVersion.getItemScheme());
 
-        return new TaskImportationInfo(Boolean.FALSE, null);
+        return new TaskImportationInfo(Boolean.FALSE, informationItems);
     }
 
     @Override
@@ -1986,25 +1996,31 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public TaskImportationInfo importVariableElementsTsv(ServiceContext ctx, String variableUrn, InputStream stream, String charset, String fileName, boolean updateAlreadyExisting,
-            List<MetamacExceptionItem> informationItems, Boolean canBeBackground) throws MetamacException {
+    public TaskImportationInfo importVariableElementsTsv(ServiceContext ctx, String variableUrn, File file, String fileName, boolean updateAlreadyExisting, Boolean canBeBackground)
+            throws MetamacException {
 
         // Validation
-        CodesMetamacInvocationValidator.checkImportVariableElementsTsv(variableUrn, stream, charset, fileName, updateAlreadyExisting, informationItems, canBeBackground, null);
+        CodesMetamacInvocationValidator.checkImportVariableElementsTsv(variableUrn, file, fileName, updateAlreadyExisting, canBeBackground, null);
 
-        // Plannify task if can be in background
-        if (canBeBackground) {
-            String jobKey = tasksMetamacService.plannifyImportVariableElementsTsvInBackground(ctx, variableUrn, stream, fileName, updateAlreadyExisting);
+        // Decide if task must be executed in background
+        boolean executeInBackground = taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_IMPORTATION);
+
+        // Plannify task if background
+        if (executeInBackground) {
+            String jobKey = tasksMetamacService.plannifyImportVariableElementsTsvInBackground(ctx, variableUrn, file, fileName, updateAlreadyExisting);
             return new TaskImportationInfo(Boolean.TRUE, jobKey);
         }
 
         // Import
         Variable variable = retrieveVariableByUrn(variableUrn);
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
         InputStreamReader inputStreamReader = null;
         BufferedReader bufferedReader = null;
         Map<String, VariableElement> variableElementsToPersistByCode = null;
         try {
+            InputStream stream = new FileInputStream(file);
+            String charset = FileUtils.guessCharset(file);
             inputStreamReader = new InputStreamReader(stream, charset);
             bufferedReader = new BufferedReader(inputStreamReader);
 
@@ -2058,7 +2074,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                     lineNumber++;
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("Error importing tsv file", e);
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_FILE_PARSING, e.getMessage()));
         } finally {
@@ -2079,7 +2095,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             getVariableElementRepository().save(variableElement);
         }
 
-        return new TaskImportationInfo(Boolean.FALSE, null);
+        return new TaskImportationInfo(Boolean.FALSE, informationItems);
     }
 
     @Override
@@ -3593,8 +3609,19 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         Variable variable = retrieveVariableByUrn(variableUrn);
         SrmValidationUtils.checkVariableIsGeographical(variable);
 
-        // Plannify task if can be in background
-        if (canBeBackground) {
+        // Decide if task must be executed in background
+        File file = null;
+        try {
+            file = new File(shapeFileUrl.toURI());
+        } catch (Exception e) {
+            logger.error("Error creating file", e);
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
+                    .build();
+        }
+        boolean executeInBackground = taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_GEO_IMPORTATION);
+
+        // Plannify task if background
+        if (executeInBackground) {
             String jobKey = null;
             if (SrmConstants.SHAPE_OPERATION_IMPORT_SHAPES.equals(operationType)) {
                 jobKey = tasksMetamacService.plannifyImportVariableElementsShapeInBackground(ctx, variableUrn, shapeFileUrl);
@@ -3614,6 +3641,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Import
+        List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
         String[] geometryTypes = null;
         if (SrmConstants.SHAPE_OPERATION_IMPORT_SHAPES.equals(operationType)) {
             geometryTypes = new String[]{SrmConstants.SHAPE_POLYGON, SrmConstants.SHAPE_MULTIPOLYGON};
@@ -3628,7 +3656,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             getVariableElementRepository().save(variableElement);
         }
 
-        return new TaskImportationInfo(Boolean.FALSE, null);
+        return new TaskImportationInfo(Boolean.FALSE, informationItems);
     }
 
     /**
@@ -3704,6 +3732,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private CodelistVersionMetamac retrieveCodelistOriginalFromUrnTemporal(ServiceContext ctx, String urnTemporal) throws MetamacException {
         String urnOriginal = GeneratorUrnUtils.makeUrnFromTemporal(urnTemporal);
         return retrieveCodelistByUrn(ctx, urnOriginal);
+    }
+
+    private boolean taskMustBeBackground(File file, Boolean canBeBackground, long maximumBytesToNonBackground) {
+        if (canBeBackground && file.length() > maximumBytesToNonBackground) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

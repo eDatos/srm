@@ -14,11 +14,11 @@ Application TaskMetamac {
 			"Imports file in sdmx format"
 			TaskInfo importSDMXStructure(InputStream inputMessage, String fileName) throws MetamacException;
 			"Prepares importation of codes in tsv format"
-    		String plannifyImportCodesTsvInBackground(String codelistUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
+    		String plannifyImportCodesTsvInBackground(String codelistUrn, java.io.File file, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 			"Prepares importation of code orders in tsv format"
-    		String plannifyImportCodeOrdersTsvInBackground(String codelistUrn, InputStream tsvStream, String fileName) throws MetamacException;
+    		String plannifyImportCodeOrdersTsvInBackground(String codelistUrn, java.io.File file, String fileName) throws MetamacException;
 			"Prepares importation of variable elements in tsv format"
-    		String plannifyImportVariableElementsTsvInBackground(String variableUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
+    		String plannifyImportVariableElementsTsvInBackground(String variableUrn, java.io.File file, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 			"Prepares importation of geographical information (shape) of variable elements"
     		String plannifyImportVariableElementsShapeInBackground(String variableUrn, URL shapeFileUrl) throws MetamacException;
 			"Prepares importation of geographical information (points) of variable elements"

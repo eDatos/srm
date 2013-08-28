@@ -593,9 +593,9 @@ Application SrmFacadeCore {
     		"Retrieves codes by code scheme in locale and visualisation requested. If visualisation is not provided, tries retrieve codes in default visualisations"
     		List<CodeMetamacVisualisationResult> retrieveCodesByCodelistUrn(String codelistUrn, String locale, String orderVisualisationUrn, String opennessVisualisationUrn) throws MetamacException;
     		"Imports codes in tsv format"
-    		importCodesTsvInBackground(String codelistUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
+    		TaskImportationInfo importCodesTsv(String codelistUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 			"Imports code orders in tsv format"
-    		importCodeOrdersTsvInBackground(String codelistUrn, InputStream tsvStream, String fileName) throws MetamacException;
+    		TaskImportationInfo importCodeOrdersTsv(String codelistUrn, InputStream tsvStream, String fileName) throws MetamacException;
 			"Exports codes in tsv format"
     		String exportCodesTsv(String codelistUrn) throws MetamacException;
 			"Exports code orders in tsv format"
@@ -696,11 +696,11 @@ Application SrmFacadeCore {
  			"Retrieves all variable elements operations of one variable element"
  			List<@VariableElementOperationDto> retrieveVariableElementsOperationsByVariableElement(String variableElementUrn) throws MetamacException;
     		"Imports variable elements in tsv format"
-    		importVariableElementsTsvInBackground(String variableUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
+    		TaskImportationInfo importVariableElementsTsv(String variableUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 			"Imports geographical information (shape) of variable elements"
-    		importVariableElementsShapeInBackground(String variableUrn, URL shapeFileUrl) throws MetamacException;
+    		TaskImportationInfo importVariableElementsShape(String variableUrn, URL shapeFileUrl) throws MetamacException;
 			"Imports geographical information (points) of variable elements"
-    		importVariableElementsPointsInBackground(String variableUrn, URL shapeFileUrl) throws MetamacException;
+    		TaskImportationInfo importVariableElementsPoints(String variableUrn, URL shapeFileUrl) throws MetamacException;
     		    		
     		/**************************************************************************
 		     * COMMON
@@ -729,11 +729,11 @@ Application SrmFacadeCore {
        		> @TasksMetamacService
 
     		"Imports codes in tsv format"
-    		processImportCodesTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+    		processImportCodesTsv(String codelistUrn, java.io.File tsvFile, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
 			"Imports code orders in tsv format"
-    		processImportCodeOrdersTsv(String codelistUrn, InputStream tsvStream, String charset, String fileName, String jobKey) throws MetamacException;
+    		processImportCodeOrdersTsv(String codelistUrn, java.io.File tsvFile, String fileName, String jobKey) throws MetamacException;
     		"Imports variable elements in tsv format"
-    		processImportVariableElementsTsv(String variableUrn, InputStream tsvStream, String charset, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+    		processImportVariableElementsTsv(String variableUrn, java.io.File tsvFile, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
 			"Imports geographical information (shape) of variable elements"
     		processImportVariableElementsShape(String variableUrn, URL shapeFileUrl, String jobKey) throws MetamacException;
 			"Imports geographical information (points) of variable elements"

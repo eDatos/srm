@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.core.code.serviceimpl.utils;
 
-import java.io.InputStream;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -209,43 +209,30 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkImportCodesTsv(String codelistUrn, InputStream stream, String charset, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> informationItems,
-            Boolean canBeBackground, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkImportCodesTsv(String codelistUrn, File file, String fileName, boolean updateAlreadyExisting, Boolean canBeBackground, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
-        ValidationUtils.checkParameterRequired(stream, ServiceExceptionParameters.STREAM, exceptions);
+        ValidationUtils.checkParameterRequired(file, ServiceExceptionParameters.STREAM, exceptions);
         ValidationUtils.checkParameterRequired(fileName, ServiceExceptionParameters.FILE_NAME, exceptions);
         ValidationUtils.checkParameterRequired(canBeBackground, ServiceExceptionParameters.CAN_BE_BACKGROUND, exceptions);
-        if (BooleanUtils.isFalse(canBeBackground)) {
-            ValidationUtils.checkParameterRequired(charset, ServiceExceptionParameters.CHARSET, exceptions);
-            if (informationItems == null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.INFORMATION_ITEMS));
-            }
-        }
         ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_TSV_UPDATE_ALREADY_EXISTING, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkImportCodeOrdersTsv(String codelistUrn, InputStream stream, String charset, String fileName, List<MetamacExceptionItem> informationItems, Boolean canBeBackground,
-            List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkImportCodeOrdersTsv(String codelistUrn, File file, String fileName, Boolean canBeBackground, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ValidationUtils.checkParameterRequired(codelistUrn, ServiceExceptionParameters.URN, exceptions);
-        ValidationUtils.checkParameterRequired(stream, ServiceExceptionParameters.STREAM, exceptions);
+        ValidationUtils.checkParameterRequired(file, ServiceExceptionParameters.STREAM, exceptions);
         ValidationUtils.checkParameterRequired(fileName, ServiceExceptionParameters.FILE_NAME, exceptions);
         ValidationUtils.checkParameterRequired(canBeBackground, ServiceExceptionParameters.CAN_BE_BACKGROUND, exceptions);
-        if (BooleanUtils.isFalse(canBeBackground)) {
-            ValidationUtils.checkParameterRequired(charset, ServiceExceptionParameters.CHARSET, exceptions);
-            if (informationItems == null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.INFORMATION_ITEMS));
-            }
-        }
         ExceptionUtils.throwIfException(exceptions);
     }
 
@@ -670,22 +657,15 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkImportVariableElementsTsv(String variableUrn, InputStream stream, String charset, String fileName, Boolean updateAlreadyExisting,
-            List<MetamacExceptionItem> informationItems, Boolean canBeBackground, List<MetamacExceptionItem> exceptions) throws MetamacException {
+    public static void checkImportVariableElementsTsv(String variableUrn, File file, String fileName, Boolean updateAlreadyExisting, Boolean canBeBackground, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }
 
         ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
-        ValidationUtils.checkParameterRequired(stream, ServiceExceptionParameters.STREAM, exceptions);
-        ValidationUtils.checkParameterRequired(fileName, ServiceExceptionParameters.FILE_NAME, exceptions);
+        ValidationUtils.checkParameterRequired(file, ServiceExceptionParameters.STREAM, exceptions);
         ValidationUtils.checkParameterRequired(canBeBackground, ServiceExceptionParameters.CAN_BE_BACKGROUND, exceptions);
-        if (BooleanUtils.isFalse(canBeBackground)) {
-            ValidationUtils.checkParameterRequired(charset, ServiceExceptionParameters.CHARSET, exceptions);
-            if (informationItems == null) {
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, ServiceExceptionParameters.INFORMATION_ITEMS));
-            }
-        }
         ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_TSV_UPDATE_ALREADY_EXISTING, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);

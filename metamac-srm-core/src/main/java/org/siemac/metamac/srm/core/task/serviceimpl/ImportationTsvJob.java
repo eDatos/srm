@@ -1,8 +1,6 @@
 package org.siemac.metamac.srm.core.task.serviceimpl;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.Date;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -13,7 +11,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.PersistJobDataAfterExecution;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core.common.io.FileUtils;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.facade.serviceapi.TasksMetamacServiceFacade;
 import org.slf4j.Logger;
@@ -30,7 +27,7 @@ public class ImportationTsvJob implements Job {
     // Job Context Param
     public static final String        USER                               = "user";
     public static final String        FILE_PATH                          = "filePath";
-    public static final String        FILE_IMPORTED_NAME                 = "fileImportedName";
+    public static final String        FILE_NAME                          = "fileName";
     public static final String        VARIABLE_URN                       = "variableUrn";
     public static final String        CODELIST_URN                       = "codelistUrn";
     public static final String        UPDATE_ALREADY_EXISTING            = "updateAlreadyExisting";
@@ -96,16 +93,12 @@ public class ImportationTsvJob implements Job {
         // Parameters
         String variableUrn = data.getString(VARIABLE_URN);
         String filePath = data.getString(FILE_PATH);
-        String fileImportedName = data.getString(FILE_IMPORTED_NAME);
+        String fileName = data.getString(FILE_NAME);
         Boolean updateAlreadyExisting = data.getBoolean(UPDATE_ALREADY_EXISTING);
-
-        File file = new File(filePath);
-        InputStream stream = new FileInputStream(file);
-        String charset = guessTsvCharset(file);
 
         // Execution
         logger.info("ImportationJob [importVariableElements]: " + jobKey + " starting at " + new Date());
-        getTaskMetamacServiceFacade().processImportVariableElementsTsv(serviceContext, variableUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
+        getTaskMetamacServiceFacade().processImportVariableElementsTsv(serviceContext, variableUrn, new File(filePath), fileName, jobKey.getName(), updateAlreadyExisting);
         logger.info("ImportationJob [importVariableElements]: " + jobKey + " finished at " + new Date());
     }
 
@@ -114,16 +107,11 @@ public class ImportationTsvJob implements Job {
         // Parameters
         String codelistUrn = data.getString(CODELIST_URN);
         String filePath = data.getString(FILE_PATH);
-        String fileImportedName = data.getString(FILE_IMPORTED_NAME);
+        String fileName = data.getString(FILE_NAME);
         Boolean updateAlreadyExisting = data.getBoolean(UPDATE_ALREADY_EXISTING);
 
-        File file = new File(filePath);
-        InputStream stream = new FileInputStream(file);
-        String charset = guessTsvCharset(file);
-
-        // Execution
         logger.info("ImportationJob [importCodes]: " + jobKey + " starting at " + new Date());
-        getTaskMetamacServiceFacade().processImportCodesTsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName(), updateAlreadyExisting);
+        getTaskMetamacServiceFacade().processImportCodesTsv(serviceContext, codelistUrn, new File(filePath), fileName, jobKey.getName(), updateAlreadyExisting);
         logger.info("ImportationJob [importCodes]: " + jobKey + " finished at " + new Date());
     }
 
@@ -132,22 +120,11 @@ public class ImportationTsvJob implements Job {
         // Parameters
         String codelistUrn = data.getString(CODELIST_URN);
         String filePath = data.getString(FILE_PATH);
-        String fileImportedName = data.getString(FILE_IMPORTED_NAME);
-
-        File file = new File(filePath);
-        InputStream stream = new FileInputStream(file);
-        String charset = guessTsvCharset(file);
+        String fileName = data.getString(FILE_NAME);
 
         // Execution
         logger.info("ImportationJob [importCodeOrders]: " + jobKey + " starting at " + new Date());
-        getTaskMetamacServiceFacade().processImportCodeOrdersTsv(serviceContext, codelistUrn, stream, charset, fileImportedName, jobKey.getName());
+        getTaskMetamacServiceFacade().processImportCodeOrdersTsv(serviceContext, codelistUrn, new File(filePath), fileName, jobKey.getName());
         logger.info("ImportationJob [importCodeOrders]: " + jobKey + " finished at " + new Date());
-    }
-
-    /**
-     * Guess charset of file
-     */
-    private String guessTsvCharset(File file) throws Exception {
-        return FileUtils.guessCharset(file);
     }
 }
