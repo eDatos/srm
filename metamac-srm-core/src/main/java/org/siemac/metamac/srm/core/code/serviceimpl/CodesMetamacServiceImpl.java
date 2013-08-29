@@ -705,7 +705,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Validation
         CodesMetamacInvocationValidator.checkImportCodesTsv(codelistUrn, file, fileName, updateAlreadyExisting, canBeBackground, null);
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
+        if (codelistVersion.getVariable() == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CODELIST_VARIABLE).build();
+        }
         checkCodelistCanExecuteImportation(codelistVersion, canBeBackground);
+
         srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersion);
 
         // Decide if task must be executed in background
