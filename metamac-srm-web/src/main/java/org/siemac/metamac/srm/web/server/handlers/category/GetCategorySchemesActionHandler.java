@@ -42,7 +42,7 @@ public class GetCategorySchemesActionHandler extends SecurityActionHandler<GetCa
         // Order
         MetamacCriteriaOrder order = new MetamacCriteriaOrder();
         order.setType(OrderTypeEnum.DESC);
-        order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.LAST_UPDATED.name());
+        order.setPropertyName(CategorySchemeVersionMetamacCriteriaOrderEnum.RESOURCE_LAST_UPDATED.name());
         List<MetamacCriteriaOrder> criteriaOrders = new ArrayList<MetamacCriteriaOrder>();
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);

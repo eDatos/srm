@@ -42,7 +42,7 @@ public class GetOrganisationSchemesActionHandler extends SecurityActionHandler<G
         // Order
         MetamacCriteriaOrder order = new MetamacCriteriaOrder();
         order.setType(OrderTypeEnum.DESC);
-        order.setPropertyName(OrganisationSchemeVersionMetamacCriteriaOrderEnum.LAST_UPDATED.name());
+        order.setPropertyName(OrganisationSchemeVersionMetamacCriteriaOrderEnum.RESOURCE_LAST_UPDATED.name());
         List<MetamacCriteriaOrder> criteriaOrders = new ArrayList<MetamacCriteriaOrder>();
         criteriaOrders.add(order);
         criteria.setOrdersBy(criteriaOrders);
