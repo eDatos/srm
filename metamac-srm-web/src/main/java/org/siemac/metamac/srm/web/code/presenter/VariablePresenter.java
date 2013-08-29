@@ -55,9 +55,9 @@ import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -428,8 +428,9 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     //
 
     @Override
-    public void resourceImportationSucceed(String fileName) {
-        ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, getMessages().resourceImportationPlanned());
+    public void resourceImportationSucceed(String successMessage) {
+        ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, successMessage);
+        retrieveVariableElementsByVariable(ELEMENT_LIST_FIRST_RESULT, ELEMENT_LIST_MAX_RESULTS, null, variableDto.getUrn());
     }
 
     @Override

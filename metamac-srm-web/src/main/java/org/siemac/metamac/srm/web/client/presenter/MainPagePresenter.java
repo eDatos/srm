@@ -3,9 +3,7 @@ package org.siemac.metamac.srm.web.client.presenter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
-import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent.SelectMenuButtonHandler;
@@ -216,8 +214,7 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
 
     @Override
     public void sDMXResourceImportationSucceed(String successMessage) {
-        String message = !StringUtils.isBlank(successMessage) ? successMessage : MetamacSrmWeb.getMessages().resourceImportationPlanned();
-        ShowMessageEvent.fireSuccessMessage(MainPagePresenter.this, message);
+        ShowMessageEvent.fireSuccessMessage(MainPagePresenter.this, successMessage);
     }
 
     //

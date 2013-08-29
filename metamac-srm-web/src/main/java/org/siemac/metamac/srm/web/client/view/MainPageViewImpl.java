@@ -7,6 +7,7 @@ import org.siemac.metamac.srm.web.client.view.handlers.MainPageUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.StructuralResourcesMenu;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.utils.MetamacJsonParser;
 import org.siemac.metamac.web.common.client.widgets.BreadCrumbsPanel;
 import org.siemac.metamac.web.common.client.widgets.ErrorMessagePanel;
 import org.siemac.metamac.web.common.client.widgets.MasterHead;
@@ -188,15 +189,24 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
         // Hide messages before showing the new ones
         hideMessages();
         if (MessageTypeEnum.SUCCESS.equals(type)) {
-            successMessagePanel.showMessage(message);
-            Timer timer = new Timer() {
 
-                @Override
-                public void run() {
-                    successMessagePanel.animateHide(AnimationEffect.FADE);
-                }
-            };
-            timer.schedule(12000);
+            successMessagePanel.showMessage(message);
+
+            try {
+                // Check if the message is a MetamacException (with information items) serialized in JSON
+                MetamacJsonParser.parseMetamacWebException(message);
+            } catch (Exception e) {
+                // If the message has no information items, hide the panel automatically  after 12000 milliseconds
+                Timer timer = new Timer() {
+
+                    @Override
+                    public void run() {
+                        successMessagePanel.animateHide(AnimationEffect.FADE);
+                    }
+                };
+                timer.schedule(12000);
+            }
+
         } else if (MessageTypeEnum.ERROR.equals(type)) {
             if (throwable != null) {
                 errorMessagePanel.showMessage(throwable);

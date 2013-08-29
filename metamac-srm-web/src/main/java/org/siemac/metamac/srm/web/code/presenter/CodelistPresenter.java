@@ -1117,8 +1117,9 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     //
 
     @Override
-    public void resourceImportationSucceed(String fileName) {
-        ShowMessageEvent.fireSuccessMessage(CodelistPresenter.this, getMessages().resourceImportationPlanned());
+    public void resourceImportationSucceed(String successMessage) {
+        ShowMessageEvent.fireSuccessMessage(CodelistPresenter.this, successMessage);
+        retrieveCodelistAndCodesByUrn(codelistMetamacDto.getUrn());
     }
 
     @Override
