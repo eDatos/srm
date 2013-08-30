@@ -1,12 +1,13 @@
 package org.siemac.metamac.srm.core.base.mapper;
 
 import org.siemac.metamac.core.common.dto.ExternalItemDto;
-import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItem;
 
 @org.springframework.stereotype.Component("baseDto2DoMapper")
 public class BaseDto2DoMapperImpl implements org.siemac.metamac.srm.core.base.mapper.BaseDto2DoMapper {

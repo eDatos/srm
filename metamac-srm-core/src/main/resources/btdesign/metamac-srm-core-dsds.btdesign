@@ -4,7 +4,7 @@ import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-v2_1-domain-enums.btdesign"
 import "classpath:/btdesign/metamac-srm-core-base.btdesign"
 import "classpath:/btdesign/metamac-core-common-enum.btdesign"
-import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-common.btdesign"
 import "classpath:/btdesign/metamac-srm-core-concepts.btdesign"
 import "classpath:/btdesign/metamac-srm-core-codes.btdesign"
 

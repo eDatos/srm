@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.core.concept.serviceapi.utils;
 
 import java.util.UUID;
 
-import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
@@ -17,6 +16,7 @@ import org.siemac.metamac.srm.core.concept.enume.domain.QuantityUnitSymbolPositi
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
+import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItem;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 

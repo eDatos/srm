@@ -1,4 +1,4 @@
-import "classpath:/btdesign/export/metamac-core-common-entity.btdesign"
+import "classpath:/btdesign/statistic-sdmx-core-common.btdesign"
 import "classpath:/btdesign/metamac-core-common-enum.btdesign"
 import "classpath:/btdesign/statistic-sdmx-core-concepts.btdesign"
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"

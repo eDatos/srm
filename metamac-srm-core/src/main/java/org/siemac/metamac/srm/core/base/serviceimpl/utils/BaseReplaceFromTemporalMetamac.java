@@ -1,11 +1,11 @@
 package org.siemac.metamac.srm.core.base.serviceimpl.utils;
 
-import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporal;
+import com.arte.statistic.sdmx.srm.core.common.domain.InternationalStringRepository;
 
 public class BaseReplaceFromTemporalMetamac extends BaseReplaceFromTemporal {
 

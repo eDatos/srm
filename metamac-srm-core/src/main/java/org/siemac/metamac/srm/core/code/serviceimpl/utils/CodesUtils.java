@@ -3,13 +3,13 @@ package org.siemac.metamac.srm.core.code.serviceimpl.utils;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.siemac.metamac.core.common.ent.domain.InternationalStringRepository;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.InternationalStringRepository;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 
 public class CodesUtils {
