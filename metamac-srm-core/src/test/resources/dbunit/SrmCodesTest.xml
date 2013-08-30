@@ -47,6 +47,25 @@
     <TB_SEQUENCES SEQUENCE_NAME="M_VAR_ELEM_OPERATIONS" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_VAR_ELEM_OP_SOURCES" SEQUENCE_NEXT_VALUE="100000000" />
     <TB_SEQUENCES SEQUENCE_NAME="M_VAR_ELEM_OP_TARGETS" SEQUENCE_NEXT_VALUE="100000000" />
+    <TB_SEQUENCES SEQUENCE_NAME="MISC_VALUES" SEQUENCE_NEXT_VALUE="100000000" />
+    
+     <TB_MISC_VALUES
+        ID="100"
+        UUID="100"
+        
+        NAME="variable_element.geographical_information.last_updated_date"
+        DATE_VALUE="2011-01-01 01:02:03"
+        DATE_VALUE_TZ="Europe/London"
+        STRING_VALUE="[null]"
+        
+        VERSION="1"
+        CREATED_BY="user1"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_DATE_TZ="Europe/London"
+        LAST_UPDATED_BY="user2"
+        LAST_UPDATED="2011-01-22 01:02:03"
+        LAST_UPDATED_TZ="Europe/London"  
+    />
     
     <!-- ************************************************************************************** -->
     <!-- ORGANISATION SCHEME 100 (ROOT ORGANISATION - MAINTAINER)                               -->

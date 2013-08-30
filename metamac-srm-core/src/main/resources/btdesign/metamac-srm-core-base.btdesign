@@ -1,10 +1,19 @@
 import "classpath:/btdesign/metamac-srm-core-enum.btdesign"
 
-Application SrmEntitiesBaseCore {
+Application BaseCore {
     basePackage=unused
     
-    Module core_entities_base {
+    Module domain_base_metamac {
     	basePackage=org.siemac.metamac.srm.core.base
+    		
+		Service MiscMetamacService {
+			> @MiscValueRepository
+			
+			"Create or update misc value"
+			@MiscValue createOrUpdateMiscValue(String name, Object value) throws MetamacException;
+			"Finds the misc value by name"
+			@MiscValue findOneMiscValueByName(String name) throws MetamacException;
+		}
     		
     	BasicType SrmLifeCycleMetadata {
 			!immutable
@@ -27,6 +36,32 @@ Application SrmEntitiesBaseCore {
 			DateTimeTZ externalPublicationDate nullable;
 			"User who published externally"
 			String externalPublicationUser nullable;
-		}    	
+		}  
+		
+		Entity MiscValue {
+			databaseTable="TB_MISC_VALUES"
+			hint="idSequence=MISC_VALUES"
+			gap
+			
+			"Name"
+			String name not nullable;
+			
+			// --------------------------------------------------------------------------------------------------------------------------
+			// NOTE: IF ANY ANOTHER VALUE TYPE IS ADDED, review clearAllValues method in entity, and createOrUpdateMiscValue in Service			
+			// --------------------------------------------------------------------------------------------------------------------------
+			"Column to date values"
+			DateTimeTZ dateValue nullable;
+			"Column to string values"
+			String stringValue nullable;
+			// --------------------------------------------------------------------------------------------------------------------------
+			// NOTE: IF ANY ANOTHER VALUE TYPE IS ADDED, review clearAllValues method in entity, and createOrUpdateMiscValue in Service			
+			// --------------------------------------------------------------------------------------------------------------------------
+			
+			Repository MiscValueRepository {
+				save;
+				findByQuery(String query, Map<String, Object> parameters, int maxResult);
+				@MiscValue findByName(String name);
+			}
+		}		  	
 	}
 }

@@ -58,7 +58,9 @@ import org.siemac.metamac.core.common.ent.domain.LocalisedString;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.srm.core.base.domain.MiscValue;
 import org.siemac.metamac.srm.core.base.repositoryimpl.EntityToDeleteRepository;
+import org.siemac.metamac.srm.core.base.serviceapi.MiscMetamacService;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamily;
 import org.siemac.metamac.srm.core.code.domain.CodelistFamilyProperties;
@@ -144,6 +146,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Autowired
     private TasksMetamacService           tasksService;
+
+    @Autowired
+    private MiscMetamacService            miscMetamacService;
 
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
     protected EntityManager               entityManager;
@@ -9459,6 +9464,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     @DirtyDatabase
     public void testImportVariableElementsShape() throws Exception {
+
+        MiscValue miscValue = miscMetamacService.findOneMiscValueByName(getServiceContextAdministrador(), SrmConstants.MISC_VALUE_VARIABLE_ELEMENT_GEOGRAPHICAL_INFORMATION_LAST_UPDATED_DATE);
+        assertEqualsDate("2011-01-01 01:02:03", miscValue.getDateValue());
+
         String variableUrn = VARIABLE_5;
         URL shapeFileUrl = this.getClass().getResource("/shape/comarcas_n1/comarcas_n1.shp");
 
@@ -9503,6 +9512,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals("MULTIPOLYGON (((-20.91900240266335 31.856725761393726)))", variableElement.getShapeWkt());
             assertEquals("{(((-20.91900240266335 31.856725761393726)))}", variableElement.getShapeGeojson());
         }
+
+        // Validate global date is updated
+        miscValue = miscMetamacService.findOneMiscValueByName(getServiceContextAdministrador(), SrmConstants.MISC_VALUE_VARIABLE_ELEMENT_GEOGRAPHICAL_INFORMATION_LAST_UPDATED_DATE);
+        assertTrue(DateUtils.isSameDay(new Date(), miscValue.getDateValue().toDate()));
     }
 
     @Override

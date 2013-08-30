@@ -59,6 +59,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
 import org.siemac.metamac.core.common.io.FileUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.base.serviceapi.MiscMetamacService;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
@@ -200,6 +201,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Autowired
     private InternationalStringRepository  internationalStringRepository;
+
+    @Autowired
+    private MiscMetamacService             miscMetamacService;
 
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
     protected EntityManager                entityManager;
@@ -3659,6 +3663,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         for (VariableElement variableElement : variableElementsToPersist) {
             getVariableElementRepository().save(variableElement);
         }
+
+        // Update global date of last update geographic information
+        miscMetamacService.createOrUpdateMiscValue(ctx, SrmConstants.MISC_VALUE_VARIABLE_ELEMENT_GEOGRAPHICAL_INFORMATION_LAST_UPDATED_DATE, new DateTime());
 
         return new TaskImportationInfo(Boolean.FALSE, informationItems);
     }
