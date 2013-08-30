@@ -13,6 +13,12 @@ Application BaseCore {
 			@MiscValue createOrUpdateMiscValue(String name, Object value) throws MetamacException;
 			"Finds the misc value by name"
 			@MiscValue findOneMiscValueByName(String name) throws MetamacException;
+			
+			// Utilities
+			"Update last update value of variable elements geo info"
+			updateLastUpdatedVariableElementsGeographicalInformation(DateTimeTZ value) throws MetamacException;
+			"Retrieve last update value of variable elements geo info"
+			DateTimeTZ findLastUpdatedVariableElementsGeographicalInformation() throws MetamacException;
 		}
     		
     	BasicType SrmLifeCycleMetadata {

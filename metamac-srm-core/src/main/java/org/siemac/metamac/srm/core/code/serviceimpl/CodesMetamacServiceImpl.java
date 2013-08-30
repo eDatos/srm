@@ -3665,7 +3665,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Update global date of last update geographic information
-        miscMetamacService.createOrUpdateMiscValue(ctx, SrmConstants.MISC_VALUE_VARIABLE_ELEMENT_GEOGRAPHICAL_INFORMATION_LAST_UPDATED_DATE, new DateTime());
+        miscMetamacService.updateLastUpdatedVariableElementsGeographicalInformation(ctx, new DateTime());
 
         return new TaskImportationInfo(Boolean.FALSE, informationItems);
     }

@@ -6,6 +6,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.base.domain.MiscValue;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.MiscMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,6 +45,12 @@ public class MiscMetamacServiceImpl extends MiscMetamacServiceImplBase {
     }
 
     @Override
+    public void updateLastUpdatedVariableElementsGeographicalInformation(ServiceContext ctx, DateTime value) throws MetamacException {
+        String name = SrmConstants.MISC_VALUE_VARIABLE_ELEMENT_GEOGRAPHICAL_INFORMATION_LAST_UPDATED_DATE;
+        createOrUpdateMiscValue(ctx, name, value);
+    }
+
+    @Override
     public MiscValue findOneMiscValueByName(ServiceContext ctx, String name) throws MetamacException {
         // Validation
         MiscMetamacInvocationValidator.checkFindOneMiscValueByName(name, null);
@@ -51,5 +58,14 @@ public class MiscMetamacServiceImpl extends MiscMetamacServiceImplBase {
         // Retrieve
         MiscValue miscValue = getMiscValueRepository().findByName(name);
         return miscValue; // note: can not exist
+    }
+
+    @Override
+    public DateTime findLastUpdatedVariableElementsGeographicalInformation(ServiceContext ctx) throws MetamacException {
+        MiscValue miscValue = findOneMiscValueByName(ctx, SrmConstants.MISC_VALUE_VARIABLE_ELEMENT_GEOGRAPHICAL_INFORMATION_LAST_UPDATED_DATE);
+        if (miscValue == null) {
+            return null;
+        }
+        return miscValue.getDateValue();
     }
 }
