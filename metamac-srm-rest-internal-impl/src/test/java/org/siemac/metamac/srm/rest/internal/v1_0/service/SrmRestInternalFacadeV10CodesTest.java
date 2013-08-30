@@ -54,6 +54,7 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
@@ -72,6 +73,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variabl
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables;
 import org.siemac.metamac.rest.utils.RestUtils;
+import org.siemac.metamac.srm.core.base.serviceapi.MiscMetamacService;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
@@ -93,6 +95,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10BaseTest {
 
     private CodesMetamacService         codesService;
+    private MiscMetamacService          miscMetamacService;
     private ItemSchemeVersionRepository itemSchemeVersionRepository;
     private CodeRepository              codeRepository;
     private CodeMetamacRepository       codeMetamacRepository;
@@ -1249,6 +1252,16 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
                 });
     }
 
+    private void mockRetrieveLastUpdatedDateVariableElementsGeoInfo() throws MetamacException {
+        when(miscMetamacService.findLastUpdatedVariableElementsGeographicalInformation(any(ServiceContext.class))).thenAnswer(new Answer<DateTime>() {
+
+            @Override
+            public DateTime answer(InvocationOnMock invocation) throws Throwable {
+                return new DateTime(2013, 1, 2, 3, 10, 50, 0);
+            };
+        });
+    }
+
     private String getUriVariableFamilies(String resourceID, String query, String limit, String offset) throws Exception {
         String uri = baseApi + "/" + "variablefamilies";
         if (resourceID != null) {
@@ -1325,12 +1338,15 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     protected void resetMocks() throws MetamacException {
         codesService = applicationContext.getBean(CodesMetamacService.class);
         reset(codesService);
+        miscMetamacService = applicationContext.getBean(MiscMetamacService.class);
+        reset(miscMetamacService);
         itemSchemeVersionRepository = applicationContext.getBean(ItemSchemeVersionRepository.class);
         reset(itemSchemeVersionRepository);
         codeRepository = applicationContext.getBean(CodeRepository.class);
         reset(codeRepository);
         codeMetamacRepository = applicationContext.getBean(CodeMetamacRepository.class);
         reset(codeMetamacRepository);
+
         mockRetrieveItemSchemeVersionByVersion();
         mockFindCodelistsByCondition();
         mockFindCodesByCondition();
@@ -1340,6 +1356,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         mockFindVariableElementsByCondition();
         mockFindVariableElementsByVariableEfficiently();
         mockFindCodelistFamiliesByCondition();
+        mockRetrieveLastUpdatedDateVariableElementsGeoInfo();
     }
 
     @Override

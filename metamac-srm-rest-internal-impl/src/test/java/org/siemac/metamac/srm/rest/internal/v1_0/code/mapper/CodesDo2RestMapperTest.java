@@ -611,11 +611,12 @@ public class CodesDo2RestMapperTest {
         selection.setGeographicalGranularity(true);
 
         // Transform
-        String target = do2RestInternalMapper.toVariableElementsGeoJson(sources, selection);
+        DateTime lastUpdated = new DateTime(2013, 1, 2, 3, 10, 50, 0);
+        String target = do2RestInternalMapper.toVariableElementsGeoJson(sources, selection, lastUpdated);
 
         // Validate
         assertEquals(
-                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"id\":\"artefact1\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-17, 28],[-15, 50]]]]},\"properties\": {\"urn\": \"urn:sdmx:org.sdmx.infomodel.xxx=artefact1\",\"longitude\": 1.0,\"latitude\": 2.0,\"geographicalGranularity\": \"urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact1\"}},{\"type\":\"Feature\",\"id\":\"artefact2\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-19, 30],[-17.90, 28.85],[-14, 15]]]]},\"properties\": {\"urn\": \"urn:sdmx:org.sdmx.infomodel.xxx=artefact2\",\"longitude\": 3.0,\"latitude\": 4.0,\"geographicalGranularity\": \"urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact2\"}}]}",
+                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"id\":\"artefact1\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-17, 28],[-15, 50]]]]},\"properties\": {\"urn\": \"urn:sdmx:org.sdmx.infomodel.xxx=artefact1\",\"lastUpdatedDate\": \"2013-01-02T03:10:50.000Z\",\"longitude\": 1.0,\"latitude\": 2.0,\"geographicalGranularity\": \"urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact1\"}},{\"type\":\"Feature\",\"id\":\"artefact2\",\"geometry\":{\"type\":\"MultiPolygon\",\"coordinates\":[[[[-19, 30],[-17.90, 28.85],[-14, 15]]]]},\"properties\": {\"urn\": \"urn:sdmx:org.sdmx.infomodel.xxx=artefact2\",\"lastUpdatedDate\": \"2013-01-02T03:10:50.000Z\",\"longitude\": 3.0,\"latitude\": 4.0,\"geographicalGranularity\": \"urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact2\"}}]}",
                 target);
     }
 
@@ -632,7 +633,8 @@ public class CodesDo2RestMapperTest {
         selection.setGeographicalGranularity(true);
 
         // Transform
-        VariableElementsGeoInfo target = do2RestInternalMapper.toVariableElementsGeoXml(sources, selection);
+        DateTime lastUpdated = new DateTime(2013, 1, 2, 3, 10, 50, 0);
+        VariableElementsGeoInfo target = do2RestInternalMapper.toVariableElementsGeoXml(sources, selection, lastUpdated);
 
         // Validate
         assertEquals("FeatureCollection", target.getType());
@@ -646,6 +648,7 @@ public class CodesDo2RestMapperTest {
             assertEquals(Double.valueOf(1.0D), feature.getProperties().getLongitude());
             assertEquals(Double.valueOf(2.0D), feature.getProperties().getLatitude());
             assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:codelist01(01.000).geo-artefact1", feature.getProperties().getGeographicalGranularity().getUrn());
+            MetamacAsserts.assertEqualsDate("2013-01-02 03:10:50", feature.getProperties().getLastUpdatedDate());
         }
         {
             VariableElementsGeoInfoFeature feature = target.getFeatures().getFeatures().get(1);

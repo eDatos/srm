@@ -19,6 +19,7 @@ import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.exception.RestCommonServiceExceptionType;
 import org.siemac.metamac.rest.exception.RestException;
@@ -70,6 +71,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variabl
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables;
+import org.siemac.metamac.srm.core.base.serviceapi.MiscMetamacService;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamacProperties;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
@@ -144,6 +146,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Autowired
     private DataStructureDefinitionMetamacService dataStructureDefinitionService;
+
+    @Autowired
+    private MiscMetamacService                    miscMetamacService;
 
     @Autowired
     private ConceptsRest2DoMapper                 conceptsRest2DoMapper;
@@ -1615,6 +1620,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             }
 
             Object target = null;
+            DateTime lastUpdatedDateVariableElementsGeoInfo = retrieveLastUpdatedDateVariableElementsGeographicalInformation();
             if (mustFindVariableElementsInsteadRetrieveAllVariableElementsOfVariable(variableID, resourceID, query, sculptorCriteria.getConditions(), orderBy, limit, offset)) {
                 // Find. Retrieve variable elements paginated
                 PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(variableID, resourceID, true, sculptorCriteria.getConditions(),
@@ -1622,9 +1628,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
                 // Transform
                 if (MediaType.APPLICATION_JSON.equals(mediaType)) {
-                    target = codesDo2RestMapper.toVariableElementsGeoJson(entitiesPagedResult, selection);
+                    target = codesDo2RestMapper.toVariableElementsGeoJson(entitiesPagedResult, selection, lastUpdatedDateVariableElementsGeoInfo);
                 } else if (MediaType.APPLICATION_XML.equals(mediaType)) {
-                    target = codesDo2RestMapper.toVariableElementsGeoXml(entitiesPagedResult, selection);
+                    target = codesDo2RestMapper.toVariableElementsGeoXml(entitiesPagedResult, selection, lastUpdatedDateVariableElementsGeoInfo);
                 }
             } else {
                 // Retrieve all variable elements of variable, without pagination
@@ -1638,9 +1644,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
                 // Transform
                 if (MediaType.APPLICATION_JSON.equals(mediaType)) {
-                    target = codesDo2RestMapper.toVariableElementsGeoJson(entities, selection);
+                    target = codesDo2RestMapper.toVariableElementsGeoJson(entities, selection, lastUpdatedDateVariableElementsGeoInfo);
                 } else if (MediaType.APPLICATION_XML.equals(mediaType)) {
-                    target = codesDo2RestMapper.toVariableElementsGeoXml(entities, selection);
+                    target = codesDo2RestMapper.toVariableElementsGeoXml(entities, selection, lastUpdatedDateVariableElementsGeoInfo);
                 }
             }
             return target;
@@ -1769,5 +1775,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     private ConditionalCriteria extractQueryVariableElementWhenOnlyQueryByCode(List<ConditionalCriteria> queries) {
         return queries.get(1);
+    }
+
+    private DateTime retrieveLastUpdatedDateVariableElementsGeographicalInformation() throws MetamacException {
+        return miscMetamacService.findLastUpdatedVariableElementsGeographicalInformation(ctx);
     }
 }

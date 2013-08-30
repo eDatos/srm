@@ -6,6 +6,7 @@ import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstan
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY;
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_GEOMETRY;
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_ID;
+import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_LAST_UPDATED_DATE;
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_LATITUDE;
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_LONGITUDE;
 import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_PROPERTIES;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
@@ -375,23 +377,24 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @Override
-    public String toVariableElementsGeoJson(List<VariableElementResult> sources, VariableElementResultSelection selection) {
-        return toVariableElementsGeoJsonCommon(sources, selection);
+    public String toVariableElementsGeoJson(List<VariableElementResult> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate) {
+        return toVariableElementsGeoJsonCommon(sources, selection, globalLastUpdatedDate);
     }
 
     @Override
-    public String toVariableElementsGeoJson(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection) {
-        return toVariableElementsGeoJsonCommon(sources.getValues(), selection);
+    public String toVariableElementsGeoJson(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate) {
+        return toVariableElementsGeoJsonCommon(sources.getValues(), selection, globalLastUpdatedDate);
     }
 
     @Override
-    public VariableElementsGeoInfo toVariableElementsGeoXml(List<VariableElementResult> sources, VariableElementResultSelection selection) {
-        return toVariableElementsGeoXmlCommon(sources, selection);
+    public VariableElementsGeoInfo toVariableElementsGeoXml(List<VariableElementResult> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate) {
+        return toVariableElementsGeoXmlCommon(sources, selection, globalLastUpdatedDate);
     }
 
     @Override
-    public VariableElementsGeoInfo toVariableElementsGeoXml(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection) {
-        return toVariableElementsGeoXmlCommon(sources.getValues(), selection);
+    public VariableElementsGeoInfo toVariableElementsGeoXml(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection,
+            DateTime globalLastUpdatedDate) {
+        return toVariableElementsGeoXmlCommon(sources.getValues(), selection, globalLastUpdatedDate);
     }
 
     @Override
@@ -889,7 +892,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @SuppressWarnings("rawtypes")
-    private String toVariableElementsGeoJsonCommon(List sources, VariableElementResultSelection selection) {
+    private String toVariableElementsGeoJsonCommon(List sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate) {
         StringBuilder target = new StringBuilder();
         target.append("{");
         target.append("\"" + VARIABLE_ELEMENT_TYPE + "\":\"" + VARIABLE_ELEMENT_FEATURE_COLLECTION_VALUE + "\"");
@@ -899,7 +902,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             for (int i = 0; i < sources.size(); i++) {
                 Object source = sources.get(i);
                 VariableElementMetadataExtraction variableElementMetadataExtraction = buildVariableElementMetadataExtraction(source);
-                toVariableElementGeoJson(variableElementMetadataExtraction, selection, target);
+                toVariableElementGeoJson(variableElementMetadataExtraction, selection, globalLastUpdatedDate, target);
                 if (i != sources.size() - 1) {
                     target.append(",");
                 }
@@ -911,7 +914,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @SuppressWarnings("rawtypes")
-    private VariableElementsGeoInfo toVariableElementsGeoXmlCommon(List sources, VariableElementResultSelection selection) {
+    private VariableElementsGeoInfo toVariableElementsGeoXmlCommon(List sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate) {
         VariableElementsGeoInfo target = new VariableElementsGeoInfo();
         target.setType(VARIABLE_ELEMENT_FEATURE_COLLECTION_VALUE);
         if (!CollectionUtils.isEmpty(sources)) {
@@ -920,7 +923,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             for (int i = 0; i < sources.size(); i++) {
                 Object source = sources.get(i);
                 VariableElementMetadataExtraction variableElementMetadataExtraction = buildVariableElementMetadataExtraction(source);
-                VariableElementsGeoInfoFeature feature = toVariableElementGeoXml(variableElementMetadataExtraction, selection);
+                VariableElementsGeoInfoFeature feature = toVariableElementGeoXml(variableElementMetadataExtraction, selection, globalLastUpdatedDate);
                 target.getFeatures().getFeatures().add(feature);
             }
             target.getFeatures().setTotal(BigInteger.valueOf(target.getFeatures().getFeatures().size()));
@@ -928,7 +931,8 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    private void toVariableElementGeoJson(VariableElementMetadataExtraction variableElementMetadataExtraction, VariableElementResultSelection selection, StringBuilder target) {
+    private void toVariableElementGeoJson(VariableElementMetadataExtraction variableElementMetadataExtraction, VariableElementResultSelection selection, DateTime globalLastUpdatedDate,
+            StringBuilder target) {
         target.append("{");
         target.append("\"" + VARIABLE_ELEMENT_TYPE + "\":\"" + VARIABLE_ELEMENT_FEATURE_VALUE + "\"");
         target.append(",");
@@ -944,6 +948,10 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.append("\"" + VARIABLE_ELEMENT_PROPERTIES + "\": ");
         target.append("{");
         target.append("\"" + VARIABLE_ELEMENT_URN + "\": \"" + variableElementMetadataExtraction.getUrn() + "\"");
+        if (globalLastUpdatedDate != null) {
+            target.append(",");
+            target.append("\"" + VARIABLE_ELEMENT_LAST_UPDATED_DATE + "\": \"" + globalLastUpdatedDate.toString() + "\"");
+        }
         if (selection.isLongitudeLatitude()) {
             Double longitude = variableElementMetadataExtraction.getLongitude();
             if (longitude != null) {
@@ -966,7 +974,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.append("}");
         target.append("}");
     }
-
     private VariableElementMetadataExtraction buildVariableElementMetadataExtraction(Object source) {
         if (source instanceof VariableElementResult) {
             return new VariableElementMetadataExtractionResult((VariableElementResult) source);
@@ -979,7 +986,8 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
     }
 
-    private VariableElementsGeoInfoFeature toVariableElementGeoXml(VariableElementMetadataExtraction variableElementMetadataExtraction, VariableElementResultSelection selection) {
+    private VariableElementsGeoInfoFeature toVariableElementGeoXml(VariableElementMetadataExtraction variableElementMetadataExtraction, VariableElementResultSelection selection,
+            DateTime globalLastUpdatedDate) {
         VariableElementsGeoInfoFeature target = new VariableElementsGeoInfoFeature();
         target.setType(VARIABLE_ELEMENT_FEATURE_VALUE);
         target.setId(variableElementMetadataExtraction.getCode());
@@ -988,6 +996,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
         target.setProperties(new VariableElementsGeoInfoFeatureProperties());
         target.getProperties().setUrn(variableElementMetadataExtraction.getUrn());
+        target.getProperties().setLastUpdatedDate(toDate(globalLastUpdatedDate));
         if (selection.isLongitudeLatitude()) {
             target.getProperties().setLongitude(variableElementMetadataExtraction.getLongitude());
             target.getProperties().setLatitude(variableElementMetadataExtraction.getLatitude());

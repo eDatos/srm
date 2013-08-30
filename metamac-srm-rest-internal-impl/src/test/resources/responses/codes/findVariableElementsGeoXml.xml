@@ -20,6 +20,7 @@
                     </cdomain:name>
                     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=ISTAC:codelist01(01.000)/code;id=geo-artefact1</sr:managementAppLink>
                 </sr:geographicalGranularity>
+                <sr:lastUpdatedDate>2013-01-02T03:10:50Z</sr:lastUpdatedDate>
             </sr:properties>
         </sr:feature>
         <sr:feature>
@@ -40,6 +41,7 @@
                     </cdomain:name>
                     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=ISTAC:codelist01(01.000)/code;id=geo-artefact2</sr:managementAppLink>
                 </sr:geographicalGranularity>
+                <sr:lastUpdatedDate>2013-01-02T03:10:50Z</sr:lastUpdatedDate>
             </sr:properties>
         </sr:feature>
     </sr:features>

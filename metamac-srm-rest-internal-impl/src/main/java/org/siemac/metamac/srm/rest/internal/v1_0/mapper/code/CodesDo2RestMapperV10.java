@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.code;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codes;
@@ -45,10 +46,11 @@ public interface CodesDo2RestMapperV10 {
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements toVariableElements(PagedResult<VariableElement> sources, String variableID, String query, String orderBy,
             Integer limit);
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements toVariableElements(List<VariableElementResult> sources, String variableID, String query);
-    public String toVariableElementsGeoJson(List<VariableElementResult> sources, VariableElementResultSelection selection);
-    public VariableElementsGeoInfo toVariableElementsGeoXml(List<VariableElementResult> sources, VariableElementResultSelection selection);
-    public String toVariableElementsGeoJson(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection);
-    public VariableElementsGeoInfo toVariableElementsGeoXml(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection);
+    public String toVariableElementsGeoJson(List<VariableElementResult> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
+    public VariableElementsGeoInfo toVariableElementsGeoXml(List<VariableElementResult> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
+    public String toVariableElementsGeoJson(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
+    public VariableElementsGeoInfo toVariableElementsGeoXml(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection,
+            DateTime globalLastUpdatedDate);
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElement toVariableElement(org.siemac.metamac.srm.core.code.domain.VariableElement source);
 
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilies toCodelistFamilies(PagedResult<CodelistFamily> sources, String query, String orderBy, Integer limit);

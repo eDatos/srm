@@ -39,6 +39,10 @@
         <constructor-arg value="org.siemac.metamac.srm.core.dsd.serviceapi.DataStructureDefinitionMetamacService" />
     </bean>    
     
+    <bean id="miscMetamacService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.siemac.metamac.srm.core.base.serviceapi.MiscMetamacService" />
+    </bean>
+    
     <bean id="itemSchemeVersionRepository" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository" />
     </bean>       
