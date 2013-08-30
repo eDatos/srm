@@ -27,9 +27,9 @@ public class ApplicationStartup implements ServletContextListener {
     }
 
     private void checkConfiguration() {
-        LOG.info("**********************************************************");
-        LOG.info("Checking application configuration");
-        LOG.info("**********************************************************");
+        LOG.info("**************************************************************");
+        LOG.info("[metamac-srm-external-web] Checking application configuration");
+        LOG.info("**************************************************************");
 
         // Datasource
         configurationService.checkRequiredProperty(SrmConfigurationConstants.DB_DRIVER_NAME);
@@ -43,9 +43,9 @@ public class ApplicationStartup implements ServletContextListener {
         configurationService.checkRequiredProperty(SrmConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_EXTERNAL_API);
         configurationService.checkRequiredProperty(SrmConfigurationConstants.METAMAC_ORGANISATION_URN);
 
-        LOG.info("**********************************************************");
-        LOG.info("Application configuration checked");
-        LOG.info("**********************************************************");
+        LOG.info("**************************************************************");
+        LOG.info("[metamac-srm-external-web] Application configuration checked");
+        LOG.info("**************************************************************");
     }
 
     @Override
