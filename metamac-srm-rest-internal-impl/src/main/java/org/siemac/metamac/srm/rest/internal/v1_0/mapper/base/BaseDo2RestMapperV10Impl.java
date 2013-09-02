@@ -15,7 +15,6 @@ import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
-import org.siemac.metamac.core.common.ent.domain.ExternalItem;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
@@ -41,6 +40,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.AnnotableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
+import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItem;
 import com.arte.statistic.sdmx.srm.core.common.domain.IdentifiableArtefactResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxAlias;
@@ -134,12 +134,12 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setStructureUrl(source.getStructureURL());
     }
 
-    protected InternationalString toInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString sources) {
+    protected InternationalString toInternationalString(com.arte.statistic.sdmx.srm.core.common.domain.InternationalString sources) {
         if (sources == null) {
             return null;
         }
         InternationalString targets = new InternationalString();
-        for (org.siemac.metamac.core.common.ent.domain.LocalisedString source : sources.getTexts()) {
+        for (com.arte.statistic.sdmx.srm.core.common.domain.LocalisedString source : sources.getTexts()) {
             LocalisedString target = new LocalisedString();
             target.setValue(source.getLabel());
             target.setLang(source.getLocale());
