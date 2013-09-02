@@ -13,13 +13,13 @@ import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 
 public abstract class BaseDo2SoapMapperV10Impl {
 
-    protected InternationalString toInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString source) {
+    protected InternationalString toInternationalString(com.arte.statistic.sdmx.srm.core.common.domain.InternationalString source) {
         if (source == null || source.getTexts() == null || source.getTexts().size() == 0) {
             return null;
         }
 
         InternationalString internationalString = new InternationalString();
-        for (org.siemac.metamac.core.common.ent.domain.LocalisedString item : source.getTexts()) {
+        for (com.arte.statistic.sdmx.srm.core.common.domain.LocalisedString item : source.getTexts()) {
             LocalisedString localisedString = localisedStringToLocalisedStringWebService(item);
             internationalString.getTexts().add(localisedString);
         }
@@ -57,7 +57,7 @@ public abstract class BaseDo2SoapMapperV10Impl {
         return source.getPublicLogic();
     }
 
-    private LocalisedString localisedStringToLocalisedStringWebService(org.siemac.metamac.core.common.ent.domain.LocalisedString source) {
+    private LocalisedString localisedStringToLocalisedStringWebService(com.arte.statistic.sdmx.srm.core.common.domain.LocalisedString source) {
         LocalisedString localisedString = new LocalisedString();
         localisedString.setLang(source.getLocale());
         localisedString.setValue(source.getLabel());

@@ -17,19 +17,20 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 
 public class Asserts {
 
-    public static void assertEqualsInternationalStringNotNull(org.siemac.metamac.core.common.ent.domain.InternationalString expecteds,
+    public static void assertEqualsInternationalStringNotNull(com.arte.statistic.sdmx.srm.core.common.domain.InternationalString expecteds,
             org.siemac.metamac.soap.common.v1_0.domain.InternationalString actuals) {
         assertNotNull(expecteds);
         assertEqualsInternationalString(expecteds, actuals);
     }
 
-    public static void assertEqualsInternationalString(org.siemac.metamac.core.common.ent.domain.InternationalString expecteds, org.siemac.metamac.soap.common.v1_0.domain.InternationalString actuals) {
+    public static void assertEqualsInternationalString(com.arte.statistic.sdmx.srm.core.common.domain.InternationalString expecteds,
+            org.siemac.metamac.soap.common.v1_0.domain.InternationalString actuals) {
         assertEqualsNullability(expecteds, actuals);
         if (expecteds == null) {
             return;
         }
         assertEquals(expecteds.getTexts().size(), actuals.getTexts().size());
-        for (org.siemac.metamac.core.common.ent.domain.LocalisedString expected : expecteds.getTexts()) {
+        for (com.arte.statistic.sdmx.srm.core.common.domain.LocalisedString expected : expecteds.getTexts()) {
             boolean existsItem = false;
             for (LocalisedString actual : actuals.getTexts()) {
                 if (expected.getLocale().equals(actual.getLang())) {
