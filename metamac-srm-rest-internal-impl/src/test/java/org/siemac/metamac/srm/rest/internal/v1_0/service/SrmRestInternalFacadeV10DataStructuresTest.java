@@ -42,7 +42,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataStr
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamacProperties;
 import org.siemac.metamac.srm.core.dsd.serviceapi.DataStructureDefinitionMetamacService;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.dsd.utils.DataStructuresDoMocks;
 
@@ -106,7 +106,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
         assertEquals(getApiEndpoint() + "/datastructures/" + agencyID + "?limit=4&offset=0", dataStructures.getFirstLink());
         assertEquals(getApiEndpoint() + "/datastructures/" + agencyID + "?limit=4&offset=0", dataStructures.getPreviousLink());
         assertEquals(getApiEndpoint() + "/datastructures/" + agencyID + "?limit=4&offset=36", dataStructures.getLastLink());
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURES, dataStructures.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURES, dataStructures.getKind());
     }
     @Test
     public void testFindDataStructuresByAgencyErrorWildcard() throws Exception {
@@ -119,7 +119,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -148,7 +148,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
         assertEquals(getApiEndpoint() + "/datastructures/" + agencyID + "/" + resourceID + "?limit=4&offset=0", dataStructures.getFirstLink());
         assertEquals(getApiEndpoint() + "/datastructures/" + agencyID + "/" + resourceID + "?limit=4&offset=0", dataStructures.getPreviousLink());
         assertEquals(getApiEndpoint() + "/datastructures/" + agencyID + "/" + resourceID + "?limit=4&offset=36", dataStructures.getLastLink());
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURES, dataStructures.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURES, dataStructures.getKind());
     }
 
     @Test
@@ -162,7 +162,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -181,9 +181,9 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
         assertEquals(agencyID, dataStructure.getAgencyID());
         assertEquals(resourceID, dataStructure.getId());
         assertEquals(version, dataStructure.getVersion());
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURE, dataStructure.getKind());
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURE, dataStructure.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURES, dataStructure.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURE, dataStructure.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURE, dataStructure.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURES, dataStructure.getParentLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveDataStructure(dsdsService, agencyID, resourceID, version);
@@ -202,9 +202,9 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
         assertEquals(agencyID, dataStructure.getAgencyID());
         assertEquals(resourceID, dataStructure.getId());
         assertEquals(VERSION_1, dataStructure.getVersion());
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURE, dataStructure.getKind());
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURE, dataStructure.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURES, dataStructure.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURE, dataStructure.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURE, dataStructure.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURES, dataStructure.getParentLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveDataStructure(dsdsService, agencyID, resourceID, version);
@@ -267,7 +267,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -282,7 +282,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -297,7 +297,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter version has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -317,7 +317,7 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
         }
 
         assertNotNull(dataStructures);
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURES, dataStructures.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURES, dataStructures.getKind());
 
         // Verify with Mockito
         verifyFindDataStructures(dsdsService, agencyID, resourceID, null, limit, offset, query, orderBy);

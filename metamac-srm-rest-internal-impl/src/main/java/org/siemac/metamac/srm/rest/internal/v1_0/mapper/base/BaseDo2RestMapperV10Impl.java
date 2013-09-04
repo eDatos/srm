@@ -30,7 +30,7 @@ import org.siemac.metamac.rest.utils.RestCommonUtil;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.InternalWebApplicationNavigation;
 import org.springframework.beans.factory.BeanCreationException;
@@ -380,7 +380,7 @@ public abstract class BaseDo2RestMapperV10Impl {
 
         // Srm Internal Api V1.0
         String srmApiInternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_SRM_INTERNAL_API);
-        srmApiInternalEndpointV10 = RestUtils.createLink(srmApiInternalEndpoint, RestInternalConstants.API_VERSION_1_0);
+        srmApiInternalEndpointV10 = RestUtils.createLink(srmApiInternalEndpoint, SrmRestConstants.API_VERSION_1_0);
 
         // Statistical operations Internal Api (do not add api version! it is already stored in database (~latest))
         statisticalOperationsApiInternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_INTERNAL_API);

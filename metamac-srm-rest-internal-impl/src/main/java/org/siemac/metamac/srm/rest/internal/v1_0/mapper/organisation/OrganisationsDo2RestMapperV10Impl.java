@@ -35,7 +35,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.springframework.stereotype.Component;
@@ -612,17 +612,17 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
     private String toSupathItemSchemes(OrganisationSchemeTypeEnum type) {
         if (type == null) {
-            return RestInternalConstants.LINK_SUBPATH_ORGANISATION_SCHEMES;
+            return SrmRestConstants.LINK_SUBPATH_ORGANISATION_SCHEMES;
         }
         switch (type) {
             case AGENCY_SCHEME:
-                return RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES;
+                return SrmRestConstants.LINK_SUBPATH_AGENCY_SCHEMES;
             case ORGANISATION_UNIT_SCHEME:
-                return RestInternalConstants.LINK_SUBPATH_ORGANISATION_UNIT_SCHEMES;
+                return SrmRestConstants.LINK_SUBPATH_ORGANISATION_UNIT_SCHEMES;
             case DATA_CONSUMER_SCHEME:
-                return RestInternalConstants.LINK_SUBPATH_DATA_CONSUMER_SCHEMES;
+                return SrmRestConstants.LINK_SUBPATH_DATA_CONSUMER_SCHEMES;
             case DATA_PROVIDER_SCHEME:
-                return RestInternalConstants.LINK_SUBPATH_DATA_PROVIDER_SCHEMES;
+                return SrmRestConstants.LINK_SUBPATH_DATA_PROVIDER_SCHEMES;
             default:
                 throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + type);
         }
@@ -634,17 +634,17 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
     private String toSubpathItems(OrganisationSchemeTypeEnum type) {
         if (type == null) {
-            return RestInternalConstants.LINK_SUBPATH_ORGANISATIONS;
+            return SrmRestConstants.LINK_SUBPATH_ORGANISATIONS;
         }
         switch (type) {
             case AGENCY_SCHEME:
-                return RestInternalConstants.LINK_SUBPATH_AGENCIES;
+                return SrmRestConstants.LINK_SUBPATH_AGENCIES;
             case ORGANISATION_UNIT_SCHEME:
-                return RestInternalConstants.LINK_SUBPATH_ORGANISATION_UNITS;
+                return SrmRestConstants.LINK_SUBPATH_ORGANISATION_UNITS;
             case DATA_CONSUMER_SCHEME:
-                return RestInternalConstants.LINK_SUBPATH_DATA_CONSUMERS;
+                return SrmRestConstants.LINK_SUBPATH_DATA_CONSUMERS;
             case DATA_PROVIDER_SCHEME:
-                return RestInternalConstants.LINK_SUBPATH_DATA_PROVIDERS;
+                return SrmRestConstants.LINK_SUBPATH_DATA_PROVIDERS;
             default:
                 throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + type);
         }
@@ -656,17 +656,17 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
     private String toKindItemSchemes(OrganisationSchemeTypeEnum type) {
         if (type == null) {
-            return RestInternalConstants.KIND_ORGANISATION_SCHEMES;
+            return SrmRestConstants.KIND_ORGANISATION_SCHEMES;
         }
         switch (type) {
             case AGENCY_SCHEME:
-                return RestInternalConstants.KIND_AGENCY_SCHEMES;
+                return SrmRestConstants.KIND_AGENCY_SCHEMES;
             case ORGANISATION_UNIT_SCHEME:
-                return RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES;
+                return SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEMES;
             case DATA_CONSUMER_SCHEME:
-                return RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES;
+                return SrmRestConstants.KIND_DATA_CONSUMER_SCHEMES;
             case DATA_PROVIDER_SCHEME:
-                return RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES;
+                return SrmRestConstants.KIND_DATA_PROVIDER_SCHEMES;
             default:
                 throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + type);
         }
@@ -674,17 +674,17 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
     private String toKindItems(OrganisationSchemeTypeEnum type) {
         if (type == null) {
-            return RestInternalConstants.KIND_ORGANISATIONS;
+            return SrmRestConstants.KIND_ORGANISATIONS;
         }
         switch (type) {
             case AGENCY_SCHEME:
-                return RestInternalConstants.KIND_AGENCIES;
+                return SrmRestConstants.KIND_AGENCIES;
             case ORGANISATION_UNIT_SCHEME:
-                return RestInternalConstants.KIND_ORGANISATION_UNITS;
+                return SrmRestConstants.KIND_ORGANISATION_UNITS;
             case DATA_CONSUMER_SCHEME:
-                return RestInternalConstants.KIND_DATA_CONSUMERS;
+                return SrmRestConstants.KIND_DATA_CONSUMERS;
             case DATA_PROVIDER_SCHEME:
-                return RestInternalConstants.KIND_DATA_PROVIDERS;
+                return SrmRestConstants.KIND_DATA_PROVIDERS;
             default:
                 throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + type);
         }
@@ -700,13 +700,13 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         }
         switch (type) {
             case AGENCY_SCHEME:
-                return RestInternalConstants.KIND_AGENCY_SCHEME;
+                return SrmRestConstants.KIND_AGENCY_SCHEME;
             case ORGANISATION_UNIT_SCHEME:
-                return RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME;
+                return SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEME;
             case DATA_CONSUMER_SCHEME:
-                return RestInternalConstants.KIND_DATA_CONSUMER_SCHEME;
+                return SrmRestConstants.KIND_DATA_CONSUMER_SCHEME;
             case DATA_PROVIDER_SCHEME:
-                return RestInternalConstants.KIND_DATA_PROVIDER_SCHEME;
+                return SrmRestConstants.KIND_DATA_PROVIDER_SCHEME;
             default:
                 throw new IllegalArgumentException("OrganisationSchemeTypeEnum unsuported: " + type);
         }
@@ -718,13 +718,13 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         }
         switch (type) {
             case AGENCY:
-                return RestInternalConstants.KIND_AGENCY;
+                return SrmRestConstants.KIND_AGENCY;
             case ORGANISATION_UNIT:
-                return RestInternalConstants.KIND_ORGANISATION_UNIT;
+                return SrmRestConstants.KIND_ORGANISATION_UNIT;
             case DATA_CONSUMER:
-                return RestInternalConstants.KIND_DATA_CONSUMER;
+                return SrmRestConstants.KIND_DATA_CONSUMER;
             case DATA_PROVIDER:
-                return RestInternalConstants.KIND_DATA_PROVIDER;
+                return SrmRestConstants.KIND_DATA_PROVIDER;
             default:
                 throw new IllegalArgumentException("OrganisationTypeEnum unsuported: " + type);
         }

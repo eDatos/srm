@@ -45,7 +45,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Quantit
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.QuantityUnitSymbolPosition;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsDo2RestMapperV10;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -83,7 +83,7 @@ public class ConceptsDo2RestMapperTest {
         ConceptSchemes target = do2RestInternalMapper.toConceptSchemes(sources, agencyID, resourceID, query, orderBy, limit);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, target.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEMES, target.getKind());
 
         String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes" + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + orderBy;
 
@@ -112,17 +112,17 @@ public class ConceptsDo2RestMapperTest {
         ConceptScheme target = do2RestInternalMapper.toConceptScheme(source);
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEME, target.getKind());
         assertEquals("resourceID1", target.getId());
         assertEquals("01.123", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=agencyID1:resourceID1(01.123)", target.getUrn());
         assertEquals(null, target.getUrnProvider());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agencyID1/resourceID1/01.123";
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, target.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agencyID1:resourceID1(01.123)", target.getManagementAppLink());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, target.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes", target.getParentLink().getHref());
         assertEquals(ConceptSchemeType.OPERATION, target.getType());
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-resourceID1", target.getStatisticalOperation().getUrn());
@@ -145,7 +145,7 @@ public class ConceptsDo2RestMapperTest {
         assertEqualsDate(new DateTime(2013, 10, 1, 10, 12, 13, 14), target.getCreatedDate());
 
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
-        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getChildLinks().getChildLinks().get(0).getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPTS, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/concepts", target.getChildLinks().getChildLinks().get(0).getHref());
     }
 
@@ -192,7 +192,7 @@ public class ConceptsDo2RestMapperTest {
         Concepts target = do2RestInternalMapper.toConcepts(sources, agencyID, conceptSchemeID, version, query, orderBy, limit);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPTS, target.getKind());
 
         String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes" + "/" + agencyID + "/" + conceptSchemeID + "/" + version + "/concepts?query=" + query
                 + "&orderBy=" + orderBy;
@@ -229,7 +229,7 @@ public class ConceptsDo2RestMapperTest {
         Concepts target = do2RestInternalMapper.toConcepts(sources, conceptScheme1);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPTS, target.getKind());
 
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes" + "/" + agencyID + "/" + conceptSchemeID + "/" + version + "/concepts", target.getSelfLink());
         assertEquals(null, target.getFirstLink());
@@ -257,17 +257,17 @@ public class ConceptsDo2RestMapperTest {
         Concept target = do2RestInternalMapper.toConcept(source);
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
-        assertEquals(RestInternalConstants.KIND_CONCEPT, target.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT, target.getKind());
         assertEquals("concept2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID1(01.123).concept2", target.getUrn());
         assertEquals(null, target.getUrnProvider());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/agencyID1/resourceID1/01.123/concepts";
         String selfLink = parentLink + "/concept2";
-        assertEquals(RestInternalConstants.KIND_CONCEPT, target.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
-        assertEquals(RestInternalConstants.KIND_CONCEPTS, target.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPTS, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
         assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agencyID1:resourceID1(01.123)/concept;id=concept2", target.getManagementAppLink());
@@ -284,7 +284,7 @@ public class ConceptsDo2RestMapperTest {
         assertEquals("variable1", target.getVariable().getId());
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1", target.getVariable().getUrn());
         assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getName());
-        assertEquals(RestInternalConstants.KIND_VARIABLE, target.getVariable().getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_VARIABLE, target.getVariable().getSelfLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variable1", target.getVariable().getSelfLink().getHref());
 
         assertEquals("conceptType1", target.getType().getId());

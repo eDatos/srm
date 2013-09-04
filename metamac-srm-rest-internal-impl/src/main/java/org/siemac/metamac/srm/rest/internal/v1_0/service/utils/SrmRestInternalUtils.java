@@ -9,7 +9,7 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionProperties;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
@@ -142,7 +142,7 @@ public class SrmRestInternalUtils {
         if (SdmxAlias.SDMX_MAINTAINER.equals(agencyID)) {
             conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(maintainableArtefactProperty.maintainer().idAsMaintainer()).eq(agencyID).or()
                     .withProperty(maintainableArtefactProperty.maintainer()).isNull().rbrace().build());
-        } else if (agencyID != null && !RestInternalConstants.WILDCARD_ALL.equals(agencyID)) {
+        } else if (agencyID != null && !SrmRestConstants.WILDCARD_ALL.equals(agencyID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
         }
     }
@@ -150,7 +150,7 @@ public class SrmRestInternalUtils {
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaByMaintainableArtefactCode(List<ConditionalCriteria> conditionalCriteria, String code, Class entity,
             MaintainableArtefactProperty maintainableArtefactProperty) {
-        if (code != null && !RestInternalConstants.WILDCARD_ALL.equals(code)) {
+        if (code != null && !SrmRestConstants.WILDCARD_ALL.equals(code)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(maintainableArtefactProperty.code()).eq(code).or()
                     .withProperty(maintainableArtefactProperty.codeFull()).eq(code).rbrace().buildSingle());
         }
@@ -159,7 +159,7 @@ public class SrmRestInternalUtils {
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaByMaintainableArtefactVersion(List<ConditionalCriteria> conditionalCriteria, String version, Class entity,
             MaintainableArtefactProperty maintainableArtefactProperty) {
-        if (RestInternalConstants.WILDCARD_LATEST.equals(version)) {
+        if (SrmRestConstants.WILDCARD_LATEST.equals(version)) {
 
             // AgencyScheme, DataProviderScheme and DataConsumerScheme never are versioned, so they are always with same version
             if (OrganisationSchemeVersionMetamac.class.equals(entity)) {
@@ -173,13 +173,13 @@ public class SrmRestInternalUtils {
             } else {
                 conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).buildSingle());
             }
-        } else if (version != null && !RestInternalConstants.WILDCARD_ALL.equals(version)) {
+        } else if (version != null && !SrmRestConstants.WILDCARD_ALL.equals(version)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
         }
     }
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void addConditionalCriteriaByItemCode(List<ConditionalCriteria> conditionalCriteria, String code, Class entity, NameableArtefactProperty nameableArtefactProperty) {
-        if (code != null && !RestInternalConstants.WILDCARD_ALL.equals(code)) {
+        if (code != null && !SrmRestConstants.WILDCARD_ALL.equals(code)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(nameableArtefactProperty.code()).eq(code).or()
                     .withProperty(nameableArtefactProperty.codeFull()).eq(code).rbrace().buildSingle());
         }

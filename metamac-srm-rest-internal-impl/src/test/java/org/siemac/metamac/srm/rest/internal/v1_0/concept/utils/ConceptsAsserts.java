@@ -11,7 +11,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Resourc
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RoleConcepts;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
@@ -27,7 +27,7 @@ public class ConceptsAsserts extends Asserts {
         String version = maintainableArtefact.getVersionLogic();
         String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/conceptschemes/" + agency + "/" + code + "/" + version;
         String expectedManagementLink = "http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=" + agency + ":" + code + "(" + version + ")";
-        Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT_SCHEME, expectedSelfLink, expectedManagementLink, actual);
+        Asserts.assertEqualsResource(expected, SrmRestConstants.KIND_CONCEPT_SCHEME, expectedSelfLink, expectedManagementLink, actual);
     }
 
     public static void assertEqualsResource(ItemSchemeVersion itemSchemeVersion, ConceptMetamac expected, ItemResult expectedItemResult, ResourceInternal actual) {
@@ -45,9 +45,9 @@ public class ConceptsAsserts extends Asserts {
         String expectedManagementLink = "http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=" + agency + ":" + codeItemScheme + "(" + version + ")/concept;id="
                 + code;
         if (expected != null) {
-            Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CONCEPT, expectedSelfLink, expectedManagementLink, actual);
+            Asserts.assertEqualsResource(expected, SrmRestConstants.KIND_CONCEPT, expectedSelfLink, expectedManagementLink, actual);
         } else if (expectedItemResult != null) {
-            Asserts.assertEqualsResource(expectedItemResult, RestInternalConstants.KIND_CONCEPT, expectedSelfLink, expectedManagementLink, actual, itemSchemeVersion.getMaintainableArtefact()
+            Asserts.assertEqualsResource(expectedItemResult, SrmRestConstants.KIND_CONCEPT, expectedSelfLink, expectedManagementLink, actual, itemSchemeVersion.getMaintainableArtefact()
                     .getIsImported());
         }
     }

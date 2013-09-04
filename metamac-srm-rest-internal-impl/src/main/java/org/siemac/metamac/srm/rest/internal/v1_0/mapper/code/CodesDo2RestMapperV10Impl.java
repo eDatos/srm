@@ -1,17 +1,17 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.code;
 
-import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_FEATURES;
-import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_FEATURE_COLLECTION_VALUE;
-import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_FEATURE_VALUE;
-import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY;
-import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_GEOMETRY;
-import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_ID;
-import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_LAST_UPDATED_DATE;
-import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_LATITUDE;
-import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_LONGITUDE;
-import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_PROPERTIES;
-import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_TYPE;
-import static org.siemac.metamac.srm.rest.internal.constants.RestInternalConstantsPrivate.VARIABLE_ELEMENT_URN;
+import static org.siemac.metamac.srm.rest.internal.constants.SrmRestInternalConstants.VARIABLE_ELEMENT_FEATURES;
+import static org.siemac.metamac.srm.rest.internal.constants.SrmRestInternalConstants.VARIABLE_ELEMENT_FEATURE_COLLECTION_VALUE;
+import static org.siemac.metamac.srm.rest.internal.constants.SrmRestInternalConstants.VARIABLE_ELEMENT_FEATURE_VALUE;
+import static org.siemac.metamac.srm.rest.internal.constants.SrmRestInternalConstants.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY;
+import static org.siemac.metamac.srm.rest.internal.constants.SrmRestInternalConstants.VARIABLE_ELEMENT_GEOMETRY;
+import static org.siemac.metamac.srm.rest.internal.constants.SrmRestInternalConstants.VARIABLE_ELEMENT_ID;
+import static org.siemac.metamac.srm.rest.internal.constants.SrmRestInternalConstants.VARIABLE_ELEMENT_LAST_UPDATED_DATE;
+import static org.siemac.metamac.srm.rest.internal.constants.SrmRestInternalConstants.VARIABLE_ELEMENT_LATITUDE;
+import static org.siemac.metamac.srm.rest.internal.constants.SrmRestInternalConstants.VARIABLE_ELEMENT_LONGITUDE;
+import static org.siemac.metamac.srm.rest.internal.constants.SrmRestInternalConstants.VARIABLE_ELEMENT_PROPERTIES;
+import static org.siemac.metamac.srm.rest.internal.constants.SrmRestInternalConstants.VARIABLE_ELEMENT_TYPE;
+import static org.siemac.metamac.srm.rest.internal.constants.SrmRestInternalConstants.VARIABLE_ELEMENT_URN;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -67,7 +67,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableElementResultSelection;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
 import org.slf4j.Logger;
@@ -89,7 +89,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     public Codelists toCodelists(PagedResult<CodelistVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
 
         Codelists targets = new Codelists();
-        targets.setKind(RestInternalConstants.KIND_CODELISTS);
+        targets.setKind(SrmRestConstants.KIND_CODELISTS);
 
         // Pagination
         String baseLink = toCodelistsLink(agencyID, resourceID, null);
@@ -109,7 +109,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         Codelist target = new Codelist();
-        target.setKind(RestInternalConstants.KIND_CODELIST);
+        target.setKind(SrmRestConstants.KIND_CODELIST);
         target.setSelfLink(toCodelistSelfLink(source));
         target.setParentLink(toCodelistParentLink(source));
         target.setChildLinks(toCodelistChildLinks(source));
@@ -137,7 +137,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_CODELIST, toCodelistSelfLink(source), toCodelistManagementApplicationLink(source), target);
+        toResource(source.getMaintainableArtefact(), SrmRestConstants.KIND_CODELIST, toCodelistSelfLink(source), toCodelistManagementApplicationLink(source), target);
         return target;
     }
 
@@ -145,7 +145,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     public Codes toCodes(PagedResult<CodeMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
 
         Codes targets = new Codes();
-        targets.setKind(RestInternalConstants.KIND_CODES);
+        targets.setKind(SrmRestConstants.KIND_CODES);
 
         // Pagination
         String baseLink = toCodesLink(agencyID, resourceID, version);
@@ -163,7 +163,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     public Codes toCodes(List<ItemResult> sources, CodelistVersionMetamac codelistVersion) {
 
         Codes targets = new Codes();
-        targets.setKind(RestInternalConstants.KIND_CODES);
+        targets.setKind(SrmRestConstants.KIND_CODES);
 
         // No pagination
         targets.setSelfLink(toCodesLink(codelistVersion));
@@ -185,7 +185,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
         Code target = new Code();
 
-        target.setKind(RestInternalConstants.KIND_CODE);
+        target.setKind(SrmRestConstants.KIND_CODE);
         target.setSelfLink(toCodeSelfLink(source));
         target.setParentLink(toCodeParentLink(source));
         target.setChildLinks(toCodeChildLinks(source));
@@ -209,7 +209,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ItemResourceInternal target = new ItemResourceInternal();
-        toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target);
+        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target);
         return target;
     }
 
@@ -218,7 +218,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         CodeResourceInternal target = new CodeResourceInternal();
-        toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target);
+        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target);
         target.setVariableElement(toResource(source.getVariableElement()));
 
         // order and open are retrieved only one retrieve efficiently all codes in codelist
@@ -232,7 +232,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         CodeResourceInternal target = new CodeResourceInternal();
-        toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), toCodeManagementApplicationLink(codelistVersion, source), target, codelistVersion
+        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), toCodeManagementApplicationLink(codelistVersion, source), target, codelistVersion
                 .getMaintainableArtefact().getIsImported());
         target.setVariableElement(toResource(variableID, ((CodeMetamacResultExtensionPoint) source.getExtensionPoint()).getVariableElement()));
         target.setOrder(SrmServiceUtils.getCodeItemResultOrder(source) + 1); // add 1 to start in 1, instead of 0
@@ -250,7 +250,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     public VariableFamilies toVariableFamilies(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily> sourcesPagedResult, String query, String orderBy, Integer limit) {
 
         VariableFamilies targets = new VariableFamilies();
-        targets.setKind(RestInternalConstants.KIND_VARIABLE_FAMILIES);
+        targets.setKind(SrmRestConstants.KIND_VARIABLE_FAMILIES);
 
         // Pagination
         String baseLink = toVariableFamiliesLink();
@@ -272,7 +272,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         VariableFamily target = new VariableFamily();
         toNameableArtefact(source.getNameableArtefact(), target, false);
 
-        target.setKind(RestInternalConstants.KIND_VARIABLE_FAMILY);
+        target.setKind(SrmRestConstants.KIND_VARIABLE_FAMILY);
         target.setSelfLink(toVariableFamilySelfLink(source));
         target.setParentLink(toVariableFamilyParentLink(source));
         target.setChildLinks(toVariableFamilyChildLinks(source));
@@ -285,7 +285,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     public Variables toVariablesByFamily(String familyID, PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> sourcesPagedResult, String query, String orderBy, Integer limit) {
 
         Variables targets = new Variables();
-        targets.setKind(RestInternalConstants.KIND_VARIABLES);
+        targets.setKind(SrmRestConstants.KIND_VARIABLES);
 
         // Pagination
         String baseLink = toVariablesByFamilyLink(familyID);
@@ -303,7 +303,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     public Variables toVariables(PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> sourcesPagedResult, String query, String orderBy, Integer limit) {
 
         Variables targets = new Variables();
-        targets.setKind(RestInternalConstants.KIND_VARIABLES);
+        targets.setKind(SrmRestConstants.KIND_VARIABLES);
 
         // Pagination
         String baseLink = toVariablesLink();
@@ -325,7 +325,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         Variable target = new Variable();
         toNameableArtefact(source.getNameableArtefact(), target, false);
 
-        target.setKind(RestInternalConstants.KIND_VARIABLE);
+        target.setKind(SrmRestConstants.KIND_VARIABLE);
         target.setSelfLink(toVariableSelfLink(source));
         target.setParentLink(toVariableParentLink(source));
         target.setChildLinks(toVariableChildLinks(source));
@@ -345,7 +345,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     public VariableElements toVariableElements(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, String variableID, String query, String orderBy, Integer limit) {
 
         VariableElements targets = new VariableElements();
-        targets.setKind(RestInternalConstants.KIND_VARIABLE_ELEMENTS);
+        targets.setKind(SrmRestConstants.KIND_VARIABLE_ELEMENTS);
 
         // Pagination
         String baseLink = toVariableElementsLink(variableID, null);
@@ -362,7 +362,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     @Override
     public VariableElements toVariableElements(List<VariableElementResult> sources, String variableID, String query) {
         VariableElements targets = new VariableElements();
-        targets.setKind(RestInternalConstants.KIND_VARIABLE_ELEMENTS);
+        targets.setKind(SrmRestConstants.KIND_VARIABLE_ELEMENTS);
 
         // No pagination
         targets.setSelfLink(toVariableElementsLink(variableID, query));
@@ -405,7 +405,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         VariableElement target = new VariableElement();
         toIdentifiableArtefact(source.getIdentifiableArtefact(), target, false);
 
-        target.setKind(RestInternalConstants.KIND_VARIABLE_ELEMENT);
+        target.setKind(SrmRestConstants.KIND_VARIABLE_ELEMENT);
         target.setSelfLink(toVariableElementSelfLink(source));
         target.setParentLink(toVariableElementParentLink(source));
         target.setChildLinks(toVariableElementChildLinks(source));
@@ -427,7 +427,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE, toVariableSelfLink(source), toVariableManagementApplicationLink(source), target, false);
+        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_VARIABLE, toVariableSelfLink(source), toVariableManagementApplicationLink(source), target, false);
         return target;
     }
 
@@ -435,7 +435,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     public CodelistFamilies toCodelistFamilies(PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> sourcesPagedResult, String query, String orderBy, Integer limit) {
 
         CodelistFamilies targets = new CodelistFamilies();
-        targets.setKind(RestInternalConstants.KIND_CODELIST_FAMILIES);
+        targets.setKind(SrmRestConstants.KIND_CODELIST_FAMILIES);
 
         // Pagination
         String baseLink = toCodelistFamiliesLink();
@@ -457,7 +457,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         CodelistFamily target = new CodelistFamily();
         toNameableArtefact(source.getNameableArtefact(), target, false);
 
-        target.setKind(RestInternalConstants.KIND_CODELIST_FAMILY);
+        target.setKind(SrmRestConstants.KIND_CODELIST_FAMILY);
         target.setSelfLink(toCodelistFamilySelfLink(source));
         target.setParentLink(toCodelistFamilyParentLink(source));
         target.setChildLinks(toCodelistFamilyChildLinks(source));
@@ -472,7 +472,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source.getIdentifiableArtefact(), RestInternalConstants.KIND_VARIABLE_ELEMENT, toVariableElementSelfLink(source), toVariableElementManagementApplicationLink(source), target, false);
+        toResource(source.getIdentifiableArtefact(), SrmRestConstants.KIND_VARIABLE_ELEMENT, toVariableElementSelfLink(source), toVariableElementManagementApplicationLink(source), target, false);
         target.setName(toInternationalString(source.getShortName()));
         return target;
     }
@@ -482,41 +482,41 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source, RestInternalConstants.KIND_VARIABLE_ELEMENT, toVariableElementSelfLink(variableID, source), toVariableElementManagementApplicationLink(variableID, source), target, false);
+        toResource(source, SrmRestConstants.KIND_VARIABLE_ELEMENT, toVariableElementSelfLink(variableID, source), toVariableElementManagementApplicationLink(variableID, source), target, false);
         target.setName(toInternationalString(source.getShortName()));
         return target;
     }
 
     private ResourceLink toCodelistSelfLink(CodelistVersion source) {
-        return toResourceLink(RestInternalConstants.KIND_CODELIST, toCodelistLink(source));
+        return toResourceLink(SrmRestConstants.KIND_CODELIST, toCodelistLink(source));
     }
 
     private ResourceLink toCodelistParentLink(CodelistVersionMetamac source) {
-        return toResourceLink(RestInternalConstants.KIND_CODELISTS, toCodelistsLink(null, null, null));
+        return toResourceLink(SrmRestConstants.KIND_CODELISTS, toCodelistsLink(null, null, null));
     }
 
     private ChildLinks toCodelistChildLinks(CodelistVersionMetamac source) {
         ChildLinks targets = new ChildLinks();
-        targets.getChildLinks().add(toResourceLink(RestInternalConstants.KIND_CODES, toCodesLink(source)));
+        targets.getChildLinks().add(toResourceLink(SrmRestConstants.KIND_CODES, toCodesLink(source)));
         targets.setTotal(BigInteger.valueOf(targets.getChildLinks().size()));
         return targets;
     }
 
     private ResourceLink toCodeSelfLink(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
-        return toResourceLink(RestInternalConstants.KIND_CODE, toCodeLink(source));
+        return toResourceLink(SrmRestConstants.KIND_CODE, toCodeLink(source));
     }
     private ResourceLink toCodeSelfLink(ItemResult source, CodelistVersion codelistVersion) {
-        return toResourceLink(RestInternalConstants.KIND_CODE, toCodeLink(source, codelistVersion));
+        return toResourceLink(SrmRestConstants.KIND_CODE, toCodeLink(source, codelistVersion));
     }
     private ResourceLink toCodeSelfLink(ItemResult source) {
         String[] codeUrnSplited = UrnUtils.splitUrnItem(source.getUrn());
         String codesLink = toItemsLink(toSubpathItemSchemes(), toSubpathItems(), codeUrnSplited[0], codeUrnSplited[1], codeUrnSplited[2]);
         String codeLink = RestUtils.createLink(codesLink, getCode(source));
-        return toResourceLink(RestInternalConstants.KIND_CODE, codeLink);
+        return toResourceLink(SrmRestConstants.KIND_CODE, codeLink);
     }
 
     private ResourceLink toCodeParentLink(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
-        return toResourceLink(RestInternalConstants.KIND_CODES, toCodesLink(source.getItemSchemeVersion()));
+        return toResourceLink(SrmRestConstants.KIND_CODES, toCodesLink(source.getItemSchemeVersion()));
     }
 
     private ChildLinks toCodeChildLinks(com.arte.statistic.sdmx.srm.core.code.domain.Code source) {
@@ -530,7 +530,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
     private ChildLinks toVariableFamilyChildLinks(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
         ChildLinks targets = new ChildLinks();
-        targets.getChildLinks().add(toResourceLink(RestInternalConstants.KIND_VARIABLES, toVariablesByFamilyLink(source)));
+        targets.getChildLinks().add(toResourceLink(SrmRestConstants.KIND_VARIABLES, toVariablesByFamilyLink(source)));
         targets.setTotal(BigInteger.valueOf(targets.getChildLinks().size()));
         return targets;
     }
@@ -541,13 +541,13 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
     private ChildLinks toVariableChildLinks(org.siemac.metamac.srm.core.code.domain.Variable source) {
         ChildLinks targets = new ChildLinks();
-        targets.getChildLinks().add(toResourceLink(RestInternalConstants.KIND_VARIABLE_ELEMENTS, toVariableElementsLink(source)));
+        targets.getChildLinks().add(toResourceLink(SrmRestConstants.KIND_VARIABLE_ELEMENTS, toVariableElementsLink(source)));
         targets.setTotal(BigInteger.valueOf(targets.getChildLinks().size()));
         return targets;
     }
 
     private ResourceLink toVariableElementParentLink(org.siemac.metamac.srm.core.code.domain.VariableElement source) {
-        return toResourceLink(RestInternalConstants.KIND_VARIABLE_ELEMENTS, toVariableElementsLink(source.getVariable()));
+        return toResourceLink(SrmRestConstants.KIND_VARIABLE_ELEMENTS, toVariableElementsLink(source.getVariable()));
     }
 
     private ChildLinks toVariableElementChildLinks(org.siemac.metamac.srm.core.code.domain.VariableElement source) {
@@ -573,7 +573,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source), toVariableFamilyManagementApplicationLink(source), target, false);
+        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source), toVariableFamilyManagementApplicationLink(source), target, false);
         return target;
     }
 
@@ -582,7 +582,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source.getNameableArtefact(), RestInternalConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source), toCodelistFamilyManagementApplicationLink(source), target, false);
+        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source), toCodelistFamilyManagementApplicationLink(source), target, false);
         return target;
     }
 
@@ -606,15 +606,15 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     private String toSubpathItemSchemes() {
-        return RestInternalConstants.LINK_SUBPATH_CODELISTS;
+        return SrmRestConstants.LINK_SUBPATH_CODELISTS;
     }
     private String toSubpathItems() {
-        return RestInternalConstants.LINK_SUBPATH_CODES;
+        return SrmRestConstants.LINK_SUBPATH_CODES;
     }
 
     // API/variablefamilies
     private String toVariableFamiliesLink() {
-        return RestUtils.createLink(getSrmApiInternalEndpointV10(), RestInternalConstants.LINK_SUBPATH_VARIABLE_FAMILIES);
+        return RestUtils.createLink(getSrmApiInternalEndpointV10(), SrmRestConstants.LINK_SUBPATH_VARIABLE_FAMILIES);
     }
 
     // API/variablefamilies/VARIABLE_FAMILY_ID
@@ -627,7 +627,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
     private ResourceLink toVariableFamilySelfLink(org.siemac.metamac.srm.core.code.domain.VariableFamily source) {
         ResourceLink target = new ResourceLink();
-        target.setKind(RestInternalConstants.KIND_VARIABLE_FAMILY);
+        target.setKind(SrmRestConstants.KIND_VARIABLE_FAMILY);
         target.setHref(toVariableFamilyLink(source));
         return target;
     }
@@ -635,7 +635,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     // API/variablefamilies/VARIABLE_FAMILY_ID/variables
     private String toVariablesByFamilyLink(String variableFamilyID) {
         String linkVariableFamily = toVariableFamilyLink(variableFamilyID);
-        return RestUtils.createLink(linkVariableFamily, RestInternalConstants.LINK_SUBPATH_VARIABLES_BY_FAMILY);
+        return RestUtils.createLink(linkVariableFamily, SrmRestConstants.LINK_SUBPATH_VARIABLES_BY_FAMILY);
     }
     private String toVariablesByFamilyLink(org.siemac.metamac.srm.core.code.domain.VariableFamily variableFamily) {
         return toVariablesByFamilyLink(variableFamily.getNameableArtefact().getCode());
@@ -643,7 +643,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
     // API/variables
     private String toVariablesLink() {
-        return RestUtils.createLink(getSrmApiInternalEndpointV10(), RestInternalConstants.LINK_SUBPATH_VARIABLES);
+        return RestUtils.createLink(getSrmApiInternalEndpointV10(), SrmRestConstants.LINK_SUBPATH_VARIABLES);
     }
 
     // API/variables/VARIABLE_ID
@@ -656,7 +656,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
     private ResourceLink toVariableSelfLink(org.siemac.metamac.srm.core.code.domain.Variable source) {
         ResourceLink target = new ResourceLink();
-        target.setKind(RestInternalConstants.KIND_VARIABLE);
+        target.setKind(SrmRestConstants.KIND_VARIABLE);
         target.setHref(toVariableLink(source));
         return target;
     }
@@ -664,7 +664,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     // API/variables/VARIABLE_ID/variableelements
     private String toVariableElementsLink(String variableID, String query) {
         String linkVariable = toVariableLink(variableID);
-        String link = RestUtils.createLink(linkVariable, RestInternalConstants.LINK_SUBPATH_VARIABLE_ELEMENTS);
+        String link = RestUtils.createLink(linkVariable, SrmRestConstants.LINK_SUBPATH_VARIABLE_ELEMENTS);
         if (query != null) {
             link = RestUtils.createLinkWithQueryParam(link, RestConstants.PARAMETER_QUERY, query);
         }
@@ -685,24 +685,24 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
     private ResourceLink toVariableElementSelfLink(org.siemac.metamac.srm.core.code.domain.VariableElement source) {
         ResourceLink target = new ResourceLink();
-        target.setKind(RestInternalConstants.KIND_VARIABLE_ELEMENT);
+        target.setKind(SrmRestConstants.KIND_VARIABLE_ELEMENT);
         target.setHref(toVariableElementLink(source));
         return target;
     }
     private ResourceLink toVariableElementSelfLink(String variableID, org.siemac.metamac.srm.core.code.domain.VariableElementResult source) {
         ResourceLink target = new ResourceLink();
-        target.setKind(RestInternalConstants.KIND_VARIABLE_ELEMENT);
+        target.setKind(SrmRestConstants.KIND_VARIABLE_ELEMENT);
         target.setHref(toVariableElementLink(variableID, source.getCode()));
         return target;
     }
     private String toVariableElementGeoLink(org.siemac.metamac.srm.core.code.domain.VariableElement variableElement) {
         String linkVariableElement = toVariableElementLink(variableElement);
-        return RestUtils.createLink(linkVariableElement, RestInternalConstants.LINK_SUBPATH_VARIABLE_ELEMENT_GEOGRAPHICAL_INFO);
+        return RestUtils.createLink(linkVariableElement, SrmRestConstants.LINK_SUBPATH_VARIABLE_ELEMENT_GEOGRAPHICAL_INFO);
     }
 
     // API/codelistfamilies
     private String toCodelistFamiliesLink() {
-        return RestUtils.createLink(getSrmApiInternalEndpointV10(), RestInternalConstants.LINK_SUBPATH_CODELIST_FAMILIES);
+        return RestUtils.createLink(getSrmApiInternalEndpointV10(), SrmRestConstants.LINK_SUBPATH_CODELIST_FAMILIES);
     }
 
     // API/codelistfamilies/CODELIST_FAMILY_ID
@@ -712,7 +712,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
     private ResourceLink toCodelistFamilySelfLink(org.siemac.metamac.srm.core.code.domain.CodelistFamily source) {
         ResourceLink target = new ResourceLink();
-        target.setKind(RestInternalConstants.KIND_CODELIST_FAMILY);
+        target.setKind(SrmRestConstants.KIND_CODELIST_FAMILY);
         target.setHref(toCodelistFamilyLink(source));
         return target;
     }
@@ -751,7 +751,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             }
         }
         if (target != null) {
-            target.setKind(RestInternalConstants.KIND_CODELISTS);
+            target.setKind(SrmRestConstants.KIND_CODELISTS);
             target.setTotal(BigInteger.valueOf(target.getReplaceTos().size()));
         }
         return target;
@@ -762,7 +762,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ReplaceToResources target = new ReplaceToResources();
-        target.setKind(RestInternalConstants.KIND_VARIABLES);
+        target.setKind(SrmRestConstants.KIND_VARIABLES);
         target.setTotal(BigInteger.valueOf(source.getReplaceToVariables().size()));
         for (org.siemac.metamac.srm.core.code.domain.Variable replaceToSource : source.getReplaceToVariables()) {
             target.getReplaceTos().add(toResource(replaceToSource));
@@ -775,7 +775,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ReplaceToResources target = new ReplaceToResources();
-        target.setKind(RestInternalConstants.KIND_VARIABLE_ELEMENTS);
+        target.setKind(SrmRestConstants.KIND_VARIABLE_ELEMENTS);
         target.setTotal(BigInteger.valueOf(source.getReplaceToVariableElements().size()));
         for (org.siemac.metamac.srm.core.code.domain.VariableElement replaceToSource : source.getReplaceToVariableElements()) {
             target.getReplaceTos().add(toResource(replaceToSource));
@@ -788,7 +788,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         VariableFamilyMetadata target = new VariableFamilyMetadata();
-        target.setKind(RestInternalConstants.KIND_VARIABLE_FAMILIES);
+        target.setKind(SrmRestConstants.KIND_VARIABLE_FAMILIES);
         target.setTotal(BigInteger.valueOf(source.getFamilies().size()));
         for (org.siemac.metamac.srm.core.code.domain.VariableFamily variableFamily : source.getFamilies()) {
             target.getFamilies().add(toResource(variableFamily));
@@ -1012,7 +1012,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ItemResourceInternal target = new ItemResourceInternal();
-        toResource(source, RestInternalConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source.getUrn()), target, false);
+        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source.getUrn()), target, false);
         return target;
     }
 

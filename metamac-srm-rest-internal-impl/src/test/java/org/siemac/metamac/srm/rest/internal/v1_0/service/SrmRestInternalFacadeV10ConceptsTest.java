@@ -56,7 +56,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.concept.utils.ConceptsDoMocks;
 
@@ -122,7 +122,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "?limit=4&offset=0", conceptSchemes.getFirstLink());
         assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "?limit=4&offset=0", conceptSchemes.getPreviousLink());
         assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "?limit=4&offset=36", conceptSchemes.getLastLink());
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptSchemes.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEMES, conceptSchemes.getKind());
     }
 
     @Test
@@ -136,7 +136,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -165,7 +165,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", conceptSchemes.getFirstLink());
         assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", conceptSchemes.getPreviousLink());
         assertEquals(getApiEndpoint() + "/conceptschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=36", conceptSchemes.getLastLink());
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptSchemes.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEMES, conceptSchemes.getKind());
     }
 
     @Test
@@ -179,7 +179,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -198,9 +198,9 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(agencyID, conceptScheme.getAgencyID());
         assertEquals(resourceID, conceptScheme.getId());
         assertEquals(version, conceptScheme.getVersion());
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveConceptScheme(conceptsService, agencyID, resourceID, version);
@@ -219,9 +219,9 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(agencyID, conceptScheme.getAgencyID());
         assertEquals(resourceID, conceptScheme.getId());
         assertEquals(VERSION_1, conceptScheme.getVersion());
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveConceptScheme(conceptsService, agencyID, resourceID, version);
@@ -284,7 +284,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -299,7 +299,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -314,7 +314,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter version has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -327,7 +327,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         Concepts concepts = getSrmRestInternalFacadeClientXml().findConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null);
 
         assertNotNull(concepts);
-        assertEquals(RestInternalConstants.KIND_CONCEPTS, concepts.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPTS, concepts.getKind());
         assertEquals(BigInteger.valueOf(4), concepts.getTotal());
 
         // Verify with mockito
@@ -403,9 +403,9 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         // Validation
         assertNotNull(concept);
         assertEquals(conceptID, concept.getId());
-        assertEquals(RestInternalConstants.KIND_CONCEPT, concept.getKind());
-        assertEquals(RestInternalConstants.KIND_CONCEPT, concept.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_CONCEPTS, concept.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT, concept.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT, concept.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPTS, concept.getParentLink().getKind());
         assertTrue(concept instanceof Concept);
         // other metadata are tested in transformation tests
 
@@ -471,7 +471,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -485,7 +485,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -500,7 +500,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter version has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -515,7 +515,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter conceptID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_CONCEPT_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_CONCEPT_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -528,7 +528,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         ConceptTypes conceptTypes = getSrmRestInternalFacadeClientXml().retrieveConceptTypes();
 
         // Validation
-        assertEquals(RestInternalConstants.KIND_CONCEPT_TYPES, conceptTypes.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_TYPES, conceptTypes.getKind());
         assertTrue(conceptTypes.getConceptTypes().size() > 0);
     }
 
@@ -556,7 +556,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         }
 
         assertNotNull(conceptSchemes);
-        assertEquals(RestInternalConstants.KIND_CONCEPT_SCHEMES, conceptSchemes.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEMES, conceptSchemes.getKind());
 
         // Verify with Mockito
         verifyFindConceptSchemes(conceptsService, agencyID, resourceID, version, limit, offset, query, orderBy);
@@ -567,7 +567,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         Concepts concepts = getSrmRestInternalFacadeClientXml().findConcepts(agencyID, resourceID, version, query, orderBy, limit, offset);
 
         assertNotNull(concepts);
-        assertEquals(RestInternalConstants.KIND_CONCEPTS, concepts.getKind());
+        assertEquals(SrmRestConstants.KIND_CONCEPTS, concepts.getKind());
 
         // Verify with mockito
         verifyFindConcepts(conceptsService, agencyID, resourceID, version, limit, offset, query, orderBy);

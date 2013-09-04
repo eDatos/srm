@@ -34,7 +34,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agencie
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencyScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AgencySchemes;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
@@ -101,7 +101,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         assertEquals(getApiEndpoint() + "/agencyschemes/" + agencyID + "?limit=4&offset=0", agencySchemes.getFirstLink());
         assertEquals(getApiEndpoint() + "/agencyschemes/" + agencyID + "?limit=4&offset=0", agencySchemes.getPreviousLink());
         assertEquals(getApiEndpoint() + "/agencyschemes/" + agencyID + "?limit=4&offset=36", agencySchemes.getLastLink());
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, agencySchemes.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEMES, agencySchemes.getKind());
     }
 
     @Test
@@ -115,7 +115,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -142,7 +142,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         String resourceID = ITEM_SCHEME_1_CODE;
         AgencySchemes agencySchemes = getSrmRestInternalFacadeClientXml().findAgencySchemes(agencyID, resourceID, null, null, "4", "0");
         assertEquals(getApiEndpoint() + "/agencyschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", agencySchemes.getSelfLink());
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, agencySchemes.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEMES, agencySchemes.getKind());
     }
 
     @Test
@@ -156,7 +156,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -174,9 +174,9 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         assertEquals(agencyID, agencyScheme.getAgencyID());
         assertEquals(resourceID, agencyScheme.getId());
         assertEquals(version, agencyScheme.getVersion());
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, agencyScheme.getKind());
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, agencyScheme.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, agencyScheme.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEME, agencyScheme.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEME, agencyScheme.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEMES, agencyScheme.getParentLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.AGENCY_SCHEME);
@@ -195,9 +195,9 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         assertEquals(agencyID, agencyScheme.getAgencyID());
         assertEquals(resourceID, agencyScheme.getId());
         assertEquals(VERSION_1, agencyScheme.getVersion());
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, agencyScheme.getKind());
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, agencyScheme.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, agencyScheme.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEME, agencyScheme.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEME, agencyScheme.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEMES, agencyScheme.getParentLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.AGENCY_SCHEME);
@@ -260,7 +260,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -275,7 +275,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -290,7 +290,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter version has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -344,7 +344,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         Agencies agencies = getSrmRestInternalFacadeClientXml().findAgencies(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null);
 
         assertNotNull(agencies);
-        assertEquals(RestInternalConstants.KIND_AGENCIES, agencies.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCIES, agencies.getKind());
         assertEquals(BigInteger.valueOf(4), agencies.getTotal());
 
         // Verify with mockito
@@ -378,9 +378,9 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         // Validation
         assertNotNull(agency);
         assertEquals(organsationID, agency.getId());
-        assertEquals(RestInternalConstants.KIND_AGENCY, agency.getKind());
-        assertEquals(RestInternalConstants.KIND_AGENCY, agency.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_AGENCIES, agency.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY, agency.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY, agency.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCIES, agency.getParentLink().getKind());
         assertTrue(agency instanceof Agency);
         // other metadata are tested in transformation tests
 
@@ -447,7 +447,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -461,7 +461,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -476,7 +476,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter version has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -491,7 +491,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter organisationID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_ORGANISATION_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_ORGANISATION_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -511,7 +511,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         }
 
         assertNotNull(itemSchemes);
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, itemSchemes.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEMES, itemSchemes.getKind());
 
         // Verify with Mockito
         verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationSchemeTypeEnum.AGENCY_SCHEME);
@@ -522,7 +522,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
         Agencies items = getSrmRestInternalFacadeClientXml().findAgencies(agencyID, resourceID, version, query, orderBy, limit, offset);
 
         assertNotNull(items);
-        assertEquals(RestInternalConstants.KIND_AGENCIES, items.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCIES, items.getKind());
 
         // Verify with Mockito
         verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationTypeEnum.AGENCY);
@@ -530,11 +530,11 @@ public class SrmRestInternalFacadeV10OrganisationsTypeAgenciesTest extends SrmRe
 
     @Override
     protected String getSupathMaintainableArtefacts() {
-        return RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES;
+        return SrmRestConstants.LINK_SUBPATH_AGENCY_SCHEMES;
     }
 
     @Override
     protected String getSupathItems() {
-        return RestInternalConstants.LINK_SUBPATH_AGENCIES;
+        return SrmRestConstants.LINK_SUBPATH_AGENCIES;
     }
 }

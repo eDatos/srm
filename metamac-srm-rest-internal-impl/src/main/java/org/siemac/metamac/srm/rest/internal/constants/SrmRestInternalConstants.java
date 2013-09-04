@@ -1,8 +1,8 @@
 package org.siemac.metamac.srm.rest.internal.constants;
 
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 
-public class RestInternalConstantsPrivate extends RestInternalConstants {
+public class SrmRestInternalConstants extends SrmRestConstants {
 
     public static final String VARIABLE_ELEMENT_FEATURE_COLLECTION_VALUE = "FeatureCollection";
     public static final String VARIABLE_ELEMENT_FEATURE_VALUE            = "Feature";

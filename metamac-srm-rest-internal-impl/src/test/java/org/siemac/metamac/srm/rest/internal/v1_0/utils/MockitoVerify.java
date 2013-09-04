@@ -15,7 +15,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefactProperties.IdentifiableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionProperties;
@@ -80,14 +80,14 @@ public class MockitoVerify {
         }
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).distinctRoot().buildSingle());
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(itemSchemeVersionMaintainableArtefactProperty.finalLogicClient()).eq(Boolean.TRUE).buildSingle());
-        if (agencyID != null && !RestInternalConstants.WILDCARD_ALL.equals(agencyID)) {
+        if (agencyID != null && !SrmRestConstants.WILDCARD_ALL.equals(agencyID)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(itemSchemeVersionMaintainableArtefactProperty.maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
         }
-        if (resourceID != null && !RestInternalConstants.WILDCARD_ALL.equals(resourceID)) {
+        if (resourceID != null && !SrmRestConstants.WILDCARD_ALL.equals(resourceID)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(itemSchemeVersionMaintainableArtefactProperty.code()).eq(resourceID).or()
                     .withProperty(itemSchemeVersionMaintainableArtefactProperty.codeFull()).eq(resourceID).rbrace().buildSingle());
         }
-        if (RestInternalConstants.WILDCARD_LATEST.equals(version)) {
+        if (SrmRestConstants.WILDCARD_LATEST.equals(version)) {
             if (OrganisationMetamac.class.equals(entityClass)) {
                 expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(OrganisationProperties.organisationType())
                         .in(OrganisationTypeEnum.AGENCY, OrganisationTypeEnum.DATA_CONSUMER, OrganisationTypeEnum.DATA_PROVIDER).or()
@@ -95,7 +95,7 @@ public class MockitoVerify {
             } else {
                 expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(itemSchemeVersionMaintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).buildSingle());
             }
-        } else if (version != null && !RestInternalConstants.WILDCARD_ALL.equals(version)) {
+        } else if (version != null && !SrmRestConstants.WILDCARD_ALL.equals(version)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(itemSchemeVersionMaintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
         }
         if (itemID != null) {
@@ -115,14 +115,14 @@ public class MockitoVerify {
         }
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).distinctRoot().buildSingle());
         expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(maintainableArtefactProperty.finalLogicClient()).eq(Boolean.TRUE).buildSingle());
-        if (agencyID != null && !RestInternalConstants.WILDCARD_ALL.equals(agencyID)) {
+        if (agencyID != null && !SrmRestConstants.WILDCARD_ALL.equals(agencyID)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(maintainableArtefactProperty.maintainer().idAsMaintainer()).eq(agencyID).buildSingle());
         }
-        if (resourceID != null && !RestInternalConstants.WILDCARD_ALL.equals(resourceID)) {
+        if (resourceID != null && !SrmRestConstants.WILDCARD_ALL.equals(resourceID)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(maintainableArtefactProperty.code()).eq(resourceID).or()
                     .withProperty(maintainableArtefactProperty.codeFull()).eq(resourceID).rbrace().buildSingle());
         }
-        if (RestInternalConstants.WILDCARD_LATEST.equals(version)) {
+        if (SrmRestConstants.WILDCARD_LATEST.equals(version)) {
             // AgencyScheme, DataProviderScheme and DataConsumerScheme never are versioned, so they are always with same version
             if (OrganisationSchemeVersionMetamac.class.equals(entityClass)) {
                 expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).lbrace().withProperty(OrganisationSchemeVersionProperties.organisationSchemeType())
@@ -131,7 +131,7 @@ public class MockitoVerify {
             } else {
                 expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(maintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).buildSingle());
             }
-        } else if (version != null && !RestInternalConstants.WILDCARD_ALL.equals(version)) {
+        } else if (version != null && !SrmRestConstants.WILDCARD_ALL.equals(version)) {
             expected.add(ConditionalCriteriaBuilder.criteriaFor(entityClass).withProperty(maintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
         }
         return expected;

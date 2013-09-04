@@ -83,7 +83,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableElementProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableElementResultSelection;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesDoMocks;
 
@@ -143,7 +143,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "?limit=4&offset=0", codelists.getFirstLink());
         assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "?limit=4&offset=0", codelists.getPreviousLink());
         assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "?limit=4&offset=36", codelists.getLastLink());
-        assertEquals(RestInternalConstants.KIND_CODELISTS, codelists.getKind());
+        assertEquals(SrmRestConstants.KIND_CODELISTS, codelists.getKind());
     }
 
     @Test
@@ -157,7 +157,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -186,7 +186,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "/" + resourceID + "?limit=4&offset=0", codelists.getFirstLink());
         assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "/" + resourceID + "?limit=4&offset=0", codelists.getPreviousLink());
         assertEquals(getApiEndpoint() + "/codelists/" + agencyID + "/" + resourceID + "?limit=4&offset=36", codelists.getLastLink());
-        assertEquals(RestInternalConstants.KIND_CODELISTS, codelists.getKind());
+        assertEquals(SrmRestConstants.KIND_CODELISTS, codelists.getKind());
     }
 
     @Test
@@ -200,7 +200,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -219,9 +219,9 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(agencyID, codelist.getAgencyID());
         assertEquals(resourceID, codelist.getId());
         assertEquals(version, codelist.getVersion());
-        assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getKind());
-        assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_CODELISTS, codelist.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CODELIST, codelist.getKind());
+        assertEquals(SrmRestConstants.KIND_CODELIST, codelist.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CODELISTS, codelist.getParentLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveCodelist(codesService, agencyID, resourceID, version);
@@ -240,9 +240,9 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(agencyID, codelist.getAgencyID());
         assertEquals(resourceID, codelist.getId());
         assertEquals(VERSION_1, codelist.getVersion());
-        assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getKind());
-        assertEquals(RestInternalConstants.KIND_CODELIST, codelist.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_CODELISTS, codelist.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CODELIST, codelist.getKind());
+        assertEquals(SrmRestConstants.KIND_CODELIST, codelist.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CODELISTS, codelist.getParentLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveCodelist(codesService, agencyID, resourceID, version);
@@ -305,7 +305,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -320,7 +320,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -335,7 +335,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter version has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -392,7 +392,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null, order, openness);
 
         assertNotNull(codes);
-        assertEquals(RestInternalConstants.KIND_CODES, codes.getKind());
+        assertEquals(SrmRestConstants.KIND_CODES, codes.getKind());
         assertEquals(BigInteger.valueOf(4), codes.getTotal());
 
         // Verify with mockito
@@ -431,9 +431,9 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         // Validation
         assertNotNull(code);
         assertEquals(codeID, code.getId());
-        assertEquals(RestInternalConstants.KIND_CODE, code.getKind());
-        assertEquals(RestInternalConstants.KIND_CODE, code.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_CODES, code.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CODE, code.getKind());
+        assertEquals(SrmRestConstants.KIND_CODE, code.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CODES, code.getParentLink().getKind());
         assertTrue(code instanceof Code);
         // other metadata are tested in transformation tests
 
@@ -499,7 +499,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -513,7 +513,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -528,7 +528,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter version has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -543,7 +543,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter codeID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_CODE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_CODE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -560,7 +560,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         VariableFamilies variableFamilies = getSrmRestInternalFacadeClientXml().findVariableFamilies(query, orderBy, limit, offset);
 
         assertNotNull(variableFamilies);
-        assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILIES, variableFamilies.getKind());
+        assertEquals(SrmRestConstants.KIND_VARIABLE_FAMILIES, variableFamilies.getKind());
         // Verify with Mockito
         verifyFindVariableFamilies(codesService, null, limit, offset, query, orderBy);
     }
@@ -583,8 +583,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertNotNull(variableFamily);
         // other metadata are tested in mapper tests
         assertEquals(resourceID, variableFamily.getId());
-        assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILY, variableFamily.getKind());
-        assertEquals(RestInternalConstants.KIND_VARIABLE_FAMILY, variableFamily.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_VARIABLE_FAMILY, variableFamily.getKind());
+        assertEquals(SrmRestConstants.KIND_VARIABLE_FAMILY, variableFamily.getSelfLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveVariableFamily(codesService, resourceID);
@@ -643,7 +643,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         Variables variables = getSrmRestInternalFacadeClientXml().findVariablesByFamily(familyID, query, orderBy, limit, offset);
 
         assertNotNull(variables);
-        assertEquals(RestInternalConstants.KIND_VARIABLES, variables.getKind());
+        assertEquals(SrmRestConstants.KIND_VARIABLES, variables.getKind());
         // Verify with Mockito
         verifyFindVariables(codesService, null, familyID, limit, offset, query, orderBy);
     }
@@ -669,7 +669,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         Variables variables = getSrmRestInternalFacadeClientXml().findVariables(query, orderBy, limit, offset);
 
         assertNotNull(variables);
-        assertEquals(RestInternalConstants.KIND_VARIABLES, variables.getKind());
+        assertEquals(SrmRestConstants.KIND_VARIABLES, variables.getKind());
         // Verify with Mockito
         verifyFindVariables(codesService, null, null, limit, offset, query, orderBy);
     }
@@ -692,8 +692,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertNotNull(variable);
         // other metadata are tested in mapper tests
         assertEquals(resourceID, variable.getId());
-        assertEquals(RestInternalConstants.KIND_VARIABLE, variable.getKind());
-        assertEquals(RestInternalConstants.KIND_VARIABLE, variable.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_VARIABLE, variable.getKind());
+        assertEquals(SrmRestConstants.KIND_VARIABLE, variable.getSelfLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveVariable(codesService, resourceID);
@@ -751,7 +751,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
 
         assertNotNull(variableElements);
-        assertEquals(RestInternalConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
+        assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
         // Verify with Mockito
         verifyFindVariableElements(codesService, null, variableID, limit, offset, query, orderBy);
     }
@@ -774,7 +774,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         {
             String query = null;
             VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
-            assertEquals(RestInternalConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
+            assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
             verifyFindVariableElementsRetrieveAll(codesService, variableID, null);
         }
         resetMocks();
@@ -865,7 +865,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         CodelistFamilies codelistFamilies = getSrmRestInternalFacadeClientXml().findCodelistFamilies(query, orderBy, limit, offset);
 
         assertNotNull(codelistFamilies);
-        assertEquals(RestInternalConstants.KIND_CODELIST_FAMILIES, codelistFamilies.getKind());
+        assertEquals(SrmRestConstants.KIND_CODELIST_FAMILIES, codelistFamilies.getKind());
         // Verify with Mockito
         verifyFindCodelistFamilies(codesService, null, limit, offset, query, orderBy);
     }
@@ -888,8 +888,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertNotNull(codelistFamily);
         // other metadata are tested in mapper tests
         assertEquals(resourceID, codelistFamily.getId());
-        assertEquals(RestInternalConstants.KIND_CODELIST_FAMILY, codelistFamily.getKind());
-        assertEquals(RestInternalConstants.KIND_CODELIST_FAMILY, codelistFamily.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CODELIST_FAMILY, codelistFamily.getKind());
+        assertEquals(SrmRestConstants.KIND_CODELIST_FAMILY, codelistFamily.getSelfLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveCodelistFamily(codesService, resourceID);
@@ -950,7 +950,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         }
 
         assertNotNull(codelists);
-        assertEquals(RestInternalConstants.KIND_CODELISTS, codelists.getKind());
+        assertEquals(SrmRestConstants.KIND_CODELISTS, codelists.getKind());
 
         // Verify with Mockito
         verifyFindCodelists(codesService, agencyID, resourceID, version, limit, offset, query, orderBy);
@@ -961,7 +961,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         Codes codes = getSrmRestInternalFacadeClientXml().findCodes(agencyID, resourceID, version, query, orderBy, limit, offset, null, null);
 
         assertNotNull(codes);
-        assertEquals(RestInternalConstants.KIND_CODES, codes.getKind());
+        assertEquals(SrmRestConstants.KIND_CODES, codes.getKind());
 
         // Verify with mockito
         verifyFindCodes(codesService, agencyID, resourceID, version, limit, offset, query, orderBy);

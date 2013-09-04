@@ -40,7 +40,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Dimensi
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Group;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.dsd.DataStructuresDo2RestMapperV10;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -81,7 +81,7 @@ public class DataStructuresDo2RestMapperTest {
         DataStructures target = do2RestInternalMapper.toDataStructures(sources, agencyID, resourceID, query, orderBy, limit);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURES, target.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURES, target.getKind());
 
         String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures" + "/" + agencyID + "/" + resourceID + "?query=" + query + "&orderBy=" + orderBy;
 
@@ -111,17 +111,17 @@ public class DataStructuresDo2RestMapperTest {
         DataStructure target = do2RestInternalMapper.toDataStructure(source);
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURE, target.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURE, target.getKind());
         assertEquals("resourceID1", target.getId());
         assertEquals("01.123", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agencyID1:resourceID1(01.123)", target.getUrn());
         assertEquals("agencyID1", target.getAgencyID());
         assertEquals(null, target.getUrnProvider());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agencyID1/resourceID1/01.123";
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURE, target.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURE, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
-        assertEquals(RestInternalConstants.KIND_DATA_STRUCTURES, target.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_STRUCTURES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures", target.getParentLink().getHref());
         assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agencyID1:resourceID1(01.123)", target.getManagementAppLink());
         assertEqualsInternationalString("es", "name-resourceID1v01.123 en Español", "en", "name-resourceID1v01.123 in English", target.getName());

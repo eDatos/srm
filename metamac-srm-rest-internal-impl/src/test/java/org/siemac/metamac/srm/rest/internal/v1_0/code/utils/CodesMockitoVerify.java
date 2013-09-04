@@ -30,7 +30,7 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.MockitoVerify;
 
 public class CodesMockitoVerify extends MockitoVerify {
@@ -207,11 +207,11 @@ public class CodesMockitoVerify extends MockitoVerify {
             conditionalCriteriaExpected.addAll(buildFindExpectedQuery(query, VariableElement.class, VariableElementProperties.identifiableArtefact()));
         }
         conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).distinctRoot().buildSingle());
-        if (variableID != null && !RestInternalConstants.WILDCARD_ALL.equals(variableID)) {
+        if (variableID != null && !SrmRestConstants.WILDCARD_ALL.equals(variableID)) {
             conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.variable().nameableArtefact().code()).eq(variableID)
                     .buildSingle());
         }
-        if (resourceID != null && !RestInternalConstants.WILDCARD_ALL.equals(resourceID)) {
+        if (resourceID != null && !SrmRestConstants.WILDCARD_ALL.equals(resourceID)) {
             conditionalCriteriaExpected.add(ConditionalCriteriaBuilder.criteriaFor(VariableElement.class).withProperty(VariableElementProperties.identifiableArtefact().code()).eq(resourceID)
                     .buildSingle());
         }

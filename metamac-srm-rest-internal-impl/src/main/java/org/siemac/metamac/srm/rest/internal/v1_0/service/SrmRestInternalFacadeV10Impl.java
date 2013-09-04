@@ -107,7 +107,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProper
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.category.CategoriesDo2RestMapperV10;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.category.CategoriesRest2DoMapper;
@@ -247,7 +247,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public Concept retrieveConcept(String agencyID, String resourceID, String version, String conceptID) {
         try {
-            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, conceptID, RestInternalConstants.PARAMETER_CONCEPT_ID);
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, conceptID, SrmRestConstants.PARAMETER_CONCEPT_ID);
 
             // Find one
             PagedResult<ConceptMetamac> entitiesPagedResult = findConceptsCore(agencyID, resourceID, version, conceptID, null, pagingParameterOneResult);
@@ -342,7 +342,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public Category retrieveCategory(String agencyID, String resourceID, String version, String categoryID) {
         try {
-            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, categoryID, RestInternalConstants.PARAMETER_CATEGORY_ID);
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, categoryID, SrmRestConstants.PARAMETER_CATEGORY_ID);
 
             // Find one
             PagedResult<CategoryMetamac> entitiesPagedResult = findCategoriesCore(agencyID, resourceID, version, categoryID, null, pagingParameterOneResult);
@@ -462,7 +462,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public Organisation retrieveOrganisation(String agencyID, String resourceID, String version, String organisationID) {
         try {
-            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, RestInternalConstants.PARAMETER_ORGANISATION_ID);
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, SrmRestConstants.PARAMETER_ORGANISATION_ID);
 
             // Find one
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(null, agencyID, resourceID, version, organisationID, null, pagingParameterOneResult);
@@ -544,7 +544,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public Agency retrieveAgency(String agencyID, String resourceID, String version, String organisationID) {
         try {
-            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, RestInternalConstants.PARAMETER_ORGANISATION_ID);
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, SrmRestConstants.PARAMETER_ORGANISATION_ID);
 
             // Find one
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.AGENCY, agencyID, resourceID, version, organisationID, null, pagingParameterOneResult);
@@ -627,7 +627,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public OrganisationUnit retrieveOrganisationUnit(String agencyID, String resourceID, String version, String organisationID) {
         try {
-            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, RestInternalConstants.PARAMETER_ORGANISATION_ID);
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, SrmRestConstants.PARAMETER_ORGANISATION_ID);
 
             // Find one
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.ORGANISATION_UNIT, agencyID, resourceID, version, organisationID, null,
@@ -711,7 +711,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public DataProvider retrieveDataProvider(String agencyID, String resourceID, String version, String organisationID) {
         try {
-            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, RestInternalConstants.PARAMETER_ORGANISATION_ID);
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, SrmRestConstants.PARAMETER_ORGANISATION_ID);
 
             // Find one
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_PROVIDER, agencyID, resourceID, version, organisationID, null,
@@ -795,7 +795,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public DataConsumer retrieveDataConsumer(String agencyID, String resourceID, String version, String organisationID) {
         try {
-            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, RestInternalConstants.PARAMETER_ORGANISATION_ID);
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, organisationID, SrmRestConstants.PARAMETER_ORGANISATION_ID);
 
             // Find one
             PagedResult<OrganisationMetamac> entitiesPagedResult = findOrganisationsCore(OrganisationTypeEnum.DATA_CONSUMER, agencyID, resourceID, version, organisationID, null,
@@ -853,8 +853,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
             if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
-                checkParameterEmpty(RestInternalConstants.PARAMETER_ORDER_ID, order);
-                checkParameterEmpty(RestInternalConstants.PARAMETER_OPENNESS_ID, openness);
+                checkParameterEmpty(SrmRestConstants.PARAMETER_ORDER_ID, order);
+                checkParameterEmpty(SrmRestConstants.PARAMETER_OPENNESS_ID, openness);
 
                 // Find. Retrieve codes paginated
                 SculptorCriteria sculptorCriteria = codesRest2DoMapper.getCodeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
@@ -985,8 +985,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public VariableElement retrieveVariableElementById(String variableID, String resourceID) {
         try {
-            checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_VARIABLE_ID, variableID);
-            checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
+            checkParameterNotWildcardAll(SrmRestConstants.PARAMETER_VARIABLE_ID, variableID);
+            checkParameterNotWildcardAll(SrmRestConstants.PARAMETER_RESOURCE_ID, resourceID);
 
             // Find one
             PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> entitiesPagedResult = findVariableElementsCore(variableID, resourceID, false, null, pagingParameterOneResult);
@@ -1089,7 +1089,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public Code retrieveCode(String agencyID, String resourceID, String version, String codeID) {
         try {
-            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, codeID, RestInternalConstants.PARAMETER_CODE_ID);
+            checkParameterNotWildcardRetrieveItem(agencyID, resourceID, version, codeID, SrmRestConstants.PARAMETER_CODE_ID);
 
             // Find one
             PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, codeID, null, pagingParameterOneResult);
@@ -1481,7 +1481,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // init
             conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.VariableElement.class).distinctRoot().build());
         }
-        if (variableID != null && !RestInternalConstants.WILDCARD_ALL.equals(variableID)) {
+        if (variableID != null && !SrmRestConstants.WILDCARD_ALL.equals(variableID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.VariableElement.class)
                     .withProperty(VariableElementProperties.variable().nameableArtefact().code()).eq(variableID).buildSingle());
         }
@@ -1489,7 +1489,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.VariableElement.class).withProperty(VariableElementProperties.variable().type())
                     .eq(VariableTypeEnum.GEOGRAPHICAL).buildSingle());
         }
-        if (resourceID != null && !RestInternalConstants.WILDCARD_ALL.equals(resourceID)) {
+        if (resourceID != null && !SrmRestConstants.WILDCARD_ALL.equals(resourceID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.VariableElement.class)
                     .withProperty(VariableElementProperties.identifiableArtefact().code()).eq(resourceID).buildSingle());
         }
@@ -1559,7 +1559,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.Variable.class).withProperty(VariableProperties.nameableArtefact().code())
                     .eq(variableID).buildSingle());
         }
-        if (familyID != null && !RestInternalConstants.WILDCARD_ALL.equals(familyID)) {
+        if (familyID != null && !SrmRestConstants.WILDCARD_ALL.equals(familyID)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.Variable.class)
                     .withProperty(VariableProperties.families().nameableArtefact().code()).eq(familyID).buildSingle());
         }
@@ -1610,13 +1610,13 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
             VariableElementResultSelection selection = new VariableElementResultSelection();
             selection.setReturnOnlyGeographicalVariableElements(true);
-            selection.setLongitudeLatitude(!hasField(fields, RestInternalConstants.FIELD_EXCLUDE_LONGITUDE_LATITUDE));
-            selection.setGeographicalGranularity(!hasField(fields, RestInternalConstants.FIELD_EXCLUDE_GEOGRAPHICAL_GRANULARITY));
+            selection.setLongitudeLatitude(!hasField(fields, SrmRestConstants.FIELD_EXCLUDE_LONGITUDE_LATITUDE));
+            selection.setGeographicalGranularity(!hasField(fields, SrmRestConstants.FIELD_EXCLUDE_GEOGRAPHICAL_GRANULARITY));
             if (MediaType.APPLICATION_JSON.equals(mediaType)) {
-                selection.setShapeGeojson(!hasField(fields, RestInternalConstants.FIELD_EXCLUDE_GEOMETRY));
+                selection.setShapeGeojson(!hasField(fields, SrmRestConstants.FIELD_EXCLUDE_GEOMETRY));
             }
             if (MediaType.APPLICATION_XML.equals(mediaType)) {
-                selection.setShapeWkt(!hasField(fields, RestInternalConstants.FIELD_EXCLUDE_GEOMETRY));
+                selection.setShapeWkt(!hasField(fields, SrmRestConstants.FIELD_EXCLUDE_GEOMETRY));
             }
 
             Object target = null;
@@ -1670,17 +1670,17 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     private void checkParameterNotWildcardFindItemSchemes(String agencyID) {
-        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_AGENCY_ID, agencyID);
+        checkParameterNotWildcardAll(SrmRestConstants.PARAMETER_AGENCY_ID, agencyID);
     }
 
     private void checkParameterNotWildcardFindItemSchemes(String agencyID, String resourceID) {
-        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
+        checkParameterNotWildcardAll(SrmRestConstants.PARAMETER_RESOURCE_ID, resourceID);
     }
 
     private void checkParameterNotWildcardRetrieveItemScheme(String agencyID, String resourceID, String version) {
-        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_AGENCY_ID, agencyID);
-        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
-        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_VERSION, version);
+        checkParameterNotWildcardAll(SrmRestConstants.PARAMETER_AGENCY_ID, agencyID);
+        checkParameterNotWildcardAll(SrmRestConstants.PARAMETER_RESOURCE_ID, resourceID);
+        checkParameterNotWildcardAll(SrmRestConstants.PARAMETER_VERSION, version);
     }
 
     private void checkParameterNotWildcardFindItems(String agencyID, String resourceID, String version) {
@@ -1688,9 +1688,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     private void checkParameterNotWildcardRetrieveItem(String agencyID, String resourceID, String version, String itemID, String parameterNameItemID) {
-        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_AGENCY_ID, agencyID);
-        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_RESOURCE_ID, resourceID);
-        checkParameterNotWildcardAll(RestInternalConstants.PARAMETER_VERSION, version);
+        checkParameterNotWildcardAll(SrmRestConstants.PARAMETER_AGENCY_ID, agencyID);
+        checkParameterNotWildcardAll(SrmRestConstants.PARAMETER_RESOURCE_ID, resourceID);
+        checkParameterNotWildcardAll(SrmRestConstants.PARAMETER_VERSION, version);
         checkParameterNotWildcardAll(parameterNameItemID, itemID);
     }
 
@@ -1698,7 +1698,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
      * Check unsupported wildcards in some parameters
      */
     private void checkParameterNotWildcardAll(String parameterName, String parameterValue) {
-        if (RestInternalConstants.WILDCARD_ALL.equals(parameterValue)) {
+        if (SrmRestConstants.WILDCARD_ALL.equals(parameterValue)) {
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, parameterName);
             throw new RestException(exception, Status.BAD_REQUEST);
         }
@@ -1715,7 +1715,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     private boolean mustFindItemsInsteadRetrieveAllItemsOfItemScheme(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
-        if (RestInternalConstants.WILDCARD_ALL.equals(agencyID) || RestInternalConstants.WILDCARD_ALL.equals(resourceID) || RestInternalConstants.WILDCARD_ALL.equals(version)) {
+        if (SrmRestConstants.WILDCARD_ALL.equals(agencyID) || SrmRestConstants.WILDCARD_ALL.equals(resourceID) || SrmRestConstants.WILDCARD_ALL.equals(version)) {
             return true;
         }
         if (query != null || orderBy != null || limit != null || offset != null) {
@@ -1727,11 +1727,11 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     private boolean mustFindVariableElementsInsteadRetrieveAllVariableElementsOfVariable(String variableID, String variableElementID, String query, List<ConditionalCriteria> queries, String orderBy,
             String limit, String offset) {
-        if (variableID == null || RestInternalConstants.WILDCARD_ALL.equals(variableID)) {
+        if (variableID == null || SrmRestConstants.WILDCARD_ALL.equals(variableID)) {
             // only when it is a specific variable
             return true;
         }
-        if (variableElementID != null && !RestInternalConstants.WILDCARD_ALL.equals(variableElementID)) {
+        if (variableElementID != null && !SrmRestConstants.WILDCARD_ALL.equals(variableElementID)) {
             // retrieving only one. do not execute query
             return true;
         }

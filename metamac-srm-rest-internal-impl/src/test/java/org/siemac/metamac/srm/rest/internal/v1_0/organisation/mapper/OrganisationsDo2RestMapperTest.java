@@ -52,7 +52,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcSta
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.organisation.OrganisationsDo2RestMapperV10;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -93,9 +93,9 @@ public class OrganisationsDo2RestMapperTest {
         AgencySchemes target = do2RestInternalMapper.toAgencySchemes(sources, agencyID, resourceID, query, orderBy, limit);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, target.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEMES, target.getKind());
 
-        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/" + RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES + "/" + agencyID + "/" + resourceID + "?query=" + query
+        String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/" + SrmRestConstants.LINK_SUBPATH_AGENCY_SCHEMES + "/" + agencyID + "/" + resourceID + "?query=" + query
                 + "&orderBy=" + orderBy;
 
         assertEquals(baseLink + "&limit=" + limit + "&offset=" + offset, target.getSelfLink());
@@ -110,7 +110,7 @@ public class OrganisationsDo2RestMapperTest {
 
         assertEquals(source.size(), target.getAgencySchemes().size());
         for (int i = 0; i < source.size(); i++) {
-            assertEqualsResource(source.get(i), RestInternalConstants.KIND_AGENCY_SCHEME, RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES, target.getAgencySchemes().get(i));
+            assertEqualsResource(source.get(i), SrmRestConstants.KIND_AGENCY_SCHEME, SrmRestConstants.LINK_SUBPATH_AGENCY_SCHEMES, target.getAgencySchemes().get(i));
         }
     }
 
@@ -127,12 +127,12 @@ public class OrganisationsDo2RestMapperTest {
         OrganisationUnitSchemes target = do2RestInternalMapper.toOrganisationUnitSchemes(sources, null, null, null, null, 1);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, target.getKind());
+        assertEquals(SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEMES, target.getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes?limit=1&offset=0", target.getSelfLink());
 
         assertEquals(source.size(), target.getOrganisationUnitSchemes().size());
         for (int i = 0; i < source.size(); i++) {
-            assertEqualsResource(source.get(i), RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, RestInternalConstants.LINK_SUBPATH_ORGANISATION_UNIT_SCHEMES, target.getOrganisationUnitSchemes()
+            assertEqualsResource(source.get(i), SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEME, SrmRestConstants.LINK_SUBPATH_ORGANISATION_UNIT_SCHEMES, target.getOrganisationUnitSchemes()
                     .get(i));
         }
     }
@@ -150,12 +150,12 @@ public class OrganisationsDo2RestMapperTest {
         DataConsumerSchemes target = do2RestInternalMapper.toDataConsumerSchemes(sources, null, null, null, null, 1);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, target.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEMES, target.getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes?limit=1&offset=0", target.getSelfLink());
 
         assertEquals(source.size(), target.getDataConsumerSchemes().size());
         for (int i = 0; i < source.size(); i++) {
-            assertEqualsResource(source.get(i), RestInternalConstants.KIND_DATA_CONSUMER_SCHEME, RestInternalConstants.LINK_SUBPATH_DATA_CONSUMER_SCHEMES, target.getDataConsumerSchemes().get(i));
+            assertEqualsResource(source.get(i), SrmRestConstants.KIND_DATA_CONSUMER_SCHEME, SrmRestConstants.LINK_SUBPATH_DATA_CONSUMER_SCHEMES, target.getDataConsumerSchemes().get(i));
         }
     }
 
@@ -172,12 +172,12 @@ public class OrganisationsDo2RestMapperTest {
         DataProviderSchemes target = do2RestInternalMapper.toDataProviderSchemes(sources, null, null, null, null, 1);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES, target.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_PROVIDER_SCHEMES, target.getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes?limit=1&offset=0", target.getSelfLink());
 
         assertEquals(source.size(), target.getDataProviderSchemes().size());
         for (int i = 0; i < source.size(); i++) {
-            assertEqualsResource(source.get(i), RestInternalConstants.KIND_DATA_PROVIDER_SCHEME, RestInternalConstants.LINK_SUBPATH_DATA_PROVIDER_SCHEMES, target.getDataProviderSchemes().get(i));
+            assertEqualsResource(source.get(i), SrmRestConstants.KIND_DATA_PROVIDER_SCHEME, SrmRestConstants.LINK_SUBPATH_DATA_PROVIDER_SCHEMES, target.getDataProviderSchemes().get(i));
         }
     }
 
@@ -190,18 +190,18 @@ public class OrganisationsDo2RestMapperTest {
         AgencyScheme target = do2RestInternalMapper.toAgencyScheme(source);
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, target.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEME, target.getKind());
         assertEquals("AGENCIES", target.getId());
         assertEquals("01.000", target.getVersion());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=agencyID1:AGENCIES(01.000)", target.getUrn());
         assertEquals(null, target.getUrnProvider());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agencyID1/AGENCIES/01.000";
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEME, target.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=AGENCY_SCHEME;id=agencyID1:AGENCIES(01.000)",
                 target.getManagementAppLink());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
-        assertEquals(RestInternalConstants.KIND_AGENCY_SCHEMES, target.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes", target.getParentLink().getHref());
         assertEqualsInternationalString("es", "comment-AGENCIESv01.000 en Español", "en", "comment-AGENCIESv01.000 in English", target.getComment());
         // replaceX no tested, because it is necessary a repository access
@@ -219,7 +219,7 @@ public class OrganisationsDo2RestMapperTest {
         assertEqualsDate(new DateTime(2013, 10, 1, 10, 12, 13, 14), target.getCreatedDate());
 
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
-        assertEquals(RestInternalConstants.KIND_AGENCIES, target.getChildLinks().getChildLinks().get(0).getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCIES, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/agencies", target.getChildLinks().getChildLinks().get(0).getHref());
     }
 
@@ -251,19 +251,19 @@ public class OrganisationsDo2RestMapperTest {
         DataConsumerScheme target = do2RestInternalMapper.toDataConsumerScheme(source);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEME, target.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEME, target.getKind());
         assertEquals("DATACONSUMERS", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=agencyID1:DATACONSUMERS(01.000)", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agencyID1/DATACONSUMERS/01.000";
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEME, target.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_CONSUMER_SCHEME;id=agencyID1:DATACONSUMERS(01.000)",
                 target.getManagementAppLink());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, target.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes", target.getParentLink().getHref());
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMERS, target.getChildLinks().getChildLinks().get(0).getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMERS, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/dataconsumers", target.getChildLinks().getChildLinks().get(0).getHref());
     }
 
@@ -278,20 +278,20 @@ public class OrganisationsDo2RestMapperTest {
         DataProviderScheme target = do2RestInternalMapper.toDataProviderScheme(source);
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
-        assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEME, target.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_PROVIDER_SCHEME, target.getKind());
         assertEquals("DATAPROVIDERS", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataProviderScheme=agencyID1:DATAPROVIDERS(01.000)", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes/agencyID1/DATAPROVIDERS/01.000";
-        assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEME, target.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_PROVIDER_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_PROVIDER_SCHEME;id=agencyID1:DATAPROVIDERS(01.000)",
                 target.getManagementAppLink());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
-        assertEquals(RestInternalConstants.KIND_DATA_PROVIDER_SCHEMES, target.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_PROVIDER_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes", target.getParentLink().getHref());
 
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
-        assertEquals(RestInternalConstants.KIND_DATA_PROVIDERS, target.getChildLinks().getChildLinks().get(0).getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_PROVIDERS, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/dataproviders", target.getChildLinks().getChildLinks().get(0).getHref());
     }
 
@@ -306,20 +306,20 @@ public class OrganisationsDo2RestMapperTest {
         OrganisationUnitScheme target = do2RestInternalMapper.toOrganisationUnitScheme(source);
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, target.getKind());
+        assertEquals(SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEME, target.getKind());
         assertEquals("resourceID1", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=agencyID1:resourceID1(01.000)", target.getUrn());
         String selfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agencyID1/resourceID1/01.000";
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEME, target.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agencyID1:resourceID1(01.000)",
                 target.getManagementAppLink());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT_SCHEMES, target.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes", target.getParentLink().getHref());
 
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNITS, target.getChildLinks().getChildLinks().get(0).getKind());
+        assertEquals(SrmRestConstants.KIND_ORGANISATION_UNITS, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/organisationunits", target.getChildLinks().getChildLinks().get(0).getHref());
     }
 
@@ -351,7 +351,7 @@ public class OrganisationsDo2RestMapperTest {
         Agencies targets = do2RestInternalMapper.toAgencies(sourcesPagedList, agencyID, organisationSchemeID, version, query, orderBy, limit);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_AGENCIES, targets.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCIES, targets.getKind());
 
         String baseLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes" + "/" + agencyID + "/" + organisationSchemeID + "/" + version + "/agencies?query=" + query
                 + "&orderBy=" + orderBy;
@@ -370,8 +370,8 @@ public class OrganisationsDo2RestMapperTest {
         for (int i = 0; i < sources.size(); i++) {
             OrganisationMetamac source = sources.get(i);
             ResourceInternal target = targets.getAgencies().get(i);
-            assertEqualsResource(source.getItemSchemeVersion(), source, null, RestInternalConstants.KIND_AGENCY, RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES,
-                    RestInternalConstants.LINK_SUBPATH_AGENCIES, target);
+            assertEqualsResource(source.getItemSchemeVersion(), source, null, SrmRestConstants.KIND_AGENCY, SrmRestConstants.LINK_SUBPATH_AGENCY_SCHEMES,
+                    SrmRestConstants.LINK_SUBPATH_AGENCIES, target);
         }
     }
 
@@ -392,7 +392,7 @@ public class OrganisationsDo2RestMapperTest {
         Agencies targets = do2RestInternalMapper.toAgencies(sources, organisationScheme);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_AGENCIES, targets.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCIES, targets.getKind());
 
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes" + "/" + agencyID + "/" + organisationSchemeID + "/" + version + "/agencies", targets.getSelfLink());
         assertEquals(null, targets.getFirstLink());
@@ -408,7 +408,7 @@ public class OrganisationsDo2RestMapperTest {
         for (int i = 0; i < sources.size(); i++) {
             ItemResult source = sources.get(i);
             ResourceInternal target = targets.getAgencies().get(i);
-            assertEqualsResource(organisationScheme, null, source, RestInternalConstants.KIND_AGENCY, RestInternalConstants.LINK_SUBPATH_AGENCY_SCHEMES, RestInternalConstants.LINK_SUBPATH_AGENCIES,
+            assertEqualsResource(organisationScheme, null, source, SrmRestConstants.KIND_AGENCY, SrmRestConstants.LINK_SUBPATH_AGENCY_SCHEMES, SrmRestConstants.LINK_SUBPATH_AGENCIES,
                     target);
         }
     }
@@ -430,15 +430,15 @@ public class OrganisationsDo2RestMapperTest {
         DataConsumers targets = do2RestInternalMapper.toDataConsumers(sourcesPagedResult, agencyID, organisationSchemeID, version, null, null, limit);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMERS, targets.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMERS, targets.getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/~all/~all/~all/dataconsumers?limit=4&offset=0", targets.getSelfLink());
 
         assertEquals(sources.size(), targets.getDataConsumers().size());
         for (int i = 0; i < sources.size(); i++) {
             OrganisationMetamac source = sourcesPagedResult.getValues().get(i);
             ResourceInternal target = targets.getDataConsumers().get(i);
-            assertEqualsResource(source.getItemSchemeVersion(), source, null, RestInternalConstants.KIND_DATA_CONSUMER, RestInternalConstants.LINK_SUBPATH_DATA_CONSUMER_SCHEMES,
-                    RestInternalConstants.LINK_SUBPATH_DATA_CONSUMERS, target);
+            assertEqualsResource(source.getItemSchemeVersion(), source, null, SrmRestConstants.KIND_DATA_CONSUMER, SrmRestConstants.LINK_SUBPATH_DATA_CONSUMER_SCHEMES,
+                    SrmRestConstants.LINK_SUBPATH_DATA_CONSUMERS, target);
         }
     }
 
@@ -459,15 +459,15 @@ public class OrganisationsDo2RestMapperTest {
         DataProviders targets = do2RestInternalMapper.toDataProviders(sourcesPagedResult, agencyID, organisationSchemeID, version, null, null, limit);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_DATA_PROVIDERS, targets.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_PROVIDERS, targets.getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes/~all/~all/~all/dataproviders?limit=4&offset=0", targets.getSelfLink());
 
         assertEquals(sources.size(), targets.getDataProviders().size());
         for (int i = 0; i < sources.size(); i++) {
             OrganisationMetamac source = sourcesPagedResult.getValues().get(i);
             ResourceInternal target = targets.getDataProviders().get(i);
-            assertEqualsResource(source.getItemSchemeVersion(), source, null, RestInternalConstants.KIND_DATA_PROVIDER, RestInternalConstants.LINK_SUBPATH_DATA_PROVIDER_SCHEMES,
-                    RestInternalConstants.LINK_SUBPATH_DATA_PROVIDERS, target);
+            assertEqualsResource(source.getItemSchemeVersion(), source, null, SrmRestConstants.KIND_DATA_PROVIDER, SrmRestConstants.LINK_SUBPATH_DATA_PROVIDER_SCHEMES,
+                    SrmRestConstants.LINK_SUBPATH_DATA_PROVIDERS, target);
         }
     }
 
@@ -488,15 +488,15 @@ public class OrganisationsDo2RestMapperTest {
         OrganisationUnits targets = do2RestInternalMapper.toOrganisationUnits(sourcesPagedResult, agencyID, organisationSchemeID, version, null, null, limit);
 
         // Validate
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNITS, targets.getKind());
+        assertEquals(SrmRestConstants.KIND_ORGANISATION_UNITS, targets.getKind());
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/~all/~all/~all/organisationunits?limit=4&offset=0", targets.getSelfLink());
 
         assertEquals(sources.size(), targets.getOrganisationUnits().size());
         for (int i = 0; i < sources.size(); i++) {
             OrganisationMetamac source = sourcesPagedResult.getValues().get(i);
             ResourceInternal target = targets.getOrganisationUnits().get(i);
-            assertEqualsResource(source.getItemSchemeVersion(), source, null, RestInternalConstants.KIND_ORGANISATION_UNIT, RestInternalConstants.LINK_SUBPATH_ORGANISATION_UNIT_SCHEMES,
-                    RestInternalConstants.LINK_SUBPATH_ORGANISATION_UNITS, target);
+            assertEqualsResource(source.getItemSchemeVersion(), source, null, SrmRestConstants.KIND_ORGANISATION_UNIT, SrmRestConstants.LINK_SUBPATH_ORGANISATION_UNIT_SCHEMES,
+                    SrmRestConstants.LINK_SUBPATH_ORGANISATION_UNITS, target);
         }
     }
 
@@ -513,7 +513,7 @@ public class OrganisationsDo2RestMapperTest {
         Agency target = do2RestInternalMapper.toAgency(source);
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
-        assertEquals(RestInternalConstants.KIND_AGENCY, target.getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY, target.getKind());
         assertEquals("organisation2", target.getId());
         assertEquals("idAsMaintainerorganisation2", target.getNestedId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.Agency=agencyID1:AGENCIES(01.000).organisation2", target.getUrn());
@@ -521,13 +521,13 @@ public class OrganisationsDo2RestMapperTest {
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agencyID1/AGENCIES/01.000/agencies";
         String selfLink = parentLink + "/organisation2";
-        assertEquals(RestInternalConstants.KIND_AGENCY, target.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCY, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals(
                 "http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=AGENCY_SCHEME;id=agencyID1:AGENCIES(01.000)/organisation;id=organisation2",
                 target.getManagementAppLink());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
-        assertEquals(RestInternalConstants.KIND_AGENCIES, target.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_AGENCIES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
 
@@ -565,18 +565,18 @@ public class OrganisationsDo2RestMapperTest {
         DataConsumer target = do2RestInternalMapper.toDataConsumer(source);
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER, target.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER, target.getKind());
         assertEquals("organisation2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataConsumer=agencyID1:DATACONSUMERS(01.000).organisation2", target.getUrn());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataconsumerschemes/agencyID1/DATACONSUMERS/01.000/dataconsumers";
         String selfLink = parentLink + "/organisation2";
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER, target.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals(
                 "http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_CONSUMER_SCHEME;id=agencyID1:DATACONSUMERS(01.000)/organisation;id=organisation2",
                 target.getManagementAppLink());
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMERS, target.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMERS, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
     }
@@ -591,19 +591,19 @@ public class OrganisationsDo2RestMapperTest {
         DataProvider target = do2RestInternalMapper.toDataProvider(source);
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
-        assertEquals(RestInternalConstants.KIND_DATA_PROVIDER, target.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_PROVIDER, target.getKind());
         assertEquals("organisation2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.DataProvider=agencyID1:DATAPROVIDERS(01.000).organisation2", target.getUrn());
         assertEquals(null, target.getUrnProvider());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/dataproviderschemes/agencyID1/DATAPROVIDERS/01.000/dataproviders";
         String selfLink = parentLink + "/organisation2";
-        assertEquals(RestInternalConstants.KIND_DATA_PROVIDER, target.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_PROVIDER, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals(
                 "http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_PROVIDER_SCHEME;id=agencyID1:DATAPROVIDERS(01.000)/organisation;id=organisation2",
                 target.getManagementAppLink());
-        assertEquals(RestInternalConstants.KIND_DATA_PROVIDERS, target.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_PROVIDERS, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
     }
@@ -618,19 +618,19 @@ public class OrganisationsDo2RestMapperTest {
         OrganisationUnit target = do2RestInternalMapper.toOrganisationUnit(source);
 
         // Validate (only Metamac metadata and some SDMX). Note: check with concrete values (not doing "getter" of source)
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, target.getKind());
+        assertEquals(SrmRestConstants.KIND_ORGANISATION_UNIT, target.getKind());
         assertEquals("organisation2", target.getId());
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=agencyID1:resourceID1(01.000).organisation2", target.getUrn());
         assertEquals(null, target.getUrnProvider());
 
         String parentLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/organisationunitschemes/agencyID1/resourceID1/01.000/organisationunits";
         String selfLink = parentLink + "/organisation2";
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNIT, target.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_ORGANISATION_UNIT, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertEquals(
                 "http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agencyID1:resourceID1(01.000)/organisation;id=organisation2",
                 target.getManagementAppLink());
-        assertEquals(RestInternalConstants.KIND_ORGANISATION_UNITS, target.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_ORGANISATION_UNITS, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
     }

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.utils.Asserts;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
@@ -22,7 +22,7 @@ public class CategoriesAsserts extends Asserts {
         String version = maintainableArtefact.getVersionLogic();
         String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categoryschemes/" + agency + "/" + code + "/" + version;
         String expectedManagementLink = "http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=" + agency + ":" + code + "(" + version + ")";
-        Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CATEGORY_SCHEME, expectedSelfLink, expectedManagementLink, actual);
+        Asserts.assertEqualsResource(expected, SrmRestConstants.KIND_CATEGORY_SCHEME, expectedSelfLink, expectedManagementLink, actual);
     }
 
     public static void assertEqualsResource(ItemSchemeVersion itemSchemeVersion, CategoryMetamac expected, ItemResult expectedItemResult, ResourceInternal actual) {
@@ -41,9 +41,9 @@ public class CategoriesAsserts extends Asserts {
                 + ")/category;id=" + codeFullExpected;
 
         if (expected != null) {
-            Asserts.assertEqualsResource(expected, RestInternalConstants.KIND_CATEGORY, expectedSelfLink, expectedManagementLink, actual);
+            Asserts.assertEqualsResource(expected, SrmRestConstants.KIND_CATEGORY, expectedSelfLink, expectedManagementLink, actual);
         } else if (expectedItemResult != null) {
-            Asserts.assertEqualsResource(expectedItemResult, RestInternalConstants.KIND_CATEGORY, expectedSelfLink, expectedManagementLink, actual, itemSchemeVersion.getMaintainableArtefact()
+            Asserts.assertEqualsResource(expectedItemResult, SrmRestConstants.KIND_CATEGORY, expectedSelfLink, expectedManagementLink, actual, itemSchemeVersion.getMaintainableArtefact()
                     .getIsImported());
         }
         assertEquals(codeFullExpected, actual.getNestedId());
@@ -54,7 +54,7 @@ public class CategoriesAsserts extends Asserts {
         String expectedSelfLink = "http://data.istac.es/apis/structural-resources-internal/v1.0/categorisations/" + maintainableArtefact.getMaintainer().getIdAsMaintainer() + "/"
                 + maintainableArtefact.getCode() + "/" + maintainableArtefact.getVersionLogic();
 
-        assertEquals(RestInternalConstants.KIND_CATEGORISATION, actual.getKind());
+        assertEquals(SrmRestConstants.KIND_CATEGORISATION, actual.getKind());
         assertEquals(expected.getMaintainableArtefact().getCode(), actual.getId());
         assertEquals(expected.getMaintainableArtefact().getUrn(), actual.getUrn());
         if (expected.getMaintainableArtefact().getIsImported()) {
@@ -62,7 +62,7 @@ public class CategoriesAsserts extends Asserts {
         } else {
             assertEquals(null, actual.getUrnProvider());
         }
-        assertEquals(RestInternalConstants.KIND_CATEGORISATION, actual.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CATEGORISATION, actual.getSelfLink().getKind());
         assertEquals(expectedSelfLink, actual.getSelfLink().getHref());
         assertEqualsInternationalString(expected.getMaintainableArtefact().getName(), actual.getName());
     }

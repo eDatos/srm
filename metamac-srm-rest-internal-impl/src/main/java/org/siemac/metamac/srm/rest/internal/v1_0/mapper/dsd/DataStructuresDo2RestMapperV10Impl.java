@@ -43,7 +43,7 @@ import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMeta
 import org.siemac.metamac.srm.core.dsd.domain.DimensionOrder;
 import org.siemac.metamac.srm.core.dsd.domain.DimensionVisualisationInfo;
 import org.siemac.metamac.srm.core.dsd.domain.MeasureDimensionPrecision;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.StructureBaseDo2RestMapperV10Impl;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept.ConceptsDo2RestMapperV10;
@@ -78,7 +78,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
     public DataStructures toDataStructures(PagedResult<DataStructureDefinitionVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
 
         DataStructures targets = new DataStructures();
-        targets.setKind(RestInternalConstants.KIND_DATA_STRUCTURES);
+        targets.setKind(SrmRestConstants.KIND_DATA_STRUCTURES);
 
         // Pagination
         String baseLink = toDataStructuresLink(agencyID, resourceID, null);
@@ -101,7 +101,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         Boolean isImported = source.getMaintainableArtefact().getIsImported();
 
         DataStructure target = new DataStructure();
-        target.setKind(RestInternalConstants.KIND_DATA_STRUCTURE);
+        target.setKind(SrmRestConstants.KIND_DATA_STRUCTURE);
         target.setSelfLink(toDataStructureSelfLink(source));
         target.setParentLink(toDataStructureParentLink(source));
         target.setChildLinks(toDataStructureChildLinks(source));
@@ -375,11 +375,11 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return targets;
     }
     private ResourceLink toDataStructureSelfLink(DataStructureDefinitionVersionMetamac source) {
-        return toResourceLink(RestInternalConstants.KIND_DATA_STRUCTURE, toDataStructureLink(source));
+        return toResourceLink(SrmRestConstants.KIND_DATA_STRUCTURE, toDataStructureLink(source));
     }
 
     private ResourceLink toDataStructureParentLink(DataStructureDefinitionVersionMetamac source) {
-        return toResourceLink(RestInternalConstants.KIND_DATA_STRUCTURES, toDataStructuresLink(null, null, null));
+        return toResourceLink(SrmRestConstants.KIND_DATA_STRUCTURES, toDataStructuresLink(null, null, null));
     }
 
     private ChildLinks toDataStructureChildLinks(DataStructureDefinitionVersionMetamac source) {
@@ -391,7 +391,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source.getMaintainableArtefact(), RestInternalConstants.KIND_DATA_STRUCTURE, toDataStructureSelfLink(source), toDataStructureManagementApplicationLink(source), target);
+        toResource(source.getMaintainableArtefact(), SrmRestConstants.KIND_DATA_STRUCTURE, toDataStructureSelfLink(source), toDataStructureManagementApplicationLink(source), target);
         return target;
     }
 
@@ -402,7 +402,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return toMaintainableArtefactLink(toSubpathDataStructures(), structureVersion.getMaintainableArtefact());
     }
     private String toSubpathDataStructures() {
-        return RestInternalConstants.LINK_SUBPATH_DATA_STRUCTURES;
+        return SrmRestConstants.LINK_SUBPATH_DATA_STRUCTURES;
     }
 
     private AttributeQualifierType toAttributeQualifierType(SpecialAttributeTypeEnum source) {

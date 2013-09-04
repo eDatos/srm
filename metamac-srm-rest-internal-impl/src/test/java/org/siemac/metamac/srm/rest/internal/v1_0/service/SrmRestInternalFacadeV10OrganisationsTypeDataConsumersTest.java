@@ -28,7 +28,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataCon
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumerScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumerSchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumers;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -88,7 +88,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         assertEquals(getApiEndpoint() + "/dataconsumerschemes/" + agencyID + "?limit=4&offset=0", dataConsumersSchemes.getFirstLink());
         assertEquals(getApiEndpoint() + "/dataconsumerschemes/" + agencyID + "?limit=4&offset=0", dataConsumersSchemes.getPreviousLink());
         assertEquals(getApiEndpoint() + "/dataconsumerschemes/" + agencyID + "?limit=4&offset=36", dataConsumersSchemes.getLastLink());
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, dataConsumersSchemes.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEMES, dataConsumersSchemes.getKind());
     }
 
     @Test
@@ -102,7 +102,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -129,7 +129,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         String resourceID = ITEM_SCHEME_1_CODE;
         DataConsumerSchemes dataConsumersSchemes = getSrmRestInternalFacadeClientXml().findDataConsumerSchemes(agencyID, resourceID, null, null, "4", "0");
         assertEquals(getApiEndpoint() + "/dataconsumerschemes/" + agencyID + "/" + resourceID + "?limit=4&offset=0", dataConsumersSchemes.getSelfLink());
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, dataConsumersSchemes.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEMES, dataConsumersSchemes.getKind());
     }
 
     @Test
@@ -143,7 +143,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -162,9 +162,9 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         assertEquals(agencyID, dataConsumerScheme.getAgencyID());
         assertEquals(resourceID, dataConsumerScheme.getId());
         assertEquals(version, dataConsumerScheme.getVersion());
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEME, dataConsumerScheme.getKind());
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEME, dataConsumerScheme.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, dataConsumerScheme.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEME, dataConsumerScheme.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEME, dataConsumerScheme.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEMES, dataConsumerScheme.getParentLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
@@ -240,7 +240,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -255,7 +255,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -270,7 +270,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter version has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -328,9 +328,9 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         // Validation
         assertNotNull(dataConsumer);
         assertEquals(organsationID, dataConsumer.getId());
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER, dataConsumer.getKind());
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER, dataConsumer.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMERS, dataConsumer.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER, dataConsumer.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER, dataConsumer.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMERS, dataConsumer.getParentLink().getKind());
         assertTrue(dataConsumer instanceof DataConsumer);
         // other metadata are tested in transformation tests
 
@@ -397,7 +397,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -411,7 +411,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -426,7 +426,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter version has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -441,7 +441,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter organisationID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_ORGANISATION_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_ORGANISATION_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -461,7 +461,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         }
 
         assertNotNull(itemSchemes);
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMER_SCHEMES, itemSchemes.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEMES, itemSchemes.getKind());
 
         // Verify with Mockito
         verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
@@ -472,7 +472,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         DataConsumers items = getSrmRestInternalFacadeClientXml().findDataConsumers(agencyID, resourceID, version, query, orderBy, limit, offset);
 
         assertNotNull(items);
-        assertEquals(RestInternalConstants.KIND_DATA_CONSUMERS, items.getKind());
+        assertEquals(SrmRestConstants.KIND_DATA_CONSUMERS, items.getKind());
 
         // Verify with Mockito
         verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationTypeEnum.DATA_CONSUMER);
@@ -480,11 +480,11 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
     @Override
     protected String getSupathMaintainableArtefacts() {
-        return RestInternalConstants.LINK_SUBPATH_DATA_CONSUMER_SCHEMES;
+        return SrmRestConstants.LINK_SUBPATH_DATA_CONSUMER_SCHEMES;
     }
 
     @Override
     protected String getSupathItems() {
-        return RestInternalConstants.LINK_SUBPATH_DATA_CONSUMERS;
+        return SrmRestConstants.LINK_SUBPATH_DATA_CONSUMERS;
     }
 }

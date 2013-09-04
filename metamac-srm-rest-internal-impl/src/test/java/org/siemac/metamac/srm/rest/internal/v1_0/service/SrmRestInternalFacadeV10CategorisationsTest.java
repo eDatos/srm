@@ -35,7 +35,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisation;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categorisations;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
-import org.siemac.metamac.srm.rest.internal.RestInternalConstants;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesDoMocks;
 
@@ -104,7 +104,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
         assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "?limit=3&offset=0", categorisations.getFirstLink());
         assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "?limit=3&offset=0", categorisations.getPreviousLink());
         assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "?limit=3&offset=27", categorisations.getLastLink());
-        assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, categorisations.getKind());
+        assertEquals(SrmRestConstants.KIND_CATEGORISATIONS, categorisations.getKind());
     }
 
     @Test
@@ -118,7 +118,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -147,7 +147,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
         assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "/" + resourceID + "?limit=3&offset=0", categorisations.getFirstLink());
         assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "/" + resourceID + "?limit=3&offset=0", categorisations.getPreviousLink());
         assertEquals(getApiEndpoint() + "/categorisations/" + agencyID + "/" + resourceID + "?limit=3&offset=27", categorisations.getLastLink());
-        assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, categorisations.getKind());
+        assertEquals(SrmRestConstants.KIND_CATEGORISATIONS, categorisations.getKind());
     }
 
     @Test
@@ -161,7 +161,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -180,9 +180,9 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
         assertEquals(agencyID, categorisation.getAgencyID());
         assertEquals(resourceID, categorisation.getId());
         assertEquals(version, categorisation.getVersion());
-        assertEquals(RestInternalConstants.KIND_CATEGORISATION, categorisation.getKind());
-        assertEquals(RestInternalConstants.KIND_CATEGORISATION, categorisation.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, categorisation.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CATEGORISATION, categorisation.getKind());
+        assertEquals(SrmRestConstants.KIND_CATEGORISATION, categorisation.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CATEGORISATIONS, categorisation.getParentLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveCategorisation(categoriesService, agencyID, resourceID, version);
@@ -201,9 +201,9 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
         assertEquals(agencyID, categorisation.getAgencyID());
         assertEquals(resourceID, categorisation.getId());
         assertEquals(CATEGORISATION_1_VERSION_1, categorisation.getVersion());
-        assertEquals(RestInternalConstants.KIND_CATEGORISATION, categorisation.getKind());
-        assertEquals(RestInternalConstants.KIND_CATEGORISATION, categorisation.getSelfLink().getKind());
-        assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, categorisation.getParentLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CATEGORISATION, categorisation.getKind());
+        assertEquals(SrmRestConstants.KIND_CATEGORISATION, categorisation.getSelfLink().getKind());
+        assertEquals(SrmRestConstants.KIND_CATEGORISATIONS, categorisation.getParentLink().getKind());
 
         // Verify with Mockito
         verifyRetrieveCategorisation(categoriesService, agencyID, resourceID, version);
@@ -266,7 +266,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter agencyID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_AGENCY_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -281,7 +281,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter resourceID has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_RESOURCE_ID, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -296,7 +296,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
             assertEquals(RestServiceExceptionType.PARAMETER_INCORRECT.getCode(), exception.getCode());
             assertEquals("Parameter version has incorrect value", exception.getMessage());
             assertEquals(1, exception.getParameters().getParameters().size());
-            assertEquals(RestInternalConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
+            assertEquals(SrmRestConstants.PARAMETER_VERSION, exception.getParameters().getParameters().get(0));
         } catch (Exception e) {
             fail("Incorrect exception");
         }
@@ -316,7 +316,7 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
         }
 
         assertNotNull(categorisations);
-        assertEquals(RestInternalConstants.KIND_CATEGORISATIONS, categorisations.getKind());
+        assertEquals(SrmRestConstants.KIND_CATEGORISATIONS, categorisations.getKind());
 
         // Verify with Mockito
         verifyFindCategorisations(categoriesService, agencyID, resourceID, null, limit, offset, query, orderBy);
