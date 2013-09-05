@@ -42,8 +42,6 @@ import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
-import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
-import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.ContactItem;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationResultExtensionPoint;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
@@ -167,13 +165,6 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
     @Override
     public AgencyScheme toAgencyScheme(OrganisationSchemeVersionMetamac source) throws MetamacException {
         OrganisationScheme target = toOrganisationSchemeCommon(source);
-
-        if (!SdmxSrmUtils.isAgencySchemeSdmx(source.getMaintainableArtefact().getUrn())) { // Maintainer is only null for AgencyScheme SDMX
-            target.setAgencyID(source.getMaintainableArtefact().getMaintainer().getIdAsMaintainer());
-        } else {
-            target.setAgencyID(SdmxConstants.AGENCY_SDMX_CODE);
-        }
-
         return (AgencyScheme) target;
     }
 

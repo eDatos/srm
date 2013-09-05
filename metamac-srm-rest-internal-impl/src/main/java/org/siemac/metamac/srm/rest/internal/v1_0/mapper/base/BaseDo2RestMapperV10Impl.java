@@ -43,7 +43,9 @@ import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItem;
 import com.arte.statistic.sdmx.srm.core.common.domain.IdentifiableArtefactResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxAlias;
+import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 
 public abstract class BaseDo2RestMapperV10Impl {
@@ -124,7 +126,11 @@ public abstract class BaseDo2RestMapperV10Impl {
         toVersionableArtefact(source, target, source.getIsImported());
 
         target.setLifeCycle(toLifeCycle(lifeCycleSource));
-        target.setAgencyID(source.getMaintainer().getIdAsMaintainer());
+        if (!SdmxSrmUtils.isAgencySchemeSdmx(source.getUrn())) { // Maintainer is only null for AgencyScheme SDMX
+            target.setAgencyID(source.getMaintainer().getIdAsMaintainer());
+        } else {
+            target.setAgencyID(SdmxConstants.AGENCY_SDMX_CODE);
+        }
         target.setIsFinal(source.getFinalLogic());
         target.setIsExternalReference(source.getIsExternalReference());
         target.setValidFrom(toDate(source.getValidFrom()));
