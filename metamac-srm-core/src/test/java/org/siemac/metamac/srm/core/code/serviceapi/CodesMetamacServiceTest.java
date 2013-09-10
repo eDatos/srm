@@ -6038,8 +6038,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<Variable> result = codesService.findVariablesByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
-            assertEquals(6, result.getTotalRows());
+            assertEquals(7, result.getTotalRows());
             int i = 0;
+            assertEquals(VARIABLE_7_WORLD, result.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(VARIABLE_1, result.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(VARIABLE_2, result.getValues().get(i++).getNameableArtefact().getUrn());
             assertEquals(VARIABLE_3, result.getValues().get(i++).getNameableArtefact().getUrn());
@@ -6139,6 +6140,24 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_WITH_RELATIONS, 2, new String[]{variableUrn, CONCEPT_SCHEME_1_V1_CONCEPT_1}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
+    public void testDeleteVariableErrorWorld() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        String variableUrn = VARIABLE_7_WORLD;
+
+        // Delete variable
+        try {
+            codesService.deleteVariable(ctx, variableUrn);
+            fail("variable can not be deleted. World");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.VARIABLE_WORLD_OPERATION_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(variableUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
 
@@ -6251,6 +6270,20 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNotNull(urn);
         VariableElement variableElementRetrieved = codesService.retrieveVariableElementByUrn(ctx, urn);
         assertEqualsVariableElement(variableElement, variableElementRetrieved);
+    }
+
+    @Test
+    public void testCreateVariableElementErrorVariableWorld() throws Exception {
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_7_WORLD);
+        CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_13_V1_CODE_1); // TODO geo gran debe ser null
+        VariableElement variableElement = CodesMetamacDoMocks.mockVariableElementGeographical(variable, geographicalGranularity);
+        try {
+            codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("world");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_WORLD_OPERATION_NOT_SUPPORTED, 1, new String[]{VARIABLE_7_WORLD}, e.getExceptionItems().get(0));
+        }
     }
 
     @Test
@@ -6587,8 +6620,9 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<VariableElement> result = codesService.findVariableElementsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
-            assertEquals(14, result.getTotalRows());
+            assertEquals(15, result.getTotalRows());
             int i = 0;
+            assertEquals(VARIABLE_7_VARIABLE_ELEMENT_1_WORLD, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
             assertEquals(VARIABLE_1_VARIABLE_ELEMENT_1, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_1, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
             assertEquals(VARIABLE_2_VARIABLE_ELEMENT_2, result.getValues().get(i++).getIdentifiableArtefact().getUrn());
@@ -6969,6 +7003,23 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Check that the code has not been deleted
         codesService.retrieveCodeByUrn(ctx, codeUrn);
+    }
+
+    @Test
+    public void testDeleteVariableElementErrorWorld() throws Exception {
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        String variableElementUrn = VARIABLE_7_VARIABLE_ELEMENT_1_WORLD;
+
+        try {
+            codesService.deleteVariableElement(ctx, variableElementUrn);
+            fail("variable element can not be deleted. World");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.VARIABLE_ELEMENT_WORLD_OPERATION_NOT_SUPPORTED.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(variableElementUrn, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
     }
 
     @Override
@@ -9095,6 +9146,24 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNotNull(task);
         assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
         assertEquals(0, task.getTaskResults().size());
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImportVariableElementsTsvErrorVariableWorld() throws Exception {
+
+        String variableUrn = VARIABLE_7_WORLD;
+        String fileName = "importation-variable-element-01.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        try {
+            codesService.importVariableElementsTsv(getServiceContextAdministrador(), variableUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+            fail("world");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_WORLD_OPERATION_NOT_SUPPORTED, 1, new String[]{VARIABLE_7_WORLD}, e.getExceptionItems().get(0));
+        }
     }
 
     @Test

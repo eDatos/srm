@@ -31,9 +31,11 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     // Codelists
     public static final CommonServiceExceptionType VARIABLE_ONLY_IN_ONE_FAMILY                                                        = create("exception.srm.codelists.variable.variable_only_one_family");
     public static final CommonServiceExceptionType VARIABLE_WITH_RELATIONS                                                            = create("exception.srm.codelists.variable.with_relations");
+    public static final CommonServiceExceptionType VARIABLE_WORLD_OPERATION_NOT_SUPPORTED                                             = create("exception.srm.codelists.variable.operation_unsupported_variable_world");
     public static final CommonServiceExceptionType VARIABLE_MUST_BE_GEOGRAPHICAL                                                      = create("exception.srm.codelists.variable.must_be_geographical");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_WITH_RELATIONS                                                    = create("exception.srm.codelists.variable_element.with_relations");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_WITH_OPERATIONS                                                   = create("exception.srm.codelists.variable_element.with_operations");
+    public static final CommonServiceExceptionType VARIABLE_ELEMENT_WORLD_OPERATION_NOT_SUPPORTED                                     = create("exception.srm.codelists.variable_element.operation_unsupported_variable_element_world");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_OPERATION_VARIABLE_ELEMENT_IN_SOURCE_AND_TARGET                   = create("exception.srm.codelists.variable_element_operation.variable_element_in_source_and_target");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_ALREADY_AS_SOURCE_IN_OPERATION                                    = create("exception.srm.codelists.variable_element.already_as_source_in_operation");
     public static final CommonServiceExceptionType VARIABLE_ELEMENT_ALREADY_AS_TARGET_IN_OPERATION                                    = create("exception.srm.codelists.variable_element.already_as_target_in_operation");

@@ -274,6 +274,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String VARIABLE_4                                            = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_04";
     protected static final String VARIABLE_5                                            = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_05";
     protected static final String VARIABLE_6                                            = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=VARIABLE_06";
+    protected static final String VARIABLE_7_WORLD                                      = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=TERRITORIO_MUNDO";
 
     // Variable elements
     protected static final String VARIABLE_1_VARIABLE_ELEMENT_1                         = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_01.VARIABLE_ELEMENT_01";
@@ -290,6 +291,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     protected static final String VARIABLE_5_VARIABLE_ELEMENT_2                         = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_02";
     protected static final String VARIABLE_5_VARIABLE_ELEMENT_3                         = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_03";
     protected static final String VARIABLE_5_VARIABLE_ELEMENT_4                         = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=VARIABLE_05.VARIABLE_ELEMENT_04";
+    protected static final String VARIABLE_7_VARIABLE_ELEMENT_1_WORLD                   = "urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=TERRITORIO_MUNDO.MUNDO";
 
     // Variable elements operations
     protected static final String VARIABLE_2_VARIABLE_ELEMENT_OPERATION_1               = "VARIABLE_2_OPERATION_1";

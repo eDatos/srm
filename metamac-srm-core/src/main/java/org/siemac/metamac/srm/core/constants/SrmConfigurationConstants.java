@@ -16,7 +16,6 @@ public class SrmConfigurationConstants extends ConfigurationConstants {
     public static final String USER_GUIDE_FILE_NAME                                      = "metamac.srm.user_guide.file_name";
 
     // DataSource
-
     public static final String DB_URL                                                    = "metamac.srm.db.url";
     public static final String DB_USERNAME                                               = "metamac.srm.db.username";
     public static final String DB_PASSWORD                                               = "metamac.srm.db.password";
@@ -24,4 +23,8 @@ public class SrmConfigurationConstants extends ConfigurationConstants {
     public static final String DB_DRIVER_NAME                                            = "metamac.srm.db.driver_name";
     public static final String DB_DRIVER_NAME_ORACLE                                     = "oracle.jdbc.OracleDriver";
     public static final String DB_DRIVER_NAME_MSSQL                                      = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+
+    // Misc
+    public static final String VARIABLE_WORLD                                            = "metamac.srm.variables.variable_world";
+    public static final String VARIABLE_ELEMENT_WORLD                                    = "metamac.srm.variables.variable_element_world";
 }

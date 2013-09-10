@@ -22,6 +22,16 @@ public interface SrmConfiguration {
     public String retrieveCodelistUrnForVariableElementGeographicalGranularity() throws MetamacException;
 
     /**
+     * Retrieves the URN for special variable WORLD
+     */
+    public String retrieveVariableWorldUrn() throws MetamacException;
+
+    /**
+     * Retrieves the URN for special variable element WORLD
+     */
+    public String retrieveVariableElementWorldUrn() throws MetamacException;
+
+    /**
      * Checks if Database is Oracle
      */
     public Boolean isDatabaseOracle() throws MetamacException;

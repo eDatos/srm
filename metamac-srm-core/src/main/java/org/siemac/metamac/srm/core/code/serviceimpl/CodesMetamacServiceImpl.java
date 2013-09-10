@@ -622,9 +622,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodeMetamac createCode(ServiceContext ctx, String codelistUrn, CodeMetamac code) throws MetamacException {
-
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // IMPORTANT: If any restriction change, review operations of importation of tsv file and copy of codes,
         // because the importation doesnot call to service methods to avoid extra queries, flushing...
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
 
@@ -1123,9 +1124,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public CodeMetamac updateCode(ServiceContext ctx, CodeMetamac code) throws MetamacException {
-
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // IMPORTANT: If any restriction change, review operations of importation of tsv file and copy of codes,
         // because the importation doesnot call to service methods to avoid extra queries, flushing...
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         CodelistVersionMetamac codelistVersion = retrieveCodelistByCodeUrn(ctx, code.getNameableArtefact().getUrn());
 
@@ -1504,7 +1506,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public void deleteCodelistFamily(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
-        // Note: METAMAC-1644. Variable family can be deleted even if it is published in api
+        // Note: METAMAC-1644. Codelist family can be deleted even if it is published in api
 
         // Delete
         CodelistFamily codelistFamilyToDelete = retrieveCodelistFamilyByUrn(urn);
@@ -1606,15 +1608,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public void deleteVariableFamily(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
-        // Note: METAMAC-1644. Variable family can be deleted even if it is published in api
         VariableFamily variableFamilyToDelete = retrieveVariableFamilyByUrn(urn);
-        // Check variables of family to delete has more families, because family of variable is required (in exception, say only one variable)
-        for (Variable variable : variableFamilyToDelete.getVariables()) {
-            if (variable.getFamilies().size() == 1) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ONLY_IN_ONE_FAMILY).withMessageParameters(variable.getNameableArtefact().getUrn(), urn)
-                        .build();
-            }
-        }
+        checkVariableFamilyCanBeDeleted(variableFamilyToDelete);
 
         // Delete associations with variables
         variableFamilyToDelete.removeAllVariables();
@@ -1670,10 +1665,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkUpdateVariable(variable, null);
         checkVariableToCreateOrUpdate(ctx, variable);
 
-        // If code has been changed, update URN
+        // Code modifications unsupported (METAMAC-1644). If this change, avoid modify code to 'SrmConfigurationConstants.VARIABLE_WORLD'
         if (variable.getNameableArtefact().getIsCodeUpdated()) {
-            // METAMAC-1644
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.URN).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE).build();
+            // If code has been changed, update URN
             // setVariableUrnUnique(variable);
             // for (VariableElement variableElement : variable.getVariableElements()) {
             // setVariableElementUrnUnique(variable, variableElement, true);
@@ -1728,21 +1723,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public void deleteVariable(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
-        // Note: METAMAC-1644. Variable family can be deleted even if it is published in api
-        // Check variable has not concepts, variable elements neither codelists (in exception, say only one)
         Variable variableToDelete = retrieveVariableByUrn(urn);
-        if (CollectionUtils.isNotEmpty(variableToDelete.getCodelists())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_RELATIONS)
-                    .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getCodelists().get(0).getMaintainableArtefact().getUrn()).build();
-        }
-        if (CollectionUtils.isNotEmpty(variableToDelete.getConcepts())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_RELATIONS)
-                    .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getConcepts().get(0).getNameableArtefact().getUrn()).build();
-        }
-        if (CollectionUtils.isNotEmpty(variableToDelete.getVariableElements())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_RELATIONS)
-                    .withMessageParameters(variableToDelete.getNameableArtefact().getUrn(), variableToDelete.getVariableElements().get(0).getIdentifiableArtefact().getUrn()).build();
-        }
+        checkVariableCanBeDeleted(variableToDelete);
 
         // Delete associations with variable families
         variableToDelete.removeAllFamilies();
@@ -1801,7 +1783,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public VariableElement createVariableElement(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // IMPORTANT: If any restriction change, review importation of tsv file, because the importation doesnot call to service methods to avoid extra queries, flushing...
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         // Validation
         CodesMetamacInvocationValidator.checkCreateVariableElement(variableElement, null);
@@ -1825,13 +1809,15 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
     @Override
     public VariableElement updateVariableElement(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // IMPORTANT: If any restriction change, review importation of tsv file, because the importation doesnot call to service methods to avoid extra queries, flushing...
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         // Validation
         CodesMetamacInvocationValidator.checkUpdateVariableElement(variableElement, null);
         checkVariableElementToCreateOrUpdate(ctx, variableElement);
 
-        // If code has been changed, update URN
+        // If code has been changed, update URN // TODO PENDIENTE DUDA. No debería poder modificarse, ya que están en la API. Si sí se puede, no dejar para MUNDO
         if (variableElement.getIdentifiableArtefact().getIsCodeUpdated()) {
             setVariableElementUrnUnique(variableElement.getVariable(), variableElement, Boolean.TRUE);
         }
@@ -1917,18 +1903,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     public void deleteVariableElement(ServiceContext ctx, String urn) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkDeleteArtefact(urn);
-        // Check variableElement has not codes
         VariableElement variableElementToDelete = retrieveVariableElementByUrn(urn);
-        if (CollectionUtils.isNotEmpty(variableElementToDelete.getCodes())) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_WITH_RELATIONS)
-                    .withMessageParameters(variableElementToDelete.getIdentifiableArtefact().getUrn(), variableElementToDelete.getCodes().get(0).getNameableArtefact().getUrn()).build(); // say one
-        }
-        // Check variableElement has not operations
-        List<VariableElementOperation> variableElementsOperations = getVariableElementOperationRepository().findByVariableElementUrn(urn);
-        if (CollectionUtils.isNotEmpty(variableElementsOperations)) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_WITH_OPERATIONS)
-                    .withMessageParameters(variableElementToDelete.getIdentifiableArtefact().getUrn()).build();
-        }
+        checkVariableElementCanBeDeleted(variableElementToDelete);
 
         // Delete
         variableElementToDelete.removeAllReplaceToVariableElements(); // variable element can be deleted although it replaces to another variable element
@@ -1941,6 +1917,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkAddVariableElementsToVariable(variableElementsUrn, variableUrn, null);
 
         Variable variable = retrieveVariableByUrn(variableUrn);
+        checkVariableIsNotSpecialVariableWorld(variable);
+
         for (String variableElementUrn : variableElementsUrn) {
             VariableElement variableElement = retrieveVariableElementByUrn(variableElementUrn);
 
@@ -2009,6 +1987,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Validation
         CodesMetamacInvocationValidator.checkImportVariableElementsTsv(variableUrn, file, fileName, updateAlreadyExisting, canBeBackground, null);
+        Variable variable = retrieveVariableByUrn(variableUrn);
+        checkVariableIsNotSpecialVariableWorld(variable);
 
         // Decide if task must be executed in background
         boolean executeInBackground = taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_IMPORTATION);
@@ -2020,7 +2000,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         // Import
-        Variable variable = retrieveVariableByUrn(variableUrn);
         List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
         List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
         InputStreamReader inputStreamReader = null;
@@ -2487,6 +2466,17 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
+    private void checkVariableFamilyCanBeDeleted(VariableFamily variableFamilyToDelete) throws MetamacException {
+        // Note: METAMAC-1644. Variable family can be deleted even if it is published in api
+        // Check variables of family to delete has more families, because family of variable is required (in exception, say only one variable)
+        for (Variable variable : variableFamilyToDelete.getVariables()) {
+            if (variable.getFamilies().size() == 1) {
+                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ONLY_IN_ONE_FAMILY)
+                        .withMessageParameters(variable.getNameableArtefact().getUrn(), variableFamilyToDelete.getNameableArtefact().getUrn()).build();
+            }
+        }
+    }
+
     /**
      * Common validations to create or update a codelist family
      */
@@ -2652,10 +2642,36 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
     }
 
+    private void checkVariableCanBeDeleted(Variable variableToDelete) throws MetamacException {
+        String variableToDeleteUrn = variableToDelete.getNameableArtefact().getUrn();
+        // Check it is not world
+        checkVariableIsNotSpecialVariableWorld(variableToDelete);
+
+        // Note: METAMAC-1644. Variable can be deleted even if it is published in api
+        // Check variable has not concepts, variable elements neither codelists (in exception, say only one)
+        if (CollectionUtils.isNotEmpty(variableToDelete.getCodelists())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_RELATIONS)
+                    .withMessageParameters(variableToDeleteUrn, variableToDelete.getCodelists().get(0).getMaintainableArtefact().getUrn()).build();
+        }
+        if (CollectionUtils.isNotEmpty(variableToDelete.getConcepts())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_RELATIONS)
+                    .withMessageParameters(variableToDeleteUrn, variableToDelete.getConcepts().get(0).getNameableArtefact().getUrn()).build();
+        }
+        if (CollectionUtils.isNotEmpty(variableToDelete.getVariableElements())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WITH_RELATIONS)
+                    .withMessageParameters(variableToDeleteUrn, variableToDelete.getVariableElements().get(0).getIdentifiableArtefact().getUrn()).build();
+        }
+    }
+
     /**
      * Common validations to create or update a variable element
      */
     private void checkVariableElementToCreateOrUpdate(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
+
+        if (variableElement.getId() == null) {
+            checkVariableIsNotSpecialVariableWorld(variableElement.getVariable());
+        }
+
         // Check variable element doesnt replace self
         if (SrmServiceUtils.isVariableElementInList(variableElement.getIdentifiableArtefact().getUrn(), variableElement.getReplaceToVariableElements())) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.ARTEFACT_CAN_NOT_REPLACE_ITSELF).withMessageParameters(variableElement.getIdentifiableArtefact().getUrn())
@@ -2670,7 +2686,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
         }
 
-        // Check do not change variable (do with contains method to be more efficient, instead parse urn)
+        // Check do not change variable (execute this validation with 'contains method' is unefficient. Do parsing urn instead)
         if (variableElement.getId() != null) {
             if (!variableElement.getIdentifiableArtefact().getUrn().contains("=" + variableElement.getVariable().getNameableArtefact().getCode() + ".")) {
                 throw new MetamacException(ServiceExceptionType.METADATA_UNMODIFIABLE, ServiceExceptionParameters.VARIABLE_ELEMENT_VARIABLE);
@@ -2712,6 +2728,38 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT)
                         .withMessageParameters(ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY).build();
             }
+        }
+    }
+
+    private void checkVariableIsNotSpecialVariableWorld(Variable variable) throws MetamacException {
+        String variableWorldUrn = srmConfiguration.retrieveVariableWorldUrn(); // required property
+        if (variableWorldUrn.equals(variable.getNameableArtefact().getUrn())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_WORLD_OPERATION_NOT_SUPPORTED).withMessageParameters(variable.getNameableArtefact().getUrn())
+                    .build();
+        }
+    }
+
+    private void checkVariableElementCanBeDeleted(VariableElement variableElementToDelete) throws MetamacException {
+        String variableElementToDeleteUrn = variableElementToDelete.getIdentifiableArtefact().getUrn();
+        // Check it is not world
+        checkVariableElementIsNotSpecialVariableElementWorld(variableElementToDelete);
+
+        if (CollectionUtils.isNotEmpty(variableElementToDelete.getCodes())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_WITH_RELATIONS)
+                    .withMessageParameters(variableElementToDeleteUrn, variableElementToDelete.getCodes().get(0).getNameableArtefact().getUrn()).build(); // say one
+        }
+        // Check variableElement has not operations
+        List<VariableElementOperation> variableElementsOperations = getVariableElementOperationRepository().findByVariableElementUrn(variableElementToDeleteUrn);
+        if (CollectionUtils.isNotEmpty(variableElementsOperations)) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_WITH_OPERATIONS).withMessageParameters(variableElementToDeleteUrn).build();
+        }
+    }
+
+    private void checkVariableElementIsNotSpecialVariableElementWorld(VariableElement variableElement) throws MetamacException {
+        String variableElementWorldUrn = srmConfiguration.retrieveVariableElementWorldUrn(); // required property
+        if (variableElementWorldUrn.equals(variableElement.getIdentifiableArtefact().getUrn())) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_ELEMENT_WORLD_OPERATION_NOT_SUPPORTED)
+                    .withMessageParameters(variableElement.getIdentifiableArtefact().getUrn()).build();
         }
     }
 

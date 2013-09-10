@@ -6523,6 +6523,105 @@
             LAST_UPDATED="2011-01-22 01:02:03"
             LAST_UPDATED_TZ="Europe/London"
         /> 
+        
+        
+    <TB_M_VARIABLES
+        ID="7"
+        NAMEABLE_ARTEFACT_FK="999937"
+        
+        SHORT_NAME_FK="157"
+        VARIABLE_TYPE="GEOGRAPHICAL"
+        
+        VALID_FROM_TZ="Europe/London"
+        VALID_FROM="2011-01-02 02:02:04" 
+        VALID_TO_TZ="Europe/London"
+        VALID_TO="2012-01-02 02:02:04"
+        REPLACED_BY_VARIABLE_FK="[null]"
+        
+        UUID="variable-07"
+        CREATED_DATE_TZ="Europe/London"
+        CREATED_DATE="2011-01-01 01:02:03"
+        CREATED_BY="user1"
+        LAST_UPDATED_TZ="Europe/London"
+        LAST_UPDATED="2012-01-01 01:02:03"
+        LAST_UPDATED_BY="user2"
+        VERSION="1"
+    />
+    
+       <TB_ANNOTABLE_ARTEFACTS 
+            ID="999937"
+            ANNOTABLE_ARTEFACT_TYPE="NAMEABLE_ARTEFACT"
+            
+            CODE="TERRITORIO_MUNDO"
+            CODE_FULL="[null]"
+            URI_PROVIDER="[null]"
+            URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=TERRITORIO_MUNDO"
+            URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=TERRITORIO_MUNDO"
+            
+            NAME_FK="158"
+            DESCRIPTION_FK="[null]"
+            
+            UUID="annotableArtefact-999937"
+            VERSION="1"
+            CREATED_BY="user1"
+            CREATED_DATE="2011-01-01 01:02:03"
+            CREATED_DATE_TZ="Europe/London"
+            LAST_UPDATED_BY="user2"
+            LAST_UPDATED="2011-01-22 01:02:03"
+            LAST_UPDATED_TZ="Europe/London"
+        />
+        
+            <!-- VARIABLE ELEMENTS -->
+            <TB_M_VARIABLE_ELEMENTS
+                ID="71"
+                IDENTIFIABLE_ARTEFACT_FK="9999371"
+                
+                SHORT_NAME_FK="159"
+                COMMENT_FK="[null]"
+                VALID_FROM_TZ="[null]"
+                VALID_FROM="[null]" 
+                VALID_TO_TZ="[null]"
+                VALID_TO="[null]"
+                VARIABLE_FK="7"
+                REPLACED_BY_VAR_ELEMENT_FK="[null]"
+                LATITUDE="[null]"
+                LONGITUDE="[null]"
+                SHAPE_WKT="shapeWkt"
+                SHAPE_GEOJSON="shapeGeoJson"
+                GEOGRAPHICAL_GRANULARITY_FK="[null]"
+                
+                UUID="variable-element-71"
+                CREATED_DATE_TZ="Europe/London"
+                CREATED_DATE="2011-01-01 01:02:03"
+                CREATED_BY="user1"
+                LAST_UPDATED_TZ="Europe/London"
+                LAST_UPDATED="2012-01-01 01:02:03"
+                LAST_UPDATED_BY="user2"
+                VERSION="1"
+            />
+            
+               <TB_ANNOTABLE_ARTEFACTS 
+                    ID="9999371"
+                    ANNOTABLE_ARTEFACT_TYPE="IDENTIFIABLE_ARTEFACT"
+                    
+                    CODE="MUNDO"
+                    CODE_FULL="[null]"
+                    URI_PROVIDER="[null]"
+                    URN_PROVIDER="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=TERRITORIO_MUNDO.MUNDO"
+                    URN="urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=TERRITORIO_MUNDO.MUNDO"
+                    
+                    NAME_FK="[null]"
+                    DESCRIPTION_FK="[null]"
+                    
+                    UUID="annotableArtefact-9999371"
+                    VERSION="1"
+                    CREATED_BY="user1"
+                    CREATED_DATE="2011-01-01 01:02:03"
+                    CREATED_DATE_TZ="Europe/London"
+                    LAST_UPDATED_BY="user2"
+                    LAST_UPDATED="2011-01-22 01:02:03"
+                    LAST_UPDATED_TZ="Europe/London"
+                />          
             
     <!-- ************************************************************************************** -->
     <!-- FAMILIES - VARIABLES                                                                         -->
@@ -9330,4 +9429,44 @@
         INTERNATIONAL_STRING_FK="156"
     />    
              
+    <TB_INTERNATIONAL_STRINGS
+        ID="157"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1571"
+        LABEL="Variable World"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="157"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="158"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1581"
+        LABEL="Variable World"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="158"
+    />             
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="159"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1591"
+        LABEL="Variable element World"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="159"
+    />             
+    
+                 
 </dataset>

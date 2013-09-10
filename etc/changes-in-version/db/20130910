@@ -1,0 +1,6 @@
+-- Add variable TERRITORIO_MUNDO and variable element MUNDO
+
+Execute following scripts:
+1) 04-srm-initialize-sequences.sql
+2) 09-srm-inserts-variables.sql
+3) 99-srm-drop-sequence-function.sql
