@@ -1817,9 +1817,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodesMetamacInvocationValidator.checkUpdateVariableElement(variableElement, null);
         checkVariableElementToCreateOrUpdate(ctx, variableElement);
 
-        // If code has been changed, update URN // TODO PENDIENTE DUDA. No debería poder modificarse, ya que están en la API. Si sí se puede, no dejar para MUNDO
+        // Code modifications unsupported (METAMAC-1644). If this change, avoid modify code to 'SrmConfigurationConstants.VARIABLE_ELEMENT_WORLD'
         if (variableElement.getIdentifiableArtefact().getIsCodeUpdated()) {
-            setVariableElementUrnUnique(variableElement.getVariable(), variableElement, Boolean.TRUE);
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE).build();
+            // If code has been changed, update URN
+            // setVariableElementUrnUnique(variableElement.getVariable(), variableElement, Boolean.TRUE);
         }
         variableElement.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 

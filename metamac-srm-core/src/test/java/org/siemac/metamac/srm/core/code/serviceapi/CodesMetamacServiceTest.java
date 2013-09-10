@@ -5226,7 +5226,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("code unmodifiable");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNMODIFIABLE, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNMODIFIABLE, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
         }
     }
 
@@ -5532,7 +5532,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("code unmodifiable");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNMODIFIABLE, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNMODIFIABLE, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
         }
     }
 
@@ -5929,6 +5929,20 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(1, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_TYPE_UPDATE_TO_GEOGRAPHICAL_UNSUPPORTED, 1, new String[]{variable.getNameableArtefact().getUrn()}, e.getExceptionItems()
                     .get(0));
+        }
+    }
+
+    @Test
+    public void testUpdateVariableErrorCodeUnmodifiable() throws Exception {
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
+        variable.getNameableArtefact().setCode("newIdentifier");
+        variable.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        try {
+            codesService.updateVariable(getServiceContextAdministrador(), variable);
+            fail("code unmodifiable");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNMODIFIABLE, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
         }
     }
 
@@ -6453,6 +6467,20 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         VariableElement variableElementUpdated = codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
 
         assertEqualsVariableElement(variableElement, variableElementUpdated);
+    }
+
+    @Test
+    public void testUpdateVariableElementErrorCodeUnmodifiable() throws Exception {
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        variableElement.getIdentifiableArtefact().setCode("newCode");
+        variableElement.getIdentifiableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        try {
+            codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("wrong code");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNMODIFIABLE, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
+        }
     }
 
     @Test
