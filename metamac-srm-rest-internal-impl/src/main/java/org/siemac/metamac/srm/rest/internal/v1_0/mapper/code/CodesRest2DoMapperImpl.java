@@ -250,6 +250,8 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                     return buildSculptorPropertyCriteria(VariableProperties.shortName().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case FAMILY_URN:
                     return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, VariableProperties.families().nameableArtefact());
+                case VARIABLE_TYPE:
+                    return buildSculptorPropertyCriteria(VariableProperties.type(), PropertyTypeEnum.VARIABLE_TYPE, propertyRestriction);
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }
@@ -286,6 +288,10 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                     return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, VariableElementProperties.identifiableArtefact());
                 case NAME:
                     return buildSculptorPropertyCriteria(VariableElementProperties.shortName().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
+                case GEOGRAPHICAL_GRANULARITY_URN:
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, VariableElementProperties.geographicalGranularity().nameableArtefact());
+                case VARIABLE_TYPE:
+                    return buildSculptorPropertyCriteria(VariableElementProperties.variable().type(), PropertyTypeEnum.VARIABLE_TYPE, propertyRestriction);
                 default:
                     throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
             }

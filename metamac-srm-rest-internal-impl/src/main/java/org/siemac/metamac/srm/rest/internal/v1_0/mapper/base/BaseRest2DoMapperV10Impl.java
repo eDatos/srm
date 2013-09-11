@@ -14,6 +14,7 @@ import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaDisjuncti
 import org.siemac.metamac.rest.search.criteria.utils.CriteriaUtils;
 import org.siemac.metamac.rest.search.criteria.utils.CriteriaUtils.PropertyValueRestToPropertyValueEntityInterface;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
+import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
@@ -33,7 +34,7 @@ public abstract class BaseRest2DoMapperV10Impl {
     private PropertyValueRestToPropertyValueEntityInterface propertyValueRestToPropertyValueEntity = null;
 
     protected enum PropertyTypeEnum {
-        STRING, DATE, BOOLEAN, PROC_STATUS, PROC_STATUS_ITEM_SCHEME_FROM_ITEM, ORGANISATION_SCHEME_TYPE, ORGANISATION_TYPE, CONCEPT_SCHEME_TYPE
+        STRING, DATE, BOOLEAN, PROC_STATUS, PROC_STATUS_ITEM_SCHEME_FROM_ITEM, ORGANISATION_SCHEME_TYPE, ORGANISATION_TYPE, CONCEPT_SCHEME_TYPE, VARIABLE_TYPE
     }
 
     public BaseRest2DoMapperV10Impl() {
@@ -73,6 +74,8 @@ public abstract class BaseRest2DoMapperV10Impl {
                         return OrganisationTypeEnum.valueOf(value);
                     case CONCEPT_SCHEME_TYPE:
                         return ConceptSchemeTypeEnum.valueOf(value);
+                    case VARIABLE_TYPE:
+                        return VariableTypeEnum.valueOf(value);
                     default:
                         throw toRestExceptionParameterIncorrect(propertyName);
                 }
