@@ -5582,11 +5582,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String variableFamilyUrn = VARIABLE_FAMILY_3;
 
         VariableFamily family = codesService.retrieveVariableFamilyByUrn(ctx, variableFamilyUrn);
-        assertEquals(4, family.getVariables().size());
-        assertTrue(SrmServiceUtils.isVariableInList(VARIABLE_1, family.getVariables()));
-        assertTrue(SrmServiceUtils.isVariableInList(VARIABLE_2, family.getVariables()));
-        assertTrue(SrmServiceUtils.isVariableInList(VARIABLE_3, family.getVariables()));
-        assertTrue(SrmServiceUtils.isVariableInList(VARIABLE_4, family.getVariables()));
+        assertEquals(5, family.getVariables().size());
+        List<String> variablesUrn = Arrays.asList(VARIABLE_1, VARIABLE_2, VARIABLE_3, VARIABLE_4, VARIABLE_7_WORLD);
+        for (String variableUrn : variablesUrn) {
+            assertTrue(SrmServiceUtils.isVariableInList(variableUrn, family.getVariables()));
+        }
 
         codesService.deleteVariableFamily(ctx, variableFamilyUrn);
 
@@ -5607,14 +5607,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
 
         // Check that the associated variables has not been deleted
-        Variable variable1 = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
-        Variable variable2 = codesService.retrieveVariableByUrn(ctx, VARIABLE_2);
-        Variable variable3 = codesService.retrieveVariableByUrn(ctx, VARIABLE_3);
-        Variable variable4 = codesService.retrieveVariableByUrn(ctx, VARIABLE_4);
-        assertFalse(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable1.getFamilies()));
-        assertFalse(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable2.getFamilies()));
-        assertFalse(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable3.getFamilies()));
-        assertFalse(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable4.getFamilies()));
+        for (String variableUrn : variablesUrn) {
+            Variable variable = codesService.retrieveVariableByUrn(ctx, variableUrn);
+            assertFalse(SrmServiceUtils.isFamilyInList(variableFamilyUrn, variable.getFamilies()));
+        }
     }
 
     @Override
