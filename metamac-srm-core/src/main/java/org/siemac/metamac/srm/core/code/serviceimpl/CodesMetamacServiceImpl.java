@@ -1471,7 +1471,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (codelistFamily.getNameableArtefact().getIsCodeUpdated()) {
             // setCodelistFamilyUrnUnique(codelistFamily);
             // METAMAC-1644
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.URN).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE).build();
         }
         codelistFamily.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
@@ -1586,7 +1586,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (variableFamily.getNameableArtefact().getIsCodeUpdated()) {
             // setVariableFamilyUrnUnique(variableFamily);
             // METAMAC-1644
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.URN).build();
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNMODIFIABLE).withMessageParameters(ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE).build();
         }
         variableFamily.setUpdateDate(new DateTime()); // Optimistic locking: Update "update date" attribute to force update to root entity, to increase attribute "version"
 
@@ -2717,19 +2717,35 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     private void checkVariableElementGeographicalGranularity(ServiceContext ctx, VariableElement variableElement) throws MetamacException {
-        // note: required metadata checked in CodesMetamacInvocationValidator
-
-        if (variableElement.getGeographicalGranularity() != null) {
-            PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
-            CodeMetamac codeGeographicalGranularity = retrieveCodeByUrn(ctx, variableElement.getGeographicalGranularity().getNameableArtefact().getUrn());
-            Long codeGeographicalGranularityId = codeGeographicalGranularity.getId();
-            List<ConditionalCriteria> criteriaToVerifyGeographicalGranularity = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.id())
-                    .eq(codeGeographicalGranularityId).build();
-            PagedResult<CodeMetamac> result = findCodesCanBeVariableElementGeographicalGranularityByCondition(ctx, criteriaToVerifyGeographicalGranularity, pagingParameter);
-            if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codeGeographicalGranularityId)) {
-                throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT)
-                        .withMessageParameters(ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY).build();
+        if (VariableTypeEnum.GEOGRAPHICAL.equals(variableElement.getVariable().getType())) {
+            // Check required or empty
+            String variableElementWorldUrn = srmConfiguration.retrieveVariableElementWorldUrn();
+            if (variableElementWorldUrn.equals(variableElement.getIdentifiableArtefact().getUrn())) {
+                if (variableElement.getGeographicalGranularity() != null) {
+                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_UNEXPECTED)
+                            .withMessageParameters(ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY).build();
+                }
+            } else {
+                if (variableElement.getGeographicalGranularity() == null) {
+                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED)
+                            .withMessageParameters(ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY).build();
+                }
             }
+            // Check it is correct
+            if (variableElement.getGeographicalGranularity() != null) {
+                PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
+                CodeMetamac codeGeographicalGranularity = retrieveCodeByUrn(ctx, variableElement.getGeographicalGranularity().getNameableArtefact().getUrn());
+                Long codeGeographicalGranularityId = codeGeographicalGranularity.getId();
+                List<ConditionalCriteria> criteriaToVerifyGeographicalGranularity = ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.id())
+                        .eq(codeGeographicalGranularityId).build();
+                PagedResult<CodeMetamac> result = findCodesCanBeVariableElementGeographicalGranularityByCondition(ctx, criteriaToVerifyGeographicalGranularity, pagingParameter);
+                if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codeGeographicalGranularityId)) {
+                    throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_INCORRECT)
+                            .withMessageParameters(ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY).build();
+                }
+            }
+        } else {
+            // empty metadata are checked in CodesMetamacInvocationValidator
         }
     }
 

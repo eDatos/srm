@@ -706,14 +706,14 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
 
         // Check geographical information
         if (variableElement.getVariable() != null) {
-            if (VariableTypeEnum.GEOGRAPHICAL.equals(variableElement.getVariable().getType())) {
-                ValidationUtils.checkMetadataRequired(variableElement.getGeographicalGranularity(), ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, exceptions);
-            } else {
+            if (!VariableTypeEnum.GEOGRAPHICAL.equals(variableElement.getVariable().getType())) {
                 ValidationUtils.checkMetadataEmpty(variableElement.getLatitude(), ServiceExceptionParameters.VARIABLE_ELEMENT_LATITUDE, exceptions);
                 ValidationUtils.checkMetadataEmpty(variableElement.getLongitude(), ServiceExceptionParameters.VARIABLE_ELEMENT_LONGITUDE, exceptions);
                 ValidationUtils.checkMetadataEmpty(variableElement.getShapeWkt(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHAPE_WKT, exceptions);
                 ValidationUtils.checkMetadataEmpty(variableElement.getShapeGeojson(), ServiceExceptionParameters.VARIABLE_ELEMENT_SHAPE_GEOJSON, exceptions);
                 ValidationUtils.checkMetadataEmpty(variableElement.getGeographicalGranularity(), ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, exceptions);
+            } else {
+                // tested in service
             }
         }
     }

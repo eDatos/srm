@@ -5949,14 +5949,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testUpdateVariableErrorWrongCode() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
-        variable.getNameableArtefact().setCode("newIdentifier");
+        variable.getNameableArtefact().setCode(" 0 - invalid identifier");
         variable.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
             codesService.updateVariable(getServiceContextAdministrador(), variable);
             fail("code unmodifiable");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNMODIFIABLE, 1, new String[]{ServiceExceptionParameters.URN}, e.getExceptionItems().get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
         }
     }
 
@@ -6231,12 +6231,17 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     // ------------------------------------------------------------------------------------
 
     @Override
-    @Test
     public void testCreateVariableElement() throws Exception {
+        // Tested in other testCreateVariableElement*
+    }
+
+    @Test
+    public void testCreateVariableElementGeographical() throws Exception {
 
         ServiceContext ctx = getServiceContextAdministrador();
 
         Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_5);
+        assertTrue(VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType()));
         CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(ctx, CODELIST_13_V1_CODE_1);
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElementGeographical(variable, geographicalGranularity);
         // Replace to
@@ -6274,6 +6279,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         ServiceContext ctx = getServiceContextAdministrador();
 
         Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_3);
+        assertFalse(VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType()));
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
 
         // Create
@@ -6289,6 +6295,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testCreateVariableElementErrorVariableWorld() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_7_WORLD);
+        assertTrue(VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType()));
         CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_13_V1_CODE_1); // TODO geo gran debe ser null
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElementGeographical(variable, geographicalGranularity);
         try {
@@ -6347,21 +6354,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
-    public void testCreateVariableElementErrorGeographicalGranularity() throws Exception {
-        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_5);
-        CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V1_CODE_1);
-        VariableElement variableElement = CodesMetamacDoMocks.mockVariableElementGeographical(variable, geographicalGranularity);
-        try {
-            codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
-            fail("wrong geographical granularity");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY},
-                    e.getExceptionItems().get(0));
-        }
-    }
-
-    @Test
     public void testCreateVariableElementErrorDuplicatedCode() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
@@ -6399,6 +6391,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testCreateVariableElementErrorIncorrectMetadataGeographical() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_5);
+        assertTrue(VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType()));
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
         variableElement.setLatitude(null);
         variableElement.setLongitude(null);
@@ -6416,8 +6409,24 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testCreateVariableElementErrorGeographicalGranularity() throws Exception {
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_5);
+        CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V1_CODE_1);
+        VariableElement variableElement = CodesMetamacDoMocks.mockVariableElementGeographical(variable, geographicalGranularity);
+        try {
+            codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("wrong geographical granularity");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY},
+                    e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
     public void testCreateVariableElementErrorIncorrectMetadataNonGeographical() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_3);
+        assertFalse(VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType()));
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElement(variable);
         variableElement.setLatitude(Double.valueOf(1));
         variableElement.setLongitude(Double.valueOf(2));
@@ -6458,8 +6467,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testUpdateVariableElement() throws Exception {
         VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
-        variableElement.getIdentifiableArtefact().setCode("code-" + MetamacMocks.mockString(10));
-        variableElement.getIdentifiableArtefact().setIsCodeUpdated(Boolean.TRUE);
+        variableElement.getIdentifiableArtefact().setIsCodeUpdated(Boolean.FALSE);
         variableElement.setShortName(BaseDoMocks.mockInternationalString());
         variableElement.setValidFrom(MetamacMocks.mockDateTime());
         variableElement.setValidTo(null);
@@ -6494,20 +6502,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(0));
-        }
-    }
-
-    @Test
-    public void testUpdateVariableElementErrorDuplicatedCode() throws Exception {
-        VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
-        variableElement.getIdentifiableArtefact().setCode("VARIABLE_ELEMENT_02");
-        variableElement.getIdentifiableArtefact().setIsCodeUpdated(Boolean.TRUE);
-        try {
-            codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
-            fail("duplicated code");
-        } catch (MetamacException e) {
-            assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_URN_DUPLICATED, 1, new String[]{VARIABLE_2_VARIABLE_ELEMENT_2}, e.getExceptionItems().get(0));
         }
     }
 
@@ -6566,6 +6560,54 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.IDENTIFIABLE_ARTEFACT_CODE}, e.getExceptionItems().get(2));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHORT_NAME}, e.getExceptionItems().get(3));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_VALID_TO}, e.getExceptionItems().get(4));
+        }
+    }
+
+    @Test
+    public void testUpdateVariableElementErrorGeographicalGranularityRequired() throws Exception {
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_5_VARIABLE_ELEMENT_1);
+        assertTrue(VariableTypeEnum.GEOGRAPHICAL.equals(variableElement.getVariable().getType()));
+        variableElement.getIdentifiableArtefact().setIsCodeUpdated(false);
+        variableElement.setGeographicalGranularity(null);
+        try {
+            codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("metadata required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY}, e.getExceptionItems()
+                    .get(0));
+        }
+    }
+
+    @Test
+    public void testUpdateVariableElementErrorGeographicalGranularityUnexpectedWorld() throws Exception {
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_7_VARIABLE_ELEMENT_1_WORLD);
+        assertTrue(VariableTypeEnum.GEOGRAPHICAL.equals(variableElement.getVariable().getType()));
+        variableElement.getIdentifiableArtefact().setIsCodeUpdated(false);
+        variableElement.setGeographicalGranularity(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1));
+        try {
+            codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("must be empty");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY}, e.getExceptionItems()
+                    .get(0));
+        }
+    }
+
+    @Test
+    public void testUpdateVariableElementErrorGeographicalGranularityUnexpectedNotGeographical() throws Exception {
+        VariableElement variableElement = codesService.retrieveVariableElementByUrn(getServiceContextAdministrador(), VARIABLE_2_VARIABLE_ELEMENT_1);
+        assertFalse(VariableTypeEnum.GEOGRAPHICAL.equals(variableElement.getVariable().getType()));
+        variableElement.getIdentifiableArtefact().setIsCodeUpdated(false);
+        variableElement.setGeographicalGranularity(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_1_V2_CODE_1));
+        try {
+            codesService.updateVariableElement(getServiceContextAdministrador(), variableElement);
+            fail("metadata required");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY}, e.getExceptionItems()
+                    .get(0));
         }
     }
 
