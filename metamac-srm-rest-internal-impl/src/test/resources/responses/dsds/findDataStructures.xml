@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <sr:dataStructures xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain"       xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#dataStructures" total="40" limit="4" offset="4" selfLink="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures?limit=4&amp;offset=4" firstLink="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures?limit=4&amp;offset=0" previousLink="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures?limit=4&amp;offset=0" nextLink="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures?limit=4&amp;offset=8" lastLink="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures?limit=4&amp;offset=36">
-    <sr:dataStructures kind="structuralResources#dataStructure">
+    <sr:dataStructure kind="structuralResources#dataStructure">
         <cdomain:id>artefact1</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact1(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#dataStructure" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency1/artefact1/01.000"/>
@@ -9,8 +9,8 @@
             <cdomain:text xml:lang="es">name-artefact1v01.000 en Español</cdomain:text>
         </cdomain:name>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency1:artefact1(01.000)</sr:managementAppLink>
-    </sr:dataStructures>
-    <sr:dataStructures kind="structuralResources#dataStructure">
+    </sr:dataStructure>
+    <sr:dataStructure kind="structuralResources#dataStructure">
         <cdomain:id>artefact2</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact2(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#dataStructure" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency1/artefact2/01.000"/>
@@ -19,8 +19,8 @@
             <cdomain:text xml:lang="es">name-artefact2v01.000 en Español</cdomain:text>
         </cdomain:name>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency1:artefact2(01.000)</sr:managementAppLink>
-    </sr:dataStructures>
-    <sr:dataStructures kind="structuralResources#dataStructure">
+    </sr:dataStructure>
+    <sr:dataStructure kind="structuralResources#dataStructure">
         <cdomain:id>artefact2</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency1:artefact2(02.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#dataStructure" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency1/artefact2/02.000"/>
@@ -29,8 +29,8 @@
             <cdomain:text xml:lang="es">name-artefact2v02.000 en Español</cdomain:text>
         </cdomain:name>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency1:artefact2(02.000)</sr:managementAppLink>
-    </sr:dataStructures>
-    <sr:dataStructures kind="structuralResources#dataStructure">
+    </sr:dataStructure>
+    <sr:dataStructure kind="structuralResources#dataStructure">
         <cdomain:id>artefact3</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=agency2:artefact3(01.000)</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#dataStructure" href="http://data.istac.es/apis/structural-resources-internal/v1.0/datastructures/agency2/artefact3/01.000"/>
@@ -39,5 +39,5 @@
             <cdomain:text xml:lang="en">name-artefact3v01.000 in English</cdomain:text>
         </cdomain:name>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agency2:artefact3(01.000)</sr:managementAppLink>
-    </sr:dataStructures>
+    </sr:dataStructure>
 </sr:dataStructures>
