@@ -5,8 +5,8 @@
      <!--  The following URN must be create in the system before any DSD creation -->
     <entry key="metamac.srm.dsd.primary_measure.default_concept.urn">urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME04(01.000).CONCEPT01</entry>
     
-    <entry key="metamac.srm.variables.variable_world">urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=TERRITORIO_MUNDO</entry>
-    <entry key="metamac.srm.variables.variable_element_world">urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=TERRITORIO_MUNDO.MUNDO</entry>
+    <entry key="metamac.srm.variables.variable_world.urn">urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=TERRITORIO_MUNDO</entry>
+    <entry key="metamac.srm.variables.variable_element_world.urn">urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=TERRITORIO_MUNDO.MUNDO</entry>
     
     <!-- Database -->
     <!-- ORACLE -->

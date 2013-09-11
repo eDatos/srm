@@ -25,6 +25,6 @@ public class SrmConfigurationConstants extends ConfigurationConstants {
     public static final String DB_DRIVER_NAME_MSSQL                                      = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
     // Misc
-    public static final String VARIABLE_WORLD                                            = "metamac.srm.variables.variable_world";
-    public static final String VARIABLE_ELEMENT_WORLD                                    = "metamac.srm.variables.variable_element_world";
+    public static final String VARIABLE_WORLD                                            = "metamac.srm.variables.variable_world.urn";
+    public static final String VARIABLE_ELEMENT_WORLD                                    = "metamac.srm.variables.variable_element_world.urn";
 }

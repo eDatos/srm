@@ -1,4 +1,4 @@
 Añadir propiedades a [DATA]/srm-web/conf/static/resources.xml
 
-    <entry key="metamac.srm.variables.variable_world">urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=TERRITORIO_MUNDO</entry>
-    <entry key="metamac.srm.variables.variable_element_world">urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=TERRITORIO_MUNDO.MUNDO</entry>
+    <entry key="metamac.srm.variables.variable_world.urn">urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=TERRITORIO_MUNDO</entry>
+    <entry key="metamac.srm.variables.variable_element_world.urn">urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=TERRITORIO_MUNDO.MUNDO</entry>
