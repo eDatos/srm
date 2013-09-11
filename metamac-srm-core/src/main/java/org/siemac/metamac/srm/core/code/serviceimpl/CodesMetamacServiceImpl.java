@@ -2640,6 +2640,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 if (variableElementsCount != 0) {
                     throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.VARIABLE_TYPE_UPDATE_TO_GEOGRAPHICAL_UNSUPPORTED).withMessageParameters(variableUrn).build();
                 }
+            } else if (!VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType())) {
+                String variableWorldUrn = srmConfiguration.retrieveVariableWorldUrn();
+                if (variableWorldUrn.equals(variable.getNameableArtefact().getUrn())) {
+                    throw new MetamacException(ServiceExceptionType.METADATA_UNMODIFIABLE, ServiceExceptionParameters.VARIABLE_TYPE);
+                }
             }
         }
     }

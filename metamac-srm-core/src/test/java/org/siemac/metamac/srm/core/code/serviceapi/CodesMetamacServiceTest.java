@@ -5933,6 +5933,23 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     }
 
     @Test
+    public void testUpdateVariableTypeErrorWorld() throws Exception {
+        Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_7_WORLD);
+        assertEquals(VariableTypeEnum.GEOGRAPHICAL, variable.getType());
+        variable.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        variable.setPreviousType(variable.getType());
+        variable.setType(null);
+
+        try {
+            codesService.updateVariable(getServiceContextAdministrador(), variable);
+            fail("updating type is unsupported to world");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNMODIFIABLE, 1, new String[]{ServiceExceptionParameters.VARIABLE_TYPE}, e.getExceptionItems().get(0));
+        }
+    }
+
+    @Test
     public void testUpdateVariableErrorCodeUnmodifiable() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_1);
         variable.getNameableArtefact().setCode("newIdentifier");
