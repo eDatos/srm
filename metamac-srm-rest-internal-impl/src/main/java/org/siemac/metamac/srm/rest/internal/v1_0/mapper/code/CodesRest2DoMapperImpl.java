@@ -1,9 +1,16 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.code;
 
+import javax.ws.rs.core.Response.Status;
+
 import org.fornax.cartridges.sculptor.framework.domain.Property;
+import org.siemac.metamac.core.common.conf.ConfigurationService;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
+import org.siemac.metamac.rest.common.query.domain.OperationTypeEnum;
+import org.siemac.metamac.rest.exception.RestCommonServiceExceptionType;
 import org.siemac.metamac.rest.exception.RestException;
+import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteria;
 import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaBase;
 import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaDisjunction;
@@ -34,10 +41,14 @@ import org.siemac.metamac.srm.core.code.domain.VariableFamily;
 import org.siemac.metamac.srm.core.code.domain.VariableFamilyProperties;
 import org.siemac.metamac.srm.core.code.domain.VariableProperties;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements CodesRest2DoMapper {
+
+    @Autowired
+    private ConfigurationService                                  configurationService;
 
     private RestCriteria2SculptorCriteria<CodelistVersionMetamac> codelistCriteriaMapper        = null;
     private RestCriteria2SculptorCriteria<CodeMetamac>            codeCriteriaMapper            = null;
@@ -174,11 +185,29 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                             propertyRestriction);
                 case CODELIST_LATEST:
                     return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                case DEFAULT_GEOGRAPHICAL_GRANULARITIES_CODELIST: {
+                    String codelistUrn = null;
+                    try {
+                        codelistUrn = configurationService.retrieveDefaultCodelistGeographicalGranularityUrn();;
+                    } catch (MetamacException e) {
+                        org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestCommonServiceExceptionType.UNKNOWN);
+                        throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+                    }
+                    MetamacRestQueryPropertyRestriction codelistPropertyRestriction = new MetamacRestQueryPropertyRestriction();
+                    codelistPropertyRestriction.setPropertyName(CodeCriteriaPropertyRestriction.CODELIST_URN.name());
+                    codelistPropertyRestriction.setValue(codelistUrn);
+                    Boolean value = Boolean.valueOf(propertyRestriction.getValue());
+                    if (value) {
+                        codelistPropertyRestriction.setOperationType(OperationTypeEnum.EQ);
+                    } else {
+                        codelistPropertyRestriction.setOperationType(OperationTypeEnum.NE);
+                    }
+                    return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(codelistPropertyRestriction, CodeMetamacProperties.itemSchemeVersion().maintainableArtefact());
+                }
                 default:
                     throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
-
         @SuppressWarnings("rawtypes")
         @Override
         public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {

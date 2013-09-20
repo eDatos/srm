@@ -20,7 +20,10 @@ import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
+import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.util.shared.UrnUtils;
+import org.siemac.metamac.rest.common.v1_0.domain.ComparisonOperator;
 import org.siemac.metamac.rest.exception.RestCommonServiceExceptionType;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
@@ -36,6 +39,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Categor
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategoryScheme;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CategorySchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Code;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodeCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamily;
@@ -149,6 +153,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Autowired
     private MiscMetamacService                    miscMetamacService;
+
+    @Autowired
+    private ConfigurationService                  configurationService;
 
     @Autowired
     private ConceptsRest2DoMapper                 conceptsRest2DoMapper;
@@ -852,6 +859,17 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         try {
             checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
+            if (isFindByDefaultGeographicalGranularitiesCodelist(agencyID, resourceID, version, query, orderBy, limit, offset)) {
+                String codelistUrn = configurationService.retrieveDefaultCodelistGeographicalGranularityUrn();
+                String[] codelistUrnSplited = UrnUtils.splitUrnItemScheme(codelistUrn);
+                agencyID = codelistUrnSplited[0];
+                resourceID = codelistUrnSplited[1];
+                version = codelistUrnSplited[2];
+                query = null;
+                orderBy = null;
+                limit = null;
+            }
+
             if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
                 checkParameterEmpty(SrmRestConstants.PARAMETER_ORDER_ID, order);
                 checkParameterEmpty(SrmRestConstants.PARAMETER_OPENNESS_ID, openness);
@@ -889,7 +907,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             throw manageException(e);
         }
     }
-
     @Override
     public VariableFamily retrieveVariableFamilyById(String id) {
         try {
@@ -1760,6 +1777,19 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Must be [API]/codelists/~all/~all/~all/codes?query=DEFAULT_GEOGRAPHICAL_GRANULARITIES_CODELIST EQ TRUE
+     */
+    private boolean isFindByDefaultGeographicalGranularitiesCodelist(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        if (!SrmRestConstants.WILDCARD_ALL.equals(agencyID) || !SrmRestConstants.WILDCARD_ALL.equals(resourceID) || !SrmRestConstants.WILDCARD_ALL.equals(version)) {
+            return false;
+        }
+        if (query == null || orderBy != null || limit != null || offset != null) {
+            return false;
+        }
+        return query.equalsIgnoreCase(CodeCriteriaPropertyRestriction.DEFAULT_GEOGRAPHICAL_GRANULARITIES_CODELIST + " " + ComparisonOperator.EQ.value() + " 'TRUE'");
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
