@@ -125,7 +125,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case LATEST:
                     return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -137,7 +137,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case ID:
                     return CodelistVersionMetamacProperties.maintainableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -175,7 +175,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case CODELIST_LATEST:
                     return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -187,7 +187,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case ID:
                     return CodeMetamacProperties.nameableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -211,7 +211,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case NAME:
                     return buildSculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().name().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -223,7 +223,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case ID:
                     return VariableFamilyProperties.nameableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -253,7 +253,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case VARIABLE_TYPE:
                     return buildSculptorPropertyCriteria(VariableProperties.type(), PropertyTypeEnum.VARIABLE_TYPE, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -265,7 +265,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case ID:
                     return VariableProperties.nameableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -293,7 +293,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case VARIABLE_TYPE:
                     return buildSculptorPropertyCriteria(VariableElementProperties.variable().type(), PropertyTypeEnum.VARIABLE_TYPE, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -305,7 +305,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case ID:
                     return VariableElementProperties.identifiableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -329,7 +329,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case NAME:
                     return buildSculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().name().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -341,7 +341,7 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                 case ID:
                     return CodelistFamilyProperties.nameableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 

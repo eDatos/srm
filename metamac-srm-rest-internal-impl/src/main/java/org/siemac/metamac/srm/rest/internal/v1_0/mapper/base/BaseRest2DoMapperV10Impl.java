@@ -130,6 +130,11 @@ public abstract class BaseRest2DoMapperV10Impl {
         throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
     }
 
+    protected RestException toRestExceptionParameterUnexpected(String parameter) {
+        org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_UNEXPECTED, parameter);
+        throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+    }
+
     private Boolean procStatusItemSchemeToPublicLogic(String propertyName, String value) {
         ProcStatus procStatus = ProcStatus.valueOf(value);
         switch (procStatus) {

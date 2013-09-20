@@ -87,7 +87,7 @@ public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl im
                     return new SculptorPropertyCriteriaConjunction(propertyCriteria1, propertyCriteria2);
                 }
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -99,7 +99,7 @@ public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl im
                 case ID:
                     return DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 

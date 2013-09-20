@@ -79,7 +79,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                 case TYPE:
                     return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.organisationSchemeType(), PropertyTypeEnum.ORGANISATION_SCHEME_TYPE, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -91,7 +91,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                 case ID:
                     return OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -126,7 +126,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                 case TYPE:
                     return buildSculptorPropertyCriteria(OrganisationMetamacProperties.organisationType(), PropertyTypeEnum.ORGANISATION_TYPE, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -138,7 +138,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                 case ID:
                     return OrganisationMetamacProperties.nameableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 

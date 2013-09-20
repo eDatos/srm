@@ -81,7 +81,7 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                 case LATEST:
                     return buildSculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -93,7 +93,7 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                 case ID:
                     return ConceptSchemeVersionMetamacProperties.maintainableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -140,7 +140,7 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                 case CONCEPT_SCHEME_LATEST:
                     return buildSculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -152,7 +152,7 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                 case ID:
                     return ConceptMetamacProperties.nameableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 

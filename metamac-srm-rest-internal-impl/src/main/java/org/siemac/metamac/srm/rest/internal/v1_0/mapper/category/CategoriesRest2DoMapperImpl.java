@@ -70,9 +70,11 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                 case DESCRIPTION:
                     return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case VALID_FROM:
-                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validFrom(), CategorySchemeVersionMetamac.class, false);
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validFrom(),
+                            CategorySchemeVersionMetamac.class, false);
                 case VALID_TO:
-                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validTo(), CategorySchemeVersionMetamac.class, false);
+                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validTo(),
+                            CategorySchemeVersionMetamac.class, false);
                 case PROC_STATUS:
                     return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), PropertyTypeEnum.PROC_STATUS, propertyRestriction);
                 case INTERNAL_PUBLICATION_DATE:
@@ -88,7 +90,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                 case LATEST:
                     return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -100,7 +102,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                 case ID:
                     return CategorySchemeVersionMetamacProperties.maintainableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -133,7 +135,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                 case CATEGORY_SCHEME_LATEST:
                     return buildSculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -145,7 +147,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                 case ID:
                     return CategoryMetamacProperties.nameableArtefact().codeFull();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -175,7 +177,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                 case LATEST:
                     return buildSculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
@@ -187,7 +189,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                 case ID:
                     return CategorisationProperties.maintainableArtefact().code();
                 default:
-                    throw toRestExceptionParameterIncorrect(propertyNameCriteria.name());
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
 
