@@ -1,6 +1,8 @@
 package org.siemac.metamac.srm.core.code.mapper;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -23,6 +25,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -132,6 +135,23 @@ public class CodesDo2DtoMapperTest extends SrmBaseTest {
 
         VariableElementDto dto = codesDo2DtoMapper.variableElementDoToDto(entity);
         CodesMetamacAsserts.assertEqualsVariableElement(entity, dto);
+    }
+
+    @Test
+    public void testVariableElementBasicDoToDto() {
+        VariableElement entity = mockVariableElementWithAllMetadata();
+        VariableElementBasicDto dto = codesDo2DtoMapper.variableElementDoToBasicDto(entity);
+        CodesMetamacAsserts.assertEqualsVariableElementBasic(entity, dto);
+        assertFalse(dto.getHasShape());
+    }
+
+    @Test
+    public void testVariableElementBasicGeographicalDoToDto() {
+        VariableElement entity = CodesMetamacDoMocks.mockVariableElementGeographicalFixedValues("variableElement1");
+
+        VariableElementBasicDto dto = codesDo2DtoMapper.variableElementDoToBasicDto(entity);
+        CodesMetamacAsserts.assertEqualsVariableElementBasic(entity, dto);
+        assertTrue(dto.getHasShape());
     }
 
     @Test

@@ -285,6 +285,7 @@ public class CodesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements Codes
         VariableElementBasicDto target = new VariableElementBasicDto();
         target.setShortName(do2DtoMapperSdmxSrm.internationalStringToDto(TypeDozerCopyMode.COPY_ALL_METADATA, source.getShortName()));
         target.setVariable(variableDoToRelatedResourceDto(source.getVariable()));
+        target.setHasShape(source.getShapeWkt() != null);
         identifiableArtefactDoToIdentifiableArtefactBasicDto(source.getIdentifiableArtefact(), target);
         return target;
     }

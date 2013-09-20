@@ -137,6 +137,8 @@ Application DtosMetamacCodeDomain {
 			- @InternationalStringDto shortName nullable;
 			"Variable"
 			- @RelatedResourceDto variable not nullable;
+			"Has shape"
+			Boolean hasShape not nullable;
 		}
 		
 		"Dto for VariableElementOperation"		

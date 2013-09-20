@@ -22,6 +22,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -497,6 +498,21 @@ public class CodesMetamacAsserts extends CodesAsserts {
 
         // other artefacts
         assertEqualsIdentifiableArtefact(entity.getIdentifiableArtefact(), dto, mapperEnum);
+    }
+
+    public static void assertEqualsVariableElementBasic(VariableElement expected, VariableElementBasicDto actual) {
+        assertEqualsVariableElementBasic(expected, actual, MapperEnum.DO2DTO);
+    }
+
+    public static void assertEqualsVariableElementBasic(VariableElementBasicDto actual, VariableElement expected) {
+        assertEqualsVariableElementBasic(expected, actual, MapperEnum.DTO2DO);
+    }
+
+    private static void assertEqualsVariableElementBasic(VariableElement entity, VariableElementBasicDto dto, MapperEnum mapperEnum) {
+        assertEqualsInternationalString(entity.getShortName(), dto.getShortName());
+        assertEquals(entity.getIdentifiableArtefact().getCode(), dto.getCode());
+        assertEquals(entity.getIdentifiableArtefact().getUrn(), dto.getUrn());
+        assertEquals(entity.getVariable().getNameableArtefact().getUrn(), dto.getVariable().getUrn());
     }
 
     public static void assertEqualsVariableElementRelatedResourceDto(VariableElement entity, RelatedResourceDto dto, MapperEnum mapperEnum) {
