@@ -106,8 +106,9 @@
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac</groupId>
-            <artifactId>metamac-rest-common-test</artifactId>
-            <version>${metamac-rest-common-test.version}</version>
+            <artifactId>metamac-rest-common</artifactId>
+            <type>test-jar</type>
+            <version>${metamac-rest-common.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -142,5 +143,47 @@
             <version>${geronimo-servlet_2.5_spec.version}</version>
             <scope>test</scope>
         </dependency>
+<dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-testutils</artifactId>
+            <version>${cxf.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>${jetty.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>${jetty.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+            <version>${jetty.version}</version>
+            <scope>test</scope>
+        </dependency>          
     </dependencies>
 </project>
