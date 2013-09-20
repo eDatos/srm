@@ -19,18 +19,6 @@
         <!-- METAMAC -->
         <dependency>
             <groupId>org.siemac.metamac</groupId>
-            <artifactId>metamac-common-test</artifactId>
-            <version>${metamac-common-test.version}</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>metamac-core-common</artifactId>
-                    <groupId>org.siemac.metamac</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.siemac.metamac</groupId>
             <artifactId>metamac-core-common</artifactId>
             <version>${metamac-core-common.version}</version>
             <classifier>resources</classifier>
@@ -55,6 +43,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac</groupId>
+            <artifactId>metamac-core-common</artifactId>
+            <version>${metamac-core-common.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>        
         <dependency>
             <groupId>com.arte.statistic.statistic-sdmx-srm</groupId>
             <artifactId>statistic-sdmx-srm-core</artifactId>

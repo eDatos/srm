@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.siemac.metamac.metamac-srm</groupId>
@@ -13,25 +13,25 @@
     <groupId>org.siemac.metamac.metamac-srm</groupId>
     <artifactId>metamac-srm-rest-internal-impl</artifactId>
     <packaging>jar</packaging>
-    <name>SIEMAC :: METAMAC :: SRM :: REST :: INTERNAL IMPL</name>  
+    <name>SIEMAC :: METAMAC :: SRM :: REST :: INTERNAL IMPL</name>
 
-	<dependencies>
+    <dependencies>
         <!-- Metamac -->
-		<dependency>
-			<groupId>org.siemac.metamac.metamac-srm</groupId>
-			<artifactId>metamac-srm-rest-internal-api</artifactId>
-			<version>${metamac-srm-rest-internal-api.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-srm</groupId>
+            <artifactId>metamac-srm-rest-internal-api</artifactId>
+            <version>${metamac-srm-rest-internal-api.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-srm</groupId>
             <artifactId>metamac-srm-core</artifactId>
             <classifier>client</classifier>
             <version>${project.version}</version>
             <exclusions>
-            	<exclusion>
-            		<artifactId>statistic-sdmx-v2_1-domain</artifactId>
-            		<groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>statistic-sdmx-v2_1-domain</artifactId>
+                    <groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -73,7 +73,7 @@
             <version>${spring.version}</version>
         </dependency>
 
-	<!-- JSON -->	
+        <!-- JSON -->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
@@ -93,21 +93,16 @@
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-xc</artifactId>
             <version>${jackson.version}</version>
-        </dependency>         
-        
+        </dependency>
+
 
         <!-- Test -->
         <dependency>
             <groupId>org.siemac.metamac</groupId>
-            <artifactId>metamac-common-test</artifactId>
-            <version>${metamac-common-test.version}</version>
+            <artifactId>metamac-core-common</artifactId>
+            <version>${metamac-core-common.version}</version>
+            <type>test-jar</type>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>metamac-core-common</artifactId>
-                    <groupId>org.siemac.metamac</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac</groupId>
@@ -129,12 +124,18 @@
             <version>${statistic-sdmx-srm.version}</version>
             <scope>test</scope>
             <exclusions>
-            	<exclusion>
-            		<artifactId>statistic-sdmx-v2_1-domain</artifactId>
-            		<groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>statistic-sdmx-v2_1-domain</artifactId>
+                    <groupId>com.arte.statistic.statistic-sdmx-v2_1</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>        
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-servlet_2.5_spec</artifactId>
