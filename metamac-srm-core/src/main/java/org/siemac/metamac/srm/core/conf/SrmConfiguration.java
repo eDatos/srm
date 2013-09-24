@@ -1,15 +1,10 @@
 package org.siemac.metamac.srm.core.conf;
 
-import java.util.List;
-
 import org.siemac.metamac.core.common.exception.MetamacException;
 
-public interface SrmConfiguration {
+import com.arte.statistic.sdmx.srm.core.conf.SdmxSrmConfiguration;
 
-    /**
-     * Retrieves organisation that is maintainer default to create artefacts
-     */
-    public String retrieveMaintainerUrnDefault() throws MetamacException;
+public interface SrmConfiguration extends SdmxSrmConfiguration {
 
     /**
      * Retrieves the concept ID for concept identification default of primary measure to create artefacts
@@ -32,6 +27,11 @@ public interface SrmConfiguration {
     public String retrieveVariableElementWorldUrn() throws MetamacException;
 
     /**
+     * Retrieves the Cron expression to perform a cleanup of deleted entities
+     */
+    public String retrieveJobDeleteDeprecatedEntitiesCronExpression() throws MetamacException;
+
+    /**
      * Checks if Database is Oracle
      */
     public Boolean isDatabaseOracle() throws MetamacException;
@@ -40,27 +40,5 @@ public interface SrmConfiguration {
      * Checks if Database is SQL Server
      */
     public Boolean isDatabaseSqlServer() throws MetamacException;
-
-    /**
-     * Retrieves all languages managed by service
-     */
-    public List<String> retrieveLanguages() throws MetamacException;
-
-    /**
-     * Retrieves language as default
-     */
-    public String retrieveLanguageDefault() throws MetamacException;
-
-    /**
-     * Retrieves url base of Statistical Operation Internal API
-     */
-    public String retrieveStatisticalOperationsInternalApiUrlBase() throws MetamacException;
-
-    /**
-     * Retrieves url base of Statistical Operation Internal Web
-     */
-    public String retrieveStatisticalOperationsInternalWebApplicationUrlBase() throws MetamacException;
-
-    public String retrieveJobDeleteDeprecatedEntitiesCronExpression() throws MetamacException;
 
 }

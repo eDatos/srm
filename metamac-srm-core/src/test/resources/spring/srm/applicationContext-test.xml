@@ -32,7 +32,7 @@
     </bean>
 
     <!-- Metamac environment configuration -->
-    <bean id="configurationService" class="org.siemac.metamac.core.common.conf.ConfigurationServiceImpl">
+    <bean id="configurationService" class="org.siemac.metamac.srm.core.conf.SrmConfigurationImpl">
         <property name="systemConfigurationFile">
             <value>classpath:metamac/environment-test.xml</value>
         </property>
