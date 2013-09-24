@@ -5,10 +5,10 @@ import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
+import org.siemac.metamac.core.common.criteria.SculptorCriteriaConjunction;
+import org.siemac.metamac.core.common.criteria.SculptorCriteriaDisjunction;
 import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteria;
 import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteriaBase;
-import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteriaConjunction;
-import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteriaDisjunction;
 import org.siemac.metamac.core.common.criteria.mapper.MetamacCriteria2SculptorCriteria;
 import org.siemac.metamac.core.common.criteria.mapper.MetamacCriteria2SculptorCriteria.CriteriaCallback;
 import org.siemac.metamac.core.common.criteria.utils.CriteriaUtils;
@@ -240,44 +240,61 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             DataStructureDefinitionVersionMetamacCriteriaPropertyEnum propertyEnum = DataStructureDefinitionVersionMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case PROC_STATUS:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue(),
+                            propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case MAINTAINER_URN:
                     return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().maintainer().nameableArtefact().urn(),
-                            propertyRestriction.getStringValue());
+                            propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case STATISTICAL_OPERATION_URN:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.statisticalOperation().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.statisticalOperation().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case IS_LAST_VERSION:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case LATEST_FINAL:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case LATEST_PUBLIC:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_DATE:
                     return new SculptorPropertyCriteria(getDatetimeLeafPropertyEmbedded(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
-                            DataStructureDefinitionVersion.class), propertyRestriction.getDateValue());
+                            DataStructureDefinitionVersion.class), propertyRestriction.getDateValue(), propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_DATE:
                     return new SculptorPropertyCriteria(getDatetimeLeafPropertyEmbedded(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
-                            DataStructureDefinitionVersion.class), propertyRestriction.getDateValue());
+                            DataStructureDefinitionVersion.class), propertyRestriction.getDateValue(), propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getStringValue());
-                case DIMENSION_CONCEPT_URN:
-                    return new SculptorPropertyCriteriaConjunction(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact().urn(),
-                            propertyRestriction.getStringValue(), propertyRestriction.getOperationType(), DataStructureDefinitionVersionMetamacProperties.grouping().components().componentType(),
+                    return new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
+                case DIMENSION_CONCEPT_URN: {
+                    SculptorPropertyCriteria propertyCriteria1 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact()
+                            .urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
+                    SculptorPropertyCriteria propertyCriteria2 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().componentType(),
                             TypeComponent.DIMENSION_COMPONENT, OperationType.EQ);
-                case ATTRIBUTE_CONCEPT_URN:
-                    return new SculptorPropertyCriteriaConjunction(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact().urn(),
-                            propertyRestriction.getStringValue(), propertyRestriction.getOperationType(), DataStructureDefinitionVersionMetamacProperties.grouping().components().componentType(),
+                    return new SculptorCriteriaConjunction(propertyCriteria1, propertyCriteria2);
+                }
+                case ATTRIBUTE_CONCEPT_URN: {
+                    SculptorPropertyCriteria propertyCriteria1 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().cptIdRef().nameableArtefact()
+                            .urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
+                    SculptorPropertyCriteria propertyCriteria2 = new SculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.grouping().components().componentType(),
                             TypeComponent.DATA_ATTRIBUTE, OperationType.EQ);
+                    return new SculptorCriteriaConjunction(propertyCriteria1, propertyCriteria2);
+                }
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -322,39 +339,50 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             ConceptSchemeVersionMetamacCriteriaPropertyEnum propertyEnum = ConceptSchemeVersionMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case PROC_STATUS:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue(),
+                            propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case MAINTAINER_URN:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().maintainer().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().maintainer().nameableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case CONCEPT_SCHEME_TYPE:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.type(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.type(), propertyRestriction.getEnumValue(), propertyRestriction.getOperationType());
                 case STATISTICAL_OPERATION_URN:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.relatedOperation().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.relatedOperation().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case IS_LAST_VERSION:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case LATEST_FINAL:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case LATEST_PUBLIC:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_DATE:
                     return new SculptorPropertyCriteria(
                             getDatetimeLeafPropertyEmbedded(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(), ConceptSchemeVersion.class),
-                            propertyRestriction.getDateValue());
+                            propertyRestriction.getDateValue(), propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_DATE:
                     return new SculptorPropertyCriteria(
                             getDatetimeLeafPropertyEmbedded(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(), ConceptSchemeVersion.class),
-                            propertyRestriction.getDateValue());
+                            propertyRestriction.getDateValue(), propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -394,30 +422,36 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             ConceptMetamacCriteriaPropertyEnum propertyEnum = ConceptMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case DESCRIPTION_SOURCE:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.descriptionSource().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.descriptionSource().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case ACRONYM:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.acronym().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.acronym().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case CONCEPT_PARENT_URN:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.parent().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.parent().nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case CONCEPT_SCHEME_URN:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case CONCEPT_SCHEME_TYPE:
                     return new SculptorPropertyCriteria(new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(),
-                            ConceptSchemeVersionMetamacProperties.type().getName(), false, ConceptMetamac.class), propertyRestriction.getEnumValue());
+                            ConceptSchemeVersionMetamacProperties.type().getName(), false, ConceptMetamac.class), propertyRestriction.getEnumValue(), propertyRestriction.getOperationType());
                 case CONCEPT_SCHEME_IS_LAST_VERSION:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case CONCEPT_SCHEME_LATEST_FINAL:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case CONCEPT_SCHEME_LATEST_PUBLIC:
-                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -459,35 +493,46 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             OrganisationSchemeVersionMetamacCriteriaPropertyEnum propertyEnum = OrganisationSchemeVersionMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case TYPE:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.organisationSchemeType(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.organisationSchemeType(), propertyRestriction.getEnumValue(), propertyRestriction.getOperationType());
                 case PROC_STATUS:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue(),
+                            propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case MAINTAINER_URN:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().maintainer().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().maintainer().nameableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case IS_LAST_VERSION:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case LATEST_FINAL:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case LATEST_PUBLIC:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_DATE:
                     return new SculptorPropertyCriteria(getDatetimeLeafPropertyEmbedded(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
-                            OrganisationSchemeVersion.class), propertyRestriction.getDateValue());
+                            OrganisationSchemeVersion.class), propertyRestriction.getDateValue(), propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_DATE:
                     return new SculptorPropertyCriteria(getDatetimeLeafPropertyEmbedded(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
-                            OrganisationSchemeVersion.class), propertyRestriction.getDateValue());
+                            OrganisationSchemeVersion.class), propertyRestriction.getDateValue(), propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -528,28 +573,34 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             OrganisationMetamacCriteriaPropertyEnum propertyEnum = OrganisationMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case TYPE:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.organisationType(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.organisationType(), propertyRestriction.getEnumValue(), propertyRestriction.getOperationType());
                 case ORGANISATION_PARENT_URN:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.parent().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.parent().nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case ORGANISATION_SCHEME_URN:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case ORGANISATION_SCHEME_TYPE:
                     return new SculptorPropertyCriteria(new LeafProperty<OrganisationMetamac>(OrganisationMetamacProperties.itemSchemeVersion().getName(), OrganisationSchemeVersionMetamacProperties
-                            .organisationSchemeType().getName(), false, OrganisationMetamac.class), propertyRestriction.getEnumValue());
+                            .organisationSchemeType().getName(), false, OrganisationMetamac.class), propertyRestriction.getEnumValue(), propertyRestriction.getOperationType());
                 case ORGANISATION_SCHEME_IS_LAST_VERSION:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case ORGANISATION_SCHEME_LATEST_FINAL:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case ORGANISATION_SCHEME_LATEST_PUBLIC:
-                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -587,13 +638,13 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             OrganisationContactCriteriaPropertyEnum propertyEnum = OrganisationContactCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case ORGANISATION_URN:
-                    return new SculptorPropertyCriteria(ContactProperties.organisation().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ContactProperties.organisation().nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(ContactProperties.name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ContactProperties.name().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case ORGANISATION_UNIT:
-                    return new SculptorPropertyCriteria(ContactProperties.organisationUnit().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ContactProperties.organisationUnit().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case RESPONSIBILITY:
-                    return new SculptorPropertyCriteria(ContactProperties.responsibility().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(ContactProperties.responsibility().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -627,33 +678,44 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             CategorySchemeVersionMetamacCriteriaPropertyEnum propertyEnum = CategorySchemeVersionMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case PROC_STATUS:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue(),
+                            propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case MAINTAINER_URN:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().maintainer().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().maintainer().nameableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case IS_LAST_VERSION:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case LATEST_FINAL:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case LATEST_PUBLIC:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_DATE:
                     return new SculptorPropertyCriteria(getDatetimeLeafPropertyEmbedded(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
-                            CategorySchemeVersion.class), propertyRestriction.getDateValue());
+                            CategorySchemeVersion.class), propertyRestriction.getDateValue(), propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_DATE:
                     return new SculptorPropertyCriteria(getDatetimeLeafPropertyEmbedded(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
-                            CategorySchemeVersion.class), propertyRestriction.getDateValue());
+                            CategorySchemeVersion.class), propertyRestriction.getDateValue(), propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -694,25 +756,32 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             CategoryMetamacCriteriaPropertyEnum propertyEnum = CategoryMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case CATEGORY_PARENT_URN:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.parent().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.parent().nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case CATEGORY_SCHEME_URN:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case CATEGORY_SCHEME_IS_LAST_VERSION:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case CATEGORY_SCHEME_LATEST_FINAL:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case CATEGORY_SCHEME_LATEST_PUBLIC:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case CATEGORY_SCHEME_EXTERNALLY_PUBLISHED:
-                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -754,39 +823,49 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             CodelistVersionMetamacCriteriaPropertyEnum propertyEnum = CodelistVersionMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case PROC_STATUS:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().procStatus(), propertyRestriction.getEnumValue(), propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case DESCRIPTION_SOURCE:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.descriptionSource().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.descriptionSource().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().description().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case MAINTAINER_URN:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().maintainer().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().maintainer().nameableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case ACCESS_TYPE:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.accessType(), propertyRestriction.getEnumValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.accessType(), propertyRestriction.getEnumValue(), propertyRestriction.getOperationType());
                 case IS_LAST_VERSION:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case LATEST_FINAL:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case LATEST_PUBLIC:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case CODELIST_FAMILY_URN:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.family().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.family().nameableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_DATE:
                     return new SculptorPropertyCriteria(getDatetimeLeafPropertyEmbedded(CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(), CodelistVersion.class),
-                            propertyRestriction.getDateValue());
+                            propertyRestriction.getDateValue(), propertyRestriction.getOperationType());
                 case INTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_DATE:
                     return new SculptorPropertyCriteria(getDatetimeLeafPropertyEmbedded(CodelistVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(), CodelistVersion.class),
-                            propertyRestriction.getDateValue());
+                            propertyRestriction.getDateValue(), propertyRestriction.getOperationType());
                 case EXTERNAL_PUBLICATION_USER:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -829,26 +908,35 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             CodeMetamacCriteriaPropertyEnum propertyEnum = CodeMetamacCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case DESCRIPTION:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getStringValue());
-                case SHORT_NAME:
-                    return new SculptorPropertyCriteriaDisjunction(CodeMetamacProperties.shortName().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType(),
-                            CodeMetamacProperties.variableElement().shortName().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().description().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
+                case SHORT_NAME: {
+                    SculptorPropertyCriteria propertyCriteria1 = new SculptorPropertyCriteria(CodeMetamacProperties.shortName().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
+                    SculptorPropertyCriteria propertyCriteria2 = new SculptorPropertyCriteria(CodeMetamacProperties.variableElement().shortName().texts().label(),
+                            propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
+                    return new SculptorCriteriaDisjunction(propertyCriteria1, propertyCriteria2);
+                }
                 case CODE_PARENT_URN:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.parent().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.parent().nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case CODELIST_URN:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 case CODELIST_IS_LAST_VERSION:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().isLastVersion(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case CODELIST_LATEST_FINAL:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 case CODELIST_LATEST_PUBLIC:
-                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -886,9 +974,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             CodelistFamilyCriteriaPropertyEnum propertyEnum = CodelistFamilyCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -923,9 +1012,10 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             VariableFamilyCriteriaPropertyEnum propertyEnum = VariableFamilyCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -960,11 +1050,11 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             VariableCriteriaPropertyEnum propertyEnum = VariableCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case NAME:
-                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case VARIABLE_FAMILY_URN:
-                    return new SculptorPropertyCriteria(VariableProperties.families().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableProperties.families().nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -1001,13 +1091,13 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
             VariableElementCriteriaPropertyEnum propertyEnum = VariableElementCriteriaPropertyEnum.fromValue(propertyRestriction.getPropertyName());
             switch (propertyEnum) {
                 case CODE:
-                    return new SculptorPropertyCriteria(VariableElementProperties.identifiableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableElementProperties.identifiableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case URN:
-                    return new SculptorPropertyCriteria(VariableElementProperties.identifiableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableElementProperties.identifiableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case SHORT_NAME:
-                    return new SculptorPropertyCriteria(VariableElementProperties.shortName().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableElementProperties.shortName().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case VARIABLE_URN:
-                    return new SculptorPropertyCriteria(VariableElementProperties.variable().nameableArtefact().urn(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableElementProperties.variable().nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
