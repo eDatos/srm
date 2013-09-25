@@ -12,13 +12,6 @@
     <!-- Activates annotation-based bean configuration -->
     <context:annotation-config />
 
-    <!-- METAMAC environment configuration -->
-    <bean id="configurationService" class="org.siemac.metamac.core.common.conf.ConfigurationServiceImpl">
-        <property name="systemConfigurationFile">
-            <value>classpath:metamac/environment.xml</value>
-        </property>
-    </bean>
-
     <bean id="propertyPlaceholderConfigurer" class="org.siemac.metamac.core.common.conf.ConfigurationServicePropertyPlaceholderConfigurer">
         <property name="configurationService">
             <ref bean="configurationService" />
