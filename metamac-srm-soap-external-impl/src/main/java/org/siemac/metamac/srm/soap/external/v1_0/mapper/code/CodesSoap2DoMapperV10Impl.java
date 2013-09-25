@@ -1,9 +1,10 @@
 package org.siemac.metamac.srm.soap.external.v1_0.mapper.code;
 
 import org.fornax.cartridges.sculptor.framework.domain.Property;
-import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteria;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaOrder;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaPropertyRestriction;
+import org.siemac.metamac.soap.criteria.SculptorPropertyCriteria;
+import org.siemac.metamac.soap.criteria.SculptorPropertyCriteriaBase;
 import org.siemac.metamac.soap.criteria.mapper.SoapCriteria2SculptorCriteria;
 import org.siemac.metamac.soap.criteria.mapper.SoapCriteria2SculptorCriteria.CriteriaCallback;
 import org.siemac.metamac.soap.exception.SoapCommonServiceExceptionType;
@@ -70,13 +71,13 @@ public class CodesSoap2DoMapperV10Impl implements CodesSoap2DoMapperV10 {
     private class VariableFamilyCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws ExceptionFault {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws ExceptionFault {
             VariableFamilyCriteriaPropertyRestriction propertyNameCriteria = VariableFamilyCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperation());
                 case NAME:
-                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperation());
                 default:
                     throw SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.PARAMETER_INCORRECT, SoapExceptionParameters.CRITERIA_PROPERTY_NAME);
             }
@@ -106,13 +107,13 @@ public class CodesSoap2DoMapperV10Impl implements CodesSoap2DoMapperV10 {
             VariableCriteriaPropertyRestriction propertyNameCriteria = VariableCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperation());
                 case NAME:
-                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperation());
                 case SHORT_NAME:
-                    return new SculptorPropertyCriteria(VariableProperties.shortName().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableProperties.shortName().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperation());
                 case FAMILY_ID:
-                    return new SculptorPropertyCriteria(VariableProperties.families().nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(VariableProperties.families().nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperation());
                 default:
                     throw SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.PARAMETER_INCORRECT, SoapExceptionParameters.CRITERIA_PROPERTY_NAME);
             }
@@ -138,13 +139,13 @@ public class CodesSoap2DoMapperV10Impl implements CodesSoap2DoMapperV10 {
     private class CodelistFamilyCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws ExceptionFault {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws ExceptionFault {
             CodelistFamilyCriteriaPropertyRestriction propertyNameCriteria = CodelistFamilyCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperation());
                 case NAME:
-                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistFamilyProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperation());
                 default:
                     throw SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.PARAMETER_INCORRECT, SoapExceptionParameters.CRITERIA_PROPERTY_NAME);
             }
@@ -174,17 +175,19 @@ public class CodesSoap2DoMapperV10Impl implements CodesSoap2DoMapperV10 {
             CodelistCriteriaPropertyRestriction propertyNameCriteria = CodelistCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperation());
                 case NAME:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().name().texts().label(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperation());
                 case DESCRIPTION_SOURCE:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.descriptionSource().texts().label(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.descriptionSource().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperation());
                 case FAMILY_ID:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.family().nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.family().nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperation());
                 case VARIABLE_ID:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.variable().nameableArtefact().code(), propertyRestriction.getStringValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.variable().nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperation());
                 case LAST_VERSION:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue());
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestPublic(), propertyRestriction.getBooleanValue(),
+                            propertyRestriction.getOperation());
                 default:
                     throw SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.PARAMETER_INCORRECT, SoapExceptionParameters.CRITERIA_PROPERTY_NAME);
             }

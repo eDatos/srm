@@ -1,6 +1,6 @@
 package org.siemac.metamac.soap.criteria.mapper;
 
-import java.util.List; 
+import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -8,20 +8,22 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.siemac.metamac.core.common.criteria.SculptorCriteria;
-import org.siemac.metamac.core.common.criteria.SculptorPropertyCriteria;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteria;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaOrder;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.soap.common.v1_0.domain.MetamacCriteriaRestriction;
+import org.siemac.metamac.soap.common.v1_0.domain.OperationType;
 import org.siemac.metamac.soap.common.v1_0.domain.OrderType;
+import org.siemac.metamac.soap.criteria.SculptorPropertyCriteria;
+import org.siemac.metamac.soap.criteria.SculptorPropertyCriteriaBase;
 import org.siemac.metamac.soap.exception.SoapCommonServiceExceptionType;
 import org.siemac.metamac.soap.exception.SoapExceptionUtils;
 import org.siemac.metamac.soap.structural_resources.v1_0.ExceptionFault;
 import org.siemac.metamac.srm.soap.external.exception.SoapExceptionParameters;
 
-// // TODO put in common library if more soap services are created
+// // TODO put in common library if more soap services are created. Also org.siemac.metamac.soap.criteria.SculptorCriteria* classes
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class SoapCriteria2SculptorCriteria<T> {
 
@@ -146,12 +148,28 @@ public class SoapCriteria2SculptorCriteria<T> {
     private void addRestriction(MetamacCriteriaPropertyRestriction metamacCriteriaPropertyRestriction, ConditionRoot criteria) throws ExceptionFault {
         checkPropertyRestriction(metamacCriteriaPropertyRestriction);
 
-        SculptorPropertyCriteria sculptorPropertyCriteria = callback.retrieveProperty(metamacCriteriaPropertyRestriction);
-        addRestrictionWithProperty(metamacCriteriaPropertyRestriction, criteria, sculptorPropertyCriteria.getProperty(), sculptorPropertyCriteria.getValue());
+        SculptorPropertyCriteriaBase sculptorPropertyCriteriaBase = callback.retrieveProperty(metamacCriteriaPropertyRestriction);
+        addRestrictionBase(criteria, sculptorPropertyCriteriaBase);
     }
 
-    private void addRestrictionWithProperty(MetamacCriteriaPropertyRestriction metamacCriteriaPropertyRestriction, ConditionRoot criteria, Property property, Object value) throws ExceptionFault {
-        switch (metamacCriteriaPropertyRestriction.getOperation()) {
+    private void addRestrictionBase(ConditionRoot<T> criteria, SculptorPropertyCriteriaBase sculptorPropertyCriteriaBase) throws ExceptionFault {
+        if (sculptorPropertyCriteriaBase instanceof SculptorPropertyCriteria) {
+            addRestriction(criteria, (SculptorPropertyCriteria) sculptorPropertyCriteriaBase);
+        } else {
+            throw SoapExceptionUtils.buildExceptionFault(SoapCommonServiceExceptionType.PARAMETER_INCORRECT, SoapExceptionParameters.CRITERIA_OPERATION);
+        }
+    }
+
+    private void addRestriction(ConditionRoot criteria, SculptorPropertyCriteria sculptorPropertyCriteria) throws ExceptionFault {
+        addRestrictionWithProperty(criteria, sculptorPropertyCriteria);
+    }
+
+    private void addRestrictionWithProperty(ConditionRoot criteria, SculptorPropertyCriteria sculptorPropertyCriteria) throws ExceptionFault {
+
+        Property property = sculptorPropertyCriteria.getProperty();
+        Object value = sculptorPropertyCriteria.getValue();
+        OperationType operationType = sculptorPropertyCriteria.getOperationType();
+        switch (operationType) {
             case EQ:
                 criteria.withProperty(property).eq(value);
                 break;
@@ -208,7 +226,7 @@ public class SoapCriteria2SculptorCriteria<T> {
 
     public static interface CriteriaCallback {
 
-        public SculptorPropertyCriteria retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws ExceptionFault;
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacCriteriaPropertyRestriction propertyRestriction) throws ExceptionFault;
         public Property retrievePropertyOrder(MetamacCriteriaOrder order) throws ExceptionFault;
         public Property retrievePropertyOrderDefault() throws ExceptionFault;
     }
