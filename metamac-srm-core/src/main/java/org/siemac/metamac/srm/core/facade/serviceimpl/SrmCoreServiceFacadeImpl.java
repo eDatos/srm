@@ -120,13 +120,13 @@ import com.arte.statistic.sdmx.srm.core.structure.domain.GroupDimensionDescripto
 import com.arte.statistic.sdmx.srm.core.structure.domain.MeasureDescriptor;
 import com.arte.statistic.sdmx.srm.core.task.domain.Task;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.ReferenceResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.task.ContentInputDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.task.TaskDto;
-import com.arte.statistic.sdmx.v2_1.domain.dto.trans.StructureMsgDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDozerCopyMode;
 
@@ -565,7 +565,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public String exportSDMXStructureMsg(ServiceContext ctx, StructureMsgDto structureMsgDto) throws MetamacException {
+    public String exportSDMXStructureMsg(ServiceContext ctx, ReferenceResourceDto referenceResourceDto) throws MetamacException {
         // TODO cambiar la interfaz de este método para que sean los que sean los elementos que se le pasan, sean URNs en vez de objetos
         // posiblemente se tenga que cambiar el structuremsgdto para que almacene conjuntos de urn agrupasad por tipo, es decir, urn de dsd, urn de codelist... y así
 
