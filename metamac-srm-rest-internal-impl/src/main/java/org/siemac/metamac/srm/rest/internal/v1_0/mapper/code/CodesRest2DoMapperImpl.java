@@ -117,6 +117,8 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                     return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case DESCRIPTION_SOURCE:
                     return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.descriptionSource().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
+                case VARIABLE_URN:
+                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.variable().nameableArtefact().urn(), PropertyTypeEnum.STRING, propertyRestriction);
                 case VALID_FROM:
                     return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact().validFrom(), CodelistVersionMetamac.class, false);
                 case VALID_TO:
@@ -204,6 +206,8 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                     }
                     return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(codelistPropertyRestriction, CodeMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 }
+                case VARIABLE_ELEMENT_URN:
+                    return buildSculptorPropertyCriteria(CodeMetamacProperties.variableElement().identifiableArtefact().urn(), PropertyTypeEnum.STRING, propertyRestriction);
                 default:
                     throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
