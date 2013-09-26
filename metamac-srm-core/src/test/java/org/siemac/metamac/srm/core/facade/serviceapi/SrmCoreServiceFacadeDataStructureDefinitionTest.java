@@ -7,20 +7,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.xml.bind.Marshaller;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.sdmx.resources.sdmxml.schemas.v2_1.message.Structure;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaOrder;
@@ -31,7 +23,6 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.dto.LocalisedStringDto;
-import org.siemac.metamac.core.common.jaxb.CustomJaxb2Marshaller;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.ConceptMetamacCriteriaPropertyEnum;
@@ -41,8 +32,6 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDt
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.dsd.serviceapi.utils.DataStructureDefinitionMetamacDtoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
@@ -67,18 +56,6 @@ public class SrmCoreServiceFacadeDataStructureDefinitionTest extends SrmBaseTest
 
     @Autowired
     protected SrmCoreServiceFacade srmCoreServiceFacade;
-
-    @Autowired
-    @Qualifier("jaxb2MarshallerWithValidation")
-    private Jaxb2Marshaller        marshallerWithValidation;
-
-    @Autowired
-    @Qualifier("jaxb2MarshallerWithoutValidation")
-    private CustomJaxb2Marshaller  marshallerWithoutValidation;
-
-    // @Autowired
-    // @Qualifier("mapperCoreCopyAllMetadataMode")
-    // private DozerBeanMapper mapper;
 
     // -------------------------------------------------------------------------------
     // DSDs
@@ -429,17 +406,17 @@ public class SrmCoreServiceFacadeDataStructureDefinitionTest extends SrmBaseTest
         for (FileInputStream fis : fileInputStreams) {
 
             // 1. Extract Structure
-            Structure structure = (Structure) marshallerWithValidation.unmarshal(new StreamSource(fis));
-
-            StringWriter writer = new StringWriter();
-            StreamResult result = new StreamResult(writer);
-
-            // 2. Marshaller.JAXB_FORMATTED_OUTPUT, true
-            Map<String, Object> marshallProperties = new HashMap<String, Object>();
-            marshallProperties.put(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshallerWithoutValidation.setMarshallerProperties(marshallProperties);
-
-            marshallerWithoutValidation.marshal(structure, result);
+            // Structure structure = (Structure) marshallerWithValidation.unmarshal(new StreamSource(fis));
+            //
+            // StringWriter writer = new StringWriter();
+            // StreamResult result = new StreamResult(writer);
+            //
+            // // 2. Marshaller.JAXB_FORMATTED_OUTPUT, true
+            // Map<String, Object> marshallProperties = new HashMap<String, Object>();
+            // marshallProperties.put(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            // marshallerWithoutValidation.setMarshallerProperties(marshallProperties);
+            //
+            // marshallerWithoutValidation.marshal(structure, result);
 
             // System.out.println(writer.toString());
         }

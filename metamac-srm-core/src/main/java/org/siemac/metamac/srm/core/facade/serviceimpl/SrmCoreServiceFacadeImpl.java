@@ -101,8 +101,6 @@ import org.siemac.metamac.srm.core.security.TasksSecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
@@ -170,10 +168,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     private CodesDto2DoMapper                          codesDto2DoMapper;
 
     @Autowired
-    @Qualifier("jaxb2MarshallerWithValidation")
-    private Jaxb2Marshaller                            marshallerWithValidation;
-
-    @Autowired
     private MetamacCriteria2SculptorCriteriaMapper     metamacCriteria2SculptorCriteriaMapper;
 
     @Autowired
@@ -183,10 +177,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     private final static Comparator<StructureVersion>  STRUCTURE_CREATED_DATE_DESC_COMPARATOR   = new StructureCreatedDateDescComparator();
 
     private static Logger                              logger                                   = LoggerFactory.getLogger(SrmCoreServiceFacade.class);
-
-    public Jaxb2Marshaller getMarshallerWithValidation() {
-        return marshallerWithValidation;
-    }
 
     protected DataStructureDefinitionDo2DtoMapper getDo2DtoMapper() {
         return dataStructureDefinitionDo2DtoMapper;
@@ -573,32 +563,6 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         // OutputStream outputStream = null;
         File file = null;
-        /*
-         * try {
-         * file = File.createTempFile("mt_dsd_", ".xml");
-         * outputStream = new FileOutputStream(file);
-         * // StreamResult resultWriter = new StreamResult(outputStream);
-         * // Output with writer to avoid bad indent in xml ouput
-         * OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-         * StreamResult result = new StreamResult(writer);
-         * // Marshall properties
-         * Map<String, Object> marshallProperties = new HashMap<String, Object>();
-         * marshallProperties.put(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); // Formatted output
-         * getMarshallerWithValidation().setMarshallerProperties(marshallProperties);
-         * // Transform Metamac Business Objects to JAXB Objects
-         * Structure structure = getTransformationServiceFacade().transformStructureMessage(ctx, structureMsgDto);
-         * getMarshallerWithValidation().marshal(structure, result);
-         * } catch (XmlMappingException e) {
-         * throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(MetamacTransExceptionType.MATAMAC_TRANS_JAXB_ERROR).withLoggedLevel(ExceptionLevelEnum.ERROR)
-         * .withMessageParameters((e.getRootCause() != null) ? e.getRootCause().getMessage() : e.getMessage()).build();
-         * } catch (FileNotFoundException e) {
-         * throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.UNKNOWN).withLoggedLevel(ExceptionLevelEnum.ERROR)
-         * .withMessageParameters(FileNotFoundException.class.getName()).build();
-         * } catch (IOException e) {
-         * throw MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.UNKNOWN).withLoggedLevel(ExceptionLevelEnum.ERROR)
-         * .withMessageParameters(IOException.class.getName()).build();
-         * }
-         */
         return (file == null) ? StringUtils.EMPTY : file.getAbsolutePath();
     }
 
