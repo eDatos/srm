@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
+import org.siemac.metamac.srm.core.common.SrmConstantsTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
@@ -98,6 +100,11 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
                     ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_DIMENSION_REPRESENTATION_UPDATED, exceptions);
             ValidationUtils.checkMetadataRequired(((DimensionComponent) component).getIsConceptIdUpdated(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_DIMENSION_CONCEPTID_UPDATED,
                     exceptions);
+        }
+
+        // In metamac there are reserved keywords
+        if (StringUtils.equalsIgnoreCase(SrmConstantsTest.ATTRIBUTE_DATA_SOURCE_ID, component.getCode())) {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METAMAC_RESERVED_KEYWORD, component.getCode()));
         }
 
         ExceptionUtils.throwIfException(exceptions);

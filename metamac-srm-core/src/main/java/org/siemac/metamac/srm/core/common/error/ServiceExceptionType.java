@@ -12,6 +12,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType MAINTAINABLE_ARTEFACT_VERSIONING_NOT_SUPPORTED_VERSION_NOT_PUBLISHED               = create("exception.srm.maintainable_artefact.versioning_not_supported.version_unpublished_found");
     public static final CommonServiceExceptionType ARTEFACT_CAN_NOT_REPLACE_ITSELF                                                    = create("exception.srm.artefact.cannot_replace_itself");
     public static final CommonServiceExceptionType ARTEFACT_IS_ALREADY_REPLACED                                                       = create("exception.srm.artefact.already_replaced");
+    public static final CommonServiceExceptionType METAMAC_RESERVED_KEYWORD                                                           = create("exception.srm.reserved_keyword");
 
     // Concepts
     public static final CommonServiceExceptionType CONCEPT_SCHEME_WRONG_TYPE                                                          = create("exception.srm.concepts.concept_scheme.wrong_type");
