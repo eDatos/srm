@@ -6,6 +6,4 @@ public class SrmConstantsTest {
     public static final String ENDPOINT_INTERNAL_API_STATISTICAL_OPERATIONS    = "apis.metamac.org/statistical-operations-internal";
     public static final String INTERNAL_WEB_APPLICATION_STATISTICAL_OPERATIONS = "http://localhost:8080/metamac-statistical-operations-web";
 
-    // Attribute name used in repository, is a metamac reserved keyword
-    public static String       ATTRIBUTE_DATA_SOURCE_ID                        = "DATA_SOURCE_ID";
 }

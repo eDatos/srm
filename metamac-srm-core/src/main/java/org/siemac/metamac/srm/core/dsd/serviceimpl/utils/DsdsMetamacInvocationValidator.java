@@ -10,9 +10,9 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
-import org.siemac.metamac.srm.core.common.SrmConstantsTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Component;
@@ -103,7 +103,7 @@ public class DsdsMetamacInvocationValidator extends DataStructureInvocationValid
         }
 
         // In metamac there are reserved keywords
-        if (StringUtils.equalsIgnoreCase(SrmConstantsTest.ATTRIBUTE_DATA_SOURCE_ID, component.getCode())) {
+        if (StringUtils.equalsIgnoreCase(SrmConstants.ATTRIBUTE_DATA_SOURCE_ID, component.getCode())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METAMAC_RESERVED_KEYWORD, component.getCode()));
         }
 
