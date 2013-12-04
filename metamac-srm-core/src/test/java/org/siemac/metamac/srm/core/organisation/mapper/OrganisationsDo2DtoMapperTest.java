@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.core.organisation.mapper;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -20,6 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -40,6 +43,15 @@ public class OrganisationsDo2DtoMapperTest extends SrmBaseTest {
 
         OrganisationSchemeMetamacDto dto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToDto(entity);
         OrganisationsMetamacAsserts.assertEqualsOrganisationScheme(entity, dto);
+    }
+
+    @Test
+    public void organisationSchemeMetamacDoToRelatedResourceDto() throws MetamacException {
+        OrganisationSchemeVersionMetamac entity = OrganisationsMetamacDoMocks.mockOrganisationSchemeFixedValues("agency01", "organisationScheme01", "01.000",
+                OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
+
+        RelatedResourceDto dto = organisationsDo2DtoMapper.organisationSchemeMetamacDoToRelatedResourceDto(entity);
+        assertNotNull(dto);
     }
 
     @Test
