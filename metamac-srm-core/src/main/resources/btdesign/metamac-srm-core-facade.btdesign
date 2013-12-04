@@ -711,6 +711,16 @@ Application SrmFacadeCore {
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 	    	"
 	    	TaskInfo importSDMXStructureMsg(@ContentInputDto contentDto) throws MetamacException;
+	    	
+	    	"
+	    	 @throws org.siemac.metamac.core.common.exception.MetamacException
+	    	"
+	    	TaskInfo importSDMXStructureMsg(@ContentInputDto contentDto, Set<String> resourcesUrnToImport) throws MetamacException;
+	    	
+	    	"
+	    	 @throws org.siemac.metamac.core.common.exception.MetamacException
+	    	"
+	    	List<@RelatedResourceDto> previewImportSDMXStructure(@ContentInputDto contentDto) throws MetamacException;
 	   		
 	    	"
 	    	 @param ctx                                                                         

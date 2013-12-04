@@ -101,4 +101,14 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
     public List<CategorisationDto> categorisationDoListToDtoList(List<Categorisation> sources) {
         return do2DtoMapperSdmxSrm.categorisationsDoToDto(sources);
     }
+
+    @Override
+    public RelatedResourceDto categorisationDoToRelatedResourceDto(CategorySchemeVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = do2DtoMapperSdmxSrm.categorisationDoToRelatedResourceDto(source);
+        return target;
+    }
+
 }

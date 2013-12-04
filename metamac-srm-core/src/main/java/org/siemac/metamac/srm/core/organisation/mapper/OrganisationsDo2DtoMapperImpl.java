@@ -35,6 +35,15 @@ public class OrganisationsDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implemen
     }
 
     @Override
+    public RelatedResourceDto organisationSchemeMetamacDoToRelatedResourceDto(OrganisationSchemeVersionMetamac source) {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = do2DtoMapperSdmxSrm.organisationSchemeDoToRelatedResourceDto(source);
+        return target;
+    }
+
+    @Override
     public OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDoToBasicDto(OrganisationSchemeVersionMetamac source) {
         if (source == null) {
             return null;

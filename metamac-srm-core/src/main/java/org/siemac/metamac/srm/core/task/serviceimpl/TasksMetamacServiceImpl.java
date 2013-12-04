@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -58,8 +59,13 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
     }
 
     @Override
-    public TaskInfo importSDMXStructure(ServiceContext ctx, InputStream inputMessage, String fileName) throws MetamacException {
-        return tasksService.importSDMXStructure(ctx, inputMessage, fileName, importationJaxb2DoCallback);
+    public TaskInfo importSDMXStructure(ServiceContext ctx, InputStream inputMessage, String fileName, Set<String> resourcesUrnToImport) throws MetamacException {
+        return tasksService.importSDMXStructure(ctx, inputMessage, fileName, importationJaxb2DoCallback, resourcesUrnToImport);
+    }
+
+    @Override
+    public List<Object> previewImportSDMXStructure(ServiceContext ctx, InputStream inputMessage) throws MetamacException {
+        return tasksService.previewImportSDMXStructure(ctx, inputMessage, importationJaxb2DoCallback);
     }
 
     @Override

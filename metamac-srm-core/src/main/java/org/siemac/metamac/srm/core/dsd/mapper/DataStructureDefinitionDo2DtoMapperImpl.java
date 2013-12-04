@@ -93,6 +93,15 @@ public class DataStructureDefinitionDo2DtoMapperImpl extends BaseDo2DtoMapperImp
         return dataStructureDefinitionMetamacDtos;
     }
 
+    @Override
+    public RelatedResourceDto dataStructureDefinitionMetamacDoToRelatedResourceDto(DataStructureDefinitionVersionMetamac source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+        RelatedResourceDto target = do2DtoMapperSdmxSrm.dataStructureDefinitionToRelatedResourceDto(source);
+        return target;
+    }
+
     private DataStructureDefinitionMetamacDto dataStructureDefinitionVersionMetamacDoToDto(DataStructureDefinitionVersionMetamac source, TypeDozerCopyMode typeDozerCopyMode) throws MetamacException {
         DataStructureDefinitionMetamacDto target = new DataStructureDefinitionMetamacDto();
         target.setLifeCycle(lifeCycleDoToDto(source.getLifeCycleMetadata()));

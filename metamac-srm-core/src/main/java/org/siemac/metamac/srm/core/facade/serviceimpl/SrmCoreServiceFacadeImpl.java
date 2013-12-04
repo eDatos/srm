@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -108,9 +109,13 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ComponentList;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
+import com.arte.statistic.sdmx.srm.core.category.domain.CategorySchemeVersion;
+import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
+import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DataStructureDefinitionVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.DimensionDescriptor;
@@ -535,7 +540,43 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         TasksSecurityUtils.canImportStructure(ctx);
 
         // Import
-        return getTasksMetamacService().importSDMXStructure(ctx, contentDto.getInput(), contentDto.getName());
+        return getTasksMetamacService().importSDMXStructure(ctx, contentDto.getInput(), contentDto.getName(), null);
+    }
+
+    @Override
+    public TaskInfo importSDMXStructureMsg(ServiceContext ctx, ContentInputDto contentDto, Set<String> resourcesUrnToImport) throws MetamacException {
+        // Security
+        TasksSecurityUtils.canImportStructure(ctx);
+
+        // Import
+        return getTasksMetamacService().importSDMXStructure(ctx, contentDto.getInput(), contentDto.getName(), resourcesUrnToImport);
+    }
+
+    @Override
+    public List<RelatedResourceDto> previewImportSDMXStructure(ServiceContext ctx, ContentInputDto contentDto) throws MetamacException {
+        // Security
+        TasksSecurityUtils.canImportStructure(ctx);
+
+        List<Object> previewStructures = getTasksMetamacService().previewImportSDMXStructure(ctx, contentDto.getInput());
+
+        List<RelatedResourceDto> result = new ArrayList<RelatedResourceDto>(previewStructures.size());
+        for (Object elem : previewStructures) {
+            if (elem instanceof OrganisationSchemeVersion) {
+                result.add(organisationsDo2DtoMapper.organisationSchemeMetamacDoToRelatedResourceDto((OrganisationSchemeVersionMetamac) elem));
+            } else if (elem instanceof CategorySchemeVersion) {
+                result.add(categoriesDo2DtoMapper.categorySchemeMetamacDoToRelatedResourceDto((CategorySchemeVersionMetamac) elem));
+            } else if (elem instanceof Categorisation) {
+                result.add(categoriesDo2DtoMapper.categorisationDoToRelatedResourceDto((CategorySchemeVersionMetamac) elem));
+            } else if (elem instanceof CodelistVersion) {
+                result.add(codesDo2DtoMapper.codelistMetamacDoToRelatedResourceDto((CodelistVersionMetamac) elem));
+            } else if (elem instanceof ConceptSchemeVersion) {
+                result.add(conceptsDo2DtoMapper.conceptSchemeMetamacDoToRelatedResourceDto((ConceptSchemeVersionMetamac) elem));
+            } else if (elem instanceof DataStructureDefinitionVersion) {
+                result.add(dataStructureDefinitionDo2DtoMapper.dataStructureDefinitionMetamacDoToRelatedResourceDto((DataStructureDefinitionVersionMetamac) elem));
+            }
+        }
+
+        return result;
     }
 
     @Override

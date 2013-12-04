@@ -20,6 +20,7 @@ public interface OrganisationsDo2DtoMapper {
     public OrganisationSchemeMetamacDto organisationSchemeMetamacDoToDto(OrganisationSchemeVersionMetamac source);
     public OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDoToBasicDto(OrganisationSchemeVersionMetamac source);
     public List<OrganisationSchemeMetamacBasicDto> organisationSchemeMetamacDoListToDtoList(List<OrganisationSchemeVersionMetamac> sources);
+    public RelatedResourceDto organisationSchemeMetamacDoToRelatedResourceDto(OrganisationSchemeVersionMetamac source);
 
     // Organisations
     public OrganisationMetamacDto organisationMetamacDoToDto(OrganisationMetamac source);
