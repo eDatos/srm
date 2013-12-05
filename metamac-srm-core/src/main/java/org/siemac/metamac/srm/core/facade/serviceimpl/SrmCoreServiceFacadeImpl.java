@@ -566,7 +566,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
             } else if (elem instanceof CategorySchemeVersion) {
                 result.add(categoriesDo2DtoMapper.categorySchemeMetamacDoToRelatedResourceDto((CategorySchemeVersionMetamac) elem));
             } else if (elem instanceof Categorisation) {
-                result.add(categoriesDo2DtoMapper.categorisationDoToRelatedResourceDto((CategorySchemeVersionMetamac) elem));
+                result.add(categoriesDo2DtoMapper.categorisationDoToRelatedResourceDto((Categorisation) elem));
             } else if (elem instanceof CodelistVersion) {
                 result.add(codesDo2DtoMapper.codelistMetamacDoToRelatedResourceDto((CodelistVersionMetamac) elem));
             } else if (elem instanceof ConceptSchemeVersion) {

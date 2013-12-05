@@ -29,5 +29,5 @@ public interface CategoriesDo2DtoMapper {
     // Categorisations
     public CategorisationDto categorisationDoToDto(Categorisation source);
     public List<CategorisationDto> categorisationDoListToDtoList(List<Categorisation> sources);
-    public RelatedResourceDto categorisationDoToRelatedResourceDto(CategorySchemeVersionMetamac source);
+    public RelatedResourceDto categorisationDoToRelatedResourceDto(Categorisation source);
 }

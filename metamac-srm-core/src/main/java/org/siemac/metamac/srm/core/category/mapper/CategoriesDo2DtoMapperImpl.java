@@ -103,7 +103,7 @@ public class CategoriesDo2DtoMapperImpl extends BaseDo2DtoMapperImpl implements 
     }
 
     @Override
-    public RelatedResourceDto categorisationDoToRelatedResourceDto(CategorySchemeVersionMetamac source) {
+    public RelatedResourceDto categorisationDoToRelatedResourceDto(Categorisation source) {
         if (source == null) {
             return null;
         }
