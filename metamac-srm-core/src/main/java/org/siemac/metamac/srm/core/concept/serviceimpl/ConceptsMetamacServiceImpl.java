@@ -408,10 +408,10 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public TaskInfo copyConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo copyConceptScheme(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         String maintainerUrn = srmConfiguration.retrieveMaintainerUrnDefault();
         VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
-        return conceptsService.copyConceptScheme(ctx, urnToCopy, maintainerUrn, versionPattern, conceptsCopyCallback);
+        return conceptsService.copyConceptScheme(ctx, urnToCopy, newCode, maintainerUrn, versionPattern, conceptsCopyCallback);
     }
 
     @Override

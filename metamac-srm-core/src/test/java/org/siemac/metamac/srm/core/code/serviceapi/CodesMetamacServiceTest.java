@@ -2234,7 +2234,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         String urnExpectedCode2 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE02";
         String urnExpectedCode3 = "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST14(01.000).CODE03";
 
-        TaskInfo copyResult = codesService.copyCodelist(getServiceContextAdministrador(), urnToCopy);
+        TaskInfo copyResult = codesService.copyCodelist(getServiceContextAdministrador(), urnToCopy, null);
 
         // Validate (only some metadata, already tested in statistic module)
         entityManager.clear();
@@ -2300,7 +2300,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     ItemSchemeVersion itemSchemeVersion = itemSchemeRepository.findByUrn(urnToCopy);
                     assertEquals(null, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
 
-                    TaskInfo copyResult = codesService.copyCodelist(getServiceContextAdministrador(), urnToCopy);
+                    TaskInfo copyResult = codesService.copyCodelist(getServiceContextAdministrador(), urnToCopy, null);
                     assertEquals(true, copyResult.getIsPlannedInBackground());
                     assertEquals(null, copyResult.getUrnResult());
                     jobKey.append(copyResult.getJobKey());
@@ -2309,7 +2309,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                     assertEquals(true, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
 
                     try {
-                        codesService.copyCodelist(getServiceContextAdministrador(), urnToCopy);
+                        codesService.copyCodelist(getServiceContextAdministrador(), urnToCopy, null);
                         fail("already copying");
                     } catch (MetamacException e) {
                         assertEquals(1, e.getExceptionItems().size());
@@ -2333,6 +2333,71 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         // Validate
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST14(01.000)";
+        String versionExpected = "01.000";
+        String maintainerUrnExpected = ORGANISATION_SCHEME_100_V1_ORGANISATION_01;
+        entityManager.clear();
+        CodelistVersionMetamac codelistVersionNewArtefact = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnExpected);
+        assertEquals(maintainerUrnExpected, codelistVersionNewArtefact.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn());
+        assertEquals(ProcStatusEnum.DRAFT, codelistVersionNewArtefact.getLifeCycleMetadata().getProcStatus());
+        assertEquals(versionExpected, codelistVersionNewArtefact.getMaintainableArtefact().getVersionLogic());
+        assertEquals(urnExpected, codelistVersionNewArtefact.getMaintainableArtefact().getUrn());
+
+        // Validate background task as finished in original item scheme
+        CodelistVersion codelistVersionCopied = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnToCopy);
+        assertEquals(false, codelistVersionCopied.getItemScheme().getIsTaskInBackground());
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testCopyCodelistInBackgroundWithNewCode() throws Exception {
+        final String newCode = "NEW_CODE";
+        int previousValueLimitToBackground = SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND;
+        SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND = 3; // modify to force in background
+        final String urnToCopy = CODELIST_14_V1;
+        final StringBuilder jobKey = new StringBuilder();
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    ItemSchemeVersion itemSchemeVersion = itemSchemeRepository.findByUrn(urnToCopy);
+                    assertEquals(null, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
+
+                    TaskInfo copyResult = codesService.copyCodelist(getServiceContextAdministrador(), urnToCopy, newCode);
+                    assertEquals(true, copyResult.getIsPlannedInBackground());
+                    assertEquals(null, copyResult.getUrnResult());
+                    jobKey.append(copyResult.getJobKey());
+
+                    itemSchemeVersion = itemSchemeRepository.findByUrn(urnToCopy);
+                    assertEquals(true, itemSchemeVersion.getItemScheme().getIsTaskInBackground());
+
+                    try {
+                        codesService.copyCodelist(getServiceContextAdministrador(), urnToCopy, newCode);
+                        fail("already copying");
+                    } catch (MetamacException e) {
+                        assertEquals(1, e.getExceptionItems().size());
+                        assertEquals(ServiceExceptionType.MAINTAINABLE_ARTEFACT_ACTION_NOT_SUPPORTED_WHEN_TASK_IN_BACKGROUND.getCode(), e.getExceptionItems().get(0).getCode());
+                        assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+                        assertEquals(urnToCopy, e.getExceptionItems().get(0).getMessageParameters()[0]);
+                    }
+                } catch (MetamacException e) {
+                    fail("copy failed");
+                }
+            }
+        });
+        waitUntilJobFinished();
+        SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND = previousValueLimitToBackground;
+
+        // Validate
+        Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
+        assertNotNull(task);
+        assertEquals(TaskStatusTypeEnum.FINISHED, task.getStatus());
+        assertEquals(0, task.getTaskResults().size());
+
+        // Validate
+        String urnExpected = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:NEW_CODE(01.000)";
         String versionExpected = "01.000";
         String maintainerUrnExpected = ORGANISATION_SCHEME_100_V1_ORGANISATION_01;
         entityManager.clear();

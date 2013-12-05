@@ -243,10 +243,10 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     }
 
     @Override
-    public TaskInfo copyCategoryScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo copyCategoryScheme(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         String maintainerUrn = srmConfiguration.retrieveMaintainerUrnDefault();
         VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
-        return categoriesService.copyCategoryScheme(ctx, urnToCopy, maintainerUrn, versionPattern, categoriesCopyCallback);
+        return categoriesService.copyCategoryScheme(ctx, urnToCopy, newCode, maintainerUrn, versionPattern, categoriesCopyCallback);
     }
 
     @Override

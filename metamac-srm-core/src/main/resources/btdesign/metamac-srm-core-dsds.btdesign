@@ -57,8 +57,8 @@ Application DsdsMetamac {
 	    	
 			"Deletes data structure definition version. This must be last version and no published"
     		deleteDataStructureDefinition(String urn) throws MetamacException;
-    		"Copies a data structure definition version, creating a new data structure definition"
-    		TaskInfo copyDataStructureDefinition(String urnToCopy) throws MetamacException;
+    		"Copies a data structure definition version, creating a new data structure definition, newCode is optional, skip to reuse before, but if the maintainer of source and target are the same the newCode is mandatory"
+    		TaskInfo copyDataStructureDefinition(String urnToCopy, String newCode) throws MetamacException;
     		"Creates a new version of a data structure definition, copying metadata from version with provided urn"
     		TaskInfo versioningDataStructureDefinition(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Create heading and stub metadata in the new version if exists in the previous DSD heading and stub"

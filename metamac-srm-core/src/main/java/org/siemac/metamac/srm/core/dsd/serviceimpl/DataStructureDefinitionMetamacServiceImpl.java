@@ -415,10 +415,10 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
     }
 
     @Override
-    public TaskInfo copyDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo copyDataStructureDefinition(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         String maintainerUrn = srmConfiguration.retrieveMaintainerUrnDefault();
         VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
-        return dataStructureDefinitionService.copyDataStructureDefinition(ctx, urnToCopy, maintainerUrn, versionPattern, dataStructureDefinitionsCopyCallback);
+        return dataStructureDefinitionService.copyDataStructureDefinition(ctx, urnToCopy, newCode, maintainerUrn, versionPattern, dataStructureDefinitionsCopyCallback);
     }
 
     @Override

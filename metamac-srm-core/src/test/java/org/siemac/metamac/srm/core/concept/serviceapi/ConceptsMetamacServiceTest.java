@@ -1816,7 +1816,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         String urnExpectedConcept2 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT02";
         String urnExpectedConcept3 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME14(01.000).CONCEPT03";
 
-        TaskInfo copyResult = conceptsService.copyConceptScheme(getServiceContextAdministrador(), urnToCopy);
+        TaskInfo copyResult = conceptsService.copyConceptScheme(getServiceContextAdministrador(), urnToCopy, null);
 
         // Validate (only some metadata, already tested in statistic module)
         entityManager.clear();
@@ -1892,7 +1892,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         String urnToCopy = CONCEPT_SCHEME_15_V1;
 
         // Versioning
-        TaskInfo copyResult = conceptsService.copyConceptScheme(getServiceContextAdministrador(), urnToCopy);
+        TaskInfo copyResult = conceptsService.copyConceptScheme(getServiceContextAdministrador(), urnToCopy, null);
         String urnExpectedConcept1 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME15(01.000).CONCEPT01";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME15(01.000)";
         String urnExpectedConcept2 = "urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME15(01.000).CONCEPT02";

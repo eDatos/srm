@@ -614,14 +614,30 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
     @Test
     public void testCopyOrganisationScheme() throws Exception {
-        // Copy
-        String urn = ORGANISATION_SCHEME_11_V1;
-        TaskInfo copyResult = srmCoreServiceFacade.copyOrganisationScheme(getServiceContextAdministrador(), urn);
 
-        // Validate
-        assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME11(01.000)", copyResult.getUrnResult());
-        assertEquals(null, copyResult.getIsPlannedInBackground());
-        assertEquals(null, copyResult.getJobKey());
+        // Copy from foreign provider
+        {
+            // Copy
+            String urn = ORGANISATION_SCHEME_11_V1;
+            TaskInfo copyResult = srmCoreServiceFacade.copyOrganisationScheme(getServiceContextAdministrador(), urn, null);
+
+            // Validate
+            assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:ORGANISATIONSCHEME11(01.000)", copyResult.getUrnResult());
+            assertEquals(null, copyResult.getIsPlannedInBackground());
+            assertEquals(null, copyResult.getJobKey());
+        }
+
+        // Copy from DATA provider, is necessary a new code for this
+        {
+            // Copy
+            String urn = ORGANISATION_SCHEME_11_V1;
+            TaskInfo copyResult = srmCoreServiceFacade.copyOrganisationScheme(getServiceContextAdministrador(), urn, "NEW_CODE");
+
+            // Validate
+            assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnitScheme=SDMX01:NEW_CODE(01.000)", copyResult.getUrnResult());
+            assertEquals(null, copyResult.getIsPlannedInBackground());
+            assertEquals(null, copyResult.getJobKey());
+        }
     }
 
     @Test

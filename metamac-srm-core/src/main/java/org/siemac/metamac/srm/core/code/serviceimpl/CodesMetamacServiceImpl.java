@@ -439,11 +439,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public TaskInfo copyCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo copyCodelist(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         ItemSchemesCopyCallback callback = codesCopyCallback;
         String maintainerUrn = srmConfiguration.retrieveMaintainerUrnDefault();
         VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
-        return codesService.copyCodelist(ctx, urnToCopy, maintainerUrn, versionPattern, Boolean.TRUE, callback);
+        return codesService.copyCodelist(ctx, urnToCopy, newCode, maintainerUrn, versionPattern, Boolean.TRUE, callback);
     }
 
     @Override

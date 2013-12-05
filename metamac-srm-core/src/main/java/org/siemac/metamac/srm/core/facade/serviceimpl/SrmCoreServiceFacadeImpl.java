@@ -381,11 +381,11 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public TaskInfo copyDataStructureDefinition(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo copyDataStructureDefinition(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         // Security
         DataStructureDefinitionSecurityUtils.canCopyDataStructureDefinition(ctx);
 
-        return getDataStructureDefinitionMetamacService().copyDataStructureDefinition(ctx, urnToCopy);
+        return getDataStructureDefinitionMetamacService().copyDataStructureDefinition(ctx, urnToCopy, newCode);
     }
 
     @Override
@@ -1351,12 +1351,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public TaskInfo copyCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo copyCodelist(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         // Security
         CodesSecurityUtils.canCopyCodelist(ctx);
 
         // Copy
-        return getCodesMetamacService().copyCodelist(ctx, urnToCopy);
+        return getCodesMetamacService().copyCodelist(ctx, urnToCopy, newCode);
     }
 
     @Override
@@ -2419,12 +2419,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public TaskInfo copyOrganisationScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo copyOrganisationScheme(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         // Security
         OrganisationsSecurityUtils.canCopyOrganisationScheme(ctx);
 
         // Copy
-        return getOrganisationsMetamacService().copyOrganisationScheme(ctx, urnToCopy);
+        return getOrganisationsMetamacService().copyOrganisationScheme(ctx, urnToCopy, newCode);
     }
 
     @Override
@@ -2919,13 +2919,13 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public TaskInfo copyConceptScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo copyConceptScheme(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         // Security
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urnToCopy);
         ConceptsSecurityUtils.canCopyConceptScheme(ctx, conceptSchemeVersionToCopy);
 
         // Copy
-        return getConceptsMetamacService().copyConceptScheme(ctx, urnToCopy);
+        return getConceptsMetamacService().copyConceptScheme(ctx, urnToCopy, newCode);
     }
 
     @Override
@@ -3497,12 +3497,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public TaskInfo copyCategoryScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo copyCategoryScheme(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         // Security
         CategoriesSecurityUtils.canCopyCategoryScheme(ctx);
 
         // Copy
-        return getCategoriesMetamacService().copyCategoryScheme(ctx, urnToCopy);
+        return getCategoriesMetamacService().copyCategoryScheme(ctx, urnToCopy, newCode);
     }
 
     @Override

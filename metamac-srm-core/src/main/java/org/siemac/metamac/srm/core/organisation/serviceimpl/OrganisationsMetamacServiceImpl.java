@@ -215,10 +215,10 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     }
 
     @Override
-    public TaskInfo copyOrganisationScheme(ServiceContext ctx, String urnToCopy) throws MetamacException {
+    public TaskInfo copyOrganisationScheme(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         String maintainerUrn = srmConfiguration.retrieveMaintainerUrnDefault();
         VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
-        return organisationsService.copyOrganisationScheme(ctx, urnToCopy, maintainerUrn, versionPattern, organisationsCopyCallback);
+        return organisationsService.copyOrganisationScheme(ctx, urnToCopy, newCode, maintainerUrn, versionPattern, organisationsCopyCallback);
     }
 
     @Override

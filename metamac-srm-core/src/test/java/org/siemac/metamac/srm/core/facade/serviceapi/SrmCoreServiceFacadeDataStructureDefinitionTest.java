@@ -39,6 +39,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
 import com.arte.statistic.sdmx.srm.core.structure.serviceapi.utils.DataStructureDefinitionDtoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -1107,6 +1108,33 @@ public class SrmCoreServiceFacadeDataStructureDefinitionTest extends SrmBaseTest
             int i = 0;
             assertEquals(CODELIST_8_V1, result.getResults().get(i++).getUrn());
             assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
+    }
+
+    @Test
+    public void testCopyDataStructureDefinition() throws Exception {
+        // Copy from foreign provider
+        {
+            // Copy
+            String urn = DSD_6_V1;
+            TaskInfo copyResult = srmCoreServiceFacade.copyDataStructureDefinition(getServiceContextAdministrador(), urn, null);
+
+            // Validate
+            assertEquals("urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(01.000)", copyResult.getUrnResult());
+            assertEquals(null, copyResult.getIsPlannedInBackground());
+            assertEquals(null, copyResult.getJobKey());
+        }
+
+        // Copy from DATA provider, is necessary a new code for this
+        {
+            // Copy
+            String urn = DSD_6_V1;
+            TaskInfo copyResult = srmCoreServiceFacade.copyDataStructureDefinition(getServiceContextAdministrador(), urn, "NEW_CODE");
+
+            // Validate
+            assertEquals("urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:NEW_CODE(01.000)", copyResult.getUrnResult());
+            assertEquals(null, copyResult.getIsPlannedInBackground());
+            assertEquals(null, copyResult.getJobKey());
         }
     }
 

@@ -539,14 +539,29 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
 
     @Test
     public void testCopyCategoryScheme() throws Exception {
-        // Copy
-        String urn = CATEGORY_SCHEME_8_V1;
-        TaskInfo copyResult = srmCoreServiceFacade.copyCategoryScheme(getServiceContextAdministrador(), urn);
+        // Copy from foreign provider
+        {
+            // Copy
+            String urn = CATEGORY_SCHEME_8_V1;
+            TaskInfo copyResult = srmCoreServiceFacade.copyCategoryScheme(getServiceContextAdministrador(), urn, null);
 
-        // Validate
-        assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME08(01.000)", copyResult.getUrnResult());
-        assertEquals(null, copyResult.getIsPlannedInBackground());
-        assertEquals(null, copyResult.getJobKey());
+            // Validate
+            assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:CATEGORYSCHEME08(01.000)", copyResult.getUrnResult());
+            assertEquals(null, copyResult.getIsPlannedInBackground());
+            assertEquals(null, copyResult.getJobKey());
+        }
+
+        // Copy from DATA provider, is necessary a new code for this
+        {
+            // Copy
+            String urn = CATEGORY_SCHEME_6_V1;
+            TaskInfo copyResult = srmCoreServiceFacade.copyCategoryScheme(getServiceContextAdministrador(), urn, "NEW_CODE");
+
+            // Validate
+            assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=SDMX01:NEW_CODE(01.000)", copyResult.getUrnResult());
+            assertEquals(null, copyResult.getIsPlannedInBackground());
+            assertEquals(null, copyResult.getJobKey());
+        }
     }
 
     @Test

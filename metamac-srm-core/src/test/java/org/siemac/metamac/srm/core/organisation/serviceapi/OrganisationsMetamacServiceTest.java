@@ -1314,7 +1314,7 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         String urnExpectedOrganisation2 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION02";
         String urnExpectedOrganisation3 = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME11(01.000).ORGANISATION03";
 
-        TaskInfo copyResult = organisationsService.copyOrganisationScheme(getServiceContextAdministrador(), urnToCopy);
+        TaskInfo copyResult = organisationsService.copyOrganisationScheme(getServiceContextAdministrador(), urnToCopy, null);
 
         // Validate (only some metadata, already tested in statistic module)
         entityManager.clear();

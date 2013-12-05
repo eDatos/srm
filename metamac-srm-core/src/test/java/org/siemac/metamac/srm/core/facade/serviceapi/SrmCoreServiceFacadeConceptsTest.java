@@ -1073,14 +1073,29 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
     @Test
     public void testCopyConceptScheme() throws Exception {
-        // Copy
-        String urn = CONCEPT_SCHEME_14_V1;
-        TaskInfo copyResult = srmCoreServiceFacade.copyConceptScheme(getServiceContextAdministrador(), urn);
+        // Copy from foreign provider
+        {
+            // Copy
+            String urn = CONCEPT_SCHEME_14_V1;
+            TaskInfo copyResult = srmCoreServiceFacade.copyConceptScheme(getServiceContextAdministrador(), urn, null);
 
-        // Validate
-        assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME14(01.000)", copyResult.getUrnResult());
-        assertEquals(null, copyResult.getIsPlannedInBackground());
-        assertEquals(null, copyResult.getJobKey());
+            // Validate
+            assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:CONCEPTSCHEME14(01.000)", copyResult.getUrnResult());
+            assertEquals(null, copyResult.getIsPlannedInBackground());
+            assertEquals(null, copyResult.getJobKey());
+        }
+
+        // Copy from DATA provider, is necessary a new code for this
+        {
+            // Copy
+            String urn = CONCEPT_SCHEME_14_V1;
+            TaskInfo copyResult = srmCoreServiceFacade.copyConceptScheme(getServiceContextAdministrador(), urn, "NEW_CODE");
+
+            // Validate
+            assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=SDMX01:NEW_CODE(01.000)", copyResult.getUrnResult());
+            assertEquals(null, copyResult.getIsPlannedInBackground());
+            assertEquals(null, copyResult.getJobKey());
+        }
     }
 
     @Test

@@ -1192,7 +1192,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         String urnExpectedCategory2 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY02";
         String urnExpectedCategory3 = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME08(01.000).CATEGORY03";
 
-        TaskInfo copyResult = categoriesService.copyCategoryScheme(getServiceContextAdministrador(), urnToCopy);
+        TaskInfo copyResult = categoriesService.copyCategoryScheme(getServiceContextAdministrador(), urnToCopy, null);
 
         // Validate (only some metadata, already tested in statistic module)
         entityManager.clear();

@@ -156,10 +156,11 @@ Application SrmFacadeCore {
     		 Copies a codelist version, creating a new codelist
      		 @param ctx
      		 @param urnToCopy
+     		 @param newCode: is optional, skip to reuse before, but if the maintainer of source and target are the same the newCode is mandatory
      		 @return
      		 @throws org.siemac.metamac.core.common.exception.MetamacException
      		"
-    		TaskInfo copyDataStructureDefinition(String urnToCopy) throws MetamacException;
+    		TaskInfo copyDataStructureDefinition(String urnToCopy, String newCode) throws MetamacException;
     		
     		"
 	    	 Creates a new version of a dsd, copying metadata from version with provided urn  		
@@ -329,8 +330,8 @@ Application SrmFacadeCore {
 	    	@OrganisationSchemeMetamacDto publishOrganisationSchemeInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a organisation scheme"
 	    	@OrganisationSchemeMetamacDto publishOrganisationSchemeExternally(String urn) throws MetamacException;
-    		"Copies a organisation scheme version, creating a new organisation scheme"
-    		TaskInfo copyOrganisationScheme(String urnToCopy) throws MetamacException;
+    		"Copies a organisation scheme version, creating a new organisation scheme, newCode is optional, skip to reuse before, but if the maintainer of source and target are the same the newCode is mandatory"
+    		TaskInfo copyOrganisationScheme(String urnToCopy, String newCode) throws MetamacException;
     		"Creates a new version of a organisation scheme, copying metadata from version with provided urn"
     		TaskInfo versioningOrganisationScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a organisation scheme, copying metadata from version with provided urn"
@@ -400,8 +401,8 @@ Application SrmFacadeCore {
 	    	@ConceptSchemeMetamacDto publishConceptSchemeInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a concept scheme"
 	    	@ConceptSchemeMetamacDto publishConceptSchemeExternally(String urn) throws MetamacException;
-    		"Copies a concept scheme version, creating a new concept scheme"
-    		TaskInfo copyConceptScheme(String urnToCopy) throws MetamacException;
+    		"Copies a concept scheme version, creating a new concept scheme, newCode is optional, skip to reuse before, but if the maintainer of source and target are the same the newCode is mandatory"
+    		TaskInfo copyConceptScheme(String urnToCopy, String newCode) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
     		TaskInfo versioningConceptScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a concept scheme, copying metadata from version with provided urn"
@@ -488,8 +489,8 @@ Application SrmFacadeCore {
 	    	@CategorySchemeMetamacDto publishCategorySchemeInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a category scheme"
 	    	@CategorySchemeMetamacDto publishCategorySchemeExternally(String urn) throws MetamacException;
-    		"Copies a category scheme version, creating a new category scheme"
-    		TaskInfo copyCategoryScheme(String urnToCopy) throws MetamacException;
+    		"Copies a category scheme version, creating a new category scheme, newCode is optional, skip to reuse before, but if the maintainer of source and target are the same the newCode is mandatory"
+    		TaskInfo copyCategoryScheme(String urnToCopy, String newCode) throws MetamacException;
     		"Creates a new version of a category scheme, copying metadata from version with provided urn"
     		TaskInfo versioningCategoryScheme(String urnToCopy, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a category scheme, copying metadata from version with provided urn"
@@ -557,8 +558,8 @@ Application SrmFacadeCore {
 	    	TaskInfo publishCodelistInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a Codelist"
 	    	@CodelistMetamacDto publishCodelistExternally(String urn) throws MetamacException;
-    		"Copies a codelist version, creating a new codelist"
-    		TaskInfo copyCodelist(String urnToCopy) throws MetamacException;
+    		"Copies a codelist version, creating a new codelist, newCode is optional, skip to reuse before, but if the maintainer of source and target are the same the newCode is mandatory"
+    		TaskInfo copyCodelist(String urnToCopy, String newCode) throws MetamacException;
     		"Creates a new version of a Codelist, copying metadata from version with provided urn"
     		TaskInfo versioningCodelist(String urnToCopy, Boolean versioningCodes, @VersionTypeEnum versionType) throws MetamacException;
     		"Creates a temporal version of a Codelist, copying metadata from version with provided urn"

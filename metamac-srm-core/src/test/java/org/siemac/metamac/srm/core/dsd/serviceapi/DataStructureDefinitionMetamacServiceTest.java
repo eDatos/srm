@@ -484,7 +484,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
         String versionExpected = "01.000";
         String urnExpected = "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=SDMX01:DATASTRUCTUREDEFINITION06(01.000)";
 
-        TaskInfo copyResult = dataStructureDefinitionMetamacService.copyDataStructureDefinition(getServiceContextAdministrador(), urnToCopy);
+        TaskInfo copyResult = dataStructureDefinitionMetamacService.copyDataStructureDefinition(getServiceContextAdministrador(), urnToCopy, null);
 
         // Validate (only some metadata, already tested in statistic module)
         entityManager.clear();
