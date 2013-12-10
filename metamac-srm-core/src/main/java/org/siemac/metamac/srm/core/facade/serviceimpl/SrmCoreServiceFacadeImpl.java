@@ -11,9 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.sdmx.resources.sdmxml.rest.schemas.v2_1.types.StructureParameterDetailEnum;
+import org.sdmx.resources.sdmxml.rest.schemas.v2_1.types.StructureParameterReferencesEnum;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
@@ -114,6 +115,7 @@ import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.io.serviceapi.ExportService;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Contact;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.structure.domain.AttributeDescriptor;
@@ -177,6 +179,9 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
     @Autowired
     private SculptorCriteria2MetamacCriteriaMapper     sculptorCriteria2MetamacCriteriaMapper;
+
+    @Autowired
+    private ExportService                              exportService;
 
     private final static Comparator<ItemSchemeVersion> ITEM_SCHEME_CREATED_DATE_DESC_COMPARATOR = new ItemSchemeCreatedDateDescComparator();
     private final static Comparator<StructureVersion>  STRUCTURE_CREATED_DATE_DESC_COMPARATOR   = new StructureCreatedDateDescComparator();
@@ -596,15 +601,12 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public String exportSDMXStructureMsg(ServiceContext ctx, ReferenceResourceDto referenceResourceDto) throws MetamacException {
-        // TODO cambiar la interfaz de este método para que sean los que sean los elementos que se le pasan, sean URNs en vez de objetos
-        // posiblemente se tenga que cambiar el structuremsgdto para que almacene conjuntos de urn agrupasad por tipo, es decir, urn de dsd, urn de codelist... y así
+    public String exportSDMXStructureMsg(ServiceContext ctx, ReferenceResourceDto referenceResourceDto, StructureParameterDetailEnum detail, StructureParameterReferencesEnum references)
+            throws MetamacException {
+        // Security
+        TasksSecurityUtils.canExportStructure(ctx);
 
-        // TODO Facade. Añadir seguridad a exportar DSD
-
-        // OutputStream outputStream = null;
-        File file = null;
-        return (file == null) ? StringUtils.EMPTY : file.getAbsolutePath();
+        return exportService.exportStructures(ctx, detail, references, referenceResourceDto);
     }
 
     @Override

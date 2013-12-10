@@ -729,7 +729,7 @@ Application SrmFacadeCore {
 			 @return                                                                            
 			 @throws org.siemac.metamac.core.common.exception.MetamacException
 			"
-	    	String exportSDMXStructureMsg(@ReferenceResourceDto resourceToExport) throws MetamacException;
+	    	String exportSDMXStructureMsg(@ReferenceResourceDto resourceToExport, org.sdmx.resources.sdmxml.rest.schemas.v2_1.types.StructureParameterDetailEnum detail, org.sdmx.resources.sdmxml.rest.schemas.v2_1.types.StructureParameterReferencesEnum references) throws MetamacException;
 
 	   		"Finds information about tasks"
     		MetamacCriteriaResult<@TaskDto> findTasksByCondition(MetamacCriteria criteria) throws MetamacException;
