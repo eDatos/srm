@@ -13,7 +13,7 @@ ${environment.indicators.data}/conf/static/datasources.xml
 
 En la app interna:
 	La configuración de logs irá en data/srm/conf/ 
-	Los logs se conservan en data/srm/logs/
+	Los logs se ubican en data/srm/logs/
 
 En la app externa:
-		Los logs se conservan en data/srm/logs/
+		Los logs se ubican en data/istac/srm/logs/
