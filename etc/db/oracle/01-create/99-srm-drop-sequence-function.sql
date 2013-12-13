@@ -1,3 +1,0 @@
--- Drop function
-
-DROP FUNCTION GET_NEXT_SEQUENCE_VALUE;
