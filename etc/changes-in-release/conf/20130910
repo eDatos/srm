@@ -1,4 +1,19 @@
-Añadir propiedades a [DATA]/srm-web/conf/static/resources.xml
+Las configuraciones pasan a estar en base de datos:
 
-    <entry key="metamac.srm.variables.variable_world.urn">urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=TERRITORIO_MUNDO</entry>
-    <entry key="metamac.srm.variables.variable_element_world.urn">urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=TERRITORIO_MUNDO.MUNDO</entry>
+Todos los ficheros se pasan a base de datos menos el de logback.
+
+${environment.metamac.data}/common/conf/static/resources.xml
+${environment.metamac.data}/common/conf/dynamic/security.xml
+${environment.metamac.data}/common/conf/static/api-endpoints.xml
+
+${environment.indicators.data}/conf/static/resources.xml
+${environment.indicators.data}/conf/static/quartz.properties
+${environment.indicators.data}/conf/static/datasources.xml
+
+
+En la app interna:
+	La configuración de logs irá en data/srm/conf/ 
+	Los logs se conservan en data/srm/logs/
+
+En la app externa:
+		Los logs se conservan en data/srm/logs/

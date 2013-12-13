@@ -2,7 +2,7 @@
 <!DOCTYPE configuration>
 <configuration scan="true" scanPeriod="60 seconds">
 
-    <property name="LOGS_HOME" value="${environment.metamac.data}/srm/srm-web/logs" />
+    <property name="LOGS_HOME" value="${environment.metamac.data}/srm/logs" />
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
