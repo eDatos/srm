@@ -1,0 +1,716 @@
+========================================================================
+METAMAC-SRM -- Gestor de recursos estructurales
+========================================================================
+
+Aplicación que se encarga de llevar a cabo la gestión de los recursos 
+estructurales de SDMX: DSD, esquemas de conceptos, esquemas de organizaciones,
+esquemas de categorías, clasificaciones y categorizaciones de estructuras.
+
+Por favor, consulta nuestro gestor de incidencia para obtener más información
+de las incidencias con el id [METAMAC-xxx].
+http://jira.arte-consultores.com/browse/METAMAC
+
+------------------------------------------------------------------------------
+Release 1.1.0
+------------------------------------------------------------------------------
+
+Notas de publicación - Metamac - hito metamac-srm - 1.1.0
+
+** Tarea
+    * [METAMAC-1817] - Eliminar propiedad duplicada: metamac.srm.codelist.variable_element.geographical_granularity.urn
+
+
+------------------------------------------------------------------------------
+Release 1.0.0
+------------------------------------------------------------------------------
+
+Notas de publicación - Metamac - hito metamac-srm 1.0.0
+
+** Defecto
+    * [METAMAC-13] - ErrorPage
+    * [METAMAC-16] - Quitar facetValue de las representaciones no enumeradas
+    * [METAMAC-20] - No seleccionar botón DSD de toolStrip en el escritorio de la operación
+    * [METAMAC-21] - Error al borrar listado de componentes
+    * [METAMAC-27] - Cambiar los servicios que guardan InternalString-Localised para que no guarden traducciones con el mismo locale. Es decir, un Int con un conjunto de locales en el que se repitan.
+    * [METAMAC-28] - Añadir al RepresentationDto un error (return = null) si ( Enumerated == true && IsNoEnumerated == true) || (Enumerated == false&& IsNoEnumerated == false
+    * [METAMAC-32] - Gestionar la importación de un DSD cuando esta ya exista previamente en el Sistema
+    * [METAMAC-39] - Al cambiar nombre de dimensión, no se actualiza en los group keys
+    * [METAMAC-54] - Tabbing a través de un CanvasItem
+    * [METAMAC-70] - Error al guardar campos internationalString cuando no se muestran las traducciones
+    * [METAMAC-71] - Error en título al visualizar DSDs.
+    * [METAMAC-72] - Estilos en formularios con International_Item
+    * [METAMAC-105] - Fix Sculptor generación de poperties no serializables
+    * [METAMAC-121] - Al validar canvas de ConceptSelectItem, si hay campos requeridos vacíos, las celdas son desplazadas por el icono de error
+    * [METAMAC-122] - Mappings de externalItemBt a Dto y viceversa no están funcionando correctamente
+    * [METAMAC-124] - Conf Maven de los proyectos no incluyen el *.gwt.xml en el jar resultante.
+    * [METAMAC-125] - Deprecated metamac-common.
+    * [METAMAC-131] - Eliminar basura de la desasignación de los InternationalString
+    * [METAMAC-135] - Jar generado por maven de los paquetes -client.jar está mal configurado
+    * [METAMAC-136] - Error al guardar una dimensión ya creada (ver Descripción) (update Ver Comentarios)
+    * [METAMAC-144] - Eliminar Basura de attributeRelationship
+    * [METAMAC-148] - JNDI con 2 datasources falla en Tomcat con la configuración GWT del proyecto
+    * [METAMAC-150] - Select de selección de dimensiones de un grupo, o de groupDescriptors en atributos, no se muestran correctamente
+    * [METAMAC-157] - Importación de grupos incorrecta con el dsd ECB_EXR_RG_FULL
+    * [METAMAC-161] - Añadir gestor de configuraciones (data conf) a Metamac
+    * [METAMAC-162] - Hacer la conversion DATETIME to DATE y viceversa de manera correcta.
+    * [METAMAC-172] - Bean de repositorio deuplicado en stat4you y en Metamac, problems con sculptor y spring
+    * [METAMAC-179] - Incremento repentino del tiempo de generación del código de sculptor
+    * [METAMAC-194] - Añadir constrainst adicionales en los esquemas de BBDD generados por Sculptor
+    * [METAMAC-218] - Representaciones con asociaciones noEnumeradas son de cardinalidad 1 y no many.
+    * [METAMAC-234] - Error al crear anotaciones
+    * [METAMAC-254] - Llamada duplicada al cargar un DSD (GetDsdAndDescriptorsActionHandler)
+    * [METAMAC-536] - Añadir constraint en los maintainable artefact.
+    * [METAMAC-552] - Cambiar el serializer de XML en los servicios REST. Marshall with format..
+    * [METAMAC-630] - Error al mostrar representaciones de componentes de DSDs
+    * [METAMAC-771] - Comprobar que la importación y exportación de DSDs se realiza correctamente
+    * [METAMAC-772] - OptimisticLockingException al guardar componentes (ver Descripción)
+    * [METAMAC-872] - Bug Sculptor: En herencia con SINGLE_TABLE no genera las FK
+    * [METAMAC-897] - Idioma de los widgets definidos en metamac-web-common
+    * [METAMAC-906] - En la creación del versionado del grafo de DSD se debe regenerar la urn.
+    * [METAMAC-908] - Fix exportación y exportación de DSD
+    * [METAMAC-1022] - Dto2Do: revisar el método 'externalItemDtoToExternalItem' para poder pasar el target
+    * [METAMAC-1068] - Al llamar al findDsdByCondition devuelve la lista de DSDs correctamente pero sin los metadatos rellenos
+    * [METAMAC-1092] - Error al borrar un concepto que se está visualizando
+    * [METAMAC-1166] - En los tests no se está almacenando el usuario de ServiceContext
+    * [METAMAC-1232] - Eliminar resolución por web services de los artefactos pertenecientes al SRM
+    * [METAMAC-1269] - Actualizar la URL de los recursos cuando se actualiza alguno de los elementos que la componen
+    * [METAMAC-1276] - Importación de mensajes DSD. Adecuarla a la nueva estrategia de versionado del statistic-srm
+    * [METAMAC-1281] - Validación de InternationalString y ExternalItem requeridos y válidos
+    * [METAMAC-1295] - Ciclo de vida: error de optimistic locking
+    * [METAMAC-1347] - Problema de concurrencia con el Pooled optimizer (generación de ids de Hibernate)
+    * [METAMAC-1384] - Mappings Jaxb2Do
+    * [METAMAC-1418] - NO guardar el endpoint de la API en la base de datos
+    * [METAMAC-1424] - No se actualiza el título de la pagína del listado de DSDs
+    * [METAMAC-1441] - Error al guardar conceptos de un esquema de tipo glosario
+    * [METAMAC-1464] - [Importación] Creación de thread de importación y tabla de histórico con logs de importación.
+    * [METAMAC-1510] - [CODES] Bug en el parseo de URLs de códigos de una clasificación
+    * [METAMAC-1553] - Al cambiar una entidad con representación No enumerada a Enumerada falla con un delete entity passed to persists
+    * [METAMAC-1554] - El campo "type" de los conceptMetamac entra en conflicto con el "type" de los relatedResource cuando se usa la copia con Dozer
+    * [METAMAC-1556] - No se pueden quitar dimensions de un descriptor de grupos
+    * [METAMAC-1634] - [DSD] ERROR en botón de crear dimensiones.
+    * [METAMAC-1637] - [CONCEPTS] Error al cambiar el tipo de los esquemas de conceptos
+    * [METAMAC-1655] - Validar representación enumerada de conceptos al publicar y asignar automáticamente cuando corresponda
+    * [METAMAC-1662] - Recálculo de los dimensionOrder de las dimensiones puesto que para la API sdmx de datos necesitamos estos ordenes.
+    * [METAMAC-1664] - [WEB] Error al crear versión temporal de un DSD: no se actualiza la URL correctamente
+    * [METAMAC-1703] - Los scripts de creación de la función de secuencia están incorrectos.
+    * [METAMAC-1705] - ERROR: no permitir modificar metadatos SDMX de recursos importados
+    * [METAMAC-1706] - Error en el contador para los identificadores de las categorizaciones y otros errores
+    * [METAMAC-1707] - Revisar cuándo se puede cambiar el tipo de conceptScheme
+    * [METAMAC-1711] - No permitir terminar la validez de DSDs e ItemSchemes si no están publicados externamente
+    * [METAMAC-1720] - Error al crear esquemas de conceptos: si se selecciona en primer lugar el tipo 'operación', da error si luego se quiere poner otro tipo
+    * [METAMAC-1749] - Al seleccionar un record en un listado o en un árbol, los nodos "saltan"
+    * [METAMAC-1753] -  La información que se muestra en modo edición y en modo visualización para la dimensión de un DSD hay ocasiones en las que no coincide.
+    * [METAMAC-1754] - Problema con la codificación de URLs con dos puntos (:) en IE y Chrome
+    * [METAMAC-1791] - Búsquedas REST: No funcionan las búsquedas por IN
+
+
+** Historia
+    * [METAMAC-178] - Crear documento de descripción general de módulos Metamac.
+    * [METAMAC-893] - Búsqueda de recursos
+    * [METAMAC-991] - Publicación de recursos
+    * [METAMAC-1099] - [CONCEPTOS] Actualización de conceptos
+    * [METAMAC-1100] - [CONCEPTOS] Actualización de esquemas de conceptos
+    * [METAMAC-1102] - [DSDs] Actualización de DSDs
+    * [METAMAC-1105] - [ORGANIZACIONES] Crear esquemas de organizaciones
+    * [METAMAC-1106] - [ORGANIZACIONES] Eliminar organizaciones
+    * [METAMAC-1107] - [ORGANIZACIONES] Actualizar esquemas de organizaciones
+    * [METAMAC-1109] - [ORGANIZACIONES] Gestión del ciclo de vida de esquemas de organizaciones
+    * [METAMAC-1110] - [ORGANIZACIONES] Creación de organizaciones
+    * [METAMAC-1114] - [ORGANIZACIONES] Consulta de organizaciones
+    * [METAMAC-1118] - [DSDs] Gestión del ciclo de vida de los DSDs
+    * [METAMAC-1119] - [CONCEPTOS] Gestión del ciclo de vida de esquemas de conceptos
+    * [METAMAC-1147] - [ORGANIZACIONES] Actualización de organizaciones
+    * [METAMAC-1156] - [CONCEPTOS] Consulta de esquemas de conceptos
+    * [METAMAC-1187] - [CATEGORÍAS] Crear esquema de categorías
+    * [METAMAC-1188] - [CATEGORÍAS] Actualizar esquema de categorías
+    * [METAMAC-1189] - [CATEGORÍAS] Obtener esquema de categorías por urn
+    * [METAMAC-1190] - [CATEGORÍAS] Obtener todas las  versiones de un esquema de categorías
+    * [METAMAC-1191] - [CATEGORÍAS] Buscar esquemas de categorías por criteria
+    * [METAMAC-1192] - [CATEGORÍAS] Versionar esquema de categorías
+    * [METAMAC-1193] - [CATEGORÍAS] Ciclo de vida de un esquema de categorías
+    * [METAMAC-1202] - [CATEGORÍAS] Crear categoría
+    * [METAMAC-1203] - [CATEGORÍAS] Actualizar categoría
+    * [METAMAC-1204] - [CATEGORÍAS] Obtener categoría por urn
+    * [METAMAC-1205] - [CATEGORÍAS] Eliminar categoría
+    * [METAMAC-1206] - [CATEGORÍAS] Obtener categorías de un esquema
+    * [METAMAC-1207] - [CATEGORÍAS] Buscar categorías por criteria
+    * [METAMAC-1224] - [CATEGORÍAS] Eliminar esquema de categorías
+    * [METAMAC-1314] - Consultar ayuda
+    * [METAMAC-1362] - [CODES] Obtener Codelists
+    * [METAMAC-1363] - [CODES] Búsqueda de Codelists
+    * [METAMAC-1364] - [CODES] Crear Codelists
+    * [METAMAC-1365] - [CODES] Eliminar Codelists 
+    * [METAMAC-1379] - [CODES] Actualizar codelists
+    * [METAMAC-1385] - [CODES] Crear codes
+    * [METAMAC-1386] - [CODES] Obtener codes
+    * [METAMAC-1387] - [CODES] Actualizar codes
+    * [METAMAC-1388] - [CODES] Eliminar codes
+    * [METAMAC-1389] - [CODES] Buscar codes
+    * [METAMAC-1408] - [CODES] Gestión del ciclo de vida de codelists
+    * [METAMAC-1419] - [CODES] Gestión de familias de codelists
+    * [METAMAC-1421] - [CODES] Gestión de variables, familias de variables y elementos de variable
+    * [METAMAC-1422] - Edición de artefactos publicados (importados)
+    * [METAMAC-1501] - [IMPORTACIÓN] Importación de recursos en formato CSV
+
+** Mejora
+    * [METAMAC-15] - Navegar mediante rutas absolutas
+    * [METAMAC-31] - Performance y thread-safety en JAXB
+    * [METAMAC-33] - Loggers: Añadir más logger y revisar los existentes para que se pase siempre la excepción y así poderla ver en el log.
+    * [METAMAC-41] - Añadir mensajes internacionalidados en el resto de librerías, ej: Data, Transformation
+    * [METAMAC-42] - Al parser DataSet poner excepciones cuando se requiere ID o Value en los IDvaluePairDto (no es siempre).
+    * [METAMAC-49] - Hacer uso de ListGridToolStrip e incluirlo en metamac-web-common
+    * [METAMAC-90] - Cambiar ManyToOne por estrategia de propagación de Foreign Keys.
+    * [METAMAC-132] - Añadir atomicidad por lotes a la hora de insertar datos.
+    * [METAMAC-142] - Añadir Configuración JNDI de la BBDD
+    * [METAMAC-171] - Establecer el punto de conexión para acceder a servicios web en un único sitio común.
+    * [METAMAC-257] - Adecuar los márgenes para que el ancho de pantalla se ajuste a 1280x1024 y no aparezca scroll horizontal
+    * [METAMAC-384] - Revisar modal window para importar DSD en los distintos navegadores
+    * [METAMAC-385] - Poner hint o default value en las celdas que recogen las anotaciones
+    * [METAMAC-571] - Limpiar los ficheros que se borran de spring del pom
+    * [METAMAC-594] - Añadir proc status para trabajar menor en la web
+    * [METAMAC-613] - URLs de DSDs con códigos semánticos
+    * [METAMAC-640] - Cambiar nombre de proyectos y paquetes para quitar el "facade-core"
+    * [METAMAC-698] - Descarga segura de ficheros
+    * [METAMAC-702] - Incluir URL de aplicación interna en los ExternalItems
+    * [METAMAC-743] - Cambiar formato de los formularios: todos los campos deben tener el máximo ancho que les permita la columna
+    * [METAMAC-791] - Cambio en el formato de las URLs de las aplicaciones internas
+    * [METAMAC-886] - Do2Dto eliminar lógica innecesaria y refactorizar el uso de excepciones con parámetros
+    * [METAMAC-1339] - Crear clase de utilidades que permita obtener el MetamacPrincipal y lanzar una excepción si una operación no está permitida
+    * [METAMAC-1417] - Refactor de metadatos REPLACED_BY y REPLACE_TO (MaintainableArtefact)
+    * [METAMAC-1516] - [Test] Refactor de la clase MetamacBaseTest para que pase a ser MetamacDBUnitBaseTest
+    * [METAMAC-1530] - [CODES] Hacer eficiente la gestión de codelists con elevado número de codes
+    * [METAMAC-1544] - Realizar perfomance en operaciones de borrado
+    * [METAMAC-1594] - Modificar los campos de tipo ML para que sean ML+URL 
+    * [METAMAC-1625] - Permitir que la representación enumerada por defecto de un concepto (en esquemas de conceptos) sea otro esquema de conceptos de tipo Measure
+    * [METAMAC-1626] - En los DSD, partiendo de un DSD ya existente, crear otro nuevo recurso que sea una copia pero que la versión sea 01.000, esté en estado de BORRADOR y la agencia mantenedora sea la propietaria de la aplicación.
+    * [METAMAC-1627] - Copia de esquemas de ítems
+    * [METAMAC-1628] - En la web, mostrar las representaciones no enumeradas en el siguiente orden: 1) Integer, 2) Decimal, 3) Tipos de datos numéricos y 4) Otros tipos de datos
+    * [METAMAC-1631] - Las API REST deben tener los mismos métodos que las API SOAP. Estos incluyen: familias de variables, familia de variable, familias de codelist, familia de codelist, variables, variable
+    * [METAMAC-1632] - Servir en la API externa (hacer públicos) los metadatos replaceByVersion y replaceToVersion. Hay que tener en cuenta que sólo se pueden servir estos metadatos cuando el codelist que lo reemplaza es ya público.
+    * [METAMAC-1647] - [CODES] Exportación de CSVs
+    * [METAMAC-1648] - Añadir metadatos RESOURCE_CREATED_DATE y RESOURCE_LAST_UPDATED en ItemScheme (no en ItemSchemeVersion!!)
+    * [METAMAC-1672] - Metadato 'quantity' en conceptos
+    * [METAMAC-1793] - [WEB] Gestión de anotaciones de SDMX
+
+** Nueva Funcionalidad
+    * [METAMAC-19] - Locale en ServiceContext
+    * [METAMAC-30] - Importar Datos desde un mensaje SDMX.
+    * [METAMAC-538] - Crear operaciones básicas de esquema de conceptos
+    * [METAMAC-590] - Parseo de URLs
+    * [METAMAC-591] - Formato de fechas
+    * [METAMAC-629] - Validación de facets
+    * [METAMAC-685] - Añadir la versión de la aplicación en el footer
+    * [METAMAC-1319] - Añadir comprobaciones al ValidationUtils para metadatos opcionales bien formados
+    * [METAMAC-1442] - [WEB] Gestión de descriptores y componentes de un DSD
+    * [METAMAC-1451] - Gestión de parámetros de excepciones: contemplar parámetros de tipo String y de tipo String[]
+
+** Reuniones
+    * [METAMAC-407] - Reunión sobre la estructura de la aplicación que gestionará los conceptos
+    * [METAMAC-598] - Revisión de metadatos de conceptos
+
+** Soporte
+    * [METAMAC-930] - Subida a demos de todas la aplicaciones de METAMAC
+    * [METAMAC-1010] - Modificar el XLS de metadatos de conceptos para que identifique los que son de SDMX y METAMAC
+    * [METAMAC-1063] - Eliminar el uso de mapping para InternationalString y LocalisedString en el MetamacSRM y usar el de SDMSRM en su lugar
+    * [METAMAC-1113] - Cambio en la configuración de Maven: uniqueVersion
+    * [METAMAC-1129] - Migración de bases de datos de jenkins a laguna
+    * [METAMAC-1163] - Configuración de tests JUnit: cambio en la estrategia de filtrado de FilteredDataSet
+    * [METAMAC-1346] - Subida a demos de metamac-srm
+    * [METAMAC-1471] - Refactorizar las clases DoCopyUtils por VersioningCopyUtils
+
+** Tarea
+    * [METAMAC-6] - Parsear Dataset Generic para series temporales
+    * [METAMAC-14] - Importación DSD:: Representaciones, falta hacer el updateReferences cuando haya representaciones enumeradas
+    * [METAMAC-17] - Formulario en modal windows
+    * [METAMAC-34] - Quitar de base.btdesign-> Facet, todos los FVT y quitar el "facetValueType:String".
+    * [METAMAC-35] - Reducir el número de tablas de bbdd intermedias en las relaciones 1..* utilizando el inverse de sculptor.
+    * [METAMAC-36] - Las attachmentConstraint no están parseadas.
+    * [METAMAC-45] - Realizar un profiling del tiempo que tarda el fetch de datos tanto a nivel de consultas en el servidor, como a nivel AJAX. Involucra a Zeben y a Laura.
+    * [METAMAC-51] - Hacer validadores de las representaciones de los facet de tipo Periodo.
+    * [METAMAC-52] - Probar a cambiar la estrategia de resolución de herencia en hibernate (sculptor)
+    * [METAMAC-53] - Análisis del Gestor de Conceptos
+    * [METAMAC-57] - Validate lenght en TextItem, TextAreaItem, etc...
+    * [METAMAC-66] - Refacto de los servicios de importación hacia el proyecto Core.
+    * [METAMAC-69] - Compilar con compatibilidad para todos los navegadores
+    * [METAMAC-74] - Crear proyecto Maven metamac-gcon
+    * [METAMAC-79] - Probar DSD INE IAS e IPS
+    * [METAMAC-81] - Annotations en Dtos
+    * [METAMAC-84] - Integración Spring(Sculptor), internal-web, siemac-commons, data, core and transformation.
+    * [METAMAC-86] - Añadir el modelo de InternationalString al proyecto siemac-core-commons
+    * [METAMAC-87] - Cambiar el modelo para deslocalizar Referencias.
+    * [METAMAC-91] - Cambiar la importación de DSD para que busque Concepts y Codelist externalizados.
+    * [METAMAC-104] - Adaptar metamac-internal-web a cambios en el core (referencias externas)
+    * [METAMAC-109] - Gestión de agencias (maintainer) de los artefactos
+    * [METAMAC-112] - Resolución de referencias externas.
+    * [METAMAC-126] - Thread Safe y perfomance de JAXB
+    * [METAMAC-127] - Mejoras en la interfaz web
+    * [METAMAC-134] - Annotations
+    * [METAMAC-140] - Messages
+    * [METAMAC-152] - Probar DSD INE de la operación PIAS
+    * [METAMAC-159] - Añadir validaciones de esquemas JAXB
+    * [METAMAC-163] - Externalizar los loggers
+    * [METAMAC-168] - Crear lista de instalación de la plataforma
+    * [METAMAC-170] - Exportación de SDMX-ML en versión 2.1
+    * [METAMAC-192] - Listas de códigos en representaciones enumeradas: codeLists según el concepto seleccionado
+    * [METAMAC-195] - Arreglar compilación con Maven en la web
+    * [METAMAC-196] - Iconos duplicados en metamac-web-common y en metamac-internal-web
+    * [METAMAC-216] - Generación de Uris Internas
+    * [METAMAC-217] - Conversión de uris Internas en Externas
+    * [METAMAC-226] - Integrar anotaciones en formulario
+    * [METAMAC-227] - Actualización a nuevas versiones: modificación en la gestión de las representaciones.
+    * [METAMAC-229] - International Annotations
+    * [METAMAC-235] - Importación de DSDs
+    * [METAMAC-253] - Comprobar si es necesario que un concepto tenga asociada una representación por defecto
+    * [METAMAC-287] - Barra de acciones a nivel de componente o descriptor
+    * [METAMAC-289] - Exportación de DSDs
+    * [METAMAC-305] - Revisar el código de DESIC enviado por Informática Istac
+    * [METAMAC-315] - Enviar un mensaje al foro de SDMX preguntando por qué los atributos no son IS
+    * [METAMAC-354] - Crear entidades de versionado para DSD
+    * [METAMAC-356] - Refactor excepciones
+    * [METAMAC-371] - Logger improve
+    * [METAMAC-374] - Generates a standard XSD for a given SDMX DSD
+    * [METAMAC-375] - Create mapping without dsd id field
+    * [METAMAC-383] - Actualización y adaptación del proyecto a cambios en core y subida a servidor de demos.
+    * [METAMAC-423] - Actualización de web a cambios en el core
+    * [METAMAC-426] - Refactor: Usar la excepción de metamac en vez de la Application Exception
+    * [METAMAC-427] - Cambiar TBL por TB en los prefijos de la tablas de BBDDD
+    * [METAMAC-428] - Cambios formato interfaz
+    * [METAMAC-431] - Reestructuración de proyecto metamac-internal-web para optimizar el tiempo de carga del DevMode (GWT)
+    * [METAMAC-432] - Eliminar página de inicio de metamac-internal-web
+    * [METAMAC-433] - Creación de DTOs básicos y fachada de servicios
+    * [METAMAC-436] - Páginas de gestión de esquemas de conceptos
+    * [METAMAC-439] - Estructura de servicios y fachada del metamac-core para la gestión de conceptos
+    * [METAMAC-440] - Actualización a cambios en proyectos dependientes
+    * [METAMAC-441] - Corregir error de validación de tablas de hibernate
+    * [METAMAC-443] - Adaptar metamac-internal-web a MetamacException
+    * [METAMAC-455] - Refactorizar paquetes de los archivos *Dto
+    * [METAMAC-472] - Refactor del proyecto DATA y CORE para separar la importación y exportación de datos del Core.
+    * [METAMAC-502] - Lanzar el proyecto de servicios REST para el gestor de recursos estructurales
+    * [METAMAC-529] - Cambiar los test a nivel de servicio para añadir los interceptores "pointcut"
+    * [METAMAC-531] - Crear servicio rest para DataStructure
+    * [METAMAC-533] - Preparar entorno para empezar a trabajar con conceptos
+    * [METAMAC-543] - Refactor para establecer CORE en SRM-CORE y en multimodule de maven
+    * [METAMAC-558] - Instalar proyectos tras para el desarrollo del módulo de conceptos
+    * [METAMAC-567] - Crear el método getLocalisedLabel en la entidad InternationalString
+    * [METAMAC-568] - Crear la clase SrmAsserts
+    * [METAMAC-569] - Refactor en metamac-internal-web
+    * [METAMAC-570] - Refactor en groupId de proyectos multimódulo
+    * [METAMAC-572] - Panel de espera, corregir image bundle (IE), ServiceContextHolder y gestión de excepciones
+    * [METAMAC-573] - Configuración del LoggingSetup
+    * [METAMAC-574] - Corregir errores en serviceContext
+    * [METAMAC-576] - Crear esquema de conceptos
+    * [METAMAC-577] - Refactor paquetes proyecto para englobar cosas comunes en "common"
+    * [METAMAC-612] - Método retrieveDsdByUrn en la fachada de servicios
+    * [METAMAC-627] - Ancho de los campos
+    * [METAMAC-631] - ¿Cómo se van a configurar los idiomas de la aplicación?
+    * [METAMAC-636] - SRM Gatekeeper
+    * [METAMAC-637] - Paginación de listado de DSDs
+    * [METAMAC-638] - Modificar configuración de los interceptores
+    * [METAMAC-639] - Refactor LoggingSetup
+    * [METAMAC-644] - Servicios de conceptos
+    * [METAMAC-645] - Crear clase SrmSuiteTest
+    * [METAMAC-646] - Refactorizar paquetes del src/test/java
+    * [METAMAC-652] - Cambiar configuración de BBDD de tests para que se adapte al Jenkins
+    * [METAMAC-653] - Refactor de las clases *SuiteTest por *Suite
+    * [METAMAC-655] - Modificar la clase de spring que se usa para crear el bean "dataSource"
+    * [METAMAC-660] - Poner paginación a findDsdByCondition
+    * [METAMAC-666] - Configuración de idiomas de la aplicación
+    * [METAMAC-745] - Migrar la ubicación de los Dto a su propio proyecto
+    * [METAMAC-752] - Adaptar proyectos de metamac al MetamacBaseTests que corrige problemas de rendimiento
+    * [METAMAC-762] - Revisar análisis de SRM y excel con metadatos
+    * [METAMAC-776] - Modificar specialCase que evita que se cree unique constraints para que contemple ExternalItem
+    * [METAMAC-780] - Los ExternalItem deben tener los nuevos campos acordados y requeridos por las APIS
+    * [METAMAC-802] - Crear el assembly de SDMX e incluir los types REST de SDMX en el srm-rest
+    * [METAMAC-803] - Cambiar la lógica en los artefacto que tiene que incluir al nuevo ExternalItemDto sin basictype
+    * [METAMAC-805] - Añadir el campo "CODE" en los ExternalItem
+    * [METAMAC-822] - Cambio en la construcción de los Hashmaps
+    * [METAMAC-823] - Cambiar el uso de URI por el de URN correctamente
+    * [METAMAC-835] - Hacer validaciones de Constraints sobre Entities en vez de Dtos
+    * [METAMAC-837] - Estructura de páginas de la sección de esquemas de conceptos
+    * [METAMAC-839] - Evitar que un mismo DSD pueda tener URLs diferentes
+    * [METAMAC-849] - Hacer que el ciclo de vida sea común a todos los recursos ItemScheme
+    * [METAMAC-850] - Operación: crear ConceptScheme
+    * [METAMAC-851] - Operación: crear Concept (Sdmx)
+    * [METAMAC-853] - Operación: buscar ConceptScheme
+    * [METAMAC-854] - Operación: buscar ConceptSchemes
+    * [METAMAC-855] - Operación: eliminar ConceptScheme
+    * [METAMAC-856] - Operación: eliminar Concept
+    * [METAMAC-857] - Operación: obtener todas las versiones de un ConceptScheme
+    * [METAMAC-858] - Operación: actualizar Concept
+    * [METAMAC-859] - Operación: actualizar ConceptScheme
+    * [METAMAC-860] - Operación: obtener ConceptScheme por urn
+    * [METAMAC-861] - Operación: obtener Concept por URN (Sdmx)
+    * [METAMAC-862] - Adaptar el proyecto SRM a decisiones tomadas en otros proyectos
+    * [METAMAC-863] - Refactor: organizar server side por paquetes según el tipo de recurso
+    * [METAMAC-866] - Operación: obtener la jerarquía de conceptos de un ConceptScheme
+    * [METAMAC-867] - Seguridad en el acceso a la aplicación
+    * [METAMAC-873] - DUDAS
+    * [METAMAC-874] - Definir modelo de Conceptos con versiones
+    * [METAMAC-875] - Creación de ServiceFacade de Concepts
+    * [METAMAC-878] - Permutar los Service Exception Parameters
+    * [METAMAC-879] - Generar URN cada vez que cambia el identificador semántico de un artefacto así como sus descendientes si los tuviese.
+    * [METAMAC-880] - Maintainer de Artefactos
+    * [METAMAC-881] - ¿Refactor versionLogic, finalLogic, orderLogic...?
+    * [METAMAC-882] - Refactor "idLogic" por "code"
+    * [METAMAC-883] - [Validación] No se pueden editar artefactos en los que la agencia mantenedora no es el ISTAC
+    * [METAMAC-889] - Visualización de versiones anteriores de esquemas de conceptos
+    * [METAMAC-890] - Integración de la sección de conceptos con la fachada de servicios
+    * [METAMAC-899] - ¿Es posible poner el procStatus en ConceptSchemeMetamac?
+    * [METAMAC-907] - Remove Jndi test context
+    * [METAMAC-911] - Actualizar dependencias en el metamac srm api, para que no utilice el metamac-transformation(deprecated) y utilice el statistic-sdmx-v2_1-transformation
+    * [METAMAC-912] - Configuración del SRM para adptarse a cambios en los proyectos del core
+    * [METAMAC-913] - Crear DTOs extendidos de SDMX en metamac-srm-core
+    * [METAMAC-921] - Gestión de "principalException" en excepciones de la web
+    * [METAMAC-928] - Modificar análisis de DSD
+    * [METAMAC-932] - Integración con statistic-sdmx-srm
+    * [METAMAC-933] - Consumir API de operaciones estadísticas (para crear esquemas de conceptos de tipo operación)
+    * [METAMAC-934] - Widget para selección de una operación estadística
+    * [METAMAC-935] - Explicación del Core a Laura y implementar alguna operación del servicio de ejemplo
+    * [METAMAC-938] - Preprarar entorno para trabajar en SRM-CORE y ejecución de varios de tests de prueb
+    * [METAMAC-946] - Configuración de búsquedas de esquemas de conceptos
+    * [METAMAC-949] - Configuración del DATA según el endpoints.xml definido en metamac-parent
+    * [METAMAC-950] - Cambiar configuración del DATA para que las configuraciones comunes estén en el directorio "common"
+    * [METAMAC-964] - Operación: obtener ConceptScheme
+    * [METAMAC-977] - Operación: En Sdmx, operación para marcar un ConceptScheme como "final"
+    * [METAMAC-978] - Operación: crear Concept (Metamac)
+    * [METAMAC-981] - Operación: obtener Concepto por URN (Metamac)
+    * [METAMAC-982] - En el módulo de Sdmx seguir el patrón recomendado de numeración de versiones
+    * [METAMAC-989] - [CATEGORÍAS] Modelo de datos
+    * [METAMAC-994] - Identificar en el btdesign cuáles son los metadatos propios de SDMX
+    * [METAMAC-995] - Completar versionado de ConceptScheme con Concepts
+    * [METAMAC-1001] - Crear DTOs y mappers de SDMX
+    * [METAMAC-1002] - Mover metadatos "replaceTo" y "replacedBy" a "MaintainableArtefact"
+    * [METAMAC-1012] - Servicios en statistic-sdmx-srm para rellenar metadatos VALID_FROM y VALID_TO
+    * [METAMAC-1014] - Añadir ciclo de vida de DSDs
+    * [METAMAC-1015] - Árbol para visualizar conceptos
+    * [METAMAC-1017] - InternationalString: Hacer más eficiente la creación de los LocalisedString
+    * [METAMAC-1018] - Mostrar metadatos de conceptos
+    * [METAMAC-1019] - Una vez se ha publicado internamente un esquema de conceptos no se puede modificar el metadato "type"
+    * [METAMAC-1021] - Eliminar ExternalItem para referencias entre recursos estructurales
+    * [METAMAC-1023] - No modificar el tipo de un esquema de conceptos tras publicar internamente en la primera versión
+    * [METAMAC-1025] - Operación: búsqueda de conceptos por criteria
+    * [METAMAC-1031] - Metadatos de esquemas de conceptos: Anotaciones
+    * [METAMAC-1032] - Gestión de anotaciones de SDMX
+    * [METAMAC-1034] - Metadatos de conceptos: Representación
+    * [METAMAC-1037] - Revisar análisis de conceptos para añadir decisiones tomadas al codificar
+    * [METAMAC-1038] - Actualización del endpoint de la API de metamac-common-metadata
+    * [METAMAC-1039] - Bug chequeo de optimistic locking en los mappers
+    * [METAMAC-1040] - Realizar tests Do2Dto y Dto2Do de clases Base y Conceptos
+    * [METAMAC-1051] - ¿El CODE de un concepto puede ser modificado SIEMPRE?
+    * [METAMAC-1057] - Modificar la configuración de Base de Datos para evitar errores de arranque en Cibercentro
+    * [METAMAC-1064] - Sección DSDs: actualizar WEB según cambios en el CORE
+    * [METAMAC-1069] - Cambiar métodos de fachada que se saltan los servicos de Metamac-srm y llaman directamente a SDMX-srm
+    * [METAMAC-1070] - Cambiar optimistic looking en el modelo de DSD
+    * [METAMAC-1072] - Conectar el versionado de DSD en la fachada de Metamac SRM
+    * [METAMAC-1074] - Comprobar que se muestran todos los metadatos de SDMX
+    * [METAMAC-1077] - Método para obtener todas las versiones de un DSD
+    * [METAMAC-1078] - Permitir buscar DSDs con el parámetro IS_LAST_VERSION (para obtener la última versión)
+    * [METAMAC-1087] - Búsqueda de DSDs y esquemas de conceptos a través del SectionStack
+    * [METAMAC-1088] - Añadir el criterio de búsqueda por NAME en los DSD
+    * [METAMAC-1090] - Añadir el criterio de búsqueda por NAME en los ConceptScheme
+    * [METAMAC-1091] - Añadir seguridad de acceso a las operaciones de la fachada de DSD
+    * [METAMAC-1093] - Traducir mensajes de error definidos en el CORE
+    * [METAMAC-1103] - [ORGANIZACIONES] Consulta de esquemas de organizaciones
+    * [METAMAC-1104] - Estructura del proyecto statistic-sdmx
+    * [METAMAC-1108] - [ORGANIZACIONES] Eliminar esquemas de organizaciones
+    * [METAMAC-1111] - Gestión de representaciones no enumeradas asociadas de los recursos
+    * [METAMAC-1120] - [ORGANIZACIONES] Actualización de esquemas de organizaciones
+    * [METAMAC-1139] - Configuración de acceso a base de datos
+    * [METAMAC-1170] - Hacer versionado con Callback en conceptos y organizaciones
+    * [METAMAC-1172] - Separar Do2Dto y Dto2Do por recursos
+    * [METAMAC-1208] - [CATEGORÍAS] Categorizaciones
+    * [METAMAC-1243] - Agrupar códigos de excepciones
+    * [METAMAC-1256] - En la actualización de un item no permitir cambiar su itemScheme
+    * [METAMAC-1278] - Requisitos referentes a los esquemas de organizaciones de tipo agencia.
+    * [METAMAC-1280] - Añadir soporte para SQL Server
+    * [METAMAC-1294] - Actualización del CODE (identificador) de recursos
+    * [METAMAC-1296] - Permitir indicar la fecha de comienzo o fin de validez de un recurso
+    * [METAMAC-1300] - Versionado de sdmx: no obligar a que la versión anterior sea final
+    * [METAMAC-1310] - Almacenar el VersionPattern
+    * [METAMAC-1335] - Obtención de artefactos por agencyID, code y version
+    * [METAMAC-1343] - [ORGANIZACIONES] Especificar varias URLs para el contacto de una organización
+    * [METAMAC-1361] - [CODES] Modelo de datos de Codelists y codes
+    * [METAMAC-1409] - Visualización de artefactos
+    * [METAMAC-1412] - Actualización de artefactos importados según la agencia
+    * [METAMAC-1413] - [CONCEPTS] Añadir el tipo de ConceptScheme "Measure"
+    * [METAMAC-1415] - Cambio de formato de links: selfLink, parent...
+    * [METAMAC-1416] - [CODES] Añadir metadatos del ISTAC a Codelists
+    * [METAMAC-1428] - Tests: comprobar que pasan todos los tests con mssql
+    * [METAMAC-1432] - Dividir directorio DATA para que las aplicaciones internas y externas no utilicen los mismos ficheros de configuración
+    * [METAMAC-1438] - SRM: Manual de instalación
+    * [METAMAC-1448] - Relaciones entre recursos estructurales
+    * [METAMAC-1449] - [ORGANIZACIONES] Permitir modiciar TODOS los metadatos de las AgencyScheme, DataProvider y DataConsumer
+    * [METAMAC-1454] - No permitir modificar el tipo de los esquemas de conceptos cuando tienen items (conceptos)
+    * [METAMAC-1456] - [CODES] Versionar codes
+    * [METAMAC-1457] - [CODES] Órdenes
+    * [METAMAC-1458] - [CODES] Niveles de apertura
+    * [METAMAC-1461] - [CODES] Añadir metadatos del ISTAC a Codes
+    * [METAMAC-1462] - Metadatos de visualización de DSDs
+    * [METAMAC-1469] - [URIs] Diseño de las URIS de las entidades que no son de SDMX sino de METAMAC
+    * [METAMAC-1474] - Metadatos de METAMAC requeridos al importar
+    * [METAMAC-1475] - Problema con longitud de campos con valores con acentos en Oracle 
+    * [METAMAC-1480] - [Importación] Determinar cuáles son los metadatos que deben heredarse
+    * [METAMAC-1482] - [DSD] Asociar DSD con operación estadística
+    * [METAMAC-1491] - Revisar núcleo de metadatos de recursos estructurales
+    * [METAMAC-1508] - [CODES] Normalización de clasificaciones
+    * [METAMAC-1518] - Traducción de mensajes y parámetros de error
+    * [METAMAC-1519] - [CODES] Codelists complejos
+    * [METAMAC-1522] - [DSD] Añadir dimensión y atributo de tipo geográfico, y atributo de tipo medida y de tiempo
+    * [METAMAC-1523] - [WEB] Prueba de visualización de árbol con muchos items
+    * [METAMAC-1546] - Versionado DUMMY de los recursos
+    * [METAMAC-1549] - Mejorar eficiencia de las consultas
+    * [METAMAC-1563] - Establecer para los artefactos del maintainer del DATA isPartial ha de ser false
+    * [METAMAC-1564] - Configuración y control de propiedades del DATA para aplicaciones internas y externas
+    * [METAMAC-1565] - Al publicar internamente, comprobar que se ha rellenado para todo InternationalString el idioma por defecto
+    * [METAMAC-1577] - Hacer que en la importación de metamac no se importen nunca las anotaciones de los descriptores
+    * [METAMAC-1580] - Devolver para los listados de recursos Dto reducidos
+    * [METAMAC-1581] - Mapeo LUNA
+    * [METAMAC-1585] - Crear RelatedResourceBaseDto del que extiende RelatedResourceDto
+    * [METAMAC-1587] - VariableElement hereda de IdentifiableArtefact, no de Nameable
+    * [METAMAC-1590] - Revisar metadatos que se pueden servir por haber un solo entorno
+    * [METAMAC-1593] - Los métodos que obtienen los listados de versiones de DSDs e ItemSchemes deben dar los resultados ordenados por fecha de creación (o importación)
+    * [METAMAC-1595] - [CODES] Cambiar máxima longitud de SHORT_NAME a 100 caracteres
+    * [METAMAC-1636] - Obtener todos los listados de items de forma eficiente
+    * [METAMAC-1643] - Copia de categorizaciones al versionar y al copiar
+    * [METAMAC-1673] - Revisar el título de las aplicaciones web internas (ver el que se muestra en el navegador)
+    * [METAMAC-1675] - El esquema de agencias root (AGENCIAS) debería mostrar que su mantenedor es SDMX
+    * [METAMAC-1676] - Añadir botón de borrado cuando se está visualizando un recurso
+    * [METAMAC-1677] - [CONCEPTS] Permitir que un ConceptScheme de tipo medida tenga asociado una operación estadística
+    * [METAMAC-1683] - Añadir a SrmRestInternalFacadeV10 métodos para obtener Items de cualquier ItemScheme
+    * [METAMAC-1684] - [ORGANIZACIONES] Gestión de organizaciones (que no son OrganisationUnit)
+    * [METAMAC-1693] - Mejorar rendimiento: Eliminar relaciones a clases abstractas Item e ItemSchemeVersion
+    * [METAMAC-1694] - ExternalItems: no almacenar la versión específica de la api, sino latest
+    * [METAMAC-1700] - Incluir quantities en la web del SRM
+    * [METAMAC-1708] - No permitir finalizar la validez de artefactos que no son del maintainer por defecto
+    * [METAMAC-1713] - Al publicar externamente una versión dummy, conservar el validFrom anterior
+    * [METAMAC-1715] - Importación: al buscar los recursos a relacionar no enlazar con dummies
+    * [METAMAC-1716] - No permitir enlazar codelists que no sean PUBLIC
+    * [METAMAC-1722] - Variables geográficas
+    * [METAMAC-1723] - [DSD] Representación de dimensiones y atributos
+    * [METAMAC-1725] - Permitir enlazar recursos publicados internamente y externamente. Nunca no publicados
+    * [METAMAC-1738] - El ID de la agencia del data no debería poder editarse en la aplicación
+    * [METAMAC-1739] - Visualización de recursos con scroll a nivel global
+    * [METAMAC-1742] - Ordenar árboles de items (que no sean códigos) por code
+    * [METAMAC-1743] - Validar la longitud de los LocalisedString
+    * [METAMAC-1744] - Realizar la validación de traducciones completas al pasar a validación de producción
+    * [METAMAC-1745] - Mostrar siempre metadatos del recurso al acceder al mismo (siempre seleccionar la primera pestaña)
+    * [METAMAC-1746] - En los listados para seleccionar categorías, mostrar el codeFull en vez del code
+    * [METAMAC-1747] - InternationalString: Limpiar tags html que no se soportan en Metamac
+    * [METAMAC-1751] - Mostrar error específico cuando la variable del concepto es requerida por tener representación enumerada de tipo Codelist
+    * [METAMAC-1764] - Mover las propiedades de configuración de la base de datos en Test a resources.xml
+    * [METAMAC-1776] - Añadir metadato en VariableDto para indicar si la variable tiene elementos de variable
+    * [METAMAC-1792] - Refactor ProcStatus para poner el módulo como prefijo
+    * [METAMAC-1798] - [API] Permitir buscar por ProcStatus en los ítems, en lugar de con boolean de externallyPublished
+    * [METAMAC-1808] - Refactor propiedades de configuración
+
+
+** Sub-tarea
+    * [METAMAC-46] - Realizar un profiling del tiempo que tarda el fecth de datos.
+    * [METAMAC-82] - Soporte
+    * [METAMAC-85] - Integración del proyecto siemac-commons en la lógica
+    * [METAMAC-123] - Selección de roles
+    * [METAMAC-539] - Crear página de listado de esquemas de conceptos
+    * [METAMAC-540] - Crear popup de creación de esquemas
+    * [METAMAC-541] - Implementar el borrado de un conjunto de esquemas
+    * [METAMAC-542] - Crear página de detalle/edición de esquemas
+    * [METAMAC-579] - Configuración del CAS
+    * [METAMAC-582] - Configuración del CAS
+    * [METAMAC-586] - Añadir los esquemas de conceptos actualizados recientemente en la pagina de recursos estructurales (inicio)
+    * [METAMAC-599] - Comprobar que el LegalActs debe usar el CommonMetadata
+    * [METAMAC-667] - Eliminar dependencias a commons-dbcp
+    * [METAMAC-848] - Cuando se finalice la aplicación de conceptos, eliminar la clase ConceptRecord (ver Descripción)
+    * [METAMAC-852] - Operación: versionar ConceptScheme
+    * [METAMAC-869] - Ciclo de vida: publicar internamente ConceptScheme
+    * [METAMAC-870] - Ciclo de vida: publicar externamente un ConceptScheme
+    * [METAMAC-871] - [CONCEPTOS] Seguridad de conceptos
+    * [METAMAC-894] - Integración de conceptos y esquema de conceptos en dimensiones y atributos de los DSDs
+    * [METAMAC-895] - Sección "Version Responsibility" para los esquemas de conceptos
+    * [METAMAC-915] - Acción "Anular validez" (esquemas de conceptos)
+    * [METAMAC-917] - Ciclo de vida de los DSDs
+    * [METAMAC-919] - Acción "Anular validez" (DSDs)
+    * [METAMAC-922] - Ciclo de vida de DSDs
+    * [METAMAC-955] - Requisitos SRM
+    * [METAMAC-968] - Ciclo de vida: Enviar ConceptScheme a validación de producción
+    * [METAMAC-969] - Ciclo de vida: Enviar ConceptScheme a validación de difusión
+    * [METAMAC-970] - Ciclo de vida: Rechazar validación de ConceptScheme
+    * [METAMAC-971] - Operación: obtener el histórico de un ConceptScheme
+    * [METAMAC-979] - ¿Qué hacer con el estado EXTERNAL_PUBLICATION_FAILED?
+    * [METAMAC-980] - Añadir metadato isExternalReference
+    * [METAMAC-984] - Completar metadatos "complejos" de Concept
+    * [METAMAC-987] - Eliminar estado EXTERNAL_PUBLICATION_FAILED del ciclo de vida
+    * [METAMAC-1020] - Al crear/editar esquemas de conceptos, sólo mostrar las operaciones estadísticas sobre las que se tiene permiso
+    * [METAMAC-1024] - Únicamente mostrar operaciones estadísticas sobre las cuales el usuario tenga permisos
+    * [METAMAC-1026] - Rellenar metadato de concepto: ROLES
+    * [METAMAC-1027] - Rellenar metadato de concepto: EXTENDS
+    * [METAMAC-1028] - Rellenar metadato de concepto: RELATED_CONCEPTS
+    * [METAMAC-1030] - Metadatos de conceptos: Anotaciones
+    * [METAMAC-1033] - Metadatos de conceptos: Representación
+    * [METAMAC-1075] - No permitir modificar conceptos o descriptores de DSDs cuando los esquemas de conceptos y DSDs están publicados
+    * [METAMAC-1076] - Mostrar todas las versiones de un DSD
+    * [METAMAC-1080] - Añadir restricción: sólo rellenar el metadato SDMX_RELATED_ARTEFACT de un concepto cuando el tipo del esquema sea OPERATION o TRANSVERSAL
+    * [METAMAC-1081] - Gestión de metadatos de conceptos que expresan relación con otros conceptos
+    * [METAMAC-1083] - Códigos de las dimensiones de un DSD
+    * [METAMAC-1084] - Actualizar el esquema de conceptos tras crear nuevos conceptos
+    * [METAMAC-1085] - Orden de las dimensiones de los DSDs
+    * [METAMAC-1089] - Permitir consultar el manual de usuario desde la aplicación
+    * [METAMAC-1094] - Mostrar metadatos de SDMX REPLACED_BY y REPLACE_TO
+    * [METAMAC-1095] - Creación de estructura de páginas de sección de organizaciones
+    * [METAMAC-1096] - [ORGANIZACIONES] Modelo de datos de organizaciones (SDMX)
+    * [METAMAC-1112] - Listado de esquema de organizaciones en la web
+    * [METAMAC-1115] - [ORGANIZACIONES] Añadir metadato TYPE a esquemas de organización
+    * [METAMAC-1125] - Modificación del TYPE del esquema de organizaciones
+    * [METAMAC-1141] - Servicio y mappers en statistic-sdmx-srm
+    * [METAMAC-1143] - Consulta de una organización: Servicio y facade en metamac-srm
+    * [METAMAC-1144] - Servicio y mappers en statistic-sdmx-srm
+    * [METAMAC-1148] - Servicios en statistic-sdmx-srm
+    * [METAMAC-1149] - Permitir cambiar un concepto de esquema en statistic-sdmx-srm
+    * [METAMAC-1152] - Creación de organizaciones: Servicio y facade en metamac-srm
+    * [METAMAC-1153] - Actualización de organizaciones: Servicio y facade en metamac-srm
+    * [METAMAC-1154] - Servicios en statistic-sdmx-srm
+    * [METAMAC-1155] - Eliminar organizaciones: Servicio y facade en metamac-srm
+    * [METAMAC-1157] - Visualización del listado de organizaciones de un esquema
+    * [METAMAC-1158] - Visualización de conceptos de un esquema
+    * [METAMAC-1164] - Mejorar la clase LifeCycle
+    * [METAMAC-1174] - Consulta de organizaciones: Integración en la web
+    * [METAMAC-1175] -  Creación de organizaciones: Integración en la web
+    * [METAMAC-1176] - Eliminar organizaciones: Integración en la web
+    * [METAMAC-1177] - Actualización de organizaciones: Intergración con la WEB
+    * [METAMAC-1178] - [ORGANIZACIONES] Seguridad en organizaciones
+    * [METAMAC-1179] - [CONCEPTOS] Seguridad en conceptos
+    * [METAMAC-1183] - Consulta de esquema de organización de una organización
+    * [METAMAC-1184] - Búsqueda de organizaciones
+    * [METAMAC-1185] - Consulta de organizaciones de un esquema: Servicio y facade en metamac-srm
+    * [METAMAC-1194] - [CATEGORÍAS] Marcar esquema de categorías como 'final'
+    * [METAMAC-1195] - [CATEGORÍAS] Comenzar validez de esquema de categorías
+    * [METAMAC-1196] - [CATEGORÍAS] Finalizar validez de esquema de categorías
+    * [METAMAC-1197] - [CATEGORÍAS] Enviar a validación de producción un esquema de categorías
+    * [METAMAC-1198] - [CATEGORÍAS] Enviar a validación de difusión un esquema de categorías
+    * [METAMAC-1199] - [CATEGORÍAS] Rechazar validación de producción o difusión un esquema de categorías
+    * [METAMAC-1200] - [CATEGORÍAS] Publicar internamente un esquema de categorías
+    * [METAMAC-1201] - [CATEGORÍAS] Publicar externamente un esquema de categorías
+    * [METAMAC-1209] - Obtener esquema de categorías: servicio y mappers en statistic-sdmx-srm
+    * [METAMAC-1210] - Obtener esquema de categorías: servicio, facade y mappers en metamac-srm
+    * [METAMAC-1211] - Obtener esquema de categorías: integración en la web
+    * [METAMAC-1214] - Crear esquema de categorías: servicio y mappers en statistic-sdmx-srm
+    * [METAMAC-1215] - Crear esquema de categorías: servicio, facade y mappers en metamac-srm
+    * [METAMAC-1216] - Crear esquema de categorías: integración en la web
+    * [METAMAC-1218] - [CATEGORIAS] Seguridad en categorías
+    * [METAMAC-1221] - Actualizar esquema de categorías: servicio y mappers en statistic-sdmx-srm
+    * [METAMAC-1222] - Actualizar esquema de categorías: servicio, facade y mappers en metamac-srm
+    * [METAMAC-1223] - Actualizar esquema de categorías: integración en la web
+    * [METAMAC-1225] - Eliminar esquema de categorías: servicio statistic-sdmx-srm
+    * [METAMAC-1226] - Eliminar esquema de categorías: servicio y facade en metamac-srm
+    * [METAMAC-1227] - Eliminar esquema de categorías: integración en la web
+    * [METAMAC-1228] - [CATEGORÍAS] Ciclo de vida: integración en la web
+    * [METAMAC-1229] - Buscar esquemas de categorías por criteria: servicio y mappers en statistic-sdmx-srm
+    * [METAMAC-1230] - Buscar esquemas de categorías por criteria: servicio, facade y mappers en metamac-srm
+    * [METAMAC-1231] - Buscar esquemas de categorías por criteria: integración en la web
+    * [METAMAC-1234] - Consulta de organizaciones: visualización de contactos
+    * [METAMAC-1236] - Obtener todas las versiones de un esquema de categorías: servicio y facade en metamac-srm
+    * [METAMAC-1237] - Obtener todas las versiones de un esquema de categorías: servicio en statistic-sdmx-srm
+    * [METAMAC-1238] - Obtener todas las versiones de un esquema de categorías: integración en web
+    * [METAMAC-1239] - Versionar esquema de categorías: servicio y facade en metamac-srm
+    * [METAMAC-1240] - Versionar esquema de categorías: servicio en statistic-sdmx-srm
+    * [METAMAC-1241] - Versionar esquema de categorías: integración en web
+    * [METAMAC-1245] - Obtener categoría: servicio y mapper statistic-sdmx-srm
+    * [METAMAC-1246] - Obtener categoría: servicio, facade y mapper metamac-srm
+    * [METAMAC-1247] - Obtener categoría: integración en web
+    * [METAMAC-1248] - Crear categoría: servicio y mapper statistic-sdmx-srm
+    * [METAMAC-1249] - Crear categoría: servicio, facade y mapper metamac-srm
+    * [METAMAC-1250] - Crear categoría: integración en la web
+    * [METAMAC-1253] - Actualizar categoría: servicio y mapper statistic-sdmx-srm
+    * [METAMAC-1254] - Actualizar categoría: servicio y facade metamac-srm
+    * [METAMAC-1255] - Actualizar categoría: integración en la web
+    * [METAMAC-1260] - Eliminar categoría: servicio en statistic-sdmx-srm
+    * [METAMAC-1261] - Eliminar categoría: servicio y facade en metamac-srm
+    * [METAMAC-1262] - Eliminar categoría: integración en la web
+    * [METAMAC-1263] - Buscar categorías por criteria: servicio y mapper en statistic-sdmx-srm
+    * [METAMAC-1264] - Buscar categorías por criteria: servicio, facade y mapper en metamac-srm
+    * [METAMAC-1265] - Buscar categorías por criteria: integración en la web
+    * [METAMAC-1267] - Categorizaciones: Añadir categorización
+    * [METAMAC-1268] - Categorizaciones: obtener categorizaciones de un artefacto
+    * [METAMAC-1270] - Obtener categorías de un esquema: servicio y facade en metamac-srm
+    * [METAMAC-1271] - Obtener categorías de un esquema: servicio en statistic-sdmx-srm
+    * [METAMAC-1272] - Obtener categorías de un esquema: integración en la web
+    * [METAMAC-1273] - Probar a asignar a un artefacto la Agencia "base" de SDMX
+    * [METAMAC-1274] - Consulta de organizaciones que pueden ser maintainer
+    * [METAMAC-1275] - Categorizaciones: Eliminar categorización
+    * [METAMAC-1282] - Consulta de conceptos de tipo rol
+    * [METAMAC-1285] - Integración de clasificaciones en representaciones enumeradas (primary measure, dimensions y attributes)
+    * [METAMAC-1286] - Refactor: Uso de datasources para definir los campos de los formularios
+    * [METAMAC-1290] - [ORGANIZACIONES] Gestión de agencias (maintainer)
+    * [METAMAC-1292] - [ORGANIZACIONES] Crear AgencyScheme no final
+    * [METAMAC-1293] - Categorizaciones: publicación de una categorización
+    * [METAMAC-1320] - [CATEGORIAS] Seguridad de categorizaciones
+    * [METAMAC-1321] - API: mappings Do2Jaxb
+    * [METAMAC-1322] - API: estructura de proyectos
+    * [METAMAC-1323] - API: conceptos
+    * [METAMAC-1324] - API: organizaciones
+    * [METAMAC-1325] - API: categorías
+    * [METAMAC-1326] - API: latest en api interna
+    * [METAMAC-1327] - API: dsd
+    * [METAMAC-1328] - API: revisar wadl de sdmx para comprobar que statistic-sdmx cumple requisitos sdmx
+    * [METAMAC-1329] - API: tratamiento de excepciones
+    * [METAMAC-1330] - Almacenar en los maintainables el AgencyID con toda la jerarquía
+    * [METAMAC-1334] - Determinar qué metadatos son públicos y por cuáles debería permitirse realizar búsquedas
+    * [METAMAC-1338] - API: aplicaciones web de publicación de api
+    * [METAMAC-1340] - Reunión sobre operaciones de la API de Metamac
+    * [METAMAC-1344] - [ORGANIZACIONES] El identificador de los AgencyScheme, DataConsumerScheme y DataProviderScheme tienen valores fijos
+    * [METAMAC-1348] - API: pendientes
+    * [METAMAC-1353] - API: tests de mappers
+    * [METAMAC-1366] - [CODES] Obtener Codelists: servicio y mapper en statistic-sdmx-srm
+    * [METAMAC-1367] - [CODES] Obtener Codelists: Servicio, facade y mapper en metamac-srm
+    * [METAMAC-1368] - [CODES] Obtener Codelists: servicio, facade y mappers en metamac-srm
+    * [METAMAC-1369] - [CODES] Obtener Codelists: integración en la WEB
+    * [METAMAC-1370] - [CODES] Búsqueda de Codelists: servicio y mapper en statistic-sdmx-srm
+    * [METAMAC-1371] - [CODES] Búsqueda de Codelists: servicio, facade y mappers en metamac-srm
+    * [METAMAC-1372] - [CODES] Búsqueda de Codelists: Integración en la web
+    * [METAMAC-1373] - [CODES] Crear Codelists: servicio y mapper en statistic-sdmx-srm
+    * [METAMAC-1374] - [CODES] Crear Codelists: servicio, facade y mapper en metamac-srm
+    * [METAMAC-1375] - [CODES] Crear Codelists: integración en la WEB
+    * [METAMAC-1376] - [CODES] Eliminar Codelists: servicio y mapper en statistic-sdmx-srm
+    * [METAMAC-1377] - [CODES] Eliminar Codelists: servicio, facade y mapper en metamac-srm
+    * [METAMAC-1378] - [CODES] Eliminar Codelists: integración en la web
+    * [METAMAC-1380] - [CODES] Actualizar codelists: servicio y mapper en statistic-sdmx-srm
+    * [METAMAC-1381] - [CODES] Actualizar codelists: servicio, facade y mapper en metamac-srm
+    * [METAMAC-1382] - [CODES] Actualizar codelists: integración en la WEB
+    * [METAMAC-1390] - [CODES] Crear codes: servicio y mapper en statistic-sdmx-srm
+    * [METAMAC-1391] - [CODES] Crear codes: servicio, mapper y facade en metamac-srm
+    * [METAMAC-1392] - [CODES] Crear codes: integración en la WEB
+    * [METAMAC-1393] - [CODES] Obtener codes: servicio y mapper en statistic-sdmx-srm
+    * [METAMAC-1394] - [CODES] Obtener codes: servicio, mapper y facade en metamac-srm
+    * [METAMAC-1395] - [CODES] Obtener codes: integración en la WEB
+    * [METAMAC-1396] - [CODES] Actualizar codes: servicio y mapper en estatistic-sdmx-srm
+    * [METAMAC-1397] - [CODES] Actualizar codes: servicio, mapper y facade en metamac-srm
+    * [METAMAC-1398] - [CODES] Actualizar codes: integración en la WEB
+    * [METAMAC-1399] - [CODES] Eliminar codes: servicio y mapper en statistic-sdmx-srm
+    * [METAMAC-1400] - [CODES] Eliminar codes: servicio, mapper y facade en metamac-srm
+    * [METAMAC-1401] - [CODES] Eliminar codes: integración en la web
+    * [METAMAC-1402] - [CODES] Buscar codes: servicio y mapper en statistic-sdmx-srm
+    * [METAMAC-1403] - [CODES] Buscar codes: servicio, mapper y facade en metamac-srm
+    * [METAMAC-1404] - [CODES] Buscar codes: integración en la WEB
+    * [METAMAC-1423] - [CODES] Seguridad de Codelists y Codes
+    * [METAMAC-1435] - API: codes
+    * [METAMAC-1437] - Añadir un campo para el código completo de las categorías
+    * [METAMAC-1446] - [CODES] Gestión de familias de codelists: integración en la WEB
+    * [METAMAC-1447] - [CODES] Gestión de variables y familias de variables: integración en la WEB
+    * [METAMAC-1476] - API: servicio web SOAP
+    * [METAMAC-1486] - [CODES] Hacer pruebas de eficiencia de consultas de codelists con número elevado de codes
+    * [METAMAC-1495] - Revisar metadatos de la API de todos los artefactos
+    * [METAMAC-1524] - [CODES] Consulta eficiente para obtener todos los codes de un codelist
+    * [METAMAC-1525] - [WEB] Mostrar únicamente las operaciones sobre las que el usuario tiene permiso
+    * [METAMAC-1531] - API: mejorar eficiencia de items que no se muestran en jerarquía
+    * [METAMAC-1532] - [CODES] Probar en web la gestión de codelists con elevado número de codes
+    * [METAMAC-1533] - [PORTAL] Consulta eficiente en la API para obtener todos los codes de un codelist
+    * [METAMAC-1539] - [CODES] Si el versionado tarda más de X, lanzar en background
+    * [METAMAC-1603] - Refactorizar la tabla TB_ITEMS por entrar en conflicto con la vista para LUNA
+    * [METAMAC-1616] - [CODES] Publicación de codelist temporal en background
+    * [METAMAC-1633] - [CODES] Mejorar eficiencia de versionado
+    * [METAMAC-1696] - Permitir buscar por URN interna
+    * [METAMAC-1702] - Añadir urnInterna en retrieve y find
+    * [METAMAC-1761] - API: Permitir indicar como criterio de búsqueda de items que la versión del itemScheme sea latest
+    * [METAMAC-1805] - API: error al obtener un artefacto cuya agencia es SDMX
+
+
+
+
