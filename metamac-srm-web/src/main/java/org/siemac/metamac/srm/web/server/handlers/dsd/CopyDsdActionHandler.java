@@ -27,7 +27,7 @@ public class CopyDsdActionHandler extends SecurityActionHandler<CopyDsdAction, C
     @Override
     public CopyDsdResult executeSecurityAction(CopyDsdAction action) throws ActionException {
         try {
-            TaskInfo taskInfo = srmCoreServiceFacade.copyDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getUrn());
+            TaskInfo taskInfo = srmCoreServiceFacade.copyDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(), action.getUrn(), null);
             // DSD is never copied in background
             DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto = srmCoreServiceFacade.retrieveDataStructureDefinitionByUrn(ServiceContextHolder.getCurrentServiceContext(),
                     taskInfo.getUrnResult());

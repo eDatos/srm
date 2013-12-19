@@ -28,7 +28,7 @@ public class CopyCodelistActionHandler extends SecurityActionHandler<CopyCodelis
     @Override
     public CopyCodelistResult executeSecurityAction(CopyCodelistAction action) throws ActionException {
         try {
-            TaskInfo taskInfo = srmCoreServiceFacade.copyCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn());
+            TaskInfo taskInfo = srmCoreServiceFacade.copyCodelist(ServiceContextHolder.getCurrentServiceContext(), action.getCodelistUrn(), null);
 
             if (BooleanUtils.isTrue(taskInfo.getIsPlannedInBackground())) {
                 // Copied in background

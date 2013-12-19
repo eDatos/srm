@@ -28,7 +28,7 @@ public class CopyConceptSchemeActionHandler extends SecurityActionHandler<CopyCo
     public CopyConceptSchemeResult executeSecurityAction(CopyConceptSchemeAction action) throws ActionException {
 
         try {
-            TaskInfo taskInfo = srmCoreServiceFacade.copyConceptScheme(ServiceContextHolder.getCurrentServiceContext(), action.getConceptSchemeUrn());
+            TaskInfo taskInfo = srmCoreServiceFacade.copyConceptScheme(ServiceContextHolder.getCurrentServiceContext(), action.getConceptSchemeUrn(), null);
             // Concept scheme will never be copied in background
             ConceptSchemeMetamacDto conceptSchemeMetamacDto = srmCoreServiceFacade.retrieveConceptSchemeByUrn(ServiceContextHolder.getCurrentServiceContext(), taskInfo.getUrnResult());
             return new CopyConceptSchemeResult(conceptSchemeMetamacDto);
