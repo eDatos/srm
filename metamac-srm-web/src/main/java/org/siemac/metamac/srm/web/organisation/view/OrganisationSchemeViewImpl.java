@@ -37,6 +37,7 @@ import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
@@ -77,48 +78,48 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationSchemeUiHandlers> implements OrganisationSchemePresenter.OrganisationSchemeView {
 
-    private TitleLabel                             titleLabel;
-    private VLayout                                panel;
-    private OrganisationSchemeMainFormLayout       mainFormLayout;
+    private final TitleLabel                             titleLabel;
+    private final VLayout                                panel;
+    private final OrganisationSchemeMainFormLayout       mainFormLayout;
 
-    private CustomTabSet                           tabSet;
-    private Tab                                    organisationSchemeTab;
+    private final CustomTabSet                           tabSet;
+    private final Tab                                    organisationSchemeTab;
 
     // View forms
-    private GroupDynamicForm                       identifiersForm;
-    private GroupDynamicForm                       contentDescriptorsForm;
-    private GroupDynamicForm                       productionDescriptorsForm;
-    private GroupDynamicForm                       diffusionDescriptorsForm;
-    private GroupDynamicForm                       versionResponsibilityForm;
-    private GroupDynamicForm                       commentsForm;
-    private AnnotationsPanel                       annotationsPanel;
+    private GroupDynamicForm                             identifiersForm;
+    private GroupDynamicForm                             contentDescriptorsForm;
+    private GroupDynamicForm                             productionDescriptorsForm;
+    private GroupDynamicForm                             diffusionDescriptorsForm;
+    private GroupDynamicForm                             versionResponsibilityForm;
+    private GroupDynamicForm                             commentsForm;
+    private AnnotationsPanel                             annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                       identifiersEditionForm;
-    private GroupDynamicForm                       contentDescriptorsEditionForm;
-    private GroupDynamicForm                       productionDescriptorsEditionForm;
-    private GroupDynamicForm                       diffusionDescriptorsEditionForm;
-    private GroupDynamicForm                       versionResponsibilityEditionForm;
-    private GroupDynamicForm                       commentsEditionForm;
-    private AnnotationsPanel                       annotationsEditionPanel;
+    private GroupDynamicForm                             identifiersEditionForm;
+    private GroupDynamicForm                             contentDescriptorsEditionForm;
+    private GroupDynamicForm                             productionDescriptorsEditionForm;
+    private GroupDynamicForm                             diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                             versionResponsibilityEditionForm;
+    private GroupDynamicForm                             commentsEditionForm;
+    private AnnotationsPanel                             annotationsEditionPanel;
 
     // Versions
-    private OrganisationSchemeVersionsSectionStack versionsSectionStack;
+    private final OrganisationSchemeVersionsSectionStack versionsSectionStack;
 
     // Organisation list
-    private ToolStrip                              toolStrip;
-    private ToolStripButton                        newButton;
-    private ToolStripButton                        deleteOrganisationButton;
-    private NewOrganisationWindow                  newOrganisationWindow;
-    private DeleteConfirmationWindow               deleteConfirmationWindow;
-    private CustomListGrid                         organisationListGrid;
-    private OrganisationSchemeMetamacDto           organisationSchemeDto;
+    private final ToolStrip                              toolStrip;
+    private final ToolStripButton                        newButton;
+    private final ToolStripButton                        deleteOrganisationButton;
+    private NewOrganisationWindow                        newOrganisationWindow;
+    private final DeleteConfirmationWindow               deleteConfirmationWindow;
+    private final CustomListGrid                         organisationListGrid;
+    private OrganisationSchemeMetamacDto                 organisationSchemeDto;
 
     // OrganisationTree
-    private OrganisationsTreeGrid                  organisationsTreeGrid;
+    private final OrganisationsTreeGrid                  organisationsTreeGrid;
 
     // Categorisations
-    private OrganisationSchemeCategorisationsPanel categorisationsPanel;
+    private final OrganisationSchemeCategorisationsPanel categorisationsPanel;
 
     @Inject
     public OrganisationSchemeViewImpl() {
@@ -671,7 +672,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         // Content descriptors
         contentDescriptorsForm.setValue(OrganisationSchemeDS.TYPE, CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
         contentDescriptorsForm.setValue(OrganisationSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getDescription()));
-        contentDescriptorsForm.setValue(OrganisationSchemeDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(organisationSchemeDto.getIsPartial()));
+        contentDescriptorsForm.setValue(OrganisationSchemeDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(organisationSchemeDto.getIsPartial()));
         contentDescriptorsForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_REFERENCE, organisationSchemeDto.getIsExternalReference() != null ? (organisationSchemeDto.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
@@ -729,7 +730,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.TYPE, CommonUtils.getOrganisationSchemeTypeName(organisationSchemeDto.getType()));
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationSchemeDto.getDescription()));
-        contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(organisationSchemeDto.getIsPartial()));
+        contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(organisationSchemeDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(OrganisationSchemeDS.IS_EXTERNAL_REFERENCE, organisationSchemeDto.getIsExternalReference() != null ? (organisationSchemeDto.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);

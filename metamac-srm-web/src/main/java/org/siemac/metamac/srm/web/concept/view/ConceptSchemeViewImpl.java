@@ -34,6 +34,7 @@ import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
@@ -78,41 +79,41 @@ import com.smartgwt.client.widgets.tab.Tab;
 
 public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHandlers> implements ConceptSchemePresenter.ConceptSchemeView {
 
-    private TitleLabel                        titleLabel;
-    private VLayout                           panel;
-    private ConceptSchemeMainFormLayout       mainFormLayout;
+    private final TitleLabel                        titleLabel;
+    private final VLayout                           panel;
+    private final ConceptSchemeMainFormLayout       mainFormLayout;
 
-    private CustomTabSet                      tabSet;
-    private Tab                               conceptSchemeTab;
+    private final CustomTabSet                      tabSet;
+    private final Tab                               conceptSchemeTab;
 
     // View forms
-    private GroupDynamicForm                  identifiersForm;
-    private GroupDynamicForm                  contentDescriptorsForm;
-    private GroupDynamicForm                  classDescriptorsForm;
-    private GroupDynamicForm                  productionDescriptorsForm;
-    private GroupDynamicForm                  diffusionDescriptorsForm;
-    private GroupDynamicForm                  versionResponsibilityForm;
-    private GroupDynamicForm                  commentsForm;
-    private AnnotationsPanel                  annotationsPanel;
+    private GroupDynamicForm                        identifiersForm;
+    private GroupDynamicForm                        contentDescriptorsForm;
+    private GroupDynamicForm                        classDescriptorsForm;
+    private GroupDynamicForm                        productionDescriptorsForm;
+    private GroupDynamicForm                        diffusionDescriptorsForm;
+    private GroupDynamicForm                        versionResponsibilityForm;
+    private GroupDynamicForm                        commentsForm;
+    private AnnotationsPanel                        annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                  identifiersEditionForm;
-    private GroupDynamicForm                  contentDescriptorsEditionForm;
-    private GroupDynamicForm                  classDescriptorsEditionForm;
-    private GroupDynamicForm                  productionDescriptorsEditionForm;
-    private GroupDynamicForm                  diffusionDescriptorsEditionForm;
-    private GroupDynamicForm                  versionResponsibilityEditionForm;
-    private GroupDynamicForm                  commentsEditionForm;
-    private AnnotationsPanel                  annotationsEditionPanel;
+    private GroupDynamicForm                        identifiersEditionForm;
+    private GroupDynamicForm                        contentDescriptorsEditionForm;
+    private GroupDynamicForm                        classDescriptorsEditionForm;
+    private GroupDynamicForm                        productionDescriptorsEditionForm;
+    private GroupDynamicForm                        diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                        versionResponsibilityEditionForm;
+    private GroupDynamicForm                        commentsEditionForm;
+    private AnnotationsPanel                        annotationsEditionPanel;
 
-    private SearchExternalItemWindow          searchOperationsWindow;
-    private InformationLabel                  conceptsNoVisibleInfoMessage;
-    private ConceptsTreeGrid                  conceptsTreeGrid;
-    private ConceptSchemeVersionsSectionStack versionsSectionStack;
-    private ConceptSchemeCategorisationsPanel categorisationsPanel;
+    private SearchExternalItemWindow                searchOperationsWindow;
+    private final InformationLabel                  conceptsNoVisibleInfoMessage;
+    private final ConceptsTreeGrid                  conceptsTreeGrid;
+    private final ConceptSchemeVersionsSectionStack versionsSectionStack;
+    private final ConceptSchemeCategorisationsPanel categorisationsPanel;
 
-    private ConceptSchemeMetamacDto           conceptSchemeDto;
-    private ConceptSchemeTypeEnum             conceptSchemeType;               // this field stores the initial type of the concept scheme
+    private ConceptSchemeMetamacDto                 conceptSchemeDto;
+    private ConceptSchemeTypeEnum                   conceptSchemeType;               // this field stores the initial type of the concept scheme
 
     @Inject
     public ConceptSchemeViewImpl() {
@@ -639,7 +640,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
         // Content descriptors
         contentDescriptorsForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));
-        contentDescriptorsForm.setValue(ConceptSchemeDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(conceptSchemeDto.getIsPartial()));
+        contentDescriptorsForm.setValue(ConceptSchemeDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(conceptSchemeDto.getIsPartial()));
         contentDescriptorsForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon
                 .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(ConceptSchemeDS.FINAL, conceptSchemeDto.getFinalLogic() != null ? (conceptSchemeDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
@@ -705,7 +706,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         // CONTENT DESCRIPTORS
 
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));
-        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(conceptSchemeDto.getIsPartial()));
+        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(conceptSchemeDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon
                 .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.FINAL, conceptSchemeDto.getFinalLogic() != null ? (conceptSchemeDto.getFinalLogic()

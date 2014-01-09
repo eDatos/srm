@@ -18,7 +18,6 @@ import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
-import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
@@ -34,6 +33,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.utils.CustomRequiredValidator;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
@@ -41,6 +41,7 @@ import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
+import org.siemac.metamac.web.common.client.widgets.form.fields.BooleanSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ExternalItemLinkItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
@@ -69,9 +70,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHandlers> implements DsdGeneralTabPresenter.DsdGeneralTabView {
 
-    private VLayout                           panel;
+    private final VLayout                     panel;
 
-    private DsdMainFormLayout                 mainFormLayout;
+    private final DsdMainFormLayout           mainFormLayout;
 
     // VIEW FORM
 
@@ -535,7 +536,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         versionResponsibilityForm.setValue(DataStructureDefinitionDS.EXTERNAL_PUBLICATION_DATE, dsd.getLifeCycle().getExternalPublicationDate());
 
         // Visualisation metadata
-        visualisationMetadataForm.setValue(DataStructureDefinitionDS.AUTO_OPEN, CommonUtils.getBooleanName(dsd.getAutoOpen()));
+        visualisationMetadataForm.setValue(DataStructureDefinitionDS.AUTO_OPEN, BooleanWebUtils.getBooleanLabel(dsd.getAutoOpen()));
         visualisationMetadataForm.setValue(DataStructureDefinitionDS.SHOW_DECIMALS, dsd.getShowDecimals() != null ? dsd.getShowDecimals().toString() : StringUtils.EMPTY);
         ((DimensionsVisualisationItem) visualisationMetadataForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).setVisualisationDimensions(dsd.getHeadingDimensions(),
                 dsd.getStubDimensions());

@@ -18,7 +18,6 @@ import org.siemac.metamac.srm.web.category.widgets.CategoriesTreeGrid;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeCategorisationsPanel;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeMainFormLayout;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeVersionsSectionStack;
-import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
@@ -29,6 +28,7 @@ import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
@@ -59,41 +59,41 @@ import com.smartgwt.client.widgets.tab.Tab;
 
 public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiHandlers> implements CategorySchemePresenter.CategorySchemeView {
 
-    private TitleLabel                         titleLabel;
-    private VLayout                            panel;
-    private CategorySchemeMainFormLayout       mainFormLayout;
+    private final TitleLabel                         titleLabel;
+    private final VLayout                            panel;
+    private final CategorySchemeMainFormLayout       mainFormLayout;
 
-    private CustomTabSet                       tabSet;
-    private Tab                                categorySchemeTab;
+    private final CustomTabSet                       tabSet;
+    private final Tab                                categorySchemeTab;
 
     // View forms
-    private GroupDynamicForm                   identifiersForm;
-    private GroupDynamicForm                   contentDescriptorsForm;
-    private GroupDynamicForm                   productionDescriptorsForm;
-    private GroupDynamicForm                   diffusionDescriptorsForm;
-    private GroupDynamicForm                   versionResponsibilityForm;
-    private GroupDynamicForm                   commentsForm;
-    private AnnotationsPanel                   annotationsPanel;
+    private GroupDynamicForm                         identifiersForm;
+    private GroupDynamicForm                         contentDescriptorsForm;
+    private GroupDynamicForm                         productionDescriptorsForm;
+    private GroupDynamicForm                         diffusionDescriptorsForm;
+    private GroupDynamicForm                         versionResponsibilityForm;
+    private GroupDynamicForm                         commentsForm;
+    private AnnotationsPanel                         annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                   identifiersEditionForm;
-    private GroupDynamicForm                   contentDescriptorsEditionForm;
-    private GroupDynamicForm                   productionDescriptorsEditionForm;
-    private GroupDynamicForm                   diffusionDescriptorsEditionForm;
-    private GroupDynamicForm                   versionResponsibilityEditionForm;
-    private GroupDynamicForm                   commentsEditionForm;
-    private AnnotationsPanel                   annotationsEditionPanel;
+    private GroupDynamicForm                         identifiersEditionForm;
+    private GroupDynamicForm                         contentDescriptorsEditionForm;
+    private GroupDynamicForm                         productionDescriptorsEditionForm;
+    private GroupDynamicForm                         diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                         versionResponsibilityEditionForm;
+    private GroupDynamicForm                         commentsEditionForm;
+    private AnnotationsPanel                         annotationsEditionPanel;
 
     // Versions
-    private CategorySchemeVersionsSectionStack versionsSectionStack;
+    private final CategorySchemeVersionsSectionStack versionsSectionStack;
 
     // CategoriesTree
-    private CategoriesTreeGrid                 categoriesTreeGrid;
+    private final CategoriesTreeGrid                 categoriesTreeGrid;
 
     // Categorisations
-    private CategorySchemeCategorisationsPanel categorisationsPanel;
+    private final CategorySchemeCategorisationsPanel categorisationsPanel;
 
-    private CategorySchemeMetamacDto           categorySchemeDto;
+    private CategorySchemeMetamacDto                 categorySchemeDto;
 
     @Inject
     public CategorySchemeViewImpl() {
@@ -523,7 +523,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         // Content descriptors
         contentDescriptorsForm.setValue(CategorySchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categorySchemeDto.getDescription()));
-        contentDescriptorsForm.setValue(CategorySchemeDS.IS_PARTIAL, CommonUtils.getBooleanName(categorySchemeDto.getIsPartial()));
+        contentDescriptorsForm.setValue(CategorySchemeDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(categorySchemeDto.getIsPartial()));
         contentDescriptorsForm.setValue(CategorySchemeDS.IS_EXTERNAL_REFERENCE, categorySchemeDto.getIsExternalReference() != null ? (categorySchemeDto.getIsExternalReference() ? MetamacWebCommon
                 .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(CategorySchemeDS.FINAL, categorySchemeDto.getFinalLogic() != null ? (categorySchemeDto.getFinalLogic()
@@ -579,7 +579,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         // CONTENT DESCRIPTORS
 
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categorySchemeDto.getDescription()));
-        contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_PARTIAL, CommonUtils.getBooleanName(categorySchemeDto.getIsPartial()));
+        contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(categorySchemeDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_EXTERNAL_REFERENCE, categorySchemeDto.getIsExternalReference() != null ? (categorySchemeDto.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);

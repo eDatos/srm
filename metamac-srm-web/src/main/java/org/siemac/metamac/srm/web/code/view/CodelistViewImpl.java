@@ -19,7 +19,6 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
-import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
 import org.siemac.metamac.srm.web.client.widgets.CustomTabSet;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
@@ -46,6 +45,7 @@ import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
@@ -55,6 +55,7 @@ import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
+import org.siemac.metamac.web.common.client.widgets.form.fields.BooleanSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
@@ -87,13 +88,13 @@ import com.smartgwt.client.widgets.tab.Tab;
 
 public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> implements CodelistPresenter.CodelistView {
 
-    private TitleLabel                                   titleLabel;
-    private InformationLabel                             informationLabel;
-    private VLayout                                      panel;
-    private CodelistMainFormLayout                       mainFormLayout;
+    private final TitleLabel                             titleLabel;
+    private final InformationLabel                       informationLabel;
+    private final VLayout                                panel;
+    private final CodelistMainFormLayout                 mainFormLayout;
 
-    private CustomTabSet                                 tabSet;
-    private Tab                                          codelistTab;
+    private final CustomTabSet                           tabSet;
+    private final Tab                                    codelistTab;
 
     // View forms
     private GroupDynamicForm                             identifiersForm;
@@ -118,22 +119,22 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToCodelistsWindow;
 
     // Versions
-    private CodelistVersionsSectionStack                 versionsSectionStack;
+    private final CodelistVersionsSectionStack           versionsSectionStack;
 
     // Codes
-    private CodelistCodesPanel                           codelistCodesPanel;
+    private final CodelistCodesPanel                     codelistCodesPanel;
 
     // Variable elements assignment
-    private CodelistCodesVariableElementsPanel           codelistCodesVariableElementsPanel;
+    private final CodelistCodesVariableElementsPanel     codelistCodesVariableElementsPanel;
 
     // Orders
-    private CodelistOrdersPanel                          codelistOrdersPanel;
+    private final CodelistOrdersPanel                    codelistOrdersPanel;
 
     // Openness levels
-    private CodelistOpennesssLevelsPanel                 codelistOpennesssLevelsPanel;
+    private final CodelistOpennesssLevelsPanel           codelistOpennesssLevelsPanel;
 
     // Categorisations
-    private CodelistCategorisationsPanel                 categorisationsPanel;
+    private final CodelistCategorisationsPanel           categorisationsPanel;
 
     private CodelistMetamacDto                           codelistDto;
 
@@ -774,13 +775,13 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codelistDto.getDescription()));
         contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(codelistDto.getDescriptionSource()));
-        contentDescriptorsForm.setValue(CodelistDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsPartial()));
+        contentDescriptorsForm.setValue(CodelistDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(codelistDto.getIsPartial()));
         contentDescriptorsForm.setValue(CodelistDS.IS_EXTERNAL_REFERENCE, codelistDto.getIsExternalReference() != null ? (codelistDto.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
                 : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(CodelistDS.FINAL, codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants()
                 .no()) : StringUtils.EMPTY);
-        contentDescriptorsForm.setValue(CodelistDS.IS_RECOMMENDED, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsRecommended()));
+        contentDescriptorsForm.setValue(CodelistDS.IS_RECOMMENDED, BooleanWebUtils.getBooleanLabel(codelistDto.getIsRecommended()));
         ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(CodelistDS.FAMILY)).setRelatedResource(codelistDto.getFamily());
         ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(CodelistDS.VARIABLE)).setRelatedResource(codelistDto.getVariable());
 
@@ -845,7 +846,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         contentDescriptorsEditionForm.setValue(CodelistDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codelistDto.getDescription()));
         ((MultilanguageRichTextEditorItem) contentDescriptorsEditionForm.getItem(CodelistDS.DESCRIPTION_SOURCE)).setValueInternational(codelistDto.getDescriptionSource());
-        contentDescriptorsEditionForm.setValue(CodelistDS.IS_PARTIAL, org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(codelistDto.getIsPartial()));
+        contentDescriptorsEditionForm.setValue(CodelistDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(codelistDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(CodelistDS.IS_EXTERNAL_REFERENCE, codelistDto.getIsExternalReference() != null ? (codelistDto.getIsExternalReference() ? MetamacWebCommon.getConstants()
                 .yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setValue(CodelistDS.FINAL, codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon

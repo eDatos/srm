@@ -4,11 +4,11 @@ import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
-import org.siemac.metamac.srm.web.client.widgets.BooleanSelectItem;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.web.common.client.utils.SDMXCommonWebValidatorsV2_1;
 import org.siemac.metamac.web.common.client.utils.XsdDataTypesValidators;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
+import org.siemac.metamac.web.common.client.widgets.form.fields.BooleanSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 

@@ -4,6 +4,7 @@ import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.model.ds.RepresentationDS;
 import org.siemac.metamac.srm.web.client.utils.FacetFormUtils;
+import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
@@ -11,21 +12,21 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 
 public class StaticFacetForm extends GroupDynamicForm {
 
-    private ViewTextItem textTypeHidden;
-    private ViewTextItem textType;
-    private ViewTextItem isSequence;
-    private ViewTextItem interval;
-    private ViewTextItem startValue;
-    private ViewTextItem endValue;
-    private ViewTextItem timeInterval;
-    private ViewTextItem startTime;
-    private ViewTextItem endTime;
-    private ViewTextItem minLength;
-    private ViewTextItem maxLength;
-    private ViewTextItem minValue;
-    private ViewTextItem maxValue;
-    private ViewTextItem decimals;
-    private ViewTextItem pattern;
+    private final ViewTextItem textTypeHidden;
+    private final ViewTextItem textType;
+    private final ViewTextItem isSequence;
+    private final ViewTextItem interval;
+    private final ViewTextItem startValue;
+    private final ViewTextItem endValue;
+    private final ViewTextItem timeInterval;
+    private final ViewTextItem startTime;
+    private final ViewTextItem endTime;
+    private final ViewTextItem minLength;
+    private final ViewTextItem maxLength;
+    private final ViewTextItem minValue;
+    private final ViewTextItem maxValue;
+    private final ViewTextItem decimals;
+    private final ViewTextItem pattern;
 
     public StaticFacetForm() {
         super(MetamacSrmWeb.getConstants().dsdDimensionNonNumeratedRepresentation());
@@ -87,7 +88,7 @@ public class StaticFacetForm extends GroupDynamicForm {
                     MetamacSrmWeb.getCoreMessages().facetValueTypeEnum() + facetDto.getFacetValue().getName());
             textType.setValue(value);
             // - FacetType
-            isSequence.setValue(facetDto.getIsSequenceFT() == null ? null : org.siemac.metamac.srm.web.client.utils.CommonUtils.getBooleanName(BooleanUtils.parseBoolean(facetDto.getIsSequenceFT())));
+            isSequence.setValue(facetDto.getIsSequenceFT() == null ? null : BooleanWebUtils.getBooleanLabel(BooleanUtils.parseBoolean(facetDto.getIsSequenceFT())));
             minLength.setValue(facetDto.getMinLengthFT());
             maxLength.setValue(facetDto.getMaxLengthFT());
             minValue.setValue(facetDto.getMinValueFT());
