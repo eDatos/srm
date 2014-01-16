@@ -55,9 +55,9 @@ public class MergeCodelistJob implements Job {
             getTaskMetamacServiceFacade().processPublishInternallyCodelist(serviceContext, urnToCopy, forceLatestFinal, jobKey.getName());
 
             logger.info("MergingJob: Urn to copy " + urnToCopy + ", job " + jobKey + " finished at " + new Date());
-            // TODO sistema de avisos
+            // TODO sistema de avisos (METAMAC-1992)
         } catch (Exception e) {
-            // TODO sistema de avisos
+            // TODO sistema de avisos (METAMAC-1992)
             logger.error("MergingJob: job with key " + jobKey.getName() + " has failed", e);
             try {
                 getTaskMetamacServiceFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);

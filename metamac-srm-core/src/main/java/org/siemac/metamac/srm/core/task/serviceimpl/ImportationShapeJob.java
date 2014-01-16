@@ -62,9 +62,9 @@ public class ImportationShapeJob implements Job {
                 throw new IllegalArgumentException("Job with operation " + operation + " is not supported");
             }
             logger.info("ImportationShapeJob: Import " + shapeFileUrl + ", job " + jobKey + " finished at " + new Date());
-            // TODO sistema de avisos
+            // TODO sistema de avisos (METAMAC-1992)
         } catch (Exception e) {
-            // TODO sistema de avisos
+            // TODO sistema de avisos (METAMAC-1992)
             logger.error("ImportationShapeJob: job with key " + jobKey.getName() + " has failed", e);
             try {
                 getTaskMetamacServiceFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);
