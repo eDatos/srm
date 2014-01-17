@@ -82,11 +82,6 @@
                     <groupId>javax.transaction</groupId>
                     <artifactId>jta</artifactId>
                 </exclusion>
-                <!-- TODO Probando esta exclusion, quitar si hay fallos -->
-                <!-- <exclusion> -->
-                <!-- <groupId>xml-apis</groupId> -->
-                <!-- <artifactId>xml-apis</artifactId> -->
-                <!-- </exclusion> -->
             </exclusions>
         </dependency>
         <dependency>
