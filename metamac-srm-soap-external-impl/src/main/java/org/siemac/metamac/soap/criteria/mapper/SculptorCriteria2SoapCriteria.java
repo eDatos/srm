@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.soap.common.v1_0.domain.ListBase;
 
-// // TODO put in common library if more soap services are created
+// IDEA: put in common library if more soap services are created
 public class SculptorCriteria2SoapCriteria {
 
     @SuppressWarnings("rawtypes")

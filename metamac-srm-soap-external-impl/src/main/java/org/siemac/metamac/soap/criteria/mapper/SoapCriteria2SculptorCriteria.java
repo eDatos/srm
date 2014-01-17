@@ -23,7 +23,7 @@ import org.siemac.metamac.soap.exception.SoapExceptionUtils;
 import org.siemac.metamac.soap.structural_resources.v1_0.ExceptionFault;
 import org.siemac.metamac.srm.soap.external.exception.SoapExceptionParameters;
 
-// // TODO put in common library if more soap services are created. Also org.siemac.metamac.soap.criteria.SculptorCriteria* classes
+// IDEA: Put in common library if more soap services are created. Also org.siemac.metamac.soap.criteria.SculptorCriteria* classes (LLCC-151)
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class SoapCriteria2SculptorCriteria<T> {
 
