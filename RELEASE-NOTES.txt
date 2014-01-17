@@ -10,6 +10,82 @@ Por favor, consulta nuestro gestor de incidencia para obtener más información
 de las incidencias con el id [METAMAC-xxx].
 http://jira.arte-consultores.com/browse/METAMAC
 
+
+------------------------------------------------------------------------------
+Release 1.1.1
+------------------------------------------------------------------------------
+
+Notas de publicación - Metamac - hito metamac-srm - 1.1.1
+
+** Defecto
+    * [METAMAC-1784] - Cambios en las tareas background para compatibilidad con sdmx4you
+    * [METAMAC-1830] - [WEB] Al seleccionar los códigos geográficos a asignar a un elemento de variable geográfico, no debería mostrarse el filtro de codelist (siempre es el mismo)
+    * [METAMAC-1859] - [WEB] Error en gestión de InternationalString en los widgets internacionales
+    * [METAMAC-1863] - Error durante la descompresión de ficheros ZIP
+    * [METAMAC-1868] - [WEB] No se actualiza el listado de versiones de un recurso cuando se publica un recurso en versión temporal
+    * [METAMAC-1907] - Crear war de Apis SDMX tras una fachada con la misma API
+    * [METAMAC-1998] - [CORE] Modificar los tipos de datos de MSSQL que usen "VARCHAR" por "NVARCHAR" 
+    * [METAMAC-2043] - Corregir problema con factorypathentry para el gwtplatform 0.6
+
+
+** Historia
+    * [METAMAC-1101] - Publicación de anuncios relativos a los recursos
+    * [METAMAC-1421] - [CODES] Gestión de variables, familias de variables y elementos de variable
+
+** Mejora
+    * [METAMAC-1618] - External Items linkables
+    * [METAMAC-1620] - Quitar título de los listados y poner una sección de tipo stack
+    * [METAMAC-1621] - Añadir en todos los árboles una columna que muestre un pop-up con la información en detalle
+    * [METAMAC-1622] - En las tablas, mostrar más columnas que las que aparecen por defecto. Inicialmente estarán ocultas.
+    * [METAMAC-1623] - [WEB] Los datos obligatorios para pasar un recurso de fase deben especificarse de alguna forma en la interfaz web para que el usuario sepa en cada momento cuáles les van a hacer requeridos al intentar pasar de fase.
+    * [METAMAC-1624] - Related Resources linkables
+    * [METAMAC-1915] - Elemento de variable "Mundo"
+
+** Nueva Funcionalidad
+    * [METAMAC-1976] - Posibilidad de setear en la WEB los datos por defecto de data
+
+** Soporte
+    * [METAMAC-2003] - Añadir RELEASE-NOTES al proyecto
+    * [METAMAC-2045] - Modificar las utilidades de la web de los selectores booleanos para que use los generales del web-common
+
+** Tarea
+    * [METAMAC-844] - API de SRM
+    * [METAMAC-1133] - Análisis del sistema
+    * [METAMAC-1674] - [WEB] Permitir borrar un recurso cuando se está visualizando
+    * [METAMAC-1695] - External Item con URN opcional
+    * [METAMAC-1714] - APIs: kinds en librería común. Las APIs interna y externa deben tener los mismos valores
+    * [METAMAC-1755] - Configurar la visualización o no de SQL en logback
+    * [METAMAC-1756] - Logs: los cambios del logback no se reflejan sin reiniciar el servidor
+    * [METAMAC-1768] - Validación de dataset asociado a un dsd
+    * [METAMAC-1788] - Añadir el nestedId a ExternalItem, recursos de la API...
+    * [METAMAC-1799] - [API] Obtener dsd: devolver órdenes de dimensiones y niveles de apertura
+    * [METAMAC-1811] - Añadir en el listener qué aplicación está iniciándose
+    * [METAMAC-1832] - ExternalItem: refactor urns
+    * [METAMAC-1834] - [SOAP] Refactor urn por urnProvider y añadir urn
+    * [METAMAC-1855] - [WEB] Envío de excepciones complejas desde un Servlet a código cliente
+    * [METAMAC-1866] - [API] No devolver urnProvider si el recurso no es importado
+    * [METAMAC-1873] - Importaciones: no planificar en background si se importan pocos elementos
+    * [METAMAC-1896] - Caché de información geográfica de elementos de variable
+    * [METAMAC-1901] - [APIs] Modificar generación automática de wadl: prefijos con "ns"
+    * [METAMAC-1902] - Aplicaciones web externa: eliminar listener y servlet no necesarios
+    * [METAMAC-1924] - No permitir cambiar el código de variables, elementos de variables, familias...
+    * [METAMAC-1929] - Identificar en la API el codelist de granularidades geográficas
+    * [METAMAC-1941] - Refactor y mejora de tipos de criteria SculptorPropertyCriteria*
+    * [METAMAC-2000] - Modificar la estructura changes-in-release de los proyectos
+
+** Sub-tarea
+    * [METAMAC-1266] - Categorizaciones: integración en la web
+    * [METAMAC-1514] - API: Validación contra xsd
+    * [METAMAC-1814] - [API] Obtener itemScheme: modificaciones
+    * [METAMAC-1815] - [APIS] Obtener items: modificaciones
+    * [METAMAC-1826] - [API] Refactor urnInternal por urnSiemac
+    * [METAMAC-1831] - [API] Refactor urn por urnProvider
+    * [METAMAC-1836] - [API] Cambiar tipo de dato xsd:integer por xsd:int
+    * [METAMAC-1840] - [API] NO UTILIZAR tipos de datos del xsd SDMX. Crear los propios para metamac
+    * [METAMAC-1875] - [API] Elementos de variable
+    * [METAMAC-1891] - API: servir en JSON
+
+
 ------------------------------------------------------------------------------
 Release 1.1.0
 ------------------------------------------------------------------------------
