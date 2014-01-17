@@ -5,7 +5,7 @@ import java.text.MessageFormat;
 
 import org.siemac.metamac.soap.structural_resources.v1_0.ExceptionFault;
 
-// TODO put in common library if more soap services are created
+// IDEA: Put in common library if more soap services are created (LLCC-151)
 public class SoapExceptionUtils {
 
     public static org.siemac.metamac.soap.common.v1_0.domain.Exception buildException(SoapCommonServiceExceptionType exceptionType, String... parameters) {

@@ -5,7 +5,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-// TODO put in common library if more soap services are created
+// IDEA: Put in common library if more soap services are created (LLCC-151)
 public class SoapCommonServiceExceptionType {
 
     // Map
