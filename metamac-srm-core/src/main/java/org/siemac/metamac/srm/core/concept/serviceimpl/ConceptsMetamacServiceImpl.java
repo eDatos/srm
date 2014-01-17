@@ -1283,7 +1283,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptInNewVersion.setQuantity(quantityCopied);
     }
 
-    // TODO mejorar? pasar mapa en target para no tener q hacer find?
+    // IDEA: To improve efficiency we can receive a map in target in order to avoid making the search.
     private ConceptMetamac versioningConceptRelatedInQuantity(Long itemSchemeVersionIdToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion, ConceptMetamac conceptInQuantityToCopy)
             throws MetamacException {
         if (conceptInQuantityToCopy == null) {

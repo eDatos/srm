@@ -979,7 +979,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         Statement statement = null;
         try {
             statement = connection.createStatement();
-            logger.info(sb); // TODO remove this log in future
+            logger.info(sb); // TODO remove this log in future (METAMAC-2076)
             statement.execute(sb);
         } finally {
             if (statement != null) {
