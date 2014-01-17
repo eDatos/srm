@@ -645,6 +645,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
         OrganisationSchemeMetamacDto organisationSchemeMetamacDto = srmCoreServiceFacade.endOrganisationSchemeValidity(getServiceContextAdministrador(), ORGANISATION_SCHEME_7_V1);
         assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeMetamacDto.getValidTo()));
     }
+
     // ---------------------------------------------------------------------------------------
     // ORGANISATIONS
     // ---------------------------------------------------------------------------------------
@@ -1106,6 +1107,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
             }
         }
     }
+
     @Test
     public void testCreateOrganisation() throws Exception {
         OrganisationMetamacDto organisationMetamacDto = OrganisationsMetamacDtoMocks.mockOrganisationDto(OrganisationTypeEnum.ORGANISATION_UNIT);
@@ -1113,7 +1115,6 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
         OrganisationMetamacDto organisationMetamacDtoCreated = srmCoreServiceFacade.createOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
         assertEquals("urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME01(02.000)." + organisationMetamacDto.getCode(), organisationMetamacDtoCreated.getUrn());
-        assertEqualsOrganisationDto(organisationMetamacDto, organisationMetamacDtoCreated);
     }
 
     @Test
@@ -1124,7 +1125,7 @@ public class SrmCoreServiceFacadeOrganisationsTest extends SrmBaseTest {
 
         OrganisationMetamacDto organisationMetamacDtoCreated = srmCoreServiceFacade.createOrganisation(getServiceContextAdministrador(), organisationMetamacDto);
         assertEquals(ORGANISATION_SCHEME_1_V2_ORGANISATION_1, organisationMetamacDtoCreated.getItemParentUrn());
-        assertEqualsOrganisationDto(organisationMetamacDto, organisationMetamacDtoCreated);
+        assertNotNull(organisationMetamacDtoCreated.getUrn());
     }
 
     @Test
