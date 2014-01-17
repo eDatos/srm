@@ -842,7 +842,6 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
 
         CategoryMetamacDto categoryMetamacDtoCreated = srmCoreServiceFacade.createCategory(getServiceContextAdministrador(), categoryMetamacDto);
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME01(02.000)." + categoryMetamacDto.getCode(), categoryMetamacDtoCreated.getUrn());
-        assertEqualsCategoryDto(categoryMetamacDto, categoryMetamacDtoCreated);
     }
 
     @Test
@@ -853,7 +852,7 @@ public class SrmCoreServiceFacadeCategoriesTest extends SrmBaseTest {
 
         CategoryMetamacDto categoryMetamacDtoCreated = srmCoreServiceFacade.createCategory(getServiceContextAdministrador(), categoryMetamacDto);
         assertEquals(CATEGORY_SCHEME_1_V2_CATEGORY_1, categoryMetamacDtoCreated.getItemParentUrn());
-        assertEqualsCategoryDto(categoryMetamacDto, categoryMetamacDtoCreated);
+        assertNotNull(categoryMetamacDtoCreated.getUrn());
     }
 
     @Test
