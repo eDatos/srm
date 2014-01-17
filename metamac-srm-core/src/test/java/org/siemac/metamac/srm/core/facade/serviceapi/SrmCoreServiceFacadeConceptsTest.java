@@ -194,7 +194,6 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         ConceptSchemeMetamacDto conceptSchemeMetamacCreated = srmCoreServiceFacade.createConceptScheme(getServiceContextAdministrador(), conceptSchemeDto);
 
         conceptSchemeDto.getRelatedOperation().setUri(conceptSchemeDto.getRelatedOperation().getUri().replace("v1.0", "latest")); // dto2Do change version for latest
-        assertEqualsConceptSchemeMetamacDto(conceptSchemeDto, conceptSchemeMetamacCreated);
 
         // Identifiers
         assertNotNull(conceptSchemeMetamacCreated);
@@ -1125,6 +1124,7 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
             assertEquals(urn, e.getExceptionItems().get(0).getMessageParameters()[0]);
         }
     }
+
     @Test
     public void testRetrieveConceptsByConceptSchemeUrn() throws Exception {
         // Do not test because facade operation has same signature as service operation (without dto)
@@ -1723,8 +1723,6 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());
         assertNull(conceptMetamacDtoCreated.getUriProvider());
-
-        assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);
     }
 
     @Test
@@ -1738,8 +1736,6 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX02:CONCEPTSCHEME16(01.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());
         assertNull(conceptMetamacDtoCreated.getUriProvider());
-
-        assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);
     }
 
     @Test
@@ -1750,8 +1746,6 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME01(02.000)." + conceptMetamacDto.getCode(), conceptMetamacDtoCreated.getUrn());
         assertNull(conceptMetamacDtoCreated.getUriProvider());
-
-        assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);
     }
 
     @Test
@@ -1762,7 +1756,6 @@ public class SrmCoreServiceFacadeConceptsTest extends SrmBaseTest {
 
         ConceptMetamacDto conceptMetamacDtoCreated = srmCoreServiceFacade.createConcept(getServiceContextAdministrador(), conceptMetamacDto);
         assertEquals(CONCEPT_SCHEME_1_V2_CONCEPT_1, conceptMetamacDtoCreated.getItemParentUrn());
-        assertEqualsConceptDto(conceptMetamacDto, conceptMetamacDtoCreated);
     }
 
     @Test
