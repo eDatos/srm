@@ -5379,6 +5379,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         codelistDraft = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), codelistDraftUrn);
         assertNull(codelistDraft.getFamily());
     }
+
     @Override
     @Test
     public void testAddCodelistsToCodelistFamily() throws Exception {
@@ -6374,7 +6375,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     public void testCreateVariableElementErrorVariableWorld() throws Exception {
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_7_WORLD);
         assertTrue(VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType()));
-        CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_13_V1_CODE_1); // TODO geo gran debe ser null
+        CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_13_V1_CODE_1); // TODO geo gran debe ser null. Comprobar que la granularidad del
+                                                                                                                                       // elemento es null.
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElementGeographical(variable, geographicalGranularity);
         try {
             codesService.createVariableElement(getServiceContextAdministrador(), variableElement);
