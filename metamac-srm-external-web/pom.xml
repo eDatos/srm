@@ -50,4 +50,9 @@
             <version>${urlrewritefilter.version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>structural-resources-${project.version}</finalName>
+    </build>
+    
 </project>
