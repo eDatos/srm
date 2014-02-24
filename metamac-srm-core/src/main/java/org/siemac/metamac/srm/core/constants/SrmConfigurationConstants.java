@@ -8,23 +8,20 @@ public class SrmConfigurationConstants extends ConfigurationConstants {
 
     // Configuration
 
-    public static final String DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN                = "metamac.srm.dsd.primary_measure.default_concept.urn";
-    public static final String DSD_TIME_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN    = "metamac.srm.dsd.time_dimension_or_attribute.default_concept.urn";
-    public static final String DSD_MEASURE_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN = "metamac.srm.dsd.measure_dimension_or_attribute.default_concept.urn";
-    public static final String JOB_DELETE_DEPRECATED_ENTITIES_CRON_EXPRESSION            = "metamac.srm.jobs.delete_deprecated_entities.cron_expression";
+    public static final String JOB_DELETE_DEPRECATED_ENTITIES_CRON_EXPRESSION = "metamac.srm.jobs.delete_deprecated_entities.cron_expression";
 
-    public static final String USER_GUIDE_FILE_NAME                                      = "metamac.srm.user_guide.file_name";
+    public static final String USER_GUIDE_FILE_NAME                           = "metamac.srm.user_guide.file_name";
 
     // DataSource
-    public static final String DB_URL                                                    = "metamac.srm.db.url";
-    public static final String DB_USERNAME                                               = "metamac.srm.db.username";
-    public static final String DB_PASSWORD                                               = "metamac.srm.db.password";
-    public static final String DB_DIALECT                                                = "metamac.srm.db.dialect";
-    public static final String DB_DRIVER_NAME                                            = "metamac.srm.db.driver_name";
-    public static final String DB_DRIVER_NAME_ORACLE                                     = "oracle.jdbc.OracleDriver";
-    public static final String DB_DRIVER_NAME_MSSQL                                      = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    public static final String DB_URL                                         = "metamac.srm.db.url";
+    public static final String DB_USERNAME                                    = "metamac.srm.db.username";
+    public static final String DB_PASSWORD                                    = "metamac.srm.db.password";
+    public static final String DB_DIALECT                                     = "metamac.srm.db.dialect";
+    public static final String DB_DRIVER_NAME                                 = "metamac.srm.db.driver_name";
+    public static final String DB_DRIVER_NAME_ORACLE                          = "oracle.jdbc.OracleDriver";
+    public static final String DB_DRIVER_NAME_MSSQL                           = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
     // Misc
-    public static final String VARIABLE_WORLD                                            = "metamac.srm.variables.variable_world.urn";
-    public static final String VARIABLE_ELEMENT_WORLD                                    = "metamac.srm.variables.variable_element_world.urn";
+    public static final String VARIABLE_WORLD                                 = "metamac.srm.variables.variable_world.urn";
+    public static final String VARIABLE_ELEMENT_WORLD                         = "metamac.srm.variables.variable_element_world.urn";
 }
