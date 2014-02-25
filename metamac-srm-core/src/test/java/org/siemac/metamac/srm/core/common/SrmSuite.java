@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.concept.mapper.ConceptsDo2DtoMapperTest;
 import org.siemac.metamac.srm.core.concept.mapper.ConceptsDto2DoMapperTest;
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacServiceTest;
 import org.siemac.metamac.srm.core.dsd.serviceapi.DataStructureDefinitionMetamacServiceTest;
+import org.siemac.metamac.srm.core.error.SrmCheckTranslationsTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeConceptsSecurityTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeConceptsTest;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacadeDataStructureDefinitionTest;
@@ -33,7 +34,7 @@ import com.arte.statistic.sdmx.srm.core.structure.mapper.DataStructureDefinition
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({SrmCoreServiceFacadeConceptsTest.class, SrmCoreServiceFacadeOrganisationsTest.class, SrmCoreServiceFacadeConceptsSecurityTest.class,
+@Suite.SuiteClasses({SrmCheckTranslationsTest.class, SrmCoreServiceFacadeConceptsTest.class, SrmCoreServiceFacadeOrganisationsTest.class, SrmCoreServiceFacadeConceptsSecurityTest.class,
         SrmCoreServiceFacadeDataStructureDefinitionTest.class, ConceptsMetamacServiceTest.class, BaseDo2DtoMapperTest.class, OrganisationsDo2DtoMapperTest.class, OrganisationsDto2DoMapperTest.class,
         ConceptsDo2DtoMapperTest.class, ConceptsDto2DoMapperTest.class, SrmCoreServiceFacadeOrganisationsSecurityTest.class, OrganisationsMetamacServiceTest.class,
         DataStructureDefinitionMetamacServiceTest.class, CategoriesServiceTest.class, CategoriesDto2DoMapperTest.class, CategoriesDo2DtoMapperTest.class, CodesMetamacServiceTest.class,
