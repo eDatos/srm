@@ -20,8 +20,8 @@ import org.siemac.metamac.web.common.client.events.SetTitleEvent.SetTitleHandler
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent.ShowMessageHandler;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 import org.siemac.metamac.web.common.client.widgets.MasterHead;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
 import org.siemac.metamac.web.common.shared.CloseSessionAction;
 import org.siemac.metamac.web.common.shared.CloseSessionResult;
 
@@ -190,12 +190,8 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
 
     @Override
     public void downloadUserGuide() {
-        dispatcher.execute(new GetUserGuideUrlAction(), new WaitingAsyncCallback<GetUserGuideUrlResult>() {
+        dispatcher.execute(new GetUserGuideUrlAction(), new WaitingAsyncCallbackHandlingError<GetUserGuideUrlResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(MainPagePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetUserGuideUrlResult result) {
                 CommonWebUtils.showDownloadFileWindow(SrmSharedTokens.FILE_DOWNLOAD_DIR_PATH, SrmSharedTokens.PARAM_FILE_NAME, result.getUserGuideUrl());

@@ -38,8 +38,7 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveDsdResult;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
-import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -169,51 +168,41 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
     @Override
     public void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        dispatcher.execute(new SaveDsdAction(dataStructureDefinitionMetamacDto), new WaitingAsyncCallback<SaveDsdResult>() {
+        dispatcher.execute(new SaveDsdAction(dataStructureDefinitionMetamacDto), new WaitingAsyncCallbackHandlingError<SaveDsdResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(SaveDsdResult result) {
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(getView().getDataStructureDefinitionWebCriteria()));
-                ShowMessageEvent.fireSuccessMessage(DsdListPresenter.this, MetamacSrmWeb.getMessages().dsdSaved());
+                fireSuccessMessage(MetamacSrmWeb.getMessages().dsdSaved());
             }
         });
     }
 
     @Override
     public void deleteDsds(List<String> urns) {
-        dispatcher.execute(new DeleteDsdsAction(urns), new WaitingAsyncCallback<DeleteDsdsResult>() {
+        dispatcher.execute(new DeleteDsdsAction(urns), new WaitingAsyncCallbackHandlingError<DeleteDsdsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(getView().getDataStructureDefinitionWebCriteria()));
-                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(DeleteDsdsResult result) {
+                fireSuccessMessage(MetamacSrmWeb.getMessages().dsdDeleted());
+            }
+
+            @Override
+            protected void afterResult() {
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(getView().getDataStructureDefinitionWebCriteria()));
-                ShowMessageEvent.fireSuccessMessage(DsdListPresenter.this, MetamacSrmWeb.getMessages().dsdDeleted());
             }
+
         });
     }
-
     /**
      * AsyncCallback to fetch DSDs
      */
     @Override
     public void retrieveDsdList(int firstResult, int maxResults, DataStructureDefinitionWebCriteria dataStructureDefinitionWebCriteria) {
-        dispatcher.execute(new GetDsdsAction(firstResult, maxResults, dataStructureDefinitionWebCriteria), new WaitingAsyncCallback<GetDsdsResult>() {
+        dispatcher.execute(new GetDsdsAction(firstResult, maxResults, dataStructureDefinitionWebCriteria), new WaitingAsyncCallbackHandlingError<GetDsdsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetDsdsResult result) {
                 getView().setDsds(result.getDsdDtos(), result.getFirstResultOut(), result.getTotalResults());
@@ -223,12 +212,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
     @Override
     public void exportDsd(String urn) {
-        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallback<ExportSDMXResourceResult>() {
+        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {
                 CommonUtils.downloadFile(result.getFileName());
@@ -238,17 +223,15 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
 
     @Override
     public void cancelValidity(List<String> urns) {
-        dispatcher.execute(new CancelDsdValidityAction(urns), new WaitingAsyncCallback<CancelDsdValidityResult>() {
+        dispatcher.execute(new CancelDsdValidityAction(urns), new WaitingAsyncCallbackHandlingError<CancelDsdValidityResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
-                retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(getView().getDataStructureDefinitionWebCriteria()));
-            }
-            @Override
             public void onWaitSuccess(CancelDsdValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdListPresenter.this, getMessages().dsdCanceledValidity());
+                fireSuccessMessage(getMessages().dsdCanceledValidity());
+            }
+
+            @Override
+            protected void afterResult() {
                 retrieveDsdList(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToDataStructureDefinitionWebCriteria(getView().getDataStructureDefinitionWebCriteria()));
             }
@@ -258,12 +241,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     @Override
     public void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria) {
         StatisticalOperationWebCriteria statisticalOperationWebCriteria = new StatisticalOperationWebCriteria(criteria);
-        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallbackHandlingError<GetStatisticalOperationsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {
                 getView().setOperations(result);
@@ -281,12 +260,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
         StatisticalOperationWebCriteria statisticalOperationWebCriteria = new StatisticalOperationWebCriteria(criteria);
         statisticalOperationWebCriteria.setNoFilterByUserPrincipal(true);
 
-        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallbackHandlingError<GetStatisticalOperationsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetStatisticalOperationsResult result) {
                 getView().setOperationsForSearchSection(result);
@@ -297,12 +272,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     @Override
     public void retrieveDimensionConceptsForSearchSection(int firstResult, int maxResults, String criteria) {
         ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
-        dispatcher.execute(new GetConceptsAction(firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetConceptsResult>() {
+        dispatcher.execute(new GetConceptsAction(firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallbackHandlingError<GetConceptsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetConceptsResult result) {
                 getView().setDimensionConceptsForSearchSection(result);
@@ -313,12 +284,8 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     @Override
     public void retrieveAttributeConceptsForSearchSection(int firstResult, int maxResults, String criteria) {
         ConceptWebCriteria conceptWebCriteria = new ConceptWebCriteria(criteria);
-        dispatcher.execute(new GetConceptsAction(firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetConceptsResult>() {
+        dispatcher.execute(new GetConceptsAction(firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallbackHandlingError<GetConceptsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdListPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetConceptsResult result) {
                 getView().setAttributeConceptsForSearchSection(result);

@@ -7,22 +7,18 @@ import org.siemac.metamac.srm.web.client.view.handlers.MainPageUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.StructuralResourcesMenu;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
-import org.siemac.metamac.web.common.client.utils.MetamacJsonParser;
 import org.siemac.metamac.web.common.client.widgets.BreadCrumbsPanel;
-import org.siemac.metamac.web.common.client.widgets.ErrorMessagePanel;
 import org.siemac.metamac.web.common.client.widgets.MasterHead;
+import org.siemac.metamac.web.common.client.widgets.MessagePanel;
 import org.siemac.metamac.web.common.client.widgets.MetamacNavBar;
-import org.siemac.metamac.web.common.client.widgets.SuccessMessagePanel;
 import org.siemac.metamac.web.common.client.widgets.VersionFooter;
 
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -39,8 +35,7 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
     private final BreadCrumbsPanel        breadCrumbsPanel;
     private final StructuralResourcesMenu structuralResourcesMenu;
 
-    private final SuccessMessagePanel     successMessagePanel;
-    private final ErrorMessagePanel       errorMessagePanel;
+    private final MessagePanel            messagePanel;
 
     private VLayout                       panel;                  // MAIN
     private HLayout                       northLayout;
@@ -48,13 +43,11 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
     private VLayout                       footerLayout;
 
     @Inject
-    public MainPageViewImpl(MasterHead masterHead, BreadCrumbsPanel breadCrumbsPanel, StructuralResourcesMenu structuralResourcesMenu, SuccessMessagePanel successMessagePanel,
-            ErrorMessagePanel errorMessagePanel) {
+    public MainPageViewImpl(MasterHead masterHead, BreadCrumbsPanel breadCrumbsPanel, StructuralResourcesMenu structuralResourcesMenu, MessagePanel messagePanel) {
         this.masterHead = masterHead;
         this.breadCrumbsPanel = breadCrumbsPanel;
         this.structuralResourcesMenu = structuralResourcesMenu;
-        this.successMessagePanel = successMessagePanel;
-        this.errorMessagePanel = errorMessagePanel;
+        this.messagePanel = messagePanel;
         // get rid of scroll bars, and clear out the window's built-in margin,
         // because we want to take advantage of the entire client area
         Window.enableScrolling(false);
@@ -90,8 +83,7 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
         southLayout.setHeight100();
 
         footerLayout = new VLayout();
-        footerLayout.addMember(this.successMessagePanel);
-        footerLayout.addMember(this.errorMessagePanel);
+        footerLayout.addMember(this.messagePanel);
         footerLayout.addMember(new VersionFooter(MetamacSrmWeb.getProjectVersion()));
         // footerLayout.setBackgroundColor("SeaShell");
 
@@ -186,40 +178,12 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
 
     @Override
     public void showMessage(Throwable throwable, String message, MessageTypeEnum type) {
-        // Hide messages before showing the new ones
-        hideMessages();
-        if (MessageTypeEnum.SUCCESS.equals(type)) {
-
-            successMessagePanel.showMessage(message);
-
-            try {
-                // Check if the message is a MetamacException (with information items) serialized in JSON
-                MetamacJsonParser.parseMetamacWebException(message);
-            } catch (Exception e) {
-                // If the message has no information items, hide the panel automatically  after 12000 milliseconds
-                Timer timer = new Timer() {
-
-                    @Override
-                    public void run() {
-                        successMessagePanel.animateHide(AnimationEffect.FADE);
-                    }
-                };
-                timer.schedule(12000);
-            }
-
-        } else if (MessageTypeEnum.ERROR.equals(type)) {
-            if (throwable != null) {
-                errorMessagePanel.showMessage(throwable);
-            } else {
-                errorMessagePanel.showMessage(message);
-            }
-        }
+        messagePanel.showMessage(throwable, message, type);
     }
 
     @Override
     public void hideMessages() {
-        successMessagePanel.hide();
-        errorMessagePanel.hide();
+        messagePanel.hide();
     }
 
     @Override

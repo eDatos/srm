@@ -51,14 +51,14 @@ import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -179,7 +179,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void retrieveConcept(String conceptUrn) {
-        dispatcher.execute(new GetConceptAction(conceptUrn), new WaitingAsyncCallback<GetConceptResult>() {
+        dispatcher.execute(new GetConceptAction(conceptUrn), new WaitingAsyncCallbackHandlingError<GetConceptResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -194,7 +194,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void retrieveConceptsByScheme(String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetConceptsBySchemeResult>() {
+        dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallbackHandlingError<GetConceptsBySchemeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -203,7 +203,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             @Override
             public void onWaitSuccess(GetConceptsBySchemeResult result) {
                 final List<ConceptMetamacVisualisationResult> itemVisualisationResults = result.getItemVisualisationResults();
-                dispatcher.execute(new GetConceptSchemeAction(ConceptPresenter.this.conceptSchemeUrn), new WaitingAsyncCallback<GetConceptSchemeResult>() {
+                dispatcher.execute(new GetConceptSchemeAction(ConceptPresenter.this.conceptSchemeUrn), new WaitingAsyncCallbackHandlingError<GetConceptSchemeResult>(ConceptPresenter.this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -229,7 +229,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void saveConcept(ConceptMetamacDto conceptDto, List<String> roles, List<String> relatedConcepts) {
-        dispatcher.execute(new SaveConceptAction(conceptDto, roles, relatedConcepts), new WaitingAsyncCallback<SaveConceptResult>() {
+        dispatcher.execute(new SaveConceptAction(conceptDto, roles, relatedConcepts), new WaitingAsyncCallbackHandlingError<SaveConceptResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -237,7 +237,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             }
             @Override
             public void onWaitSuccess(SaveConceptResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptPresenter.this, getMessages().conceptSaved());
+                fireSuccessMessage(getMessages().conceptSaved());
                 getView().setConcept(result.getConceptDto(), result.getRoles(), result.getRelatedConcepts());
 
                 // Update URL
@@ -249,7 +249,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void deleteConcept(final ItemVisualisationResult itemVisualisationResult) {
-        dispatcher.execute(new DeleteConceptAction(itemVisualisationResult.getUrn()), new WaitingAsyncCallback<DeleteConceptResult>() {
+        dispatcher.execute(new DeleteConceptAction(itemVisualisationResult.getUrn()), new WaitingAsyncCallbackHandlingError<DeleteConceptResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -269,7 +269,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void deleteConcept(final ConceptMetamacDto conceptMetamacDto) {
-        dispatcher.execute(new DeleteConceptAction(conceptMetamacDto.getUrn()), new WaitingAsyncCallback<DeleteConceptResult>() {
+        dispatcher.execute(new DeleteConceptAction(conceptMetamacDto.getUrn()), new WaitingAsyncCallbackHandlingError<DeleteConceptResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -290,7 +290,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void retrieveConceptTypes() {
         if (conceptTypeDtos == null) {
-            dispatcher.execute(new FindAllConceptTypesAction(), new WaitingAsyncCallback<FindAllConceptTypesResult>() {
+            dispatcher.execute(new FindAllConceptTypesAction(), new WaitingAsyncCallbackHandlingError<FindAllConceptTypesResult>(this) {
 
                 @Override
                 public void onWaitFailure(Throwable caught) {
@@ -322,7 +322,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
 
             dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_CONCEPT_ENUMERATED_REPRESENTATION, firstResult, maxResults, conceptSchemeWebCriteria),
-                    new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                    new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                         @Override
                         public void onWaitFailure(Throwable caught) {
@@ -350,7 +350,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
             }
 
             dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_CONCEPT_ENUMERATED_REPRESENTATION, firstResult, maxResults, codelistWebCriteria),
-                    new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                    new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                         @Override
                         public void onWaitFailure(Throwable caught) {
@@ -367,7 +367,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void retrieveConceptSchemesWithConceptsThatCanBeRole(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_CONCEPT_ROLE, firstResult, maxResults, conceptSchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -383,7 +383,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void retrieveConceptsThatCanBeRole(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_CONCEPT_ROLE, firstResult, maxResults, conceptWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -399,7 +399,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void retrieveConceptSchemesWithConceptsThatCanBeExtended(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_CONCEPT_EXTENDS, firstResult, maxResults, conceptSchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -415,7 +415,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void retrieveConceptsThatCanBeExtended(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_CONCEPT_EXTENDS, firstResult, maxResults, conceptWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -430,7 +430,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void retrieveVariables(int firstResult, int maxResults, String criteria, String variableFamilyUrn) {
-        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, variableFamilyUrn), new WaitingAsyncCallback<GetVariablesResult>() {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, variableFamilyUrn), new WaitingAsyncCallbackHandlingError<GetVariablesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -445,7 +445,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
     @Override
     public void retrieveVariableFamilies(int firstResult, int maxResults, String criteria) {
-        dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetVariableFamiliesResult>() {
+        dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallbackHandlingError<GetVariableFamiliesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -461,7 +461,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void retrieveCodelistsForQuantityUnitFilter(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_QUANTITY_UNIT, firstResult, maxResults, codelistWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -478,7 +478,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void retrieveCodesForQuantityUnit(int firstResult, int maxResults, CodeWebCriteria codeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODE_WITH_QUANTITY_UNIT, firstResult, maxResults, codeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -498,7 +498,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         conceptSchemeWebCriteria.setRelatedConceptSchemeUrn(conceptSchemeUrn);
 
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_BASE_QUANTITY, firstResult, maxResults, conceptSchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -515,7 +515,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void retrieveConceptsForQuantityBase(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_BASE_QUANTITY, firstResult, maxResults, conceptWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -535,7 +535,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         conceptSchemeWebCriteria.setRelatedConceptSchemeUrn(conceptSchemeUrn);
 
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_NUMERATOR, firstResult, maxResults, conceptSchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -553,7 +553,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void retrieveConceptsForQuantityNumerator(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_NUMERATOR, firstResult, maxResults, conceptWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -573,7 +573,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         conceptSchemeWebCriteria.setRelatedConceptSchemeUrn(conceptSchemeUrn);
 
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_QUANTITY_DENOMINATOR, firstResult, maxResults, conceptSchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -591,7 +591,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void retrieveConceptsForQuantityDenominator(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_QUANTITY_DENOMINATOR, firstResult, maxResults, conceptWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -608,7 +608,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void retrieveCodelistsForQuantityBaseLocationFilter(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_QUANTITY_BASE_LOCATION, firstResult, maxResults, codelistWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -625,7 +625,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void retrieveCodesForQuantityBaseLocation(int firstResult, int maxResults, CodeWebCriteria codeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODE_WITH_QUANTITY_BASE_LOCATION, firstResult, maxResults, codeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {

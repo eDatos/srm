@@ -34,11 +34,11 @@ import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyResult;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -135,7 +135,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
     @Override
     public void retrieveVariableFamilyByUrn(String urn) {
-        dispatcher.execute(new GetVariableFamilyAction(urn), new WaitingAsyncCallback<GetVariableFamilyResult>() {
+        dispatcher.execute(new GetVariableFamilyAction(urn), new WaitingAsyncCallbackHandlingError<GetVariableFamilyResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -150,7 +150,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
     @Override
     public void retrieveVariables(int firstResult, int maxResults, String criteria) {
-        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallback<GetVariablesResult>() {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallbackHandlingError<GetVariablesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -165,7 +165,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
     @Override
     public void retrieveVariablesByFamily(int firstResult, int maxResults, final String criteria, String familyUrn) {
-        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, familyUrn), new WaitingAsyncCallback<GetVariablesResult>() {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, familyUrn), new WaitingAsyncCallbackHandlingError<GetVariablesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -187,7 +187,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
     @Override
     public void saveVariableFamily(VariableFamilyDto variableFamilyDto) {
-        dispatcher.execute(new SaveVariableFamilyAction(variableFamilyDto), new WaitingAsyncCallback<SaveVariableFamilyResult>() {
+        dispatcher.execute(new SaveVariableFamilyAction(variableFamilyDto), new WaitingAsyncCallbackHandlingError<SaveVariableFamilyResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -195,7 +195,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
             }
             @Override
             public void onWaitSuccess(SaveVariableFamilyResult result) {
-                ShowMessageEvent.fireSuccessMessage(VariableFamilyPresenter.this, getMessages().variableFamilySaved());
+                fireSuccessMessage(getMessages().variableFamilySaved());
                 getView().setVariableFamily(result.getSavedVariableFamilyDto());
 
                 // Update URL
@@ -207,7 +207,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
     @Override
     public void addVariablesToFamily(List<String> variableUrns, final String familyUrn) {
-        dispatcher.execute(new AddVariablesToVariableFamilyAction(variableUrns, familyUrn), new WaitingAsyncCallback<AddVariablesToVariableFamilyResult>() {
+        dispatcher.execute(new AddVariablesToVariableFamilyAction(variableUrns, familyUrn), new WaitingAsyncCallbackHandlingError<AddVariablesToVariableFamilyResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -215,7 +215,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
             }
             @Override
             public void onWaitSuccess(AddVariablesToVariableFamilyResult result) {
-                ShowMessageEvent.fireSuccessMessage(VariableFamilyPresenter.this, getMessages().variablesAddedToFamily());
+                fireSuccessMessage(getMessages().variablesAddedToFamily());
                 retrieveVariablesByFamily(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null, familyUrn);
             }
         });
@@ -223,7 +223,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
     @Override
     public void removeVariablesFromFamily(List<String> variableUrns, final String familyUrn) {
-        dispatcher.execute(new RemoveVariablesFromVariableFamilyAction(variableUrns, familyUrn), new WaitingAsyncCallback<RemoveVariablesFromVariableFamilyResult>() {
+        dispatcher.execute(new RemoveVariablesFromVariableFamilyAction(variableUrns, familyUrn), new WaitingAsyncCallbackHandlingError<RemoveVariablesFromVariableFamilyResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -231,7 +231,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
             }
             @Override
             public void onWaitSuccess(RemoveVariablesFromVariableFamilyResult result) {
-                ShowMessageEvent.fireSuccessMessage(VariableFamilyPresenter.this, getMessages().variablesRemovedFromFamily());
+                fireSuccessMessage(getMessages().variablesRemovedFromFamily());
                 retrieveVariablesByFamily(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null, familyUrn);
             }
         });
@@ -239,7 +239,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
     @Override
     public void deleteVariableFamily(String urn) {
-        dispatcher.execute(new DeleteVariableFamiliesAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteVariableFamiliesResult>() {
+        dispatcher.execute(new DeleteVariableFamiliesAction(Arrays.asList(urn)), new WaitingAsyncCallbackHandlingError<DeleteVariableFamiliesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -247,7 +247,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
             }
             @Override
             public void onWaitSuccess(DeleteVariableFamiliesResult result) {
-                ShowMessageEvent.fireSuccessMessage(VariableFamilyPresenter.this, getMessages().variableFamilyDeleted());
+                fireSuccessMessage(getMessages().variableFamilyDeleted());
                 placeManager.revealRelativePlace(-1);
             }
         });

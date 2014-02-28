@@ -33,7 +33,7 @@ import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.StatisticalOperationWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -127,7 +127,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
     @Override
     public void retrieveConceptSchemes(int firstResult, int maxResults, final ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
-        dispatcher.execute(new GetConceptSchemesAction(firstResult, maxResults, conceptSchemeWebCriteria), new WaitingAsyncCallback<GetConceptSchemesResult>() {
+        dispatcher.execute(new GetConceptSchemesAction(firstResult, maxResults, conceptSchemeWebCriteria), new WaitingAsyncCallbackHandlingError<GetConceptSchemesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -142,7 +142,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
     @Override
     public void createConceptScheme(ConceptSchemeMetamacDto conceptSchemeDto) {
-        dispatcher.execute(new SaveConceptSchemeAction(conceptSchemeDto), new WaitingAsyncCallback<SaveConceptSchemeResult>() {
+        dispatcher.execute(new SaveConceptSchemeAction(conceptSchemeDto), new WaitingAsyncCallbackHandlingError<SaveConceptSchemeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -150,7 +150,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             }
             @Override
             public void onWaitSuccess(SaveConceptSchemeResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptSchemeListPresenter.this, getMessages().conceptSchemeSaved());
+                fireSuccessMessage(getMessages().conceptSchemeSaved());
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(getView().getConceptSchemeWebCriteria()));
             }
@@ -159,7 +159,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
     @Override
     public void deleteConceptSchemes(List<String> urns) {
-        dispatcher.execute(new DeleteConceptSchemesAction(urns), new WaitingAsyncCallback<DeleteConceptSchemesResult>() {
+        dispatcher.execute(new DeleteConceptSchemesAction(urns), new WaitingAsyncCallbackHandlingError<DeleteConceptSchemesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -169,7 +169,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             }
             @Override
             public void onWaitSuccess(DeleteConceptSchemesResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptSchemeListPresenter.this, getMessages().conceptSchemeDeleted());
+                fireSuccessMessage(getMessages().conceptSchemeDeleted());
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(getView().getConceptSchemeWebCriteria()));
             }
@@ -178,7 +178,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
 
     @Override
     public void cancelValidity(List<String> urns) {
-        dispatcher.execute(new CancelConceptSchemeValidityAction(urns), new WaitingAsyncCallback<CancelConceptSchemeValidityResult>() {
+        dispatcher.execute(new CancelConceptSchemeValidityAction(urns), new WaitingAsyncCallbackHandlingError<CancelConceptSchemeValidityResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -188,7 +188,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
             }
             @Override
             public void onWaitSuccess(CancelConceptSchemeValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptSchemeListPresenter.this, getMessages().conceptSchemeCanceledValidity());
+                fireSuccessMessage(getMessages().conceptSchemeCanceledValidity());
                 retrieveConceptSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToConceptSchemeWebCriteria(getView().getConceptSchemeWebCriteria()));
             }
@@ -198,7 +198,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
     @Override
     public void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria) {
         StatisticalOperationWebCriteria statisticalOperationWebCriteria = new StatisticalOperationWebCriteria(criteria);
-        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallbackHandlingError<GetStatisticalOperationsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -221,7 +221,7 @@ public class ConceptSchemeListPresenter extends Presenter<ConceptSchemeListPrese
         StatisticalOperationWebCriteria statisticalOperationWebCriteria = new StatisticalOperationWebCriteria(criteria);
         statisticalOperationWebCriteria.setNoFilterByUserPrincipal(true);
 
-        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallbackHandlingError<GetStatisticalOperationsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {

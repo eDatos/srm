@@ -35,7 +35,7 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdResult;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
@@ -45,8 +45,8 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEn
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialDimensionTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeDimensionComponent;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -166,7 +166,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     @Override
     public void saveDimension(DimensionComponentDto dimensionToSave) {
         dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), dimensionToSave, TypeComponentList.DIMENSION_DESCRIPTOR),
-                new WaitingAsyncCallback<SaveComponentForDsdResult>() {
+                new WaitingAsyncCallbackHandlingError<SaveComponentForDsdResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -175,7 +175,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
                     @Override
                     public void onWaitSuccess(SaveComponentForDsdResult result) {
-                        ShowMessageEvent.fireSuccessMessage(DsdDimensionsTabPresenter.this, MetamacSrmWeb.getMessages().dsdDimensionSaved());
+                        fireSuccessMessage(MetamacSrmWeb.getMessages().dsdDimensionSaved());
                         dataStructureDefinitionDto = result.getDataStructureDefinitionMetamacDto();
                         updateDimensionList(false); // Do no update the view!! The method onDimensionSaved updates the dimension list in the view
                         getView().onDimensionSaved((DimensionComponentDto) result.getComponentDtoSaved());
@@ -185,7 +185,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     @Override
     public void deleteDimensions(List<DimensionComponentDto> dimensionsToDelete) {
-        dispatcher.execute(new DeleteDimensionListForDsdAction(dataStructureDefinitionDto.getUrn(), dimensionsToDelete), new WaitingAsyncCallback<DeleteDimensionListForDsdResult>() {
+        dispatcher.execute(new DeleteDimensionListForDsdAction(dataStructureDefinitionDto.getUrn(), dimensionsToDelete), new WaitingAsyncCallbackHandlingError<DeleteDimensionListForDsdResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -195,7 +195,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
             @Override
             public void onWaitSuccess(DeleteDimensionListForDsdResult result) {
                 updateDimensionList(true);
-                ShowMessageEvent.fireSuccessMessage(DsdDimensionsTabPresenter.this, MetamacSrmWeb.getMessages().dsdDimensionDeleted());
+                fireSuccessMessage(MetamacSrmWeb.getMessages().dsdDimensionDeleted());
             }
         });
     }
@@ -203,7 +203,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     public void retrieveDimensions(String urn) {
         Set<TypeComponentList> descriptorsToRetrieve = new HashSet<TypeComponentList>();
         descriptorsToRetrieve.add(TypeComponentList.DIMENSION_DESCRIPTOR);
-        dispatcher.execute(new GetDsdAndDescriptorsAction(urn, descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
+        dispatcher.execute(new GetDsdAndDescriptorsAction(urn, descriptorsToRetrieve), new WaitingAsyncCallbackHandlingError<GetDsdAndDescriptorsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -224,7 +224,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
         Set<TypeComponentList> descriptorsToRetrieve = new HashSet<TypeComponentList>();
         descriptorsToRetrieve.add(TypeComponentList.DIMENSION_DESCRIPTOR);
-        dispatcher.execute(new GetDsdAndDescriptorsAction(dataStructureDefinitionDto.getUrn(), descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
+        dispatcher.execute(new GetDsdAndDescriptorsAction(dataStructureDefinitionDto.getUrn(), descriptorsToRetrieve), new WaitingAsyncCallbackHandlingError<GetDsdAndDescriptorsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -245,7 +245,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     public void retrieveConceptSchemes(TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionTypeEnum, int firstResult, int maxResults,
             ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         StructuralResourcesRelationEnum relationType = getRelationTypeForConceptScheme(dimensionType, specialDimensionTypeEnum);
-        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptSchemeWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptSchemeWebCriteria), new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -261,7 +261,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     @Override
     public void retrieveConcepts(TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionType, int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         StructuralResourcesRelationEnum relationType = getRelationTypeForConcept(dimensionType, specialDimensionType);
-        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -277,7 +277,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     @Override
     public void retrieveConceptSchemesForMeasureDimensionEnumeratedRepresentation(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_DSD_MEASURE_DIMENSION_ENUMERATED_REPRESENTATION, firstResult, maxResults,
-                conceptSchemeWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                conceptSchemeWebCriteria), new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -297,23 +297,24 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
                 ? StructuralResourcesRelationEnum.CODELIST_WITH_DSD_SPATIAL_DIMENSION_ENUMERATED_REPRESENTATION
                 : StructuralResourcesRelationEnum.CODELIST_WITH_DSD_DIMENSION_ENUMERATED_REPRESENTATION;
 
-        dispatcher.execute(new GetRelatedResourcesAction(structuralResourcesRelationEnum, firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(structuralResourcesRelationEnum, firstResult, maxResults, codelistWebCriteria),
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setCodelistsForEnumeratedRepresentation(result);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(DsdDimensionsTabPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCodelistsForEnumeratedRepresentation(result);
+                    }
+                });
     }
 
     @Override
     public void retrieveConceptSchemesForDimensionRole(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_ROLES, firstResult, maxResults, conceptSchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -329,7 +330,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
     @Override
     public void retrieveConceptsForDimensionRole(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_DSD_ROLES, firstResult, maxResults, conceptWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -344,7 +345,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     @Override
     public void retrieveConceptSchemeEnumeratedRepresentationFromConcept(String conceptUrn) {
-        dispatcher.execute(new GetConceptAction(conceptUrn), new WaitingAsyncCallback<GetConceptResult>() {
+        dispatcher.execute(new GetConceptAction(conceptUrn), new WaitingAsyncCallbackHandlingError<GetConceptResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -369,7 +370,7 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
 
     @Override
     public void createDefaultDimension(String dsdUrn, TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionType) {
-        dispatcher.execute(new GetDefaultDimensionForDsdAction(dsdUrn, dimensionType, specialDimensionType), new WaitingAsyncCallback<GetDefaultDimensionForDsdResult>() {
+        dispatcher.execute(new GetDefaultDimensionForDsdAction(dsdUrn, dimensionType, specialDimensionType), new WaitingAsyncCallbackHandlingError<GetDefaultDimensionForDsdResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {

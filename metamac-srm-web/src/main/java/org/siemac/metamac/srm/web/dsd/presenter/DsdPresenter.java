@@ -26,12 +26,11 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdVersionsResult;
-import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -236,12 +235,8 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     }
 
     private void retrieveDsdAndVersions(String urn) {
-        dispatcher.execute(new GetDsdAction(urn), new WaitingAsyncCallback<GetDsdResult>() {
+        dispatcher.execute(new GetDsdAction(urn), new WaitingAsyncCallbackHandlingError<GetDsdResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetDsdResult result) {
                 getView().setDsd(result.getDsd());
@@ -251,12 +246,8 @@ public class DsdPresenter extends Presenter<DsdPresenter.DsdView, DsdPresenter.D
     }
 
     private void retrieveDsdVersions(String dsdUrn) {
-        dispatcher.execute(new GetDsdVersionsAction(dsdUrn), new WaitingAsyncCallback<GetDsdVersionsResult>() {
+        dispatcher.execute(new GetDsdVersionsAction(dsdUrn), new WaitingAsyncCallbackHandlingError<GetDsdVersionsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetDsdVersionsResult result) {
                 getView().setDsdVersions(result.getDataStructureDefinitionMetamacDtos());

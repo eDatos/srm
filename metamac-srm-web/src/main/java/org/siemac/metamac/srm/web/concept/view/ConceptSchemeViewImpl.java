@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
@@ -18,6 +17,7 @@ import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
 import org.siemac.metamac.srm.web.client.widgets.CustomTabSet;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
+import org.siemac.metamac.srm.web.client.widgets.SearchStatisticalOperationLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -40,27 +40,23 @@ import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.InformationLabel;
-import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
-import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
-import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ExternalItemLinkItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchExternalItemLinkItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
+import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -68,8 +64,6 @@ import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.form.validator.RequiredIfFunction;
 import com.smartgwt.client.widgets.form.validator.RequiredIfValidator;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -106,7 +100,6 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     private GroupDynamicForm                        commentsEditionForm;
     private AnnotationsPanel                        annotationsEditionPanel;
 
-    private SearchExternalItemWindow                searchOperationsWindow;
     private final InformationLabel                  conceptsNoVisibleInfoMessage;
     private final ConceptsTreeGrid                  conceptsTreeGrid;
     private final ConceptSchemeVersionsSectionStack versionsSectionStack;
@@ -114,6 +107,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
     private ConceptSchemeMetamacDto                 conceptSchemeDto;
     private ConceptSchemeTypeEnum                   conceptSchemeType;               // this field stores the initial type of the concept scheme
+    private SearchStatisticalOperationLinkItem      operationItem;
 
     @Inject
     public ConceptSchemeViewImpl() {
@@ -414,10 +408,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
     @Override
     public void setOperations(GetStatisticalOperationsResult result) {
-        if (searchOperationsWindow != null) {
-            searchOperationsWindow.setExternalItems(result.getOperations());
-            searchOperationsWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getOperations().size(), result.getTotalResults());
-        }
+        operationItem.setOperations(result.getOperations(), result.getFirstResultOut(), result.getTotalResults());
     }
 
     @Override
@@ -558,7 +549,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
                 classDescriptorsEditionForm.markForRedraw();
                 if (!ConceptSchemeTypeEnum.OPERATION.name().equals(type.getValueAsString()) && !ConceptSchemeTypeEnum.MEASURE.name().equals(type.getValueAsString())) {
                     // if the concept scheme is not an operation type anymore, remove the related operation
-                    ((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).clearExternalItem();
+                    classDescriptorsEditionForm.clearValue(ConceptSchemeDS.RELATED_OPERATION);
                 }
             }
         });
@@ -570,8 +561,8 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
         // Operation
 
-        final SearchExternalItemLinkItem operation = createRelatedOperationItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
-        operation.setShowIfCondition(new FormItemIfFunction() {
+        operationItem = createRelatedOperationItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
+        operationItem.setShowIfCondition(new FormItemIfFunction() {
 
             @Override
             public boolean execute(FormItem item, Object value, DynamicForm form) {
@@ -580,7 +571,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             }
         });
 
-        classDescriptorsEditionForm.setFields(type, typeView, operation);
+        classDescriptorsEditionForm.setFields(type, typeView, operationItem);
 
         // Production descriptors
         productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
@@ -628,7 +619,6 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         mainFormLayout.addEditionCanvas(commentsEditionForm);
         mainFormLayout.addEditionCanvas(annotationsEditionPanel);
     }
-
     public void setConceptSchemeViewMode(ConceptSchemeMetamacDto conceptSchemeDto) {
         // Identifiers
         identifiersForm.setValue(ConceptSchemeDS.CODE, conceptSchemeDto.getCode());
@@ -654,7 +644,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         } else {
             classDescriptorsForm.getItem(ConceptSchemeDS.RELATED_OPERATION).hide();
         }
-        ((ExternalItemLinkItem) classDescriptorsForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).setExternalItem(conceptSchemeDto.getRelatedOperation());
+        classDescriptorsForm.setValue(ConceptSchemeDS.RELATED_OPERATION, conceptSchemeDto.getRelatedOperation());
         classDescriptorsForm.markForRedraw();
 
         // Production descriptors
@@ -718,7 +708,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE, conceptSchemeDto.getType() != null ? conceptSchemeDto.getType().name() : null);
         classDescriptorsEditionForm.setValue(ConceptSchemeDS.TYPE_VIEW, CommonUtils.getConceptSchemeTypeName(conceptSchemeDto.getType()));
-        ((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).setExternalItem(conceptSchemeDto.getRelatedOperation());
+        classDescriptorsEditionForm.setValue(ConceptSchemeDS.RELATED_OPERATION, conceptSchemeDto.getRelatedOperation());
         classDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         classDescriptorsEditionForm.markForRedraw();
 
@@ -768,7 +758,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         conceptSchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptSchemeDS.DESCRIPTION));
         // Class descriptors
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.valueOf(classDescriptorsEditionForm.getValueAsString(ConceptSchemeDS.TYPE)));
-        conceptSchemeDto.setRelatedOperation(((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).getExternalItemDto());
+        conceptSchemeDto.setRelatedOperation(classDescriptorsEditionForm.getValueAsExternalItemDto(ConceptSchemeDS.RELATED_OPERATION));
 
         // Comments
         conceptSchemeDto.setComment((InternationalStringDto) commentsEditionForm.getValue(ConceptSchemeDS.COMMENTS));
@@ -780,8 +770,15 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         return conceptSchemeDto;
     }
 
-    private SearchExternalItemLinkItem createRelatedOperationItem(String name, String title) {
-        SearchExternalItemLinkItem operation = new SearchExternalItemLinkItem(name, title);
+    private SearchStatisticalOperationLinkItem createRelatedOperationItem(String name, String title) {
+        SearchStatisticalOperationLinkItem operation = new SearchStatisticalOperationLinkItem(name, title) {
+
+            @Override
+            protected void retrieveStatisticalOperations(int firstResult, int maxResults, MetamacWebCriteria webCriteria) {
+                getUiHandlers().retrieveStatisticalOperations(firstResult, maxResults, webCriteria != null ? webCriteria.getCriteria() : null);
+            }
+        };
+
         RequiredIfValidator requiredIfValidator = new RequiredIfValidator(new RequiredIfFunction() {
 
             @Override
@@ -790,40 +787,6 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             }
         });
         operation.setValidators(requiredIfValidator);
-        operation.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
-
-            @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-                final int OPERATION_FIRST_RESULT = 0;
-                final int OPERATION_MAX_RESULTS = 16;
-                searchOperationsWindow = new SearchExternalItemWindow(getConstants().conceptSchemeSearchOperations(), OPERATION_MAX_RESULTS, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveStatisticalOperations(firstResult, maxResults, searchOperationsWindow.getSearchCriteria());
-                    }
-                });
-                getUiHandlers().retrieveStatisticalOperations(OPERATION_FIRST_RESULT, OPERATION_MAX_RESULTS, null);
-                searchOperationsWindow.getListGrid().setSelectionType(SelectionStyle.SINGLE); // Only one statistical operation can be selected
-                searchOperationsWindow.getExternalListGridItem().setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String code) {
-                        getUiHandlers().retrieveStatisticalOperations(firstResult, maxResults, code);
-                    }
-                });
-                searchOperationsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        ExternalItemDto selectedOperation = searchOperationsWindow.getSelectedExternalItem();
-                        searchOperationsWindow.destroy();
-                        ((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).setExternalItem(selectedOperation);
-                        classDescriptorsEditionForm.validate(false);
-                    }
-                });
-            }
-        });
         return operation;
     }
 

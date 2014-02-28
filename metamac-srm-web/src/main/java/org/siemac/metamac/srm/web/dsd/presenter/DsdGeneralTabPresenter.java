@@ -57,7 +57,7 @@ import org.siemac.metamac.srm.web.shared.dsd.VersionDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.VersionDsdResult;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
@@ -147,7 +147,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void saveDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionDto) {
-        dispatcher.execute(new SaveDsdAction(dataStructureDefinitionDto), new WaitingAsyncCallback<SaveDsdResult>() {
+        dispatcher.execute(new SaveDsdAction(dataStructureDefinitionDto), new WaitingAsyncCallbackHandlingError<SaveDsdResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -155,7 +155,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             }
             @Override
             public void onWaitSuccess(SaveDsdResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdGeneralTabPresenter.this, MetamacSrmWeb.getMessages().dsdSaved());
+                fireSuccessMessage(MetamacSrmWeb.getMessages().dsdSaved());
 
                 // Redirect to the DSD page to update the URL
                 goToDsd(result.getDsdSaved().getUrn()); // To update the URL (the method placeManager.updateHistory only allow to update the last placeRequest)
@@ -165,7 +165,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void deleteDsd(String urn) {
-        dispatcher.execute(new DeleteDsdsAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteDsdsResult>() {
+        dispatcher.execute(new DeleteDsdsAction(Arrays.asList(urn)), new WaitingAsyncCallbackHandlingError<DeleteDsdsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -173,7 +173,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             }
             @Override
             public void onWaitSuccess(DeleteDsdsResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdGeneralTabPresenter.this, MetamacSrmWeb.getMessages().dsdDeleted());
+                fireSuccessMessage(MetamacSrmWeb.getMessages().dsdDeleted());
                 goTo(PlaceRequestUtils.buildAbsoluteDsdsPlaceRequest());
             }
         });
@@ -186,7 +186,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     private void retrieveCompleteDsd(final String dsdUrn, final boolean startDsdEdition) {
         Set<TypeComponentList> descriptorsToRetrieve = new HashSet<TypeComponentList>();
         descriptorsToRetrieve.add(TypeComponentList.DIMENSION_DESCRIPTOR);
-        dispatcher.execute(new GetDsdAndDescriptorsAction(dsdUrn, descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
+        dispatcher.execute(new GetDsdAndDescriptorsAction(dsdUrn, descriptorsToRetrieve), new WaitingAsyncCallbackHandlingError<GetDsdAndDescriptorsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -214,7 +214,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         criteria.setCodeEQ(dataStructureDefinitionMetamacDto.getCode());
         criteria.setMaintainerUrn(dataStructureDefinitionMetamacDto.getMaintainer().getUrn());
         criteria.setIsLatestFinal(true);
-        dispatcher.execute(new GetDsdsAction(0, 1, criteria), new WaitingAsyncCallback<GetDsdsResult>() {
+        dispatcher.execute(new GetDsdsAction(0, 1, criteria), new WaitingAsyncCallbackHandlingError<GetDsdsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -229,7 +229,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void exportDsd(String urn) {
-        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallback<ExportSDMXResourceResult>() {
+        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -244,7 +244,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void copyDsd(String urn) {
-        dispatcher.execute(new CopyDsdAction(urn), new WaitingAsyncCallback<CopyDsdResult>() {
+        dispatcher.execute(new CopyDsdAction(urn), new WaitingAsyncCallbackHandlingError<CopyDsdResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -252,7 +252,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             }
             @Override
             public void onWaitSuccess(CopyDsdResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdGeneralTabPresenter.this, getMessages().maintainableArtefactCopied());
+                fireSuccessMessage(getMessages().maintainableArtefactCopied());
             }
         });
     }
@@ -263,55 +263,58 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void sendToProductionValidation(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.PRODUCTION_VALIDATION, null), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.PRODUCTION_VALIDATION, null),
+                new WaitingAsyncCallbackHandlingError<UpdateDsdProcStatusResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdGeneralTabPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(UpdateDsdProcStatusResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdGeneralTabPresenter.this, MetamacSrmWeb.getMessages().dsdSentToProductionValidation());
-                retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(DsdGeneralTabPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateDsdProcStatusResult result) {
+                        fireSuccessMessage(MetamacSrmWeb.getMessages().dsdSentToProductionValidation());
+                        retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
+                    }
+                });
     }
 
     @Override
     public void sendToDiffusionValidation(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.DIFFUSION_VALIDATION, null), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.DIFFUSION_VALIDATION, null),
+                new WaitingAsyncCallbackHandlingError<UpdateDsdProcStatusResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdGeneralTabPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(UpdateDsdProcStatusResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdGeneralTabPresenter.this, MetamacSrmWeb.getMessages().dsdSentToDiffusionValidation());
-                retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(DsdGeneralTabPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateDsdProcStatusResult result) {
+                        fireSuccessMessage(MetamacSrmWeb.getMessages().dsdSentToDiffusionValidation());
+                        retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
+                    }
+                });
     }
 
     @Override
     public void rejectValidation(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.VALIDATION_REJECTED, null), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.VALIDATION_REJECTED, null),
+                new WaitingAsyncCallbackHandlingError<UpdateDsdProcStatusResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdGeneralTabPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(UpdateDsdProcStatusResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdGeneralTabPresenter.this, MetamacSrmWeb.getMessages().dsdRejected());
-                retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(DsdGeneralTabPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateDsdProcStatusResult result) {
+                        fireSuccessMessage(MetamacSrmWeb.getMessages().dsdRejected());
+                        retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
+                    }
+                });
     }
 
     @Override
     public void publishInternally(final DataStructureDefinitionMetamacDto dsdToPublish, Boolean forceLatestFinal) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(dsdToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, forceLatestFinal), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dsdToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, forceLatestFinal), new WaitingAsyncCallbackHandlingError<UpdateDsdProcStatusResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -319,7 +322,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             }
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdGeneralTabPresenter.this, MetamacSrmWeb.getMessages().dsdPublishedInternally());
+                fireSuccessMessage(MetamacSrmWeb.getMessages().dsdPublishedInternally());
                 retrieveCompleteDsd(result.getDataStructureDefinitionMetamacDto().getUrn());
 
                 // If the version published was a temporal version, reload the version list and the URL. When a temporal version is published, is automatically converted into a normal version (the
@@ -331,23 +334,24 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void publishExternally(final DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {
-        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.EXTERNALLY_PUBLISHED, null), new WaitingAsyncCallback<UpdateDsdProcStatusResult>() {
+        dispatcher.execute(new UpdateDsdProcStatusAction(dataStructureDefinitionMetamacDto, ProcStatusEnum.EXTERNALLY_PUBLISHED, null),
+                new WaitingAsyncCallbackHandlingError<UpdateDsdProcStatusResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdGeneralTabPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(UpdateDsdProcStatusResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdGeneralTabPresenter.this, MetamacSrmWeb.getMessages().dsdPublishedExternally());
-                retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(DsdGeneralTabPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateDsdProcStatusResult result) {
+                        fireSuccessMessage(MetamacSrmWeb.getMessages().dsdPublishedExternally());
+                        retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
+                    }
+                });
     }
 
     @Override
     public void versioning(String urn, VersionTypeEnum versionType) {
-        dispatcher.execute(new VersionDsdAction(urn, versionType), new WaitingAsyncCallback<VersionDsdResult>() {
+        dispatcher.execute(new VersionDsdAction(urn, versionType), new WaitingAsyncCallbackHandlingError<VersionDsdResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -355,7 +359,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             }
             @Override
             public void onWaitSuccess(VersionDsdResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdGeneralTabPresenter.this, MetamacSrmWeb.getMessages().dsdVersioned());
+                fireSuccessMessage(MetamacSrmWeb.getMessages().dsdVersioned());
                 // Update the URL (the method placeManager.updateHistory only allow to update the last placeRequest)
                 goToDsd(result.getDataStructureDefinitionMetamacDto().getUrn());
                 // Update the version list
@@ -366,7 +370,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void createTemporalVersion(String urn) {
-        dispatcher.execute(new CreateDsdTemporalVersionAction(urn), new WaitingAsyncCallback<CreateDsdTemporalVersionResult>() {
+        dispatcher.execute(new CreateDsdTemporalVersionAction(urn), new WaitingAsyncCallbackHandlingError<CreateDsdTemporalVersionResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -387,7 +391,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     public void cancelValidity(final String urn) {
         List<String> urns = new ArrayList<String>();
         urns.add(urn);
-        dispatcher.execute(new CancelDsdValidityAction(urns), new WaitingAsyncCallback<CancelDsdValidityResult>() {
+        dispatcher.execute(new CancelDsdValidityAction(urns), new WaitingAsyncCallbackHandlingError<CancelDsdValidityResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -395,7 +399,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             }
             @Override
             public void onWaitSuccess(CancelDsdValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdGeneralTabPresenter.this, getMessages().dsdCanceledValidity());
+                fireSuccessMessage(getMessages().dsdCanceledValidity());
                 retrieveCompleteDsd(urn);
             }
         });
@@ -408,7 +412,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     @Override
     public void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria) {
         StatisticalOperationWebCriteria statisticalOperationWebCriteria = new StatisticalOperationWebCriteria(criteria);
-        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallbackHandlingError<GetStatisticalOperationsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -422,7 +426,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     private void retrieveConcepts(final String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptSchemeAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptSchemeResult>() {
+        dispatcher.execute(new GetConceptSchemeAction(conceptSchemeUrn), new WaitingAsyncCallbackHandlingError<GetConceptSchemeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -431,7 +435,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             @Override
             public void onWaitSuccess(GetConceptSchemeResult result) {
                 final ConceptSchemeMetamacDto conceptSchemeMetamacDto = result.getConceptSchemeDto();
-                dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetConceptsBySchemeResult>() {
+                dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallbackHandlingError<GetConceptsBySchemeResult>(
+                        DsdGeneralTabPresenter.this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -462,7 +467,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void retrieveDimensionsAndCandidateVisualisations(String dsdUrn) {
-        dispatcher.execute(new GetDsdDimensionsAndCandidateVisualisationsAction(dsdUrn), new WaitingAsyncCallback<GetDsdDimensionsAndCandidateVisualisationsResult>() {
+        dispatcher.execute(new GetDsdDimensionsAndCandidateVisualisationsAction(dsdUrn), new WaitingAsyncCallbackHandlingError<GetDsdDimensionsAndCandidateVisualisationsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {

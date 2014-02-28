@@ -6,28 +6,24 @@ import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
+import org.siemac.metamac.srm.web.client.widgets.SearchStatisticalOperationLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourceSearchSectionStack;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
-import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
-import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
-import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchExternalItemLinkItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.external.SearchExternalItemLinkItem;
+import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
-import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
-import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 
 public class ConceptSchemeSearchSectionStack extends VersionableResourceSearchSectionStack {
 
-    private ConceptSchemeListUiHandlers uiHandlers;
+    private ConceptSchemeListUiHandlers        uiHandlers;
 
-    private SearchExternalItemWindow    searchOperationWindow;
+    private SearchStatisticalOperationLinkItem statisticalOperationItem;
 
     public ConceptSchemeSearchSectionStack() {
     }
@@ -36,7 +32,7 @@ public class ConceptSchemeSearchSectionStack extends VersionableResourceSearchSe
     protected void setFormItemsInAdvancedSearchForm(FormItem[] advancedSearchFormItems) {
 
         // Statistical operation
-        SearchExternalItemLinkItem statisticalOperation = createStatisticalOperationItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
+        statisticalOperationItem = createStatisticalOperationItem(ConceptSchemeDS.RELATED_OPERATION, getConstants().conceptSchemeOperation());
 
         // Type
         SelectItem conceptSchemeType = new SelectItem(ConceptSchemeDS.TYPE, getConstants().conceptSchemeType());
@@ -46,7 +42,7 @@ public class ConceptSchemeSearchSectionStack extends VersionableResourceSearchSe
         FormItem[] conceptFields = new FormItem[advancedSearchFormItems.length + 2];
         System.arraycopy(advancedSearchFormItems, 0, conceptFields, 0, advancedSearchFormItems.length - 1);
         System.arraycopy(advancedSearchFormItems, advancedSearchFormItems.length - 1, conceptFields, conceptFields.length - 1, 1);
-        conceptFields[conceptFields.length - 3] = statisticalOperation;
+        conceptFields[conceptFields.length - 3] = statisticalOperationItem;
         conceptFields[conceptFields.length - 2] = conceptSchemeType;
         advancedSearchForm.setFields(conceptFields);
     }
@@ -66,10 +62,7 @@ public class ConceptSchemeSearchSectionStack extends VersionableResourceSearchSe
     }
 
     public void setOperations(GetStatisticalOperationsResult result) {
-        if (searchOperationWindow != null) {
-            searchOperationWindow.setExternalItems(result.getOperations());
-            searchOperationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getOperations().size(), result.getTotalResults());
-        }
+        statisticalOperationItem.setOperations(result.getOperations(), result.getFirstResultOut(), result.getTotalResults());
     }
 
     public void setUiHandlers(ConceptSchemeListUiHandlers uiHandlers) {
@@ -80,47 +73,15 @@ public class ConceptSchemeSearchSectionStack extends VersionableResourceSearchSe
         return uiHandlers;
     }
 
-    private SearchExternalItemLinkItem createStatisticalOperationItem(String name, String title) {
-        SearchExternalItemLinkItem operationItem = new SearchExternalItemLinkItem(name, title);
-        operationItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+    private SearchStatisticalOperationLinkItem createStatisticalOperationItem(String name, String title) {
+        SearchStatisticalOperationLinkItem operationItem = new SearchStatisticalOperationLinkItem(name, title) {
 
             @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-                final int OPERATION_FIRST_RESULT = 0;
-                final int OPERATION_MAX_RESULTS = 16;
-                searchOperationWindow = new SearchExternalItemWindow(getConstants().conceptSchemeSearchOperations(), OPERATION_MAX_RESULTS, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveStatisticalOperationsForSearchSection(firstResult, maxResults, searchOperationWindow.getSearchCriteria());
-                    }
-                });
-                getUiHandlers().retrieveStatisticalOperationsForSearchSection(OPERATION_FIRST_RESULT, OPERATION_MAX_RESULTS, null);
-                searchOperationWindow.getListGrid().setSelectionType(SelectionStyle.SINGLE); // Only one statistical operation can be selected
-                searchOperationWindow.getExternalListGridItem().setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveStatisticalOperationsForSearchSection(firstResult, maxResults, criteria);
-                    }
-                });
-                searchOperationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        ExternalItemDto statisticalOperation = searchOperationWindow.getSelectedExternalItem();
-                        searchOperationWindow.destroy();
-                        ((SearchExternalItemLinkItem) advancedSearchForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).setExternalItem(statisticalOperation);
-                    }
-                });
+            protected void retrieveStatisticalOperations(int firstResult, int maxResults, MetamacWebCriteria webCriteria) {
+                getUiHandlers().retrieveStatisticalOperationsForSearchSection(firstResult, maxResults, webCriteria != null ? webCriteria.getCriteria() : null);
             }
-        });
+        };
         return operationItem;
     }
 
-    @Override
-    protected void clearAdvancedSearchSection() {
-        super.clearAdvancedSearchSection();
-        ((SearchExternalItemLinkItem) advancedSearchForm.getItem(ConceptSchemeDS.RELATED_OPERATION)).clearExternalItem();
-    }
 }

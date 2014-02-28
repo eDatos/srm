@@ -32,7 +32,7 @@ import org.siemac.metamac.srm.web.shared.code.SaveCodelistResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -124,7 +124,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
     @Override
     public void createCodelist(CodelistMetamacDto codelistMetamacDto) {
-        dispatcher.execute(new SaveCodelistAction(codelistMetamacDto), new WaitingAsyncCallback<SaveCodelistResult>() {
+        dispatcher.execute(new SaveCodelistAction(codelistMetamacDto), new WaitingAsyncCallbackHandlingError<SaveCodelistResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -132,7 +132,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             }
             @Override
             public void onWaitSuccess(SaveCodelistResult result) {
-                ShowMessageEvent.fireSuccessMessage(CodelistListPresenter.this, getMessages().codelistSaved());
+                fireSuccessMessage(getMessages().codelistSaved());
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(getView().getCodelistWebCriteria()));
             }
@@ -141,7 +141,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
     @Override
     public void deleteCodelists(List<String> urns) {
-        dispatcher.execute(new DeleteCodelistsAction(urns), new WaitingAsyncCallback<DeleteCodelistsResult>() {
+        dispatcher.execute(new DeleteCodelistsAction(urns), new WaitingAsyncCallbackHandlingError<DeleteCodelistsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -151,7 +151,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             }
             @Override
             public void onWaitSuccess(DeleteCodelistsResult result) {
-                ShowMessageEvent.fireSuccessMessage(CodelistListPresenter.this, getMessages().codelistDeleted());
+                fireSuccessMessage(getMessages().codelistDeleted());
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(getView().getCodelistWebCriteria()));
             }
@@ -160,7 +160,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
     @Override
     public void retrieveCodelists(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
-        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallbackHandlingError<GetCodelistsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -175,7 +175,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
     @Override
     public void cancelValidity(List<String> urns) {
-        dispatcher.execute(new CancelCodelistValidityAction(urns), new WaitingAsyncCallback<CancelCodelistValidityResult>() {
+        dispatcher.execute(new CancelCodelistValidityAction(urns), new WaitingAsyncCallbackHandlingError<CancelCodelistValidityResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -185,7 +185,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             }
             @Override
             public void onWaitSuccess(CancelCodelistValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(CodelistListPresenter.this, getMessages().codelistCanceledValidity());
+                fireSuccessMessage(getMessages().codelistCanceledValidity());
                 retrieveCodelists(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCodelistWebCriteria(getView().getCodelistWebCriteria()));
             }
@@ -194,7 +194,7 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
 
     @Override
     public void retrieveVariables(int firstResult, int maxResults, String criteria) {
-        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallback<GetVariablesResult>() {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallbackHandlingError<GetVariablesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {

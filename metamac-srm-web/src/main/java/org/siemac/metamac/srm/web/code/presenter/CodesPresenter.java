@@ -22,11 +22,11 @@ import org.siemac.metamac.srm.web.shared.code.GetCodesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -109,7 +109,7 @@ public class CodesPresenter extends Presenter<CodesPresenter.CodesView, CodesPre
 
     @Override
     public void retrieveCodes(int firstResult, int maxResults, CodeWebCriteria codeWebCriteria) {
-        dispatcher.execute(new GetCodesAction(firstResult, maxResults, codeWebCriteria), new WaitingAsyncCallback<GetCodesResult>() {
+        dispatcher.execute(new GetCodesAction(firstResult, maxResults, codeWebCriteria), new WaitingAsyncCallbackHandlingError<GetCodesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {

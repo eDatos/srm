@@ -29,8 +29,7 @@ import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
-import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -126,12 +125,8 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
 
     @Override
     public void retrieveCategorySchemes(int firstResult, int maxResults, CategorySchemeWebCriteria categorySchemeWebCriteria) {
-        dispatcher.execute(new GetCategorySchemesAction(firstResult, maxResults, categorySchemeWebCriteria), new WaitingAsyncCallback<GetCategorySchemesResult>() {
+        dispatcher.execute(new GetCategorySchemesAction(firstResult, maxResults, categorySchemeWebCriteria), new WaitingAsyncCallbackHandlingError<GetCategorySchemesResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemeListPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetCategorySchemesResult result) {
                 getView().setCategorySchemePaginatedList(result);
@@ -141,15 +136,11 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
 
     @Override
     public void createCategoryScheme(CategorySchemeMetamacDto categorySchemeDto) {
-        dispatcher.execute(new SaveCategorySchemeAction(categorySchemeDto), new WaitingAsyncCallback<SaveCategorySchemeResult>() {
+        dispatcher.execute(new SaveCategorySchemeAction(categorySchemeDto), new WaitingAsyncCallbackHandlingError<SaveCategorySchemeResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemeListPresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(SaveCategorySchemeResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategorySchemeListPresenter.this, getMessages().categorySchemeSaved());
+                fireSuccessMessage(getMessages().categorySchemeSaved());
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(getView().getCategorySchemeWebCriteria()));
             }
@@ -158,36 +149,31 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
 
     @Override
     public void deleteCategorySchemes(List<String> urns) {
-        dispatcher.execute(new DeleteCategorySchemesAction(urns), new WaitingAsyncCallback<DeleteCategorySchemesResult>() {
+        dispatcher.execute(new DeleteCategorySchemesAction(urns), new WaitingAsyncCallbackHandlingError<DeleteCategorySchemesResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemeListPresenter.this, caught);
-                retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(getView().getCategorySchemeWebCriteria()));
-            }
-            @Override
             public void onWaitSuccess(DeleteCategorySchemesResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategorySchemeListPresenter.this, getMessages().categorySchemeDeleted());
+                fireSuccessMessage(getMessages().categorySchemeDeleted());
+            }
+
+            @Override
+            protected void afterResult() {
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(getView().getCategorySchemeWebCriteria()));
             }
         });
     }
-
     @Override
     public void cancelValidity(List<String> urns) {
-        dispatcher.execute(new CancelCategorySchemeValidityAction(urns), new WaitingAsyncCallback<CancelCategorySchemeValidityResult>() {
+        dispatcher.execute(new CancelCategorySchemeValidityAction(urns), new WaitingAsyncCallbackHandlingError<CancelCategorySchemeValidityResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemeListPresenter.this, caught);
-                retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(getView().getCategorySchemeWebCriteria()));
-            }
-            @Override
             public void onWaitSuccess(CancelCategorySchemeValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategorySchemeListPresenter.this, getMessages().categorySchemeCanceledValidity());
+                fireSuccessMessage(getMessages().categorySchemeCanceledValidity());
+            }
+
+            @Override
+            protected void afterResult() {
                 retrieveCategorySchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToCategorySchemeWebCriteria(getView().getCategorySchemeWebCriteria()));
             }

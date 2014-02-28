@@ -33,14 +33,13 @@ import org.siemac.metamac.srm.web.shared.category.SaveCategoryResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
-import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -132,12 +131,8 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
     @Override
     public void retrieveCategory(String categoryUrn) {
-        dispatcher.execute(new GetCategoryAction(categoryUrn), new WaitingAsyncCallback<GetCategoryResult>() {
+        dispatcher.execute(new GetCategoryAction(categoryUrn), new WaitingAsyncCallbackHandlingError<GetCategoryResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategoryPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetCategoryResult result) {
                 getView().setCategory(result.getCategoryDto(), result.getCategorySchemeMetamacDto());
@@ -147,16 +142,12 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
     @Override
     public void saveCategory(CategoryMetamacDto categoryDto) {
-        dispatcher.execute(new SaveCategoryAction(categoryDto), new WaitingAsyncCallback<SaveCategoryResult>() {
+        dispatcher.execute(new SaveCategoryAction(categoryDto), new WaitingAsyncCallbackHandlingError<SaveCategoryResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategoryPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(SaveCategoryResult result) {
                 categoryMetamacDto = result.getCategorySaved();
-                ShowMessageEvent.fireSuccessMessage(CategoryPresenter.this, getMessages().categorySchemeSaved());
+                fireSuccessMessage(getMessages().categorySchemeSaved());
                 getView().setCategory(result.getCategorySaved());
 
                 // Update URL
@@ -168,15 +159,11 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
     @Override
     public void deleteCategory(final ItemVisualisationResult itemVisualisationResult) {
-        dispatcher.execute(new DeleteCategoryAction(itemVisualisationResult.getUrn()), new WaitingAsyncCallback<DeleteCategoryResult>() {
+        dispatcher.execute(new DeleteCategoryAction(itemVisualisationResult.getUrn()), new WaitingAsyncCallbackHandlingError<DeleteCategoryResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategoryPresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(DeleteCategoryResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategoryPresenter.this, getMessages().categoryDeleted());
+                fireSuccessMessage(getMessages().categoryDeleted());
                 // If deleted category had a category parent, go to this category parent. If not, go to the category scheme.
                 if (itemVisualisationResult.getParent() != null && itemVisualisationResult.getParent().getUrn() != null) {
                     goToCategory(itemVisualisationResult.getParent().getUrn());
@@ -189,15 +176,11 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
     @Override
     public void deleteCategory(final CategoryMetamacDto categoryMetamacDto) {
-        dispatcher.execute(new DeleteCategoryAction(categoryMetamacDto.getUrn()), new WaitingAsyncCallback<DeleteCategoryResult>() {
+        dispatcher.execute(new DeleteCategoryAction(categoryMetamacDto.getUrn()), new WaitingAsyncCallbackHandlingError<DeleteCategoryResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategoryPresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(DeleteCategoryResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategoryPresenter.this, getMessages().categoryDeleted());
+                fireSuccessMessage(getMessages().categoryDeleted());
                 // If deleted category had a category parent, go to this category parent. If not, go to the category scheme.
                 if (categoryMetamacDto.getItemParentUrn() != null) {
                     goToCategory(categoryMetamacDto.getItemParentUrn());
@@ -210,28 +193,22 @@ public class CategoryPresenter extends Presenter<CategoryPresenter.CategoryView,
 
     @Override
     public void retrieveCategoryListByScheme(String categorySchemeUrn) {
-        dispatcher.execute(new GetCategoriesBySchemeAction(categorySchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategoryPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetCategoriesBySchemeResult result) {
-                final List<ItemVisualisationResult> itemVisualisationResults = result.getCategories();
-                dispatcher.execute(new GetCategorySchemeAction(CategoryPresenter.this.categorySchemeUrn), new WaitingAsyncCallback<GetCategorySchemeResult>() {
+        dispatcher.execute(new GetCategoriesBySchemeAction(categorySchemeUrn, ApplicationEditionLanguages.getCurrentLocale()),
+                new WaitingAsyncCallbackHandlingError<GetCategoriesBySchemeResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(CategoryPresenter.this, caught);
-                    }
-                    @Override
-                    public void onWaitSuccess(GetCategorySchemeResult result) {
-                        getView().setCategoryList(result.getCategorySchemeMetamacDto(), itemVisualisationResults);
+                    public void onWaitSuccess(GetCategoriesBySchemeResult result) {
+                        final List<ItemVisualisationResult> itemVisualisationResults = result.getCategories();
+                        dispatcher.execute(new GetCategorySchemeAction(CategoryPresenter.this.categorySchemeUrn),
+                                new WaitingAsyncCallbackHandlingError<GetCategorySchemeResult>(CategoryPresenter.this) {
+
+                                    @Override
+                                    public void onWaitSuccess(GetCategorySchemeResult result) {
+                                        getView().setCategoryList(result.getCategorySchemeMetamacDto(), itemVisualisationResults);
+                                    }
+                                });
                     }
                 });
-            }
-        });
     }
 
     @Override

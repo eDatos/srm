@@ -25,15 +25,14 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdResult;
-import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DescriptorDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponent;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -117,31 +116,23 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
 
     @Override
     public void savePrimaryMeasure(ComponentDto component) {
-        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), component, TypeComponentList.MEASURE_DESCRIPTOR), new WaitingAsyncCallback<SaveComponentForDsdResult>() {
+        dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), component, TypeComponentList.MEASURE_DESCRIPTOR),
+                new WaitingAsyncCallbackHandlingError<SaveComponentForDsdResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdPrimaryMeasureTabPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(SaveComponentForDsdResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdPrimaryMeasureTabPresenter.this, MetamacSrmWeb.getMessages().dsdPrimaryMeasureSaved());
-                primaryMeasure = result.getComponentDtoSaved();
-                dataStructureDefinitionDto = result.getDataStructureDefinitionMetamacDto();
-                getView().onPrimaryMeasureSaved(dataStructureDefinitionDto, primaryMeasure);
-            }
-        });
+                    @Override
+                    public void onWaitSuccess(SaveComponentForDsdResult result) {
+                        fireSuccessMessage(MetamacSrmWeb.getMessages().dsdPrimaryMeasureSaved());
+                        primaryMeasure = result.getComponentDtoSaved();
+                        dataStructureDefinitionDto = result.getDataStructureDefinitionMetamacDto();
+                        getView().onPrimaryMeasureSaved(dataStructureDefinitionDto, primaryMeasure);
+                    }
+                });
     }
-
     public void retrievePrimaryMeasure(String urn) {
         Set<TypeComponentList> descriptorsToRetrieve = new HashSet<TypeComponentList>();
         descriptorsToRetrieve.add(TypeComponentList.MEASURE_DESCRIPTOR);
-        dispatcher.execute(new GetDsdAndDescriptorsAction(urn, descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
+        dispatcher.execute(new GetDsdAndDescriptorsAction(urn, descriptorsToRetrieve), new WaitingAsyncCallbackHandlingError<GetDsdAndDescriptorsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdPrimaryMeasureTabPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetDsdAndDescriptorsResult result) {
                 dataStructureDefinitionDto = result.getDsd();
@@ -156,12 +147,8 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     @Override
     public void retrieveConceptSchemes(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_PRIMARY_MEASURE, firstResult, maxResults, conceptSchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(DsdPrimaryMeasureTabPresenter.this, caught);
-                    }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
                         getView().setConceptSchemes(result);
@@ -172,12 +159,8 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     @Override
     public void retrieveConcepts(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_WITH_DSD_PRIMARY_MEASURE, firstResult, maxResults, conceptWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(DsdPrimaryMeasureTabPresenter.this, caught);
-                    }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
                         getView().setConcepts(result);
@@ -188,12 +171,8 @@ public class DsdPrimaryMeasureTabPresenter extends Presenter<DsdPrimaryMeasureTa
     @Override
     public void retrieveCodelistsForEnumeratedRepresentation(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_DSD_PRIMARY_MEASURE_ENUMERATED_REPRESENTATION, firstResult, maxResults, codelistWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(DsdPrimaryMeasureTabPresenter.this, caught);
-                    }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
                         getView().setCodelistsForEnumeratedRepresentation(result);

@@ -25,7 +25,7 @@ import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistFamilyResult;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -116,7 +116,7 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
 
     @Override
     public void retrieveCodelistFamilies(int firstResult, int maxResults, final String criteria) {
-        dispatcher.execute(new GetCodelistFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetCodelistFamiliesResult>() {
+        dispatcher.execute(new GetCodelistFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallbackHandlingError<GetCodelistFamiliesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -134,7 +134,7 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
 
     @Override
     public void createCodelistFamily(CodelistFamilyDto codelistFamilyDto) {
-        dispatcher.execute(new SaveCodelistFamilyAction(codelistFamilyDto), new WaitingAsyncCallback<SaveCodelistFamilyResult>() {
+        dispatcher.execute(new SaveCodelistFamilyAction(codelistFamilyDto), new WaitingAsyncCallbackHandlingError<SaveCodelistFamilyResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -142,7 +142,7 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
             }
             @Override
             public void onWaitSuccess(SaveCodelistFamilyResult result) {
-                ShowMessageEvent.fireSuccessMessage(CodelistFamilyListPresenter.this, getMessages().codelistFamilySaved());
+                fireSuccessMessage(getMessages().codelistFamilySaved());
                 retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, getView().getCodelistFamilyCriteria());
             }
         });
@@ -150,7 +150,7 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
 
     @Override
     public void deleteCodelistFamilies(List<String> urns) {
-        dispatcher.execute(new DeleteCodelistFamiliesAction(urns), new WaitingAsyncCallback<DeleteCodelistFamiliesResult>() {
+        dispatcher.execute(new DeleteCodelistFamiliesAction(urns), new WaitingAsyncCallbackHandlingError<DeleteCodelistFamiliesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -159,7 +159,7 @@ public class CodelistFamilyListPresenter extends Presenter<CodelistFamilyListPre
             }
             @Override
             public void onWaitSuccess(DeleteCodelistFamiliesResult result) {
-                ShowMessageEvent.fireSuccessMessage(CodelistFamilyListPresenter.this, getMessages().codelistFamilyDeleted());
+                fireSuccessMessage(getMessages().codelistFamilyDeleted());
                 retrieveCodelistFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, getView().getCodelistFamilyCriteria());
             }
         });

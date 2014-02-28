@@ -50,11 +50,11 @@ import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -147,7 +147,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void retrieveCode(String codeUrn) {
-        dispatcher.execute(new GetCodeAction(codeUrn), new WaitingAsyncCallback<GetCodeResult>() {
+        dispatcher.execute(new GetCodeAction(codeUrn), new WaitingAsyncCallbackHandlingError<GetCodeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -162,7 +162,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void retrieveCodesByCodelist(final String codelistUrn) {
-        dispatcher.execute(new GetCodelistAction(codelistUrn), new WaitingAsyncCallback<GetCodelistResult>() {
+        dispatcher.execute(new GetCodelistAction(codelistUrn), new WaitingAsyncCallbackHandlingError<GetCodelistResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -173,7 +173,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
                 final CodelistMetamacDto codelistMetamacDto = result.getCodelistMetamacDto();
                 String defaultOrderUrn = org.siemac.metamac.srm.web.code.utils.CommonUtils.getDefaultCodelistOrderUrn(codelistMetamacDto);
                 dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, defaultOrderUrn, null, ApplicationEditionLanguages.getCurrentLocale()),
-                        new WaitingAsyncCallback<GetCodesByCodelistResult>() {
+                        new WaitingAsyncCallbackHandlingError<GetCodesByCodelistResult>(CodePresenter.this) {
 
                             @Override
                             public void onWaitFailure(Throwable caught) {
@@ -190,7 +190,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void saveCode(CodeMetamacDto codeDto) {
-        dispatcher.execute(new SaveCodeAction(codeDto), new WaitingAsyncCallback<SaveCodeResult>() {
+        dispatcher.execute(new SaveCodeAction(codeDto), new WaitingAsyncCallbackHandlingError<SaveCodeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -198,7 +198,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
             }
             @Override
             public void onWaitSuccess(SaveCodeResult result) {
-                ShowMessageEvent.fireSuccessMessage(CodePresenter.this, getMessages().codeSaved());
+                fireSuccessMessage(getMessages().codeSaved());
                 getView().setCode(result.getCodeDto());
 
                 // Update URL
@@ -210,7 +210,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void copyCodesInCodelist(String codelistSourceUrn, final String codelistTargetUrn, List<CodeToCopy> codesToCopy) {
-        dispatcher.execute(new CopyCodesInCodelistAction(codelistSourceUrn, codelistTargetUrn, codesToCopy), new WaitingAsyncCallback<CopyCodesInCodelistResult>() {
+        dispatcher.execute(new CopyCodesInCodelistAction(codelistSourceUrn, codelistTargetUrn, codesToCopy), new WaitingAsyncCallbackHandlingError<CopyCodesInCodelistResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -218,7 +218,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
             }
             @Override
             public void onWaitSuccess(CopyCodesInCodelistResult result) {
-                ShowMessageEvent.fireSuccessMessage(CodePresenter.this, getMessages().codesCopiedInCodelist());
+                fireSuccessMessage(getMessages().codesCopiedInCodelist());
                 retrieveCodesByCodelist(codelistTargetUrn);
             }
         });
@@ -226,7 +226,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void deleteCode(final String codelistUrn, final CodeMetamacVisualisationResult code) {
-        dispatcher.execute(new DeleteCodeAction(code.getUrn()), new WaitingAsyncCallback<DeleteCodeResult>() {
+        dispatcher.execute(new DeleteCodeAction(code.getUrn()), new WaitingAsyncCallbackHandlingError<DeleteCodeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -246,7 +246,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void deleteCode(final CodeMetamacDto codeMetamacDto) {
-        dispatcher.execute(new DeleteCodeAction(codeMetamacDto.getUrn()), new WaitingAsyncCallback<DeleteCodeResult>() {
+        dispatcher.execute(new DeleteCodeAction(codeMetamacDto.getUrn()), new WaitingAsyncCallbackHandlingError<DeleteCodeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -269,7 +269,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
         VariableElementWebCriteria variableElementWebCriteria = new VariableElementWebCriteria(criteria);
         variableElementWebCriteria.setCodelistUrn(codelistUrn);
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.VARIABLE_ELEMENT_WITH_CODE, firstResult, maxResults, variableElementWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -289,7 +289,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void updateCodeParent(final String codeUrn, String newParentUrn) {
-        dispatcher.execute(new UpdateCodeParentAction(codeUrn, newParentUrn), new WaitingAsyncCallback<UpdateCodeParentResult>() {
+        dispatcher.execute(new UpdateCodeParentAction(codeUrn, newParentUrn), new WaitingAsyncCallbackHandlingError<UpdateCodeParentResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -304,7 +304,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void updateVariableElement(final String codeUrn, String variableElementUrn) {
-        dispatcher.execute(new UpdateCodeVariableElementAction(codeUrn, variableElementUrn), new WaitingAsyncCallback<UpdateCodeVariableElementResult>() {
+        dispatcher.execute(new UpdateCodeVariableElementAction(codeUrn, variableElementUrn), new WaitingAsyncCallbackHandlingError<UpdateCodeVariableElementResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -312,7 +312,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
             }
             @Override
             public void onWaitSuccess(UpdateCodeVariableElementResult result) {
-                ShowMessageEvent.fireSuccessMessage(CodePresenter.this, getMessages().codeVariableElementUpdated());
+                fireSuccessMessage(getMessages().codeVariableElementUpdated());
                 retrieveCode(codeUrn);
             }
         });
@@ -320,7 +320,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void retrieveCodelistsForCreateComplexCodelists(int firstResult, int maxResults, CodelistWebCriteria criteria) {
-        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetCodelistsResult>() {
+        dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, criteria), new WaitingAsyncCallbackHandlingError<GetCodelistsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -335,7 +335,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void retrieveCodesForCreateComplexCodelists(final String codelistUrn) {
-        dispatcher.execute(new GetCodelistAction(codelistUrn), new WaitingAsyncCallback<GetCodelistResult>() {
+        dispatcher.execute(new GetCodelistAction(codelistUrn), new WaitingAsyncCallbackHandlingError<GetCodelistResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -347,7 +347,7 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
                 final CodelistMetamacDto codelistMetamacDto = result.getCodelistMetamacDto();
                 String defaultOrderUrn = org.siemac.metamac.srm.web.code.utils.CommonUtils.getDefaultCodelistOrderUrn(codelistMetamacDto);
                 dispatcher.execute(new GetCodesByCodelistAction(codelistUrn, defaultOrderUrn, null, ApplicationEditionLanguages.getCurrentLocale()),
-                        new WaitingAsyncCallback<GetCodesByCodelistResult>() {
+                        new WaitingAsyncCallbackHandlingError<GetCodesByCodelistResult>(CodePresenter.this) {
 
                             @Override
                             public void onWaitFailure(Throwable caught) {

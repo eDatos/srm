@@ -28,7 +28,8 @@ import org.siemac.metamac.srm.web.shared.code.SaveVariableResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -130,15 +131,11 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
 
     @Override
     public void createVariable(VariableDto variableDto) {
-        dispatcher.execute(new SaveVariableAction(variableDto), new WaitingAsyncCallback<SaveVariableResult>() {
+        dispatcher.execute(new SaveVariableAction(variableDto), new WaitingAsyncCallbackHandlingError<SaveVariableResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariableListPresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(SaveVariableResult result) {
-                ShowMessageEvent.fireSuccessMessage(VariableListPresenter.this, getMessages().variableSaved());
+                fireSuccessMessage(getMessages().variableSaved());
                 retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, getView().getVariableCriteria());
             }
         });
@@ -146,24 +143,22 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
 
     @Override
     public void deleteVariables(List<String> urns) {
-        dispatcher.execute(new DeleteVariablesAction(urns), new WaitingAsyncCallback<DeleteVariablesResult>() {
+        dispatcher.execute(new DeleteVariablesAction(urns), new WaitingAsyncCallbackHandlingError<DeleteVariablesResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariableListPresenter.this, caught);
-                retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, getView().getVariableCriteria());
-            }
-            @Override
             public void onWaitSuccess(DeleteVariablesResult result) {
-                ShowMessageEvent.fireSuccessMessage(VariableListPresenter.this, getMessages().variableDeleted());
+                fireSuccessMessage(getMessages().variableDeleted());
+            }
+
+            @Override
+            protected void afterResult() {
                 retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, getView().getVariableCriteria());
             }
         });
     }
-
     @Override
     public void retrieveVariables(int firstResult, int maxResults, final String criteria) {
-        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallback<GetVariablesResult>() {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallbackHandlingError<GetVariablesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -181,7 +176,7 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
 
     @Override
     public void retrieveVariableFamilies(int firstResult, int maxResults, String criteria) {
-        dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetVariableFamiliesResult>() {
+        dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallbackHandlingError<GetVariableFamiliesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {

@@ -30,13 +30,12 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
-import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -137,12 +136,8 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     private void retrieveDsds() {
         DataStructureDefinitionWebCriteria dataStructureDefinitionWebCriteria = new DataStructureDefinitionWebCriteria();
         dataStructureDefinitionWebCriteria.setIsLastVersion(true);
-        dispatcher.execute(new GetDsdsAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, dataStructureDefinitionWebCriteria), new WaitingAsyncCallback<GetDsdsResult>() {
+        dispatcher.execute(new GetDsdsAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, dataStructureDefinitionWebCriteria), new WaitingAsyncCallbackHandlingError<GetDsdsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(StructuralResourcesPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetDsdsResult result) {
                 getView().setDsdList(result.getDsdDtos());
@@ -153,29 +148,22 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     private void retrieveConceptSchemes() {
         ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
         conceptSchemeWebCriteria.setIsLastVersion(true);
-        dispatcher.execute(new GetConceptSchemesAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, conceptSchemeWebCriteria), new WaitingAsyncCallback<GetConceptSchemesResult>() {
+        dispatcher.execute(new GetConceptSchemesAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, conceptSchemeWebCriteria),
+                new WaitingAsyncCallbackHandlingError<GetConceptSchemesResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(StructuralResourcesPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetConceptSchemesResult result) {
-                getView().setConceptSchemeList(result.getConceptSchemeList());
-            }
-        });
+                    @Override
+                    public void onWaitSuccess(GetConceptSchemesResult result) {
+                        getView().setConceptSchemeList(result.getConceptSchemeList());
+                    }
+                });
     }
 
     private void retrieveOrganisationSchemes() {
         OrganisationSchemeWebCriteria organisationSchemeWebCriteria = new OrganisationSchemeWebCriteria();
         organisationSchemeWebCriteria.setIsLastVersion(true);
         dispatcher.execute(new GetOrganisationSchemesAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, organisationSchemeWebCriteria),
-                new WaitingAsyncCallback<GetOrganisationSchemesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetOrganisationSchemesResult>(this) {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(StructuralResourcesPresenter.this, caught);
-                    }
                     @Override
                     public void onWaitSuccess(GetOrganisationSchemesResult result) {
                         getView().setOrganisationSchemeList(result.getOrganisationSchemeMetamacDtos());
@@ -186,28 +174,21 @@ public class StructuralResourcesPresenter extends Presenter<StructuralResourcesP
     private void retrieveCategorySchemes() {
         CategorySchemeWebCriteria categorySchemeWebCriteria = new CategorySchemeWebCriteria();
         categorySchemeWebCriteria.setIsLastVersion(true);
-        dispatcher.execute(new GetCategorySchemesAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, categorySchemeWebCriteria), new WaitingAsyncCallback<GetCategorySchemesResult>() {
+        dispatcher.execute(new GetCategorySchemesAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, categorySchemeWebCriteria),
+                new WaitingAsyncCallbackHandlingError<GetCategorySchemesResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(StructuralResourcesPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetCategorySchemesResult result) {
-                getView().setCategorySchemesList(result.getCategorySchemeList());
-            }
-        });
+                    @Override
+                    public void onWaitSuccess(GetCategorySchemesResult result) {
+                        getView().setCategorySchemesList(result.getCategorySchemeList());
+                    }
+                });
     }
 
     private void retrieveCodelists() {
         CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
         codelistWebCriteria.setIsLastVersion(true);
-        dispatcher.execute(new GetCodelistsAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, codelistWebCriteria), new WaitingAsyncCallback<GetCodelistsResult>() {
+        dispatcher.execute(new GetCodelistsAction(RESOURCE_LIST_FIRST_RESULT, RESOURCE_LIST_MAX_RESULTS, codelistWebCriteria), new WaitingAsyncCallbackHandlingError<GetCodelistsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(StructuralResourcesPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetCodelistsResult result) {
                 getView().setCodelistList(result.getCodelists());

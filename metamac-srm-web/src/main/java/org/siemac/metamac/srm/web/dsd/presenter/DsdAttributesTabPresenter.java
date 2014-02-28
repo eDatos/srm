@@ -35,7 +35,7 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdAndDescriptorsResult;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.SaveComponentForDsdResult;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DataAttributeDto;
@@ -45,8 +45,8 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeE
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.SpecialAttributeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -171,7 +171,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     @Override
     public void saveAttribute(DataAttributeDto attribute) {
         dispatcher.execute(new SaveComponentForDsdAction(dataStructureDefinitionDto.getUrn(), attribute, TypeComponentList.ATTRIBUTE_DESCRIPTOR),
-                new WaitingAsyncCallback<SaveComponentForDsdResult>() {
+                new WaitingAsyncCallbackHandlingError<SaveComponentForDsdResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -180,7 +180,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
                     @Override
                     public void onWaitSuccess(SaveComponentForDsdResult result) {
-                        ShowMessageEvent.fireSuccessMessage(DsdAttributesTabPresenter.this, MetamacSrmWeb.getMessages().dsdAttributeSaved());
+                        fireSuccessMessage(MetamacSrmWeb.getMessages().dsdAttributeSaved());
                         dataStructureDefinitionDto = result.getDataStructureDefinitionMetamacDto();
                         updateAttributeList(false);
                         getView().onAttributeSaved((DataAttributeDto) result.getComponentDtoSaved());
@@ -190,7 +190,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     @Override
     public void deleteAttributes(List<DataAttributeDto> attributesToDelete) {
-        dispatcher.execute(new DeleteAttributesForDsdAction(dataStructureDefinitionDto.getUrn(), attributesToDelete), new WaitingAsyncCallback<DeleteAttributesForDsdResult>() {
+        dispatcher.execute(new DeleteAttributesForDsdAction(dataStructureDefinitionDto.getUrn(), attributesToDelete), new WaitingAsyncCallbackHandlingError<DeleteAttributesForDsdResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -200,7 +200,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
             @Override
             public void onWaitSuccess(DeleteAttributesForDsdResult result) {
                 updateAttributeList(true);
-                ShowMessageEvent.fireSuccessMessage(DsdAttributesTabPresenter.this, MetamacSrmWeb.getMessages().dsdAttributeDeleted());
+                fireSuccessMessage(MetamacSrmWeb.getMessages().dsdAttributeDeleted());
             }
         });
     }
@@ -210,7 +210,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
         descriptorsToRetrieve.add(TypeComponentList.DIMENSION_DESCRIPTOR);
         descriptorsToRetrieve.add(TypeComponentList.ATTRIBUTE_DESCRIPTOR);
         descriptorsToRetrieve.add(TypeComponentList.GROUP_DIMENSION_DESCRIPTOR);
-        dispatcher.execute(new GetDsdAndDescriptorsAction(urn, descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
+        dispatcher.execute(new GetDsdAndDescriptorsAction(urn, descriptorsToRetrieve), new WaitingAsyncCallbackHandlingError<GetDsdAndDescriptorsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -231,7 +231,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     @Override
     public void retrieveConceptSchemes(SpecialAttributeTypeEnum specialAttributeTypeEnum, int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         StructuralResourcesRelationEnum relationType = getRelationTypeForConceptScheme(specialAttributeTypeEnum);
-        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptSchemeWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptSchemeWebCriteria), new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -247,7 +247,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     @Override
     public void retrieveConcepts(SpecialAttributeTypeEnum specialAttributeTypeEnum, int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         StructuralResourcesRelationEnum relationType = getRelationTypeForConcept(specialAttributeTypeEnum);
-        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(relationType, firstResult, maxResults, conceptWebCriteria), new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -287,7 +287,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     @Override
     public void retrieveConceptSchemesForAttributeRole(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEMES_WITH_DSD_ROLES, firstResult, maxResults, conceptSchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -303,7 +303,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
     @Override
     public void retrieveConceptsForAttributeRole(int firstResult, int maxResults, ConceptWebCriteria conceptWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPTS_WITH_DSD_ROLES, firstResult, maxResults, conceptWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -323,23 +323,24 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
                 ? StructuralResourcesRelationEnum.CODELIST_WITH_DSD_SPATIAL_ATTRIBUTE_ENUMERATED_REPRESENTATION
                 : StructuralResourcesRelationEnum.CODELIST_WITH_DSD_ATTRIBUTE_ENUMERATED_REPRESENTATION;
 
-        dispatcher.execute(new GetRelatedResourcesAction(structuralResourcesRelationEnum, firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+        dispatcher.execute(new GetRelatedResourcesAction(structuralResourcesRelationEnum, firstResult, maxResults, codelistWebCriteria),
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetRelatedResourcesResult result) {
-                getView().setCodelistsForEnumeratedRepresentation(result);
-            }
-        });
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(DsdAttributesTabPresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCodelistsForEnumeratedRepresentation(result);
+                    }
+                });
     }
 
     @Override
     public void retrieveConceptSchemesForEnumeratedRepresentation(int firstResult, int maxResults, ConceptSchemeWebCriteria conceptSchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CONCEPT_SCHEME_WITH_DSD_MEASURE_ATTRIBUTE_ENUMERATED_REPRESENTATION, firstResult, maxResults,
-                conceptSchemeWebCriteria), new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                conceptSchemeWebCriteria), new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -357,7 +358,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
         Set<TypeComponentList> descriptorsToRetrieve = new HashSet<TypeComponentList>();
         descriptorsToRetrieve.add(TypeComponentList.ATTRIBUTE_DESCRIPTOR);
-        dispatcher.execute(new GetDsdAndDescriptorsAction(dataStructureDefinitionDto.getUrn(), descriptorsToRetrieve), new WaitingAsyncCallback<GetDsdAndDescriptorsResult>() {
+        dispatcher.execute(new GetDsdAndDescriptorsAction(dataStructureDefinitionDto.getUrn(), descriptorsToRetrieve), new WaitingAsyncCallbackHandlingError<GetDsdAndDescriptorsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -376,7 +377,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     @Override
     public void retrieveDefaultConcept(SpecialAttributeTypeEnum specialAttributeTypeEnum, String dsdUrn) {
-        dispatcher.execute(new GetDefaultConceptForDsdAtributeAction(dsdUrn, specialAttributeTypeEnum), new WaitingAsyncCallback<GetDefaultConceptForDsdAtributeResult>() {
+        dispatcher.execute(new GetDefaultConceptForDsdAtributeAction(dsdUrn, specialAttributeTypeEnum), new WaitingAsyncCallbackHandlingError<GetDefaultConceptForDsdAtributeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -391,7 +392,7 @@ public class DsdAttributesTabPresenter extends Presenter<DsdAttributesTabPresent
 
     @Override
     public void retrieveConceptSchemeEnumeratedRepresentationFromConcept(String conceptUrn) {
-        dispatcher.execute(new GetConceptAction(conceptUrn), new WaitingAsyncCallback<GetConceptResult>() {
+        dispatcher.execute(new GetConceptAction(conceptUrn), new WaitingAsyncCallbackHandlingError<GetConceptResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {

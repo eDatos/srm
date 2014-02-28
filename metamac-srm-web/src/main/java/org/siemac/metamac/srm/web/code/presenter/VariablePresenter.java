@@ -53,7 +53,7 @@ import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -164,12 +164,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
     @Override
     public void retrieveVariableByUrn(String urn) {
-        dispatcher.execute(new GetVariableAction(urn), new WaitingAsyncCallback<GetVariableResult>() {
+        dispatcher.execute(new GetVariableAction(urn), new WaitingAsyncCallbackHandlingError<GetVariableResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetVariableResult result) {
                 VariablePresenter.this.variableDto = result.getVariableDto();
@@ -180,12 +176,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
     @Override
     public void retrieveVariableFamilies(int firstResult, int maxResults, String criteria) {
-        dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetVariableFamiliesResult>() {
+        dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallbackHandlingError<GetVariableFamiliesResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetVariableFamiliesResult result) {
                 getView().setVariableFamilies(result);
@@ -195,16 +187,12 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
     @Override
     public void saveVariable(VariableDto variableDto) {
-        dispatcher.execute(new SaveVariableAction(variableDto), new WaitingAsyncCallback<SaveVariableResult>() {
+        dispatcher.execute(new SaveVariableAction(variableDto), new WaitingAsyncCallbackHandlingError<SaveVariableResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(SaveVariableResult result) {
                 VariablePresenter.this.variableDto = result.getSavedVariableDto();
-                ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, getMessages().variableSaved());
+                fireSuccessMessage(getMessages().variableSaved());
                 getView().setVariable(result.getSavedVariableDto());
 
                 // Update URL
@@ -216,15 +204,11 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
     @Override
     public void deleteVariable(String urn) {
-        dispatcher.execute(new DeleteVariablesAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteVariablesResult>() {
+        dispatcher.execute(new DeleteVariablesAction(Arrays.asList(urn)), new WaitingAsyncCallbackHandlingError<DeleteVariablesResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(DeleteVariablesResult result) {
-                ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, getMessages().variableDeleted());
+                fireSuccessMessage(getMessages().variableDeleted());
                 placeManager.revealRelativePlace(-1);
             }
         });
@@ -232,12 +216,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
     @Override
     public void retrieveVariables(int firstResult, int maxResults, String criteria) {
-        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallback<GetVariablesResult>() {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallbackHandlingError<GetVariablesResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetVariablesResult result) {
                 getView().setVariables(result);
@@ -249,12 +229,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     public void retrieveVariableElementsByVariable(int firstResult, int maxResults, String criteria, String variableUrn) {
         VariableElementWebCriteria variableElementWebCriteria = new VariableElementWebCriteria(criteria);
         variableElementWebCriteria.setVariableUrn(variableUrn);
-        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, variableElementWebCriteria), new WaitingAsyncCallback<GetVariableElementsResult>() {
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, variableElementWebCriteria), new WaitingAsyncCallbackHandlingError<GetVariableElementsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetVariableElementsResult result) {
                 getView().setVariableElements(result);
@@ -266,12 +242,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     public void retrieveVariableElementsByVariableForFusionOperation(int firstResult, int maxResults, String criteria, String variableUrn) {
         VariableElementWebCriteria variableElementWebCriteria = new VariableElementWebCriteria(criteria);
         variableElementWebCriteria.setVariableUrn(variableUrn);
-        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, variableElementWebCriteria), new WaitingAsyncCallback<GetVariableElementsResult>() {
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, variableElementWebCriteria), new WaitingAsyncCallbackHandlingError<GetVariableElementsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetVariableElementsResult result) {
                 getView().setVariableElementsForFusion(result);
@@ -283,12 +255,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     public void retrieveVariableElementsByVariableForSegregationOperation(int firstResult, int maxResults, String criteria, String variableUrn) {
         VariableElementWebCriteria variableElementWebCriteria = new VariableElementWebCriteria(criteria);
         variableElementWebCriteria.setVariableUrn(variableUrn);
-        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, variableElementWebCriteria), new WaitingAsyncCallback<GetVariableElementsResult>() {
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, variableElementWebCriteria), new WaitingAsyncCallbackHandlingError<GetVariableElementsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetVariableElementsResult result) {
                 getView().setVariableElementsForSegregation(result);
@@ -298,33 +266,25 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
     @Override
     public void createVariableElement(VariableElementDto variableElementDto) {
-        dispatcher.execute(new SaveVariableElementAction(variableElementDto), new WaitingAsyncCallback<SaveVariableElementResult>() {
+        dispatcher.execute(new SaveVariableElementAction(variableElementDto), new WaitingAsyncCallbackHandlingError<SaveVariableElementResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(SaveVariableElementResult result) {
                 retrieveVariableByUrn(result.getSavedVariableElementDto().getVariable().getUrn()); // To update the metadata 'hasVariableElements'
                 retrieveVariableElementsByVariable(ELEMENT_LIST_FIRST_RESULT, ELEMENT_LIST_MAX_RESULTS, null, variableDto.getUrn());
-                ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, MetamacSrmWeb.getMessages().variableElementSaved());
+                fireSuccessMessage(MetamacSrmWeb.getMessages().variableElementSaved());
             }
         });
     }
 
     @Override
     public void deleteVariableElements(List<String> urns) {
-        dispatcher.execute(new DeleteVariableElementsAction(urns), new WaitingAsyncCallback<DeleteVariableElementsResult>() {
+        dispatcher.execute(new DeleteVariableElementsAction(urns), new WaitingAsyncCallbackHandlingError<DeleteVariableElementsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(DeleteVariableElementsResult result) {
                 retrieveVariableElementsByVariable(ELEMENT_LIST_FIRST_RESULT, ELEMENT_LIST_MAX_RESULTS, null, variableDto.getUrn());
-                ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, MetamacSrmWeb.getMessages().variableElementDeleted());
+                fireSuccessMessage(MetamacSrmWeb.getMessages().variableElementDeleted());
             }
         });
     }
@@ -341,12 +301,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
     @Override
     public void deleteVariableElementOperations(List<String> codes) {
-        dispatcher.execute(new DeleteVariableElementOperationsAction(codes), new WaitingAsyncCallback<DeleteVariableElementOperationsResult>() {
+        dispatcher.execute(new DeleteVariableElementOperationsAction(codes), new WaitingAsyncCallbackHandlingError<DeleteVariableElementOperationsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(DeleteVariableElementOperationsResult result) {
                 retrieveVariableElementOperations(variableDto.getUrn());
@@ -355,12 +311,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     }
 
     private void retrieveVariableElementOperations(String variableUrn) {
-        dispatcher.execute(new GetVariableElementOperationsByVariableAction(variableUrn), new WaitingAsyncCallback<GetVariableElementOperationsByVariableResult>() {
+        dispatcher.execute(new GetVariableElementOperationsByVariableAction(variableUrn), new WaitingAsyncCallbackHandlingError<GetVariableElementOperationsByVariableResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetVariableElementOperationsByVariableResult result) {
                 getView().setVariableElementOperations(result.getOperations());
@@ -369,18 +321,14 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     }
 
     private void createVariableElementOperation(final VariableElementOperationTypeEnum type, List<String> variableElementUrns, String variableElementUrn) {
-        dispatcher.execute(new CreateVariableElementOperationAction(type, variableElementUrns, variableElementUrn), new WaitingAsyncCallback<CreateVariableElementOperationResult>() {
+        dispatcher.execute(new CreateVariableElementOperationAction(type, variableElementUrns, variableElementUrn), new WaitingAsyncCallbackHandlingError<CreateVariableElementOperationResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(CreateVariableElementOperationResult result) {
                 if (VariableElementOperationTypeEnum.FUSION.equals(type)) {
-                    ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, MetamacSrmWeb.getMessages().variableElementFusioned());
+                    fireSuccessMessage(MetamacSrmWeb.getMessages().variableElementFusioned());
                 } else {
-                    ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, MetamacSrmWeb.getMessages().variableElementSegregated());
+                    fireSuccessMessage(MetamacSrmWeb.getMessages().variableElementSegregated());
                 }
                 retrieveVariableElementOperations(variableDto.getUrn());
             }
@@ -394,12 +342,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     @Override
     public void retrieveCodelistsForVariableElementGeographicalGranularity(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODELIST_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, firstResult, maxResults, codelistWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-                    }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
                         getView().setCodelistsForVariableElementGeographicalGranularity(result);
@@ -410,12 +354,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     @Override
     public void retrieveCodesForVariableElementGeographicalGranularity(int firstResult, int maxResults, CodeWebCriteria codeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODES_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, firstResult, maxResults, codeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
-                    }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
                         getView().setCodesForVariableElementGeographicalGranularity(result);

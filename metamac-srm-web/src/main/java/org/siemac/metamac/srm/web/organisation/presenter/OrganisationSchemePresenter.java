@@ -73,7 +73,7 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
@@ -228,7 +228,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     private void retrieveOrganisationSchemeByUrn(String urn, final boolean startEdition) {
-        dispatcher.execute(new GetOrganisationSchemeAction(urn), new WaitingAsyncCallback<GetOrganisationSchemeResult>() {
+        dispatcher.execute(new GetOrganisationSchemeAction(urn), new WaitingAsyncCallbackHandlingError<GetOrganisationSchemeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -251,12 +251,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void retrieveOrganisationSchemeVersions(String organisationSchemeUrn) {
-        dispatcher.execute(new GetOrganisationSchemeVersionsAction(organisationSchemeUrn), new WaitingAsyncCallback<GetOrganisationSchemeVersionsResult>() {
+        dispatcher.execute(new GetOrganisationSchemeVersionsAction(organisationSchemeUrn), new WaitingAsyncCallbackHandlingError<GetOrganisationSchemeVersionsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetOrganisationSchemeVersionsResult result) {
                 getView().setOrganisationSchemeVersions(result.getOrganisationSchemeMetamacDtos());
@@ -270,12 +266,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         criteria.setCodeEQ(organisationSchemeMetamacDto.getCode());
         criteria.setMaintainerUrn(organisationSchemeMetamacDto.getMaintainer().getUrn());
         criteria.setIsLatestFinal(true);
-        dispatcher.execute(new GetOrganisationSchemesAction(0, 1, criteria), new WaitingAsyncCallback<GetOrganisationSchemesResult>() {
+        dispatcher.execute(new GetOrganisationSchemesAction(0, 1, criteria), new WaitingAsyncCallbackHandlingError<GetOrganisationSchemesResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetOrganisationSchemesResult result) {
                 getView().setLatestOrganisationSchemeForInternalPublication(result);
@@ -285,16 +277,12 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void saveOrganisationScheme(OrganisationSchemeMetamacDto organisationScheme) {
-        dispatcher.execute(new SaveOrganisationSchemeAction(organisationScheme), new WaitingAsyncCallback<SaveOrganisationSchemeResult>() {
+        dispatcher.execute(new SaveOrganisationSchemeAction(organisationScheme), new WaitingAsyncCallbackHandlingError<SaveOrganisationSchemeResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(SaveOrganisationSchemeResult result) {
                 organisationSchemeMetamacDto = result.getOrganisationSchemeSaved();
-                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeSaved());
+                fireSuccessMessage(getMessages().organisationSchemeSaved());
                 getView().setOrganisationScheme(organisationSchemeMetamacDto);
 
                 updateUrl();
@@ -304,15 +292,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void deleteOrganisationScheme(String urn) {
-        dispatcher.execute(new DeleteOrganisationSchemeListAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteOrganisationSchemeListResult>() {
+        dispatcher.execute(new DeleteOrganisationSchemeListAction(Arrays.asList(urn)), new WaitingAsyncCallbackHandlingError<DeleteOrganisationSchemeListResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(DeleteOrganisationSchemeListResult result) {
-                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeDeleted());
+                fireSuccessMessage(getMessages().organisationSchemeDeleted());
                 goTo(PlaceRequestUtils.buildAbsoluteOrganisationSchemesPlaceRequest());
             }
         });
@@ -320,12 +304,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void exportOrganisationScheme(String urn) {
-        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallback<ExportSDMXResourceResult>() {
+        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.downloadFile(result.getFileName());
@@ -335,15 +315,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void copyOrganisationScheme(String urn) {
-        dispatcher.execute(new CopyOrganisationSchemeAction(urn), new WaitingAsyncCallback<CopyOrganisationSchemeResult>() {
+        dispatcher.execute(new CopyOrganisationSchemeAction(urn), new WaitingAsyncCallbackHandlingError<CopyOrganisationSchemeResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(CopyOrganisationSchemeResult result) {
-                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().maintainableArtefactCopied());
+                fireSuccessMessage(getMessages().maintainableArtefactCopied());
             }
         });
     }
@@ -356,15 +332,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     public void cancelValidity(final String urn) {
         List<String> urns = new ArrayList<String>();
         urns.add(urn);
-        dispatcher.execute(new CancelOrganisationSchemeValidityAction(urns), new WaitingAsyncCallback<CancelOrganisationSchemeValidityResult>() {
+        dispatcher.execute(new CancelOrganisationSchemeValidityAction(urns), new WaitingAsyncCallbackHandlingError<CancelOrganisationSchemeValidityResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(CancelOrganisationSchemeValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeCanceledValidity());
+                fireSuccessMessage(getMessages().organisationSchemeCanceledValidity());
                 retrieveOrganisationSchemeByUrn(urn);
             }
         });
@@ -373,15 +345,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus) {
         dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus, null),
-                new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateOrganisationSchemeProcStatusResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-                    }
-                    @Override
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeSentToProductionValidation());
+                        fireSuccessMessage(getMessages().organisationSchemeSentToProductionValidation());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
                     }
@@ -391,15 +359,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void sendToDiffusionValidation(String urn, ProcStatusEnum currentProcStatus) {
         dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus, null),
-                new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateOrganisationSchemeProcStatusResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-                    }
-                    @Override
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeSentToDiffusionValidation());
+                        fireSuccessMessage(getMessages().organisationSchemeSentToDiffusionValidation());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
                     }
@@ -409,15 +373,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void rejectValidation(String urn, ProcStatusEnum currentProcStatus) {
         dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus, null),
-                new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateOrganisationSchemeProcStatusResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-                    }
-                    @Override
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeRejected());
+                        fireSuccessMessage(getMessages().organisationSchemeRejected());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
                     }
@@ -427,15 +387,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus, Boolean forceLatestFinal) {
         dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus, forceLatestFinal),
-                new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateOrganisationSchemeProcStatusResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-                    }
-                    @Override
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemePublishedInternally());
+                        fireSuccessMessage(getMessages().organisationSchemePublishedInternally());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
 
@@ -453,15 +409,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void publishExternally(String urn, ProcStatusEnum currentProcStatus) {
         dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus, null),
-                new WaitingAsyncCallback<UpdateOrganisationSchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateOrganisationSchemeProcStatusResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-                    }
-                    @Override
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemePublishedExternally());
+                        fireSuccessMessage(getMessages().organisationSchemePublishedExternally());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
                     }
@@ -470,15 +422,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void versioning(String urn, VersionTypeEnum versionType) {
-        dispatcher.execute(new VersionOrganisationSchemeAction(urn, versionType), new WaitingAsyncCallback<VersionOrganisationSchemeResult>() {
+        dispatcher.execute(new VersionOrganisationSchemeAction(urn, versionType), new WaitingAsyncCallbackHandlingError<VersionOrganisationSchemeResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(VersionOrganisationSchemeResult result) {
-                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSchemeVersioned());
+                fireSuccessMessage(getMessages().organisationSchemeVersioned());
                 organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
                 retrieveCompleteOrganisationSchemeByUrn(result.getOrganisationSchemeMetamacDto().getUrn());
 
@@ -489,12 +437,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void createTemporalVersion(String urn) {
-        dispatcher.execute(new CreateOrganisationSchemeTemporalVersionAction(urn), new WaitingAsyncCallback<CreateOrganisationSchemeTemporalVersionResult>() {
+        dispatcher.execute(new CreateOrganisationSchemeTemporalVersionAction(urn), new WaitingAsyncCallbackHandlingError<CreateOrganisationSchemeTemporalVersionResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(CreateOrganisationSchemeTemporalVersionResult result) {
                 OrganisationSchemePresenter.this.organisationSchemeMetamacDto = result.getOrganisationSchemeMetamacDto();
@@ -509,30 +453,23 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     //
 
     private void retrieveOrganisationsByScheme(String organisationSchemeUrn) {
-        dispatcher.execute(new GetOrganisationsBySchemeAction(organisationSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetOrganisationsBySchemeResult>() {
+        dispatcher.execute(new GetOrganisationsBySchemeAction(organisationSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()),
+                new WaitingAsyncCallbackHandlingError<GetOrganisationsBySchemeResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetOrganisationsBySchemeResult result) {
-                getView().setOrganisationList(result.getOrganisations());
-            }
-        });
+                    @Override
+                    public void onWaitSuccess(GetOrganisationsBySchemeResult result) {
+                        getView().setOrganisationList(result.getOrganisations());
+                    }
+                });
     }
 
     @Override
     public void createOrganisation(OrganisationMetamacDto organisationDto) {
-        dispatcher.execute(new SaveOrganisationAction(organisationDto), new WaitingAsyncCallback<SaveOrganisationResult>() {
+        dispatcher.execute(new SaveOrganisationAction(organisationDto), new WaitingAsyncCallbackHandlingError<SaveOrganisationResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(SaveOrganisationResult result) {
-                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationSaved());
+                fireSuccessMessage(getMessages().organisationSaved());
                 retrieveOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
             }
         });
@@ -547,15 +484,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void deleteOrganisations(List<String> urns) {
-        dispatcher.execute(new DeleteOrganisationsAction(urns), new WaitingAsyncCallback<DeleteOrganisationsResult>() {
+        dispatcher.execute(new DeleteOrganisationsAction(urns), new WaitingAsyncCallbackHandlingError<DeleteOrganisationsResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(DeleteOrganisationsResult result) {
-                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().organisationDeleted());
+                fireSuccessMessage(getMessages().organisationDeleted());
                 retrieveOrganisationsByScheme(organisationSchemeMetamacDto.getUrn());
             }
         });
@@ -567,12 +500,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void retrieveCategorisations(String artefactCategorisedUrn) {
-        dispatcher.execute(new GetCategorisationsByArtefactAction(artefactCategorisedUrn), new WaitingAsyncCallback<GetCategorisationsByArtefactResult>() {
+        dispatcher.execute(new GetCategorisationsByArtefactAction(artefactCategorisedUrn), new WaitingAsyncCallbackHandlingError<GetCategorisationsByArtefactResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetCategorisationsByArtefactResult result) {
                 getView().setCategorisations(result.getCategorisationDtos());
@@ -583,15 +512,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void createCategorisations(List<String> categoryUrns) {
         dispatcher.execute(new CreateCategorisationAction(categoryUrns, organisationSchemeMetamacDto.getUrn(), RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto().getUrn()),
-                new WaitingAsyncCallback<CreateCategorisationResult>() {
+                new WaitingAsyncCallbackHandlingError<CreateCategorisationResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-                    }
-                    @Override
                     public void onWaitSuccess(CreateCategorisationResult result) {
-                        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().categorisationCreated());
+                        fireSuccessMessage(getMessages().categorisationCreated());
                         retrieveCategorisations(organisationSchemeMetamacDto.getUrn());
                     }
                 });
@@ -599,15 +524,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void deleteCategorisations(List<String> urns) {
-        dispatcher.execute(new DeleteCategorisationsAction(urns), new WaitingAsyncCallback<DeleteCategorisationsResult>() {
+        dispatcher.execute(new DeleteCategorisationsAction(urns), new WaitingAsyncCallbackHandlingError<DeleteCategorisationsResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(DeleteCategorisationsResult result) {
-                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().categorisationDeleted());
+                fireSuccessMessage(getMessages().categorisationDeleted());
                 retrieveCategorisations(organisationSchemeMetamacDto.getUrn());
             }
         });
@@ -615,15 +536,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void cancelCategorisationValidity(List<String> urns, Date validTo) {
-        dispatcher.execute(new CancelCategorisationValidityAction(urns, validTo), new WaitingAsyncCallback<CancelCategorisationValidityResult>() {
+        dispatcher.execute(new CancelCategorisationValidityAction(urns, validTo), new WaitingAsyncCallbackHandlingError<CancelCategorisationValidityResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(CancelCategorisationValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, getMessages().categorisationDeleted());
+                fireSuccessMessage(getMessages().categorisationDeleted());
                 retrieveCategorisations(organisationSchemeMetamacDto.getUrn());
             }
         });
@@ -632,12 +549,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, CategorySchemeWebCriteria categorySchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CATEGORY_SCHEMES_FOR_CATEGORISATIONS, firstResult, maxResults, categorySchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-                    }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
                         getView().setCategorySchemesForCategorisations(result);
@@ -648,19 +561,14 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     @Override
     public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, CategoryWebCriteria categoryWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CATEGORIES_FOR_CATEGORISATIONS, firstResult, maxResults, categoryWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
-                    }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
                         getView().setCategoriesForCategorisations(result);
                     }
                 });
     }
-
     //
     // NAVIGATION
     //

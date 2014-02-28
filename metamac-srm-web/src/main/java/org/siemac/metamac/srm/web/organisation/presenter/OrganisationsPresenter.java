@@ -22,14 +22,13 @@ import org.siemac.metamac.srm.web.shared.criteria.OrganisationWebCriteria;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationsResult;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
-import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -113,12 +112,8 @@ public class OrganisationsPresenter extends Presenter<OrganisationsPresenter.Org
 
     @Override
     public void retrieveOrganisations(int firstResult, int maxResults, OrganisationWebCriteria organisationWebCriteria) {
-        dispatcher.execute(new GetOrganisationsAction(firstResult, maxResults, organisationWebCriteria), new WaitingAsyncCallback<GetOrganisationsResult>() {
+        dispatcher.execute(new GetOrganisationsAction(firstResult, maxResults, organisationWebCriteria), new WaitingAsyncCallbackHandlingError<GetOrganisationsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationsPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetOrganisationsResult result) {
                 getView().setOrganisations(result);

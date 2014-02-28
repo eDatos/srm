@@ -75,7 +75,7 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
@@ -200,7 +200,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     //
 
     private void retrieveConceptSchemeByUrn(String urn, final boolean startEdition) {
-        dispatcher.execute(new GetConceptSchemeAction(urn), new WaitingAsyncCallback<GetConceptSchemeResult>() {
+        dispatcher.execute(new GetConceptSchemeAction(urn), new WaitingAsyncCallbackHandlingError<GetConceptSchemeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -227,7 +227,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         criteria.setCodeEQ(conceptSchemeMetamacDto.getCode());
         criteria.setMaintainerUrn(conceptSchemeMetamacDto.getMaintainer().getUrn());
         criteria.setIsLatestFinal(true);
-        dispatcher.execute(new GetConceptSchemesAction(0, 1, criteria), new WaitingAsyncCallback<GetConceptSchemesResult>() {
+        dispatcher.execute(new GetConceptSchemesAction(0, 1, criteria), new WaitingAsyncCallbackHandlingError<GetConceptSchemesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -242,7 +242,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void saveConceptScheme(ConceptSchemeMetamacDto conceptScheme) {
-        dispatcher.execute(new SaveConceptSchemeAction(conceptScheme), new WaitingAsyncCallback<SaveConceptSchemeResult>() {
+        dispatcher.execute(new SaveConceptSchemeAction(conceptScheme), new WaitingAsyncCallbackHandlingError<SaveConceptSchemeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -250,7 +250,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(SaveConceptSchemeResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().conceptSchemeSaved());
+                fireSuccessMessage(getMessages().conceptSchemeSaved());
                 ConceptSchemePresenter.this.conceptSchemeDto = result.getSavedConceptSchemeDto();
                 getView().setConceptScheme(result.getSavedConceptSchemeDto());
 
@@ -262,7 +262,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void deleteConceptScheme(String urn) {
-        dispatcher.execute(new DeleteConceptSchemesAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteConceptSchemesResult>() {
+        dispatcher.execute(new DeleteConceptSchemesAction(Arrays.asList(urn)), new WaitingAsyncCallbackHandlingError<DeleteConceptSchemesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -270,7 +270,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(DeleteConceptSchemesResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().conceptSchemeDeleted());
+                fireSuccessMessage(getMessages().conceptSchemeDeleted());
                 goTo(PlaceRequestUtils.buildAbsoluteConceptSchemesPlaceRequest());
             }
         });
@@ -278,7 +278,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void retrieveConceptSchemeVersions(String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptSchemeVersionsAction(conceptSchemeUrn), new WaitingAsyncCallback<GetConceptSchemeVersionsResult>() {
+        dispatcher.execute(new GetConceptSchemeVersionsAction(conceptSchemeUrn), new WaitingAsyncCallbackHandlingError<GetConceptSchemeVersionsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -293,7 +293,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void exportConceptScheme(String urn) {
-        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallback<ExportSDMXResourceResult>() {
+        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -308,7 +308,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void copyConceptScheme(String urn) {
-        dispatcher.execute(new CopyConceptSchemeAction(urn), new WaitingAsyncCallback<CopyConceptSchemeResult>() {
+        dispatcher.execute(new CopyConceptSchemeAction(urn), new WaitingAsyncCallbackHandlingError<CopyConceptSchemeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -316,7 +316,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(CopyConceptSchemeResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().maintainableArtefactCopied());
+                fireSuccessMessage(getMessages().maintainableArtefactCopied());
             }
         });
     }
@@ -328,7 +328,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void sendToProductionValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
         dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeMetamacDto, ProcStatusEnum.PRODUCTION_VALIDATION, null),
-                new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateConceptSchemeProcStatusResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -336,7 +336,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     }
                     @Override
                     public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().conceptSchemeSentToProductionValidation());
+                        fireSuccessMessage(getMessages().conceptSchemeSentToProductionValidation());
                         ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                         getView().setConceptScheme(result.getConceptSchemeDto());
                     }
@@ -346,7 +346,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void sendToDiffusionValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
         dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeMetamacDto, ProcStatusEnum.DIFFUSION_VALIDATION, null),
-                new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateConceptSchemeProcStatusResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -354,7 +354,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     }
                     @Override
                     public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().conceptSchemeSentToDiffusionValidation());
+                        fireSuccessMessage(getMessages().conceptSchemeSentToDiffusionValidation());
                         ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                         getView().setConceptScheme(result.getConceptSchemeDto());
                     }
@@ -363,25 +363,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void rejectValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeMetamacDto, ProcStatusEnum.VALIDATION_REJECTED, null), new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(ConceptSchemePresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().conceptSchemeRejected());
-                ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
-                getView().setConceptScheme(result.getConceptSchemeDto());
-            }
-        });
-    }
-
-    @Override
-    public void publishInternally(final ConceptSchemeMetamacDto conceptSchemeToPublish, Boolean forceLatestFinal) {
-        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, forceLatestFinal),
-                new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeMetamacDto, ProcStatusEnum.VALIDATION_REJECTED, null),
+                new WaitingAsyncCallbackHandlingError<UpdateConceptSchemeProcStatusResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -389,7 +372,25 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     }
                     @Override
                     public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().conceptSchemePublishedInternally());
+                        fireSuccessMessage(getMessages().conceptSchemeRejected());
+                        ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
+                        getView().setConceptScheme(result.getConceptSchemeDto());
+                    }
+                });
+    }
+
+    @Override
+    public void publishInternally(final ConceptSchemeMetamacDto conceptSchemeToPublish, Boolean forceLatestFinal) {
+        dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, forceLatestFinal),
+                new WaitingAsyncCallbackHandlingError<UpdateConceptSchemeProcStatusResult>(this) {
+
+                    @Override
+                    public void onWaitFailure(Throwable caught) {
+                        ShowMessageEvent.fireErrorMessage(ConceptSchemePresenter.this, caught);
+                    }
+                    @Override
+                    public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
+                        fireSuccessMessage(getMessages().conceptSchemePublishedInternally());
                         ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                         getView().setConceptScheme(result.getConceptSchemeDto());
 
@@ -407,7 +408,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void publishExternally(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
         dispatcher.execute(new UpdateConceptSchemeProcStatusAction(conceptSchemeMetamacDto, ProcStatusEnum.EXTERNALLY_PUBLISHED, null),
-                new WaitingAsyncCallback<UpdateConceptSchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateConceptSchemeProcStatusResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -415,7 +416,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     }
                     @Override
                     public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().conceptSchemePublishedExternally());
+                        fireSuccessMessage(getMessages().conceptSchemePublishedExternally());
                         ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                         getView().setConceptScheme(result.getConceptSchemeDto());
                     }
@@ -424,7 +425,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void versioning(final String urn, VersionTypeEnum versionType) {
-        dispatcher.execute(new VersionConceptSchemeAction(urn, versionType), new WaitingAsyncCallback<VersionConceptSchemeResult>() {
+        dispatcher.execute(new VersionConceptSchemeAction(urn, versionType), new WaitingAsyncCallbackHandlingError<VersionConceptSchemeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -432,7 +433,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(VersionConceptSchemeResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().conceptSchemeVersioned());
+                fireSuccessMessage(getMessages().conceptSchemeVersioned());
                 ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                 retrieveCompleteConceptSchemeByUrn(conceptSchemeDto.getUrn());
                 updateUrl();
@@ -444,7 +445,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     public void cancelValidity(final String urn) {
         List<String> urns = new ArrayList<String>();
         urns.add(urn);
-        dispatcher.execute(new CancelConceptSchemeValidityAction(urns), new WaitingAsyncCallback<CancelConceptSchemeValidityResult>() {
+        dispatcher.execute(new CancelConceptSchemeValidityAction(urns), new WaitingAsyncCallbackHandlingError<CancelConceptSchemeValidityResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -452,7 +453,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(CancelConceptSchemeValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().conceptSchemeCanceledValidity());
+                fireSuccessMessage(getMessages().conceptSchemeCanceledValidity());
                 retrieveConceptSchemeByUrn(urn);
             }
         });
@@ -460,7 +461,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void createTemporalVersion(String urn) {
-        dispatcher.execute(new CreateConceptSchemeTemporalVersionAction(urn), new WaitingAsyncCallback<CreateConceptSchemeTemporalVersionResult>() {
+        dispatcher.execute(new CreateConceptSchemeTemporalVersionAction(urn), new WaitingAsyncCallbackHandlingError<CreateConceptSchemeTemporalVersionResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -485,7 +486,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void saveConcept(ConceptMetamacDto conceptDto, List<String> roles, List<String> relatedConcepts) {
-        dispatcher.execute(new SaveConceptAction(conceptDto, roles, relatedConcepts), new WaitingAsyncCallback<SaveConceptResult>() {
+        dispatcher.execute(new SaveConceptAction(conceptDto, roles, relatedConcepts), new WaitingAsyncCallbackHandlingError<SaveConceptResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -493,14 +494,14 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(SaveConceptResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().conceptCreated());
+                fireSuccessMessage(getMessages().conceptCreated());
                 retrieveConceptSchemeByUrn(conceptSchemeDto.getUrn());
             }
         });
     }
 
     private void retrieveConceptsByScheme(String conceptSchemeUrn) {
-        dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetConceptsBySchemeResult>() {
+        dispatcher.execute(new GetConceptsBySchemeAction(conceptSchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallbackHandlingError<GetConceptsBySchemeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -515,7 +516,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void deleteConcept(ItemVisualisationResult itemVisualisationResult) {
-        dispatcher.execute(new DeleteConceptAction(itemVisualisationResult.getUrn()), new WaitingAsyncCallback<DeleteConceptResult>() {
+        dispatcher.execute(new DeleteConceptAction(itemVisualisationResult.getUrn()), new WaitingAsyncCallbackHandlingError<DeleteConceptResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -535,7 +536,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria) {
         StatisticalOperationWebCriteria statisticalOperationWebCriteria = new StatisticalOperationWebCriteria(criteria);
-        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallback<GetStatisticalOperationsResult>() {
+        dispatcher.execute(new GetStatisticalOperationsAction(firstResult, maxResults, statisticalOperationWebCriteria), new WaitingAsyncCallbackHandlingError<GetStatisticalOperationsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -554,7 +555,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void retrieveCategorisations(String artefactCategorisedUrn) {
-        dispatcher.execute(new GetCategorisationsByArtefactAction(artefactCategorisedUrn), new WaitingAsyncCallback<GetCategorisationsByArtefactResult>() {
+        dispatcher.execute(new GetCategorisationsByArtefactAction(artefactCategorisedUrn), new WaitingAsyncCallbackHandlingError<GetCategorisationsByArtefactResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -570,7 +571,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void createCategorisations(List<String> categoryUrns) {
         dispatcher.execute(new CreateCategorisationAction(categoryUrns, conceptSchemeDto.getUrn(), RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto().getUrn()),
-                new WaitingAsyncCallback<CreateCategorisationResult>() {
+                new WaitingAsyncCallbackHandlingError<CreateCategorisationResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -578,7 +579,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     }
                     @Override
                     public void onWaitSuccess(CreateCategorisationResult result) {
-                        ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().categorisationCreated());
+                        fireSuccessMessage(getMessages().categorisationCreated());
                         retrieveCategorisations(conceptSchemeDto.getUrn());
                     }
                 });
@@ -586,7 +587,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void deleteCategorisations(List<String> urns) {
-        dispatcher.execute(new DeleteCategorisationsAction(urns), new WaitingAsyncCallback<DeleteCategorisationsResult>() {
+        dispatcher.execute(new DeleteCategorisationsAction(urns), new WaitingAsyncCallbackHandlingError<DeleteCategorisationsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -594,7 +595,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(DeleteCategorisationsResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().categorisationDeleted());
+                fireSuccessMessage(getMessages().categorisationDeleted());
                 retrieveCategorisations(conceptSchemeDto.getUrn());
             }
         });
@@ -602,7 +603,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void cancelCategorisationValidity(List<String> urns, Date validTo) {
-        dispatcher.execute(new CancelCategorisationValidityAction(urns, validTo), new WaitingAsyncCallback<CancelCategorisationValidityResult>() {
+        dispatcher.execute(new CancelCategorisationValidityAction(urns, validTo), new WaitingAsyncCallbackHandlingError<CancelCategorisationValidityResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -610,7 +611,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             }
             @Override
             public void onWaitSuccess(CancelCategorisationValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().categorisationDeleted());
+                fireSuccessMessage(getMessages().categorisationDeleted());
                 retrieveCategorisations(conceptSchemeDto.getUrn());
             }
         });
@@ -619,7 +620,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, CategorySchemeWebCriteria categorySchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CATEGORY_SCHEMES_FOR_CATEGORISATIONS, firstResult, maxResults, categorySchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -635,7 +636,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     @Override
     public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, CategoryWebCriteria categoryWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CATEGORIES_FOR_CATEGORISATIONS, firstResult, maxResults, categoryWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {

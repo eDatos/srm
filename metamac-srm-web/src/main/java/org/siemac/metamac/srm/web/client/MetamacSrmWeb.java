@@ -11,7 +11,7 @@ import org.siemac.metamac.srm.web.shared.organisation.GetDefaultMaintainerResult
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.web.common.client.MetamacSecurityEntryPoint;
 import org.siemac.metamac.web.common.client.gin.MetamacWebGinjector;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallback;
 
 import com.google.gwt.core.client.GWT;
 

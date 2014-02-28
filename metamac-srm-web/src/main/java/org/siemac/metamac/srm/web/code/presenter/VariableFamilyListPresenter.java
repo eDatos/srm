@@ -25,7 +25,7 @@ import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyResult;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -116,7 +116,7 @@ public class VariableFamilyListPresenter extends Presenter<VariableFamilyListPre
 
     @Override
     public void retrieveVariableFamilies(int firstResult, int maxResults, final String criteria) {
-        dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallback<GetVariableFamiliesResult>() {
+        dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallbackHandlingError<GetVariableFamiliesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -134,7 +134,7 @@ public class VariableFamilyListPresenter extends Presenter<VariableFamilyListPre
 
     @Override
     public void createVariableFamily(VariableFamilyDto variableFamilyDto) {
-        dispatcher.execute(new SaveVariableFamilyAction(variableFamilyDto), new WaitingAsyncCallback<SaveVariableFamilyResult>() {
+        dispatcher.execute(new SaveVariableFamilyAction(variableFamilyDto), new WaitingAsyncCallbackHandlingError<SaveVariableFamilyResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -142,7 +142,7 @@ public class VariableFamilyListPresenter extends Presenter<VariableFamilyListPre
             }
             @Override
             public void onWaitSuccess(SaveVariableFamilyResult result) {
-                ShowMessageEvent.fireSuccessMessage(VariableFamilyListPresenter.this, getMessages().variableFamilySaved());
+                fireSuccessMessage(getMessages().variableFamilySaved());
                 retrieveVariableFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, getView().getVariableFamilyCriteria());
             }
         });
@@ -150,7 +150,7 @@ public class VariableFamilyListPresenter extends Presenter<VariableFamilyListPre
 
     @Override
     public void deleteVariableFamilies(List<String> urns) {
-        dispatcher.execute(new DeleteVariableFamiliesAction(urns), new WaitingAsyncCallback<DeleteVariableFamiliesResult>() {
+        dispatcher.execute(new DeleteVariableFamiliesAction(urns), new WaitingAsyncCallbackHandlingError<DeleteVariableFamiliesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -159,7 +159,7 @@ public class VariableFamilyListPresenter extends Presenter<VariableFamilyListPre
             }
             @Override
             public void onWaitSuccess(DeleteVariableFamiliesResult result) {
-                ShowMessageEvent.fireSuccessMessage(VariableFamilyListPresenter.this, getMessages().variableFamilyDeleted());
+                fireSuccessMessage(getMessages().variableFamilyDeleted());
                 retrieveVariableFamilies(FAMILY_LIST_FIRST_RESULT, FAMILY_LIST_MAX_RESULTS, getView().getVariableFamilyCriteria());
             }
         });

@@ -33,11 +33,11 @@ import org.siemac.metamac.srm.web.shared.dsd.GetDsdAction;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -111,7 +111,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
     }
 
     private void retrieveDsdAndCategorisations(final String dsdUrn) {
-        dispatcher.execute(new GetDsdAction(dsdUrn), new WaitingAsyncCallback<GetDsdResult>() {
+        dispatcher.execute(new GetDsdAction(dsdUrn), new WaitingAsyncCallbackHandlingError<GetDsdResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -127,7 +127,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
 
     @Override
     public void retrieveCategorisations(String artefactCategorisedUrn) {
-        dispatcher.execute(new GetCategorisationsByArtefactAction(artefactCategorisedUrn), new WaitingAsyncCallback<GetCategorisationsByArtefactResult>() {
+        dispatcher.execute(new GetCategorisationsByArtefactAction(artefactCategorisedUrn), new WaitingAsyncCallbackHandlingError<GetCategorisationsByArtefactResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -143,7 +143,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
     @Override
     public void createCategorisations(List<String> categoryUrns) {
         dispatcher.execute(new CreateCategorisationAction(categoryUrns, dataStructureDefinitionDto.getUrn(), RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto().getUrn()),
-                new WaitingAsyncCallback<CreateCategorisationResult>() {
+                new WaitingAsyncCallbackHandlingError<CreateCategorisationResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -151,7 +151,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
                     }
                     @Override
                     public void onWaitSuccess(CreateCategorisationResult result) {
-                        ShowMessageEvent.fireSuccessMessage(DsdCategorisationsTabPresenter.this, getMessages().categorisationCreated());
+                        fireSuccessMessage(getMessages().categorisationCreated());
                         retrieveCategorisations(dataStructureDefinitionDto.getUrn());
                     }
                 });
@@ -159,7 +159,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
 
     @Override
     public void deleteCategorisations(List<String> urns) {
-        dispatcher.execute(new DeleteCategorisationsAction(urns), new WaitingAsyncCallback<DeleteCategorisationsResult>() {
+        dispatcher.execute(new DeleteCategorisationsAction(urns), new WaitingAsyncCallbackHandlingError<DeleteCategorisationsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -167,7 +167,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
             }
             @Override
             public void onWaitSuccess(DeleteCategorisationsResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdCategorisationsTabPresenter.this, getMessages().categorisationDeleted());
+                fireSuccessMessage(getMessages().categorisationDeleted());
                 retrieveCategorisations(dataStructureDefinitionDto.getUrn());
             }
         });
@@ -175,7 +175,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
 
     @Override
     public void cancelCategorisationValidity(List<String> urns, Date validTo) {
-        dispatcher.execute(new CancelCategorisationValidityAction(urns, validTo), new WaitingAsyncCallback<CancelCategorisationValidityResult>() {
+        dispatcher.execute(new CancelCategorisationValidityAction(urns, validTo), new WaitingAsyncCallbackHandlingError<CancelCategorisationValidityResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -183,7 +183,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
             }
             @Override
             public void onWaitSuccess(CancelCategorisationValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(DsdCategorisationsTabPresenter.this, getMessages().categorisationDeleted());
+                fireSuccessMessage(getMessages().categorisationDeleted());
                 retrieveCategorisations(dataStructureDefinitionDto.getUrn());
             }
         });
@@ -192,7 +192,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
     @Override
     public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, CategorySchemeWebCriteria categorySchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CATEGORY_SCHEMES_FOR_CATEGORISATIONS, firstResult, maxResults, categorySchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {
@@ -208,7 +208,7 @@ public class DsdCategorisationsTabPresenter extends Presenter<DsdCategorisations
     @Override
     public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, CategoryWebCriteria categoryWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CATEGORIES_FOR_CATEGORISATIONS, firstResult, maxResults, categoryWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
                     @Override
                     public void onWaitFailure(Throwable caught) {

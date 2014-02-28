@@ -70,9 +70,8 @@ import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
-import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
@@ -200,12 +199,8 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     }
 
     private void retrieveCategorySchemeByUrn(String urn, final boolean startEdition) {
-        dispatcher.execute(new GetCategorySchemeAction(urn), new WaitingAsyncCallback<GetCategorySchemeResult>() {
+        dispatcher.execute(new GetCategorySchemeAction(urn), new WaitingAsyncCallbackHandlingError<GetCategorySchemeResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetCategorySchemeResult result) {
                 categorySchemeMetamacDto = result.getCategorySchemeMetamacDto();
@@ -223,12 +218,8 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void retrieveCategorySchemeVersions(String categorySchemeUrn) {
-        dispatcher.execute(new GetCategorySchemeVersionsAction(categorySchemeUrn), new WaitingAsyncCallback<GetCategorySchemeVersionsResult>() {
+        dispatcher.execute(new GetCategorySchemeVersionsAction(categorySchemeUrn), new WaitingAsyncCallbackHandlingError<GetCategorySchemeVersionsResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetCategorySchemeVersionsResult result) {
                 getView().setCategorySchemeVersions(result.getCategorySchemeMetamacDtos());
@@ -242,12 +233,8 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
         criteria.setCodeEQ(categorySchemeMetamacDto.getCode());
         criteria.setMaintainerUrn(categorySchemeMetamacDto.getMaintainer().getUrn());
         criteria.setIsLatestFinal(true);
-        dispatcher.execute(new GetCategorySchemesAction(0, 1, criteria), new WaitingAsyncCallback<GetCategorySchemesResult>() {
+        dispatcher.execute(new GetCategorySchemesAction(0, 1, criteria), new WaitingAsyncCallbackHandlingError<GetCategorySchemesResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetCategorySchemesResult result) {
                 getView().setLatestCategorySchemeForInternalPublication(result);
@@ -257,16 +244,12 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void saveCategoryScheme(CategorySchemeMetamacDto categoryScheme) {
-        dispatcher.execute(new SaveCategorySchemeAction(categoryScheme), new WaitingAsyncCallback<SaveCategorySchemeResult>() {
+        dispatcher.execute(new SaveCategorySchemeAction(categoryScheme), new WaitingAsyncCallbackHandlingError<SaveCategorySchemeResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(SaveCategorySchemeResult result) {
                 categorySchemeMetamacDto = result.getCategorySchemeSaved();
-                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeSaved());
+                fireSuccessMessage(getMessages().categorySchemeSaved());
                 getView().setCategoryScheme(categorySchemeMetamacDto);
 
                 updateUrl();
@@ -276,15 +259,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void deleteCategoryScheme(String urn) {
-        dispatcher.execute(new DeleteCategorySchemesAction(Arrays.asList(urn)), new WaitingAsyncCallback<DeleteCategorySchemesResult>() {
+        dispatcher.execute(new DeleteCategorySchemesAction(Arrays.asList(urn)), new WaitingAsyncCallbackHandlingError<DeleteCategorySchemesResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(DeleteCategorySchemesResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeDeleted());
+                fireSuccessMessage(getMessages().categorySchemeDeleted());
                 goTo(PlaceRequestUtils.buildAbsoluteCategorySchemesPlaceRequest());
             }
         });
@@ -292,15 +271,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void cancelCategorisationValidity(List<String> urns, Date validTo) {
-        dispatcher.execute(new CancelCategorisationValidityAction(urns, validTo), new WaitingAsyncCallback<CancelCategorisationValidityResult>() {
+        dispatcher.execute(new CancelCategorisationValidityAction(urns, validTo), new WaitingAsyncCallbackHandlingError<CancelCategorisationValidityResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(CancelCategorisationValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorisationDeleted());
+                fireSuccessMessage(getMessages().categorisationDeleted());
                 retrieveCategorisations(categorySchemeMetamacDto.getUrn());
             }
         });
@@ -308,12 +283,8 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void exportCategoryScheme(String urn) {
-        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallback<ExportSDMXResourceResult>() {
+        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(ExportSDMXResourceResult result) {
                 CommonUtils.downloadFile(result.getFileName());
@@ -323,15 +294,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void copyCategoryScheme(String urn) {
-        dispatcher.execute(new CopyCategorySchemeAction(urn), new WaitingAsyncCallback<CopyCategorySchemeResult>() {
+        dispatcher.execute(new CopyCategorySchemeAction(urn), new WaitingAsyncCallbackHandlingError<CopyCategorySchemeResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(CopyCategorySchemeResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().maintainableArtefactCopied());
+                fireSuccessMessage(getMessages().maintainableArtefactCopied());
             }
         });
     }
@@ -344,15 +311,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     public void cancelValidity(final String urn) {
         List<String> urns = new ArrayList<String>();
         urns.add(urn);
-        dispatcher.execute(new CancelCategorySchemeValidityAction(urns), new WaitingAsyncCallback<CancelCategorySchemeValidityResult>() {
+        dispatcher.execute(new CancelCategorySchemeValidityAction(urns), new WaitingAsyncCallbackHandlingError<CancelCategorySchemeValidityResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(CancelCategorySchemeValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeCanceledValidity());
+                fireSuccessMessage(getMessages().categorySchemeCanceledValidity());
                 retrieveCategorySchemeByUrn(urn);
             }
         });
@@ -361,15 +324,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     @Override
     public void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus) {
         dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus, null),
-                new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateCategorySchemeProcStatusResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-                    }
-                    @Override
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeSentToProductionValidation());
+                        fireSuccessMessage(getMessages().categorySchemeSentToProductionValidation());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         getView().setCategoryScheme(categorySchemeMetamacDto);
                     }
@@ -379,15 +338,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     @Override
     public void sendToDiffusionValidation(String urn, ProcStatusEnum currentProcStatus) {
         dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus, null),
-                new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateCategorySchemeProcStatusResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-                    }
-                    @Override
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeSentToDiffusionValidation());
+                        fireSuccessMessage(getMessages().categorySchemeSentToDiffusionValidation());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         getView().setCategoryScheme(categorySchemeMetamacDto);
                     }
@@ -397,15 +352,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     @Override
     public void rejectValidation(String urn, ProcStatusEnum currentProcStatus) {
         dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus, null),
-                new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateCategorySchemeProcStatusResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-                    }
-                    @Override
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeRejected());
+                        fireSuccessMessage(getMessages().categorySchemeRejected());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         getView().setCategoryScheme(categorySchemeMetamacDto);
                     }
@@ -415,15 +366,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     @Override
     public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus, Boolean forceLatestFinal) {
         dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus, forceLatestFinal),
-                new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateCategorySchemeProcStatusResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-                    }
-                    @Override
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemePublishedInternally());
+                        fireSuccessMessage(getMessages().categorySchemePublishedInternally());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         getView().setCategoryScheme(categorySchemeMetamacDto);
 
@@ -441,15 +388,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     @Override
     public void publishExternally(String urn, ProcStatusEnum currentProcStatus) {
         dispatcher.execute(new UpdateCategorySchemeProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus, null),
-                new WaitingAsyncCallback<UpdateCategorySchemeProcStatusResult>() {
+                new WaitingAsyncCallbackHandlingError<UpdateCategorySchemeProcStatusResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-                    }
-                    @Override
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemePublishedExternally());
+                        fireSuccessMessage(getMessages().categorySchemePublishedExternally());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         getView().setCategoryScheme(categorySchemeMetamacDto);
                     }
@@ -458,15 +401,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void versioning(String urn, VersionTypeEnum versionType) {
-        dispatcher.execute(new VersionCategorySchemeAction(urn, versionType), new WaitingAsyncCallback<VersionCategorySchemeResult>() {
+        dispatcher.execute(new VersionCategorySchemeAction(urn, versionType), new WaitingAsyncCallbackHandlingError<VersionCategorySchemeResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(VersionCategorySchemeResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySchemeVersioned());
+                fireSuccessMessage(getMessages().categorySchemeVersioned());
                 categorySchemeMetamacDto = result.getCategorySchemeMetamacDto();
                 retrieveCompleteCategorySchemeByUrn(categorySchemeMetamacDto.getUrn());
                 updateUrl();
@@ -476,12 +415,8 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void createTemporalVersion(String urn) {
-        dispatcher.execute(new CreateCategorySchemeTemporalVersionAction(urn), new WaitingAsyncCallback<CreateCategorySchemeTemporalVersionResult>() {
+        dispatcher.execute(new CreateCategorySchemeTemporalVersionAction(urn), new WaitingAsyncCallbackHandlingError<CreateCategorySchemeTemporalVersionResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(CreateCategorySchemeTemporalVersionResult result) {
                 CategorySchemePresenter.this.categorySchemeMetamacDto = result.getCategorySchemeMetamacDto();
@@ -496,30 +431,23 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     //
 
     private void retrieveCategoriesByScheme(String categorySchemeUrn) {
-        dispatcher.execute(new GetCategoriesBySchemeAction(categorySchemeUrn, ApplicationEditionLanguages.getCurrentLocale()), new WaitingAsyncCallback<GetCategoriesBySchemeResult>() {
+        dispatcher.execute(new GetCategoriesBySchemeAction(categorySchemeUrn, ApplicationEditionLanguages.getCurrentLocale()),
+                new WaitingAsyncCallbackHandlingError<GetCategoriesBySchemeResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(GetCategoriesBySchemeResult result) {
-                getView().setCategories(result.getCategories());
-            }
-        });
+                    @Override
+                    public void onWaitSuccess(GetCategoriesBySchemeResult result) {
+                        getView().setCategories(result.getCategories());
+                    }
+                });
     }
 
     @Override
     public void saveCategory(CategoryMetamacDto categoryDto) {
-        dispatcher.execute(new SaveCategoryAction(categoryDto), new WaitingAsyncCallback<SaveCategoryResult>() {
+        dispatcher.execute(new SaveCategoryAction(categoryDto), new WaitingAsyncCallbackHandlingError<SaveCategoryResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(SaveCategoryResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorySaved());
+                fireSuccessMessage(getMessages().categorySaved());
                 retrieveCategorySchemeByUrn(categorySchemeMetamacDto.getUrn());
             }
         });
@@ -527,15 +455,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void deleteCategory(ItemVisualisationResult itemVisualisationResult) {
-        dispatcher.execute(new DeleteCategoryAction(itemVisualisationResult.getUrn()), new WaitingAsyncCallback<DeleteCategoryResult>() {
+        dispatcher.execute(new DeleteCategoryAction(itemVisualisationResult.getUrn()), new WaitingAsyncCallbackHandlingError<DeleteCategoryResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(DeleteCategoryResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categoryDeleted());
+                fireSuccessMessage(getMessages().categoryDeleted());
                 retrieveCategoriesByScheme(categorySchemeMetamacDto.getUrn());
             }
         });
@@ -545,12 +469,8 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void retrieveCategorisations(String artefactCategorisedUrn) {
-        dispatcher.execute(new GetCategorisationsByArtefactAction(artefactCategorisedUrn), new WaitingAsyncCallback<GetCategorisationsByArtefactResult>() {
+        dispatcher.execute(new GetCategorisationsByArtefactAction(artefactCategorisedUrn), new WaitingAsyncCallbackHandlingError<GetCategorisationsByArtefactResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetCategorisationsByArtefactResult result) {
                 getView().setCategorisations(result.getCategorisationDtos());
@@ -561,15 +481,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     @Override
     public void createCategorisations(List<String> categoryUrns) {
         dispatcher.execute(new CreateCategorisationAction(categoryUrns, categorySchemeMetamacDto.getUrn(), RelatedResourceUtils.getDefaultMaintainerAsRelatedResourceDto().getUrn()),
-                new WaitingAsyncCallback<CreateCategorisationResult>() {
+                new WaitingAsyncCallbackHandlingError<CreateCategorisationResult>(this) {
 
                     @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-                    }
-                    @Override
                     public void onWaitSuccess(CreateCategorisationResult result) {
-                        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorisationCreated());
+                        fireSuccessMessage(getMessages().categorisationCreated());
                         retrieveCategorisations(categorySchemeMetamacDto.getUrn());
                     }
                 });
@@ -577,15 +493,11 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void deleteCategorisations(List<String> urns) {
-        dispatcher.execute(new DeleteCategorisationsAction(urns), new WaitingAsyncCallback<DeleteCategorisationsResult>() {
+        dispatcher.execute(new DeleteCategorisationsAction(urns), new WaitingAsyncCallbackHandlingError<DeleteCategorisationsResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(DeleteCategorisationsResult result) {
-                ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, getMessages().categorisationDeleted());
+                fireSuccessMessage(getMessages().categorisationDeleted());
                 retrieveCategorisations(categorySchemeMetamacDto.getUrn());
             }
         });
@@ -594,12 +506,8 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     @Override
     public void retrieveCategorySchemesForCategorisations(int firstResult, int maxResults, CategorySchemeWebCriteria categorySchemeWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CATEGORY_SCHEMES_FOR_CATEGORISATIONS, firstResult, maxResults, categorySchemeWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-                    }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
                         getView().setCategorySchemesForCategorisations(result);
@@ -610,12 +518,8 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
     @Override
     public void retrieveCategoriesForCategorisations(int firstResult, int maxResults, CategoryWebCriteria categoryWebCriteria) {
         dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CATEGORIES_FOR_CATEGORISATIONS, firstResult, maxResults, categoryWebCriteria),
-                new WaitingAsyncCallback<GetRelatedResourcesResult>() {
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
 
-                    @Override
-                    public void onWaitFailure(Throwable caught) {
-                        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
-                    }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
                         getView().setCategoriesForCategorisations(result);

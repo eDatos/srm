@@ -29,8 +29,7 @@ import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResu
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.SaveOrganisationSchemeResult;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
-import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.widgets.WaitingAsyncCallback;
+import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -132,15 +131,11 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
 
     @Override
     public void createOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
-        dispatcher.execute(new SaveOrganisationSchemeAction(organisationSchemeMetamacDto), new WaitingAsyncCallback<SaveOrganisationSchemeResult>() {
+        dispatcher.execute(new SaveOrganisationSchemeAction(organisationSchemeMetamacDto), new WaitingAsyncCallbackHandlingError<SaveOrganisationSchemeResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemeListPresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(SaveOrganisationSchemeResult result) {
-                ShowMessageEvent.fireSuccessMessage(OrganisationSchemeListPresenter.this, getMessages().organisationSchemeSaved());
+                fireSuccessMessage(getMessages().organisationSchemeSaved());
                 retrieveOrganisationSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToOrganisationSchemeWebCriteria(getView().getOrganisationSchemeWebCriteria()));
             }
@@ -149,17 +144,14 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
 
     @Override
     public void deleteOrganisationSchemes(List<String> urns) {
-        dispatcher.execute(new DeleteOrganisationSchemeListAction(urns), new WaitingAsyncCallback<DeleteOrganisationSchemeListResult>() {
+        dispatcher.execute(new DeleteOrganisationSchemeListAction(urns), new WaitingAsyncCallbackHandlingError<DeleteOrganisationSchemeListResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemeListPresenter.this, caught);
-                retrieveOrganisationSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
-                        MetamacWebCriteriaClientUtils.addLastVersionConditionToOrganisationSchemeWebCriteria(getView().getOrganisationSchemeWebCriteria()));
+            public void onWaitSuccess(DeleteOrganisationSchemeListResult result) {
+                fireSuccessMessage(getMessages().organisationSchemeDeleted());
             }
             @Override
-            public void onWaitSuccess(DeleteOrganisationSchemeListResult result) {
-                ShowMessageEvent.fireSuccessMessage(OrganisationSchemeListPresenter.this, getMessages().organisationSchemeDeleted());
+            protected void afterResult() {
                 retrieveOrganisationSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToOrganisationSchemeWebCriteria(getView().getOrganisationSchemeWebCriteria()));
             }
@@ -168,12 +160,8 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
 
     @Override
     public void retrieveOrganisationSchemes(int firstResult, int maxResults, OrganisationSchemeWebCriteria organisationSchemeWebCriteria) {
-        dispatcher.execute(new GetOrganisationSchemesAction(firstResult, maxResults, organisationSchemeWebCriteria), new WaitingAsyncCallback<GetOrganisationSchemesResult>() {
+        dispatcher.execute(new GetOrganisationSchemesAction(firstResult, maxResults, organisationSchemeWebCriteria), new WaitingAsyncCallbackHandlingError<GetOrganisationSchemesResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemeListPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(GetOrganisationSchemesResult result) {
                 getView().setOrganisationSchemesPaginatedList(result);
@@ -183,21 +171,16 @@ public class OrganisationSchemeListPresenter extends Presenter<OrganisationSchem
 
     @Override
     public void cancelValidity(List<String> urns) {
-        dispatcher.execute(new CancelOrganisationSchemeValidityAction(urns), new WaitingAsyncCallback<CancelOrganisationSchemeValidityResult>() {
+        dispatcher.execute(new CancelOrganisationSchemeValidityAction(urns), new WaitingAsyncCallbackHandlingError<CancelOrganisationSchemeValidityResult>(this) {
 
             @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(OrganisationSchemeListPresenter.this, caught);
-            }
-            @Override
             public void onWaitSuccess(CancelOrganisationSchemeValidityResult result) {
-                ShowMessageEvent.fireSuccessMessage(OrganisationSchemeListPresenter.this, getMessages().organisationSchemeCanceledValidity());
+                fireSuccessMessage(getMessages().organisationSchemeCanceledValidity());
                 retrieveOrganisationSchemes(SrmWebConstants.SCHEME_LIST_FIRST_RESULT, SrmWebConstants.SCHEME_LIST_MAX_RESULTS,
                         MetamacWebCriteriaClientUtils.addLastVersionConditionToOrganisationSchemeWebCriteria(getView().getOrganisationSchemeWebCriteria()));
             }
         });
     }
-
     //
     // NAVIGATION
     //

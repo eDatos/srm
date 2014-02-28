@@ -6,7 +6,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.List;
 import java.util.Map;
 
-import org.siemac.metamac.core.common.dto.ExternalItemDto;
 import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
@@ -20,6 +19,7 @@ import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
+import org.siemac.metamac.srm.web.client.widgets.SearchStatisticalOperationLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdGeneralTabPresenter;
@@ -37,26 +37,23 @@ import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.utils.CustomRequiredValidator;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
-import org.siemac.metamac.web.common.client.widgets.SearchExternalItemWindow;
-import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
-import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.BooleanSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ExternalItemLinkItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.SearchExternalItemLinkItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.external.SearchExternalItemLinkItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
+import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
@@ -64,43 +61,41 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
-import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHandlers> implements DsdGeneralTabPresenter.DsdGeneralTabView {
 
-    private final VLayout                     panel;
+    private final VLayout                      panel;
 
-    private final DsdMainFormLayout           mainFormLayout;
+    private final DsdMainFormLayout            mainFormLayout;
 
     // VIEW FORM
 
-    private GroupDynamicForm                  identifiersForm;
-    private GroupDynamicForm                  contentDescriptorsForm;
-    private GroupDynamicForm                  classDescriptorsForm;
-    private GroupDynamicForm                  productionDescriptorsForm;
-    private GroupDynamicForm                  diffusionDescriptorsForm;
-    private GroupDynamicForm                  versionResponsibilityForm;
-    private GroupDynamicForm                  visualisationMetadataForm;
-    private GroupDynamicForm                  commentsForm;
-    private AnnotationsPanel                  annotationsPanel;
+    private GroupDynamicForm                   identifiersForm;
+    private GroupDynamicForm                   contentDescriptorsForm;
+    private GroupDynamicForm                   classDescriptorsForm;
+    private GroupDynamicForm                   productionDescriptorsForm;
+    private GroupDynamicForm                   diffusionDescriptorsForm;
+    private GroupDynamicForm                   versionResponsibilityForm;
+    private GroupDynamicForm                   visualisationMetadataForm;
+    private GroupDynamicForm                   commentsForm;
+    private AnnotationsPanel                   annotationsPanel;
 
     // EDITION FORM
 
-    private GroupDynamicForm                  identifiersEditionForm;
-    private GroupDynamicForm                  contentDescriptorsEditionForm;
-    private GroupDynamicForm                  classDescriptorsEditionForm;
-    private GroupDynamicForm                  productionDescriptorsEditionForm;
-    private GroupDynamicForm                  diffusionDescriptorsEditionForm;
-    private GroupDynamicForm                  versionResponsibilityEditionForm;
-    private GroupDynamicForm                  visualisationMetadataEditionForm;
-    private GroupDynamicForm                  commentsEditionForm;
-    private AnnotationsPanel                  annotationsEditionPanel;
+    private GroupDynamicForm                   identifiersEditionForm;
+    private GroupDynamicForm                   contentDescriptorsEditionForm;
+    private GroupDynamicForm                   classDescriptorsEditionForm;
+    private GroupDynamicForm                   productionDescriptorsEditionForm;
+    private GroupDynamicForm                   diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                   versionResponsibilityEditionForm;
+    private GroupDynamicForm                   visualisationMetadataEditionForm;
+    private GroupDynamicForm                   commentsEditionForm;
+    private AnnotationsPanel                   annotationsEditionPanel;
 
-    private SearchExternalItemWindow          searchOperationWindow;
+    private DataStructureDefinitionMetamacDto  dataStructureDefinitionMetamacDto;
 
-    private DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
+    private SearchStatisticalOperationLinkItem operationItem;
 
     @Inject
     public DsdGeneralTabViewImpl() {
@@ -376,7 +371,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Class descriptors form
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
-        SearchExternalItemLinkItem operationItem = createStatisticalOperationItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
+        operationItem = createStatisticalOperationItem(DataStructureDefinitionDS.STATISTICAL_OPERATION, getConstants().dsdOperation());
         classDescriptorsEditionForm.setFields(operationItem);
 
         // Production descriptors form
@@ -485,14 +480,6 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         mainFormLayout.setEditionMode();
     }
 
-    @Override
-    public void setOperations(GetStatisticalOperationsResult result) {
-        if (searchOperationWindow != null) {
-            searchOperationWindow.setExternalItems(result.getOperations());
-            searchOperationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getOperations().size(), result.getTotalResults());
-        }
-    }
-
     private void setDsdViewMode(DataStructureDefinitionMetamacDto dsd, List<DimensionComponentDto> dimensionComponentDtos) {
         // Identifiers form
         identifiersForm.setValue(DataStructureDefinitionDS.CODE, dsd.getCode());
@@ -508,7 +495,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                 .no()) : StringUtils.EMPTY);
 
         // Class descriptors form
-        ((ExternalItemLinkItem) classDescriptorsForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).setExternalItem(dsd.getStatisticalOperation());
+        classDescriptorsForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, dsd.getStatisticalOperation());
 
         // Production descriptors form
         ((RelatedResourceLinkItem) productionDescriptorsForm.getItem(DataStructureDefinitionDS.MAINTAINER)).setRelatedResource(dsd.getMaintainer());
@@ -574,7 +561,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // CLASS DESCRIPTORS FORM
 
-        ((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).setExternalItem(dsd.getStatisticalOperation());
+        classDescriptorsEditionForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, dsd.getStatisticalOperation());
         classDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
         // PRODUCTION DESCRIPTORS FORM
@@ -645,8 +632,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         dataStructureDefinitionMetamacDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(DataStructureDefinitionDS.DESCRIPTION));
 
         // Class descriptors form
-        dataStructureDefinitionMetamacDto.setStatisticalOperation(((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION))
-                .getExternalItemDto());
+        dataStructureDefinitionMetamacDto.setStatisticalOperation(classDescriptorsEditionForm.getValueAsExternalItemDto(DataStructureDefinitionDS.STATISTICAL_OPERATION));
 
         // Production descriptors form
 
@@ -752,43 +738,20 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         visualisationMetadataEditionForm.markForRedraw();
     }
 
-    private SearchExternalItemLinkItem createStatisticalOperationItem(String name, String title) {
-        SearchExternalItemLinkItem operationItem = new SearchExternalItemLinkItem(name, title);
-        operationItem.setRequired(true);
-        operationItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+    @Override
+    public void setOperations(GetStatisticalOperationsResult result) {
+        operationItem.setOperations(result.getOperations(), result.getFirstResultOut(), result.getTotalResults());
+    }
+
+    private SearchStatisticalOperationLinkItem createStatisticalOperationItem(String name, String title) {
+        SearchStatisticalOperationLinkItem operationItem = new SearchStatisticalOperationLinkItem(name, title) {
 
             @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-                final int OPERATION_FIRST_RESULT = 0;
-                final int OPERATION_MAX_RESULTS = 16;
-                searchOperationWindow = new SearchExternalItemWindow(getConstants().dsdSearchOperations(), OPERATION_MAX_RESULTS, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveStatisticalOperations(firstResult, maxResults, searchOperationWindow.getSearchCriteria());
-                    }
-                });
-                getUiHandlers().retrieveStatisticalOperations(OPERATION_FIRST_RESULT, OPERATION_MAX_RESULTS, null);
-                searchOperationWindow.getListGrid().setSelectionType(SelectionStyle.SINGLE); // Only one statistical operation can be selected
-                searchOperationWindow.getExternalListGridItem().setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String code) {
-                        getUiHandlers().retrieveStatisticalOperations(firstResult, maxResults, code);
-                    }
-                });
-                searchOperationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        ExternalItemDto selectedOperation = searchOperationWindow.getSelectedExternalItem();
-                        searchOperationWindow.destroy();
-                        ((SearchExternalItemLinkItem) classDescriptorsEditionForm.getItem(DataStructureDefinitionDS.STATISTICAL_OPERATION)).setExternalItem(selectedOperation);
-                        classDescriptorsEditionForm.validate(false);
-                    }
-                });
+            protected void retrieveStatisticalOperations(int firstResult, int maxResults, MetamacWebCriteria webCriteria) {
+                getUiHandlers().retrieveStatisticalOperations(firstResult, maxResults, webCriteria != null ? webCriteria.getCriteria() : null);
             }
-        });
+        };
+        operationItem.setRequired(true);
         return operationItem;
     }
 
