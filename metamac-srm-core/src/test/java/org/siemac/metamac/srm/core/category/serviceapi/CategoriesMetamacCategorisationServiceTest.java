@@ -99,7 +99,7 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
     }
 
     @Test
-    public void testCreateCategorisationErrorCategoryInternallyPublished() throws Exception {
+    public void testCreateCategorisationCategoryInternallyPublished() throws Exception {
         String categoryUrn = CATEGORY_SCHEME_5_V1_CATEGORY_1;
         String artefactCategorisedUrn = CONCEPT_SCHEME_1_V1;
         String maintainerUrn = AGENCY_ROOT_1_V1;
@@ -238,10 +238,13 @@ public class CategoriesMetamacCategorisationServiceTest extends SrmBaseTest {
     // In SDMX module
     public void testRetrieveCategorisationByUrn() throws Exception {
     }
+
     public void testDeleteCategorisation() throws Exception {
     }
+
     public void testRetrieveCategorisationsByArtefact() throws Exception {
     }
+
     public void testFindCategorisationsByCondition() throws Exception {
     }
 
