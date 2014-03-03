@@ -131,7 +131,7 @@ public class CommonUtils {
     // EXPORTATION UTILS
 
     public static void downloadFile(String fileName) {
-        // TODO Is it better to use com.google.gwt.http.client.RequestBuilder to send the request?
+        // TODO Is it better to use com.google.gwt.http.client.RequestBuilder to send the request? (METAMAC-1528)
         StringBuffer url = new StringBuffer();
         url.append(URL.encode(MetamacSrmWeb.getRelativeURL(SrmSharedTokens.FILE_DOWNLOAD_DIR_PATH)));
         url.append("?").append(URL.encode(SrmSharedTokens.PARAM_FILE_NAME)).append("=").append(URL.encode(fileName));

@@ -18,7 +18,7 @@ public class UpdateMaintainableArtefactEvent extends GwtEvent<UpdateMaintainable
         return TYPE;
     }
 
-    // TODO HasEventBus should be used instead of HasHandlers ¿?
+    // TODO HasEventBus should be used instead of HasHandlers ¿? (METAMAC-2150)
     public static void fire(HasHandlers source, String urn) {
         if (TYPE != null) {
             source.fireEvent(new UpdateMaintainableArtefactEvent(urn));

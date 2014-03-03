@@ -22,7 +22,7 @@ public class ExportSDMXResourceActionHandler extends SecurityActionHandler<Expor
         // StructureMsgDto structureMsgDto = new StructureMsgDto();
 
         // try {
-        // TODO export
+        // TODO export (METAMAC-1528)
         // DataStructureDefinitionExtendDto dataStructureDefinitionExtendDto = srmCoreServiceFacade.retrieveExtendedDataStructureDefinition(ServiceContextHolder.getCurrentServiceContext(),
         // action.getUrn(), TypeDozerCopyMode.COPY_ALL_METADATA);
         // structureMsgDto.getDataStructureDefinitionDtos().add(dataStructureDefinitionExtendDto);
