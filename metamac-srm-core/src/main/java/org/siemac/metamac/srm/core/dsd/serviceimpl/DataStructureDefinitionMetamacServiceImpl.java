@@ -397,7 +397,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             }
         }
 
-        // TODO recalcular los index-order al eliminar una dimension
+        // TODO recalcular los index-order al eliminar una dimension (METAMAC-2148)
         dataStructureDefinitionService.deleteComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
     }
 

@@ -329,7 +329,7 @@ public class SrmCoreServiceFacadeDataStructureDefinitionTest extends SrmBaseTest
     // }
 
     @Test
-    // TODO tests export: pendiente reestructuración del servicio de exportación
+    // TODO tests export: pendiente reestructuración del servicio de exportación  (METAMAC-2149)
     @Ignore
     public void testExportSDMXStructureMsg() throws Exception {
 

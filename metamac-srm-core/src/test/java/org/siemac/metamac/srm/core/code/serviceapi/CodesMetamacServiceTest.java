@@ -6376,7 +6376,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         Variable variable = codesService.retrieveVariableByUrn(getServiceContextAdministrador(), VARIABLE_7_WORLD);
         assertTrue(VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType()));
         CodeMetamac geographicalGranularity = codesService.retrieveCodeByUrn(getServiceContextAdministrador(), CODELIST_13_V1_CODE_1); // TODO geo gran debe ser null. Comprobar que la granularidad del
-                                                                                                                                       // elemento es null.
+                                                                                                                                       // elemento es null. (METAMAC-2149)
         VariableElement variableElement = CodesMetamacDoMocks.mockVariableElementGeographical(variable, geographicalGranularity);
         try {
             codesService.createVariableElement(getServiceContextAdministrador(), variableElement);

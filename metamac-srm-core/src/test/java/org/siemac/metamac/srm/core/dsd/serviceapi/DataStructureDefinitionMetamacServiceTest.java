@@ -297,7 +297,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Override
     @Ignore
     public void testDeleteComponentForDataStructureDefinition() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149) (METAMAC-2149)
 
     }
 
@@ -305,7 +305,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Override
     @Ignore
     public void testSendDataStructureDefinitionToProductionValidation() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
 
     }
 
@@ -313,7 +313,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Override
     @Ignore
     public void testSendDataStructureDefinitionToDiffusionValidation() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
 
     }
 
@@ -321,7 +321,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Override
     @Ignore
     public void testRejectDataStructureDefinitionProductionValidation() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
 
     }
 
@@ -329,7 +329,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Override
     @Ignore
     public void testRejectDataStructureDefinitionDiffusionValidation() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
 
     }
 
@@ -337,7 +337,7 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Override
     @Ignore
     public void testPublishInternallyDataStructureDefinition() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
 
     }
 
@@ -460,20 +460,20 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Override
     @Ignore
     public void testPublishExternallyDataStructureDefinition() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Override
     @Ignore
     public void testCheckDataStructureDefinitionWithRelatedResourcesExternallyPublished() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Test
     @Override
     @Ignore
     public void testDeleteDataStructureDefinition() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Test
@@ -600,13 +600,13 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Test
     @Ignore
     public void testVersioningDataStructureDefinitionErrorAlreadyExistsDraft() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Test
     @Ignore
     public void testVersioningDataStructureDefinitionErrorNotPublished() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Override
@@ -853,14 +853,14 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Override
     @Ignore
     public void testStartDataStructureDefinitionValidity() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Test
     @Override
     @Ignore
     public void testEndDataStructureDefinitionValidity() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
 
     }
 
@@ -1153,13 +1153,13 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
     @Override
     public void testFindCodelistsCanBeEnumeratedRepresentationForDsdSpatialDimensionByCondition() throws Exception {
-        // TODO testFindCodelistsCanBeEnumeratedRepresentationForDsdSpatialDimensionByCondition
+        // TODO testFindCodelistsCanBeEnumeratedRepresentationForDsdSpatialDimensionByCondition (METAMAC-2149)
 
     }
 
     @Override
     public void testFindCodelistsCanBeEnumeratedRepresentationForDsdSpatialAttributeByCondition() throws Exception {
-        // TODO testFindCodelistsCanBeEnumeratedRepresentationForDsdSpatialAttributeByCondition
+        // TODO testFindCodelistsCanBeEnumeratedRepresentationForDsdSpatialAttributeByCondition (METAMAC-2149)
 
     }
 
@@ -1453,55 +1453,55 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     @Ignore
     @Test
     public void testVersioningHeadingAndStub() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Override
     @Ignore
     @Test
     public void testVersioningShowDecimalsPrecision() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Override
     @Ignore
     @Test
     public void testVersioningDimensionVisualisationInfo() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Override
     @Ignore
     @Test
     public void testCheckPrimaryMeasure() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Override
     @Ignore
     @Test
     public void testCheckTimeDimension() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Override
     @Ignore
     public void testCheckMeasureDimension() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Override
     @Ignore
     @Test
     public void testCheckDimension() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Override
     @Ignore
     @Test
     public void testCheckAttribute() throws Exception {
-        // TODO Test dsd
+        // TODO Test dsd (METAMAC-2149)
     }
 
     @Override
