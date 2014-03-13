@@ -15,7 +15,6 @@
     <name>SIEMAC :: METAMAC :: SRM :: CORE</name>
 
     <dependencies>
-
         <!-- METAMAC -->
         <dependency>
             <groupId>org.siemac.metamac</groupId>
@@ -49,13 +48,38 @@
             <version>${metamac-core-common.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac</groupId>
+            <artifactId>metamac-rest-api</artifactId>
+            <version>${metamac-rest-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-notifications</groupId>
+            <artifactId>metamac-notifications-rest-internal-api</artifactId>
+            <version>${metamac-notifications-rest-internal-api.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>metamac-rest-api</artifactId>
+                    <groupId>org.siemac.metamac</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- ARTE -->
         <dependency>
             <groupId>com.arte.statistic.statistic-sdmx-srm</groupId>
             <artifactId>statistic-sdmx-srm-core</artifactId>
             <type>test-jar</type>
             <version>${statistic-sdmx-srm.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- APIS -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+            <version>${cxf.version}</version>
         </dependency>
 
         <dependency>
@@ -399,16 +423,16 @@
             <artifactId>gt-geojson</artifactId>
             <version>${geotools.version}</version>
             <exclusions>
-            	<exclusion>
-            		<artifactId>jai_core</artifactId>
-            		<groupId>javax.media</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>jai_core</artifactId>
+                    <groupId>javax.media</groupId>
+                </exclusion>
                 <exclusion>
                     <artifactId>jdom</artifactId>
                     <groupId>jdom</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-shapefile</artifactId>

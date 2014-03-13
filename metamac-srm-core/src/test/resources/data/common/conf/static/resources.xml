@@ -7,6 +7,7 @@
     <entry key="metamac.default.codelist.geographical_granularity.urn">urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST13(01.000)</entry>
     
     <!-- Note: following properties are also written explicitly in SrmConstantsTest. If they are changed, remember to change also in this class -->
-    <entry key="metamac.statistical_operations.rest.internal">apis.metamac.org/statistical-operations-internal</entry>
-    <entry key="metamac.statistical_operations.web.internal">http://localhost:8080/metamac-statistical-operations-web</entry>
+    <entry key="metamac.statistical_operations.rest.internal">http://estadisticas.arte-consultores.com/statistical-operations-internal/apis/operations-internal</entry>
+    <entry key="metamac.statistical_operations.web.internal">http://estadisticas.arte-consultores.com/statistical-operations-internal</entry>
+    <entry key="metamac.notices.rest.internal">http://estadisticas.arte-consultores.com/notices-internal/apis/notices-internal</entry>
 </properties>
