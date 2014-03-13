@@ -102,6 +102,7 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.normalisation.DiceLuceneRamAproxStringMatch;
 import org.siemac.metamac.srm.core.normalisation.MatchResult;
+import org.siemac.metamac.srm.core.notices.serviceimpl.utils.NoticesCallbackMetamacImpl;
 import org.siemac.metamac.srm.core.task.domain.ImportationCodeOrdersTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationCodesTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationVariableElementsTsvHeader;
@@ -138,6 +139,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
+import com.arte.statistic.sdmx.srm.core.notices.serviceimpl.utils.NoticesCallback;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
@@ -195,6 +197,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Autowired
     @Qualifier("codesCopyCallbackMetamac")
     private ItemSchemesCopyCallback        codesCopyCallback;
+
+    @Autowired
+    @Qualifier(NoticesCallbackMetamacImpl.BEAN_ID)
+    private NoticesCallback                noticesCallbackMetamac;
 
     @Autowired
     private TasksMetamacService            tasksMetamacService;
@@ -441,21 +447,22 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     @Override
     public TaskInfo copyCodelist(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         ItemSchemesCopyCallback callback = codesCopyCallback;
+        NoticesCallback noticesCallback = noticesCallbackMetamac;
         String maintainerUrn = srmConfiguration.retrieveMaintainerUrnDefault();
         VersionPatternEnum versionPattern = SrmConstants.VERSION_PATTERN_METAMAC;
-        return codesService.copyCodelist(ctx, urnToCopy, newCode, maintainerUrn, versionPattern, Boolean.TRUE, callback);
+        return codesService.copyCodelist(ctx, urnToCopy, newCode, maintainerUrn, versionPattern, Boolean.TRUE, callback, noticesCallback);
     }
 
     @Override
     public TaskInfo versioningCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionType) throws MetamacException {
         ItemSchemesCopyCallback callback = versioningCodes == null || versioningCodes ? codesVersioningWithCodesCallback : codesVersioningWithoutCodesCallback;
-        return createVersionOfCodelist(ctx, urnToCopy, callback, versionType, false);
+        return createVersionOfCodelist(ctx, urnToCopy, callback, noticesCallbackMetamac, versionType, false);
     }
 
     @Override
     public TaskInfo createTemporalCodelist(ServiceContext ctx, String urnToCopy) throws MetamacException {
 
-        return createVersionOfCodelist(ctx, urnToCopy, codesDummyVersioningCallbackMetamac, null, true);
+        return createVersionOfCodelist(ctx, urnToCopy, codesDummyVersioningCallbackMetamac, noticesCallbackMetamac, null, true);
     }
 
     @Override
@@ -577,6 +584,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion = retrieveCodelistByUrn(ctx, codelistVersion.getMaintainableArtefact().getUrn());
         return codelistVersion;
     }
+
     @Override
     public CodelistVersionMetamac startCodelistValidity(ServiceContext ctx, String urn) throws MetamacException {
 
@@ -2425,14 +2433,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return findCodelistsByCondition(ctx, conditions, pagingParameter);
     }
 
-    private TaskInfo createVersionOfCodelist(ServiceContext ctx, String urnToCopy, ItemSchemesCopyCallback itemSchemesCopyCallback, VersionTypeEnum versionType, boolean isTemporal)
-            throws MetamacException {
+    private TaskInfo createVersionOfCodelist(ServiceContext ctx, String urnToCopy, ItemSchemesCopyCallback itemSchemesCopyCallback, NoticesCallback noticesCallback, VersionTypeEnum versionType,
+            boolean isTemporal) throws MetamacException {
         // Validation
-        CodesMetamacInvocationValidator.checkVersioningCodelist(urnToCopy, versionType, isTemporal, null, null);
+        CodesMetamacInvocationValidator.checkVersioningCodelist(urnToCopy, versionType, isTemporal, null, noticesCallback, null);
         checkCodelistToVersioning(ctx, urnToCopy, isTemporal);
 
         // Versioning
-        return codesService.versioningCodelist(ctx, urnToCopy, versionType, isTemporal, Boolean.TRUE, itemSchemesCopyCallback);
+        return codesService.versioningCodelist(ctx, urnToCopy, versionType, isTemporal, Boolean.TRUE, itemSchemesCopyCallback, noticesCallback);
     }
 
     private void checkCodelistToVersioning(ServiceContext ctx, String urnToCopy, boolean isTemporal) throws MetamacException {

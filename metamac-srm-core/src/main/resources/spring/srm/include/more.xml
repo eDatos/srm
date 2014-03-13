@@ -82,5 +82,8 @@
         <property name="beanName" value="dataStructureDummyVersioningCallbackMetamac"/>
         <property name="copyOperationType" value="VERSIONING_DUMMY"/>
     </bean>
+    
+    <!-- Notices -->
+    <bean id="noticesCallbackMetamac" class="org.siemac.metamac.srm.core.notices.serviceimpl.utils.NoticesCallbackMetamacImpl" />
 	
 </beans>
