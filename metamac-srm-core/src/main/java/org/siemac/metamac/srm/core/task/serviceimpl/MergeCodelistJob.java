@@ -10,8 +10,13 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.PersistJobDataAfterExecution;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
+import org.siemac.metamac.srm.core.code.invocation.service.NoticesRestInternalService;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.facade.serviceapi.TasksMetamacServiceFacade;
+import org.siemac.metamac.srm.core.notices.ServiceNoticeAction;
+import org.siemac.metamac.srm.core.notices.ServiceNoticeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,30 +49,35 @@ public class MergeCodelistJob implements Job {
         JobDataMap data = context.getJobDetail().getJobDataMap();
         ServiceContext serviceContext = new ServiceContext(data.getString(USER), context.getFireInstanceId(), "sdmx-srm-core");
         serviceContext.setProperty(SdmxConstants.SERVICE_CONTEXT_PROP_IS_JOB_INVOCATION, Boolean.TRUE);
+        String urnToCopy = data.getString(URN);
+        Boolean forceLatestFinal = data.getBoolean(FORCE_LATEST_FINAL);
+        String user = data.getString(USER);
 
         try {
-            // Parameters
-            String urnToCopy = data.getString(URN);
-            Boolean forceLatestFinal = data.getBoolean(FORCE_LATEST_FINAL);
-
             logger.info("MergingJob: Copy " + urnToCopy + ", job " + jobKey + " starting at " + new Date());
-
             getTaskMetamacServiceFacade().processPublishInternallyCodelist(serviceContext, urnToCopy, forceLatestFinal, jobKey.getName());
-
             logger.info("MergingJob: Urn to copy " + urnToCopy + ", job " + jobKey + " finished at " + new Date());
-            // TODO sistema de avisos (METAMAC-1992)
-        } catch (Exception e) {
-            // TODO sistema de avisos (METAMAC-1992)
+
+            getNoticesRestInternalService().createSuccessBackgroundNotification(user, ServiceNoticeAction.PUBLISH_INTERNALLY_CODELIST_JOB, ServiceNoticeMessage.PUBLISH_INTERNALLY_CODELIST_JOB_OK,
+                    urnToCopy);
+        } catch (MetamacException e) {
             logger.error("MergingJob: job with key " + jobKey.getName() + " has failed", e);
             try {
                 getTaskMetamacServiceFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);
-
-                String urnToCopy = data.getString(URN);
                 getTaskMetamacServiceFacade().markTaskItemSchemeAsFailed(serviceContext, urnToCopy);
+
+                e.setPrincipalException(new MetamacExceptionItem(ServiceExceptionType.PUBLISH_INTERNALLY_CODELIST_JOB_ERROR, urnToCopy));
+                getNoticesRestInternalService().createErrorBackgroundNotification(user, ServiceNoticeAction.PUBLISH_INTERNALLY_CODELIST_JOB, e);
             } catch (MetamacException e1) {
                 logger.error("MergingJob: job with key " + jobKey.getName() + " has failed and it can't marked as error", e1);
+                e.setPrincipalException(new MetamacExceptionItem(ServiceExceptionType.PUBLISH_INTERNALLY_CODELIST_JOB_ERROR_AND_CANT_MARK_AS_ERROR, urnToCopy));
+                getNoticesRestInternalService().createErrorBackgroundNotification(user, ServiceNoticeAction.PUBLISH_INTERNALLY_CODELIST_JOB, e1);
             }
 
         }
+    }
+
+    private NoticesRestInternalService getNoticesRestInternalService() {
+        return (NoticesRestInternalService) ApplicationContextProvider.getApplicationContext().getBean(NoticesRestInternalService.BEAN_ID);
     }
 }

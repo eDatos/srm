@@ -14,11 +14,15 @@ import org.siemac.metamac.srm.core.code.invocation.MetamacApisLocator;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionUtils;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component(NoticesRestInternalService.BEAN_ID)
 public class NoticesRestInternalServiceImpl implements NoticesRestInternalService {
+
+    private static Logger       logger = LoggerFactory.getLogger(NoticesRestInternalServiceImpl.class);
 
     @Autowired
     private MetamacApisLocator  restApiLocator;
@@ -30,22 +34,30 @@ public class NoticesRestInternalServiceImpl implements NoticesRestInternalServic
     private TranslateExceptions translateExceptions;
 
     @Override
-    public void createErrorBackgroundNotification(String user, String actionCode, MetamacException exception) throws MetamacException {
-        Locale locale = configurationService.retrieveLanguageDefaultLocale();
+    public void createErrorBackgroundNotification(String user, String actionCode, MetamacException exception) {
+        try {
+            Locale locale = configurationService.retrieveLanguageDefaultLocale();
 
-        Throwable localisedException = translateExceptions.translateException(locale, exception);
-        String localisedMessage = localisedException.getMessage();
+            Throwable localisedException = translateExceptions.translateException(locale, exception);
+            String localisedMessage = localisedException.getMessage();
 
-        createBackgroundNotification(actionCode, null, localisedMessage, user);
+            createBackgroundNotification(actionCode, null, localisedMessage, user);
+        } catch (MetamacException e) {
+            logger.error("Error creating createErrorBackgroundNotification:", e);
+        }
 
     }
 
     @Override
-    public void createSuccessBackgroundNotification(String user, String actionCode, String successMessageCode, Serializable... successMessageParameters) throws MetamacException {
-        Locale locale = configurationService.retrieveLanguageDefaultLocale();
-        String localisedMessage = LocaleUtil.getMessageForCode(successMessageCode, locale);
-        localisedMessage = MessageFormat.format(localisedMessage, successMessageParameters);
-        createBackgroundNotification(actionCode, localisedMessage, null, user);
+    public void createSuccessBackgroundNotification(String user, String actionCode, String successMessageCode, Serializable... successMessageParameters) {
+        try {
+            Locale locale = configurationService.retrieveLanguageDefaultLocale();
+            String localisedMessage = LocaleUtil.getMessageForCode(successMessageCode, locale);
+            localisedMessage = MessageFormat.format(localisedMessage, successMessageParameters);
+            createBackgroundNotification(actionCode, localisedMessage, null, user);
+        } catch (MetamacException e) {
+            logger.error("Error creating createSuccessBackgroundNotification:", e);
+        }
     }
 
     private void createBackgroundNotification(String actionCode, String message, String errorMessage, String user) throws MetamacException {

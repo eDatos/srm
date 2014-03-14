@@ -9,8 +9,8 @@ public interface NoticesRestInternalService {
     public static final String BEAN_ID = "noticesRestInternalService";
 
     // Background Notifications
-    public void createErrorBackgroundNotification(String user, String actionCode, MetamacException exception) throws MetamacException;
+    public void createErrorBackgroundNotification(String user, String actionCode, MetamacException exception);
 
-    public void createSuccessBackgroundNotification(String user, String actionCode, String successMessageCode, Serializable... successMessageParameters) throws MetamacException;
+    public void createSuccessBackgroundNotification(String user, String actionCode, String successMessageCode, Serializable... successMessageParameters);
 
 }

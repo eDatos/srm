@@ -11,8 +11,13 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.PersistJobDataAfterExecution;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
+import org.siemac.metamac.srm.core.code.invocation.service.NoticesRestInternalService;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.facade.serviceapi.TasksMetamacServiceFacade;
+import org.siemac.metamac.srm.core.notices.ServiceNoticeAction;
+import org.siemac.metamac.srm.core.notices.ServiceNoticeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,8 +43,6 @@ public class ImportationTsvJob implements Job {
 
     private TasksMetamacServiceFacade tasksMetamacServiceFacade          = null;
 
-    private final ServiceContext      serviceContextDefault              = new ServiceContext("importationTsvJob", "importationTsvJob", "metamac-srm");
-
     public TasksMetamacServiceFacade getTaskMetamacServiceFacade() {
         if (tasksMetamacServiceFacade == null) {
             tasksMetamacServiceFacade = (TasksMetamacServiceFacade) ApplicationContextProvider.getApplicationContext().getBean(TasksMetamacServiceFacade.BEAN_ID);
@@ -53,12 +56,13 @@ public class ImportationTsvJob implements Job {
         JobKey jobKey = context.getJobDetail().getKey();
         ServiceContext serviceContext = null;
         JobDataMap data = context.getJobDetail().getJobDataMap();
-        try {
+        String urnToCopy = data.getString(CODELIST_URN);
+        String user = data.getString(USER);
+        String fileName = data.getString(FILE_NAME);
+        serviceContext = new ServiceContext(user, context.getFireInstanceId(), "sdmx-srm-core");
+        serviceContext.setProperty(SdmxConstants.SERVICE_CONTEXT_PROP_IS_JOB_INVOCATION, Boolean.TRUE);
 
-            // Parameters
-            String user = data.getString(USER);
-            serviceContext = new ServiceContext(user, context.getFireInstanceId(), "sdmx-srm-core");
-            serviceContext.setProperty(SdmxConstants.SERVICE_CONTEXT_PROP_IS_JOB_INVOCATION, Boolean.TRUE);
+        try {
             String operation = data.getString(OPERATION);
             if (OPERATION_IMPORT_CODES.equals(operation)) {
                 importCodes(jobKey, data, serviceContext);
@@ -69,26 +73,28 @@ public class ImportationTsvJob implements Job {
             } else {
                 throw new IllegalArgumentException("Job with operation " + operation + " is not supported");
             }
-        } catch (Exception e) {
+            logger.info("CopyJob: Urn to copy " + urnToCopy + ", job " + jobKey + " finished at " + new Date());
+            getNoticesRestInternalService().createSuccessBackgroundNotification(user, ServiceNoticeAction.IMPORT_TSV_JOB, ServiceNoticeMessage.IMPORT_TSV_JOB_OK, fileName);
+        } catch (MetamacException e) {
             logger.error("ImportationJob: the importation with key " + jobKey.getName() + " has failed", e);
             try {
-                if (serviceContext == null) {
-                    serviceContext = serviceContextDefault;
-                }
                 getTaskMetamacServiceFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);
-                // TODO sistema de avisos (METAMAC-1992)
-
-                String codelistUrn = data.getString(CODELIST_URN);
-                if (codelistUrn != null) {
-                    getTaskMetamacServiceFacade().markTaskItemSchemeAsFailed(serviceContext, codelistUrn);
+                if (urnToCopy != null) {
+                    getTaskMetamacServiceFacade().markTaskItemSchemeAsFailed(serviceContext, urnToCopy);
                 }
+
+                e.setPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORT_TSV_JOB_ERROR, fileName));
+                getNoticesRestInternalService().createErrorBackgroundNotification(user, ServiceNoticeAction.IMPORT_TSV_JOB, e);
             } catch (MetamacException e1) {
                 logger.error("ImportationJob: the importation with key " + jobKey.getName() + " has failed and it can't marked as error", e1);
+
+                e.setPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORT_TSV_JOB_ERROR_AND_CANT_MARK_AS_ERROR, fileName));
+                getNoticesRestInternalService().createErrorBackgroundNotification(user, ServiceNoticeAction.IMPORT_TSV_JOB, e1);
             }
         }
     }
 
-    private void importVariableElements(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws Exception {
+    private void importVariableElements(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws MetamacException {
 
         // Parameters
         String variableUrn = data.getString(VARIABLE_URN);
@@ -102,7 +108,7 @@ public class ImportationTsvJob implements Job {
         logger.info("ImportationJob [importVariableElements]: " + jobKey + " finished at " + new Date());
     }
 
-    private void importCodes(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws Exception {
+    private void importCodes(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws MetamacException {
 
         // Parameters
         String codelistUrn = data.getString(CODELIST_URN);
@@ -115,7 +121,7 @@ public class ImportationTsvJob implements Job {
         logger.info("ImportationJob [importCodes]: " + jobKey + " finished at " + new Date());
     }
 
-    private void importCodeOrders(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws Exception {
+    private void importCodeOrders(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws MetamacException {
 
         // Parameters
         String codelistUrn = data.getString(CODELIST_URN);
@@ -126,5 +132,9 @@ public class ImportationTsvJob implements Job {
         logger.info("ImportationJob [importCodeOrders]: " + jobKey + " starting at " + new Date());
         getTaskMetamacServiceFacade().processImportCodeOrdersTsv(serviceContext, codelistUrn, new File(filePath), fileName, jobKey.getName());
         logger.info("ImportationJob [importCodeOrders]: " + jobKey + " finished at " + new Date());
+    }
+
+    private NoticesRestInternalService getNoticesRestInternalService() {
+        return (NoticesRestInternalService) ApplicationContextProvider.getApplicationContext().getBean(NoticesRestInternalService.BEAN_ID);
     }
 }

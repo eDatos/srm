@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.task.serviceimpl;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
@@ -11,9 +12,15 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.PersistJobDataAfterExecution;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
+import org.siemac.metamac.srm.core.code.invocation.service.NoticesRestInternalService;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.facade.serviceapi.TasksMetamacServiceFacade;
+import org.siemac.metamac.srm.core.notices.ServiceNoticeAction;
+import org.siemac.metamac.srm.core.notices.ServiceNoticeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,14 +52,17 @@ public class ImportationShapeJob implements Job {
 
         JobKey jobKey = context.getJobDetail().getKey();
         JobDataMap data = context.getJobDetail().getJobDataMap();
-        ServiceContext serviceContext = new ServiceContext(data.getString(USER), context.getFireInstanceId(), "sdmx-srm-core");
+        String user = data.getString(USER);
+        ServiceContext serviceContext = new ServiceContext(user, context.getFireInstanceId(), "sdmx-srm-core");
         serviceContext.setProperty(SdmxConstants.SERVICE_CONTEXT_PROP_IS_JOB_INVOCATION, Boolean.TRUE);
+        String variableUrn = data.getString(VARIABLE_URN);
+        String shapeFile = data.getString(SHAPEFILE_URL);
+        String operation = data.getString(OPERATION);
 
         try {
+            URL shapeFileUrl = new URL(shapeFile);
+
             // Parameters
-            String variableUrn = data.getString(VARIABLE_URN);
-            URL shapeFileUrl = new URL(data.getString(SHAPEFILE_URL));
-            String operation = data.getString(OPERATION);
             logger.info("ImportationShapeJob: Import " + shapeFileUrl + ", job " + jobKey + " starting at " + new Date());
             if (SrmConstants.SHAPE_OPERATION_IMPORT_SHAPES.equals(operation)) {
                 getTaskMetamacServiceFacade().processImportVariableElementsShape(serviceContext, variableUrn, shapeFileUrl, jobKey.getName());
@@ -62,15 +72,27 @@ public class ImportationShapeJob implements Job {
                 throw new IllegalArgumentException("Job with operation " + operation + " is not supported");
             }
             logger.info("ImportationShapeJob: Import " + shapeFileUrl + ", job " + jobKey + " finished at " + new Date());
-            // TODO sistema de avisos (METAMAC-1992)
-        } catch (Exception e) {
-            // TODO sistema de avisos (METAMAC-1992)
+            getNoticesRestInternalService().createSuccessBackgroundNotification(user, ServiceNoticeAction.IMPORT_SHAPE_JOB, ServiceNoticeMessage.IMPORT_SHAPE_JOB_OK, shapeFile);
+        } catch (MetamacException e) {
             logger.error("ImportationShapeJob: job with key " + jobKey.getName() + " has failed", e);
             try {
                 getTaskMetamacServiceFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);
+                e.setPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORT_SHAPE_JOB_ERROR, shapeFile));
+                getNoticesRestInternalService().createErrorBackgroundNotification(user, ServiceNoticeAction.IMPORT_SHAPE_JOB, e);
             } catch (MetamacException e1) {
                 logger.error("ImportationShapeJob: job with key " + jobKey.getName() + " has failed and it can't marked as error", e1);
+                e.setPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORT_SHAPE_JOB_ERROR_AND_CANT_MARK_AS_ERROR, shapeFile));
+                getNoticesRestInternalService().createErrorBackgroundNotification(user, ServiceNoticeAction.IMPORT_SHAPE_JOB, e1);
             }
+        } catch (MalformedURLException e2) {
+            logger.info("ImportationShapeJob: Import " + shapeFile + ", job " + jobKey + " could not be executed because shapeFileUrl is malformed");
+            MetamacException metamacException = MetamacExceptionBuilder.builder().withPrincipalException(ServiceExceptionType.IMPORT_SHAPE_JOB_ERROR_MALFORMED_URL, shapeFile).build();
+            getNoticesRestInternalService().createErrorBackgroundNotification(user, ServiceNoticeAction.IMPORT_SHAPE_JOB, metamacException);
+
         }
+    }
+
+    private NoticesRestInternalService getNoticesRestInternalService() {
+        return (NoticesRestInternalService) ApplicationContextProvider.getApplicationContext().getBean(NoticesRestInternalService.BEAN_ID);
     }
 }

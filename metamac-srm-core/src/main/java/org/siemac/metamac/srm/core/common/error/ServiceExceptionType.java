@@ -108,4 +108,13 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType IMPORTATION_SHAPE_ERROR_FILE_PARSING                                               = create("exception.srm.importation.shape.error.file_parse");
     public static final CommonServiceExceptionType EXPORTATION_TSV_ERROR                                                              = create("exception.srm.exportation.tsv.error");
 
+    // Notices
+    public static final CommonServiceExceptionType IMPORT_TSV_JOB_ERROR                                                               = create("notice_message.srm.exception.import_tsv_job.fails");
+    public static final CommonServiceExceptionType IMPORT_TSV_JOB_ERROR_AND_CANT_MARK_AS_ERROR                                        = create("notice_message.srm.exception.import_tsv_job.fails_and_cant_mark_as_error");
+    public static final CommonServiceExceptionType IMPORT_SHAPE_JOB_ERROR                                                             = create("notice_message.srm.exception.import_shape_job.fails");
+    public static final CommonServiceExceptionType IMPORT_SHAPE_JOB_ERROR_AND_CANT_MARK_AS_ERROR                                      = create("notice_message.srm.exception.import_shape_job.fails_and_cant_mark_as_error");
+    public static final CommonServiceExceptionType IMPORT_SHAPE_JOB_ERROR_MALFORMED_URL                                               = create("notice_message.srm.exception.import_shape_job.fails_malformed_shapefile_url");
+    public static final CommonServiceExceptionType PUBLISH_INTERNALLY_CODELIST_JOB_ERROR                                              = create("notice_message.srm.exception.publish_internally_codelist_job.fails");
+    public static final CommonServiceExceptionType PUBLISH_INTERNALLY_CODELIST_JOB_ERROR_AND_CANT_MARK_AS_ERROR                       = create("notice_message.srm.exception.publish_internally_codelist_job.fails_and_cant_mark_as_error");
+
 }
