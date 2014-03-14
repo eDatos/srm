@@ -122,7 +122,7 @@ public class ConceptsJaxb2DoCallbackImpl extends ImportationMetamacCommonValidat
                     : null;
 
             if (previousVariable.getId().compareTo(targetVariable.getId()) != 0) {
-                // TODO lanzar un aviso al gestor de avisos (METAMAC-1992)
+                // IDEA: METAMAC-2183
             }
 
             targetMetamac.setVariable(previousMetamac.getVariable());
