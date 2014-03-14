@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
 import com.arte.statistic.sdmx.srm.core.facade.serviceapi.utils.SdmxResources;
 import com.arte.statistic.sdmx.srm.core.task.serviceapi.utils.TasksDtoMocks;
 
@@ -76,6 +77,40 @@ public class SrmCoreServiceFacadeImportationCategoriesTest extends SrmBaseTest {
 
         // Wait until the job is finished
         waitUntilJobFinished();
+        CategorySchemeMetamacDto categorySchemeMetamacDto = null;
+        categorySchemeMetamacDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORYSCHEME_SDW_ECONOMIC_CONCEPTS);
+        assertNotNull(categorySchemeMetamacDto.getId());
+        assertEquals(CATEGORYSCHEME_SDW_ECONOMIC_CONCEPTS, categorySchemeMetamacDto.getUrn());
+    }
+
+    @Test
+    @DirtyDatabase
+    public void testImport_ECB_CATEGORIES_InBackground() throws Exception {
+        Long previousBackgroundLimit = SdmxConstants.NUM_BYTES_TO_PLANNIFY;
+        SdmxConstants.NUM_BYTES_TO_PLANNIFY = Long.valueOf(100);
+
+        // New Transaction: Because the job needs persisted data
+        final TransactionTemplate tt = new TransactionTemplate(transactionManager);
+        tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        tt.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            public void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    srmCoreServiceFacade.importSDMXStructureMsg(getServiceContextAdministrador(), TasksDtoMocks.createContentInput(new File(SdmxResources.ECB_CATEGORIES)));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (MetamacException e) {
+                    e.printStackTrace();
+                }
+                logger.info("-- doInTransactionWithoutResult -- expects transaction commit");
+            }
+        });
+
+        // Wait until the job is finished
+        waitUntilJobFinished();
+        SdmxConstants.NUM_BYTES_TO_PLANNIFY = previousBackgroundLimit;
+
         CategorySchemeMetamacDto categorySchemeMetamacDto = null;
         categorySchemeMetamacDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), CATEGORYSCHEME_SDW_ECONOMIC_CONCEPTS);
         assertNotNull(categorySchemeMetamacDto.getId());

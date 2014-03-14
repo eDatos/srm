@@ -28,12 +28,14 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.repositoryimpl.EntityToDeleteRepository;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.core.notices.serviceimpl.utils.NoticesCallbackMetamacImpl;
 import org.siemac.metamac.srm.core.task.utils.TasksMetamacInvocationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
+import com.arte.statistic.sdmx.srm.core.notices.serviceimpl.utils.NoticesCallback;
 import com.arte.statistic.sdmx.srm.core.task.domain.Task;
 import com.arte.statistic.sdmx.srm.core.task.serviceapi.TasksService;
 import com.arte.statistic.sdmx.srm.core.task.serviceimpl.utils.ImportationJaxb2DoCallback;
@@ -55,12 +57,16 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
     @Qualifier("importationMetamacJaxb2DoCallback")
     private ImportationJaxb2DoCallback importationJaxb2DoCallback;
 
+    @Autowired
+    @Qualifier(NoticesCallbackMetamacImpl.BEAN_ID)
+    private NoticesCallback            noticesCallbackMetamac;
+
     public TasksMetamacServiceImpl() {
     }
 
     @Override
     public TaskInfo importSDMXStructure(ServiceContext ctx, InputStream inputMessage, String fileName, Set<String> resourcesUrnToImport) throws MetamacException {
-        return tasksService.importSDMXStructure(ctx, inputMessage, fileName, importationJaxb2DoCallback, resourcesUrnToImport);
+        return tasksService.importSDMXStructure(ctx, inputMessage, fileName, importationJaxb2DoCallback, noticesCallbackMetamac, resourcesUrnToImport);
     }
 
     @Override
