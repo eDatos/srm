@@ -239,9 +239,15 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
             }
 
             // put triggers in group named after the cluster node instance just to distinguish (in logging) what was scheduled from where
-            JobDetail job = newJob(ImportationShapeJob.class).withIdentity(jobKey, "shape").usingJobData(ImportationShapeJob.USER, ctx.getUserId())
-                    .usingJobData(ImportationShapeJob.VARIABLE_URN, variableUrn).usingJobData(ImportationShapeJob.SHAPEFILE_URL, shapeFileUrl.toString())
-                    .usingJobData(ImportationShapeJob.OPERATION, operation).requestRecovery().build();
+            // @formatter:off
+            JobDetail job = newJob(ImportationShapeJob.class).withIdentity(jobKey, "shape")
+                                                             .usingJobData(ImportationShapeJob.USER, ctx.getUserId())
+                                                             .usingJobData(ImportationShapeJob.VARIABLE_URN, variableUrn)
+                                                             .usingJobData(ImportationShapeJob.SHAPEFILE_URL, shapeFileUrl.toString())
+                                                             .usingJobData(ImportationShapeJob.OPERATION, operation)
+                                                             .requestRecovery()
+                                                             .build();
+            // @formatter:on
 
             SimpleTrigger trigger = newTrigger().withIdentity("trigger_" + jobKey, "shape").startAt(futureDate(10, IntervalUnit.SECOND)).withSchedule(simpleSchedule()).build();
 
