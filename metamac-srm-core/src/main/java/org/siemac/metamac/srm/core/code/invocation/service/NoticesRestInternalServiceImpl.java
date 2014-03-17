@@ -41,7 +41,7 @@ public class NoticesRestInternalServiceImpl implements NoticesRestInternalServic
             Throwable localisedException = translateExceptions.translateException(locale, exception);
             String localisedMessage = localisedException.getMessage();
 
-            createBackgroundNotification(actionCode, null, localisedMessage, user);
+            createBackgroundNotification(actionCode, localisedMessage, user);
         } catch (MetamacException e) {
             logger.error("Error creating createErrorBackgroundNotification:", e);
         }
@@ -54,13 +54,13 @@ public class NoticesRestInternalServiceImpl implements NoticesRestInternalServic
             Locale locale = configurationService.retrieveLanguageDefaultLocale();
             String localisedMessage = LocaleUtil.getMessageForCode(successMessageCode, locale);
             localisedMessage = MessageFormat.format(localisedMessage, successMessageParameters);
-            createBackgroundNotification(actionCode, localisedMessage, null, user);
+            createBackgroundNotification(actionCode, localisedMessage, user);
         } catch (MetamacException e) {
             logger.error("Error creating createSuccessBackgroundNotification:", e);
         }
     }
 
-    private void createBackgroundNotification(String actionCode, String message, String errorMessage, String user) throws MetamacException {
+    private void createBackgroundNotification(String actionCode, String message, String user) throws MetamacException {
         try {
             Locale locale = configurationService.retrieveLanguageDefaultLocale();
             String localisedAction = LocaleUtil.getMessageForCode(actionCode, locale);
