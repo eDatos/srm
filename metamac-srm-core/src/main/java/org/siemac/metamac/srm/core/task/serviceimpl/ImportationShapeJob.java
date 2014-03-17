@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
+import org.fornax.cartridges.sculptor.framework.errorhandling.ExceptionHelper;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
@@ -73,22 +74,26 @@ public class ImportationShapeJob implements Job {
             }
             logger.info("ImportationShapeJob: Import " + shapeFileUrl + ", job " + jobKey + " finished at " + new Date());
             getNoticesRestInternalService().createSuccessBackgroundNotification(user, ServiceNoticeAction.IMPORT_SHAPE_JOB, ServiceNoticeMessage.IMPORT_SHAPE_JOB_OK, shapeFile);
-        } catch (MetamacException e) {
-            logger.error("ImportationShapeJob: job with key " + jobKey.getName() + " has failed", e);
+        } catch (Exception e) {
+            // Concert parser exception to metamac exception
+            MetamacException metamacException = null;
+            if (e instanceof MetamacException) {
+                metamacException = (MetamacException) e;
+                logger.error("ImportationShapeJob: job with key " + jobKey.getName() + " has failed", metamacException);
+            } else if (e instanceof MalformedURLException) {
+                metamacException = MetamacExceptionBuilder.builder().withCause(e).withExceptionItems(ServiceExceptionType.TASKS_ERROR).withMessageParameters(ExceptionHelper.excMessage(e)).build();
+                logger.info("ImportationShapeJob: Import " + shapeFile + ", job " + jobKey + " could not be executed because shapeFileUrl is malformed");
+            }
+
             try {
-                getTaskMetamacServiceFacade().markTaskAsFailed(serviceContext, jobKey.getName(), e);
-                e.setPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORT_SHAPE_JOB_ERROR, shapeFile));
-                getNoticesRestInternalService().createErrorBackgroundNotification(user, ServiceNoticeAction.IMPORT_SHAPE_JOB, e);
+                getTaskMetamacServiceFacade().markTaskAsFailed(serviceContext, jobKey.getName(), metamacException);
+                metamacException.setPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORT_SHAPE_JOB_ERROR, shapeFile));
+                getNoticesRestInternalService().createErrorBackgroundNotification(user, ServiceNoticeAction.IMPORT_SHAPE_JOB, metamacException);
             } catch (MetamacException e1) {
                 logger.error("ImportationShapeJob: job with key " + jobKey.getName() + " has failed and it can't marked as error", e1);
-                e.setPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORT_SHAPE_JOB_ERROR_AND_CANT_MARK_AS_ERROR, shapeFile));
+                metamacException.setPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORT_SHAPE_JOB_ERROR_AND_CANT_MARK_AS_ERROR, shapeFile));
                 getNoticesRestInternalService().createErrorBackgroundNotification(user, ServiceNoticeAction.IMPORT_SHAPE_JOB, e1);
             }
-        } catch (MalformedURLException e2) {
-            logger.info("ImportationShapeJob: Import " + shapeFile + ", job " + jobKey + " could not be executed because shapeFileUrl is malformed");
-            MetamacException metamacException = MetamacExceptionBuilder.builder().withPrincipalException(ServiceExceptionType.IMPORT_SHAPE_JOB_ERROR_MALFORMED_URL, shapeFile).build();
-            getNoticesRestInternalService().createErrorBackgroundNotification(user, ServiceNoticeAction.IMPORT_SHAPE_JOB, metamacException);
-
         }
     }
 
