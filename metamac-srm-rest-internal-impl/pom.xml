@@ -95,7 +95,13 @@
             <version>${jackson.version}</version>
         </dependency>
 
-
+		<!-- For JSONP -->
+        <dependency>
+           <groupId>org.apache.cxf</groupId>
+           <artifactId>cxf-rt-rs-extension-providers</artifactId>
+           <version>${cxf.version}</version>
+       	</dependency>  
+       	
         <!-- Test -->
         <dependency>
             <groupId>org.siemac.metamac</groupId>
@@ -143,7 +149,7 @@
             <version>${geronimo-servlet_2.5_spec.version}</version>
             <scope>test</scope>
         </dependency>
-<dependency>
+		<dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-testutils</artifactId>
             <version>${cxf.version}</version>
