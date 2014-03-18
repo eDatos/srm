@@ -41,6 +41,7 @@ import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
+import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
@@ -84,8 +85,8 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> implements VariablePresenter.VariableView {
 
-    private VLayout                                      panel;
-    private VariableMainFormLayout                       mainFormLayout;
+    private final VLayout                                panel;
+    private final VariableMainFormLayout                 mainFormLayout;
 
     // View forms
     private GroupDynamicForm                             identifiersForm;
@@ -102,28 +103,28 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     // Variable elements
 
-    private PaginatedCheckListGrid                       variableElementListGrid;
-    private CustomToolStripButton                        createVariableElementButton;
-    private CustomToolStripButton                        importVariableElementButton;
-    private CustomToolStripButton                        deleteVariableElementButton;
-    private CustomToolStripButton                        fusionVariableElementButton;
-    private CustomToolStripButton                        segregateVariableElementButton;
+    private final PaginatedCheckListGrid                 variableElementListGrid;
+    private final CustomToolStripButton                  createVariableElementButton;
+    private final CustomToolStripButton                  importVariableElementButton;
+    private final CustomToolStripButton                  deleteVariableElementButton;
+    private final CustomToolStripButton                  fusionVariableElementButton;
+    private final CustomToolStripButton                  segregateVariableElementButton;
     private NewVariableElementWindow                     newVariableElementWindow;
-    private DeleteConfirmationWindow                     deleteConfirmationWindow;
+    private final DeleteConfirmationWindow               deleteConfirmationWindow;
 
     private SearchRelatedResourcePaginatedWindow         createFusionWindow;
     private SearchMultipleRelatedResourcePaginatedWindow createSegregationWindow;
 
     // Variable elements importation
 
-    private ImportVariableElementsWindow                 importVariableElementsWindow;
+    private final ImportVariableElementsWindow           importVariableElementsWindow;
 
     // Variable element operations
 
-    private CustomSectionStack                           operationsSectionStack;
-    private VariableElementOperationLayout               variableElementOperationsLayout;
+    private final CustomSectionStack                     operationsSectionStack;
+    private final VariableElementOperationLayout         variableElementOperationsLayout;
 
-    private ImportVariableElementShapeWindow             importVariableElementShapeWindow;
+    private final ImportVariableElementShapeWindow       importVariableElementShapeWindow;
 
     private VariableDto                                  variableDto;
 
@@ -153,6 +154,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
             public void uploadFailed(String errorMessage) {
                 getUiHandlers().resourceImportationFailed(errorMessage);
             }
+
             @Override
             public void uploadComplete(String fileName) {
                 getUiHandlers().resourceImportationSucceed(fileName);
@@ -170,6 +172,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
             public void uploadFailed(String errorMessage) {
                 getUiHandlers().resourceImportationFailed(errorMessage);
             }
+
             @Override
             public void uploadComplete(String fileName) {
                 getUiHandlers().resourceImportationSucceed(fileName);
@@ -231,8 +234,9 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         ListGridField fieldCode = new ListGridField(VariableElementDS.CODE, getConstants().identifiableArtefactCode());
         fieldCode.setAlign(Alignment.LEFT);
         ListGridField fieldShortName = new ListGridField(VariableElementDS.SHORT_NAME, getConstants().variableElementShortName());
+        CustomListGridField hasShape = new CustomListGridField(VariableElementDS.SHAPE_WKT, getConstants().variableElementHasPolygonShape());
         ListGridField urn = new ListGridField(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
-        variableElementListGrid.getListGrid().setFields(fieldCode, fieldShortName, urn);
+        variableElementListGrid.getListGrid().setFields(fieldCode, fieldShortName, hasShape, urn);
 
         // Remove window
 
