@@ -4,6 +4,7 @@ import static org.siemac.metamac.web.common.client.utils.InternationalStringUtil
 
 import java.util.List;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
@@ -24,6 +25,7 @@ import org.siemac.metamac.srm.web.code.model.record.VariableElementOperationReco
 import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableFamilyRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
+import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -112,8 +114,10 @@ public class CodesRecordUtils extends org.siemac.metamac.srm.web.client.utils.Re
     // VARIABLE ELEMENTS
 
     public static VariableElementRecord getVariableElementRecord(VariableElementDto variableElementDto) {
+        Boolean hasShape = StringUtils.isBlank(variableElementDto.getShapeWkt()) ? Boolean.FALSE : Boolean.TRUE;
+
         VariableElementRecord record = new VariableElementRecord(variableElementDto.getId(), variableElementDto.getCode(), getLocalisedString(variableElementDto.getShortName()),
-                variableElementDto.getUrn(), variableElementDto);
+                variableElementDto.getUrn(), BooleanWebUtils.getBooleanLabel(hasShape), variableElementDto);
         return record;
     }
 
