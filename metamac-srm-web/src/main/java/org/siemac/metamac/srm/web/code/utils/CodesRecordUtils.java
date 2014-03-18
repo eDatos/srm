@@ -126,6 +126,7 @@ public class CodesRecordUtils extends org.siemac.metamac.srm.web.client.utils.Re
         record.setCode(variableElementDto.getCode());
         record.setShortName(getLocalisedString(variableElementDto.getShortName()));
         record.setUrn(variableElementDto.getUrn());
+        record.setHasShape(BooleanWebUtils.getBooleanLabel(variableElementDto.getHasShape()));
         record.setVariableElementBasicDto(variableElementDto);
         return record;
     }
