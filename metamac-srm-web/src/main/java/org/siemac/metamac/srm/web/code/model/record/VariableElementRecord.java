@@ -11,11 +11,12 @@ public class VariableElementRecord extends ListGridRecord {
     public VariableElementRecord() {
     }
 
-    public VariableElementRecord(Long id, String code, String shortName, String urn, VariableElementDto variableDto) {
+    public VariableElementRecord(Long id, String code, String shortName, String urn, String hasShape, VariableElementDto variableDto) {
         setId(id);
         setCode(code);
         setShortName(shortName);
         setUrn(urn);
+        setHasShape(hasShape);
         setVariableElementDto(variableDto);
     }
 
@@ -33,6 +34,10 @@ public class VariableElementRecord extends ListGridRecord {
 
     public void setUrn(String value) {
         setAttribute(VariableElementDS.URN, value);
+    }
+
+    public void setHasShape(String value) {
+        setAttribute(VariableElementDS.SHAPE_WKT, value);
     }
 
     public String getCode() {
