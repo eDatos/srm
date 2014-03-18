@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.code.presenter.VariableElementsPresenter;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableElementsUiHandlers;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.web.common.client.constants.CommonWebConstants;
+import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 import org.siemac.metamac.web.common.client.widgets.PaginatedListGrid;
 import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
@@ -33,11 +34,11 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class VariableElementsViewImpl extends ViewWithUiHandlers<VariableElementsUiHandlers> implements VariableElementsPresenter.VariableElementsView {
 
-    private VLayout            panel;
+    private final VLayout            panel;
 
-    private SearchSectionStack searchSectionStack;
+    private final SearchSectionStack searchSectionStack;
 
-    private PaginatedListGrid  variableElementsListGrid;
+    private final PaginatedListGrid  variableElementsListGrid;
 
     @Inject
     public VariableElementsViewImpl() {
@@ -90,8 +91,9 @@ public class VariableElementsViewImpl extends ViewWithUiHandlers<VariableElement
         ListGridField fieldCode = new ListGridField(VariableElementDS.CODE, getConstants().identifiableArtefactCode());
         fieldCode.setAlign(Alignment.LEFT);
         ListGridField fieldShortName = new ListGridField(VariableElementDS.SHORT_NAME, getConstants().variableElementShortName());
+        CustomListGridField hasShape = new CustomListGridField(VariableElementDS.SHAPE_WKT, getConstants().variableElementHasPolygonShape());
         ListGridField urn = new ListGridField(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
-        variableElementsListGrid.getListGrid().setFields(fieldCode, fieldShortName, urn);
+        variableElementsListGrid.getListGrid().setFields(fieldCode, fieldShortName, hasShape, urn);
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);
