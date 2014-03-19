@@ -22,6 +22,8 @@ import org.springframework.stereotype.Component;
 @Component(NoticesRestInternalService.BEAN_ID)
 public class NoticesRestInternalServiceImpl implements NoticesRestInternalService {
 
+    private static final String ERROR  = "ERROR";
+
     private static Logger       logger = LoggerFactory.getLogger(NoticesRestInternalServiceImpl.class);
 
     @Autowired
@@ -40,6 +42,7 @@ public class NoticesRestInternalServiceImpl implements NoticesRestInternalServic
 
             Throwable localisedException = translateExceptions.translateException(locale, exception);
             String localisedMessage = localisedException.getMessage();
+            localisedMessage = ERROR + localisedMessage;
 
             createBackgroundNotification(actionCode, localisedMessage, user);
         } catch (MetamacException e) {
