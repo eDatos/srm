@@ -71,6 +71,7 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
 
         checkRequiredProperty(ConfigurationConstants.ENDPOINT_SRM_INTERNAL_API);
         checkRequiredProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_INTERNAL_API);
+        checkRequiredProperty(ConfigurationConstants.ENDPOINT_NOTICES_INTERNAL_API);
 
         // OTHER CONFIGURATION PROPERTIES
 
@@ -92,7 +93,7 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
         checkOptionalConceptUrn(SrmConfigurationConstants.DSD_TIME_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN);
         checkOptionalConceptUrn(SrmConfigurationConstants.DSD_MEASURE_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN);
         checkOptionalCodelistUrn(SrmConfigurationConstants.DEFAULT_CODELIST_GEOGRAPHICAL_GRANULARITY_URN);
-        
+
         LOG.info("**************************************************************");
         LOG.info("[metamac-srm-web] Application configuration checked");
         LOG.info("**************************************************************");
