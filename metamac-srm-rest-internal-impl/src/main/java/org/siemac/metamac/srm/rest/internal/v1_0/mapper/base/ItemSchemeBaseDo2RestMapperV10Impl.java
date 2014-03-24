@@ -28,7 +28,7 @@ public abstract class ItemSchemeBaseDo2RestMapperV10Impl extends BaseDo2RestMapp
         target.setIsPartial(source.getIsPartial());
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
         target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
-        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
+        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate())); // TODO METAMAC-844 Incompleto, completar las 2 fechas
 
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());

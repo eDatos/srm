@@ -21,7 +21,7 @@ public abstract class StructureBaseDo2RestMapperV10Impl extends BaseDo2RestMappe
 
         target.setReplaceToVersion(toStructureReplaceToVersion(source));
         target.setReplacedByVersion(toStructureReplacedByVersion(source));
-        target.setCreatedDate(toDate(source.getStructure().getResourceCreatedDate()));
+        target.setCreatedDate(toDate(source.getStructure().getResourceCreatedDate())); // TODO METAMAC-844 Incompleto, completar las 2 fechas
 
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
