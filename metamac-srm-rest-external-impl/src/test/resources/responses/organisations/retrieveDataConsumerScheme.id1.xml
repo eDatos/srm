@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:dataConsumerScheme xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain"    xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#dataConsumerScheme">
+    <sr:annotations total="2">
+        <sr:annotation>
+            <sr:id>code2</sr:id>
+            <sr:title>title-code2</sr:title>
+            <sr:type>type-code2</sr:type>
+            <sr:url>url-code2</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
+                <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+        <sr:annotation>
+            <sr:id>code1</sr:id>
+            <sr:title>title-code1</sr:title>
+            <sr:type>type-code1</sr:type>
+            <sr:url>url-code1</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+    </sr:annotations>
+    <sr:id>itemScheme1</sr:id>
+    <sr:urn>urn:sdmx:org.sdmx.infomodel.base.DataConsumerScheme=agency1:itemScheme1(01.000)</sr:urn>
+    <sr:uri>http://data.istac.es/apis/structural-resources/v1.0/dataconsumerschemes/agency1/itemScheme1/01.000</sr:uri>
+    <sr:createdDate>2013-10-01T10:12:13.014+01:00</sr:createdDate>
+    <sr:selfLink kind="structuralResources#dataConsumerScheme" href="http://data.istac.es/apis/structural-resources/v1.0/dataconsumerschemes/agency1/itemScheme1/01.000"/>
+    <sr:parentLink kind="structuralResources#dataConsumerSchemes" href="http://data.istac.es/apis/structural-resources/v1.0/dataconsumerschemes"/>
+    <sr:childLinks total="1">
+        <cdomain:childLink kind="structuralResources#dataConsumers" href="http://data.istac.es/apis/structural-resources/v1.0/dataconsumerschemes/agency1/itemScheme1/01.000/dataconsumers"/>
+    </sr:childLinks>
+    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_CONSUMER_SCHEME;id=agency1:itemScheme1(01.000)</sr:managementAppLink>
+    <sr:name>
+        <cdomain:text xml:lang="es">name-itemScheme1v01.000 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">name-itemScheme1v01.000 in English</cdomain:text>
+    </sr:name>
+    <sr:description>
+        <cdomain:text xml:lang="es">description-itemScheme1v01.000 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">description-itemScheme1v01.000 in English</cdomain:text>
+    </sr:description>
+    <sr:comment>
+        <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
+    </sr:comment>
+    <sr:version>01.000</sr:version>
+    <sr:validFrom>2012-11-05T10:12:13.014Z</sr:validFrom>
+    <sr:validTo>2013-10-04T10:12:13.014+01:00</sr:validTo>
+    <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
+    <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
+    <sr:agencyID>agency1</sr:agencyID>
+    <sr:isFinal>true</sr:isFinal>
+    <sr:isExternalReference>false</sr:isExternalReference>
+    <sr:serviceUrl>serviceUrl-itemScheme1</sr:serviceUrl>
+    <sr:structureUrl>structureUrl-itemScheme1</sr:structureUrl>
+    <sr:lifeCycle>
+        <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>
+        <sr:productionValidationDate>2009-09-01T01:01:01.001+01:00</sr:productionValidationDate>
+        <sr:productionValidationUser>production-user</sr:productionValidationUser>
+        <sr:diffusionValidationDate>2010-10-02T01:01:01.001+01:00</sr:diffusionValidationDate>
+        <sr:diffusionValidationUser>diffusion-user</sr:diffusionValidationUser>
+        <sr:internalPublicationDate>2011-11-03T01:01:01.001Z</sr:internalPublicationDate>
+        <sr:internalPublicationUser>internal-publication-user</sr:internalPublicationUser>
+        <sr:externalPublicationDate>2012-12-04T01:01:01.001Z</sr:externalPublicationDate>
+        <sr:externalPublicationUser>external-publication-user</sr:externalPublicationUser>
+    </sr:lifeCycle>
+    <sr:isPartial>false</sr:isPartial>
+</sr:dataConsumerScheme>

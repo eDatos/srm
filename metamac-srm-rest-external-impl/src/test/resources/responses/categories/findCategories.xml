@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:categories xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain"       xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#categories" total="40" limit="4" offset="4" selfLink="http://data.istac.es/apis/structural-resources/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=4" firstLink="http://data.istac.es/apis/structural-resources/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=0" previousLink="http://data.istac.es/apis/structural-resources/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=0" nextLink="http://data.istac.es/apis/structural-resources/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=8" lastLink="http://data.istac.es/apis/structural-resources/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=36">
+    <sr:category kind="structuralResources#category">
+        <cdomain:id>category1</cdomain:id>
+        <cdomain:nestedId>category1</cdomain:nestedId>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#category" href="http://data.istac.es/apis/structural-resources/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/category1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-category1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-category1 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme1(01.000)/category;id=category1</sr:managementAppLink>
+    </sr:category>
+    <sr:category kind="structuralResources#category">
+        <cdomain:id>category2</cdomain:id>
+        <cdomain:nestedId>category2</cdomain:nestedId>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#category" href="http://data.istac.es/apis/structural-resources/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/category2"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">name-category2 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-category2 in English</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme1(01.000)/category;id=category2</sr:managementAppLink>
+    </sr:category>
+    <sr:category kind="structuralResources#category">
+        <cdomain:id>category2A</cdomain:id>
+        <cdomain:nestedId>category2.category2A</cdomain:nestedId>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2.category2A</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#category" href="http://data.istac.es/apis/structural-resources/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories/category2.category2A"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-category2A in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-category2A en Español</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme1(01.000)/category;id=category2.category2A</sr:managementAppLink>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme1(01.000).category2</sr:parent>
+    </sr:category>
+    <sr:category kind="structuralResources#category">
+        <cdomain:id>category1</cdomain:id>
+        <cdomain:nestedId>category1</cdomain:nestedId>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agency1:itemScheme2(01.000).category1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#category" href="http://data.istac.es/apis/structural-resources/v1.0/categoryschemes/agency1/itemScheme2/01.000/categories/category1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-category1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-category1 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme2(01.000)/category;id=category1</sr:managementAppLink>
+    </sr:category>
+</sr:categories>

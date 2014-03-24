@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:codelist xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain"       xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#codelist">
+    <sr:annotations total="2">
+        <sr:annotation>
+            <sr:id>code2</sr:id>
+            <sr:title>title-code2</sr:title>
+            <sr:type>type-code2</sr:type>
+            <sr:url>url-code2</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
+                <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+        <sr:annotation>
+            <sr:id>code1</sr:id>
+            <sr:title>title-code1</sr:title>
+            <sr:type>type-code1</sr:type>
+            <sr:url>url-code1</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+    </sr:annotations>
+    <sr:id>itemScheme1</sr:id>
+    <sr:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:itemScheme1(01.000)</sr:urn>
+    <sr:uri>http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000</sr:uri>
+    <sr:createdDate>2013-10-01T10:12:13.014+01:00</sr:createdDate>
+    <sr:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000"/>
+    <sr:parentLink kind="structuralResources#codelists" href="http://data.istac.es/apis/structural-resources/v1.0/codelists"/>
+    <sr:childLinks total="1">
+        <cdomain:childLink kind="structuralResources#codes" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes"/>
+    </sr:childLinks>
+    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)</sr:managementAppLink>
+    <sr:name>
+        <cdomain:text xml:lang="en">name-itemScheme1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">name-itemScheme1v01.000 en Español</cdomain:text>
+    </sr:name>
+    <sr:description>
+        <cdomain:text xml:lang="en">description-itemScheme1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">description-itemScheme1v01.000 en Español</cdomain:text>
+    </sr:description>
+    <sr:comment>
+        <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
+    </sr:comment>
+    <sr:version>01.000</sr:version>
+    <sr:validFrom>2012-11-05T10:12:13.014Z</sr:validFrom>
+    <sr:validTo>2013-10-04T10:12:13.014+01:00</sr:validTo>
+    <sr:replaceToVersion>replaceTo</sr:replaceToVersion>
+    <sr:replacedByVersion>replacedBy</sr:replacedByVersion>
+    <sr:agencyID>agency1</sr:agencyID>
+    <sr:isFinal>true</sr:isFinal>
+    <sr:isExternalReference>false</sr:isExternalReference>
+    <sr:serviceUrl>serviceUrl-itemScheme1</sr:serviceUrl>
+    <sr:structureUrl>structureUrl-itemScheme1</sr:structureUrl>
+    <sr:lifeCycle>
+        <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>
+        <sr:productionValidationDate>2009-09-01T01:01:01.001+01:00</sr:productionValidationDate>
+        <sr:productionValidationUser>production-user</sr:productionValidationUser>
+        <sr:diffusionValidationDate>2010-10-02T01:01:01.001+01:00</sr:diffusionValidationDate>
+        <sr:diffusionValidationUser>diffusion-user</sr:diffusionValidationUser>
+        <sr:internalPublicationDate>2011-11-03T01:01:01.001Z</sr:internalPublicationDate>
+        <sr:internalPublicationUser>internal-publication-user</sr:internalPublicationUser>
+        <sr:externalPublicationDate>2012-12-04T01:01:01.001Z</sr:externalPublicationDate>
+        <sr:externalPublicationUser>external-publication-user</sr:externalPublicationUser>
+    </sr:lifeCycle>
+    <sr:isPartial>false</sr:isPartial>
+    <sr:shortName>
+        <cdomain:text xml:lang="en">shortName-itemScheme1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">shortName-itemScheme1v01.000 en Español</cdomain:text>
+    </sr:shortName>
+    <sr:descriptionSource>
+        <cdomain:text xml:lang="es">descriptionSource-itemScheme1v01.000 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">descriptionSource-itemScheme1v01.000 in English</cdomain:text>
+    </sr:descriptionSource>
+    <sr:isRecommended>true</sr:isRecommended>
+    <sr:family kind="structuralResources#codelistFamily">
+        <cdomain:id>family1</cdomain:id>
+        <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=family1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#codelistFamily" href="http://data.istac.es/apis/structural-resources/v1.0/codelistfamilies/family1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-family1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-family1 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelistFamilies/codelistFamily;id=family1</sr:managementAppLink>
+    </sr:family>
+    <sr:variable kind="structuralResources#variable">
+        <cdomain:id>variable1</cdomain:id>
+        <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#variable" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-variable1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-variable1 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable1</sr:managementAppLink>
+    </sr:variable>
+    <sr:replaceTo kind="structuralResources#codelists" total="2">
+        <sr:replaceTo kind="structuralResources#codelist">
+            <cdomain:id>codelistReplaceTo1</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplaceTo1(01.000)</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/codelistReplaceTo1/01.000"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="es">name-codelistReplaceTo1v01.000 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-codelistReplaceTo1v01.000 in English</cdomain:text>
+            </cdomain:name>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:codelistReplaceTo1(01.000)</sr:managementAppLink>
+        </sr:replaceTo>
+        <sr:replaceTo kind="structuralResources#codelist">
+            <cdomain:id>codelistReplaceTo3</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplaceTo3(03.000)</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/codelistReplaceTo3/03.000"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">name-codelistReplaceTo3v03.000 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-codelistReplaceTo3v03.000 en Español</cdomain:text>
+            </cdomain:name>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:codelistReplaceTo3(03.000)</sr:managementAppLink>
+        </sr:replaceTo>
+    </sr:replaceTo>
+    <sr:replacedBy kind="structuralResources#codelist">
+        <cdomain:id>codelistReplacedBy</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency1:codelistReplacedBy(01.000)</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/codelistReplacedBy/01.000"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-codelistReplacedByv01.000 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-codelistReplacedByv01.000 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:codelistReplacedBy(01.000)</sr:managementAppLink>
+    </sr:replacedBy>
+    <sr:accessType>PUBLIC</sr:accessType>
+    <sr:orderConfigurations total="3">
+        <sr:visualisationConfiguration>
+            <cdomain:id>order1</cdomain:id>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">order-order1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">order-order1 en Español</cdomain:text>
+            </cdomain:name>
+            <sr:default>true</sr:default>
+        </sr:visualisationConfiguration>
+        <sr:visualisationConfiguration>
+            <cdomain:id>order2</cdomain:id>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">order-order2 in English</cdomain:text>
+                <cdomain:text xml:lang="es">order-order2 en Español</cdomain:text>
+            </cdomain:name>
+        </sr:visualisationConfiguration>
+        <sr:visualisationConfiguration>
+            <cdomain:id>order3</cdomain:id>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">order-order3 in English</cdomain:text>
+                <cdomain:text xml:lang="es">order-order3 en Español</cdomain:text>
+            </cdomain:name>
+        </sr:visualisationConfiguration>
+    </sr:orderConfigurations>
+    <sr:opennessConfigurations total="2">
+        <sr:visualisationConfiguration>
+            <cdomain:id>openness1</cdomain:id>
+            <cdomain:name>
+                <cdomain:text xml:lang="es">openness-openness1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">openness-openness1 in English</cdomain:text>
+            </cdomain:name>
+        </sr:visualisationConfiguration>
+        <sr:visualisationConfiguration>
+            <cdomain:id>openness2</cdomain:id>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">openness-openness2 in English</cdomain:text>
+                <cdomain:text xml:lang="es">openness-openness2 en Español</cdomain:text>
+            </cdomain:name>
+            <sr:default>true</sr:default>
+        </sr:visualisationConfiguration>
+    </sr:opennessConfigurations>
+</sr:codelist>

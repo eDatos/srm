@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:code xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#code">
+    <sr:annotations total="2">
+        <sr:annotation>
+            <sr:id>code1</sr:id>
+            <sr:title>title-code1</sr:title>
+            <sr:type>type-code1</sr:type>
+            <sr:url>url-code1</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+        <sr:annotation>
+            <sr:id>code2</sr:id>
+            <sr:title>title-code2</sr:title>
+            <sr:type>type-code2</sr:type>
+            <sr:url>url-code2</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
+                <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+    </sr:annotations>
+    <sr:id>item1</sr:id>
+    <sr:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item1</sr:urn>
+    <sr:uri>http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes/item1</sr:uri>
+    <sr:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes/item1"/>
+    <sr:parentLink kind="structuralResources#codes" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes"/>
+    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=item1</sr:managementAppLink>
+    <sr:name>
+        <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
+    </sr:name>
+    <sr:description>
+        <cdomain:text xml:lang="en">description-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">description-item1 en Español</cdomain:text>
+    </sr:description>
+    <sr:comment>
+        <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
+    </sr:comment>
+    <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item2</sr:parent>
+    <sr:shortName>
+        <cdomain:text xml:lang="es">shortName-variableElement-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">shortName-variableElement-item1 in English</cdomain:text>
+    </sr:shortName>
+    <sr:variableElement kind="structuralResources#variableElement">
+        <cdomain:id>variableElement-item1</cdomain:id>
+        <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElement-item1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/variableElement-item1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">shortName-variableElement-item1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">shortName-variableElement-item1 in English</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=variableElement-item1</sr:managementAppLink>
+    </sr:variableElement>
+</sr:code>

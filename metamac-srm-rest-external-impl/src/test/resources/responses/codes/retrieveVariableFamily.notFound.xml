@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cdomain:exception xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain">
+    <cdomain:code>exception.structural_resources.variable_family.not_found</cdomain:code>
+    <cdomain:message>Variable family notexists not found</cdomain:message>
+    <cdomain:parameters total="1">
+        <cdomain:parameter>notexists</cdomain:parameter>
+    </cdomain:parameters>
+</cdomain:exception>

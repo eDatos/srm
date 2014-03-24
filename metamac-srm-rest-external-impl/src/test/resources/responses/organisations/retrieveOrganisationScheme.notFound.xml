@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cdomain:exception xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain">
+    <cdomain:code>exception.structural_resources.organisation_scheme.not_found</cdomain:code>
+    <cdomain:message>OrganisationScheme notexists not found in version 01.000 from Agency agency1</cdomain:message>
+    <cdomain:parameters total="3">
+        <cdomain:parameter>notexists</cdomain:parameter>
+        <cdomain:parameter>01.000</cdomain:parameter>
+        <cdomain:parameter>agency1</cdomain:parameter>
+    </cdomain:parameters>
+</cdomain:exception>

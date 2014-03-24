@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:concept xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#concept">
+    <sr:annotations total="2">
+        <sr:annotation>
+            <sr:id>code1</sr:id>
+            <sr:title>title-code1</sr:title>
+            <sr:type>type-code1</sr:type>
+            <sr:url>url-code1</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+        <sr:annotation>
+            <sr:id>code2</sr:id>
+            <sr:title>title-code2</sr:title>
+            <sr:type>type-code2</sr:type>
+            <sr:url>url-code2</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+    </sr:annotations>
+    <sr:id>item1</sr:id>
+    <sr:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).item1</sr:urn>
+    <sr:uri>http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/item1</sr:uri>
+    <sr:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/item1"/>
+    <sr:parentLink kind="structuralResources#concepts" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts"/>
+    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency1:itemScheme1(01.000)/concept;id=item1</sr:managementAppLink>
+    <sr:name>
+        <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
+    </sr:name>
+    <sr:description>
+        <cdomain:text xml:lang="en">description-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">description-item1 en Español</cdomain:text>
+    </sr:description>
+    <sr:comment>
+        <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
+    </sr:comment>
+    <sr:parent>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).item2</sr:parent>
+    <sr:coreRepresentation>
+        <sr:enumerationCodelist kind="structuralResources#codelist">
+            <cdomain:id>codelist01</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agency01:codelist01(01.000)</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#codelist" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency01/codelist01/01.000"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="es">name-codelist01v01.000 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-codelist01v01.000 in English</cdomain:text>
+            </cdomain:name>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency01:codelist01(01.000)</sr:managementAppLink>
+        </sr:enumerationCodelist>
+    </sr:coreRepresentation>
+    <sr:pluralName>
+        <cdomain:text xml:lang="en">pluralName-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">pluralName-item1 en Español</cdomain:text>
+    </sr:pluralName>
+    <sr:acronym>
+        <cdomain:text xml:lang="en">acronym-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">acronym-item1 en Español</cdomain:text>
+    </sr:acronym>
+    <sr:descriptionSource>
+        <cdomain:text xml:lang="en">descriptionSource-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">descriptionSource-item1 en Español</cdomain:text>
+    </sr:descriptionSource>
+    <sr:context>
+        <cdomain:text xml:lang="en">context-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">context-item1 en Español</cdomain:text>
+    </sr:context>
+    <sr:docMethod>
+        <cdomain:text xml:lang="es">docMethod-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">docMethod-item1 in English</cdomain:text>
+    </sr:docMethod>
+    <sr:type>
+        <cdomain:id>conceptType1</cdomain:id>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">description-conceptType1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">description-conceptType1 in English</cdomain:text>
+        </cdomain:name>
+    </sr:type>
+    <sr:roles kind="structuralResources#concepts" total="2">
+        <sr:role kind="structuralResources#concept">
+            <cdomain:id>1_conceptRole1</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID22(02.000).1_conceptRole1</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agencyID1/resourceID22/02.000/concepts/1_conceptRole1"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="es">name-1_conceptRole1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-1_conceptRole1 in English</cdomain:text>
+            </cdomain:name>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agencyID1:resourceID22(02.000)/concept;id=1_conceptRole1</sr:managementAppLink>
+        </sr:role>
+        <sr:role kind="structuralResources#concept">
+            <cdomain:id>1_conceptRole2</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID33(03.000).1_conceptRole2</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agencyID1/resourceID33/03.000/concepts/1_conceptRole2"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">name-1_conceptRole2 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-1_conceptRole2 en Español</cdomain:text>
+            </cdomain:name>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agencyID1:resourceID33(03.000)/concept;id=1_conceptRole2</sr:managementAppLink>
+        </sr:role>
+    </sr:roles>
+    <sr:variable kind="structuralResources#variable">
+        <cdomain:id>variable1</cdomain:id>
+        <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#variable" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">name-variable1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-variable1 in English</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable1</sr:managementAppLink>
+    </sr:variable>
+    <sr:derivation>
+        <cdomain:text xml:lang="en">derivation-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">derivation-item1 en Español</cdomain:text>
+    </sr:derivation>
+    <sr:extends kind="structuralResources#concept">
+        <cdomain:id>1_conceptExtends1</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID11(01.000).1_conceptExtends1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agencyID1/resourceID11/01.000/concepts/1_conceptExtends1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-1_conceptExtends1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-1_conceptExtends1 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agencyID1:resourceID11(01.000)/concept;id=1_conceptExtends1</sr:managementAppLink>
+    </sr:extends>
+    <sr:relatedConcepts kind="structuralResources#concepts" total="3">
+        <sr:relatedConcept kind="structuralResources#concept">
+            <cdomain:id>1_conceptRelated1</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).1_conceptRelated1</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/1_conceptRelated1"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="es">name-1_conceptRelated1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-1_conceptRelated1 in English</cdomain:text>
+            </cdomain:name>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency1:itemScheme1(01.000)/concept;id=1_conceptRelated1</sr:managementAppLink>
+        </sr:relatedConcept>
+        <sr:relatedConcept kind="structuralResources#concept">
+            <cdomain:id>1_conceptRelated2</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).1_conceptRelated2</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/1_conceptRelated2"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">name-1_conceptRelated2 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-1_conceptRelated2 en Español</cdomain:text>
+            </cdomain:name>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency1:itemScheme1(01.000)/concept;id=1_conceptRelated2</sr:managementAppLink>
+        </sr:relatedConcept>
+        <sr:relatedConcept kind="structuralResources#concept">
+            <cdomain:id>1_conceptRelated3</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).1_conceptRelated3</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/1_conceptRelated3"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">name-1_conceptRelated3 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-1_conceptRelated3 en Español</cdomain:text>
+            </cdomain:name>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency1:itemScheme1(01.000)/concept;id=1_conceptRelated3</sr:managementAppLink>
+        </sr:relatedConcept>
+    </sr:relatedConcepts>
+    <sr:legalActs>
+        <cdomain:text xml:lang="en">legalActs-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">legalActs-item1 en Español</cdomain:text>
+    </sr:legalActs>
+    <sr:quantity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sr:QuantityChangeRate">
+        <sr:unitCode kind="structuralResources#code">
+            <cdomain:id>unitCode01</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency01:codelist01(01.000).unitCode01</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency01/codelist01/01.000/codes/unitCode01"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="es">name-unitCode01 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-unitCode01 in English</cdomain:text>
+            </cdomain:name>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency01:codelist01(01.000)/code;id=unitCode01</sr:managementAppLink>
+        </sr:unitCode>
+        <sr:unitSymbolPosition>START</sr:unitSymbolPosition>
+        <sr:significantDigits>5</sr:significantDigits>
+        <sr:decimalPlaces>2</sr:decimalPlaces>
+        <sr:unitMultiplier>10</sr:unitMultiplier>
+        <sr:min>1000</sr:min>
+        <sr:max>2000</sr:max>
+        <sr:numerator kind="structuralResources#concept">
+            <cdomain:id>numerator1</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme02(01.000).numerator1</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agency01/conceptScheme02/01.000/concepts/numerator1"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="es">name-numerator1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-numerator1 in English</cdomain:text>
+            </cdomain:name>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme02(01.000)/concept;id=numerator1</sr:managementAppLink>
+        </sr:numerator>
+        <sr:denominator kind="structuralResources#concept">
+            <cdomain:id>denominator1</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme03(01.000).denominator1</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agency01/conceptScheme03/01.000/concepts/denominator1"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">name-denominator1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-denominator1 en Español</cdomain:text>
+            </cdomain:name>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme03(01.000)/concept;id=denominator1</sr:managementAppLink>
+        </sr:denominator>
+        <sr:isPercentage>false</sr:isPercentage>
+        <sr:percentageOf>
+            <cdomain:text xml:lang="es">percentageOf-item1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">percentageOf-item1 in English</cdomain:text>
+        </sr:percentageOf>
+        <sr:baseQuantity kind="structuralResources#concept">
+            <cdomain:id>baseQuantity1</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme04(01.000).baseQuantity1</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agency01/conceptScheme04/01.000/concepts/baseQuantity1"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">name-baseQuantity1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-baseQuantity1 en Español</cdomain:text>
+            </cdomain:name>
+            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agency01:conceptScheme04(01.000)/concept;id=baseQuantity1</sr:managementAppLink>
+        </sr:baseQuantity>
+    </sr:quantity>
+</sr:concept>

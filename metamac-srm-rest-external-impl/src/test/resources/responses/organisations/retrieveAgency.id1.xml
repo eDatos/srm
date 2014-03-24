@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:agency xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain"    xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#agency">
+    <sr:annotations total="2">
+        <sr:annotation>
+            <sr:id>code1</sr:id>
+            <sr:title>title-code1</sr:title>
+            <sr:type>type-code1</sr:type>
+            <sr:url>url-code1</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+        <sr:annotation>
+            <sr:id>code2</sr:id>
+            <sr:title>title-code2</sr:title>
+            <sr:type>type-code2</sr:type>
+            <sr:url>url-code2</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+    </sr:annotations>
+    <sr:id>item1</sr:id>
+    <sr:nestedId>idAsMaintaineritem1</sr:nestedId>
+    <sr:urn>urn:sdmx:org.sdmx.infomodel.base.Agency=agency1:itemScheme1(01.000).item1</sr:urn>
+    <sr:uri>http://data.istac.es/apis/structural-resources/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies/item1</sr:uri>
+    <sr:selfLink kind="structuralResources#agency" href="http://data.istac.es/apis/structural-resources/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies/item1"/>
+    <sr:parentLink kind="structuralResources#agencies" href="http://data.istac.es/apis/structural-resources/v1.0/agencyschemes/agency1/itemScheme1/01.000/agencies"/>
+    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=AGENCY_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=item1</sr:managementAppLink>
+    <sr:name>
+        <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
+    </sr:name>
+    <sr:description>
+        <cdomain:text xml:lang="es">description-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">description-item1 in English</cdomain:text>
+    </sr:description>
+    <sr:comment>
+        <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
+        <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>
+    </sr:comment>
+    <sr:contacts total="2">
+        <sr:contact>
+            <sr:id>code-contact01</sr:id>
+            <sr:name>
+                <cdomain:text xml:lang="en">name-contact01 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-contact01 en Español</cdomain:text>
+            </sr:name>
+            <sr:organisationUnit>
+                <cdomain:text xml:lang="en">organisationUnit-contact01 in English</cdomain:text>
+                <cdomain:text xml:lang="es">organisationUnit-contact01 en Español</cdomain:text>
+            </sr:organisationUnit>
+            <sr:responsibility>
+                <cdomain:text xml:lang="en">responsibility-contact01 in English</cdomain:text>
+                <cdomain:text xml:lang="es">responsibility-contact01 en Español</cdomain:text>
+            </sr:responsibility>
+            <sr:telephones>telephone-contact01</sr:telephones>
+            <sr:faxes>fax-contact01</sr:faxes>
+            <sr:urls>http://contact01.com</sr:urls>
+            <sr:emails>usercontact01@domain.com</sr:emails>
+        </sr:contact>
+        <sr:contact>
+            <sr:id>code-contact02</sr:id>
+            <sr:name>
+                <cdomain:text xml:lang="es">name-contact02 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-contact02 in English</cdomain:text>
+            </sr:name>
+            <sr:organisationUnit>
+                <cdomain:text xml:lang="en">organisationUnit-contact02 in English</cdomain:text>
+                <cdomain:text xml:lang="es">organisationUnit-contact02 en Español</cdomain:text>
+            </sr:organisationUnit>
+            <sr:responsibility>
+                <cdomain:text xml:lang="es">responsibility-contact02 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">responsibility-contact02 in English</cdomain:text>
+            </sr:responsibility>
+            <sr:telephones>telephone-contact02</sr:telephones>
+            <sr:faxes>fax-contact02</sr:faxes>
+            <sr:urls>http://contact02.com</sr:urls>
+            <sr:emails>usercontact02@domain.com</sr:emails>
+        </sr:contact>
+    </sr:contacts>
+</sr:agency>

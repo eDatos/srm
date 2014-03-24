@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cdomain:exception xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain">
+    <cdomain:code>exception.structural_resources.variable_element.not_found</cdomain:code>
+    <cdomain:message>Variable element notexists not found in Variable variable01</cdomain:message>
+    <cdomain:parameters total="2">
+        <cdomain:parameter>notexists</cdomain:parameter>
+        <cdomain:parameter>variable01</cdomain:parameter>
+    </cdomain:parameters>
+</cdomain:exception>

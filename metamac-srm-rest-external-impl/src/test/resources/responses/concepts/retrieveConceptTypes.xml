@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:conceptTypes xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain"       xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#conceptTypes" total="3">
+    <sr:conceptType>
+        <cdomain:id>conceptType1</cdomain:id>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">description-conceptType1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">description-conceptType1 in English</cdomain:text>
+        </cdomain:name>
+    </sr:conceptType>
+    <sr:conceptType>
+        <cdomain:id>conceptType2</cdomain:id>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">description-conceptType2 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">description-conceptType2 in English</cdomain:text>
+        </cdomain:name>
+    </sr:conceptType>
+    <sr:conceptType>
+        <cdomain:id>conceptType3</cdomain:id>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">description-conceptType3 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">description-conceptType3 in English</cdomain:text>
+        </cdomain:name>
+    </sr:conceptType>
+</sr:conceptTypes>

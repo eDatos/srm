@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:variableElements xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#variableElements" total="40" limit="4" offset="4" selfLink="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements?limit=4&amp;offset=4" firstLink="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements?limit=4&amp;offset=0" previousLink="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements?limit=4&amp;offset=0" nextLink="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements?limit=4&amp;offset=8" lastLink="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements?limit=4&amp;offset=36">
+    <sr:variableElement kind="structuralResources#variableElement">
+        <cdomain:id>artefact1</cdomain:id>
+        <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.artefact1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/artefact1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">shortName-artefact1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">shortName-artefact1 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=artefact1</sr:managementAppLink>
+    </sr:variableElement>
+    <sr:variableElement kind="structuralResources#variableElement">
+        <cdomain:id>artefact2</cdomain:id>
+        <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.artefact2</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/artefact2"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">shortName-artefact2 in English</cdomain:text>
+            <cdomain:text xml:lang="es">shortName-artefact2 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=artefact2</sr:managementAppLink>
+    </sr:variableElement>
+    <sr:variableElement kind="structuralResources#variableElement">
+        <cdomain:id>artefact3</cdomain:id>
+        <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.artefact3</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/artefact3"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">shortName-artefact3 in English</cdomain:text>
+            <cdomain:text xml:lang="es">shortName-artefact3 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=artefact3</sr:managementAppLink>
+    </sr:variableElement>
+    <sr:variableElement kind="structuralResources#variableElement">
+        <cdomain:id>artefact4</cdomain:id>
+        <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.artefact4</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/artefact4"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">shortName-artefact4 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">shortName-artefact4 in English</cdomain:text>
+        </cdomain:name>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=artefact4</sr:managementAppLink>
+    </sr:variableElement>
+</sr:variableElements>
