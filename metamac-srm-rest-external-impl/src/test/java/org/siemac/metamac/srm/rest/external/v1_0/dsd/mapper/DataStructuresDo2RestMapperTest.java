@@ -10,7 +10,7 @@ import static org.siemac.metamac.srm.rest.external.v1_0.dsd.utils.DataStructures
 import static org.siemac.metamac.srm.rest.external.v1_0.dsd.utils.DataStructuresDoMocks.mockDataStructure;
 import static org.siemac.metamac.srm.rest.external.v1_0.dsd.utils.DataStructuresDoMocks.mockDataStructureWithComponents;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.Asserts.assertEqualsInternationalString;
-import static org.siemac.metamac.srm.rest.external.v1_0.utils.Asserts.assertListContainsItemResourceInternal;
+import static org.siemac.metamac.srm.rest.external.v1_0.utils.Asserts.assertListContainsItemResource;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.ARTEFACT_1_CODE;
@@ -38,7 +38,6 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataType;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.DimensionBase;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.DimensionVisualisation;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Group;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.external.v1_0.mapper.dsd.DataStructuresDo2RestMapperV10;
@@ -123,7 +122,7 @@ public class DataStructuresDo2RestMapperTest {
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(SrmRestConstants.KIND_DATA_STRUCTURES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources/v1.0/datastructures", target.getParentLink().getHref());
-        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=agencyID1:resourceID1(01.123)", target.getManagementAppLink());
+        assertNull(target.getManagementAppLink());
         assertEqualsInternationalString("es", "name-resourceID1v01.123 en Español", "en", "name-resourceID1v01.123 in English", target.getName());
         assertEqualsInternationalString("es", "description-resourceID1v01.123 en Español", "en", "description-resourceID1v01.123 in English", target.getDescription());
         assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
@@ -142,8 +141,8 @@ public class DataStructuresDo2RestMapperTest {
             assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01", dimension.getConceptIdentity().getUrn());
 
             assertEquals(2, dimension.getRoleConcepts().getRoles().size());
-            assertListContainsItemResourceInternal("concept02a", dimension.getRoleConcepts().getRoles());
-            assertListContainsItemResourceInternal("concept02b", dimension.getRoleConcepts().getRoles());
+            assertListContainsItemResource("concept02a", dimension.getRoleConcepts().getRoles());
+            assertListContainsItemResource("concept02b", dimension.getRoleConcepts().getRoles());
         }
         {
             org.siemac.metamac.rest.structural_resources.v1_0.domain.TimeDimension dimension = (org.siemac.metamac.rest.structural_resources.v1_0.domain.TimeDimension) getDimension(target,
@@ -175,8 +174,8 @@ public class DataStructuresDo2RestMapperTest {
             assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme01(01.000).concept01", attribute.getConceptIdentity().getUrn());
 
             assertEquals(2, attribute.getRoleConcepts().getRoles().size());
-            assertListContainsItemResourceInternal("concept02a", attribute.getRoleConcepts().getRoles());
-            assertListContainsItemResourceInternal("concept02b", attribute.getRoleConcepts().getRoles());
+            assertListContainsItemResource("concept02a", attribute.getRoleConcepts().getRoles());
+            assertListContainsItemResource("concept02b", attribute.getRoleConcepts().getRoles());
         }
 
         assertEquals(Boolean.TRUE, target.isAutoOpen());
@@ -211,43 +210,27 @@ public class DataStructuresDo2RestMapperTest {
         {
             DimensionVisualisation dimensionVisualisation = target.getDimensionVisualisations().getDimensionVisualisations().get(0);
             assertEquals("dimension01", dimensionVisualisation.getDimension());
-            assertEquals("order01", dimensionVisualisation.getOrder());
-            assertEquals("openness01", dimensionVisualisation.getOpenness());
         }
         {
             DimensionVisualisation dimensionVisualisation = target.getDimensionVisualisations().getDimensionVisualisations().get(1);
             assertEquals("dimension02", dimensionVisualisation.getDimension());
-            assertEquals("order02", dimensionVisualisation.getOrder());
-            assertEquals("openness02", dimensionVisualisation.getOpenness());
         }
         {
             DimensionVisualisation dimensionVisualisation = target.getDimensionVisualisations().getDimensionVisualisations().get(2);
             assertEquals("dimension05", dimensionVisualisation.getDimension());
-            assertEquals("order05", dimensionVisualisation.getOrder());
-            assertEquals("openness05", dimensionVisualisation.getOpenness());
         }
 
         // others
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
         // assertEquals("replacedBy", target.getReplacedByVersion());
-        assertEquals(ProcStatus.EXTERNALLY_PUBLISHED, target.getLifeCycle().getProcStatus());
-        assertEqualsDate(new DateTime(2009, 9, 1, 1, 1, 1, 1), target.getLifeCycle().getProductionValidationDate());
-        assertEquals("production-user", target.getLifeCycle().getProductionValidationUser());
-        assertEqualsDate(new DateTime(2010, 10, 2, 1, 1, 1, 1), target.getLifeCycle().getDiffusionValidationDate());
-        assertEquals("diffusion-user", target.getLifeCycle().getDiffusionValidationUser());
-        assertEqualsDate(new DateTime(2011, 11, 3, 1, 1, 1, 1), target.getLifeCycle().getInternalPublicationDate());
-        assertEquals("internal-publication-user", target.getLifeCycle().getInternalPublicationUser());
-        assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getExternalPublicationDate());
-        assertEquals("external-publication-user", target.getLifeCycle().getExternalPublicationUser());
+        assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getLastUpdatedDate());
 
-        assertEqualsDate(new DateTime(2012, 10, 1, 10, 12, 13, 14), target.getCreatedDate());
         assertEqualsDate(new DateTime(2012, 11, 5, 10, 12, 13, 14), target.getValidFrom());
         assertEqualsDate(new DateTime(2013, 10, 4, 10, 12, 13, 14), target.getValidTo());
 
         assertEquals(null, target.getChildLinks());
     }
-
     @Test
     public void testToDataStructureImported() {
 

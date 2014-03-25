@@ -70,7 +70,7 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
     @SuppressWarnings("rawtypes")
     @Override
     protected Boolean getVersionLatestFromConditionalCriteria(List<ConditionalCriteria> conditions, MaintainableArtefactProperty maintainableArtefactProperty) {
-        ConditionalCriteria conditionalCriteria = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Or, maintainableArtefactProperty.latestFinal());
+        ConditionalCriteria conditionalCriteria = ConditionalCriteriaUtils.getConditionalCriteriaByPropertyName(conditions, Operator.Or, maintainableArtefactProperty.latestPublic());
         return conditionalCriteria != null ? (Boolean) conditionalCriteria.getFirstOperant() : null;
     }
 

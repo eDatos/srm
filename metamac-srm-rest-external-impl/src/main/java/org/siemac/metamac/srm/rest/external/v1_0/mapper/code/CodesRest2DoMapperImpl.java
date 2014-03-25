@@ -117,26 +117,15 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                     return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case DESCRIPTION_SOURCE:
                     return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.descriptionSource().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
-                case VARIABLE_URN:
-                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.variable().nameableArtefact().urn(), PropertyTypeEnum.STRING, propertyRestriction);
                 case VALID_FROM:
                     return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact().validFrom(), CodelistVersionMetamac.class, false);
                 case VALID_TO:
                     return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CodelistVersionMetamacProperties.maintainableArtefact().validTo(), CodelistVersionMetamac.class, false);
-                case PROC_STATUS:
-                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().procStatus(), PropertyTypeEnum.PROC_STATUS, propertyRestriction);
-                case INTERNAL_PUBLICATION_DATE:
-                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
-                            CodelistVersionMetamac.class, true);
-                case INTERNAL_PUBLICATION_USER:
-                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
-                case EXTERNAL_PUBLICATION_DATE:
+                case LAST_UPDATED_DATE:
                     return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CodelistVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
                             CodelistVersionMetamac.class, true);
-                case EXTERNAL_PUBLICATION_USER:
-                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
                 case LATEST:
-                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestPublic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
                     throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
@@ -182,11 +171,8 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                     return buildSculptorPropertyCriteria(CodeMetamacProperties.nameableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case CODELIST_URN:
                     return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CodeMetamacProperties.itemSchemeVersion().maintainableArtefact());
-                case CODELIST_PROC_STATUS:
-                    return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.PROC_STATUS_ITEM_SCHEME_FROM_ITEM,
-                            propertyRestriction);
                 case CODELIST_LATEST:
-                    return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                    return buildSculptorPropertyCriteria(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 case DEFAULT_GEOGRAPHICAL_GRANULARITIES_CODELIST: {
                     String codelistUrn = null;
                     try {
@@ -206,8 +192,6 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                     }
                     return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(codelistPropertyRestriction, CodeMetamacProperties.itemSchemeVersion().maintainableArtefact());
                 }
-                case VARIABLE_ELEMENT_URN:
-                    return buildSculptorPropertyCriteria(CodeMetamacProperties.variableElement().identifiableArtefact().urn(), PropertyTypeEnum.STRING, propertyRestriction);
                 default:
                     throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }

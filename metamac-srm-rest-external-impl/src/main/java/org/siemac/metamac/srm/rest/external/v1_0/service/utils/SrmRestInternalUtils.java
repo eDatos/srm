@@ -99,6 +99,7 @@ public class SrmRestInternalUtils {
             // init
             conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).distinctRoot().build());
         }
+        addConditionalCriteriaByPublished(conditionalCriteria, entity, maintainableArtefactProperty); // API external restricctions
         addConditionalCriteriaByMaintainableArtefactPublished(conditionalCriteria, entity, maintainableArtefactProperty);
         addConditionalCriteriaByMaintainableArtefactAgency(conditionalCriteria, agencyID, entity, maintainableArtefactProperty);
         addConditionalCriteriaByMaintainableArtefactCode(conditionalCriteria, resourceID, entity, maintainableArtefactProperty);
@@ -119,6 +120,7 @@ public class SrmRestInternalUtils {
             // init
             conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).distinctRoot().build());
         }
+        addConditionalCriteriaByPublished(conditionalCriteria, entity, maintainableArtefactProperty); // API external restricctions
         addConditionalCriteriaByMaintainableArtefactPublished(conditionalCriteria, entity, maintainableArtefactProperty);
         addConditionalCriteriaByMaintainableArtefactAgency(conditionalCriteria, agencyID, entity, maintainableArtefactProperty);
         addConditionalCriteriaByMaintainableArtefactCode(conditionalCriteria, resourceID, entity, maintainableArtefactProperty);
@@ -165,13 +167,13 @@ public class SrmRestInternalUtils {
             if (OrganisationSchemeVersionMetamac.class.equals(entity)) {
                 conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(OrganisationSchemeVersionProperties.organisationSchemeType())
                         .in(OrganisationSchemeTypeEnum.AGENCY_SCHEME, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME).or()
-                        .withProperty(maintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).rbrace().buildSingle());
+                        .withProperty(maintainableArtefactProperty.latestPublic()).eq(Boolean.TRUE).rbrace().buildSingle());
             } else if (OrganisationMetamac.class.equals(entity)) {
                 conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(OrganisationProperties.organisationType())
-                        .in(OrganisationTypeEnum.AGENCY, OrganisationTypeEnum.DATA_CONSUMER, OrganisationTypeEnum.DATA_PROVIDER).or().withProperty(maintainableArtefactProperty.latestFinal())
+                        .in(OrganisationTypeEnum.AGENCY, OrganisationTypeEnum.DATA_CONSUMER, OrganisationTypeEnum.DATA_PROVIDER).or().withProperty(maintainableArtefactProperty.latestPublic())
                         .eq(Boolean.TRUE).rbrace().buildSingle());
             } else {
-                conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.latestFinal()).eq(Boolean.TRUE).buildSingle());
+                conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.latestPublic()).eq(Boolean.TRUE).buildSingle());
             }
         } else if (version != null && !SrmRestConstants.WILDCARD_ALL.equals(version)) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.versionLogic()).eq(version).buildSingle());
@@ -183,5 +185,10 @@ public class SrmRestInternalUtils {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(nameableArtefactProperty.code()).eq(code).or()
                     .withProperty(nameableArtefactProperty.codeFull()).eq(code).rbrace().buildSingle());
         }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static void addConditionalCriteriaByPublished(List<ConditionalCriteria> conditionalCriteria, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
+        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.publicLogic()).eq(Boolean.TRUE).buildSingle());
     }
 }

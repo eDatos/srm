@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
+import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
@@ -35,7 +36,6 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.Groups;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Measure;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.MeasureDimension;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.PrimaryMeasure;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ShowDecimalPrecision;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ShowDecimalPrecisions;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.TimeDimension;
@@ -86,7 +86,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
 
         // Values
         for (DataStructureDefinitionVersionMetamac source : sourcesPagedResult.getValues()) {
-            ResourceInternal target = toResource(source);
+            Resource target = toResource(source);
             targets.getDataStructures().add(target);
         }
         return targets;
@@ -105,7 +105,6 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         target.setSelfLink(toDataStructureSelfLink(source));
         target.setParentLink(toDataStructureParentLink(source));
         target.setChildLinks(toDataStructureChildLinks(source));
-        target.setManagementAppLink(toDataStructureManagementApplicationLink(source));
 
         toStructure(source, source.getLifeCycleMetadata(), target);
 
@@ -364,12 +363,6 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         for (DimensionVisualisationInfo source : sources) {
             DimensionVisualisation target = new DimensionVisualisation();
             target.setDimension(toDimensionReference(source.getDimension()));
-            if (source.getDisplayOrder() != null) {
-                target.setOrder(source.getDisplayOrder().getNameableArtefact().getCode());
-            }
-            if (source.getHierarchyLevelsOpen() != null) {
-                target.setOpenness(source.getHierarchyLevelsOpen().getNameableArtefact().getCode());
-            }
             targets.getDimensionVisualisations().add(target);
         }
         return targets;
@@ -386,12 +379,12 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         return null;
     }
 
-    private ResourceInternal toResource(DataStructureDefinitionVersionMetamac source) {
+    private Resource toResource(DataStructureDefinitionVersionMetamac source) {
         if (source == null) {
             return null;
         }
-        ResourceInternal target = new ResourceInternal();
-        toResource(source.getMaintainableArtefact(), SrmRestConstants.KIND_DATA_STRUCTURE, toDataStructureSelfLink(source), toDataStructureManagementApplicationLink(source), target);
+        Resource target = new Resource();
+        toResource(source.getMaintainableArtefact(), SrmRestConstants.KIND_DATA_STRUCTURE, toDataStructureSelfLink(source), target);
         return target;
     }
 
@@ -420,10 +413,6 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
                 throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    private String toDataStructureManagementApplicationLink(DataStructureDefinitionVersionMetamac source) {
-        return getInternalWebApplicationNavigation().buildDataStructureDefinitionUrl(source);
     }
 
     private org.siemac.metamac.rest.structural_resources.v1_0.domain.AttributeUsageStatusType toAttributeUsageStatusType(UsageStatus source) {

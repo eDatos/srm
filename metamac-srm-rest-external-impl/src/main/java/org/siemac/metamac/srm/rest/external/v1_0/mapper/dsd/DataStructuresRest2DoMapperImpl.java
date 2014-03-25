@@ -56,20 +56,11 @@ public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl im
                 case VALID_TO:
                     return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().validTo(),
                             DataStructureDefinitionVersionMetamac.class, false);
-                case PROC_STATUS:
-                    return buildSculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().procStatus(), PropertyTypeEnum.PROC_STATUS, propertyRestriction);
-                case INTERNAL_PUBLICATION_DATE:
-                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
-                            DataStructureDefinitionVersionMetamac.class, true);
-                case INTERNAL_PUBLICATION_USER:
-                    return buildSculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
-                case EXTERNAL_PUBLICATION_DATE:
+                case LAST_UPDATED_DATE:
                     return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
                             DataStructureDefinitionVersionMetamac.class, true);
-                case EXTERNAL_PUBLICATION_USER:
-                    return buildSculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
                 case LATEST:
-                    return buildSculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                    return buildSculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().latestPublic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 case STATISTICAL_OPERATION_URN:
                     return buildSculptorPropertyCriteria(DataStructureDefinitionVersionMetamacProperties.statisticalOperation().urn(), PropertyTypeEnum.STRING, propertyRestriction);
                 case DIMENSION_CONCEPT_URN: {

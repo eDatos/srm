@@ -1,7 +1,7 @@
 package org.siemac.metamac.srm.rest.external.v1_0.mapper.base;
 
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ItemResourceInternal;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.ItemResource;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.rest.external.v1_0.service.utils.SrmRestInternalUtils;
@@ -28,7 +28,6 @@ public abstract class ItemSchemeBaseDo2RestMapperV10Impl extends BaseDo2RestMapp
         target.setIsPartial(source.getIsPartial());
         target.setReplaceToVersion(toItemSchemeReplaceToVersion(source));
         target.setReplacedByVersion(toItemSchemeReplacedByVersion(source));
-        target.setCreatedDate(toDate(source.getItemScheme().getResourceCreatedDate()));
 
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
@@ -48,11 +47,11 @@ public abstract class ItemSchemeBaseDo2RestMapperV10Impl extends BaseDo2RestMapp
         }
     }
 
-    protected void toResource(Item source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target) {
+    protected void toResource(Item source, String kind, ResourceLink selfLink, ItemResource target) {
         if (source == null) {
             return;
         }
-        toResource(source.getNameableArtefact(), kind, selfLink, managementAppUrl, target, source.getItemSchemeVersion().getMaintainableArtefact().getIsImported());
+        toResource(source.getNameableArtefact(), kind, selfLink, target, source.getItemSchemeVersion().getMaintainableArtefact().getIsImported());
         if (source.getParent() != null) {
             target.setParent(source.getParent().getNameableArtefact().getUrn());
         }

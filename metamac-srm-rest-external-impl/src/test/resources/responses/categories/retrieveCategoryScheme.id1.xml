@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sr:categoryScheme xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain"       xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#categoryScheme">
+<sr:categoryScheme xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#categoryScheme">
     <sr:annotations total="2">
         <sr:annotation>
             <sr:id>code1</sr:id>
@@ -25,16 +25,14 @@
     <sr:id>itemScheme1</sr:id>
     <sr:urn>urn:sdmx:org.sdmx.infomodel.categoryscheme.CategoryScheme=agency1:itemScheme1(01.000)</sr:urn>
     <sr:uri>http://data.istac.es/apis/structural-resources/v1.0/categoryschemes/agency1/itemScheme1/01.000</sr:uri>
-    <sr:createdDate>2013-10-01T10:12:13.014+01:00</sr:createdDate>
     <sr:selfLink kind="structuralResources#categoryScheme" href="http://data.istac.es/apis/structural-resources/v1.0/categoryschemes/agency1/itemScheme1/01.000"/>
     <sr:parentLink kind="structuralResources#categorySchemes" href="http://data.istac.es/apis/structural-resources/v1.0/categoryschemes"/>
     <sr:childLinks total="1">
         <cdomain:childLink kind="structuralResources#categories" href="http://data.istac.es/apis/structural-resources/v1.0/categoryschemes/agency1/itemScheme1/01.000/categories"/>
     </sr:childLinks>
-    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agency1:itemScheme1(01.000)</sr:managementAppLink>
     <sr:name>
-        <cdomain:text xml:lang="es">name-itemScheme1v01.000 en Español</cdomain:text>
         <cdomain:text xml:lang="en">name-itemScheme1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">name-itemScheme1v01.000 en Español</cdomain:text>
     </sr:name>
     <sr:description>
         <cdomain:text xml:lang="es">description-itemScheme1v01.000 en Español</cdomain:text>
@@ -55,15 +53,7 @@
     <sr:serviceUrl>serviceUrl-itemScheme1</sr:serviceUrl>
     <sr:structureUrl>structureUrl-itemScheme1</sr:structureUrl>
     <sr:lifeCycle>
-        <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>
-        <sr:productionValidationDate>2009-09-01T01:01:01.001+01:00</sr:productionValidationDate>
-        <sr:productionValidationUser>production-user</sr:productionValidationUser>
-        <sr:diffusionValidationDate>2010-10-02T01:01:01.001+01:00</sr:diffusionValidationDate>
-        <sr:diffusionValidationUser>diffusion-user</sr:diffusionValidationUser>
-        <sr:internalPublicationDate>2011-11-03T01:01:01.001Z</sr:internalPublicationDate>
-        <sr:internalPublicationUser>internal-publication-user</sr:internalPublicationUser>
-        <sr:externalPublicationDate>2012-12-04T01:01:01.001Z</sr:externalPublicationDate>
-        <sr:externalPublicationUser>external-publication-user</sr:externalPublicationUser>
+        <sr:lastUpdatedDate>2012-12-04T01:01:01.001Z</sr:lastUpdatedDate>
     </sr:lifeCycle>
     <sr:isPartial>false</sr:isPartial>
 </sr:categoryScheme>

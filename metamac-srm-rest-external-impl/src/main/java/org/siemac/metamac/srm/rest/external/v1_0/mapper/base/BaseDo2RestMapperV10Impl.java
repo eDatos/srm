@@ -17,22 +17,21 @@ import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
+import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Annotation;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Annotations;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ItemResourceInternal;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.ItemResource;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.LifeCycle;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ProcStatus;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.utils.RestCommonUtil;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.external.exception.RestServiceExceptionType;
-import org.siemac.metamac.srm.rest.external.v1_0.service.utils.InternalWebApplicationNavigation;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -51,20 +50,15 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 public abstract class BaseDo2RestMapperV10Impl {
 
     @Autowired
-    private ConfigurationService             configurationService;
+    private ConfigurationService configurationService;
 
-    private String                           srmInternalWebApplication;
-    private String                           srmApiInternalEndpointV10;
-    private String                           statisticalOperationsInternalWebApplication;
-    private String                           statisticalOperationsApiExternalEndpoint;
-
-    private InternalWebApplicationNavigation internalWebApplicationNavigation;
+    private String               srmApiInternalEndpointV10;
+    private String               statisticalOperationsApiExternalEndpoint;
+    private String               maintainerUrnDefault;
 
     @PostConstruct
     public void init() throws Exception {
         initEndpoints();
-
-        internalWebApplicationNavigation = new InternalWebApplicationNavigation(srmInternalWebApplication);
     }
 
     public String getSrmApiInternalEndpointV10() {
@@ -199,15 +193,7 @@ public abstract class BaseDo2RestMapperV10Impl {
             return null;
         }
         LifeCycle target = new LifeCycle();
-        target.setProcStatus(toProcStatus(source.getProcStatus()));
-        target.setProductionValidationDate(toDate(source.getProductionValidationDate()));
-        target.setProductionValidationUser(source.getProductionValidationUser());
-        target.setDiffusionValidationDate(toDate(source.getDiffusionValidationDate()));
-        target.setDiffusionValidationUser(source.getDiffusionValidationUser());
-        target.setInternalPublicationDate(toDate(source.getInternalPublicationDate()));
-        target.setInternalPublicationUser(source.getInternalPublicationUser());
-        target.setExternalPublicationDate(toDate(source.getExternalPublicationDate()));
-        target.setExternalPublicationUser(source.getExternalPublicationUser());
+        target.setLastUpdatedDate(toDate(source.getExternalPublicationDate()));
         return target;
     }
 
@@ -247,84 +233,68 @@ public abstract class BaseDo2RestMapperV10Impl {
         return source.getFinalLogicClient();
     }
 
-    protected void toResource(IdentifiableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, Boolean isImported) {
+    protected void toResource(IdentifiableArtefact source, String kind, ResourceLink selfLink, Resource target, Boolean isImported) {
         if (source == null) {
             return;
         }
         target.setId(source.getCode());
         // nestedId: only filled to some resource
         target.setUrn(source.getUrn());
-        if (BooleanUtils.isTrue(isImported)) {
-            target.setUrnProvider(source.getUrnProvider());
-        } else {
-            target.setUrnProvider(null);
-        }
         target.setKind(kind);
         target.setSelfLink(selfLink);
-        target.setManagementAppLink(managementAppUrl);
     }
 
-    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, Boolean isImported) {
+    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, Resource target, Boolean isImported) {
         if (source == null) {
             return;
         }
-        toResource((IdentifiableArtefact) source, kind, selfLink, managementAppUrl, target, isImported);
+        toResource((IdentifiableArtefact) source, kind, selfLink, target, isImported);
         target.setName(toInternationalString(source.getName()));
     }
 
-    protected void toResource(MaintainableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target) {
-        toResource(source, kind, selfLink, managementAppUrl, target, source.getIsImported());
+    protected void toResource(MaintainableArtefact source, String kind, ResourceLink selfLink, Resource target) {
+        toResource(source, kind, selfLink, target, source.getIsImported());
     }
 
-    protected void toResource(IdentifiableArtefactResult source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, Boolean isImported) {
+    protected void toResource(IdentifiableArtefactResult source, String kind, ResourceLink selfLink, Resource target, Boolean isImported) {
         if (source == null) {
             return;
         }
         target.setId(source.getCode());
         // nestedId: only filled to some resource
         target.setUrn(source.getUrn());
-        if (BooleanUtils.isTrue(isImported)) {
-            target.setUrnProvider(source.getUrnProvider());
-        } else {
-            target.setUrnProvider(null);
-        }
         target.setKind(kind);
         target.setSelfLink(selfLink);
-        target.setManagementAppLink(managementAppUrl);
     }
 
-    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target, Boolean isImported) {
+    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, ItemResource target, Boolean isImported) {
         if (source == null) {
             return;
         }
-        toResource((IdentifiableArtefactResult) source, kind, selfLink, managementAppUrl, target, isImported);
+        toResource((IdentifiableArtefactResult) source, kind, selfLink, target, isImported);
         target.setName(toInternationalString(source.getName()));
         if (source.getParent() != null) {
             target.setParent(source.getParent().getUrn());
         }
     }
 
-    protected ResourceInternal toResourceExternalItemStatisticalOperation(ExternalItem source) {
+    protected Resource toResourceExternalItemStatisticalOperation(ExternalItem source) {
         if (source == null) {
             return null;
         }
-        return toResourceExternalItem(source, statisticalOperationsApiExternalEndpoint, statisticalOperationsInternalWebApplication);
+        return toResourceExternalItem(source, statisticalOperationsApiExternalEndpoint);
     }
 
-    protected ResourceInternal toResourceExternalItem(ExternalItem source, String apiExternalItemBaseUrl, String managementAppBaseUrl) {
+    protected Resource toResourceExternalItem(ExternalItem source, String apiExternalItemBaseUrl) {
         if (source == null) {
             return null;
         }
-        ResourceInternal target = new ResourceInternal();
+        Resource target = new Resource();
         target.setId(source.getCode());
         target.setNestedId(source.getCodeNested());
         target.setUrn(source.getUrn());
-        target.setUrnProvider(source.getUrnProvider());
         target.setKind(source.getType().getValue());
         target.setSelfLink(toResourceLink(target.getKind(), RestUtils.createLink(apiExternalItemBaseUrl, source.getUri())));
-        if (source.getManagementAppUrl() != null) {
-            target.setManagementAppLink(RestUtils.createLink(managementAppBaseUrl, source.getManagementAppUrl()));
-        }
         target.setName(toInternationalString(source.getTitle()));
         return target;
     }
@@ -367,10 +337,6 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
     }
 
-    protected InternalWebApplicationNavigation getInternalWebApplicationNavigation() {
-        return internalWebApplicationNavigation;
-    }
-
     private String readProperty(String property) {
         String propertyValue = configurationService.getProperty(property);
         if (propertyValue == null) {
@@ -379,12 +345,11 @@ public abstract class BaseDo2RestMapperV10Impl {
         return propertyValue;
     }
 
-    private void initEndpoints() {
-        // Srm internal application
-        // TODO METAMAC-1355 REMOVE THIS IN API EXTERNA
-        srmInternalWebApplication = readProperty(ConfigurationConstants.WEB_APPLICATION_SRM_INTERNAL_WEB);
-        srmInternalWebApplication = StringUtils.removeEnd(srmInternalWebApplication, "/");
+    public String getMaintainerUrnDefault() {
+        return maintainerUrnDefault;
+    }
 
+    private void initEndpoints() {
         // Srm External Api V1.0
         String srmApiExternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_SRM_EXTERNAL_API);
         srmApiInternalEndpointV10 = RestUtils.createLink(srmApiExternalEndpoint, SrmRestConstants.API_VERSION_1_0);
@@ -393,9 +358,6 @@ public abstract class BaseDo2RestMapperV10Impl {
         statisticalOperationsApiExternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_EXTERNAL_API);
         statisticalOperationsApiExternalEndpoint = StringUtils.removeEnd(statisticalOperationsApiExternalEndpoint, "/");
 
-        // Statistical operations internal application
-        // TODO METAMAC-1355 REMOVE THIS IN API EXTERNA
-        statisticalOperationsInternalWebApplication = readProperty(ConfigurationConstants.WEB_APPLICATION_STATISTICAL_OPERATIONS_INTERNAL_WEB);
-        statisticalOperationsInternalWebApplication = StringUtils.removeEnd(statisticalOperationsInternalWebApplication, "/");
+        maintainerUrnDefault = readProperty(ConfigurationConstants.METAMAC_ORGANISATION_URN);
     }
 }

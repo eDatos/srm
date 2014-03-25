@@ -61,21 +61,12 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                 case VALID_TO:
                     return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, OrganisationSchemeVersionMetamacProperties.maintainableArtefact().validTo(),
                             OrganisationSchemeVersionMetamac.class, false);
-                case PROC_STATUS:
-                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), PropertyTypeEnum.PROC_STATUS, propertyRestriction);
-                case INTERNAL_PUBLICATION_DATE:
-                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
-                            OrganisationSchemeVersionMetamac.class, true);
-                case INTERNAL_PUBLICATION_USER:
-                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
-                case EXTERNAL_PUBLICATION_DATE:
+                case LAST_UPDATED_DATE:
                     return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
                             OrganisationSchemeVersionMetamac.class, true);
-                case EXTERNAL_PUBLICATION_USER:
-                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
                 case LATEST:
                     // Note: AgencyScheme, DataProvider... are note marked as final, but they are marked as latest when published.
-                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                    return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.maintainableArtefact().latestPublic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 case TYPE:
                     return buildSculptorPropertyCriteria(OrganisationSchemeVersionMetamacProperties.organisationSchemeType(), PropertyTypeEnum.ORGANISATION_SCHEME_TYPE, propertyRestriction);
                 default:
@@ -118,11 +109,8 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
                     return buildSculptorPropertyCriteria(OrganisationMetamacProperties.nameableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case ORGANISATION_SCHEME_URN:
                     return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact());
-                case ORGANISATION_SCHEME_PROC_STATUS:
-                    return buildSculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.PROC_STATUS_ITEM_SCHEME_FROM_ITEM,
-                            propertyRestriction);
                 case ORGANISATION_SCHEME_LATEST:
-                    return buildSculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                    return buildSculptorPropertyCriteria(OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 case TYPE:
                     return buildSculptorPropertyCriteria(OrganisationMetamacProperties.organisationType(), PropertyTypeEnum.ORGANISATION_TYPE, propertyRestriction);
                 default:

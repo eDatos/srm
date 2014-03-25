@@ -907,6 +907,7 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
             throw manageException(e);
         }
     }
+
     @Override
     public VariableFamily retrieveVariableFamilyById(String id) {
         try {
@@ -1465,6 +1466,9 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
 
         // Criteria to find item schemes by criteria
         List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItemSchemes(agencyID, resourceID, version, conditionalCriteriaQuery, CodelistVersionMetamac.class);
+
+        // Only Codelists with access-type = PUBLIC, are public. But in LLCC-75, the codelist that are access-type = RESTRICTED never were marked as publicLogic=true,
+        // for this is unnecessary to check this condition.
         conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC)
                 .buildSingle());
 
@@ -1591,6 +1595,10 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
         // Criteria to find items by criteria
         List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, codeID, CodeMetamacProperties.itemSchemeVersion()
                 .maintainableArtefact(), CodeMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, CodeMetamac.class);
+
+        // Only Codelists with access-type = PUBLIC, are public. But in LLCC-75, the codelist that are access-type = RESTRICTED never were marked as publicLogic=true,
+        // for this is unnecessary to check this condition.
+        // For the above comment the following conditions is irrelevant:
         // Only codelists with access == public
         conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
                 .withProperty(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.accessType().getName(), false, CodeMetamac.class))

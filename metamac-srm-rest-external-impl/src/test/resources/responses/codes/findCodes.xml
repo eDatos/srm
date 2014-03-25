@@ -8,7 +8,6 @@
             <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
         </cdomain:name>
-        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=item1</sr:managementAppLink>
         <sr:variableElement kind="structuralResources#variableElement">
             <cdomain:id>variableElement-item1</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElement-item1</cdomain:urn>
@@ -17,7 +16,6 @@
                 <cdomain:text xml:lang="en">shortName-variableElement-item1 in English</cdomain:text>
                 <cdomain:text xml:lang="es">shortName-variableElement-item1 en Español</cdomain:text>
             </cdomain:name>
-            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=variableElement-item1</sr:managementAppLink>
         </sr:variableElement>
     </sr:code>
     <sr:code kind="structuralResources#code">
@@ -28,7 +26,6 @@
             <cdomain:text xml:lang="es">name-item2 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item2 in English</cdomain:text>
         </cdomain:name>
-        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=item2</sr:managementAppLink>
         <sr:variableElement kind="structuralResources#variableElement">
             <cdomain:id>variableElement-item2</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElement-item2</cdomain:urn>
@@ -37,7 +34,6 @@
                 <cdomain:text xml:lang="en">shortName-variableElement-item2 in English</cdomain:text>
                 <cdomain:text xml:lang="es">shortName-variableElement-item2 en Español</cdomain:text>
             </cdomain:name>
-            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=variableElement-item2</sr:managementAppLink>
         </sr:variableElement>
     </sr:code>
     <sr:code kind="structuralResources#code">
@@ -48,7 +44,6 @@
             <cdomain:text xml:lang="en">name-item3 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-item3 en Español</cdomain:text>
         </cdomain:name>
-        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=item3</sr:managementAppLink>
         <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item2</sr:parent>
         <sr:variableElement kind="structuralResources#variableElement">
             <cdomain:id>variableElement-item3</cdomain:id>
@@ -58,7 +53,6 @@
                 <cdomain:text xml:lang="en">shortName-variableElement-item3 in English</cdomain:text>
                 <cdomain:text xml:lang="es">shortName-variableElement-item3 en Español</cdomain:text>
             </cdomain:name>
-            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=variableElement-item3</sr:managementAppLink>
         </sr:variableElement>
     </sr:code>
     <sr:code kind="structuralResources#code">
@@ -69,7 +63,6 @@
             <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
         </cdomain:name>
-        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme2(01.000)/code;id=item1</sr:managementAppLink>
         <sr:variableElement kind="structuralResources#variableElement">
             <cdomain:id>variableElement-item1</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElement-item1</cdomain:urn>
@@ -78,7 +71,6 @@
                 <cdomain:text xml:lang="en">shortName-variableElement-item1 in English</cdomain:text>
                 <cdomain:text xml:lang="es">shortName-variableElement-item1 en Español</cdomain:text>
             </cdomain:name>
-            <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=variableElement-item1</sr:managementAppLink>
         </sr:variableElement>
     </sr:code>
 </sr:codes>

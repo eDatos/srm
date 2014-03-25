@@ -38,7 +38,6 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.Categorisations;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Category;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.CategoryScheme;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.CategorySchemes;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
@@ -119,21 +118,12 @@ public class CategoriesDo2RestMapperTest {
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(SrmRestConstants.KIND_CATEGORY_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources/v1.0/categoryschemes", target.getParentLink().getHref());
-        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agencyID1:resourceID1(01.123)", target.getManagementAppLink());
+        assertNull(target.getManagementAppLink());
         assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
         // assertEquals("replacedBy", target.getReplacedByVersion());
-        assertEquals(ProcStatus.EXTERNALLY_PUBLISHED, target.getLifeCycle().getProcStatus());
-        assertEqualsDate(new DateTime(2009, 9, 1, 1, 1, 1, 1), target.getLifeCycle().getProductionValidationDate());
-        assertEquals("production-user", target.getLifeCycle().getProductionValidationUser());
-        assertEqualsDate(new DateTime(2010, 10, 2, 1, 1, 1, 1), target.getLifeCycle().getDiffusionValidationDate());
-        assertEquals("diffusion-user", target.getLifeCycle().getDiffusionValidationUser());
-        assertEqualsDate(new DateTime(2011, 11, 3, 1, 1, 1, 1), target.getLifeCycle().getInternalPublicationDate());
-        assertEquals("internal-publication-user", target.getLifeCycle().getInternalPublicationUser());
-        assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getExternalPublicationDate());
-        assertEquals("external-publication-user", target.getLifeCycle().getExternalPublicationUser());
-        assertEqualsDate(new DateTime(2013, 10, 1, 10, 12, 13, 14), target.getCreatedDate());
+        assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getLastUpdatedDate());
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(SrmRestConstants.KIND_CATEGORIES, target.getChildLinks().getChildLinks().get(0).getKind());
         assertEquals(selfLink + "/categories", target.getChildLinks().getChildLinks().get(0).getHref());
@@ -263,8 +253,7 @@ public class CategoriesDo2RestMapperTest {
         assertEquals(SrmRestConstants.KIND_CATEGORIES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
-        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/categorySchemes/categoryScheme;id=agencyID1:resourceID1(01.123)/category;id=categoryParent1.category2",
-                target.getManagementAppLink());
+        assertNull(target.getManagementAppLink());
 
         assertEqualsInternationalString("es", "comment-category2 en Español", "en", "comment-category2 in English", target.getComment());
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).categoryParent1", target.getParent());

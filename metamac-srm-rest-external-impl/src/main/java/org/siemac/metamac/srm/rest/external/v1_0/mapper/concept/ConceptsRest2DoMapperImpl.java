@@ -66,20 +66,11 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                 case VALID_TO:
                     return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, ConceptSchemeVersionMetamacProperties.maintainableArtefact().validTo(), ConceptSchemeVersionMetamac.class,
                             false);
-                case PROC_STATUS:
-                    return buildSculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), PropertyTypeEnum.PROC_STATUS, propertyRestriction);
-                case INTERNAL_PUBLICATION_DATE:
-                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
-                            ConceptSchemeVersionMetamac.class, true);
-                case INTERNAL_PUBLICATION_USER:
-                    return buildSculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
-                case EXTERNAL_PUBLICATION_DATE:
+                case LAST_UPDATED_DATE:
                     return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
                             ConceptSchemeVersionMetamac.class, true);
-                case EXTERNAL_PUBLICATION_USER:
-                    return buildSculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
                 case LATEST:
-                    return buildSculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                    return buildSculptorPropertyCriteria(ConceptSchemeVersionMetamacProperties.maintainableArtefact().latestPublic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
                     throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
@@ -134,11 +125,8 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
                 case CONCEPT_SCHEME_STATISTICAL_OPERATION_URN:
                     return buildSculptorPropertyCriteria(new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties
                             .relatedOperation().urn().getName(), false, ConceptMetamac.class), PropertyTypeEnum.STRING, propertyRestriction);
-                case CONCEPT_SCHEME_PROC_STATUS:
-                    return buildSculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.PROC_STATUS_ITEM_SCHEME_FROM_ITEM,
-                            propertyRestriction);
                 case CONCEPT_SCHEME_LATEST:
-                    return buildSculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                    return buildSculptorPropertyCriteria(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
                     throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }

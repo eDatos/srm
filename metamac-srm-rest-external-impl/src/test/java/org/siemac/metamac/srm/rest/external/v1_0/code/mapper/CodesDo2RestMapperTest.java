@@ -41,14 +41,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.AccessType;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Code;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Codelist;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.CodelistFamilies;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.CodelistFamily;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Codelists;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Codes;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ProcStatus;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElement;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElements;
@@ -141,45 +139,21 @@ public class CodesDo2RestMapperTest {
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(SrmRestConstants.KIND_CODELISTS, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources/v1.0/codelists", target.getParentLink().getHref());
-        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agencyID1:resourceID1(01.123)", target.getManagementAppLink());
+        assertNull(target.getManagementAppLink());
         assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
         assertEqualsInternationalString("es", "shortName-resourceID1v01.123 en Español", "en", "shortName-resourceID1v01.123 in English", target.getShortName());
         assertEqualsInternationalString("es", "descriptionSource-resourceID1v01.123 en Español", "en", "descriptionSource-resourceID1v01.123 in English", target.getDescriptionSource());
         assertTrue(target.isIsRecommended());
-        assertEquals(AccessType.PUBLIC, target.getAccessType());
-        assertEquals("family1", target.getFamily().getId());
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=family1", target.getFamily().getUrn());
-        assertEqualsInternationalString("es", "name-family1 en Español", "en", "name-family1 in English", target.getFamily().getName());
-        assertEquals(SrmRestConstants.KIND_CODELIST_FAMILY, target.getFamily().getSelfLink().getKind());
-        assertEquals("http://data.istac.es/apis/structural-resources/v1.0/codelistfamilies/family1", target.getFamily().getSelfLink().getHref());
-        assertEquals("variable1", target.getVariable().getId());
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1", target.getVariable().getUrn());
-        assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getName());
-        assertEquals(SrmRestConstants.KIND_VARIABLE, target.getVariable().getSelfLink().getKind());
-        assertEquals("http://data.istac.es/apis/structural-resources/v1.0/variables/variable1", target.getVariable().getSelfLink().getHref());
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
         // assertEquals("replacedBy", target.getReplacedByVersion());
-
-        assertEquals(SrmRestConstants.KIND_CODELIST, target.getReplacedBy().getKind());
-        assertEquals("http://data.istac.es/apis/structural-resources/v1.0/codelists/agencyID1/codelistReplacedBy/01.000", target.getReplacedBy().getSelfLink().getHref());
-        assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agencyID1:codelistReplacedBy(01.000)", target.getReplacedBy().getUrn());
 
         assertEquals(SrmRestConstants.KIND_CODELISTS, target.getReplaceTo().getKind());
         assertEquals(BigInteger.valueOf(2), target.getReplaceTo().getTotal());
         assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agencyID1:codelistReplaceTo1(01.000)", target.getReplaceTo().getReplaceTos().get(0).getUrn());
         assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agencyID1:codelistReplaceTo3(03.000)", target.getReplaceTo().getReplaceTos().get(1).getUrn());
 
-        assertEquals(ProcStatus.EXTERNALLY_PUBLISHED, target.getLifeCycle().getProcStatus());
-        assertEqualsDate(new DateTime(2009, 9, 1, 1, 1, 1, 1), target.getLifeCycle().getProductionValidationDate());
-        assertEquals("production-user", target.getLifeCycle().getProductionValidationUser());
-        assertEqualsDate(new DateTime(2010, 10, 2, 1, 1, 1, 1), target.getLifeCycle().getDiffusionValidationDate());
-        assertEquals("diffusion-user", target.getLifeCycle().getDiffusionValidationUser());
-        assertEqualsDate(new DateTime(2011, 11, 3, 1, 1, 1, 1), target.getLifeCycle().getInternalPublicationDate());
-        assertEquals("internal-publication-user", target.getLifeCycle().getInternalPublicationUser());
-        assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getExternalPublicationDate());
-        assertEquals("external-publication-user", target.getLifeCycle().getExternalPublicationUser());
-        assertEqualsDate(new DateTime(2013, 10, 1, 10, 12, 13, 14), target.getCreatedDate());
+        assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getLastUpdatedDate());
 
         assertEquals(BigInteger.valueOf(3), target.getOrderConfigurations().getTotal());
         {
@@ -247,21 +221,18 @@ public class CodesDo2RestMapperTest {
             // not final
             source.getReplacedByCodelist().getMaintainableArtefact().setFinalLogicClient(false);
             Codelist target = do2RestInternalMapper.toCodelist(source);
-            assertEquals(null, target.getReplacedBy());
         }
         {
             // not public
             source.getReplacedByCodelist().getMaintainableArtefact().setFinalLogicClient(true);
             source.getReplacedByCodelist().setAccessType(AccessTypeEnum.RESTRICTED);
             Codelist target = do2RestInternalMapper.toCodelist(source);
-            assertEquals(null, target.getReplacedBy());
         }
         {
             // can be provided
             source.getReplacedByCodelist().getMaintainableArtefact().setFinalLogicClient(true);
             source.getReplacedByCodelist().setAccessType(AccessTypeEnum.PUBLIC);
             Codelist target = do2RestInternalMapper.toCodelist(source);
-            assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Codelist=agencyID2:codelistReplacedBy(01.000)", target.getReplacedBy().getUrn());
         }
     }
 
@@ -368,12 +339,10 @@ public class CodesDo2RestMapperTest {
         assertEquals(SrmRestConstants.KIND_CODES, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
-        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agencyID1:resourceID1(01.123)/code;id=code2", target.getManagementAppLink());
+        assertNull(target.getManagementAppLink());
 
         assertEqualsInternationalString("es", "comment-code2 en Español", "en", "comment-code2 in English", target.getComment());
         assertEqualsInternationalString("es", "shortName-variableElement-code2 en Español", "en", "shortName-variableElement-code2 in English", target.getShortName());
-        assertEquals("variableElement-code2", target.getVariableElement().getId());
-        assertEqualsInternationalString("es", "shortName-variableElement-code2 en Español", "en", "shortName-variableElement-code2 in English", target.getVariableElement().getName());
         assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=agencyID1:resourceID1(01.123).codeParent1", target.getParent());
     }
 
@@ -466,7 +435,7 @@ public class CodesDo2RestMapperTest {
         String selfLink = "http://data.istac.es/apis/structural-resources/v1.0/variablefamilies/variableFamily1";
         assertEquals(SrmRestConstants.KIND_VARIABLE_FAMILY, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
-        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/variableFamilies/variableFamily;id=variableFamily1", target.getManagementAppLink());
+        assertNull(target.getManagementAppLink());
         assertEqualsInternationalString("es", "name-variableFamily1 en Español", "en", "name-variableFamily1 in English", target.getName());
     }
 
@@ -527,11 +496,9 @@ public class CodesDo2RestMapperTest {
         String selfLink = "http://data.istac.es/apis/structural-resources/v1.0/variables/variable1";
         assertEquals(SrmRestConstants.KIND_VARIABLE, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
-        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable1", target.getManagementAppLink());
+        assertNull(target.getManagementAppLink());
         assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getName());
         assertEqualsInternationalString("es", "shortName-variable1 en Español", "en", "shortName-variable1 in English", target.getShortName());
-        MetamacAsserts.assertEqualsDate("2012-10-01 10:12:13", target.getValidFrom());
-        MetamacAsserts.assertEqualsDate("2013-10-01 10:12:13", target.getValidTo());
         assertEquals(VariableType.GEOGRAPHICAL, target.getType());
 
         assertEquals(SrmRestConstants.KIND_VARIABLE, target.getReplacedBy().getKind());
@@ -544,12 +511,12 @@ public class CodesDo2RestMapperTest {
         assertEquals("http://data.istac.es/apis/structural-resources/v1.0/variables/variableReplaceTo1", target.getReplaceTo().getReplaceTos().get(0).getSelfLink().getHref());
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplaceTo2", target.getReplaceTo().getReplaceTos().get(1).getUrn());
 
-        assertEquals(SrmRestConstants.KIND_VARIABLE_FAMILIES, target.getFamily().getKind());
-        assertEquals(BigInteger.valueOf(3), target.getFamily().getTotal());
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily1", target.getFamily().getFamilies().get(0).getUrn());
-        assertEquals("http://data.istac.es/apis/structural-resources/v1.0/variablefamilies/variableFamily1", target.getFamily().getFamilies().get(0).getSelfLink().getHref());
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily2", target.getFamily().getFamilies().get(1).getUrn());
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily3", target.getFamily().getFamilies().get(2).getUrn());
+        assertEquals(SrmRestConstants.KIND_VARIABLE_FAMILIES, target.getFamilies().getKind());
+        assertEquals(BigInteger.valueOf(3), target.getFamilies().getTotal());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily1", target.getFamilies().getFamilies().get(0).getUrn());
+        assertEquals("http://data.istac.es/apis/structural-resources/v1.0/variablefamilies/variableFamily1", target.getFamilies().getFamilies().get(0).getSelfLink().getHref());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily2", target.getFamilies().getFamilies().get(1).getUrn());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily3", target.getFamilies().getFamilies().get(2).getUrn());
 
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, target.getChildLinks().getChildLinks().get(0).getKind());
@@ -677,11 +644,9 @@ public class CodesDo2RestMapperTest {
         String selfLink = "http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/variableElement1";
         assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENT, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
-        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/variables/variable;id=variable01/variableElement;id=variableElement1", target.getManagementAppLink());
+        assertNull(target.getManagementAppLink());
         assertEqualsInternationalString("es", "shortName-variableElement1 en Español", "en", "shortName-variableElement1 in English", target.getName());
         assertEqualsInternationalString("es", "comment-variableElement1 en Español", "en", "comment-variableElement1 in English", target.getComment());
-        MetamacAsserts.assertEqualsDate("2012-10-01 10:12:13", target.getValidFrom());
-        MetamacAsserts.assertEqualsDate("2013-10-01 10:12:13", target.getValidTo());
 
         assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENT, target.getReplacedBy().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/variableElementReplacedBy1", target.getReplacedBy().getSelfLink().getHref());
@@ -764,7 +729,7 @@ public class CodesDo2RestMapperTest {
         String selfLink = "http://data.istac.es/apis/structural-resources/v1.0/codelistfamilies/codelistFamily1";
         assertEquals(SrmRestConstants.KIND_CODELIST_FAMILY, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
-        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/codelistFamilies/codelistFamily;id=codelistFamily1", target.getManagementAppLink());
+        assertNull(target.getManagementAppLink());
         assertEqualsInternationalString("es", "name-codelistFamily1 en Español", "en", "name-codelistFamily1 in English", target.getName());
     }
 }

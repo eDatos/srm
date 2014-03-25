@@ -7,6 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
+import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCriteria;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Agencies;
@@ -23,7 +24,7 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataProvider;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataProviderScheme;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataProviderSchemes;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataProviders;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ItemResourceInternal;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.ItemResource;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Organisation;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.OrganisationScheme;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.OrganisationSchemes;
@@ -32,7 +33,6 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.OrganisationUnit
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.OrganisationUnitSchemes;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.OrganisationUnits;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Organisations;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
@@ -46,6 +46,7 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.ContactItem;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationResultExtensionPoint;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.organisation.enume.domain.ContactItemTypeEnum;
+import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsUtils;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -66,7 +67,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (OrganisationSchemeVersionMetamac source : sourcesPagedResult.getValues()) {
-            ResourceInternal target = toResource(source);
+            Resource target = toResource(source);
             targets.getOrganisationSchemes().add(target);
         }
         return targets;
@@ -86,7 +87,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (OrganisationSchemeVersionMetamac source : sourcesPagedResult.getValues()) {
-            ResourceInternal target = toResource(source);
+            Resource target = toResource(source);
             targets.getAgencySchemes().add(target);
         }
         return targets;
@@ -107,7 +108,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (OrganisationSchemeVersionMetamac source : sourcesPagedResult.getValues()) {
-            ResourceInternal target = toResource(source);
+            Resource target = toResource(source);
             targets.getOrganisationUnitSchemes().add(target);
         }
         return targets;
@@ -127,7 +128,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (OrganisationSchemeVersionMetamac source : sourcesPagedResult.getValues()) {
-            ResourceInternal target = toResource(source);
+            Resource target = toResource(source);
             targets.getDataProviderSchemes().add(target);
         }
         return targets;
@@ -147,7 +148,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (OrganisationSchemeVersionMetamac source : sourcesPagedResult.getValues()) {
-            ResourceInternal target = toResource(source);
+            Resource target = toResource(source);
             targets.getDataConsumerSchemes().add(target);
         }
         return targets;
@@ -197,7 +198,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (OrganisationMetamac source : sourcesPagedResult.getValues()) {
-            ItemResourceInternal target = toResource(source);
+            ItemResource target = toResource(source);
             targets.getOrganisations().add(target);
         }
         return targets;
@@ -215,7 +216,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (ItemResult source : sources) {
-            ItemResourceInternal target = toResource(source, organisationSchemeVersion);
+            ItemResource target = toResource(source, organisationSchemeVersion);
             targets.getOrganisations().add(target);
         }
         return targets;
@@ -233,7 +234,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (OrganisationMetamac source : sourcesPagedResult.getValues()) {
-            ItemResourceInternal target = toResource(source);
+            ItemResource target = toResource(source);
             targets.getAgencies().add(target);
         }
         return targets;
@@ -251,7 +252,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (ItemResult source : sources) {
-            ItemResourceInternal target = toResource(source, organisationSchemeVersion);
+            ItemResource target = toResource(source, organisationSchemeVersion);
             targets.getAgencies().add(target);
         }
         return targets;
@@ -269,7 +270,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (OrganisationMetamac source : sourcesPagedResult.getValues()) {
-            ItemResourceInternal target = toResource(source);
+            ItemResource target = toResource(source);
             targets.getOrganisationUnits().add(target);
         }
         return targets;
@@ -287,7 +288,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (ItemResult source : sources) {
-            ItemResourceInternal target = toResource(source, organisationSchemeVersion);
+            ItemResource target = toResource(source, organisationSchemeVersion);
             targets.getOrganisationUnits().add(target);
         }
         return targets;
@@ -305,7 +306,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (OrganisationMetamac source : sourcesPagedResult.getValues()) {
-            ItemResourceInternal target = toResource(source);
+            ItemResource target = toResource(source);
             targets.getDataProviders().add(target);
         }
         return targets;
@@ -323,7 +324,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (ItemResult source : sources) {
-            ItemResourceInternal target = toResource(source, organisationSchemeVersion);
+            ItemResource target = toResource(source, organisationSchemeVersion);
             targets.getDataProviders().add(target);
         }
         return targets;
@@ -341,7 +342,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (OrganisationMetamac source : sourcesPagedResult.getValues()) {
-            ItemResourceInternal target = toResource(source);
+            ItemResource target = toResource(source);
             targets.getDataConsumers().add(target);
         }
         return targets;
@@ -358,7 +359,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         // Values
         for (ItemResult source : sources) {
-            ItemResourceInternal target = toResource(source, organisationSchemeVersion);
+            ItemResource target = toResource(source, organisationSchemeVersion);
             targets.getDataConsumers().add(target);
         }
         return targets;
@@ -428,7 +429,6 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         target.setSelfLink(toOrganisationSchemeSelfLink(source));
         target.setParentLink(toOrganisationSchemeParentLink(source));
         target.setChildLinks(toOrganisationSchemeChildLinks(source));
-        target.setManagementAppLink(toOrganisationSchemeManagementApplicationLink(source));
 
         toItemScheme(source, source.getLifeCycleMetadata(), target);
 
@@ -461,22 +461,24 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         target.setSelfLink(toOrganisationSelfLink(source));
         target.setParentLink(toOrganisationParentLink(source));
         target.setChildLinks(toOrganisationChildLinks(source));
-        target.setManagementAppLink(toOrganisationManagementApplicationLink(source));
 
         toItem(source, target);
 
-        target.setContacts(toContacts(source.getContacts()));
+        target.setContacts(toContacts(source.getContacts(), source.getOrganisationType()));
 
         return target;
     }
 
-    private Contacts toContacts(List<com.arte.statistic.sdmx.srm.core.organisation.domain.Contact> sources) {
+    private Contacts toContacts(List<com.arte.statistic.sdmx.srm.core.organisation.domain.Contact> sources, OrganisationTypeEnum organisationTypeEnum) {
         if (CollectionUtils.isEmpty(sources)) {
             return null;
         }
 
         Contacts targets = new Contacts();
         for (com.arte.statistic.sdmx.srm.core.organisation.domain.Contact source : sources) {
+            if (!OrganisationsUtils.checkPublicContact(source, organisationTypeEnum, false, getMaintainerUrnDefault())) {
+                continue;
+            }
             Contact target = toContact(source);
             if (target != null) {
                 targets.getContacts().add(target);
@@ -542,36 +544,34 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         return null;
     }
 
-    private ResourceInternal toResource(OrganisationSchemeVersionMetamac source) {
+    private Resource toResource(OrganisationSchemeVersionMetamac source) {
         if (source == null) {
             return null;
         }
-        ResourceInternal target = new ResourceInternal();
-        toResource(source.getMaintainableArtefact(), toKindItemScheme(source.getOrganisationSchemeType()), toOrganisationSchemeSelfLink(source), toOrganisationSchemeManagementApplicationLink(source),
-                target);
+        Resource target = new Resource();
+        toResource(source.getMaintainableArtefact(), toKindItemScheme(source.getOrganisationSchemeType()), toOrganisationSchemeSelfLink(source), target);
         return target;
     }
 
-    private ItemResourceInternal toResource(OrganisationMetamac source) {
+    private ItemResource toResource(OrganisationMetamac source) {
         if (source == null) {
             return null;
         }
-        ItemResourceInternal target = new ItemResourceInternal();
-        toResource(source, toKindItem(source.getOrganisationType()), toOrganisationSelfLink(source), toOrganisationManagementApplicationLink(source), target);
+        ItemResource target = new ItemResource();
+        toResource(source, toKindItem(source.getOrganisationType()), toOrganisationSelfLink(source), target);
         if (OrganisationTypeEnum.AGENCY.equals(source.getOrganisationType())) {
             target.setNestedId(source.getIdAsMaintainer());
         }
         return target;
     }
 
-    private ItemResourceInternal toResource(ItemResult source, OrganisationSchemeVersionMetamac organisationSchemeVersion) {
+    private ItemResource toResource(ItemResult source, OrganisationSchemeVersionMetamac organisationSchemeVersion) {
         if (source == null) {
             return null;
         }
         OrganisationTypeEnum organisationType = getOrganisationTypeEnum(source);
-        ItemResourceInternal target = new ItemResourceInternal();
-        toResource(source, toKindItem(organisationType), toOrganisationSelfLink(source, organisationSchemeVersion),
-                toOrganisationManagementApplicationLink(organisationSchemeVersion, source, organisationType), target, organisationSchemeVersion.getMaintainableArtefact().getIsImported());
+        ItemResource target = new ItemResource();
+        toResource(source, toKindItem(organisationType), toOrganisationSelfLink(source, organisationSchemeVersion), target, organisationSchemeVersion.getMaintainableArtefact().getIsImported());
         if (OrganisationTypeEnum.AGENCY.equals(organisationType)) {
             target.setNestedId(getIdAsMaintainer(source));
         }
@@ -719,18 +719,6 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             default:
                 throw new IllegalArgumentException("OrganisationTypeEnum unsuported: " + type);
         }
-    }
-
-    private String toOrganisationSchemeManagementApplicationLink(OrganisationSchemeVersionMetamac source) {
-        return getInternalWebApplicationNavigation().buildOrganisationSchemeUrl(source);
-    }
-
-    private String toOrganisationManagementApplicationLink(OrganisationMetamac source) {
-        return getInternalWebApplicationNavigation().buildOrganisationUrl(source);
-    }
-
-    private String toOrganisationManagementApplicationLink(OrganisationSchemeVersion organisationSchemeVersion, ItemResult source, OrganisationTypeEnum organisationType) {
-        return getInternalWebApplicationNavigation().buildOrganisationUrl(organisationSchemeVersion.getMaintainableArtefact().getUrn(), source.getCode(), organisationType);
     }
 
     private OrganisationTypeEnum getOrganisationTypeEnum(ItemResult source) {

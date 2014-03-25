@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNull;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.RelatedConcepts;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.RoleConcepts;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -20,7 +20,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public class ConceptsAsserts extends Asserts {
 
-    public static void assertEqualsResource(ConceptSchemeVersionMetamac expected, ResourceInternal actual) {
+    public static void assertEqualsResource(ConceptSchemeVersionMetamac expected, Resource actual) {
         MaintainableArtefact maintainableArtefact = expected.getMaintainableArtefact();
         String agency = maintainableArtefact.getMaintainer().getIdAsMaintainer();
         String code = maintainableArtefact.getCode();
@@ -30,7 +30,7 @@ public class ConceptsAsserts extends Asserts {
         Asserts.assertEqualsResource(expected, SrmRestConstants.KIND_CONCEPT_SCHEME, expectedSelfLink, expectedManagementLink, actual);
     }
 
-    public static void assertEqualsResource(ItemSchemeVersion itemSchemeVersion, ConceptMetamac expected, ItemResult expectedItemResult, ResourceInternal actual) {
+    public static void assertEqualsResource(ItemSchemeVersion itemSchemeVersion, ConceptMetamac expected, ItemResult expectedItemResult, Resource actual) {
         MaintainableArtefact maintainableArtefact = itemSchemeVersion.getMaintainableArtefact();
         String agency = maintainableArtefact.getMaintainer().getIdAsMaintainer();
         String codeItemScheme = maintainableArtefact.getCode();

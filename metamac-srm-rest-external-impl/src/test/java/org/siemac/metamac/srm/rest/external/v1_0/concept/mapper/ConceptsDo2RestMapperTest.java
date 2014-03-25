@@ -40,7 +40,6 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptSchemeType;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concepts;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ProcStatus;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.QuantityChangeRate;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.QuantityUnitSymbolPosition;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
@@ -120,7 +119,7 @@ public class ConceptsDo2RestMapperTest {
         String selfLink = "http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agencyID1/resourceID1/01.123";
         assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEME, target.getSelfLink().getKind());
         assertEquals(selfLink, target.getSelfLink().getHref());
-        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agencyID1:resourceID1(01.123)", target.getManagementAppLink());
+        assertNull(target.getManagementAppLink());
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources/v1.0/conceptschemes", target.getParentLink().getHref());
@@ -133,16 +132,7 @@ public class ConceptsDo2RestMapperTest {
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
         // assertEquals("replacedBy", target.getReplacedByVersion());
-        assertEquals(ProcStatus.EXTERNALLY_PUBLISHED, target.getLifeCycle().getProcStatus());
-        assertEqualsDate(new DateTime(2009, 9, 1, 1, 1, 1, 1), target.getLifeCycle().getProductionValidationDate());
-        assertEquals("production-user", target.getLifeCycle().getProductionValidationUser());
-        assertEqualsDate(new DateTime(2010, 10, 2, 1, 1, 1, 1), target.getLifeCycle().getDiffusionValidationDate());
-        assertEquals("diffusion-user", target.getLifeCycle().getDiffusionValidationUser());
-        assertEqualsDate(new DateTime(2011, 11, 3, 1, 1, 1, 1), target.getLifeCycle().getInternalPublicationDate());
-        assertEquals("internal-publication-user", target.getLifeCycle().getInternalPublicationUser());
-        assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getExternalPublicationDate());
-        assertEquals("external-publication-user", target.getLifeCycle().getExternalPublicationUser());
-        assertEqualsDate(new DateTime(2013, 10, 1, 10, 12, 13, 14), target.getCreatedDate());
+        assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getLastUpdatedDate());
 
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(SrmRestConstants.KIND_CONCEPTS, target.getChildLinks().getChildLinks().get(0).getKind());
@@ -270,7 +260,7 @@ public class ConceptsDo2RestMapperTest {
         assertEquals(SrmRestConstants.KIND_CONCEPTS, target.getParentLink().getKind());
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
-        assertEquals("http://localhost:8080/metamac-srm-web/#structuralResources/conceptSchemes/conceptScheme;id=agencyID1:resourceID1(01.123)/concept;id=concept2", target.getManagementAppLink());
+        assertNull(target.getManagementAppLink());
 
         assertEqualsInternationalString("es", "comment-concept2 en Español", "en", "comment-concept2 in English", target.getComment());
         assertEqualsInternationalString("es", "pluralName-concept2 en Español", "en", "pluralName-concept2 in English", target.getPluralName());

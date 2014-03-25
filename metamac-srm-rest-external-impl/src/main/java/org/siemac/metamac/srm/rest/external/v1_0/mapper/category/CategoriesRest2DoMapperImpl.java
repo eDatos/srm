@@ -75,20 +75,11 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                 case VALID_TO:
                     return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CategorySchemeVersionMetamacProperties.maintainableArtefact().validTo(),
                             CategorySchemeVersionMetamac.class, false);
-                case PROC_STATUS:
-                    return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().procStatus(), PropertyTypeEnum.PROC_STATUS, propertyRestriction);
-                case INTERNAL_PUBLICATION_DATE:
-                    return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationDate(),
-                            CategorySchemeVersionMetamac.class, true);
-                case INTERNAL_PUBLICATION_USER:
-                    return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().internalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
-                case EXTERNAL_PUBLICATION_DATE:
+                case LAST_UPDATED_DATE:
                     return buildSculptorPropertyCriteriaForDateProperty(propertyRestriction, CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationDate(),
                             CategorySchemeVersionMetamac.class, true);
-                case EXTERNAL_PUBLICATION_USER:
-                    return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.lifeCycleMetadata().externalPublicationUser(), PropertyTypeEnum.STRING, propertyRestriction);
                 case LATEST:
-                    return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                    return buildSculptorPropertyCriteria(CategorySchemeVersionMetamacProperties.maintainableArtefact().latestPublic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
                     throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
@@ -129,11 +120,8 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                     return buildSculptorPropertyCriteria(CategoryMetamacProperties.nameableArtefact().description().texts().label(), PropertyTypeEnum.STRING, propertyRestriction);
                 case CATEGORY_SCHEME_URN:
                     return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact());
-                case CATEGORY_SCHEME_PROC_STATUS:
-                    return buildSculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic(), PropertyTypeEnum.PROC_STATUS_ITEM_SCHEME_FROM_ITEM,
-                            propertyRestriction);
                 case CATEGORY_SCHEME_LATEST:
-                    return buildSculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                    return buildSculptorPropertyCriteria(CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact().latestPublic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
                     throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
@@ -175,7 +163,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
                 case CATEGORY_URN:
                     return buildSculptorPropertyCriteriaDisjunctionForUrnProperty(propertyRestriction, CategorisationProperties.category().nameableArtefact());
                 case LATEST:
-                    return buildSculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                    return buildSculptorPropertyCriteria(CategorisationProperties.maintainableArtefact().latestPublic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 default:
                     throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }

@@ -1,6 +1,6 @@
 package org.siemac.metamac.srm.rest.external.v1_0.dsd.utils;
 
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ResourceInternal;
+import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.external.v1_0.utils.Asserts;
@@ -9,7 +9,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 
 public class DataStructuresAsserts extends Asserts {
 
-    public static void assertEqualsResource(DataStructureDefinitionVersionMetamac expected, ResourceInternal actual) {
+    public static void assertEqualsResource(DataStructureDefinitionVersionMetamac expected, Resource actual) {
         MaintainableArtefact maintainableArtefact = expected.getMaintainableArtefact();
         String agency = maintainableArtefact.getMaintainer().getIdAsMaintainer();
         String code = maintainableArtefact.getCode();

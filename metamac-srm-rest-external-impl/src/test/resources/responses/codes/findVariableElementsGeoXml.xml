@@ -18,7 +18,6 @@
                         <cdomain:text xml:lang="en">name-geo-artefact1 in English</cdomain:text>
                         <cdomain:text xml:lang="es">name-geo-artefact1 en Español</cdomain:text>
                     </cdomain:name>
-                    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=ISTAC:codelist01(01.000)/code;id=geo-artefact1</sr:managementAppLink>
                 </sr:geographicalGranularity>
                 <sr:lastUpdatedDate>2013-01-02T03:10:50Z</sr:lastUpdatedDate>
             </sr:properties>
@@ -39,7 +38,6 @@
                         <cdomain:text xml:lang="en">name-geo-artefact2 in English</cdomain:text>
                         <cdomain:text xml:lang="es">name-geo-artefact2 en Español</cdomain:text>
                     </cdomain:name>
-                    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=ISTAC:codelist01(01.000)/code;id=geo-artefact2</sr:managementAppLink>
                 </sr:geographicalGranularity>
                 <sr:lastUpdatedDate>2013-01-02T03:10:50Z</sr:lastUpdatedDate>
             </sr:properties>

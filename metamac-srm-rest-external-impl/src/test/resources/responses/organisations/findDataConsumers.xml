@@ -8,7 +8,6 @@
             <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
         </cdomain:name>
-        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_CONSUMER_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=item1</sr:managementAppLink>
     </sr:dataConsumer>
     <sr:dataConsumer kind="structuralResources#dataConsumer">
         <cdomain:id>item2</cdomain:id>
@@ -18,7 +17,6 @@
             <cdomain:text xml:lang="es">name-item2 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item2 in English</cdomain:text>
         </cdomain:name>
-        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_CONSUMER_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=item2</sr:managementAppLink>
     </sr:dataConsumer>
     <sr:dataConsumer kind="structuralResources#dataConsumer">
         <cdomain:id>item3</cdomain:id>
@@ -28,7 +26,6 @@
             <cdomain:text xml:lang="es">name-item3 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item3 in English</cdomain:text>
         </cdomain:name>
-        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_CONSUMER_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=item3</sr:managementAppLink>
     </sr:dataConsumer>
     <sr:dataConsumer kind="structuralResources#dataConsumer">
         <cdomain:id>item1</cdomain:id>
@@ -38,6 +35,5 @@
             <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
         </cdomain:name>
-        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=DATA_CONSUMER_SCHEME;id=agency1:itemScheme2(01.000)/organisation;id=item1</sr:managementAppLink>
     </sr:dataConsumer>
 </sr:dataConsumers>

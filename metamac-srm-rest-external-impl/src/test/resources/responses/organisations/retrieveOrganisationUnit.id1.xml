@@ -27,7 +27,6 @@
     <sr:uri>http://data.istac.es/apis/structural-resources/v1.0/organisationunitschemes/agency1/itemScheme1/01.000/organisationunits/item1</sr:uri>
     <sr:selfLink kind="structuralResources#organisationUnit" href="http://data.istac.es/apis/structural-resources/v1.0/organisationunitschemes/agency1/itemScheme1/01.000/organisationunits/item1"/>
     <sr:parentLink kind="structuralResources#organisationUnits" href="http://data.istac.es/apis/structural-resources/v1.0/organisationunitschemes/agency1/itemScheme1/01.000/organisationunits"/>
-    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=ORGANISATION_UNIT_SCHEME;id=agency1:itemScheme1(01.000)/organisation;id=item1</sr:managementAppLink>
     <sr:name>
         <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>

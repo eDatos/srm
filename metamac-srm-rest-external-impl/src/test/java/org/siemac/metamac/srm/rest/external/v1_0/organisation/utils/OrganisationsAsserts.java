@@ -3,7 +3,7 @@ package org.siemac.metamac.srm.rest.external.v1_0.organisation.utils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.ResourceInternal;
+import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.external.v1_0.service.utils.SrmRestInternalUtils;
@@ -17,7 +17,7 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 
 public class OrganisationsAsserts extends Asserts {
 
-    public static void assertEqualsResource(OrganisationSchemeVersionMetamac expected, String kindExpected, String itemSchemeSubpathExpected, ResourceInternal actual) {
+    public static void assertEqualsResource(OrganisationSchemeVersionMetamac expected, String kindExpected, String itemSchemeSubpathExpected, Resource actual) {
         MaintainableArtefact maintainableArtefact = expected.getMaintainableArtefact();
         String agency = maintainableArtefact.getMaintainer().getIdAsMaintainer();
         String code = maintainableArtefact.getCode();
@@ -29,7 +29,7 @@ public class OrganisationsAsserts extends Asserts {
     }
 
     public static void assertEqualsResource(ItemSchemeVersion itemSchemeVersion, OrganisationMetamac expected, ItemResult expectedItemResult, String kindExpected, String itemSchemeSubpathExpected,
-            String itemsSubpathExpected, ResourceInternal actual) {
+            String itemsSubpathExpected, Resource actual) {
         MaintainableArtefact maintainableArtefact = itemSchemeVersion.getMaintainableArtefact();
         String agency = maintainableArtefact.getMaintainer().getIdAsMaintainer();
         String codeItemScheme = maintainableArtefact.getCode();

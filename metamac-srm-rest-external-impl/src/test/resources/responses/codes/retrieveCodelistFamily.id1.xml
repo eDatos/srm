@@ -26,7 +26,6 @@
     <sr:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistFamily=artefact1</sr:urn>
     <sr:uri>uriProvider:artefact1</sr:uri>
     <sr:selfLink kind="structuralResources#codelistFamily" href="http://data.istac.es/apis/structural-resources/v1.0/codelistfamilies/artefact1"/>
-    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelistFamilies/codelistFamily;id=artefact1</sr:managementAppLink>
     <sr:name>
         <cdomain:text xml:lang="en">name-artefact1 in English</cdomain:text>
         <cdomain:text xml:lang="es">name-artefact1 en Español</cdomain:text>
