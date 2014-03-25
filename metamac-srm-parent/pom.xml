@@ -15,7 +15,7 @@
     <description>SIEMAC :: METAMAC :: SRM :: PARENT</description>
 
     <properties>
-        <metamac-srm-rest-internal-api.version>1.0.1</metamac-srm-rest-internal-api.version>
+        <metamac-srm-rest-internal-api.version>1.0.2-SNAPSHOT</metamac-srm-rest-internal-api.version>
         <metamac-srm-rest-api-common.version>1.0.0</metamac-srm-rest-api-common.version>
         <metamac-web-common.version>1.10.0-SNAPSHOT</metamac-web-common.version>
         <metamac-statistical-operations-rest-internal-api.version>1.5.0</metamac-statistical-operations-rest-internal-api.version>
