@@ -64,7 +64,7 @@
         <xs:complexContent>
             <xs:extension base="tns:IdentifiableArtefact">
                 <xs:sequence>
-                    <xs:element name="conceptIdentity" type="tns:ItemResourceInternal" minOccurs="0" />
+                    <xs:element name="conceptIdentity" type="tns:ItemResource" minOccurs="0" />
                     <xs:element name="localRepresentation" type="tns:Representation" minOccurs="0" />
                 </xs:sequence>
             </xs:extension>
@@ -83,7 +83,6 @@
             <xs:extension base="tns:NameableArtefact">
                 <xs:sequence>
                     <xs:element name="version" type="xs:string" />
-                    <xs:element name="createdDate" type="xs:dateTime" minOccurs="1" />
                     <xs:element name="validFrom" type="xs:dateTime" />
                     <xs:element name="validTo" type="xs:dateTime" minOccurs="0" />
                     <xs:element name="replaceToVersion" type="xs:string" minOccurs="0" />
@@ -133,7 +132,7 @@
             <xs:extension base="tns:ItemScheme">
                 <xs:sequence>
                     <xs:element name="type" type="tns:ConceptSchemeType" />
-                    <xs:element name="statisticalOperation" type="tns:ResourceInternal" minOccurs="0" />
+                    <xs:element name="statisticalOperation" type="common:Resource" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -150,12 +149,11 @@
                     <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="context" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="docMethod" type="common:InternationalString" minOccurs="0" />
-                    <xs:element name="sdmxRelatedArtefact" type="tns:SdmxRelatedArtefact" minOccurs="0" />
                     <xs:element name="type" type="common:Item" minOccurs="0" />
                     <xs:element name="roles" type="tns:RoleConcepts" minOccurs="0" />
-                    <xs:element name="variable" type="tns:ResourceInternal" minOccurs="0" />
+                    <xs:element name="variable" type="common:Resource" minOccurs="0" />
                     <xs:element name="derivation" type="common:InternationalString" minOccurs="0" />
-                    <xs:element name="extends" type="tns:ItemResourceInternal" minOccurs="0" />
+                    <xs:element name="extends" type="tns:ItemResource" minOccurs="0" />
                     <xs:element name="relatedConcepts" type="tns:RelatedConcepts" minOccurs="0" />
                     <xs:element name="legalActs" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="quantity" type="tns:Quantity" minOccurs="0" />
@@ -203,12 +201,8 @@
                 <xs:sequence>
                     <xs:element name="shortName" type="common:InternationalString" minOccurs="0" />
                     <xs:element name="descriptionSource" type="common:InternationalString" minOccurs="0" />
-                    <xs:element name="accessType" type="tns:AccessType" minOccurs="1" />
                     <xs:element name="isRecommended" type="xs:boolean" minOccurs="0" />
                     <xs:element name="replaceTo" type="tns:ReplaceToResources" minOccurs="0" />
-                    <xs:element name="replacedBy" type="tns:ResourceInternal" minOccurs="0" />
-                    <xs:element name="family" type="tns:ResourceInternal" minOccurs="0" />
-                    <xs:element name="variable" type="tns:ResourceInternal" minOccurs="1" />
                     <xs:element name="orderConfigurations" type="tns:VisualisationConfigurations" minOccurs="1" />
                     <xs:element name="opennessConfigurations" type="tns:VisualisationConfigurations" minOccurs="1" />
                 </xs:sequence>
@@ -222,7 +216,6 @@
             <xs:extension base="tns:Item">
                 <xs:sequence>
                     <xs:element name="shortName" type="common:InternationalString" minOccurs="0" />
-                    <xs:element name="variableElement" type="tns:ResourceInternal" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -243,7 +236,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="codelistFamily" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="codelistFamily" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -263,7 +256,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="variableFamily" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="variableFamily" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -275,11 +268,9 @@
                 <xs:sequence>
                     <xs:element name="shortName" type="common:InternationalString" />
                     <xs:element name="type" type="tns:VariableType" minOccurs="0" />
-                    <xs:element name="validFrom" type="xs:dateTime" minOccurs="0" />
-                    <xs:element name="validTo" type="xs:dateTime" minOccurs="0" />
-                    <xs:element name="replacedBy" type="tns:ResourceInternal" minOccurs="0" />
+                    <xs:element name="replacedBy" type="common:Resource" minOccurs="0" />
                     <xs:element name="replaceTo" type="tns:ReplaceToResources" minOccurs="0" />
-                    <xs:element name="family" type="tns:VariableFamilyMetadata" minOccurs="1" />
+                    <xs:element name="families" type="tns:VariableFamiliesMetadata" minOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -290,7 +281,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="variable" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="variable" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -300,11 +291,9 @@
         <xs:complexContent>
             <xs:extension base="tns:NameableArtefact">
                 <xs:sequence>
-                    <xs:element name="validFrom" type="xs:dateTime" minOccurs="0" />
-                    <xs:element name="validTo" type="xs:dateTime" minOccurs="0" />
-                    <xs:element name="replacedBy" type="tns:ResourceInternal" minOccurs="0" />
+                    <xs:element name="replacedBy" type="common:Resource" minOccurs="0" />
                     <xs:element name="replaceTo" type="tns:ReplaceToResources" minOccurs="0" />
-                    <xs:element name="variable" type="tns:ResourceInternal" minOccurs="1" />
+                    <xs:element name="variable" type="common:Resource" minOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="kind" type="xs:string" use="required" />
             </xs:extension>
@@ -315,7 +304,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="variableElement" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="variableElement" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -352,16 +341,16 @@
             <xs:element name="urn" type="xs:string" minOccurs="1" />
             <xs:element name="longitude" type="xs:double" minOccurs="0" />
             <xs:element name="latitude" type="xs:double" minOccurs="0" />
-            <xs:element name="geographicalGranularity" type="tns:ItemResourceInternal" minOccurs="0" />
+            <xs:element name="geographicalGranularity" type="tns:ItemResource" minOccurs="0" />
             <xs:element name="lastUpdatedDate" type="xs:dateTime" minOccurs="0" />
         </xs:sequence>
     </xs:complexType>          
 
-    <xs:complexType name="VariableFamilyMetadata">
+    <xs:complexType name="VariableFamiliesMetadata">
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="family" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="family" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -372,7 +361,7 @@
             <xs:extension base="tns:MaintainableArtefact">
                 <xs:sequence>
                     <xs:element name="dataStructureComponents" type="tns:DataStructureComponents" minOccurs="0" />
-                    <xs:element name="statisticalOperation" type="tns:ResourceInternal" minOccurs="0" />
+                    <xs:element name="statisticalOperation" type="common:Resource" minOccurs="0" />
                     <xs:element name="autoOpen" type="xs:boolean" minOccurs="0" />
                     <xs:element name="heading" type="tns:DimensionReferences" minOccurs="1" />
                     <xs:element name="stub" type="tns:DimensionReferences" minOccurs="1" />
@@ -530,7 +519,7 @@
 
     <xs:complexType name="ShowDecimalPrecision">
         <xs:sequence>
-            <xs:element name="concept" type="tns:ItemResourceInternal" minOccurs="1" />
+            <xs:element name="concept" type="tns:ItemResource" minOccurs="1" />
             <xs:element name="showDecimals" type="xs:int" minOccurs="1" />
         </xs:sequence>
     </xs:complexType>
@@ -538,14 +527,12 @@
     <xs:complexType name="DimensionVisualisation">
         <xs:sequence>
             <xs:element name="dimension" type="xs:string" minOccurs="1" />
-            <xs:element name="order" type="xs:string" minOccurs="0" />
-            <xs:element name="openness" type="xs:string" minOccurs="0" />
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="Quantity">
         <xs:sequence>
-            <xs:element name="unitCode" type="tns:ItemResourceInternal" minOccurs="1" />
+            <xs:element name="unitCode" type="tns:ItemResource" minOccurs="1" />
             <xs:element name="unitSymbolPosition" type="tns:QuantityUnitSymbolPosition" minOccurs="1" />
             <xs:element name="significantDigits" type="xs:int" minOccurs="0" />
             <xs:element name="decimalPlaces" type="xs:int" minOccurs="0" />
@@ -575,8 +562,8 @@
         <xs:complexContent>
             <xs:extension base="tns:QuantityMagnitude">
                 <xs:sequence>
-                    <xs:element name="numerator" type="tns:ItemResourceInternal" minOccurs="0" />
-                    <xs:element name="denominator" type="tns:ItemResourceInternal" minOccurs="0" />
+                    <xs:element name="numerator" type="tns:ItemResource" minOccurs="0" />
+                    <xs:element name="denominator" type="tns:ItemResource" minOccurs="0" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -606,7 +593,7 @@
                 <xs:sequence>
                     <xs:element name="baseValue" type="xs:int" minOccurs="0" />
                     <xs:element name="baseTime" type="xs:string" minOccurs="0" />
-                    <xs:element name="baseLocation" type="tns:ItemResourceInternal" minOccurs="0" />
+                    <xs:element name="baseLocation" type="tns:ItemResource" minOccurs="0" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -616,7 +603,7 @@
         <xs:complexContent>
             <xs:extension base="tns:QuantityRate">
                 <xs:sequence>
-                    <xs:element name="baseQuantity" type="tns:ItemResourceInternal" minOccurs="0" />
+                    <xs:element name="baseQuantity" type="tns:ItemResource" minOccurs="0" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -626,8 +613,8 @@
         <xs:choice>
             <xs:element name="textFormat" type="tns:TextFormat" />
             <xs:choice>
-                <xs:element name="enumerationCodelist" type="tns:ResourceInternal" />
-                <xs:element name="enumerationConceptScheme" type="tns:ResourceInternal" />
+                <xs:element name="enumerationCodelist" type="common:Resource" />
+                <xs:element name="enumerationConceptScheme" type="common:Resource" />
             </xs:choice>
         </xs:choice>
     </xs:complexType>
@@ -657,7 +644,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="conceptScheme" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="conceptScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -667,7 +654,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="concept" type="tns:ItemResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="concept" type="tns:ItemResource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -687,7 +674,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="categoryScheme" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="categoryScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -697,7 +684,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="category" type="tns:ItemResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="category" type="tns:ItemResource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -707,7 +694,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="categorisation" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="categorisation" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -717,7 +704,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="organisationScheme" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="organisationScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -727,7 +714,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="agencyScheme" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="agencyScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -737,7 +724,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="organisationUnitScheme" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="organisationUnitScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -747,7 +734,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="dataProviderScheme" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="dataProviderScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -757,7 +744,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="dataConsumerScheme" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="dataConsumerScheme" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -813,7 +800,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="organisation" type="tns:ItemResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="organisation" type="tns:ItemResource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -823,7 +810,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="agency" type="tns:ItemResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="agency" type="tns:ItemResource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -833,7 +820,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="organisationUnit" type="tns:ItemResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="organisationUnit" type="tns:ItemResource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -843,7 +830,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="dataProvider" type="tns:ItemResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="dataProvider" type="tns:ItemResource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -853,7 +840,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="dataConsumer" type="tns:ItemResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="dataConsumer" type="tns:ItemResource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -933,7 +920,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="codelist" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="codelist" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -943,7 +930,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="code" type="tns:CodeResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="code" type="tns:CodeResource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -953,7 +940,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="dataStructure" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="dataStructure" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -993,7 +980,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="relatedConcept" type="tns:ItemResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="relatedConcept" type="tns:ItemResource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -1003,7 +990,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="role" type="tns:ItemResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="role" type="tns:ItemResource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -1013,7 +1000,7 @@
         <xs:complexContent>
             <xs:extension base="common:ListBase">
                 <xs:sequence>
-                    <xs:element name="replaceTo" type="tns:ResourceInternal" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="replaceTo" type="common:Resource" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -1185,13 +1172,9 @@
             <xs:enumeration value="DESCRIPTION" />
             <xs:enumeration value="TYPE" />
             <xs:enumeration value="STATISTICAL_OPERATION_URN" />
-            <xs:enumeration value="PROC_STATUS" />
             <xs:enumeration value="VALID_FROM" />
             <xs:enumeration value="VALID_TO" />
-            <xs:enumeration value="INTERNAL_PUBLICATION_DATE" />
-            <xs:enumeration value="INTERNAL_PUBLICATION_USER" />
-            <xs:enumeration value="EXTERNAL_PUBLICATION_DATE" />
-            <xs:enumeration value="EXTERNAL_PUBLICATION_USER" />
+            <xs:enumeration value="LAST_UPDATED_DATE" />
             <xs:enumeration value="LATEST" />
         </xs:restriction>
     </xs:simpleType>
@@ -1215,7 +1198,6 @@
             <xs:enumeration value="CONCEPT_SCHEME_URN" />
             <xs:enumeration value="CONCEPT_SCHEME_TYPE" />
             <xs:enumeration value="CONCEPT_SCHEME_STATISTICAL_OPERATION_URN" />
-            <xs:enumeration value="CONCEPT_SCHEME_PROC_STATUS" />
             <xs:enumeration value="CONCEPT_SCHEME_LATEST" />
         </xs:restriction>
     </xs:simpleType>
@@ -1232,13 +1214,9 @@
             <xs:enumeration value="URN" />
             <xs:enumeration value="NAME" />
             <xs:enumeration value="DESCRIPTION" />
-            <xs:enumeration value="PROC_STATUS" />
             <xs:enumeration value="VALID_FROM" />
             <xs:enumeration value="VALID_TO" />
-            <xs:enumeration value="INTERNAL_PUBLICATION_DATE" />
-            <xs:enumeration value="INTERNAL_PUBLICATION_USER" />
-            <xs:enumeration value="EXTERNAL_PUBLICATION_DATE" />
-            <xs:enumeration value="EXTERNAL_PUBLICATION_USER" />
+            <xs:enumeration value="LAST_UPDATED_DATE" />
             <xs:enumeration value="LATEST" />
         </xs:restriction>
     </xs:simpleType>
@@ -1256,7 +1234,6 @@
             <xs:enumeration value="NAME" />
             <xs:enumeration value="DESCRIPTION" />
             <xs:enumeration value="CATEGORY_SCHEME_URN" />
-            <xs:enumeration value="CATEGORY_SCHEME_PROC_STATUS" />
             <xs:enumeration value="CATEGORY_SCHEME_LATEST" />
         </xs:restriction>
     </xs:simpleType>
@@ -1291,13 +1268,9 @@
             <xs:enumeration value="NAME" />
             <xs:enumeration value="DESCRIPTION" />
             <xs:enumeration value="TYPE" />
-            <xs:enumeration value="PROC_STATUS" />
             <xs:enumeration value="VALID_FROM" />
             <xs:enumeration value="VALID_TO" />
-            <xs:enumeration value="INTERNAL_PUBLICATION_DATE" />
-            <xs:enumeration value="INTERNAL_PUBLICATION_USER" />
-            <xs:enumeration value="EXTERNAL_PUBLICATION_DATE" />
-            <xs:enumeration value="EXTERNAL_PUBLICATION_USER" />
+            <xs:enumeration value="LAST_UPDATED_DATE" />
             <xs:enumeration value="LATEST" />
         </xs:restriction>
     </xs:simpleType>
@@ -1316,7 +1289,6 @@
             <xs:enumeration value="DESCRIPTION" />
             <xs:enumeration value="TYPE" />
             <xs:enumeration value="ORGANISATION_SCHEME_URN" />
-            <xs:enumeration value="ORGANISATION_SCHEME_PROC_STATUS" />
             <xs:enumeration value="ORGANISATION_SCHEME_LATEST" />
         </xs:restriction>
     </xs:simpleType>
@@ -1334,14 +1306,9 @@
             <xs:enumeration value="NAME" />
             <xs:enumeration value="DESCRIPTION" />
             <xs:enumeration value="DESCRIPTION_SOURCE" />
-            <xs:enumeration value="VARIABLE_URN" />
-            <xs:enumeration value="PROC_STATUS" />
             <xs:enumeration value="VALID_FROM" />
             <xs:enumeration value="VALID_TO" />
-            <xs:enumeration value="INTERNAL_PUBLICATION_DATE" />
-            <xs:enumeration value="INTERNAL_PUBLICATION_USER" />
-            <xs:enumeration value="EXTERNAL_PUBLICATION_DATE" />
-            <xs:enumeration value="EXTERNAL_PUBLICATION_USER" />
+            <xs:enumeration value="LAST_UPDATED_DATE" />
             <xs:enumeration value="LATEST" />
         </xs:restriction>
     </xs:simpleType>
@@ -1360,9 +1327,7 @@
             <xs:enumeration value="SHORT_NAME" />
             <xs:enumeration value="DESCRIPTION" />
             <xs:enumeration value="CODELIST_URN" />
-            <xs:enumeration value="CODELIST_PROC_STATUS" />
             <xs:enumeration value="CODELIST_LATEST" />
-            <xs:enumeration value="VARIABLE_ELEMENT_URN" />
             <xs:enumeration value="DEFAULT_GEOGRAPHICAL_GRANULARITIES_CODELIST" />
         </xs:restriction>
     </xs:simpleType>
@@ -1440,16 +1405,12 @@
             <xs:enumeration value="URN" />
             <xs:enumeration value="NAME" />
             <xs:enumeration value="DESCRIPTION" />
-            <xs:enumeration value="PROC_STATUS" />
             <xs:enumeration value="STATISTICAL_OPERATION_URN" />
             <xs:enumeration value="DIMENSION_CONCEPT_URN" />
             <xs:enumeration value="ATTRIBUTE_CONCEPT_URN" />
             <xs:enumeration value="VALID_FROM" />
             <xs:enumeration value="VALID_TO" />
-            <xs:enumeration value="INTERNAL_PUBLICATION_DATE" />
-            <xs:enumeration value="INTERNAL_PUBLICATION_USER" />
-            <xs:enumeration value="EXTERNAL_PUBLICATION_DATE" />
-            <xs:enumeration value="EXTERNAL_PUBLICATION_USER" />
+            <xs:enumeration value="LAST_UPDATED_DATE" />
             <xs:enumeration value="LATEST" />
         </xs:restriction>
     </xs:simpleType>
@@ -1462,32 +1423,13 @@
 
     <xs:complexType name="LifeCycle">
         <xs:sequence>
-            <xs:element name="procStatus" type="tns:ProcStatus" minOccurs="1" />
-            <xs:element name="productionValidationDate" type="xs:dateTime" minOccurs="1" />
-            <xs:element name="productionValidationUser" type="xs:string" minOccurs="1" />
-            <xs:element name="diffusionValidationDate" type="xs:dateTime" minOccurs="1" />
-            <xs:element name="diffusionValidationUser" type="xs:string" minOccurs="1" />
-            <xs:element name="internalPublicationDate" type="xs:dateTime" minOccurs="1" />
-            <xs:element name="internalPublicationUser" type="xs:string" minOccurs="1" />
-            <xs:element name="externalPublicationDate" type="xs:dateTime" minOccurs="0" />
-            <xs:element name="externalPublicationUser" type="xs:string" minOccurs="0" />
+            <xs:element name="lastUpdatedDate" type="xs:dateTime" minOccurs="0" />
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="ResourceInternal">
+    <xs:complexType name="ItemResource">
         <xs:complexContent>
             <xs:extension base="common:Resource">
-                <xs:sequence>
-                    <xs:element name="urnProvider" type="xs:string" minOccurs="1" />
-                    <xs:element name="managementAppLink" type="xs:string" />
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:complexType name="ItemResourceInternal">
-        <xs:complexContent>
-            <xs:extension base="tns:ResourceInternal">
                 <xs:sequence>
                     <xs:element name="parent" type="xs:string" minOccurs="0" />
                 </xs:sequence>
@@ -1495,13 +1437,11 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="CodeResourceInternal">
+    <xs:complexType name="CodeResource">
         <xs:complexContent>
-            <xs:extension base="tns:ItemResourceInternal">
+            <xs:extension base="tns:ItemResource">
                 <xs:sequence>
-                    <xs:element name="variableElement" type="tns:ResourceInternal" minOccurs="0" />
-                    <xs:element name="order" type="xs:int" minOccurs="0" />
-                    <xs:element name="open" type="xs:boolean" minOccurs="0" />
+                    <xs:element name="variableElement" type="common:Resource" minOccurs="0" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
