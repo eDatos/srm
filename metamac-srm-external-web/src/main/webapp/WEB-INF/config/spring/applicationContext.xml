@@ -13,8 +13,8 @@
     <context:annotation-config />
     <!-- Core -->
     <import resource="classpath:/spring/srm/applicationContext.xml" />
-    <!-- Rest. SDMX API is not yet published in this war -->
-<!--     <import resource="classpath:/spring/sdmx-srm-rest-external/applicationContext.xml" /> -->
+    <!-- Rest -->
+    <import resource="classpath:/spring/srm-rest-external/applicationContext.xml" />
     <!-- Soap -->   
     <import resource="classpath:/spring/srm-soap-external/applicationContext.xml" />
 </beans>
