@@ -545,12 +545,12 @@ public class CodesDo2RestMapperTest {
         assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/variables/variableReplaceTo1", target.getReplaceTo().getReplaceTos().get(0).getSelfLink().getHref());
         assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplaceTo2", target.getReplaceTo().getReplaceTos().get(1).getUrn());
 
-        assertEquals(SrmRestConstants.KIND_VARIABLE_FAMILIES, target.getFamily().getKind());
-        assertEquals(BigInteger.valueOf(3), target.getFamily().getTotal());
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily1", target.getFamily().getFamilies().get(0).getUrn());
-        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies/variableFamily1", target.getFamily().getFamilies().get(0).getSelfLink().getHref());
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily2", target.getFamily().getFamilies().get(1).getUrn());
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily3", target.getFamily().getFamilies().get(2).getUrn());
+        assertEquals(SrmRestConstants.KIND_VARIABLE_FAMILIES, target.getFamilies().getKind());
+        assertEquals(BigInteger.valueOf(3), target.getFamilies().getTotal());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily1", target.getFamilies().getFamilies().get(0).getUrn());
+        assertEquals("http://data.istac.es/apis/structural-resources-internal/v1.0/variablefamilies/variableFamily1", target.getFamilies().getFamilies().get(0).getSelfLink().getHref());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily2", target.getFamilies().getFamilies().get(1).getUrn());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily3", target.getFamilies().getFamilies().get(2).getUrn());
 
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, target.getChildLinks().getChildLinks().get(0).getKind());

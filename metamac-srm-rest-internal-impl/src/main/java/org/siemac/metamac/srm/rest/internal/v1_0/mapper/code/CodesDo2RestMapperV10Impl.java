@@ -50,8 +50,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variabl
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElementsGeoInfoFeatureProperties;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElementsGeoInfoFeatures;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamiliesMetadata;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily;
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilyMetadata;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VisualisationConfiguration;
@@ -337,7 +337,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setValidTo(toDate(source.getValidTo()));
         target.setReplacedBy(toResource(source.getReplacedByVariable()));
         target.setReplaceTo(toVariableReplaceTo(source));
-        target.setFamily(toVariableFamilyMetadata(source));
+        target.setFamilies(toVariableFamiliesMetadata(source));
         return target;
     }
 
@@ -783,11 +783,11 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    private VariableFamilyMetadata toVariableFamilyMetadata(org.siemac.metamac.srm.core.code.domain.Variable source) {
+    private VariableFamiliesMetadata toVariableFamiliesMetadata(org.siemac.metamac.srm.core.code.domain.Variable source) {
         if (CollectionUtils.isEmpty(source.getFamilies())) {
             return null;
         }
-        VariableFamilyMetadata target = new VariableFamilyMetadata();
+        VariableFamiliesMetadata target = new VariableFamiliesMetadata();
         target.setKind(SrmRestConstants.KIND_VARIABLE_FAMILIES);
         target.setTotal(BigInteger.valueOf(source.getFamilies().size()));
         for (org.siemac.metamac.srm.core.code.domain.VariableFamily variableFamily : source.getFamilies()) {
