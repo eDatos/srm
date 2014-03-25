@@ -131,6 +131,13 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showCopyKeepingMaintainerButton() {
+        if (CodesClientSecurityUtils.canCopyCodelistKeepingMaintainer(maintainer, isTaskInBackground)) {
+            copyKeepingMaintainer.show();
+        }
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (CodesClientSecurityUtils.canAnnounceCodelist()) {

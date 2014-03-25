@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.ConfirmationWindow;
+import org.siemac.metamac.srm.web.client.widgets.CopyResourceWindow;
 import org.siemac.metamac.srm.web.client.widgets.CustomTabSet;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
@@ -420,6 +421,13 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
             @Override
             public void onClick(ClickEvent event) {
                 getUiHandlers().copyOrganisationScheme(organisationSchemeDto.getUrn());
+            }
+        });
+        mainFormLayout.getCopyKeepingMaintainer().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                copyOrganisationSchemeAskingCode(organisationSchemeDto.getUrn());
             }
         });
     }
@@ -880,6 +888,20 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 if (versionWindow.validateForm()) {
                     getUiHandlers().versioning(organisationSchemeDto.getUrn(), versionWindow.getSelectedVersion());
                     versionWindow.destroy();
+                }
+            }
+        });
+    }
+
+    private void copyOrganisationSchemeAskingCode(final String urn) {
+        final CopyResourceWindow copyResourceWindow = new CopyResourceWindow(getConstants().copyResource());
+        copyResourceWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+            @Override
+            public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                if (copyResourceWindow.validateForm()) {
+                    getUiHandlers().copyOrganisationScheme(urn, copyResourceWindow.getSelectedCode());
+                    copyResourceWindow.destroy();
                 }
             }
         });

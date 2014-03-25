@@ -162,6 +162,11 @@ public class OrganisationsClientSecurityUtils {
         return SharedOrganisationsSecurityUtils.canCopyOrganisationScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
     }
 
+    public static boolean canCopyOrganisationSchemeKeepingMaintainer(RelatedResourceDto maintainer) {
+        // Only resources from default organisations can be copied keeping maintainer
+        return SharedOrganisationsSecurityUtils.canCopyOrganisationScheme(MetamacSrmWeb.getCurrentUser()) && CommonUtils.isDefaultMaintainer(maintainer);
+    }
+
     // ORGANISATIONS
 
     public static boolean canCreateOrganisation(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {

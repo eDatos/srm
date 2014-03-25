@@ -144,6 +144,11 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canCopyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode) && !CommonUtils.isDefaultMaintainer(maintainer);
     }
 
+    public static boolean canCopyConceptSchemeKeepingMaintainer(ConceptSchemeTypeEnum type, String operationCode, RelatedResourceDto maintainer) {
+        // Only resources from default organisations can be copied keeping maintainer
+        return SharedConceptsSecurityUtils.canCopyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode) && CommonUtils.isDefaultMaintainer(maintainer);
+    }
+
     // Concepts
 
     public static boolean canCreateConcept(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {

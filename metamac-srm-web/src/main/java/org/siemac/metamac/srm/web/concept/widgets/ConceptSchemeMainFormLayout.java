@@ -109,6 +109,13 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showCopyKeepingMaintainerButton() {
+        if (ConceptsClientSecurityUtils.canCopyConceptSchemeKeepingMaintainer(type, relatedOperationCode, maintainer)) {
+            copyKeepingMaintainer.show();
+        }
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (ConceptsClientSecurityUtils.canAnnounceConceptScheme(type, relatedOperationCode)) {

@@ -308,7 +308,12 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void copyConceptScheme(String urn) {
-        dispatcher.execute(new CopyConceptSchemeAction(urn), new WaitingAsyncCallbackHandlingError<CopyConceptSchemeResult>(this) {
+        copyConceptScheme(urn, null);
+    }
+
+    @Override
+    public void copyConceptScheme(String urn, String code) {
+        dispatcher.execute(new CopyConceptSchemeAction(urn, code), new WaitingAsyncCallbackHandlingError<CopyConceptSchemeResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {

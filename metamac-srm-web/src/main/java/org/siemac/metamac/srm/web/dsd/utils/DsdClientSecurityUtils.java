@@ -96,6 +96,11 @@ public class DsdClientSecurityUtils {
         return SharedDsdSecurityUtils.canCopyDataStructureDefinition(MetamacSrmWeb.getCurrentUser()) && !org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer);
     }
 
+    public static boolean canCopyDsdKeepingMaintainer(RelatedResourceDto maintainer) {
+        // Only resources from default organisation can be copied keeping maintainer
+        return SharedDsdSecurityUtils.canCopyDataStructureDefinition(MetamacSrmWeb.getCurrentUser()) && org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer);
+    }
+
     // PRIMARY MEASURE
 
     public static boolean canUpdatePrimaryMeasure(ProcStatusEnum procStatus, String operationCode) {

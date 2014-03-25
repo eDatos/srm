@@ -294,7 +294,12 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
     @Override
     public void copyCategoryScheme(String urn) {
-        dispatcher.execute(new CopyCategorySchemeAction(urn), new WaitingAsyncCallbackHandlingError<CopyCategorySchemeResult>(this) {
+        copyCategoryScheme(urn, null);
+    }
+
+    @Override
+    public void copyCategoryScheme(String urn, String code) {
+        dispatcher.execute(new CopyCategorySchemeAction(urn, code), new WaitingAsyncCallbackHandlingError<CopyCategorySchemeResult>(this) {
 
             @Override
             public void onWaitSuccess(CopyCategorySchemeResult result) {

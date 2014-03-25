@@ -20,6 +20,7 @@ public interface OrganisationSchemeUiHandlers extends BaseOrganisationUiHandlers
     void retrieveLatestOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto);
     void exportOrganisationScheme(String urn);
     void copyOrganisationScheme(String urn);
+    void copyOrganisationScheme(String urn, String code);
 
     // Life cycle
 

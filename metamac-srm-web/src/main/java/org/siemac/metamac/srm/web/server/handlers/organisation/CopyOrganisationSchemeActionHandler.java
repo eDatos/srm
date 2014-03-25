@@ -27,7 +27,7 @@ public class CopyOrganisationSchemeActionHandler extends SecurityActionHandler<C
     @Override
     public CopyOrganisationSchemeResult executeSecurityAction(CopyOrganisationSchemeAction action) throws ActionException {
         try {
-            TaskInfo taskInfo = srmCoreServiceFacade.copyOrganisationScheme(ServiceContextHolder.getCurrentServiceContext(), action.getOrganisationSchemeUrn(), null);
+            TaskInfo taskInfo = srmCoreServiceFacade.copyOrganisationScheme(ServiceContextHolder.getCurrentServiceContext(), action.getOrganisationSchemeUrn(), action.getCode());
             // Organisation scheme will never be copied in background
             OrganisationSchemeMetamacDto organisationSchemeMetamacDto = srmCoreServiceFacade.retrieveOrganisationSchemeByUrn(ServiceContextHolder.getCurrentServiceContext(), taskInfo.getUrnResult());
             return new CopyOrganisationSchemeResult(organisationSchemeMetamacDto);

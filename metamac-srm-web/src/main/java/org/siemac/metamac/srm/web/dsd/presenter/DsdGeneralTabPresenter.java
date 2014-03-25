@@ -244,7 +244,12 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     @Override
     public void copyDsd(String urn) {
-        dispatcher.execute(new CopyDsdAction(urn), new WaitingAsyncCallbackHandlingError<CopyDsdResult>(this) {
+        copyDsd(urn, null);
+    }
+
+    @Override
+    public void copyDsd(String urn, String code) {
+        dispatcher.execute(new CopyDsdAction(urn, code), new WaitingAsyncCallbackHandlingError<CopyDsdResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {

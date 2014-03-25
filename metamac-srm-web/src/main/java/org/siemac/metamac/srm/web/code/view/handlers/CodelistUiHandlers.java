@@ -18,6 +18,7 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void addCodelistToFamily(String codelistUrn, String familyUrn);
     void retrieveLatestCodelist(CodelistMetamacDto codelistMetamacDto);
     void exportCodelist(String urn);
+    void copyCodelist(String urn, String code);
     void copyCodelist(String urn);
 
     void retrieveFamilies(int firstResult, int maxResults, String criteria);

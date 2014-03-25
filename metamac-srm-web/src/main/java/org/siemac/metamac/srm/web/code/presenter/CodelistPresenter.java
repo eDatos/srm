@@ -381,7 +381,12 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
     @Override
     public void copyCodelist(final String urn) {
-        dispatcher.execute(new CopyCodelistAction(urn), new WaitingAsyncCallbackHandlingError<CopyCodelistResult>(this) {
+        copyCodelist(urn, null);
+    }
+
+    @Override
+    public void copyCodelist(final String urn, final String code) {
+        dispatcher.execute(new CopyCodelistAction(urn, code), new WaitingAsyncCallbackHandlingError<CopyCodelistResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {

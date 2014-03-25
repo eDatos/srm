@@ -26,6 +26,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
     protected MainFormLayoutButton consolidateVersion;
     protected MainFormLayoutButton export;
     protected MainFormLayoutButton copy;
+    protected MainFormLayoutButton copyKeepingMaintainer;
     // protected AnnounceToolStripButton announce;
 
     protected String               urn;
@@ -58,6 +59,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         cancelValidity = new MainFormLayoutButton(getConstants().lifeCycleCancelValidity(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.disable().getURL());
         export = new MainFormLayoutButton(getConstants().actionExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         copy = new MainFormLayoutButton(getConstants().actionCopy(), GlobalResources.RESOURCE.copy().getURL());
+        copyKeepingMaintainer = new MainFormLayoutButton(getConstants().actionCopy(), GlobalResources.RESOURCE.copy().getURL());
         // announce = new AnnounceToolStripButton(MetamacWebCommon.getConstants().announce(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.announce().getURL());
 
         toolStrip.addButton(productionValidation);
@@ -70,6 +72,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         toolStrip.addButton(cancelValidity);
         toolStrip.addButton(export);
         toolStrip.addButton(copy);
+        toolStrip.addButton(copyKeepingMaintainer);
         // toolStrip.addButton(announce);
     }
 
@@ -133,6 +136,10 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         return copy;
     }
 
+    public HasClickHandlers getCopyKeepingMaintainer() {
+        return copyKeepingMaintainer;
+    }
+
     // public HasClickHandlers getAnnounce() {
     // return announce;
     // }
@@ -148,6 +155,7 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
         consolidateVersion.hide();
         export.hide();
         copy.hide();
+        copyKeepingMaintainer.hide();
         // announce.hide();
     }
 
@@ -189,11 +197,11 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
 
         showExportButton();
         showCopyButton();
+        showCopyKeepingMaintainerButton();
 
         // Announce button (does not depends on the procStatus)
         // showAnnounceButton();
     }
-
     protected abstract void showSendToProductionValidation();
 
     protected abstract void showSendToDiffusionValidation();
@@ -213,6 +221,8 @@ public abstract class LifeCycleMainFormLayout extends InternationalMainFormLayou
     protected abstract void showExportButton();
 
     protected abstract void showCopyButton();
+
+    protected abstract void showCopyKeepingMaintainerButton();
 
     // protected abstract void showAnnounceButton();
 }

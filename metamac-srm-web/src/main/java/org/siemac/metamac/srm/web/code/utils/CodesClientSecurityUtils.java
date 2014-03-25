@@ -215,6 +215,14 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canCopyCodelist(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
     }
 
+    public static boolean canCopyCodelistKeepingMaintainer(RelatedResourceDto maintainer, Boolean isTaskInBackground) {
+        if (isTaskInBackground(isTaskInBackground)) {
+            return false;
+        }
+        // Only resources from same organisations can be copied keeping maintainer
+        return SharedCodesSecurityUtils.canCopyCodelist(MetamacSrmWeb.getCurrentUser()) && CommonUtils.isDefaultMaintainer(maintainer);
+    }
+
     // CODES
 
     public static boolean canCreateCode(CodelistMetamacDto codelistMetamacDto) {
@@ -427,4 +435,5 @@ public class CodesClientSecurityUtils {
     private static boolean isTaskInBackground(Boolean isTaskInBackground) {
         return BooleanUtils.isTrue(isTaskInBackground);
     }
+
 }

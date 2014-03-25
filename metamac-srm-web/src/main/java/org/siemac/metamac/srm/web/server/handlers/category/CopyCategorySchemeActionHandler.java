@@ -27,7 +27,7 @@ public class CopyCategorySchemeActionHandler extends SecurityActionHandler<CopyC
     @Override
     public CopyCategorySchemeResult executeSecurityAction(CopyCategorySchemeAction action) throws ActionException {
         try {
-            TaskInfo taskInfo = srmCoreServiceFacade.copyCategoryScheme(ServiceContextHolder.getCurrentServiceContext(), action.getCategorySchemeUrn(), null);
+            TaskInfo taskInfo = srmCoreServiceFacade.copyCategoryScheme(ServiceContextHolder.getCurrentServiceContext(), action.getCategorySchemeUrn(), action.getCode());
             // Category scheme will never be copied in background
             CategorySchemeMetamacDto categorySchemeMetamacDto = srmCoreServiceFacade.retrieveCategorySchemeByUrn(ServiceContextHolder.getCurrentServiceContext(), taskInfo.getUrnResult());
             return new CopyCategorySchemeResult(categorySchemeMetamacDto);

@@ -315,7 +315,12 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void copyOrganisationScheme(String urn) {
-        dispatcher.execute(new CopyOrganisationSchemeAction(urn), new WaitingAsyncCallbackHandlingError<CopyOrganisationSchemeResult>(this) {
+        copyOrganisationScheme(urn, null);
+    }
+
+    @Override
+    public void copyOrganisationScheme(String urn, String code) {
+        dispatcher.execute(new CopyOrganisationSchemeAction(urn, code), new WaitingAsyncCallbackHandlingError<CopyOrganisationSchemeResult>(this) {
 
             @Override
             public void onWaitSuccess(CopyOrganisationSchemeResult result) {

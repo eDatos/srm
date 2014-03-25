@@ -95,6 +95,13 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showCopyKeepingMaintainerButton() {
+        if (CategoriesClientSecurityUtils.canCopyCategorySchemeKeepingMaintainer(maintainer)) {
+            copyKeepingMaintainer.show();
+        }
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (CategoriesClientSecurityUtils.canAnnounceCategoryScheme()) {
