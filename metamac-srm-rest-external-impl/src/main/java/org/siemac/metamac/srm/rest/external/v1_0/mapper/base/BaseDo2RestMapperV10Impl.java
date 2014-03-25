@@ -100,7 +100,6 @@ public abstract class BaseDo2RestMapperV10Impl {
 
         target.setName(toInternationalString(source.getName()));
         target.setDescription(toInternationalString(source.getDescription()));
-        target.setComment(toInternationalString(source.getComment()));
     }
 
     public void toVersionableArtefact(MaintainableArtefact source, org.siemac.metamac.rest.structural_resources.v1_0.domain.VersionableArtefact target, Boolean isImported) {

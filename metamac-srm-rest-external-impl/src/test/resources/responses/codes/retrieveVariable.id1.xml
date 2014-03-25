@@ -17,8 +17,8 @@
             <sr:type>type-code1</sr:type>
             <sr:url>url-code1</sr:url>
             <sr:text>
-                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
             </sr:text>
         </sr:annotation>
     </sr:annotations>
@@ -30,17 +30,13 @@
         <cdomain:childLink kind="structuralResources#variableElements" href="http://data.istac.es/apis/structural-resources/v1.0/variables/artefact1/variableelements"/>
     </sr:childLinks>
     <sr:name>
-        <cdomain:text xml:lang="en">name-artefact1 in English</cdomain:text>
         <cdomain:text xml:lang="es">name-artefact1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">name-artefact1 in English</cdomain:text>
     </sr:name>
     <sr:description>
         <cdomain:text xml:lang="es">description-artefact1 en Español</cdomain:text>
         <cdomain:text xml:lang="en">description-artefact1 in English</cdomain:text>
     </sr:description>
-    <sr:comment>
-        <cdomain:text xml:lang="es">comment-artefact1 en Español</cdomain:text>
-        <cdomain:text xml:lang="en">comment-artefact1 in English</cdomain:text>
-    </sr:comment>
     <sr:shortName>
         <cdomain:text xml:lang="es">shortName-artefact1 en Español</cdomain:text>
         <cdomain:text xml:lang="en">shortName-artefact1 in English</cdomain:text>
@@ -51,8 +47,8 @@
         <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplacedBy1</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#variable" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variableReplacedBy1"/>
         <cdomain:name>
-            <cdomain:text xml:lang="en">name-variableReplacedBy1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-variableReplacedBy1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-variableReplacedBy1 in English</cdomain:text>
         </cdomain:name>
     </sr:replacedBy>
     <sr:replaceTo kind="structuralResources#variables" total="2">
@@ -70,8 +66,8 @@
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variableReplaceTo2</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#variable" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variableReplaceTo2"/>
             <cdomain:name>
-                <cdomain:text xml:lang="en">name-variableReplaceTo2 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-variableReplaceTo2 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-variableReplaceTo2 in English</cdomain:text>
             </cdomain:name>
         </sr:replaceTo>
     </sr:replaceTo>
@@ -90,8 +86,8 @@
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableFamily=variableFamily2</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#variableFamily" href="http://data.istac.es/apis/structural-resources/v1.0/variablefamilies/variableFamily2"/>
             <cdomain:name>
-                <cdomain:text xml:lang="es">name-variableFamily2 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">name-variableFamily2 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-variableFamily2 en Español</cdomain:text>
             </cdomain:name>
         </sr:family>
         <sr:family kind="structuralResources#variableFamily">

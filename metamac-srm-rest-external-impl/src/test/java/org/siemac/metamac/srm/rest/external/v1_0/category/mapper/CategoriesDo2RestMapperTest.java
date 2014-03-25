@@ -10,7 +10,6 @@ import static org.siemac.metamac.srm.rest.external.v1_0.category.utils.Categorie
 import static org.siemac.metamac.srm.rest.external.v1_0.category.utils.CategoriesDoMocks.mockCategoryItemResult;
 import static org.siemac.metamac.srm.rest.external.v1_0.category.utils.CategoriesDoMocks.mockCategoryScheme;
 import static org.siemac.metamac.srm.rest.external.v1_0.category.utils.CategoriesDoMocks.mockCategorySchemeWithCategories;
-import static org.siemac.metamac.srm.rest.external.v1_0.utils.Asserts.assertEqualsInternationalString;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.ITEM_1_CODE;
@@ -119,7 +118,6 @@ public class CategoriesDo2RestMapperTest {
         assertEquals(SrmRestConstants.KIND_CATEGORY_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources/v1.0/categoryschemes", target.getParentLink().getHref());
         assertNull(target.getManagementAppLink());
-        assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
         // assertEquals("replacedBy", target.getReplacedByVersion());
@@ -255,7 +253,6 @@ public class CategoriesDo2RestMapperTest {
         assertNull(target.getChildLinks());
         assertNull(target.getManagementAppLink());
 
-        assertEqualsInternationalString("es", "comment-category2 en Español", "en", "comment-category2 in English", target.getComment());
         assertEquals("urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=agencyID1:resourceID1(01.123).categoryParent1", target.getParent());
     }
 

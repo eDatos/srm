@@ -2,16 +2,6 @@
 <sr:organisationUnitScheme xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#organisationUnitScheme">
     <sr:annotations total="2">
         <sr:annotation>
-            <sr:id>code1</sr:id>
-            <sr:title>title-code1</sr:title>
-            <sr:type>type-code1</sr:type>
-            <sr:url>url-code1</sr:url>
-            <sr:text>
-                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
-                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
-            </sr:text>
-        </sr:annotation>
-        <sr:annotation>
             <sr:id>code2</sr:id>
             <sr:title>title-code2</sr:title>
             <sr:type>type-code2</sr:type>
@@ -19,6 +9,16 @@
             <sr:text>
                 <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+        <sr:annotation>
+            <sr:id>code1</sr:id>
+            <sr:title>title-code1</sr:title>
+            <sr:type>type-code1</sr:type>
+            <sr:url>url-code1</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
             </sr:text>
         </sr:annotation>
     </sr:annotations>
@@ -38,10 +38,6 @@
         <cdomain:text xml:lang="es">description-itemScheme1v01.000 en Español</cdomain:text>
         <cdomain:text xml:lang="en">description-itemScheme1v01.000 in English</cdomain:text>
     </sr:description>
-    <sr:comment>
-        <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
-        <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
-    </sr:comment>
     <sr:version>01.000</sr:version>
     <sr:validFrom>2012-11-05T10:12:13.014Z</sr:validFrom>
     <sr:validTo>2013-10-04T10:12:13.014+01:00</sr:validTo>

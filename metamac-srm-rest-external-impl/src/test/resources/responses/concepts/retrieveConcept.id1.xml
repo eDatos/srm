@@ -2,16 +2,6 @@
 <sr:concept xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#concept">
     <sr:annotations total="2">
         <sr:annotation>
-            <sr:id>code1</sr:id>
-            <sr:title>title-code1</sr:title>
-            <sr:type>type-code1</sr:type>
-            <sr:url>url-code1</sr:url>
-            <sr:text>
-                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
-                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
-            </sr:text>
-        </sr:annotation>
-        <sr:annotation>
             <sr:id>code2</sr:id>
             <sr:title>title-code2</sr:title>
             <sr:type>type-code2</sr:type>
@@ -19,6 +9,16 @@
             <sr:text>
                 <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+        <sr:annotation>
+            <sr:id>code1</sr:id>
+            <sr:title>title-code1</sr:title>
+            <sr:type>type-code1</sr:type>
+            <sr:url>url-code1</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
             </sr:text>
         </sr:annotation>
     </sr:annotations>
@@ -32,13 +32,9 @@
         <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
     </sr:name>
     <sr:description>
-        <cdomain:text xml:lang="en">description-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">description-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">description-item1 in English</cdomain:text>
     </sr:description>
-    <sr:comment>
-        <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>
-        <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
-    </sr:comment>
     <sr:parent>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).item2</sr:parent>
     <sr:coreRepresentation>
         <sr:enumerationCodelist kind="structuralResources#codelist">
@@ -52,16 +48,16 @@
         </sr:enumerationCodelist>
     </sr:coreRepresentation>
     <sr:pluralName>
-        <cdomain:text xml:lang="en">pluralName-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">pluralName-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">pluralName-item1 in English</cdomain:text>
     </sr:pluralName>
     <sr:acronym>
         <cdomain:text xml:lang="en">acronym-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">acronym-item1 en Español</cdomain:text>
     </sr:acronym>
     <sr:descriptionSource>
-        <cdomain:text xml:lang="en">descriptionSource-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">descriptionSource-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">descriptionSource-item1 in English</cdomain:text>
     </sr:descriptionSource>
     <sr:context>
         <cdomain:text xml:lang="en">context-item1 in English</cdomain:text>
@@ -74,8 +70,8 @@
     <sr:type>
         <cdomain:id>conceptType1</cdomain:id>
         <cdomain:name>
-            <cdomain:text xml:lang="es">description-conceptType1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">description-conceptType1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">description-conceptType1 en Español</cdomain:text>
         </cdomain:name>
     </sr:type>
     <sr:roles kind="structuralResources#concepts" total="2">
@@ -93,8 +89,8 @@
             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID33(03.000).1_conceptRole2</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agencyID1/resourceID33/03.000/concepts/1_conceptRole2"/>
             <cdomain:name>
-                <cdomain:text xml:lang="en">name-1_conceptRole2 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-1_conceptRole2 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-1_conceptRole2 in English</cdomain:text>
             </cdomain:name>
         </sr:role>
     </sr:roles>
@@ -116,8 +112,8 @@
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agencyID1:resourceID11(01.000).1_conceptExtends1</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agencyID1/resourceID11/01.000/concepts/1_conceptExtends1"/>
         <cdomain:name>
-            <cdomain:text xml:lang="en">name-1_conceptExtends1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-1_conceptExtends1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-1_conceptExtends1 in English</cdomain:text>
         </cdomain:name>
     </sr:extends>
     <sr:relatedConcepts kind="structuralResources#concepts" total="3">
@@ -126,8 +122,8 @@
             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).1_conceptRelated1</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/1_conceptRelated1"/>
             <cdomain:name>
-                <cdomain:text xml:lang="es">name-1_conceptRelated1 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">name-1_conceptRelated1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-1_conceptRelated1 en Español</cdomain:text>
             </cdomain:name>
         </sr:relatedConcept>
         <sr:relatedConcept kind="structuralResources#concept">
@@ -135,8 +131,8 @@
             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency1:itemScheme1(01.000).1_conceptRelated2</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agency1/itemScheme1/01.000/concepts/1_conceptRelated2"/>
             <cdomain:name>
-                <cdomain:text xml:lang="en">name-1_conceptRelated2 in English</cdomain:text>
                 <cdomain:text xml:lang="es">name-1_conceptRelated2 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">name-1_conceptRelated2 in English</cdomain:text>
             </cdomain:name>
         </sr:relatedConcept>
         <sr:relatedConcept kind="structuralResources#concept">
@@ -150,8 +146,8 @@
         </sr:relatedConcept>
     </sr:relatedConcepts>
     <sr:legalActs>
-        <cdomain:text xml:lang="en">legalActs-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">legalActs-item1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">legalActs-item1 in English</cdomain:text>
     </sr:legalActs>
     <sr:quantity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sr:QuantityChangeRate">
         <sr:unitCode kind="structuralResources#code">
@@ -174,8 +170,8 @@
             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=agency01:conceptScheme02(01.000).numerator1</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#concept" href="http://data.istac.es/apis/structural-resources/v1.0/conceptschemes/agency01/conceptScheme02/01.000/concepts/numerator1"/>
             <cdomain:name>
-                <cdomain:text xml:lang="es">name-numerator1 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">name-numerator1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">name-numerator1 en Español</cdomain:text>
             </cdomain:name>
         </sr:numerator>
         <sr:denominator kind="structuralResources#concept">
@@ -189,8 +185,8 @@
         </sr:denominator>
         <sr:isPercentage>false</sr:isPercentage>
         <sr:percentageOf>
-            <cdomain:text xml:lang="es">percentageOf-item1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">percentageOf-item1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">percentageOf-item1 en Español</cdomain:text>
         </sr:percentageOf>
         <sr:baseQuantity kind="structuralResources#concept">
             <cdomain:id>baseQuantity1</cdomain:id>

@@ -9,7 +9,6 @@ import static org.siemac.metamac.srm.rest.external.v1_0.organisation.utils.Organ
 import static org.siemac.metamac.srm.rest.external.v1_0.organisation.utils.OrganisationsDoMocks.mockOrganisationItemResult;
 import static org.siemac.metamac.srm.rest.external.v1_0.organisation.utils.OrganisationsDoMocks.mockOrganisationScheme;
 import static org.siemac.metamac.srm.rest.external.v1_0.organisation.utils.OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations;
-import static org.siemac.metamac.srm.rest.external.v1_0.utils.Asserts.assertEqualsInternationalString;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.ITEM_1_CODE;
@@ -200,7 +199,6 @@ public class OrganisationsDo2RestMapperTest {
         assertEquals(target.getSelfLink().getHref(), target.getUri());
         assertEquals(SrmRestConstants.KIND_AGENCY_SCHEMES, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources/v1.0/agencyschemes", target.getParentLink().getHref());
-        assertEqualsInternationalString("es", "comment-AGENCIESv01.000 en Español", "en", "comment-AGENCIESv01.000 in English", target.getComment());
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
         // assertEquals("replacedBy", target.getReplacedByVersion());
@@ -513,7 +511,6 @@ public class OrganisationsDo2RestMapperTest {
         assertEquals(parentLink, target.getParentLink().getHref());
         assertNull(target.getChildLinks());
 
-        assertEqualsInternationalString("es", "comment-organisation2 en Español", "en", "comment-organisation2 in English", target.getComment());
     }
 
     @Test

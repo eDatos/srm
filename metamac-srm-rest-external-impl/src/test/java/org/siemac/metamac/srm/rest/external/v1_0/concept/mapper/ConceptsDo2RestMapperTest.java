@@ -128,7 +128,6 @@ public class ConceptsDo2RestMapperTest {
         assertEquals("statisticalOperations#operation", target.getStatisticalOperation().getKind());
         assertEquals("operation-resourceID1", target.getStatisticalOperation().getId());
         assertNull(target.getStatisticalOperation().getName());
-        assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
         // assertEquals("replacedBy", target.getReplacedByVersion());
@@ -262,7 +261,6 @@ public class ConceptsDo2RestMapperTest {
         assertNull(target.getChildLinks());
         assertNull(target.getManagementAppLink());
 
-        assertEqualsInternationalString("es", "comment-concept2 en Español", "en", "comment-concept2 in English", target.getComment());
         assertEqualsInternationalString("es", "pluralName-concept2 en Español", "en", "pluralName-concept2 in English", target.getPluralName());
         assertEqualsInternationalString("es", "acronym-concept2 en Español", "en", "acronym-concept2 in English", target.getAcronym());
         assertEqualsInternationalString("es", "descriptionSource-concept2 en Español", "en", "descriptionSource-concept2 in English", target.getDescriptionSource());

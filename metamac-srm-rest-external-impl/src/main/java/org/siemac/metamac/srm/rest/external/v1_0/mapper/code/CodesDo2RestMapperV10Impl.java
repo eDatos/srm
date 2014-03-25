@@ -391,7 +391,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         target.setChildLinks(toVariableElementChildLinks(source));
 
         target.setName(toInternationalString(source.getShortName()));
-        target.setComment(toInternationalString(source.getComment()));
         target.setReplacedBy(toResource(source.getReplacedByVariableElement()));
         target.setReplaceTo(toVariableElementReplaceTo(source));
         target.setVariable(toResource(source.getVariable()));

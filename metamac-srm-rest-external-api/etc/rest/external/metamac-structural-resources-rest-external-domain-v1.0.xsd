@@ -54,7 +54,6 @@
                 <xs:sequence>
                     <xs:element name="name" type="common:InternationalString" />
                     <xs:element name="description" type="common:InternationalString" minOccurs="0" />
-                    <xs:element name="comment" type="common:InternationalString" minOccurs="0" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

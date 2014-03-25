@@ -163,7 +163,6 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         target.setExtends(toResource(source.getConceptExtends()));
         target.setRoles(toRoleConcepts(source.getRoleConcepts()));
         target.setRelatedConcepts(toRelatedConcepts(source));
-        target.setComment(toInternationalString(source.getNameableArtefact().getComment()));
         target.setVariable(codesDo2RestMapper.toResource(source.getVariable()));
         target.setQuantity(toQuantity(source.getQuantity()));
 

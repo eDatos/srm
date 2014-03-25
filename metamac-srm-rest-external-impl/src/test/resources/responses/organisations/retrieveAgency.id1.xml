@@ -7,8 +7,8 @@
             <sr:type>type-code2</sr:type>
             <sr:url>url-code2</sr:url>
             <sr:text>
-                <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
                 <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
             </sr:text>
         </sr:annotation>
         <sr:annotation>
@@ -17,8 +17,8 @@
             <sr:type>type-code1</sr:type>
             <sr:url>url-code1</sr:url>
             <sr:text>
-                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
                 <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
             </sr:text>
         </sr:annotation>
     </sr:annotations>
@@ -36,9 +36,5 @@
         <cdomain:text xml:lang="en">description-item1 in English</cdomain:text>
         <cdomain:text xml:lang="es">description-item1 en Español</cdomain:text>
     </sr:description>
-    <sr:comment>
-        <cdomain:text xml:lang="en">comment-item1 in English</cdomain:text>
-        <cdomain:text xml:lang="es">comment-item1 en Español</cdomain:text>
-    </sr:comment>
     <sr:contacts total="0"/>
 </sr:agency>

@@ -7,8 +7,8 @@
             <sr:type>type-code1</sr:type>
             <sr:url>url-code1</sr:url>
             <sr:text>
-                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
                 <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
             </sr:text>
         </sr:annotation>
         <sr:annotation>
@@ -31,13 +31,9 @@
         <cdomain:childLink href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/artefact1/geoinfo"/>
     </sr:childLinks>
     <sr:name>
-        <cdomain:text xml:lang="en">shortName-artefact1 in English</cdomain:text>
         <cdomain:text xml:lang="es">shortName-artefact1 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">shortName-artefact1 in English</cdomain:text>
     </sr:name>
-    <sr:comment>
-        <cdomain:text xml:lang="es">comment-artefact1 en Español</cdomain:text>
-        <cdomain:text xml:lang="en">comment-artefact1 in English</cdomain:text>
-    </sr:comment>
     <sr:replacedBy kind="structuralResources#variableElement">
         <cdomain:id>variableElementReplacedBy1</cdomain:id>
         <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElementReplacedBy1</cdomain:urn>
@@ -62,8 +58,8 @@
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElementReplaceTo2</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/variableElementReplaceTo2"/>
             <cdomain:name>
-                <cdomain:text xml:lang="en">shortName-variableElementReplaceTo2 in English</cdomain:text>
                 <cdomain:text xml:lang="es">shortName-variableElementReplaceTo2 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">shortName-variableElementReplaceTo2 in English</cdomain:text>
             </cdomain:name>
         </sr:replaceTo>
     </sr:replaceTo>

@@ -125,7 +125,6 @@ public class DataStructuresDo2RestMapperTest {
         assertNull(target.getManagementAppLink());
         assertEqualsInternationalString("es", "name-resourceID1v01.123 en Español", "en", "name-resourceID1v01.123 in English", target.getName());
         assertEqualsInternationalString("es", "description-resourceID1v01.123 en Español", "en", "description-resourceID1v01.123 in English", target.getDescription());
-        assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
 
         assertEquals(true, target.isIsFinal());
         assertEquals(false, target.isIsExternalReference());

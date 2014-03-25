@@ -140,7 +140,6 @@ public class CodesDo2RestMapperTest {
         assertEquals(SrmRestConstants.KIND_CODELISTS, target.getParentLink().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources/v1.0/codelists", target.getParentLink().getHref());
         assertNull(target.getManagementAppLink());
-        assertEqualsInternationalString("es", "comment-resourceID1v01.123 en Español", "en", "comment-resourceID1v01.123 in English", target.getComment());
         assertEqualsInternationalString("es", "shortName-resourceID1v01.123 en Español", "en", "shortName-resourceID1v01.123 in English", target.getShortName());
         assertEqualsInternationalString("es", "descriptionSource-resourceID1v01.123 en Español", "en", "descriptionSource-resourceID1v01.123 in English", target.getDescriptionSource());
         assertTrue(target.isIsRecommended());
@@ -341,7 +340,6 @@ public class CodesDo2RestMapperTest {
         assertNull(target.getChildLinks());
         assertNull(target.getManagementAppLink());
 
-        assertEqualsInternationalString("es", "comment-code2 en Español", "en", "comment-code2 in English", target.getComment());
         assertEqualsInternationalString("es", "shortName-variableElement-code2 en Español", "en", "shortName-variableElement-code2 in English", target.getShortName());
         assertEquals("urn:sdmx:org.sdmx.infomodel.codelist.Code=agencyID1:resourceID1(01.123).codeParent1", target.getParent());
     }
@@ -646,7 +644,6 @@ public class CodesDo2RestMapperTest {
         assertEquals(selfLink, target.getSelfLink().getHref());
         assertNull(target.getManagementAppLink());
         assertEqualsInternationalString("es", "shortName-variableElement1 en Español", "en", "shortName-variableElement1 in English", target.getName());
-        assertEqualsInternationalString("es", "comment-variableElement1 en Español", "en", "comment-variableElement1 in English", target.getComment());
 
         assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENT, target.getReplacedBy().getKind());
         assertEquals("http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/variableElementReplacedBy1", target.getReplacedBy().getSelfLink().getHref());
