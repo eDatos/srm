@@ -11,13 +11,6 @@
 
     <!-- Activates annotation-based bean configuration -->
     <context:annotation-config />
-
-    <bean id="propertyPlaceholderConfigurer" class="org.siemac.metamac.core.common.conf.ConfigurationServicePropertyPlaceholderConfigurer">
-        <property name="configurationService">
-            <ref bean="configurationService" />
-        </property>
-    </bean>
-
     <!-- Core -->
     <import resource="classpath:/spring/srm/applicationContext.xml" />
     <!-- Rest. SDMX API is not yet published in this war -->
