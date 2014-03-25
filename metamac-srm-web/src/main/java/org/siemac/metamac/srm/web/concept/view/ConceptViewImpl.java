@@ -26,6 +26,7 @@ import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -273,7 +274,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ViewMultiLanguageTextItem context = new ViewMultiLanguageTextItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         ViewMultiLanguageTextItem docMethod = new ViewMultiLanguageTextItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
         RelatedResourceLinkItem variable = new RelatedResourceLinkItem(ConceptDS.VARIABLE, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
-        variable.setShowIfCondition(getVariableFormItemIfFunction());
+        variable.setShowIfCondition(getVariableViewFormItemIfFunction());
         ViewTextItem type = new ViewTextItem(ConceptDS.TYPE, getConstants().conceptType());
         RelatedResourceListItem roles = new RelatedResourceListItem(ConceptDS.ROLES, getConstants().conceptRoles(), false, getListRecordNavigationClickHandler());
         roles.setShowIfCondition(getRolesFormItemIfFunction());
@@ -365,8 +366,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         MultilanguageRichTextEditorItem descriptionSource = new MultilanguageRichTextEditorItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
         MultilanguageRichTextEditorItem context = new MultilanguageRichTextEditorItem(ConceptDS.CONTEXT, getConstants().conceptContext());
         MultilanguageRichTextEditorItem docMethod = new MultilanguageRichTextEditorItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
-        SearchRelatedResourceLinkItem variableView = createVariableItem(ConceptDS.VARIABLE, getConstants().variable());
-        variableView.setShowIfCondition(getVariableFormItemIfFunction());
+        SearchRelatedResourceLinkItem variable = createVariableItem(ConceptDS.VARIABLE, getConstants().variable());
+        variable.setShowIfCondition(getVariableFormItemIfFunction());
+        RelatedResourceLinkItem staticVariable = new RelatedResourceLinkItem(ConceptDS.VARIABLE_VIEW, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
+        staticVariable.setShowIfCondition(getStaticVariableFormItemIfFunction());
         SelectItem type = new SelectItem(ConceptDS.TYPE, getConstants().conceptType()); // Value map set in setConceptTypes method
         RelatedResourceListItem roles = createRolesItem(ConceptDS.ROLES, getConstants().conceptRoles());
         roles.setShowIfCondition(getRolesFormItemIfFunction());
@@ -387,8 +390,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
                 getCustomLinkItemNavigationClickHandler());
         enumeratedRepresentationView.setShowIfCondition(getStaticEnumeratedRepresentationFormItemIfFunction()); // This item is shown when the enumerated representation can not be edited
 
-        contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod, variableView, type, roles, representationType, staticRepresentationType, enumeratedRepresentation,
-                enumeratedRepresentationView);
+        contentDescriptorsEditionForm.setFields(description, descriptionSource, context, docMethod, variable, staticVariable, type, roles, representationType, staticRepresentationType,
+                enumeratedRepresentation, enumeratedRepresentationView);
 
         // NON ENUMERATED REPRESENTATION
         facetEditionForm = new ConceptFacetForm();
@@ -588,6 +591,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsEditionForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
         contentDescriptorsEditionForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
         ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE)).setRelatedResource(conceptDto.getVariable());
+        ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE_VIEW)).setRelatedResource(conceptDto.getVariable());
         contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getRepresentationType().name() : null);
         contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE_VIEW,
                 conceptDto.getCoreRepresentation() != null
@@ -689,7 +693,11 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     private RelatedResourceDto getVariableFromEditionForm() {
-        return ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE)).getRelatedResourceDto();
+        if (contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE).isVisible()) {
+            return ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE)).getRelatedResourceDto();
+        } else {
+            return ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE_VIEW)).getRelatedResourceDto();
+        }
     }
 
     private ConceptRoleEnum getSdmxRelatedArtefactFromEditionForm() {
@@ -1062,7 +1070,33 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             @Override
             public boolean execute(FormItem arg0, Object arg1, DynamicForm arg2) {
                 if (conceptSchemeMetamacDto != null) {
+                    return CommonUtils.isMetadataVariableVisible(conceptSchemeMetamacDto.getType()) && ConceptsFormUtils.canConceptVariableBeEdited(conceptSchemeMetamacDto);
+                }
+                return false;
+            }
+        };
+    }
+
+    private FormItemIfFunction getVariableViewFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem arg0, Object arg1, DynamicForm arg2) {
+                if (conceptSchemeMetamacDto != null) {
                     return CommonUtils.isMetadataVariableVisible(conceptSchemeMetamacDto.getType());
+                }
+                return false;
+            }
+        };
+    }
+
+    private FormItemIfFunction getStaticVariableFormItemIfFunction() {
+        return new FormItemIfFunction() {
+
+            @Override
+            public boolean execute(FormItem arg0, Object arg1, DynamicForm arg2) {
+                if (conceptSchemeMetamacDto != null) {
+                    return CommonUtils.isMetadataVariableVisible(conceptSchemeMetamacDto.getType()) && !ConceptsFormUtils.canConceptVariableBeEdited(conceptSchemeMetamacDto);
                 }
                 return false;
             }
