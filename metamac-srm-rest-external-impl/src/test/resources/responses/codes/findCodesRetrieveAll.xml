@@ -17,6 +17,8 @@
                 <cdomain:text xml:lang="es">shortName-variableElement-code1 en Español</cdomain:text>
             </cdomain:name>
         </sr:variableElement>
+        <sr:order>1</sr:order>
+        <sr:open>true</sr:open>
     </sr:code>
     <sr:code kind="structuralResources#code">
         <cdomain:id>code2</cdomain:id>
@@ -35,6 +37,8 @@
                 <cdomain:text xml:lang="es">shortName-variableElement-code2 en Español</cdomain:text>
             </cdomain:name>
         </sr:variableElement>
+        <sr:order>2</sr:order>
+        <sr:open>false</sr:open>
     </sr:code>
     <sr:code kind="structuralResources#code">
         <cdomain:id>code2A</cdomain:id>
@@ -54,6 +58,8 @@
                 <cdomain:text xml:lang="es">shortName-variableElement-code2A en Español</cdomain:text>
             </cdomain:name>
         </sr:variableElement>
+        <sr:order>1</sr:order>
+        <sr:open>true</sr:open>
     </sr:code>
     <sr:code kind="structuralResources#code">
         <cdomain:id>code2B</cdomain:id>
@@ -73,5 +79,7 @@
                 <cdomain:text xml:lang="es">shortName-variableElement-code2B en Español</cdomain:text>
             </cdomain:name>
         </sr:variableElement>
+        <sr:order>2</sr:order>
+        <sr:open>true</sr:open>
     </sr:code>
 </sr:codes>
