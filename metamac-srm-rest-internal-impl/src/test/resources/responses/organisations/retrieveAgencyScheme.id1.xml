@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sr:agencyScheme xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain"    xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#agencyScheme">
+<sr:agencyScheme xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#agencyScheme">
     <sr:annotations total="2">
+        <sr:annotation>
+            <sr:id>code2</sr:id>
+            <sr:title>title-code2</sr:title>
+            <sr:type>type-code2</sr:type>
+            <sr:url>url-code2</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
         <sr:annotation>
             <sr:id>code1</sr:id>
             <sr:title>title-code1</sr:title>
@@ -11,21 +21,10 @@
                 <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
             </sr:text>
         </sr:annotation>
-        <sr:annotation>
-            <sr:id>code2</sr:id>
-            <sr:title>title-code2</sr:title>
-            <sr:type>type-code2</sr:type>
-            <sr:url>url-code2</sr:url>
-            <sr:text>
-                <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
-                <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
-            </sr:text>
-        </sr:annotation>
     </sr:annotations>
     <sr:id>itemScheme1</sr:id>
     <sr:urn>urn:sdmx:org.sdmx.infomodel.base.AgencyScheme=agency1:itemScheme1(01.000)</sr:urn>
     <sr:uri>http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemScheme1/01.000</sr:uri>
-    <sr:createdDate>2013-10-01T10:12:13.014+01:00</sr:createdDate>
     <sr:selfLink kind="structuralResources#agencyScheme" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes/agency1/itemScheme1/01.000"/>
     <sr:parentLink kind="structuralResources#agencySchemes" href="http://data.istac.es/apis/structural-resources-internal/v1.0/agencyschemes"/>
     <sr:childLinks total="1">
@@ -33,18 +32,20 @@
     </sr:childLinks>
     <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/organisationSchemes/organisationScheme;type=AGENCY_SCHEME;id=agency1:itemScheme1(01.000)</sr:managementAppLink>
     <sr:name>
-        <cdomain:text xml:lang="en">name-itemScheme1v01.000 in English</cdomain:text>
         <cdomain:text xml:lang="es">name-itemScheme1v01.000 en Español</cdomain:text>
+        <cdomain:text xml:lang="en">name-itemScheme1v01.000 in English</cdomain:text>
     </sr:name>
     <sr:description>
-        <cdomain:text xml:lang="es">description-itemScheme1v01.000 en Español</cdomain:text>
         <cdomain:text xml:lang="en">description-itemScheme1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">description-itemScheme1v01.000 en Español</cdomain:text>
     </sr:description>
     <sr:comment>
         <cdomain:text xml:lang="es">comment-itemScheme1v01.000 en Español</cdomain:text>
         <cdomain:text xml:lang="en">comment-itemScheme1v01.000 in English</cdomain:text>
     </sr:comment>
     <sr:version>01.000</sr:version>
+    <sr:resourceCreatedDate>2013-10-01T10:12:13.014+01:00</sr:resourceCreatedDate>
+    <sr:versionCreatedDate>2012-10-01T10:12:13.014+01:00</sr:versionCreatedDate>
     <sr:validFrom>2012-11-05T10:12:13.014Z</sr:validFrom>
     <sr:validTo>2013-10-04T10:12:13.014+01:00</sr:validTo>
     <sr:replaceToVersion>replaceTo</sr:replaceToVersion>

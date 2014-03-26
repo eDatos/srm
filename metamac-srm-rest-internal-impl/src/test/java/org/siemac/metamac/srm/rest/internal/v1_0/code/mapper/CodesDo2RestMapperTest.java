@@ -179,7 +179,7 @@ public class CodesDo2RestMapperTest {
         assertEquals("internal-publication-user", target.getLifeCycle().getInternalPublicationUser());
         assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getExternalPublicationDate());
         assertEquals("external-publication-user", target.getLifeCycle().getExternalPublicationUser());
-        assertEqualsDate(new DateTime(2013, 10, 1, 10, 12, 13, 14), target.getCreatedDate());
+        assertEqualsDate(new DateTime(2013, 10, 1, 10, 12, 13, 14), target.getResourceCreatedDate());
 
         assertEquals(BigInteger.valueOf(3), target.getOrderConfigurations().getTotal());
         {

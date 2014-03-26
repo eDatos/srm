@@ -132,8 +132,7 @@ public class OrganisationsDo2RestMapperTest {
 
         assertEquals(source.size(), target.getOrganisationUnitSchemes().size());
         for (int i = 0; i < source.size(); i++) {
-            assertEqualsResource(source.get(i), SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEME, SrmRestConstants.LINK_SUBPATH_ORGANISATION_UNIT_SCHEMES, target.getOrganisationUnitSchemes()
-                    .get(i));
+            assertEqualsResource(source.get(i), SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEME, SrmRestConstants.LINK_SUBPATH_ORGANISATION_UNIT_SCHEMES, target.getOrganisationUnitSchemes().get(i));
         }
     }
 
@@ -216,7 +215,7 @@ public class OrganisationsDo2RestMapperTest {
         assertEquals("internal-publication-user", target.getLifeCycle().getInternalPublicationUser());
         assertEqualsDate(new DateTime(2012, 12, 4, 1, 1, 1, 1), target.getLifeCycle().getExternalPublicationDate());
         assertEquals("external-publication-user", target.getLifeCycle().getExternalPublicationUser());
-        assertEqualsDate(new DateTime(2013, 10, 1, 10, 12, 13, 14), target.getCreatedDate());
+        assertEqualsDate(new DateTime(2013, 10, 1, 10, 12, 13, 14), target.getResourceCreatedDate());
 
         assertEquals(BigInteger.ONE, target.getChildLinks().getTotal());
         assertEquals(SrmRestConstants.KIND_AGENCIES, target.getChildLinks().getChildLinks().get(0).getKind());
@@ -370,8 +369,8 @@ public class OrganisationsDo2RestMapperTest {
         for (int i = 0; i < sources.size(); i++) {
             OrganisationMetamac source = sources.get(i);
             ResourceInternal target = targets.getAgencies().get(i);
-            assertEqualsResource(source.getItemSchemeVersion(), source, null, SrmRestConstants.KIND_AGENCY, SrmRestConstants.LINK_SUBPATH_AGENCY_SCHEMES,
-                    SrmRestConstants.LINK_SUBPATH_AGENCIES, target);
+            assertEqualsResource(source.getItemSchemeVersion(), source, null, SrmRestConstants.KIND_AGENCY, SrmRestConstants.LINK_SUBPATH_AGENCY_SCHEMES, SrmRestConstants.LINK_SUBPATH_AGENCIES,
+                    target);
         }
     }
 
@@ -408,8 +407,7 @@ public class OrganisationsDo2RestMapperTest {
         for (int i = 0; i < sources.size(); i++) {
             ItemResult source = sources.get(i);
             ResourceInternal target = targets.getAgencies().get(i);
-            assertEqualsResource(organisationScheme, null, source, SrmRestConstants.KIND_AGENCY, SrmRestConstants.LINK_SUBPATH_AGENCY_SCHEMES, SrmRestConstants.LINK_SUBPATH_AGENCIES,
-                    target);
+            assertEqualsResource(organisationScheme, null, source, SrmRestConstants.KIND_AGENCY, SrmRestConstants.LINK_SUBPATH_AGENCY_SCHEMES, SrmRestConstants.LINK_SUBPATH_AGENCIES, target);
         }
     }
 
