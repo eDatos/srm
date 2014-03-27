@@ -26,6 +26,8 @@
         <property name="locations">
             <list>
                 <value>classpath:/data/srm/conf/static/resources.xml</value>
+                <value>classpath:/data/srm/conf/static/resources-ORACLE.xml</value>
+                <value>classpath:/data/srm/conf/static/resources-${TEST_DATABASE_PROVIDER}.xml</value>
                 <value>classpath:/data/srm/conf/static/resources-local.xml</value>
             </list>
         </property>
