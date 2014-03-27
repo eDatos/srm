@@ -143,6 +143,11 @@ public class CodesDo2RestMapperTest {
         assertEqualsInternationalString("es", "shortName-resourceID1v01.123 en Español", "en", "shortName-resourceID1v01.123 in English", target.getShortName());
         assertEqualsInternationalString("es", "descriptionSource-resourceID1v01.123 en Español", "en", "descriptionSource-resourceID1v01.123 in English", target.getDescriptionSource());
         assertTrue(target.isIsRecommended());
+        assertEquals("variable1", target.getVariable().getId());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=variable1", target.getVariable().getUrn());
+        assertEqualsInternationalString("es", "name-variable1 en Español", "en", "name-variable1 in English", target.getVariable().getName());
+        assertEquals(SrmRestConstants.KIND_VARIABLE, target.getVariable().getSelfLink().getKind());
+        assertEquals("http://data.istac.es/apis/structural-resources/v1.0/variables/variable1", target.getVariable().getSelfLink().getHref());
         // replaceX no tested, because it is necessary a repository access
         // assertEquals("replaceTo", target.getReplaceToVersion());
         // assertEquals("replacedBy", target.getReplacedByVersion());
