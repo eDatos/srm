@@ -395,9 +395,10 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                     dataStructureDefinitionVersionMetamac.removeDimensionVisualisationInfo(dimensionVisualizationInfo);
                 }
             }
+
+            // Note: Is not necessary re-calculate the dimension OrderLogic because in Metamac, this metadata never set it. See METAMAC-2148 for more info.
         }
 
-        // TODO recalcular los index-order al eliminar una dimension (METAMAC-2148)
         dataStructureDefinitionService.deleteComponentForDataStructureDefinition(ctx, dataStructureDefinitionVersionUrn, component);
     }
 
