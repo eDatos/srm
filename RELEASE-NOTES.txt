@@ -26,6 +26,7 @@ Notas de publicación - Metamac - hito metamac-srm - 1.1.1
     * [METAMAC-1907] - Crear war de Apis SDMX tras una fachada con la misma API
     * [METAMAC-1998] - [CORE] Modificar los tipos de datos de MSSQL que usen "VARCHAR" por "NVARCHAR" 
     * [METAMAC-2043] - Corregir problema con factorypathentry para el gwtplatform 0.6
+    * [METAMAC-2237] - Error al obtener los codes de un concept scheme con MSSQL
 
 
 ** Historia
