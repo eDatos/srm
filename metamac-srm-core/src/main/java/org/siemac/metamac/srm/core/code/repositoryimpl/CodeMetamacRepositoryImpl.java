@@ -514,7 +514,9 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         // Retrieve items id ordered
         String orderColumn = getOrderColumnName(orderColumnIndex != null ? orderColumnIndex : ORDER_DEFAULT); // get column name. any if no order or openness is selected
         StringBuilder sb = new StringBuilder();
+        int resultOrderIndex = -1;
         if (srmConfiguration.isDatabaseOracle()) {
+            resultOrderIndex = 1;
             sb.append("SELECT ITEM_ID, SYS_CONNECT_BY_PATH(lpad(COD_ORDER, " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + ", '0'), '.') ORDER_PATH ");
             sb.append("FROM ");
             sb.append("(");
@@ -527,6 +529,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             sb.append("CONNECT BY PRIOR ITEM_ID = ITEM_PARENT_FK ");
             sb.append("ORDER BY ORDER_PATH asc");
         } else if (srmConfiguration.isDatabaseSqlServer()) {
+            resultOrderIndex = 3;
             sb.append("WITH Parents(R_ID, R_SORT, R_ITEM_SCHEME_VERSION_FK, R_SORT_STRING) AS ");
             sb.append("( ");
             sb.append("SELECT c1.TB_CODES AS R_ID, c1." + orderColumn + " AS R_SORT, cb1.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
@@ -555,7 +558,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             Object[] resultOrderArray = (Object[]) resultOrder;
             Long codeId = getLong(resultOrderArray[0]);
             ItemResult code = mapCodeByItemId.get(codeId);
-            Object order = resultOrderArray[1];
+            Object order = resultOrderArray[resultOrderIndex];
             if (order != null) {
                 ((CodeMetamacResultExtensionPoint) code.getExtensionPoint()).setOrderConcatenatedByLevel(order.toString());
             }
