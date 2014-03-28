@@ -13,6 +13,8 @@ import java.util.Map;
 import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.siemac.metamac.core.common.constants.CoreCommonConstants;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
@@ -137,27 +139,45 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
                     StringBuilder sbGeo = new StringBuilder();
                     sbGeo.append("SELECT ve.ID as VARIABLE_ELEMENT_ID");
                     if (selection.isShapeWkt()) {
-                        sbGeo.append(", ve.SHAPE_WKT");
+                        sbGeo.append(", ve.SHAPE_WKT as SHAPE_WKT");
                     }
                     if (selection.isShapeGeojson()) {
-                        sbGeo.append(", ve.SHAPE_GEOJSON");
+                        sbGeo.append(", ve.SHAPE_GEOJSON as SHAPE_GEOJSON");
                     }
                     if (selection.isLongitudeLatitude()) {
-                        sbGeo.append(", ve.LATITUDE, ve.LONGITUDE");
+                        sbGeo.append(", ve.LATITUDE as LATITUDE, ve.LONGITUDE as LONGITUDE");
                     }
                     sbGeo.append(" ");
                     sbGeo.append("FROM TB_M_VARIABLE_ELEMENTS ve ");
                     sbGeo.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on ve.IDENTIFIABLE_ARTEFACT_FK = a.ID ");
-                    sbGeo.append("WHERE ve.VARIABLE_FK = :variableId ");
+                    sbGeo.append("WHERE ve.VARIABLE_FK = " + variableId);
                     if (!CollectionUtils.isEmpty(variableElementCodes)) {
-                        sbGeo.append("AND a.CODE IN (:variableElementCodes) ");
+                        // METAMAC-1653: Put parameter in this way instead of query.setParameter("variableElementCodes", variableElementCodes.subList(startIndex, endIndex)) to avoid
+                        // 'org.hibernate.HibernateException: Could not determine a type for class: java.util.RandomAccessSubList' exception
+                        StringBuilder variableElementsCodeParameter = new StringBuilder();
+                        for (int i = startIndex; i < endIndex; i++) {
+                            variableElementsCodeParameter.append("'" + variableElementCodes.get(i) + "'");
+                            if (i < endIndex - 1) {
+                                variableElementsCodeParameter.append(",");
+                            }
+                        }
+                        sbGeo.append("AND a.CODE IN (" + variableElementsCodeParameter.toString() + ") ");
                     }
-                    Query queryGeo = getEntityManager().createNativeQuery(sbGeo.toString());
-                    queryGeo.setParameter("variableId", variableId);
-                    if (!CollectionUtils.isEmpty(variableElementCodes)) {
-                        queryGeo.setParameter("variableElementCodes", variableElementCodes.subList(startIndex, endIndex));
+
+                    // METAMAC-1653: addScalar is needed due to mssql can be determine that SHAPE_GEOJSON and SHAPE_WKT columns are 'Text' types
+                    SQLQuery queryGeo = ((Session) getEntityManager().getDelegate()).createSQLQuery(sbGeo.toString());
+                    queryGeo = queryGeo.addScalar("VARIABLE_ELEMENT_ID", org.hibernate.Hibernate.LONG);
+                    if (selection.isShapeWkt()) {
+                        queryGeo = queryGeo.addScalar("SHAPE_WKT", org.hibernate.Hibernate.CLOB);
                     }
-                    List variableElementsResultSqlGeo = queryGeo.getResultList();
+                    if (selection.isShapeGeojson()) {
+                        queryGeo = queryGeo.addScalar("SHAPE_GEOJSON", org.hibernate.Hibernate.CLOB);
+                    }
+                    if (selection.isLongitudeLatitude()) {
+                        queryGeo = queryGeo.addScalar("LATITUDE", org.hibernate.Hibernate.FLOAT).addScalar("LONGITUDE", org.hibernate.Hibernate.FLOAT);
+                    }
+
+                    List variableElementsResultSqlGeo = queryGeo.list();
 
                     // Transform object[] results
                     for (Object variableElementResultSql : variableElementsResultSqlGeo) {
