@@ -7,21 +7,4 @@
     
     <entry key="metamac.srm.variables.variable_world.urn">urn:siemac:org.siemac.metamac.infomodel.structuralresources.Variable=TERRITORIO_MUNDO</entry>
     <entry key="metamac.srm.variables.variable_element_world.urn">urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=TERRITORIO_MUNDO.MUNDO</entry>
-    
-    <!-- Database -->
-    <!-- ORACLE -->
-<!--     <entry key="metamac.srm.db.url">jdbc:oracle:thin:@oracle-dev:1521:XE</entry> -->
-<!--     <entry key="metamac.srm.db.username">jenkins_metamac_srm</entry> -->
-<!--     <entry key="metamac.srm.db.password">jenkins_metamac_srm</entry> -->
-<!--     <entry key="metamac.srm.db.dialect">org.siemac.metamac.hibernate.dialect.Oracle10gDialectMetamac</entry> -->
-<!--     <entry key="metamac.srm.db.driver_name">oracle.jdbc.OracleDriver</entry> -->
-<!--     <entry key="metamac.srm.db.provider">ORACLE</entry> -->
-    
-    <!-- MSSQL -->
-<!--     <entry key="metamac.srm.db.url">jdbc:sqlserver://localhost:50937;databaseName=LOCAL</entry> -->
-<!--     <entry key="metamac.srm.db.username">mtm_srm_test</entry> -->
-<!--     <entry key="metamac.srm.db.password">mtm_srm_test</entry> -->
-<!--     <entry key="metamac.srm.db.dialect">org.hibernate.dialect.SQLServerDialect</entry> -->
-<!--     <entry key="metamac.srm.db.driver_name">com.microsoft.sqlserver.jdbc.SQLServerDriver</entry> -->
-<!--     <entry key="metamac.srm.db.provider">MSSQL</entry>     -->
 </properties>

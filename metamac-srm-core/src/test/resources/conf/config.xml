@@ -9,6 +9,8 @@
 
   	<properties fileName="${environment.metamac.data}/common/conf/static/resources.xml" basePath="" config-optional="false" />
     <properties fileName="${environment.metamac.data}/srm/conf/static/resources-local.xml" basePath="" config-optional="true" />
+    <properties fileName="${environment.metamac.data}/srm/conf/static/resources-${TEST_DATABASE_PROVIDER}.xml" basePath="" config-optional="true" />
+    <properties fileName="${environment.metamac.data}/srm/conf/static/resources-ORACLE.xml" basePath="" config-optional="true" />
   	<properties fileName="${environment.metamac.data}/srm/conf/static/resources.xml" basePath="" config-optional="false" />
 
   </override>
