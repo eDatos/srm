@@ -15,6 +15,16 @@ public class SrmConfigurationImpl extends SdmxSrmConfigurationImpl implements Sr
     private String  jobDeleteDeprecatedEntitiesCronExpression;
 
     @Override
+    public String retrieveUserGuideFileName() throws MetamacException {
+        return retrieveProperty(SrmConfigurationConstants.USER_GUIDE_FILE_NAME, Boolean.TRUE);
+    }
+
+    @Override
+    public String retrieveDocsPath() throws MetamacException {
+        return retrieveProperty(SrmConfigurationConstants.DOCS_PATH, Boolean.TRUE);
+    }
+
+    @Override
     public String retrievePrimaryMeasureConceptIdUrnDefault() throws MetamacException {
         if (primaryMeasureConceptIdUrnDefault == null) {
             primaryMeasureConceptIdUrnDefault = retrieveProperty(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN, Boolean.FALSE);

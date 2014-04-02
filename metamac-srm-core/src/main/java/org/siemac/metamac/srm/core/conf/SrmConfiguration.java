@@ -6,6 +6,10 @@ import com.arte.statistic.sdmx.srm.core.conf.SdmxSrmConfiguration;
 
 public interface SrmConfiguration extends SdmxSrmConfiguration {
 
+    public String retrieveUserGuideFileName() throws MetamacException;
+
+    public String retrieveDocsPath() throws MetamacException;
+
     /**
      * Retrieves the concept ID for concept identification default of primary measure to create artefacts
      */
