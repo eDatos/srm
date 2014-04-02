@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
@@ -38,14 +37,13 @@ import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
-import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.InformationLabel;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ExternalItemLinkItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
@@ -537,7 +535,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        MultilanguageRichTextEditorItem description = new MultilanguageRichTextEditorItem(ConceptSchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        MultiLanguageRichTextEditorItem description = new MultiLanguageRichTextEditorItem(ConceptSchemeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem partial = new ViewTextItem(ConceptSchemeDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(ConceptSchemeDS.FINAL, getConstants().maintainableArtefactFinalLogic());
@@ -613,7 +611,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
         // Comments
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
-        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(ConceptSchemeDS.COMMENTS, getConstants().nameableArtefactComments());
+        MultiLanguageRichTextEditorItem comments = new MultiLanguageRichTextEditorItem(ConceptSchemeDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
         // Annotations
@@ -635,10 +633,10 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         identifiersForm.setValue(ConceptSchemeDS.URN, conceptSchemeDto.getUrn());
         identifiersForm.setValue(ConceptSchemeDS.URN_PROVIDER, conceptSchemeDto.getUrnProvider());
         identifiersForm.setValue(ConceptSchemeDS.VERSION_LOGIC, conceptSchemeDto.getVersionLogic());
-        identifiersForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
+        identifiersForm.setValue(ConceptSchemeDS.NAME, conceptSchemeDto.getName());
 
         // Content descriptors
-        contentDescriptorsForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));
+        contentDescriptorsForm.setValue(ConceptSchemeDS.DESCRIPTION, conceptSchemeDto.getDescription());
         contentDescriptorsForm.setValue(ConceptSchemeDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(conceptSchemeDto.getIsPartial()));
         contentDescriptorsForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon
                 .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
@@ -680,7 +678,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         versionResponsibilityForm.setValue(ConceptSchemeDS.EXTERNAL_PUBLICATION_DATE, conceptSchemeDto.getLifeCycle().getExternalPublicationDate());
 
         // Comments
-        commentsForm.setValue(ConceptSchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getComment()));
+        commentsForm.setValue(ConceptSchemeDS.COMMENTS, conceptSchemeDto.getComment());
 
         // Annotations
         annotationsPanel.setAnnotations(conceptSchemeDto.getAnnotations(), conceptSchemeDto);
@@ -698,13 +696,13 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         identifiersEditionForm.setValue(ConceptSchemeDS.URN, conceptSchemeDto.getUrn());
         identifiersEditionForm.setValue(ConceptSchemeDS.URN_PROVIDER, conceptSchemeDto.getUrnProvider());
         identifiersEditionForm.setValue(ConceptSchemeDS.VERSION_LOGIC, conceptSchemeDto.getVersionLogic());
-        identifiersEditionForm.setValue(ConceptSchemeDS.NAME, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getName()));
+        identifiersEditionForm.setValue(ConceptSchemeDS.NAME, conceptSchemeDto.getName());
         identifiersEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         identifiersEditionForm.markForRedraw();
 
         // CONTENT DESCRIPTORS
 
-        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getDescription()));
+        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.DESCRIPTION, conceptSchemeDto.getDescription());
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(conceptSchemeDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon
                 .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
@@ -751,7 +749,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
         // COMMENTS
 
-        commentsEditionForm.setValue(ConceptSchemeDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptSchemeDto.getComment()));
+        commentsEditionForm.setValue(ConceptSchemeDS.COMMENTS, conceptSchemeDto.getComment());
         commentsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
         // ANNOTATIONS
@@ -762,15 +760,15 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     public ConceptSchemeMetamacDto getConceptSchemeDto() {
         // Identifiers
         conceptSchemeDto.setCode(identifiersEditionForm.getValueAsString(ConceptSchemeDS.CODE));
-        conceptSchemeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(ConceptSchemeDS.NAME));
+        conceptSchemeDto.setName(identifiersEditionForm.getValueAsInternationalStringDto(ConceptSchemeDS.NAME));
         // Content descriptors
-        conceptSchemeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptSchemeDS.DESCRIPTION));
+        conceptSchemeDto.setDescription(contentDescriptorsEditionForm.getValueAsInternationalStringDto(ConceptSchemeDS.DESCRIPTION));
         // Class descriptors
         conceptSchemeDto.setType(ConceptSchemeTypeEnum.valueOf(classDescriptorsEditionForm.getValueAsString(ConceptSchemeDS.TYPE)));
         conceptSchemeDto.setRelatedOperation(classDescriptorsEditionForm.getValueAsExternalItemDto(ConceptSchemeDS.RELATED_OPERATION));
 
         // Comments
-        conceptSchemeDto.setComment((InternationalStringDto) commentsEditionForm.getValue(ConceptSchemeDS.COMMENTS));
+        conceptSchemeDto.setComment(commentsEditionForm.getValueAsInternationalStringDto(ConceptSchemeDS.COMMENTS));
 
         // Annotations
         conceptSchemeDto.getAnnotations().clear();

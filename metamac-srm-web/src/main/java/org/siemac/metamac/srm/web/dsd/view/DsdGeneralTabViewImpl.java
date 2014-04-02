@@ -6,7 +6,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 import java.util.List;
 import java.util.Map;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
@@ -36,17 +35,15 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.utils.CustomRequiredValidator;
-import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.BooleanSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ExternalItemLinkItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.external.SearchExternalItemLinkItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
 import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
@@ -374,7 +371,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Content Descriptors Form
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        MultilanguageRichTextEditorItem descriptionItem = new MultilanguageRichTextEditorItem(DataStructureDefinitionDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        MultiLanguageRichTextEditorItem descriptionItem = new MultiLanguageRichTextEditorItem(DataStructureDefinitionDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         ViewTextItem staticFinalItemEdit = new ViewTextItem(DataStructureDefinitionDS.FINAL, getConstants().maintainableArtefactFinalLogic());
         contentDescriptorsEditionForm.setFields(descriptionItem, staticFinalItemEdit);
 
@@ -439,7 +436,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Comments
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
-        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(DataStructureDefinitionDS.COMMENTS, getConstants().nameableArtefactComments());
+        MultiLanguageRichTextEditorItem comments = new MultiLanguageRichTextEditorItem(DataStructureDefinitionDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
         // Annotations
@@ -492,14 +489,14 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     private void setDsdViewMode(DataStructureDefinitionMetamacDto dsd, List<DimensionComponentDto> dimensionComponentDtos) {
         // Identifiers form
         identifiersForm.setValue(DataStructureDefinitionDS.CODE, dsd.getCode());
-        identifiersForm.setValue(DataStructureDefinitionDS.NAME, RecordUtils.getInternationalStringRecord(dsd.getName()));
+        identifiersForm.setValue(DataStructureDefinitionDS.NAME, dsd.getName());
         identifiersForm.setValue(DataStructureDefinitionDS.URI, dsd.getUriProvider());
         identifiersForm.setValue(DataStructureDefinitionDS.URN, dsd.getUrn());
         identifiersForm.setValue(DataStructureDefinitionDS.URN_PROVIDER, dsd.getUrnProvider());
         identifiersForm.setValue(DataStructureDefinitionDS.VERSION_LOGIC, dsd.getVersionLogic());
 
         // Content Descriptors form
-        contentDescriptorsForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
+        contentDescriptorsForm.setValue(DataStructureDefinitionDS.DESCRIPTION, dsd.getDescription());
         contentDescriptorsForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants()
                 .no()) : StringUtils.EMPTY);
 
@@ -540,7 +537,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // DIMENSION_CODES_VISUALISATION is set in set setDimensionsAndCandidateVisualisations
 
         // Comments
-        commentsForm.setValue(DataStructureDefinitionDS.COMMENTS, RecordUtils.getInternationalStringRecord(dsd.getComment()));
+        commentsForm.setValue(DataStructureDefinitionDS.COMMENTS, dsd.getComment());
 
         // Annotations
         annotationsPanel.setAnnotations(dsd.getAnnotations(), dataStructureDefinitionMetamacDto);
@@ -554,7 +551,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         identifiersEditionForm.setValue(DataStructureDefinitionDS.CODE, dsd.getCode());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.CODE_VIEW, dsd.getCode());
-        identifiersEditionForm.setValue(DataStructureDefinitionDS.NAME, RecordUtils.getInternationalStringRecord(dsd.getName()));
+        identifiersEditionForm.setValue(DataStructureDefinitionDS.NAME, dsd.getName());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.URI, dsd.getUriProvider());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.URN, dsd.getUrn());
         identifiersEditionForm.setValue(DataStructureDefinitionDS.URN_PROVIDER, dsd.getUrnProvider());
@@ -563,7 +560,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // CONTENT DESCRIPTORS FORM
 
-        contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(dsd.getDescription()));
+        contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.DESCRIPTION, dsd.getDescription());
         contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
                 .getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
@@ -618,7 +615,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // COMMENTS
 
-        commentsEditionForm.setValue(DataStructureDefinitionDS.COMMENTS, RecordUtils.getInternationalStringRecord(dsd.getComment()));
+        commentsEditionForm.setValue(DataStructureDefinitionDS.COMMENTS, dsd.getComment());
         commentsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
         // ANNOTATIONS
@@ -635,10 +632,10 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     public DataStructureDefinitionMetamacDto getDataStructureDefinitionDto() {
         // Identifiers form
         dataStructureDefinitionMetamacDto.setCode(identifiersEditionForm.getValueAsString(DataStructureDefinitionDS.CODE));
-        dataStructureDefinitionMetamacDto.setName((InternationalStringDto) identifiersEditionForm.getValue(DataStructureDefinitionDS.NAME));
+        dataStructureDefinitionMetamacDto.setName(identifiersEditionForm.getValueAsInternationalStringDto(DataStructureDefinitionDS.NAME));
 
         // Content Descriptors form
-        dataStructureDefinitionMetamacDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(DataStructureDefinitionDS.DESCRIPTION));
+        dataStructureDefinitionMetamacDto.setDescription(contentDescriptorsEditionForm.getValueAsInternationalStringDto(DataStructureDefinitionDS.DESCRIPTION));
 
         // Class descriptors form
         dataStructureDefinitionMetamacDto.setStatisticalOperation(classDescriptorsEditionForm.getValueAsExternalItemDto(DataStructureDefinitionDS.STATISTICAL_OPERATION));
@@ -663,7 +660,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
                 ((DsdDimensionCodesVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION)).getDimensionVisualisationInfoDtos());
 
         // Comments
-        dataStructureDefinitionMetamacDto.setComment((InternationalStringDto) commentsEditionForm.getValue(DataStructureDefinitionDS.COMMENTS));
+        dataStructureDefinitionMetamacDto.setComment(commentsEditionForm.getValueAsInternationalStringDto(DataStructureDefinitionDS.COMMENTS));
 
         // Annotations
         dataStructureDefinitionMetamacDto.getAnnotations().clear();

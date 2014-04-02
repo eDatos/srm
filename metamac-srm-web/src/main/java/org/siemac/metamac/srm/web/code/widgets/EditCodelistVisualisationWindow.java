@@ -2,12 +2,10 @@ package org.siemac.metamac.srm.web.code.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistVisualisationDS;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
-import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.TranslateToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.form.CustomDynamicForm;
@@ -93,7 +91,7 @@ public abstract class EditCodelistVisualisationWindow extends CustomWindow {
         this.codelistVisualisationDto = codelistVisualisationDto;
         form.setValue(CodelistVisualisationDS.CODE, codelistVisualisationDto.getCode());
         form.setValue(CodelistVisualisationDS.CODE_VIEW, codelistVisualisationDto.getCode());
-        form.setValue(CodelistVisualisationDS.NAME, RecordUtils.getInternationalStringRecord(codelistVisualisationDto.getName()));
+        form.setValue(CodelistVisualisationDS.NAME, codelistVisualisationDto.getName());
         form.markForRedraw();
     }
 
@@ -107,7 +105,7 @@ public abstract class EditCodelistVisualisationWindow extends CustomWindow {
 
     public CodelistVisualisationDto getCodelistVisualisationDto() {
         codelistVisualisationDto.setCode(form.getValueAsString(CodelistVisualisationDS.CODE));
-        codelistVisualisationDto.setName((InternationalStringDto) form.getValue(CodelistVisualisationDS.NAME));
+        codelistVisualisationDto.setName(form.getValueAsInternationalStringDto(CodelistVisualisationDS.NAME));
         return codelistVisualisationDto;
     }
 

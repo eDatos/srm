@@ -5,7 +5,6 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
@@ -39,7 +38,6 @@ import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.listener.UploadListener;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
-import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
@@ -445,8 +443,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // Identifiers
         identifiersForm.setValue(VariableDS.CODE, variableDto.getCode());
         identifiersForm.setValue(VariableDS.URN, variableDto.getUrn());
-        identifiersForm.setValue(VariableDS.NAME, RecordUtils.getInternationalStringRecord(variableDto.getName()));
-        identifiersForm.setValue(VariableDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableDto.getShortName()));
+        identifiersForm.setValue(VariableDS.NAME, variableDto.getName());
+        identifiersForm.setValue(VariableDS.SHORT_NAME, variableDto.getShortName());
 
         // Content descriptors
         contentDescriptorsForm.setValue(VariableDS.IS_GEOGRAPHICAL, VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType()) ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
@@ -464,8 +462,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // Identifiers
         identifiersEditionForm.setValue(VariableDS.CODE, variableDto.getCode());
         identifiersEditionForm.setValue(VariableDS.URN, variableDto.getUrn());
-        identifiersEditionForm.setValue(VariableDS.NAME, RecordUtils.getInternationalStringRecord(variableDto.getName()));
-        identifiersEditionForm.setValue(VariableDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableDto.getShortName()));
+        identifiersEditionForm.setValue(VariableDS.NAME, variableDto.getName());
+        identifiersEditionForm.setValue(VariableDS.SHORT_NAME, variableDto.getShortName());
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(VariableDS.IS_GEOGRAPHICAL_VIEW, VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType()) ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
@@ -482,8 +480,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     public VariableDto getVariableDto() {
         // Identifiers
-        variableDto.setName((InternationalStringDto) identifiersEditionForm.getValue(VariableDS.NAME));
-        variableDto.setShortName((InternationalStringDto) identifiersEditionForm.getValue(VariableDS.SHORT_NAME));
+        variableDto.setName(identifiersEditionForm.getValueAsInternationalStringDto(VariableDS.NAME));
+        variableDto.setShortName(identifiersEditionForm.getValueAsInternationalStringDto(VariableDS.SHORT_NAME));
 
         // Content descriptors
 

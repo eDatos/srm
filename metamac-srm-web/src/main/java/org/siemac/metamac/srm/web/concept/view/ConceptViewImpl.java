@@ -4,7 +4,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
@@ -26,7 +25,6 @@ import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
-import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -50,15 +48,14 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
-import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
@@ -362,10 +359,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        MultilanguageRichTextEditorItem description = new MultilanguageRichTextEditorItem(ConceptDS.DESCRIPTION, getConstants().nameableArtefactDescription());
-        MultilanguageRichTextEditorItem descriptionSource = new MultilanguageRichTextEditorItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
-        MultilanguageRichTextEditorItem context = new MultilanguageRichTextEditorItem(ConceptDS.CONTEXT, getConstants().conceptContext());
-        MultilanguageRichTextEditorItem docMethod = new MultilanguageRichTextEditorItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
+        MultiLanguageRichTextEditorItem description = new MultiLanguageRichTextEditorItem(ConceptDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        MultiLanguageRichTextEditorItem descriptionSource = new MultiLanguageRichTextEditorItem(ConceptDS.DESCRIPTION_SOURCE, getConstants().conceptDescriptionSource());
+        MultiLanguageRichTextEditorItem context = new MultiLanguageRichTextEditorItem(ConceptDS.CONTEXT, getConstants().conceptContext());
+        MultiLanguageRichTextEditorItem docMethod = new MultiLanguageRichTextEditorItem(ConceptDS.DOC_METHOD, getConstants().conceptDocMethod());
         SearchRelatedResourceLinkItem variable = createVariableItem(ConceptDS.VARIABLE, getConstants().variable());
         variable.setShowIfCondition(getVariableFormItemIfFunction());
         RelatedResourceLinkItem staticVariable = new RelatedResourceLinkItem(ConceptDS.VARIABLE_VIEW, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
@@ -399,7 +396,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
         // CLASS DESCRIPTORS
         classDescriptorsEditionForm = new GroupDynamicForm(getConstants().formClassDescriptors());
-        MultilanguageRichTextEditorItem derivation = new MultilanguageRichTextEditorItem(ConceptDS.DERIVATION, getConstants().conceptDerivation());
+        MultiLanguageRichTextEditorItem derivation = new MultiLanguageRichTextEditorItem(ConceptDS.DERIVATION, getConstants().conceptDerivation());
         RequiredSelectItem sdmxRelatedArtefact = new RequiredSelectItem(ConceptDS.SDMX_RELATED_ARTEFACT, getConstants().conceptSdmxRelatedArtefact());
         sdmxRelatedArtefact.setValueMap(CommonUtils.getConceptRoleHashMap());
         sdmxRelatedArtefact.setShowIfCondition(getSdmxRelatedArtefactFormItemIfFunction());
@@ -417,13 +414,13 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // LEGAL ACTS
 
         legalActsEditionForm = new GroupDynamicForm(getConstants().conceptLegalActs());
-        MultilanguageRichTextEditorItem legalActs = new MultilanguageRichTextEditorItem(ConceptDS.LEGAL_ACTS, getConstants().conceptLegalActs());
+        MultiLanguageRichTextEditorItem legalActs = new MultiLanguageRichTextEditorItem(ConceptDS.LEGAL_ACTS, getConstants().conceptLegalActs());
         legalActsEditionForm.setFields(legalActs);
 
         // COMMENTS
 
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
-        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(ConceptDS.COMMENTS, getConstants().nameableArtefactComments());
+        MultiLanguageRichTextEditorItem comments = new MultiLanguageRichTextEditorItem(ConceptDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
         // ANNOTATIONS
@@ -512,9 +509,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private void setConceptViewMode(ConceptMetamacDto conceptDto, List<RelatedResourceDto> roles, List<ConceptMetamacBasicDto> relatedConcepts) {
         // Identifiers Form
         identifiersForm.setValue(ConceptDS.CODE, conceptDto.getCode());
-        identifiersForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
-        identifiersForm.setValue(ConceptDS.PLURAL_NAME, RecordUtils.getInternationalStringRecord(conceptDto.getPluralName()));
-        identifiersForm.setValue(ConceptDS.ACRONYM, RecordUtils.getInternationalStringRecord(conceptDto.getAcronym()));
+        identifiersForm.setValue(ConceptDS.NAME, conceptDto.getName());
+        identifiersForm.setValue(ConceptDS.PLURAL_NAME, conceptDto.getPluralName());
+        identifiersForm.setValue(ConceptDS.ACRONYM, conceptDto.getAcronym());
         identifiersForm.setValue(ConceptDS.URI, conceptDto.getUriProvider());
         identifiersForm.setValue(ConceptDS.URN, conceptDto.getUrn());
         identifiersForm.setValue(ConceptDS.URN_PROVIDER, conceptDto.getUrnProvider());
@@ -523,10 +520,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         productionDescriptorsForm.setValue(ConceptDS.CREATION_DATE, conceptDto.getCreatedDate());
 
         // Content descriptors
-        contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptDto.getDescription()));
-        contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
-        contentDescriptorsForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
-        contentDescriptorsForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
+        contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION, conceptDto.getDescription());
+        contentDescriptorsForm.setValue(ConceptDS.DESCRIPTION_SOURCE, conceptDto.getDescriptionSource());
+        contentDescriptorsForm.setValue(ConceptDS.CONTEXT, conceptDto.getContext());
+        contentDescriptorsForm.setValue(ConceptDS.DOC_METHOD, conceptDto.getDocMethod());
         ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(ConceptDS.VARIABLE)).setRelatedResource(conceptDto.getVariable());
         contentDescriptorsForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getRepresentationType().name() : null);
         contentDescriptorsForm.setValue(RepresentationDS.TYPE_VIEW,
@@ -550,7 +547,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         facetForm.markForRedraw();
 
         // Class descriptors
-        classDescriptorsForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
+        classDescriptorsForm.setValue(ConceptDS.DERIVATION, conceptDto.getDerivation());
         classDescriptorsForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, CommonUtils.getConceptRoleName(conceptDto.getSdmxRelatedArtefact()));
 
         // Relation between concepts
@@ -562,10 +559,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         quantityForm.setVisible(conceptSchemeMetamacDto != null && ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeMetamacDto.getType()));
 
         // Legal acts
-        legalActsForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
+        legalActsForm.setValue(ConceptDS.LEGAL_ACTS, conceptDto.getLegalActs());
 
         // Comments
-        commentsForm.setValue(ConceptDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptDto.getComment()));
+        commentsForm.setValue(ConceptDS.COMMENTS, conceptDto.getComment());
 
         // Annotations
         annotationsPanel.setAnnotations(conceptDto.getAnnotations(), conceptSchemeMetamacDto);
@@ -575,9 +572,9 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // IDENTIFIERS FORM
         identifiersEditionForm.setValue(ConceptDS.CODE, conceptDto.getCode());
         identifiersEditionForm.setValue(ConceptDS.CODE_VIEW, conceptDto.getCode());
-        identifiersEditionForm.setValue(ConceptDS.NAME, RecordUtils.getInternationalStringRecord(conceptDto.getName()));
-        identifiersEditionForm.setValue(ConceptDS.PLURAL_NAME, RecordUtils.getInternationalStringRecord(conceptDto.getPluralName()));
-        identifiersEditionForm.setValue(ConceptDS.ACRONYM, RecordUtils.getInternationalStringRecord(conceptDto.getAcronym()));
+        identifiersEditionForm.setValue(ConceptDS.NAME, conceptDto.getName());
+        identifiersEditionForm.setValue(ConceptDS.PLURAL_NAME, conceptDto.getPluralName());
+        identifiersEditionForm.setValue(ConceptDS.ACRONYM, conceptDto.getAcronym());
         identifiersEditionForm.setValue(ConceptDS.URI, conceptDto.getUriProvider());
         identifiersEditionForm.setValue(ConceptDS.URN, conceptDto.getUrn());
         identifiersEditionForm.setValue(ConceptDS.URN_PROVIDER, conceptDto.getUrnProvider());
@@ -586,10 +583,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         productionDescriptorsEditionForm.setValue(ConceptDS.CREATION_DATE, conceptDto.getCreatedDate());
 
         // CONTENT DESCRIPTORS
-        contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(conceptDto.getDescription()));
-        contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(conceptDto.getDescriptionSource()));
-        contentDescriptorsEditionForm.setValue(ConceptDS.CONTEXT, RecordUtils.getInternationalStringRecord(conceptDto.getContext()));
-        contentDescriptorsEditionForm.setValue(ConceptDS.DOC_METHOD, RecordUtils.getInternationalStringRecord(conceptDto.getDocMethod()));
+        contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION, conceptDto.getDescription());
+        contentDescriptorsEditionForm.setValue(ConceptDS.DESCRIPTION_SOURCE, conceptDto.getDescriptionSource());
+        contentDescriptorsEditionForm.setValue(ConceptDS.CONTEXT, conceptDto.getContext());
+        contentDescriptorsEditionForm.setValue(ConceptDS.DOC_METHOD, conceptDto.getDocMethod());
         ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE)).setRelatedResource(conceptDto.getVariable());
         ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE_VIEW)).setRelatedResource(conceptDto.getVariable());
         contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getRepresentationType().name() : null);
@@ -614,7 +611,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         }
 
         // CLASS DESCRIPTORS
-        classDescriptorsEditionForm.setValue(ConceptDS.DERIVATION, RecordUtils.getInternationalStringRecord(conceptDto.getDerivation()));
+        classDescriptorsEditionForm.setValue(ConceptDS.DERIVATION, conceptDto.getDerivation());
         classDescriptorsEditionForm.setValue(ConceptDS.SDMX_RELATED_ARTEFACT, conceptDto.getSdmxRelatedArtefact() != null ? conceptDto.getSdmxRelatedArtefact().name() : StringUtils.EMPTY);
 
         // RELATION BETWEEN CONCEPTS
@@ -627,10 +624,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         quantityEditionForm.setVisible(conceptSchemeMetamacDto != null && ConceptSchemeTypeEnum.MEASURE.equals(conceptSchemeMetamacDto.getType()));
 
         // LEGAL ACTS
-        legalActsEditionForm.setValue(ConceptDS.LEGAL_ACTS, RecordUtils.getInternationalStringRecord(conceptDto.getLegalActs()));
+        legalActsEditionForm.setValue(ConceptDS.LEGAL_ACTS, conceptDto.getLegalActs());
 
         // COMMENTS
-        commentsEditionForm.setValue(ConceptDS.COMMENTS, RecordUtils.getInternationalStringRecord(conceptDto.getComment()));
+        commentsEditionForm.setValue(ConceptDS.COMMENTS, conceptDto.getComment());
 
         // ANNOTATIONS
         annotationsEditionPanel.setAnnotations(conceptDto.getAnnotations(), conceptSchemeMetamacDto);
@@ -639,15 +636,15 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private ConceptMetamacDto getConceptDto() {
         // Identifiers Form
         conceptDto.setCode(identifiersEditionForm.getValueAsString(ConceptDS.CODE));
-        conceptDto.setName((InternationalStringDto) identifiersEditionForm.getValue(ConceptDS.NAME));
-        conceptDto.setPluralName((InternationalStringDto) identifiersEditionForm.getValue(ConceptDS.PLURAL_NAME));
-        conceptDto.setAcronym((InternationalStringDto) identifiersEditionForm.getValue(ConceptDS.ACRONYM));
+        conceptDto.setName(identifiersEditionForm.getValueAsInternationalStringDto(ConceptDS.NAME));
+        conceptDto.setPluralName(identifiersEditionForm.getValueAsInternationalStringDto(ConceptDS.PLURAL_NAME));
+        conceptDto.setAcronym(identifiersEditionForm.getValueAsInternationalStringDto(ConceptDS.ACRONYM));
 
         // Content descriptors
-        conceptDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.DESCRIPTION));
-        conceptDto.setDescriptionSource((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.DESCRIPTION_SOURCE));
-        conceptDto.setContext((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.CONTEXT));
-        conceptDto.setDocMethod((InternationalStringDto) contentDescriptorsEditionForm.getValue(ConceptDS.DOC_METHOD));
+        conceptDto.setDescription(contentDescriptorsEditionForm.getValueAsInternationalStringDto(ConceptDS.DESCRIPTION));
+        conceptDto.setDescriptionSource(contentDescriptorsEditionForm.getValueAsInternationalStringDto(ConceptDS.DESCRIPTION_SOURCE));
+        conceptDto.setContext(contentDescriptorsEditionForm.getValueAsInternationalStringDto(ConceptDS.CONTEXT));
+        conceptDto.setDocMethod(contentDescriptorsEditionForm.getValueAsInternationalStringDto(ConceptDS.DOC_METHOD));
         conceptDto.setVariable(getVariableFromEditionForm());
         if (!StringUtils.isEmpty(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE))) {
             if (conceptDto.getCoreRepresentation() == null) {
@@ -670,7 +667,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // Roles get in getRoles method
 
         // Class descriptors
-        conceptDto.setDerivation((InternationalStringDto) classDescriptorsEditionForm.getValue(ConceptDS.DERIVATION));
+        conceptDto.setDerivation(classDescriptorsEditionForm.getValueAsInternationalStringDto(ConceptDS.DERIVATION));
         conceptDto.setSdmxRelatedArtefact(getSdmxRelatedArtefactFromEditionForm());
 
         // Relation between concepts
@@ -680,10 +677,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         conceptDto.setQuantity(quantityEditionForm.getValue(conceptDto.getQuantity()));
 
         // Legal acts
-        conceptDto.setLegalActs((InternationalStringDto) legalActsEditionForm.getValue(ConceptDS.LEGAL_ACTS));
+        conceptDto.setLegalActs(legalActsEditionForm.getValueAsInternationalStringDto(ConceptDS.LEGAL_ACTS));
 
         // Comments
-        conceptDto.setComment((InternationalStringDto) commentsEditionForm.getValue(ConceptDS.COMMENTS));
+        conceptDto.setComment(commentsEditionForm.getValueAsInternationalStringDto(ConceptDS.COMMENTS));
 
         // Annotations
         conceptDto.getAnnotations().clear();

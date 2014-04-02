@@ -5,7 +5,6 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
@@ -21,7 +20,6 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
-import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
@@ -257,19 +255,19 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         // Identifiers
         identifiersForm.setValue(CodelistFamilyDS.CODE, codelistFamilyDto.getCode());
         identifiersForm.setValue(CodelistFamilyDS.URN, codelistFamilyDto.getUrn());
-        identifiersForm.setValue(CodelistFamilyDS.NAME, RecordUtils.getInternationalStringRecord(codelistFamilyDto.getName()));
+        identifiersForm.setValue(CodelistFamilyDS.NAME, codelistFamilyDto.getName());
     }
 
     public void setCodelistFamilyEditionMode(CodelistFamilyDto codelistFamilyDto) {
         // Identifiers
         identifiersEditionForm.setValue(CodelistFamilyDS.CODE, codelistFamilyDto.getCode());
         identifiersEditionForm.setValue(CodelistFamilyDS.URN, codelistFamilyDto.getUrn());
-        identifiersEditionForm.setValue(CodelistFamilyDS.NAME, RecordUtils.getInternationalStringRecord(codelistFamilyDto.getName()));
+        identifiersEditionForm.setValue(CodelistFamilyDS.NAME, codelistFamilyDto.getName());
     }
 
     public CodelistFamilyDto getCodelistFamilyDto() {
         // Identifiers
-        codelistFamilyDto.setName((InternationalStringDto) identifiersEditionForm.getValue(CodelistFamilyDS.NAME));
+        codelistFamilyDto.setName(identifiersEditionForm.getValueAsInternationalStringDto(CodelistFamilyDS.NAME));
 
         return codelistFamilyDto;
     }

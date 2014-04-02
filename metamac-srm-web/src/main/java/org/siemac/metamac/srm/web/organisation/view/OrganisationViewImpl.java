@@ -6,7 +6,6 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.ArrayList;
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
@@ -26,14 +25,13 @@ import org.siemac.metamac.srm.web.organisation.widgets.ContactMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationContactSearchSectionStack;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
-import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
@@ -395,12 +393,12 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
         ViewTextItem type = new ViewTextItem(OrganisationDS.TYPE, getConstants().organisationType());
-        MultilanguageRichTextEditorItem description = new MultilanguageRichTextEditorItem(OrganisationDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        MultiLanguageRichTextEditorItem description = new MultiLanguageRichTextEditorItem(OrganisationDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsEditionForm.setFields(type, description);
 
         // Comments
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
-        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(OrganisationDS.COMMENTS, getConstants().nameableArtefactComments());
+        MultiLanguageRichTextEditorItem comments = new MultiLanguageRichTextEditorItem(OrganisationDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
         // Annotations
@@ -515,7 +513,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
     private void setOrganisationViewMode(OrganisationMetamacDto organisationDto) {
         // Identifiers Form
         identifiersForm.setValue(OrganisationDS.CODE, organisationDto.getCode());
-        identifiersForm.setValue(OrganisationDS.NAME, RecordUtils.getInternationalStringRecord(organisationDto.getName()));
+        identifiersForm.setValue(OrganisationDS.NAME, organisationDto.getName());
         identifiersForm.setValue(OrganisationDS.URI, organisationDto.getUriProvider());
         identifiersForm.setValue(OrganisationDS.URN, organisationDto.getUrn());
         identifiersForm.setValue(OrganisationDS.URN_PROVIDER, organisationDto.getUrnProvider());
@@ -525,10 +523,10 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         // Content descriptors
         contentDescriptorsForm.setValue(OrganisationDS.TYPE, CommonUtils.getOrganisationTypeName(organisationDto.getType()));
-        contentDescriptorsForm.setValue(OrganisationDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationDto.getDescription()));
+        contentDescriptorsForm.setValue(OrganisationDS.DESCRIPTION, organisationDto.getDescription());
 
         // Comments
-        commentsForm.setValue(OrganisationDS.COMMENTS, RecordUtils.getInternationalStringRecord(organisationDto.getComment()));
+        commentsForm.setValue(OrganisationDS.COMMENTS, organisationDto.getComment());
 
         // Annotations
         annotationsPanel.setAnnotations(organisationDto.getAnnotations(), organisationSchemeMetamacDto);
@@ -538,7 +536,7 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
         // Identifiers Form
         identifiersEditionForm.setValue(OrganisationDS.CODE, organisationDto.getCode());
         identifiersEditionForm.setValue(OrganisationDS.CODE_VIEW, organisationDto.getCode());
-        identifiersEditionForm.setValue(OrganisationDS.NAME, RecordUtils.getInternationalStringRecord(organisationDto.getName()));
+        identifiersEditionForm.setValue(OrganisationDS.NAME, organisationDto.getName());
         identifiersEditionForm.setValue(OrganisationDS.URI, organisationDto.getUriProvider());
         identifiersEditionForm.setValue(OrganisationDS.URN, organisationDto.getUrn());
         identifiersEditionForm.setValue(OrganisationDS.URN_PROVIDER, organisationDto.getUrnProvider());
@@ -549,11 +547,11 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         // Content descriptors
         contentDescriptorsEditionForm.setValue(OrganisationDS.TYPE, CommonUtils.getOrganisationTypeName(organisationDto.getType()));
-        contentDescriptorsEditionForm.setValue(OrganisationDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(organisationDto.getDescription()));
+        contentDescriptorsEditionForm.setValue(OrganisationDS.DESCRIPTION, organisationDto.getDescription());
         contentDescriptorsEditionForm.markForRedraw();
 
         // Comments
-        commentsEditionForm.setValue(OrganisationDS.COMMENTS, RecordUtils.getInternationalStringRecord(organisationDto.getComment()));
+        commentsEditionForm.setValue(OrganisationDS.COMMENTS, organisationDto.getComment());
 
         // Annotations
         annotationsEditionPanel.setAnnotations(organisationDto.getAnnotations(), organisationSchemeMetamacDto);
@@ -563,13 +561,13 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
 
         // Identifiers Form
         organisationDto.setCode(identifiersEditionForm.getValueAsString(OrganisationDS.CODE));
-        organisationDto.setName((InternationalStringDto) identifiersEditionForm.getValue(OrganisationDS.NAME));
+        organisationDto.setName(identifiersEditionForm.getValueAsInternationalStringDto(OrganisationDS.NAME));
 
         // Content descriptors
-        organisationDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(OrganisationDS.DESCRIPTION));
+        organisationDto.setDescription(contentDescriptorsEditionForm.getValueAsInternationalStringDto(OrganisationDS.DESCRIPTION));
 
         // Comments
-        organisationDto.setComment((InternationalStringDto) commentsEditionForm.getValue(OrganisationDS.COMMENTS));
+        organisationDto.setComment(commentsEditionForm.getValueAsInternationalStringDto(OrganisationDS.COMMENTS));
 
         // Annotations
         organisationDto.getAnnotations().clear();

@@ -31,8 +31,8 @@ import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
@@ -265,13 +265,13 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
 
         // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        MultilanguageRichTextEditorItem description = new MultilanguageRichTextEditorItem(CodeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        MultiLanguageRichTextEditorItem description = new MultiLanguageRichTextEditorItem(CodeDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         SearchRelatedResourceLinkItem variableElement = createVariableElementItem(CodeDS.VARIABLE_ELEMENT, getConstants().variableElement());
         contentDescriptorsEditionForm.setFields(description, variableElement);
 
         // COMMENTS
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
-        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(CodeDS.COMMENTS, getConstants().nameableArtefactComments());
+        MultiLanguageRichTextEditorItem comments = new MultiLanguageRichTextEditorItem(CodeDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
         // ANNOTATIONS
@@ -345,8 +345,8 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
     private void setCodeViewMode(CodeMetamacDto codeDto) {
         // Identifiers Form
         identifiersForm.setValue(CodeDS.CODE, codeDto.getCode());
-        identifiersForm.setValue(CodeDS.NAME, RecordUtils.getInternationalStringRecord(codeDto.getName()));
-        identifiersForm.setValue(CodeDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(codeDto.getShortName()));
+        identifiersForm.setValue(CodeDS.NAME, codeDto.getName());
+        identifiersForm.setValue(CodeDS.SHORT_NAME, codeDto.getShortName());
         identifiersForm.setValue(CodeDS.URI, codeDto.getUriProvider());
         identifiersForm.setValue(CodeDS.URN, codeDto.getUrn());
         identifiersForm.setValue(CodeDS.URN_PROVIDER, codeDto.getUrnProvider());
@@ -355,12 +355,12 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         productionDescriptorsForm.setValue(CodeDS.CREATION_DATE, codeDto.getCreatedDate());
 
         // Content descriptors
-        contentDescriptorsForm.setValue(CodeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codeDto.getDescription()));
+        contentDescriptorsForm.setValue(CodeDS.DESCRIPTION, codeDto.getDescription());
         ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(CodeDS.VARIABLE_ELEMENT)).setRelatedResource(codeDto.getVariableElement());
         contentDescriptorsForm.markForRedraw();
 
         // Comments
-        commentsForm.setValue(CodeDS.COMMENTS, RecordUtils.getInternationalStringRecord(codeDto.getComment()));
+        commentsForm.setValue(CodeDS.COMMENTS, codeDto.getComment());
 
         // Annotations
         annotationsPanel.setAnnotations(codeDto.getAnnotations(), codelistMetamacDto);
@@ -370,8 +370,8 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         // Identifiers Form
         identifiersEditionForm.setValue(CodeDS.CODE, codeDto.getCode());
         identifiersEditionForm.setValue(CodeDS.CODE_VIEW, codeDto.getCode());
-        identifiersEditionForm.setValue(CodeDS.NAME, RecordUtils.getInternationalStringRecord(codeDto.getName()));
-        identifiersEditionForm.setValue(CodeDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(codeDto.getShortName()));
+        identifiersEditionForm.setValue(CodeDS.NAME, codeDto.getName());
+        identifiersEditionForm.setValue(CodeDS.SHORT_NAME, codeDto.getShortName());
         identifiersEditionForm.setValue(CodeDS.URI, codeDto.getUriProvider());
         identifiersEditionForm.setValue(CodeDS.URN, codeDto.getUrn());
         identifiersEditionForm.setValue(CodeDS.URN_PROVIDER, codeDto.getUrnProvider());
@@ -380,11 +380,11 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
         productionDescriptorsEditionForm.setValue(CodeDS.CREATION_DATE, codeDto.getCreatedDate());
 
         // Content descriptors
-        contentDescriptorsEditionForm.setValue(CodeDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codeDto.getDescription()));
+        contentDescriptorsEditionForm.setValue(CodeDS.DESCRIPTION, codeDto.getDescription());
         ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodeDS.VARIABLE_ELEMENT)).setRelatedResource(codeDto.getVariableElement());
 
         // Comments
-        commentsEditionForm.setValue(CodeDS.COMMENTS, RecordUtils.getInternationalStringRecord(codeDto.getComment()));
+        commentsEditionForm.setValue(CodeDS.COMMENTS, codeDto.getComment());
 
         // Annotations
         annotationsEditionPanel.setAnnotations(codeDto.getAnnotations(), codelistMetamacDto);
@@ -393,15 +393,15 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
     private CodeMetamacDto getCodeDto() {
         // Identifiers Form
         codeDto.setCode(identifiersEditionForm.getValueAsString(CodeDS.CODE));
-        codeDto.setName((InternationalStringDto) identifiersEditionForm.getValue(CodeDS.NAME));
-        codeDto.setShortName((InternationalStringDto) identifiersEditionForm.getValue(CodeDS.SHORT_NAME));
+        codeDto.setName(identifiersEditionForm.getValueAsInternationalStringDto(CodeDS.NAME));
+        codeDto.setShortName(identifiersEditionForm.getValueAsInternationalStringDto(CodeDS.SHORT_NAME));
 
         // Content descriptors
-        codeDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CodeDS.DESCRIPTION));
+        codeDto.setDescription(contentDescriptorsEditionForm.getValueAsInternationalStringDto(CodeDS.DESCRIPTION));
         codeDto.setVariableElement(((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodeDS.VARIABLE_ELEMENT)).getRelatedResourceDto());
 
         // Comments
-        codeDto.setComment((InternationalStringDto) commentsEditionForm.getValue(CodeDS.COMMENTS));
+        codeDto.setComment(commentsEditionForm.getValueAsInternationalStringDto(CodeDS.COMMENTS));
 
         // Annotations
         codeDto.getAnnotations().clear();

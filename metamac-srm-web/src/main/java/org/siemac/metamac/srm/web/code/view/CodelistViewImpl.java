@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
@@ -48,7 +47,6 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
-import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.InformationLabel;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
@@ -58,8 +56,8 @@ import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedActio
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.BooleanSelectItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomSelectItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
@@ -699,8 +697,8 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // CONTENT DESCRIPTORS
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        MultilanguageRichTextEditorItem description = new MultilanguageRichTextEditorItem(CodelistDS.DESCRIPTION, getConstants().nameableArtefactDescription());
-        MultilanguageRichTextEditorItem descriptionSource = new MultilanguageRichTextEditorItem(CodelistDS.DESCRIPTION_SOURCE, getConstants().codelistDescriptionSource());
+        MultiLanguageRichTextEditorItem description = new MultiLanguageRichTextEditorItem(CodelistDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        MultiLanguageRichTextEditorItem descriptionSource = new MultiLanguageRichTextEditorItem(CodelistDS.DESCRIPTION_SOURCE, getConstants().codelistDescriptionSource());
         ViewTextItem partial = new ViewTextItem(CodelistDS.IS_PARTIAL, getConstants().itemSchemeIsPartial());
         ViewTextItem isExternalReference = new ViewTextItem(CodelistDS.IS_EXTERNAL_REFERENCE, getConstants().maintainableArtefactIsExternalReference());
         ViewTextItem isFinal = new ViewTextItem(CodelistDS.FINAL, getConstants().maintainableArtefactFinalLogic());
@@ -751,7 +749,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // COMMENTS
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
-        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(CodelistDS.COMMENTS, getConstants().nameableArtefactComments());
+        MultiLanguageRichTextEditorItem comments = new MultiLanguageRichTextEditorItem(CodelistDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
         // ANNOTATIONS
@@ -775,13 +773,13 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         identifiersForm.setValue(CodelistDS.URN, codelistDto.getUrn());
         identifiersForm.setValue(CodelistDS.URN_PROVIDER, codelistDto.getUrnProvider());
         identifiersForm.setValue(CodelistDS.VERSION_LOGIC, codelistDto.getVersionLogic());
-        identifiersForm.setValue(CodelistDS.NAME, RecordUtils.getInternationalStringRecord(codelistDto.getName()));
-        identifiersForm.setValue(CodelistDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(codelistDto.getShortName()));
+        identifiersForm.setValue(CodelistDS.NAME, codelistDto.getName());
+        identifiersForm.setValue(CodelistDS.SHORT_NAME, codelistDto.getShortName());
 
         // CONTENT DESCRIPTORS
 
-        contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codelistDto.getDescription()));
-        contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION_SOURCE, RecordUtils.getInternationalStringRecord(codelistDto.getDescriptionSource()));
+        contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION, codelistDto.getDescription());
+        contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION_SOURCE, codelistDto.getDescriptionSource());
         contentDescriptorsForm.setValue(CodelistDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(codelistDto.getIsPartial()));
         contentDescriptorsForm.setValue(CodelistDS.IS_EXTERNAL_REFERENCE, codelistDto.getIsExternalReference() != null ? (codelistDto.getIsExternalReference()
                 ? MetamacWebCommon.getConstants().yes()
@@ -825,7 +823,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // COMMENTS
 
-        commentsForm.setValue(CodelistDS.COMMENTS, RecordUtils.getInternationalStringRecord(codelistDto.getComment()));
+        commentsForm.setValue(CodelistDS.COMMENTS, codelistDto.getComment());
 
         // ANNOTATIONS
 
@@ -844,15 +842,15 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         identifiersEditionForm.setValue(CodelistDS.URN, codelistDto.getUrn());
         identifiersEditionForm.setValue(CodelistDS.URN_PROVIDER, codelistDto.getUrnProvider());
         identifiersEditionForm.setValue(CodelistDS.VERSION_LOGIC, codelistDto.getVersionLogic());
-        identifiersEditionForm.setValue(CodelistDS.NAME, RecordUtils.getInternationalStringRecord(codelistDto.getName()));
-        identifiersEditionForm.setValue(CodelistDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(codelistDto.getShortName()));
+        identifiersEditionForm.setValue(CodelistDS.NAME, codelistDto.getName());
+        identifiersEditionForm.setValue(CodelistDS.SHORT_NAME, codelistDto.getShortName());
         identifiersEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         identifiersEditionForm.markForRedraw();
 
         // CONTENT DESCRIPTORS
 
-        contentDescriptorsEditionForm.setValue(CodelistDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(codelistDto.getDescription()));
-        ((MultilanguageRichTextEditorItem) contentDescriptorsEditionForm.getItem(CodelistDS.DESCRIPTION_SOURCE)).setValueInternational(codelistDto.getDescriptionSource());
+        contentDescriptorsEditionForm.setValue(CodelistDS.DESCRIPTION, codelistDto.getDescription());
+        contentDescriptorsEditionForm.setValue(CodelistDS.DESCRIPTION_SOURCE, codelistDto.getDescriptionSource());
         contentDescriptorsEditionForm.setValue(CodelistDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(codelistDto.getIsPartial()));
         contentDescriptorsEditionForm.setValue(CodelistDS.IS_EXTERNAL_REFERENCE, codelistDto.getIsExternalReference() != null ? (codelistDto.getIsExternalReference() ? MetamacWebCommon.getConstants()
                 .yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
@@ -904,7 +902,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // COMMENTS
 
-        commentsEditionForm.setValue(CodelistDS.COMMENTS, RecordUtils.getInternationalStringRecord(codelistDto.getComment()));
+        commentsEditionForm.setValue(CodelistDS.COMMENTS, codelistDto.getComment());
         commentsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
         // ANNOTATIONS
@@ -915,12 +913,12 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
     public CodelistMetamacDto getCodelistDto() {
         // Identifiers
         codelistDto.setCode(identifiersEditionForm.getValueAsString(CodelistDS.CODE));
-        codelistDto.setName((InternationalStringDto) identifiersEditionForm.getValue(CodelistDS.NAME));
-        codelistDto.setShortName((InternationalStringDto) identifiersEditionForm.getValue(CodelistDS.SHORT_NAME));
+        codelistDto.setName(identifiersEditionForm.getValueAsInternationalStringDto(CodelistDS.NAME));
+        codelistDto.setShortName(identifiersEditionForm.getValueAsInternationalStringDto(CodelistDS.SHORT_NAME));
 
         // Content descriptors
-        codelistDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CodelistDS.DESCRIPTION));
-        codelistDto.setDescriptionSource(((MultilanguageRichTextEditorItem) contentDescriptorsEditionForm.getItem(CodelistDS.DESCRIPTION_SOURCE)).getValue());
+        codelistDto.setDescription(contentDescriptorsEditionForm.getValueAsInternationalStringDto(CodelistDS.DESCRIPTION));
+        codelistDto.setDescriptionSource(contentDescriptorsEditionForm.getValueAsInternationalStringDto(CodelistDS.DESCRIPTION_SOURCE));
         codelistDto.setIsRecommended(((BooleanSelectItem) contentDescriptorsEditionForm.getItem(CodelistDS.IS_RECOMMENDED)).getBooleanValue());
         codelistDto.setFamily(((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.FAMILY)).getRelatedResourceDto());
         codelistDto.setVariable(((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.VARIABLE)).getRelatedResourceDto());
@@ -936,7 +934,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
                 .createRelatedResourceDto(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.DEFAULT_OPENNESS_LEVEL)) : null);
 
         // Comments
-        codelistDto.setComment((InternationalStringDto) commentsEditionForm.getValue(CodelistDS.COMMENTS));
+        codelistDto.setComment(commentsEditionForm.getValueAsInternationalStringDto(CodelistDS.COMMENTS));
 
         // Annotations
         codelistDto.getAnnotations().clear();

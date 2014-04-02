@@ -2,12 +2,10 @@ package org.siemac.metamac.srm.web.organisation.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.organisation.model.ds.ContactDS;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsFormUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
-import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.utils.UrlUtils;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
@@ -141,9 +139,9 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
     }
 
     public ContactDto getContact() {
-        contactDto.setName((InternationalStringDto) editionForm.getValue(ContactDS.NAME));
-        contactDto.setOrganisationUnit((InternationalStringDto) editionForm.getValue(ContactDS.ORGANISATION_UNIT));
-        contactDto.setResponsibility((InternationalStringDto) editionForm.getValue(ContactDS.RESPONSIBILITY));
+        contactDto.setName(editionForm.getValueAsInternationalStringDto(ContactDS.NAME));
+        contactDto.setOrganisationUnit(editionForm.getValueAsInternationalStringDto(ContactDS.ORGANISATION_UNIT));
+        contactDto.setResponsibility(editionForm.getValueAsInternationalStringDto(ContactDS.RESPONSIBILITY));
         // URLs
         contactDto.getUrls().clear();
         contactDto.getUrls().addAll(((MultiTextItem) editionForm.getItem(ContactDS.URL)).getValues());
@@ -167,9 +165,9 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         // TODO Why it is necessary to destroy and rebuild the form each time? (METAMAC-2150)
         form.destroy();
         createViewForm();
-        form.setValue(ContactDS.NAME, RecordUtils.getInternationalStringRecord(contactDto.getName()));
-        form.setValue(ContactDS.ORGANISATION_UNIT, RecordUtils.getInternationalStringRecord(contactDto.getOrganisationUnit()));
-        form.setValue(ContactDS.RESPONSIBILITY, RecordUtils.getInternationalStringRecord(contactDto.getResponsibility()));
+        form.setValue(ContactDS.NAME, contactDto.getName());
+        form.setValue(ContactDS.ORGANISATION_UNIT, contactDto.getOrganisationUnit());
+        form.setValue(ContactDS.RESPONSIBILITY, contactDto.getResponsibility());
         form.setValue(ContactDS.URL, CommonWebUtils.getStringListToString(contactDto.getUrls()));
         form.setValue(ContactDS.TELEPHONE, CommonWebUtils.getStringListToString(contactDto.getTelephones()));
         form.setValue(ContactDS.EMAIL, CommonWebUtils.getStringListToString(contactDto.getEmails()));
@@ -181,9 +179,9 @@ public class ContactMainFormLayout extends InternationalMainFormLayout {
         // TODO Why it is necessary to destroy and rebuild the form each time? (METAMAC-2150)
         editionForm.destroy();
         createEditionForm();
-        editionForm.setValue(ContactDS.NAME, RecordUtils.getInternationalStringRecord(contactDto.getName()));
-        editionForm.setValue(ContactDS.ORGANISATION_UNIT, RecordUtils.getInternationalStringRecord(contactDto.getOrganisationUnit()));
-        editionForm.setValue(ContactDS.RESPONSIBILITY, RecordUtils.getInternationalStringRecord(contactDto.getResponsibility()));
+        editionForm.setValue(ContactDS.NAME, contactDto.getName());
+        editionForm.setValue(ContactDS.ORGANISATION_UNIT, contactDto.getOrganisationUnit());
+        editionForm.setValue(ContactDS.RESPONSIBILITY, contactDto.getResponsibility());
         ((MultiTextItem) editionForm.getItem(ContactDS.URL)).setValues(contactDto.getUrls());
         editionForm.setValue(ContactDS.URL_VIEW, CommonWebUtils.getStringListToString(contactDto.getUrls()));
         ((MultiTextItem) editionForm.getItem(ContactDS.TELEPHONE)).setValues(contactDto.getTelephones());

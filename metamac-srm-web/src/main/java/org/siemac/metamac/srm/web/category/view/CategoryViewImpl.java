@@ -4,7 +4,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.category.dto.CategoryMetamacDto;
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
@@ -18,11 +17,10 @@ import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
-import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
@@ -220,12 +218,12 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
         // Content descriptors
         contentDescriptorsEditionForm = new GroupDynamicForm(getConstants().formContentDescriptors());
-        MultilanguageRichTextEditorItem description = new MultilanguageRichTextEditorItem(CategoryDS.DESCRIPTION, getConstants().nameableArtefactDescription());
+        MultiLanguageRichTextEditorItem description = new MultiLanguageRichTextEditorItem(CategoryDS.DESCRIPTION, getConstants().nameableArtefactDescription());
         contentDescriptorsEditionForm.setFields(description);
 
         // Comments
         commentsEditionForm = new GroupDynamicForm(getConstants().nameableArtefactComments());
-        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(CategoryDS.COMMENTS, getConstants().nameableArtefactComments());
+        MultiLanguageRichTextEditorItem comments = new MultiLanguageRichTextEditorItem(CategoryDS.COMMENTS, getConstants().nameableArtefactComments());
         commentsEditionForm.setFields(comments);
 
         // Annotations
@@ -241,7 +239,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
     private void setCategoryViewMode(CategoryMetamacDto categoryDto) {
         // Identifiers Form
         identifiersForm.setValue(CategoryDS.CODE, categoryDto.getCode());
-        identifiersForm.setValue(CategoryDS.NAME, RecordUtils.getInternationalStringRecord(categoryDto.getName()));
+        identifiersForm.setValue(CategoryDS.NAME, categoryDto.getName());
         identifiersForm.setValue(CategoryDS.URI, categoryDto.getUriProvider());
         identifiersForm.setValue(CategoryDS.URN, categoryDto.getUrn());
         identifiersForm.setValue(CategoryDS.URN_PROVIDER, categoryDto.getUrnProvider());
@@ -250,10 +248,10 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         productionDescriptorsForm.setValue(CategoryDS.CREATION_DATE, categoryDto.getCreatedDate());
 
         // Content descriptors
-        contentDescriptorsForm.setValue(CategoryDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categoryDto.getDescription()));
+        contentDescriptorsForm.setValue(CategoryDS.DESCRIPTION, categoryDto.getDescription());
 
         // Comments
-        commentsForm.setValue(CategoryDS.COMMENTS, RecordUtils.getInternationalStringRecord(categoryDto.getComment()));
+        commentsForm.setValue(CategoryDS.COMMENTS, categoryDto.getComment());
 
         // Annotations
         annotationsPanel.setAnnotations(categoryDto.getAnnotations(), categorySchemeDto);
@@ -263,7 +261,7 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         // Identifiers Form
         identifiersEditionForm.setValue(CategoryDS.CODE, categoryDto.getCode());
         identifiersEditionForm.setValue(CategoryDS.CODE_VIEW, categoryDto.getCode());
-        identifiersEditionForm.setValue(CategoryDS.NAME, RecordUtils.getInternationalStringRecord(categoryDto.getName()));
+        identifiersEditionForm.setValue(CategoryDS.NAME, categoryDto.getName());
         identifiersEditionForm.setValue(CategoryDS.URI, categoryDto.getUriProvider());
         identifiersEditionForm.setValue(CategoryDS.URN, categoryDto.getUrn());
         identifiersEditionForm.setValue(CategoryDS.URN_PROVIDER, categoryDto.getUrnProvider());
@@ -272,10 +270,10 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
         productionDescriptorsEditionForm.setValue(CategoryDS.CREATION_DATE, categoryDto.getCreatedDate());
 
         // Content descriptors
-        contentDescriptorsEditionForm.setValue(CategoryDS.DESCRIPTION, RecordUtils.getInternationalStringRecord(categoryDto.getDescription()));
+        contentDescriptorsEditionForm.setValue(CategoryDS.DESCRIPTION, categoryDto.getDescription());
 
         // Comments
-        commentsEditionForm.setValue(CategoryDS.COMMENTS, RecordUtils.getInternationalStringRecord(categoryDto.getComment()));
+        commentsEditionForm.setValue(CategoryDS.COMMENTS, categoryDto.getComment());
 
         // Annotations
         annotationsEditionPanel.setAnnotations(categoryDto.getAnnotations(), categorySchemeDto);
@@ -331,13 +329,13 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
 
         // Identifiers Form
         categoryDto.setCode(identifiersEditionForm.getValueAsString(CategoryDS.CODE));
-        categoryDto.setName((InternationalStringDto) identifiersEditionForm.getValue(CategoryDS.NAME));
+        categoryDto.setName(identifiersEditionForm.getValueAsInternationalStringDto(CategoryDS.NAME));
 
         // Content descriptors
-        categoryDto.setDescription((InternationalStringDto) contentDescriptorsEditionForm.getValue(CategoryDS.DESCRIPTION));
+        categoryDto.setDescription(contentDescriptorsEditionForm.getValueAsInternationalStringDto(CategoryDS.DESCRIPTION));
 
         // Comments
-        categoryDto.setComment((InternationalStringDto) commentsEditionForm.getValue(CategoryDS.COMMENTS));
+        categoryDto.setComment(commentsEditionForm.getValueAsInternationalStringDto(CategoryDS.COMMENTS));
 
         // Annotations
         categoryDto.getAnnotations().clear();

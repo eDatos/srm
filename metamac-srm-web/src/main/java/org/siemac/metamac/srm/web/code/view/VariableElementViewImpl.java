@@ -4,7 +4,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
@@ -27,7 +26,6 @@ import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
-import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.DoubleItem;
@@ -35,8 +33,8 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomDateItem;
+import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.MultilanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
@@ -319,7 +317,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         // Annotations
         annotationsEditionForm = new GroupDynamicForm(getConstants().formAnnotations());
-        MultilanguageRichTextEditorItem comments = new MultilanguageRichTextEditorItem(VariableElementDS.COMMENTS, getConstants().variableElementComment());
+        MultiLanguageRichTextEditorItem comments = new MultiLanguageRichTextEditorItem(VariableElementDS.COMMENTS, getConstants().variableElementComment());
         annotationsEditionForm.setFields(comments);
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
@@ -337,7 +335,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // Identifiers
         identifiersForm.setValue(VariableElementDS.CODE, variableElementDto.getCode());
         identifiersForm.setValue(VariableElementDS.URN, variableElementDto.getUrn());
-        identifiersForm.setValue(VariableElementDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getShortName()));
+        identifiersForm.setValue(VariableElementDS.SHORT_NAME, variableElementDto.getShortName());
 
         // Content descriptors
         ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(VariableElementDS.VARIABLE)).setRelatedResource(variableElementDto.getVariable());
@@ -346,8 +344,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         ((RelatedResourceLinkItem) geographicalInformationForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY)).setRelatedResource(variableElementDto.getGeographicalGranularity());
         geographicalInformationForm.setValue(VariableElementDS.LATITUDE, variableElementDto.getLatitude() != null ? variableElementDto.getLatitude().toString() : StringUtils.EMPTY);
         geographicalInformationForm.setValue(VariableElementDS.LONGITUDE, variableElementDto.getLongitude() != null ? variableElementDto.getLongitude().toString() : StringUtils.EMPTY);
-        geographicalInformationForm
-                .setValue(VariableElementDS.SHAPE_WKT, StringUtils.isBlank(variableElementDto.getShapeWkt()) ? MetamacWebCommon.getConstants().no() : MetamacWebCommon.getConstants().yes());
+        geographicalInformationForm.setValue(VariableElementDS.SHAPE_WKT, StringUtils.isBlank(variableElementDto.getShapeWkt()) ? MetamacWebCommon.getConstants().no() : MetamacWebCommon
+                .getConstants().yes());
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(VariableElementDS.VALID_FROM, DateUtils.getFormattedDate(variableElementDto.getValidFrom()));
@@ -356,14 +354,14 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         diffusionDescriptorsForm.setValue(VariableElementDS.REPLACED_BY_ELEMENT, RelatedResourceUtils.getRelatedResourceName(variableElementDto.getReplacedByVariableElement()));
 
         // Annotations
-        annotationsForm.setValue(VariableElementDS.COMMENTS, RecordUtils.getInternationalStringRecord(variableElementDto.getComment()));
+        annotationsForm.setValue(VariableElementDS.COMMENTS, variableElementDto.getComment());
     }
 
     public void setVariableElementEditionMode(VariableElementDto variableElementDto) {
         // Identifiers
         identifiersEditionForm.setValue(VariableElementDS.CODE, variableElementDto.getCode());
         identifiersEditionForm.setValue(VariableElementDS.URN, variableElementDto.getUrn());
-        identifiersEditionForm.setValue(VariableElementDS.SHORT_NAME, RecordUtils.getInternationalStringRecord(variableElementDto.getShortName()));
+        identifiersEditionForm.setValue(VariableElementDS.SHORT_NAME, variableElementDto.getShortName());
 
         // Content descriptors
         ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(VariableElementDS.VARIABLE)).setRelatedResource(variableElementDto.getVariable());
@@ -383,13 +381,13 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         diffusionDescriptorsEditionForm.setValue(VariableElementDS.REPLACED_BY_ELEMENT, RelatedResourceUtils.getRelatedResourceName(variableElementDto.getReplacedByVariableElement()));
 
         // Annotations
-        annotationsEditionForm.setValue(VariableElementDS.COMMENTS, RecordUtils.getInternationalStringRecord(variableElementDto.getComment()));
+        annotationsEditionForm.setValue(VariableElementDS.COMMENTS, variableElementDto.getComment());
     }
 
     public void saveVariableElement() {
         // Identifiers
         variableElementDto.setCode(identifiersEditionForm.getValueAsString(VariableElementDS.CODE));
-        variableElementDto.setShortName((InternationalStringDto) identifiersEditionForm.getValue(VariableElementDS.SHORT_NAME));
+        variableElementDto.setShortName(identifiersEditionForm.getValueAsInternationalStringDto(VariableElementDS.SHORT_NAME));
 
         // Content descriptors
 
@@ -407,7 +405,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
                 ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.REPLACE_TO_ELEMENTS)).getSelectedRelatedResources());
 
         // Annotations
-        variableElementDto.setComment((InternationalStringDto) annotationsEditionForm.getValue(VariableElementDS.COMMENTS));
+        variableElementDto.setComment(annotationsEditionForm.getValueAsInternationalStringDto(VariableElementDS.COMMENTS));
 
         getUiHandlers().saveVariableElement(variableElementDto);
     }

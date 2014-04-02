@@ -5,7 +5,6 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.dto.InternationalStringDto;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
@@ -21,7 +20,6 @@ import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
-import org.siemac.metamac.web.common.client.utils.RecordUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
@@ -257,19 +255,19 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         // Identifiers
         identifiersForm.setValue(VariableFamilyDS.CODE, variableFamilyDto.getCode());
         identifiersForm.setValue(VariableFamilyDS.URN, variableFamilyDto.getUrn());
-        identifiersForm.setValue(VariableFamilyDS.NAME, RecordUtils.getInternationalStringRecord(variableFamilyDto.getName()));
+        identifiersForm.setValue(VariableFamilyDS.NAME, variableFamilyDto.getName());
     }
 
     public void setVariableFamilyEditionMode(VariableFamilyDto variableFamilyDto) {
         // Identifiers
         identifiersEditionForm.setValue(VariableFamilyDS.CODE, variableFamilyDto.getCode());
         identifiersEditionForm.setValue(VariableFamilyDS.URN, variableFamilyDto.getUrn());
-        identifiersEditionForm.setValue(VariableFamilyDS.NAME, RecordUtils.getInternationalStringRecord(variableFamilyDto.getName()));
+        identifiersEditionForm.setValue(VariableFamilyDS.NAME, variableFamilyDto.getName());
     }
 
     public VariableFamilyDto getVariableFamilyDto() {
         // Identifiers
-        variableFamilyDto.setName((InternationalStringDto) identifiersEditionForm.getValue(VariableFamilyDS.NAME));
+        variableFamilyDto.setName(identifiersEditionForm.getValueAsInternationalStringDto(VariableFamilyDS.NAME));
 
         return variableFamilyDto;
     }
