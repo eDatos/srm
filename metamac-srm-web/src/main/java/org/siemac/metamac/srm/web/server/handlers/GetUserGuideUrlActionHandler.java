@@ -1,11 +1,11 @@
 package org.siemac.metamac.srm.web.server.handlers;
 
-import org.siemac.metamac.core.common.conf.ConfigurationService;
-import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
-import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlAction;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlResult;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
+import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,7 @@ import com.gwtplatform.dispatch.shared.ActionException;
 public class GetUserGuideUrlActionHandler extends SecurityActionHandler<GetUserGuideUrlAction, GetUserGuideUrlResult> {
 
     @Autowired
-    private ConfigurationService configurationService = null;
+    private SrmConfiguration configurationService = null;
 
     public GetUserGuideUrlActionHandler() {
         super(GetUserGuideUrlAction.class);
@@ -23,8 +23,12 @@ public class GetUserGuideUrlActionHandler extends SecurityActionHandler<GetUserG
 
     @Override
     public GetUserGuideUrlResult executeSecurityAction(GetUserGuideUrlAction action) throws ActionException {
-        String dataUrl = configurationService.getConfig().getString(SrmWebConstants.ENVIRONMENT_DATA_URL);
-        String userGuideFileName = configurationService.getConfig().getString(SrmConfigurationConstants.USER_GUIDE_FILE_NAME);
-        return new GetUserGuideUrlResult(dataUrl + "/srm/srm-web/docs/" + userGuideFileName);
+        try {
+            String docsPath = configurationService.retrieveDocsPath();
+            String userGuideFileName = configurationService.retrieveUserGuideFileName();
+            return new GetUserGuideUrlResult(docsPath + "/" + userGuideFileName);
+        } catch (MetamacException e) {
+            throw WebExceptionUtils.createMetamacWebException(e);
+        }
     }
 }
