@@ -24,9 +24,8 @@ public class GetUserGuideUrlActionHandler extends SecurityActionHandler<GetUserG
     @Override
     public GetUserGuideUrlResult executeSecurityAction(GetUserGuideUrlAction action) throws ActionException {
         try {
-            String docsPath = configurationService.retrieveDocsPath();
             String userGuideFileName = configurationService.retrieveUserGuideFileName();
-            return new GetUserGuideUrlResult(docsPath + "/" + userGuideFileName);
+            return new GetUserGuideUrlResult(userGuideFileName);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

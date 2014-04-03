@@ -1,8 +1,10 @@
 package org.siemac.metamac.srm.web.server.handlers;
 
+import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceResult;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gwtplatform.dispatch.shared.ActionException;
@@ -10,8 +12,8 @@ import com.gwtplatform.dispatch.shared.ActionException;
 @Component
 public class ExportSDMXResourceActionHandler extends SecurityActionHandler<ExportSDMXResourceAction, ExportSDMXResourceResult> {
 
-    // @Autowired
-    // private SrmCoreServiceFacade srmCoreServiceFacade;
+    @Autowired
+    private SrmCoreServiceFacade srmCoreServiceFacade;
 
     public ExportSDMXResourceActionHandler() {
         super(ExportSDMXResourceAction.class);

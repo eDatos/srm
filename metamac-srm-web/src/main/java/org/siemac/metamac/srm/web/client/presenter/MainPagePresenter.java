@@ -194,7 +194,7 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
 
             @Override
             public void onWaitSuccess(GetUserGuideUrlResult result) {
-                CommonWebUtils.showDownloadFileWindow(SrmSharedTokens.FILE_DOWNLOAD_DIR_PATH, SrmSharedTokens.PARAM_FILE_NAME, result.getUserGuideUrl());
+                CommonWebUtils.showDownloadFileWindow(SrmSharedTokens.FILE_DOWNLOAD_DIR_PATH, SrmSharedTokens.PARAM_DOC, result.getUserGuideUrl());
             }
         });
     }
