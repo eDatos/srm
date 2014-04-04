@@ -157,6 +157,10 @@ public class OrganisationsClientSecurityUtils {
         }
     }
 
+    public static boolean canExportCategorisationFromOrganisationScheme(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type, CategorisationDto categorisationDto) {
+        return true;
+    }
+
     public static boolean canCopyOrganisationScheme(RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
         return SharedOrganisationsSecurityUtils.canCopyOrganisationScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);

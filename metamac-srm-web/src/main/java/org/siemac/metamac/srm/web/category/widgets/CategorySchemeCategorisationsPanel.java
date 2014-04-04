@@ -48,4 +48,17 @@ public class CategorySchemeCategorisationsPanel extends CategorisationsPanel {
         }
         return true;
     }
+
+    @Override
+    public boolean canExportAllCategorisations(ListGridRecord[] records) {
+        for (ListGridRecord record : records) {
+            if (record instanceof CategorisationRecord) {
+                CategorisationRecord categorisationRecord = (CategorisationRecord) record;
+                if (!CategoriesClientSecurityUtils.canExportCategorisation(categorisedArtefactProcStatus, categorisationRecord.getCategorisationDto())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

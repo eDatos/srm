@@ -537,6 +537,11 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
+    public void exportCategorisations(List<String> urns, ExportDetailEnum detail, ExportReferencesEnum references) {
+        dispatcher.execute(new ExportSDMXResourceAction(urns, RelatedResourceTypeEnum.CATEGORISATION, detail, references), new WaitingAsyncCallbackHandlingExportResult(this));
+    }
+
+    @Override
     public void cancelCategorisationValidity(List<String> urns, Date validTo) {
         dispatcher.execute(new CancelCategorisationValidityAction(urns, validTo), new WaitingAsyncCallbackHandlingError<CancelCategorisationValidityResult>(this) {
 

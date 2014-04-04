@@ -8,10 +8,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.model.ds.CategorisationDS;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.utils.RecordUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.CategorisationUiHandlers;
+import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
@@ -47,6 +51,7 @@ public abstract class CategorisationsPanel extends VLayout {
 
     protected ToolStripButton                 newCategorisationButton;
     protected ToolStripButton                 deleteCategorisationButton;
+    protected ToolStripButton                 exportCategorisationButton;
     protected ToolStripButton                 cancelCategorisationValidityButton;
     protected NavigableListGrid               categorisationListGrid;
 
@@ -86,6 +91,29 @@ public abstract class CategorisationsPanel extends VLayout {
             }
         });
 
+        exportCategorisationButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
+        exportCategorisationButton.setVisible(false);
+        exportCategorisationButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                List<String> urns = getSelectedCategorisationUrns();
+                if (!urns.isEmpty()) {
+                    showExportationWindow(urns);
+                }
+            }
+
+            protected void showExportationWindow(final List<String> urns) {
+                new ExportSdmxResourceWindow() {
+
+                    @Override
+                    protected void startExportation(ExportDetailEnum infoAmount, ExportReferencesEnum references) {
+                        getUiHandlers().exportCategorisations(urns, infoAmount, references);
+                    }
+                };
+            }
+        });
+
         cancelCategorisationValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), RESOURCE.disable().getURL());
         cancelCategorisationValidityButton.setVisible(false);
         cancelCategorisationValidityButton.addClickHandler(new ClickHandler() {
@@ -111,6 +139,7 @@ public abstract class CategorisationsPanel extends VLayout {
         toolStrip.addButton(newCategorisationButton);
         toolStrip.addButton(deleteCategorisationButton);
         toolStrip.addButton(cancelCategorisationValidityButton);
+        toolStrip.addButton(exportCategorisationButton);
 
         // Deletion window
 
@@ -144,9 +173,11 @@ public abstract class CategorisationsPanel extends VLayout {
                 if (categorisationListGrid.getSelectedRecords().length > 0) {
                     showDeleteCategorisationButton(categorisationListGrid.getSelectedRecords());
                     showCancelCategorisationValidity(categorisationListGrid.getSelectedRecords());
+                    showExportCategorisationButton(categorisationListGrid.getSelectedRecords());
                 } else {
                     deleteCategorisationButton.hide();
                     cancelCategorisationValidityButton.hide();
+                    exportCategorisationButton.hide();
                 }
             }
         });
@@ -312,6 +343,14 @@ public abstract class CategorisationsPanel extends VLayout {
         }
     }
 
+    private void showExportCategorisationButton(ListGridRecord[] selectedRecords) {
+        if (canExportAllCategorisations(selectedRecords)) {
+            exportCategorisationButton.show();
+        } else {
+            exportCategorisationButton.hide();
+        }
+    }
+
     private List<String> getUrnsFromSelectedRecords(ListGridRecord[] records) {
         List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : records) {
@@ -323,4 +362,5 @@ public abstract class CategorisationsPanel extends VLayout {
     public abstract void updateNewButtonVisibility();
     public abstract boolean canAllCategorisationsBeDeleted(ListGridRecord[] records);
     public abstract boolean canCancelAllCategorisationsValidity(ListGridRecord[] records);
+    public abstract boolean canExportAllCategorisations(ListGridRecord[] records);
 }

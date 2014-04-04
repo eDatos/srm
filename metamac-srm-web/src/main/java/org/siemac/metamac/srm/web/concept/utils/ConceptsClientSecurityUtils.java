@@ -139,6 +139,10 @@ public class ConceptsClientSecurityUtils {
         }
     }
 
+    public static boolean canExportCategorisation(ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode, CategorisationDto categorisationDto) {
+        return true;
+    }
+
     public static boolean canCopyConceptScheme(ConceptSchemeTypeEnum type, String operationCode, RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
         return SharedConceptsSecurityUtils.canCopyConceptScheme(MetamacSrmWeb.getCurrentUser(), type, operationCode) && !CommonUtils.isDefaultMaintainer(maintainer);

@@ -179,6 +179,10 @@ public class CodesClientSecurityUtils {
         }
     }
 
+    public static boolean canExportCategorisation(ProcStatusEnum procStatus, Boolean isTaskInBackground, CategorisationDto categorisationDto) {
+        return true;
+    }
+
     /**
      * This method is called from the {@link CodelistMainFormLayout}
      * 

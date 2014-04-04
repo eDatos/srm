@@ -15,6 +15,8 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
@@ -369,6 +371,11 @@ public class CodePresenter extends Presenter<CodePresenter.CodeView, CodePresent
 
     @Override
     public void createCategorisations(List<String> categoryUrns) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void exportCategorisations(List<String> urns, ExportDetailEnum detail, ExportReferencesEnum references) {
         throw new UnsupportedOperationException();
     }
 

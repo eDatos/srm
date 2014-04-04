@@ -211,4 +211,8 @@ public class DsdClientSecurityUtils {
             return false;
         }
     }
+
+    public static boolean canExportCategorisationForDataStructureDefinition(ProcStatusEnum procStatus, String operationCode, CategorisationDto categorisationDto) {
+        return true;
+    }
 }

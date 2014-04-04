@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.dsd.widgets;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
+import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 
@@ -46,6 +47,19 @@ public class DsdCategorisationsPanel extends CategorisationsPanel {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
                 if (!DsdClientSecurityUtils.canCancelCategorisationValidityForDataStructureDefinition(categorisedArtefactProcStatus, operationCode, categorisationRecord.getCategorisationDto())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean canExportAllCategorisations(ListGridRecord[] records) {
+        for (ListGridRecord record : records) {
+            if (record instanceof CategorisationRecord) {
+                CategorisationRecord categorisationRecord = (CategorisationRecord) record;
+                if (!DsdClientSecurityUtils.canExportCategorisationForDataStructureDefinition(categorisedArtefactProcStatus, operationCode, categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }

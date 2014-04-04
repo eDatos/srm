@@ -132,6 +132,10 @@ public class CategoriesClientSecurityUtils {
         }
     }
 
+    public static boolean canExportCategorisation(ProcStatusEnum procStatus, CategorisationDto categorisationDto) {
+        return true;
+    }
+
     public static boolean canCopyCategoryScheme(RelatedResourceDto maintainer) {
         // Only resources from other organisations can be copied
         return SharedCategoriesSecurityUtils.canCopyCategoryScheme(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
