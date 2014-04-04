@@ -27,18 +27,20 @@ public class ValidateTicketActionHandler extends ValidateTicketAbstractActionHan
 
         try {
             MetamacPrincipal metamacPrincipal = validateTicket.validateTicket(ticket, service);
-            ServiceContext serviceContext = new ServiceContext(metamacPrincipal.getUserId(), ticket, SrmConstants.SECURITY_APPLICATION_ID);
+            ServiceContext serviceContext = new ServiceContext(metamacPrincipal.getUserId(), ticket, SrmConstants.APPLICATION_ID);
             serviceContext.setProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
             ServiceContextHolder.putCurrentServiceContext(serviceContext);
 
             HttpServletRequestWrapper requestWrapper = new HttpServletRequestWrapper(ServiceContextHolder.getCurrentRequest()) {
 
+                @Override
                 public String getParameter(String name) {
                     if (TICKET_PARAMETER.equals(name)) {
                         return ticket;
                     }
                     return super.getParameter(name);
                 }
+
                 @Override
                 public String getQueryString() {
                     return super.getQueryString() + TICKET_QUERY_STRING + ticket;

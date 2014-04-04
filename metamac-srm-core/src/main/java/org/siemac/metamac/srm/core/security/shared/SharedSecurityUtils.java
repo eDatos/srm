@@ -39,7 +39,7 @@ public class SharedSecurityUtils {
     public static Set<String> getOperationCodesFromMetamacPrincipalInApplication(MetamacPrincipal metamacPrincipal) {
         Set<String> operationCodes = new TreeSet<String>(); // TreeSet to avoid duplicate values and to keep the list ordered
         for (MetamacPrincipalAccess metamacPrincipalAccess : metamacPrincipal.getAccesses()) {
-            if (SrmConstants.SECURITY_APPLICATION_ID.equals(metamacPrincipalAccess.getApplication())) {
+            if (SrmConstants.APPLICATION_ID.equals(metamacPrincipalAccess.getApplication())) {
                 if (!StringUtils.isBlank(metamacPrincipalAccess.getOperation())) {
                     operationCodes.add(metamacPrincipalAccess.getOperation());
                 }
@@ -128,7 +128,7 @@ public class SharedSecurityUtils {
      */
     protected static boolean haveAccessToOperationInRol(MetamacPrincipal metamacPrincipal, SrmRoleEnum role, String operation) {
         for (MetamacPrincipalAccess metamacPrincipalAccess : metamacPrincipal.getAccesses()) {
-            if (SrmConstants.SECURITY_APPLICATION_ID.equals(metamacPrincipalAccess.getApplication()) && metamacPrincipalAccess.getRole().equals(role.name())) {
+            if (SrmConstants.APPLICATION_ID.equals(metamacPrincipalAccess.getApplication()) && metamacPrincipalAccess.getRole().equals(role.name())) {
                 if (metamacPrincipalAccess.getOperation() == null || metamacPrincipalAccess.getOperation().equals(operation)) {
                     return true;
                 }
@@ -142,7 +142,7 @@ public class SharedSecurityUtils {
      */
     protected static boolean isRoleInAccesses(MetamacPrincipal metamacPrincipal, SrmRoleEnum role) {
         for (MetamacPrincipalAccess metamacPrincipalAccess : metamacPrincipal.getAccesses()) {
-            if (SrmConstants.SECURITY_APPLICATION_ID.equals(metamacPrincipalAccess.getApplication()) && metamacPrincipalAccess.getRole().equals(role.name())) {
+            if (SrmConstants.APPLICATION_ID.equals(metamacPrincipalAccess.getApplication()) && metamacPrincipalAccess.getRole().equals(role.name())) {
                 return true;
             }
         }

@@ -4,7 +4,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 
 public class SrmConstants {
 
-    public static final String             SECURITY_APPLICATION_ID                                                = "GESTOR_RECURSOS_ESTRUCTURALES";
+    public static final String             APPLICATION_ID                                                = "GESTOR_RECURSOS_ESTRUCTURALES";
 
     // Attribute name used in repository, is a metamac reserved keyword
     public static String                   ATTRIBUTE_DATA_SOURCE_ID                                               = "DATA_SOURCE_ID";

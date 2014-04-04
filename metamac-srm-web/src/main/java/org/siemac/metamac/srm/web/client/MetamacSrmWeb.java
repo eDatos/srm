@@ -50,6 +50,7 @@ public class MetamacSrmWeb extends MetamacSecurityEntryPoint {
                 logger.log(Level.SEVERE, "Error loading the default maintainer");
                 showErrorPage();
             }
+
             @Override
             public void onWaitSuccess(GetDefaultMaintainerResult result) {
                 // Store the default maintainer
@@ -112,7 +113,7 @@ public class MetamacSrmWeb extends MetamacSecurityEntryPoint {
 
     @Override
     protected String getSecurityApplicationId() {
-        return SrmConstants.SECURITY_APPLICATION_ID;
+        return SrmConstants.APPLICATION_ID;
     };
 
     @Override

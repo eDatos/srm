@@ -36,7 +36,7 @@ public class LoggedInGatekeeper implements Gatekeeper {
 
     private boolean hasAnyAllowedRole(MetamacPrincipal metamacPrincipal) {
         for (MetamacPrincipalAccess access : metamacPrincipal.getAccesses()) {
-            if (SrmConstants.SECURITY_APPLICATION_ID.equals(access.getApplication()) && isRoleAllowed(access.getRole())) {
+            if (SrmConstants.APPLICATION_ID.equals(access.getApplication()) && isRoleAllowed(access.getRole())) {
                 return true;
             }
         }

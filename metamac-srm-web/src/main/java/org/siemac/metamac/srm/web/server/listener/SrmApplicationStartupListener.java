@@ -182,9 +182,9 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
 
             MetamacPrincipal metamacPrincipal = new MetamacPrincipal();
             metamacPrincipal.setUserId(userId);
-            metamacPrincipal.getAccesses().add(new MetamacPrincipalAccess(SrmRoleEnum.ADMINISTRADOR.getName(), SrmConstants.SECURITY_APPLICATION_ID, null));
+            metamacPrincipal.getAccesses().add(new MetamacPrincipalAccess(SrmRoleEnum.ADMINISTRADOR.getName(), SrmConstants.APPLICATION_ID, null));
 
-            serviceContext = new ServiceContext(metamacPrincipal.getUserId(), sessionId, SrmConstants.SECURITY_APPLICATION_ID);
+            serviceContext = new ServiceContext(metamacPrincipal.getUserId(), sessionId, SrmConstants.APPLICATION_ID);
             serviceContext.setProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
         }
         return serviceContext;

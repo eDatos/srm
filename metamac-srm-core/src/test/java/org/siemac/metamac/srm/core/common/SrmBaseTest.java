@@ -425,7 +425,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
 
         MetamacPrincipal metamacPrincipal = new MetamacPrincipal();
         metamacPrincipal.setUserId(ctxWithoutAccessToApplication.getUserId());
-        metamacPrincipal.getAccesses().add(new MetamacPrincipalAccess(NOT_EXISTS, SrmConstants.SECURITY_APPLICATION_ID, null));
+        metamacPrincipal.getAccesses().add(new MetamacPrincipalAccess(NOT_EXISTS, SrmConstants.APPLICATION_ID, null));
         ctxWithoutAccessToApplication.setProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
         return ctxWithoutAccessToApplication;
     }
@@ -437,7 +437,7 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     private void putMetamacPrincipalInServiceContext(ServiceContext serviceContext, SrmRoleEnum role, String operation) {
         MetamacPrincipal metamacPrincipal = new MetamacPrincipal();
         metamacPrincipal.setUserId(serviceContext.getUserId());
-        metamacPrincipal.getAccesses().add(new MetamacPrincipalAccess(role.getName(), SrmConstants.SECURITY_APPLICATION_ID, operation));
+        metamacPrincipal.getAccesses().add(new MetamacPrincipalAccess(role.getName(), SrmConstants.APPLICATION_ID, operation));
         serviceContext.setProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
     }
 
