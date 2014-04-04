@@ -9,6 +9,8 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 
@@ -22,6 +24,28 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 
 public class CommonUtils {
+
+    // EXPORT
+
+    public static LinkedHashMap<String, String> getStructureParameterDetailTypeHashMap() {
+        LinkedHashMap<String, String> typeMap = new LinkedHashMap<String, String>();
+        typeMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+        for (ExportDetailEnum type : ExportDetailEnum.values()) {
+            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().structureParameterDetailEnum() + type.name());
+            typeMap.put(type.name(), value);
+        }
+        return typeMap;
+    }
+
+    public static LinkedHashMap<String, String> getStructureParameterReferencesTypeHashMap() {
+        LinkedHashMap<String, String> typeMap = new LinkedHashMap<String, String>();
+        typeMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
+        for (ExportReferencesEnum type : ExportReferencesEnum.values()) {
+            String value = MetamacSrmWeb.getCoreMessages().getString(MetamacSrmWeb.getCoreMessages().structureParameterReferencesEnum() + type.name());
+            typeMap.put(type.name(), value);
+        }
+        return typeMap;
+    }
 
     // LIFE CYCLE
 

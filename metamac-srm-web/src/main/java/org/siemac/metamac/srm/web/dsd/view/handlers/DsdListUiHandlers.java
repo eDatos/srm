@@ -3,6 +3,8 @@ package org.siemac.metamac.srm.web.dsd.view.handlers;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.shared.criteria.DataStructureDefinitionWebCriteria;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 
@@ -15,7 +17,7 @@ public interface DsdListUiHandlers extends BaseUiHandlers {
 
     void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria);
 
-    void exportDsd(String urn);
+    void exportDsds(List<String> urns, ExportDetailEnum infoAmount, ExportReferencesEnum references);
 
     void cancelValidity(List<String> urns);
 

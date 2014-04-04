@@ -304,13 +304,13 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
 
     @Override
     public void exportOrganisationScheme(String urn) {
-        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
-
-            @Override
-            public void onWaitSuccess(ExportSDMXResourceResult result) {
-                org.siemac.metamac.srm.web.client.utils.CommonUtils.downloadFile(result.getFileName());
-            }
-        });
+        // dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
+        //
+        // @Override
+        // public void onWaitSuccess(ExportSDMXResourceResult result) {
+        // org.siemac.metamac.srm.web.client.utils.CommonUtils.downloadFile(result.getFileName());
+        // }
+        // });
     }
 
     @Override

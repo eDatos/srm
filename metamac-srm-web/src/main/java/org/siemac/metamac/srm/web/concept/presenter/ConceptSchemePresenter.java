@@ -293,17 +293,17 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
 
     @Override
     public void exportConceptScheme(String urn) {
-        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(ConceptSchemePresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(ExportSDMXResourceResult result) {
-                CommonUtils.downloadFile(result.getFileName());
-            }
-        });
+        // dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
+        //
+        // @Override
+        // public void onWaitFailure(Throwable caught) {
+        // ShowMessageEvent.fireErrorMessage(ConceptSchemePresenter.this, caught);
+        // }
+        // @Override
+        // public void onWaitSuccess(ExportSDMXResourceResult result) {
+        // CommonUtils.downloadFile(result.getFileName());
+        // }
+        // });
     }
 
     @Override

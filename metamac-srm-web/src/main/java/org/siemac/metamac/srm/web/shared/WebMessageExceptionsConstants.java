@@ -10,5 +10,8 @@ public class WebMessageExceptionsConstants {
     public static final String RESOURCE_SUCCESSFUL_IMPORTATION                                        = "message.resource.successful_importation";
     public static final String RESOURCE_IMPORTATION_PLANNED_IN_BACKGROUND                             = "message.resource.importation_planned_in_background";
 
+    public static final String RESOURCE_EXPORTATION_ZIP_CREATION_ERROR                                = "message.resource.exportation_zip_creation_error";
+    public static final String RESOURCE_EXPORTATION_FILE_PREPARATION_ERROR                            = "message.resource.exportation_file_preparation_error";
+
     public static final String IMPORTATION_SHAPE_NOT_FOUND_IN_ZIP                                     = "exception.resource.importation.shp_not_found";
 }

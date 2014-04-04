@@ -366,17 +366,17 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
 
     @Override
     public void exportCodelist(String urn) {
-        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(CodelistPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(ExportSDMXResourceResult result) {
-                CommonUtils.downloadFile(result.getFileName());
-            }
-        });
+        // dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
+        //
+        // @Override
+        // public void onWaitFailure(Throwable caught) {
+        // ShowMessageEvent.fireErrorMessage(CodelistPresenter.this, caught);
+        // }
+        // @Override
+        // public void onWaitSuccess(ExportSDMXResourceResult result) {
+        // CommonUtils.downloadFile(result.getFileName());
+        // }
+        // });
     }
 
     @Override

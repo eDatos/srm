@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.dsd.view.handlers;
 
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 
 public interface DsdGeneralTabUiHandlers extends BaseUiHandlers {
@@ -10,7 +12,7 @@ public interface DsdGeneralTabUiHandlers extends BaseUiHandlers {
     void deleteDsd(String urn);
     void goToDsd(String urn);
     void retrieveLatestDsd(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto);
-    void exportDsd(String urn);
+    void exportDsd(String urn, ExportDetailEnum detail, ExportReferencesEnum references);
     void copyDsd(String urn);
     void copyDsd(String urn, String code);
 

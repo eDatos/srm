@@ -8,8 +8,9 @@ import java.util.List;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
-import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.DsdPaginatedListGrid;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataStructureDefinitionDS;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdListPresenter;
@@ -17,6 +18,7 @@ import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdSearchSectionStack;
+import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
 import org.siemac.metamac.srm.web.dsd.widgets.NewDsdWindow;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
@@ -95,10 +97,26 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
             @Override
             public void onClick(ClickEvent event) {
-                ListGridRecord record = dsdListGrid.getListGrid().getSelectedRecord();
-                if (record instanceof DsdRecord) {
-                    getUiHandlers().exportDsd(((DsdRecord) record).getUrn());
+                ListGridRecord[] records = dsdListGrid.getListGrid().getSelectedRecords();
+                List<String> urns = new ArrayList<String>();
+                for (ListGridRecord record : records) {
+                    if (record instanceof DsdRecord) {
+                        urns.add(((DsdRecord) record).getUrn());
+                    }
                 }
+                if (!urns.isEmpty()) {
+                    showExportationWindow(urns);
+                }
+            }
+
+            protected void showExportationWindow(final List<String> urns) {
+                new ExportSdmxResourceWindow() {
+
+                    @Override
+                    protected void startExportation(ExportDetailEnum infoAmount, ExportReferencesEnum references) {
+                        getUiHandlers().exportDsds(urns, infoAmount, references);
+                    }
+                };
             }
         });
 
@@ -178,7 +196,6 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         panel.addMember(searchSectionStack);
         panel.addMember(dsdListGrid);
     }
-
     @Override
     public Widget asWidget() {
         return panel;
@@ -275,11 +292,8 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     private void showExportToolStripButton(ListGridRecord[] records) {
-        if (records.length == 1) {
-            DataStructureDefinitionMetamacBasicDto dsd = ((DsdRecord) records[0]).getDsdBasicDto();
-            if (TasksClientSecurityUtils.canExportStructure(dsd.getVersionLogic())) {
-                exportToolStripButton.show();
-            }
+        if (records.length > 0) {
+            exportToolStripButton.show();
         } else {
             exportToolStripButton.hide();
         }

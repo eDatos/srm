@@ -12,16 +12,17 @@ import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
-import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.client.utils.WaitingAsyncCallbackHandlingExportResult;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdListUiHandlers;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
-import org.siemac.metamac.srm.web.shared.ExportSDMXResourceResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
@@ -40,6 +41,7 @@ import org.siemac.metamac.srm.web.shared.dsd.SaveDsdResult;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -211,14 +213,9 @@ public class DsdListPresenter extends Presenter<DsdListPresenter.DsdListView, Ds
     }
 
     @Override
-    public void exportDsd(String urn) {
-        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
+    public void exportDsds(List<String> urns, ExportDetailEnum detail, ExportReferencesEnum references) {
 
-            @Override
-            public void onWaitSuccess(ExportSDMXResourceResult result) {
-                CommonUtils.downloadFile(result.getFileName());
-            }
-        });
+        dispatcher.execute(new ExportSDMXResourceAction(urns, RelatedResourceTypeEnum.DATA_STRUCTURE, detail, references), new WaitingAsyncCallbackHandlingExportResult(this));
     }
 
     @Override

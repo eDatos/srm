@@ -12,6 +12,8 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacBasicDto;
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
@@ -28,6 +30,7 @@ import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.dsd.widgets.DimensionsVisualisationItem;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdDimensionCodesVisualisationItem;
 import org.siemac.metamac.srm.web.dsd.widgets.DsdMainFormLayout;
+import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
 import org.siemac.metamac.srm.web.dsd.widgets.ShowDecimalsPrecisionItem;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.dsd.GetDsdsResult;
@@ -237,7 +240,17 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().exportDsd(dataStructureDefinitionMetamacDto.getUrn());
+                showExportationWindow(dataStructureDefinitionMetamacDto.getUrn());
+            }
+
+            protected void showExportationWindow(final String urn) {
+                new ExportSdmxResourceWindow() {
+
+                    @Override
+                    protected void startExportation(ExportDetailEnum infoAmount, ExportReferencesEnum references) {
+                        getUiHandlers().exportDsd(urn, infoAmount, references);
+                    }
+                };
             }
         });
         mainFormLayout.getCopy().addClickHandler(new ClickHandler() {

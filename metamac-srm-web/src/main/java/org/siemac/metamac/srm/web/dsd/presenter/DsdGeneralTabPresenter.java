@@ -20,9 +20,12 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.events.UpdateMaintainableArtefactEvent;
 import org.siemac.metamac.srm.web.client.events.UpdateMaintainableArtefactVersionsEvent;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.client.utils.WaitingAsyncCallbackHandlingExportResult;
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
@@ -61,6 +64,7 @@ import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingEr
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.TypeComponentList;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -228,18 +232,8 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     }
 
     @Override
-    public void exportDsd(String urn) {
-        dispatcher.execute(new ExportSDMXResourceAction(urn), new WaitingAsyncCallbackHandlingError<ExportSDMXResourceResult>(this) {
-
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdGeneralTabPresenter.this, caught);
-            }
-            @Override
-            public void onWaitSuccess(ExportSDMXResourceResult result) {
-                org.siemac.metamac.srm.web.client.utils.CommonUtils.downloadFile(result.getFileName());
-            }
-        });
+    public void exportDsd(String urn, ExportDetailEnum detail, ExportReferencesEnum references) {
+        dispatcher.execute(new ExportSDMXResourceAction(Arrays.asList(urn), RelatedResourceTypeEnum.DATA_STRUCTURE, detail, references), new WaitingAsyncCallbackHandlingExportResult(this));
     }
 
     @Override
@@ -377,10 +371,6 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
     public void createTemporalVersion(String urn) {
         dispatcher.execute(new CreateDsdTemporalVersionAction(urn), new WaitingAsyncCallbackHandlingError<CreateDsdTemporalVersionResult>(this) {
 
-            @Override
-            public void onWaitFailure(Throwable caught) {
-                ShowMessageEvent.fireErrorMessage(DsdGeneralTabPresenter.this, caught);
-            }
             @Override
             public void onWaitSuccess(CreateDsdTemporalVersionResult result) {
                 retrieveCompleteDsd(result.getDataStructureDefinitionMetamacDto().getUrn(), false);
