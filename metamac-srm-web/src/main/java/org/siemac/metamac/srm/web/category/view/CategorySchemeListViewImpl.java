@@ -14,8 +14,13 @@ import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeListUiHandlers;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeSearchSectionStack;
 import org.siemac.metamac.srm.web.category.widgets.NewCategorySchemeWindow;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
+import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
+import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
@@ -42,9 +47,10 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
 
     private VLayout                                   panel;
 
-    private ToolStripButton                           newCategorySchemeButton;
-    private ToolStripButton                           deleteCategorySchemeButton;
-    private ToolStripButton                           cancelCategorySchemeValidityButton;
+    private ToolStripButton                           newButton;
+    private ToolStripButton                           deleteButton;
+    private ToolStripButton                           exportButton;
+    private ToolStripButton                           cancelValidityButton;
 
     private CategorySchemeSearchSectionStack          searchSectionStack;
 
@@ -62,8 +68,8 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
         ToolStrip toolStrip = new ToolStrip();
         toolStrip.setWidth100();
 
-        newCategorySchemeButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
-        newCategorySchemeButton.addClickHandler(new ClickHandler() {
+        newButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
+        newButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -80,11 +86,11 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
                 });
             }
         });
-        newCategorySchemeButton.setVisible(CategoriesClientSecurityUtils.canCreateCategoryScheme());
+        newButton.setVisible(CategoriesClientSecurityUtils.canCreateCategoryScheme());
 
-        deleteCategorySchemeButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteCategorySchemeButton.setVisible(false);
-        deleteCategorySchemeButton.addClickHandler(new ClickHandler() {
+        deleteButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
+        deleteButton.setVisible(false);
+        deleteButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -92,9 +98,32 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
             }
         });
 
-        cancelCategorySchemeValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
-        cancelCategorySchemeValidityButton.setVisible(false);
-        cancelCategorySchemeValidityButton.addClickHandler(new ClickHandler() {
+        exportButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
+        exportButton.setVisible(false);
+        exportButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                List<String> urns = getUrnsFromSelectedCategorySchemes();
+                if (!urns.isEmpty()) {
+                    showExportationWindow(urns);
+                }
+            }
+
+            protected void showExportationWindow(final List<String> urns) {
+                new ExportSdmxResourceWindow() {
+
+                    @Override
+                    protected void startExportation(ExportDetailEnum infoAmount, ExportReferencesEnum references) {
+                        getUiHandlers().exportCategorySchemes(urns, infoAmount, references);
+                    }
+                };
+            }
+        });
+
+        cancelValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
+        cancelValidityButton.setVisible(false);
+        cancelValidityButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -102,9 +131,10 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
             }
         });
 
-        toolStrip.addButton(newCategorySchemeButton);
-        toolStrip.addButton(deleteCategorySchemeButton);
-        toolStrip.addButton(cancelCategorySchemeValidityButton);
+        toolStrip.addButton(newButton);
+        toolStrip.addButton(deleteButton);
+        toolStrip.addButton(cancelValidityButton);
+        toolStrip.addButton(exportButton);
 
         // Search
 
@@ -131,6 +161,8 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
                     showListGridDeleteButton(categorySchemesList.getListGrid().getSelectedRecords());
                     // Show cancel validity button
                     showListGridCancelValidityDeleteButton(categorySchemesList.getListGrid().getSelectedRecords());
+                    // Show export button
+                    showListGridExportButton(categorySchemesList.getListGrid().getSelectedRecords());
                 } else {
                     hideSelectionDependentButtons();
                 }
@@ -243,9 +275,9 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
             }
         }
         if (allSelectedSchemesCanBeDeleted) {
-            deleteCategorySchemeButton.show();
+            deleteButton.show();
         } else {
-            deleteCategorySchemeButton.hide();
+            deleteButton.hide();
         }
     }
 
@@ -259,14 +291,23 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
             }
         }
         if (allSelectedSchemesValidityCanBeCanceled) {
-            cancelCategorySchemeValidityButton.show();
+            cancelValidityButton.show();
         } else {
-            cancelCategorySchemeValidityButton.hide();
+            cancelValidityButton.hide();
+        }
+    }
+
+    private void showListGridExportButton(ListGridRecord[] records) {
+        if (records.length > 0) {
+            exportButton.show();
+        } else {
+            exportButton.hide();
         }
     }
 
     private void hideSelectionDependentButtons() {
-        deleteCategorySchemeButton.hide();
-        cancelCategorySchemeValidityButton.hide();
+        deleteButton.hide();
+        cancelValidityButton.hide();
+        exportButton.hide();
     }
 }

@@ -97,13 +97,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
 
             @Override
             public void onClick(ClickEvent event) {
-                ListGridRecord[] records = dsdListGrid.getListGrid().getSelectedRecords();
-                List<String> urns = new ArrayList<String>();
-                for (ListGridRecord record : records) {
-                    if (record instanceof DsdRecord) {
-                        urns.add(((DsdRecord) record).getUrn());
-                    }
-                }
+                List<String> urns = getSelectedDsdsUrns();
                 if (!urns.isEmpty()) {
                     showExportationWindow(urns);
                 }

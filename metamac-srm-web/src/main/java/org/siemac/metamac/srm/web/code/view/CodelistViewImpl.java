@@ -15,6 +15,8 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
@@ -39,6 +41,7 @@ import org.siemac.metamac.srm.web.code.widgets.CodelistMainFormLayout;
 import org.siemac.metamac.srm.web.code.widgets.CodelistOpennesssLevelsPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistOrdersPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistVersionsSectionStack;
+import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
@@ -381,7 +384,17 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().exportCodelist(codelistDto.getUrn());
+                showExportationWindow(codelistDto.getUrn());
+            }
+
+            protected void showExportationWindow(final String urn) {
+                new ExportSdmxResourceWindow() {
+
+                    @Override
+                    protected void startExportation(ExportDetailEnum infoAmount, ExportReferencesEnum references) {
+                        getUiHandlers().exportCodelist(urn, infoAmount, references);
+                    }
+                };
             }
         });
         mainFormLayout.getCopy().addClickHandler(new ClickHandler() {

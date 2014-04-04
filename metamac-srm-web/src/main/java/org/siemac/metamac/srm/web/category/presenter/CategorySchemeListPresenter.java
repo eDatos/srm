@@ -14,11 +14,15 @@ import org.siemac.metamac.srm.web.category.widgets.presenter.CategoriesToolStrip
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
 import org.siemac.metamac.srm.web.client.utils.MetamacWebCriteriaClientUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
+import org.siemac.metamac.srm.web.client.utils.WaitingAsyncCallbackHandlingExportResult;
+import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemesAction;
@@ -31,6 +35,7 @@ import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -163,6 +168,12 @@ public class CategorySchemeListPresenter extends Presenter<CategorySchemeListPre
             }
         });
     }
+
+    @Override
+    public void exportCategorySchemes(List<String> urns, ExportDetailEnum detail, ExportReferencesEnum references) {
+        dispatcher.execute(new ExportSDMXResourceAction(urns, RelatedResourceTypeEnum.CATEGORY_SCHEME, detail, references), new WaitingAsyncCallbackHandlingExportResult(this));
+    }
+
     @Override
     public void cancelValidity(List<String> urns) {
         dispatcher.execute(new CancelCategorySchemeValidityAction(urns), new WaitingAsyncCallbackHandlingError<CancelCategorySchemeValidityResult>(this) {

@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
@@ -19,6 +22,7 @@ import org.siemac.metamac.srm.web.concept.utils.ConceptsRecordUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeListUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeSearchSectionStack;
 import org.siemac.metamac.srm.web.concept.widgets.NewConceptSchemeWindow;
+import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
@@ -46,9 +50,10 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
 
     private VLayout                                   panel;
 
-    private ToolStripButton                           newConceptSchemeButton;
-    private ToolStripButton                           deleteConceptSchemeButton;
-    private ToolStripButton                           cancelConceptSchemeValidityButton;
+    private ToolStripButton                           newButton;
+    private ToolStripButton                           deleteButton;
+    private ToolStripButton                           exportButton;
+    private ToolStripButton                           cancelValidityButton;
 
     private ConceptSchemeSearchSectionStack           searchSectionStack;
 
@@ -66,8 +71,8 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         ToolStrip toolStrip = new ToolStrip();
         toolStrip.setWidth100();
 
-        newConceptSchemeButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
-        newConceptSchemeButton.addClickHandler(new ClickHandler() {
+        newButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
+        newButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -85,11 +90,11 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
                 });
             }
         });
-        newConceptSchemeButton.setVisible(ConceptsClientSecurityUtils.canCreateConceptScheme());
+        newButton.setVisible(ConceptsClientSecurityUtils.canCreateConceptScheme());
 
-        deleteConceptSchemeButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteConceptSchemeButton.setVisible(false);
-        deleteConceptSchemeButton.addClickHandler(new ClickHandler() {
+        deleteButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
+        deleteButton.setVisible(false);
+        deleteButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -97,9 +102,32 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
             }
         });
 
-        cancelConceptSchemeValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
-        cancelConceptSchemeValidityButton.setVisible(false);
-        cancelConceptSchemeValidityButton.addClickHandler(new ClickHandler() {
+        exportButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
+        exportButton.setVisible(false);
+        exportButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                List<String> urns = getUrnsFromSelectedConceptSchemes();
+                if (!urns.isEmpty()) {
+                    showExportationWindow(urns);
+                }
+            }
+
+            protected void showExportationWindow(final List<String> urns) {
+                new ExportSdmxResourceWindow() {
+
+                    @Override
+                    protected void startExportation(ExportDetailEnum infoAmount, ExportReferencesEnum references) {
+                        getUiHandlers().exportConceptSchemes(urns, infoAmount, references);
+                    }
+                };
+            }
+        });
+
+        cancelValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
+        cancelValidityButton.setVisible(false);
+        cancelValidityButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -107,9 +135,10 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
             }
         });
 
-        toolStrip.addButton(newConceptSchemeButton);
-        toolStrip.addButton(deleteConceptSchemeButton);
-        toolStrip.addButton(cancelConceptSchemeValidityButton);
+        toolStrip.addButton(newButton);
+        toolStrip.addButton(deleteButton);
+        toolStrip.addButton(cancelValidityButton);
+        toolStrip.addButton(exportButton);
 
         // Search
 
@@ -136,6 +165,8 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
                     showListGridDeleteButton(conceptSchemesList.getListGrid().getSelectedRecords());
                     // Show cancel validity button
                     showListGridCancelValidityDeleteButton(conceptSchemesList.getListGrid().getSelectedRecords());
+                    // Show export button
+                    showListGridExportButton(conceptSchemesList.getListGrid().getSelectedRecords());
                 } else {
                     hideSelectionDependentButtons();
                 }
@@ -267,9 +298,9 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
             }
         }
         if (allSelectedSchemesCanBeDeleted) {
-            deleteConceptSchemeButton.show();
+            deleteButton.show();
         } else {
-            deleteConceptSchemeButton.hide();
+            deleteButton.hide();
         }
     }
 
@@ -282,14 +313,23 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
             }
         }
         if (allSelectedSchemesValidityCanBeCanceled) {
-            cancelConceptSchemeValidityButton.show();
+            cancelValidityButton.show();
         } else {
-            cancelConceptSchemeValidityButton.hide();
+            cancelValidityButton.hide();
+        }
+    }
+
+    private void showListGridExportButton(ListGridRecord[] records) {
+        if (records.length > 0) {
+            exportButton.show();
+        } else {
+            exportButton.hide();
         }
     }
 
     private void hideSelectionDependentButtons() {
-        deleteConceptSchemeButton.hide();
-        cancelConceptSchemeValidityButton.hide();
+        deleteButton.hide();
+        cancelValidityButton.hide();
+        exportButton.hide();
     }
 }

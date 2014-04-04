@@ -3,6 +3,8 @@ package org.siemac.metamac.srm.web.organisation.view.handlers;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 
@@ -12,6 +14,7 @@ public interface OrganisationSchemeListUiHandlers extends BaseUiHandlers {
 
     void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type);
     void createOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto);
+    void exportOrganisationSchemes(List<String> urns, ExportDetailEnum infoAmount, ExportReferencesEnum references);
     void deleteOrganisationSchemes(List<String> urns);
     void retrieveOrganisationSchemes(int firstResult, int maxResults, OrganisationSchemeWebCriteria organisationSchemeWebCriteria);
     void cancelValidity(List<String> urn);

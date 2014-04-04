@@ -10,6 +10,8 @@ import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisa
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
 import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
@@ -30,6 +32,7 @@ import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeCategorisationsPa
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeVersionsSectionStack;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
+import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
@@ -317,7 +320,17 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().exportConceptScheme(conceptSchemeDto.getUrn());
+                showExportationWindow(conceptSchemeDto.getUrn());
+            }
+
+            protected void showExportationWindow(final String urn) {
+                new ExportSdmxResourceWindow() {
+
+                    @Override
+                    protected void startExportation(ExportDetailEnum infoAmount, ExportReferencesEnum references) {
+                        getUiHandlers().exportConceptScheme(urn, infoAmount, references);
+                    }
+                };
             }
         });
         mainFormLayout.getCopy().addClickHandler(new ClickHandler() {

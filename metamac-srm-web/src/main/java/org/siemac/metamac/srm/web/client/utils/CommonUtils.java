@@ -159,6 +159,11 @@ public class CommonUtils {
         StringBuffer url = new StringBuffer();
         url.append(URL.encode(MetamacSrmWeb.getRelativeURL(SrmSharedTokens.FILE_DOWNLOAD_DIR_PATH)));
         url.append("?").append(URL.encode(SrmSharedTokens.PARAM_FILE_NAME)).append("=").append(URL.encode(fileName));
-        Window.open(url.toString(), "_blank", "");
+        downloadUrl(url.toString());
     }
+
+    private static native void downloadUrl(String url) /*-{
+		$wnd.location = url;
+    }-*/;
+
 }

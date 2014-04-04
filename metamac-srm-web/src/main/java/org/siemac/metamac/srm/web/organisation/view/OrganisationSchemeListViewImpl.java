@@ -7,9 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
+import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
+import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemeListPresenter;
@@ -46,6 +51,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
 
     private ToolStripButton                           newButton;
     private ToolStripButton                           deleteButton;
+    private ToolStripButton                           exportButton;
     private ToolStripButton                           cancelValidityButton;
 
     private OrganisationSchemeSearchSectionStack      searchSectionStack;
@@ -94,6 +100,29 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
             }
         });
 
+        exportButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
+        exportButton.setVisible(false);
+        exportButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                List<String> urns = getSelectedOrganisationSchemesUrns();
+                if (!urns.isEmpty()) {
+                    showExportationWindow(urns);
+                }
+            }
+
+            protected void showExportationWindow(final List<String> urns) {
+                new ExportSdmxResourceWindow() {
+
+                    @Override
+                    protected void startExportation(ExportDetailEnum infoAmount, ExportReferencesEnum references) {
+                        getUiHandlers().exportOrganisationSchemes(urns, infoAmount, references);
+                    }
+                };
+            }
+        });
+
         cancelValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
         cancelValidityButton.setVisible(false);
         cancelValidityButton.addClickHandler(new ClickHandler() {
@@ -107,6 +136,8 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         toolStrip.addButton(newButton);
         toolStrip.addButton(deleteButton);
         toolStrip.addButton(cancelValidityButton);
+        toolStrip.addSeparator();
+        toolStrip.addButton(exportButton);
 
         // Search
 
@@ -133,6 +164,8 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
                     showListGridDeleteButton(organisationSchemeList.getListGrid().getSelectedRecords());
                     // Show cancel validity button
                     showListGridCancelValidityDeleteButton(organisationSchemeList.getListGrid().getSelectedRecords());
+                    // Show export button
+                    showListGridExportButton(organisationSchemeList.getListGrid().getSelectedRecords());
                 } else {
                     hideSelectionDependentButtons();
                 }
@@ -257,6 +290,14 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         }
     }
 
+    private void showListGridExportButton(ListGridRecord[] records) {
+        if (records.length > 0) {
+            exportButton.show();
+        } else {
+            exportButton.hide();
+        }
+    }
+
     private List<String> getSelectedOrganisationSchemesUrns() {
         List<String> urns = new ArrayList<String>();
         for (ListGridRecord record : organisationSchemeList.getListGrid().getSelectedRecords()) {
@@ -269,5 +310,6 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
     private void hideSelectionDependentButtons() {
         deleteButton.hide();
         cancelValidityButton.hide();
+        exportButton.hide();
     }
 }

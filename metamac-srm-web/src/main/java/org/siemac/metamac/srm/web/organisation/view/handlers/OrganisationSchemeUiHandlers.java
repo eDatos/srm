@@ -5,6 +5,8 @@ import java.util.List;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
@@ -18,7 +20,7 @@ public interface OrganisationSchemeUiHandlers extends BaseOrganisationUiHandlers
     void goToOrganisationScheme(String urn, OrganisationSchemeTypeEnum type);
     void deleteOrganisations(List<String> urns);
     void retrieveLatestOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto);
-    void exportOrganisationScheme(String urn);
+    void exportOrganisationScheme(String urn, ExportDetailEnum infoAmount, ExportReferencesEnum references);
     void copyOrganisationScheme(String urn);
     void copyOrganisationScheme(String urn, String code);
 

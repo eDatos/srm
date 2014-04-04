@@ -6,7 +6,10 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
+import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
@@ -17,6 +20,7 @@ import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistListUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.CodelistSearchSectionStack;
 import org.siemac.metamac.srm.web.code.widgets.NewCodelistWindow;
+import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
@@ -44,9 +48,10 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
 
     private VLayout                                   panel;
 
-    private ToolStripButton                           newCodelistButton;
-    private ToolStripButton                           deleteCodelistButton;
-    private ToolStripButton                           cancelCodelistValidityButton;
+    private ToolStripButton                           newButton;
+    private ToolStripButton                           deleteButton;
+    private ToolStripButton                           exportButton;
+    private ToolStripButton                           cancelValidityButton;
 
     private CodelistSearchSectionStack                searchSectionStack;
 
@@ -64,8 +69,8 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         ToolStrip toolStrip = new ToolStrip();
         toolStrip.setWidth100();
 
-        newCodelistButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
-        newCodelistButton.addClickHandler(new ClickHandler() {
+        newButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
+        newButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -82,11 +87,11 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
                 });
             }
         });
-        newCodelistButton.setVisible(CodesClientSecurityUtils.canCreateCodelist());
+        newButton.setVisible(CodesClientSecurityUtils.canCreateCodelist());
 
-        deleteCodelistButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteCodelistButton.setVisible(false);
-        deleteCodelistButton.addClickHandler(new ClickHandler() {
+        deleteButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
+        deleteButton.setVisible(false);
+        deleteButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -94,9 +99,32 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
             }
         });
 
-        cancelCodelistValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
-        cancelCodelistValidityButton.setVisible(false);
-        cancelCodelistValidityButton.addClickHandler(new ClickHandler() {
+        exportButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
+        exportButton.setVisible(false);
+        exportButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                List<String> urns = CommonUtils.getUrnsFromSelectedCodelists(codelistsList.getListGrid().getSelectedRecords());
+                if (!urns.isEmpty()) {
+                    showExportationWindow(urns);
+                }
+            }
+
+            protected void showExportationWindow(final List<String> urns) {
+                new ExportSdmxResourceWindow() {
+
+                    @Override
+                    protected void startExportation(ExportDetailEnum infoAmount, ExportReferencesEnum references) {
+                        getUiHandlers().exportCodelists(urns, infoAmount, references);
+                    }
+                };
+            }
+        });
+
+        cancelValidityButton = new ToolStripButton(getConstants().lifeCycleCancelValidity(), GlobalResources.RESOURCE.disable().getURL());
+        cancelValidityButton.setVisible(false);
+        cancelValidityButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -104,9 +132,10 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
             }
         });
 
-        toolStrip.addButton(newCodelistButton);
-        toolStrip.addButton(deleteCodelistButton);
-        toolStrip.addButton(cancelCodelistValidityButton);
+        toolStrip.addButton(newButton);
+        toolStrip.addButton(deleteButton);
+        toolStrip.addButton(cancelValidityButton);
+        toolStrip.addButton(exportButton);
 
         // Search
 
@@ -133,6 +162,8 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
                     showListGridDeleteButton(codelistsList.getListGrid().getSelectedRecords());
                     // Show cancel validity button
                     showListGridCancelValidityButton(codelistsList.getListGrid().getSelectedRecords());
+                    // Show export button
+                    showListGridExportButton(codelistsList.getListGrid().getSelectedRecords());
                 } else {
                     hideSelectionDependentButtons();
                 }
@@ -243,9 +274,9 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
             }
         }
         if (allSelectedSchemesCanBeDeleted) {
-            deleteCodelistButton.show();
+            deleteButton.show();
         } else {
-            deleteCodelistButton.hide();
+            deleteButton.hide();
         }
     }
 
@@ -259,14 +290,23 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
             }
         }
         if (allSelectedCodelistValidityCanBeCanceled) {
-            cancelCodelistValidityButton.show();
+            cancelValidityButton.show();
         } else {
-            cancelCodelistValidityButton.hide();
+            cancelValidityButton.hide();
+        }
+    }
+
+    private void showListGridExportButton(ListGridRecord[] records) {
+        if (records.length > 0) {
+            exportButton.show();
+        } else {
+            exportButton.hide();
         }
     }
 
     private void hideSelectionDependentButtons() {
-        deleteCodelistButton.hide();
-        cancelCodelistValidityButton.hide();
+        deleteButton.hide();
+        cancelValidityButton.hide();
+        exportButton.hide();
     }
 }

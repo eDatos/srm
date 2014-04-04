@@ -7,6 +7,8 @@ import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 
 public interface CodelistUiHandlers extends BaseCodeUiHandlers {
@@ -17,7 +19,7 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void cancelValidity(String urn);
     void addCodelistToFamily(String codelistUrn, String familyUrn);
     void retrieveLatestCodelist(CodelistMetamacDto codelistMetamacDto);
-    void exportCodelist(String urn);
+    void exportCodelist(String urn, ExportDetailEnum infoAmount, ExportReferencesEnum references);
     void copyCodelist(String urn, String code);
     void copyCodelist(String urn);
 

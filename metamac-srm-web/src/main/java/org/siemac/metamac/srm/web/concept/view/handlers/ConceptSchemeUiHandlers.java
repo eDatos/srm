@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.concept.view.handlers;
 
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
+import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 
 public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
 
@@ -13,7 +15,7 @@ public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
     void retrieveStatisticalOperations(int firstResult, int maxResults, String criteria);
     void cancelValidity(String urn);
     void retrieveLatestConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
-    void exportConceptScheme(String urn);
+    void exportConceptScheme(String urn, ExportDetailEnum infoAmount, ExportReferencesEnum references);
     void copyConceptScheme(String urn);
     void copyConceptScheme(String urn, String code);
 

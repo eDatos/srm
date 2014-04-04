@@ -19,7 +19,7 @@ public abstract class ExportSdmxResourceWindow extends CustomWindow {
     private static final String INFO_AMOUNT_ITEM_ID     = "info-amount";
     private static final String INFO_REFERENCES_ITEM_ID = "references";
 
-    private static final int    FORM_ITEM_CUSTOM_WIDTH  = 350;
+    private static final int    FORM_ITEM_CUSTOM_WIDTH  = 400;
 
     private CustomDynamicForm   form;
 
@@ -35,7 +35,7 @@ public abstract class ExportSdmxResourceWindow extends CustomWindow {
         referencesItem.setWidth(FORM_ITEM_CUSTOM_WIDTH);
         referencesItem.setValueMap(CommonUtils.getStructureParameterReferencesTypeHashMap());
 
-        CustomButtonItem exportItem = new CustomButtonItem(EXPORT_BUTTON_ID, getConstants().dsdCreate());
+        CustomButtonItem exportItem = new CustomButtonItem(EXPORT_BUTTON_ID, getConstants().download());
         exportItem.addClickHandler(new ClickHandler() {
 
             @Override
