@@ -11,7 +11,6 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
 import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
-import org.siemac.metamac.srm.web.client.model.record.DsdRecord;
 import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourcePaginatedCheckListGrid;
 import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
@@ -291,7 +290,15 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
     }
 
     private void showListGridExportButton(ListGridRecord[] records) {
-        if (records.length > 0) {
+        boolean allSelectedSchemesCanBeExported = true;
+        for (ListGridRecord record : records) {
+            OrganisationSchemeMetamacBasicDto organisationSchemeMetamacDto = ((OrganisationSchemeRecord) record).getOrganisationSchemeBasicDto();
+            // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
+            if (!OrganisationsClientSecurityUtils.canExportOrganisationScheme(organisationSchemeMetamacDto.getVersionLogic())) {
+                allSelectedSchemesCanBeExported = false;
+            }
+        }
+        if (allSelectedSchemesCanBeExported) {
             exportButton.show();
         } else {
             exportButton.hide();

@@ -9,6 +9,7 @@ import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedDsdSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -49,6 +50,10 @@ public class DsdClientSecurityUtils {
         return canCancelDsdValidity(dataStructureDefinitionMetamacBasicDto.getUrn(), CommonUtils.getStatisticalOperationCodeFromDsd(dataStructureDefinitionMetamacBasicDto),
                 dataStructureDefinitionMetamacBasicDto.getMaintainer(), dataStructureDefinitionMetamacBasicDto.getVersionLogic(),
                 dataStructureDefinitionMetamacBasicDto.getLifeCycle().getProcStatus(), dataStructureDefinitionMetamacBasicDto.getValidTo());
+    }
+
+    public static boolean canExportDsd(String versionLogic) {
+        return TasksClientSecurityUtils.canExportResource(versionLogic);
     }
 
     public static boolean canCancelDsdValidity(String urn, String operationCode, RelatedResourceDto maintainer, String versionLogic, ProcStatusEnum procStatus, Date validTo) {
@@ -212,7 +217,7 @@ public class DsdClientSecurityUtils {
         }
     }
 
-    public static boolean canExportCategorisationForDataStructureDefinition(ProcStatusEnum procStatus, String operationCode, CategorisationDto categorisationDto) {
-        return true;
+    public static boolean canExportCategorisationForDataStructureDefinition(CategorisationDto categorisationDto) {
+        return TasksClientSecurityUtils.canExportResource(categorisationDto.getVersionLogic());
     }
 }

@@ -119,7 +119,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showExportButton() {
-        if (TasksClientSecurityUtils.canExportStructure(versionLogic)) {
+        if (CodesClientSecurityUtils.canExportCodelist(versionLogic)) {
             export.show();
         }
     }

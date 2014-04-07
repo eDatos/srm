@@ -286,13 +286,20 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     }
 
     private void showExportToolStripButton(ListGridRecord[] records) {
-        if (records.length > 0) {
+        boolean allSelectedDsdsCanBeExported = true;
+        for (ListGridRecord record : records) {
+            DataStructureDefinitionMetamacBasicDto dsd = ((DsdRecord) record).getDsdBasicDto();
+            if (!DsdClientSecurityUtils.canExportDsd(dsd.getVersionLogic())) {
+                allSelectedDsdsCanBeExported = false;
+                break;
+            }
+        }
+        if (allSelectedDsdsCanBeExported) {
             exportToolStripButton.show();
         } else {
             exportToolStripButton.hide();
         }
     }
-
     private List<String> getSelectedDsdsUrns() {
         List<String> urns = new ArrayList<String>();
         if (dsdListGrid.getListGrid().getSelectedRecords() != null) {

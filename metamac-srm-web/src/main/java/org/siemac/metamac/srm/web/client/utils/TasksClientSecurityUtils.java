@@ -10,7 +10,7 @@ public class TasksClientSecurityUtils {
         return SharedTasksSecurityUtils.canImportStructure(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canExportStructure(String versionLogic) {
+    public static boolean canExportResource(String versionLogic) {
         return SharedTasksSecurityUtils.canExportStructure(MetamacSrmWeb.getCurrentUser()) && !VersionUtil.isTemporalVersion(versionLogic);
     }
 }

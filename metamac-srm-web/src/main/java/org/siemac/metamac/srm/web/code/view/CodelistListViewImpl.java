@@ -297,7 +297,15 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     }
 
     private void showListGridExportButton(ListGridRecord[] records) {
-        if (records.length > 0) {
+        boolean allSelectedCodelistCanBeExported = true;
+        for (ListGridRecord record : records) {
+            CodelistMetamacBasicDto codelistMetamacDto = ((CodelistRecord) record).getCodelistMetamacBasicDto();
+            // Do not show cancel validity button if scheme is not published externally or if scheme validity has been canceled previously
+            if (!CodesClientSecurityUtils.canExportCodelist(codelistMetamacDto.getVersionLogic())) {
+                allSelectedCodelistCanBeExported = false;
+            }
+        }
+        if (allSelectedCodelistCanBeExported) {
             exportButton.show();
         } else {
             exportButton.hide();

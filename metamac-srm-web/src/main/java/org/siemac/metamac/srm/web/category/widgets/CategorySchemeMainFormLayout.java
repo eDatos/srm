@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.web.category.widgets;
 
 import org.siemac.metamac.srm.core.category.dto.CategorySchemeMetamacDto;
 import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
-import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 
 public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
@@ -83,7 +82,7 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showExportButton() {
-        if (TasksClientSecurityUtils.canExportStructure(versionLogic)) {
+        if (CategoriesClientSecurityUtils.canExportCategoryScheme(versionLogic)) {
             export.show();
         }
     }

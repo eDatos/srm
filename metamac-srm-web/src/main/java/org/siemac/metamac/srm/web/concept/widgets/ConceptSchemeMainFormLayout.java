@@ -97,7 +97,7 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showExportButton() {
-        if (TasksClientSecurityUtils.canExportStructure(versionLogic)) {
+        if (ConceptsClientSecurityUtils.canExportConceptScheme(versionLogic)) {
             export.show();
         }
     }

@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedCodesSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
+import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.CodelistFamilyViewImpl;
 import org.siemac.metamac.srm.web.code.widgets.CodelistMainFormLayout;
 
@@ -179,8 +180,8 @@ public class CodesClientSecurityUtils {
         }
     }
 
-    public static boolean canExportCategorisation(ProcStatusEnum procStatus, Boolean isTaskInBackground, CategorisationDto categorisationDto) {
-        return true;
+    public static boolean canExportCategorisation(CategorisationDto categorisationDto) {
+        return TasksClientSecurityUtils.canExportResource(categorisationDto.getVersionLogic());
     }
 
     /**
@@ -217,6 +218,10 @@ public class CodesClientSecurityUtils {
         }
         // Only resources from other organisations can be copied
         return SharedCodesSecurityUtils.canCopyCodelist(MetamacSrmWeb.getCurrentUser()) && !CommonUtils.isDefaultMaintainer(maintainer);
+    }
+
+    public static boolean canExportCodelist(String versionLogic) {
+        return TasksClientSecurityUtils.canExportResource(versionLogic);
     }
 
     public static boolean canCopyCodelistKeepingMaintainer(RelatedResourceDto maintainer, Boolean isTaskInBackground) {

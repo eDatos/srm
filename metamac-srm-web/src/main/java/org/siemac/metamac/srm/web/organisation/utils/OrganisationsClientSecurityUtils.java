@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto
 import org.siemac.metamac.srm.core.security.shared.SharedOrganisationsSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
+import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -91,6 +92,10 @@ public class OrganisationsClientSecurityUtils {
                 organisationSchemeMetamacBasicDto.getType(), organisationSchemeMetamacBasicDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacBasicDto.getValidTo());
     }
 
+    public static boolean canExportOrganisationScheme(String versionLogic) {
+        return TasksClientSecurityUtils.canExportResource(versionLogic);
+    }
+
     public static boolean canCancelOrganisationSchemeValidity(String urn, RelatedResourceDto maintainer, String versionLogic, OrganisationSchemeTypeEnum organisationSchemeType,
             ProcStatusEnum procStatus, Date validTo) {
 
@@ -157,8 +162,8 @@ public class OrganisationsClientSecurityUtils {
         }
     }
 
-    public static boolean canExportCategorisationFromOrganisationScheme(ProcStatusEnum procStatus, OrganisationSchemeTypeEnum type, CategorisationDto categorisationDto) {
-        return true;
+    public static boolean canExportCategorisationFromOrganisationScheme(CategorisationDto categorisationDto) {
+        return TasksClientSecurityUtils.canExportResource(categorisationDto.getVersionLogic());
     }
 
     public static boolean canCopyOrganisationScheme(RelatedResourceDto maintainer) {

@@ -54,7 +54,7 @@ public class CategorySchemeCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!CategoriesClientSecurityUtils.canExportCategorisation(categorisedArtefactProcStatus, categorisationRecord.getCategorisationDto())) {
+                if (!CategoriesClientSecurityUtils.canExportCategorisation(categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }

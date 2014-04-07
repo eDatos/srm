@@ -4,7 +4,6 @@ import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
-import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 
@@ -62,7 +61,7 @@ public class ConceptSchemeCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!ConceptsClientSecurityUtils.canExportCategorisation(categorisedArtefactProcStatus, type, operationCode, categorisationRecord.getCategorisationDto())) {
+                if (!ConceptsClientSecurityUtils.canExportCategorisation(categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }

@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.code.widgets;
 
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
-import org.siemac.metamac.srm.web.category.utils.CategoriesClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
@@ -58,7 +57,7 @@ public class CodelistCategorisationsPanel extends CategorisationsPanel {
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!CodesClientSecurityUtils.canExportCategorisation(categorisedArtefactProcStatus, versioningBackground, categorisationRecord.getCategorisationDto())) {
+                if (!CodesClientSecurityUtils.canExportCategorisation(categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }

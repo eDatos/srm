@@ -3,7 +3,6 @@ package org.siemac.metamac.srm.web.organisation.widgets;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.model.record.CategorisationRecord;
 import org.siemac.metamac.srm.web.client.widgets.CategorisationsPanel;
-import org.siemac.metamac.srm.web.dsd.utils.DsdClientSecurityUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -59,7 +58,7 @@ public class OrganisationSchemeCategorisationsPanel extends CategorisationsPanel
         for (ListGridRecord record : records) {
             if (record instanceof CategorisationRecord) {
                 CategorisationRecord categorisationRecord = (CategorisationRecord) record;
-                if (!OrganisationsClientSecurityUtils.canExportCategorisationFromOrganisationScheme(categorisedArtefactProcStatus, type, categorisationRecord.getCategorisationDto())) {
+                if (!OrganisationsClientSecurityUtils.canExportCategorisationFromOrganisationScheme(categorisationRecord.getCategorisationDto())) {
                     return false;
                 }
             }

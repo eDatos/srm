@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedCategoriesSecurityUtils;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.utils.CommonUtils;
+import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -132,8 +133,12 @@ public class CategoriesClientSecurityUtils {
         }
     }
 
-    public static boolean canExportCategorisation(ProcStatusEnum procStatus, CategorisationDto categorisationDto) {
-        return true;
+    public static boolean canExportCategorisation(CategorisationDto categorisationDto) {
+        return TasksClientSecurityUtils.canExportResource(categorisationDto.getVersionLogic());
+    }
+
+    public static boolean canExportCategoryScheme(String versionLogic) {
+        return TasksClientSecurityUtils.canExportResource(versionLogic);
     }
 
     public static boolean canCopyCategoryScheme(RelatedResourceDto maintainer) {

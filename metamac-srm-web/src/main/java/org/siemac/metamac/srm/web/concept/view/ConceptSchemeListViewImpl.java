@@ -320,7 +320,14 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
     }
 
     private void showListGridExportButton(ListGridRecord[] records) {
-        if (records.length > 0) {
+        boolean allSelectedSchemesCanBeExported = true;
+        for (ListGridRecord record : records) {
+            ConceptSchemeMetamacBasicDto conceptSchemeMetamacDto = ((ConceptSchemeRecord) record).getConceptSchemeBasicDto();
+            if (!ConceptsClientSecurityUtils.canExportConceptScheme(conceptSchemeMetamacDto.getVersionLogic())) {
+                allSelectedSchemesCanBeExported = false;
+            }
+        }
+        if (allSelectedSchemesCanBeExported) {
             exportButton.show();
         } else {
             exportButton.hide();

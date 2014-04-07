@@ -92,7 +92,7 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showExportButton() {
-        if (TasksClientSecurityUtils.canExportStructure(versionLogic)) {
+        if (OrganisationsClientSecurityUtils.canExportOrganisationScheme(versionLogic)) {
             export.show();
         }
     }
