@@ -353,6 +353,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
             @Override
             public void onChanged(ChangedEvent event) {
                 relatedTo.validate();
+                editionForm.markForRedraw();
+
             }
         });
         relatedTo.setValidators(new CustomValidator() {
@@ -381,6 +383,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         CustomSelectItem groupKeysForDimensionRelationshipItem = new CustomSelectItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP, getConstants()
                 .dsdAttributeGroupKeysForDimensionRelationship());
         groupKeysForDimensionRelationshipItem.setMultiple(true);
+        groupKeysForDimensionRelationshipItem.setAllowEmptyValue(false);
         groupKeysForDimensionRelationshipItem.setPickListWidth(350);
         groupKeysForDimensionRelationshipItem.setShowIfCondition(getGroupKeysForDimensionRelationshipFormItemIfFunction());
 
@@ -393,6 +396,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         RequiredSelectItem dimensionsForDimensionRelationshipItem = new RequiredSelectItem(DataAttributeDS.DIMENSION_FOR_DIMENSION_RELATIONSHIP, getConstants()
                 .dsdAttributeDimensionsForDimensionRelationship());
         dimensionsForDimensionRelationshipItem.setMultiple(true);
+        dimensionsForDimensionRelationshipItem.setAllowEmptyValue(false);
         dimensionsForDimensionRelationshipItem.setPickListWidth(350);
         dimensionsForDimensionRelationshipItem.setShowIfCondition(getDimensionsForDimensionRelationshipFormItemIfFunction());
 
@@ -514,7 +518,8 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
     public void setGroupKeys(List<DescriptorDto> descriptorDtos) {
         this.descriptorDtos = descriptorDtos;
         LinkedHashMap<String, String> groupKeysMap = CommonUtils.getDescriptorDtoHashMap(descriptorDtos);
-        ((CustomSelectItem) editionForm.getItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP)).setValueMap(groupKeysMap);
+        LinkedHashMap<String, String> groupKeysMapWithEmpty = CommonUtils.getDescriptorDtoHashMapWithEmpty(descriptorDtos);
+        ((CustomSelectItem) editionForm.getItem(DataAttributeDS.GROUP_KEY_FOR_GROUP_RELATIONSHIP)).setValueMap(groupKeysMapWithEmpty);
         ((CustomSelectItem) editionForm.getItem(DataAttributeDS.GROUP_KEY_FOR_DIMENSION_RELATIONSHIP)).setValueMap(groupKeysMap);
     }
 

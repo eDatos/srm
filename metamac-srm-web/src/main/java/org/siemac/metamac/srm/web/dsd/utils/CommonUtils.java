@@ -159,7 +159,6 @@ public class CommonUtils extends CommonSharedUtils {
 
     public static LinkedHashMap<String, String> getDimensionComponentDtoHashMap(List<DimensionComponentDto> dimensionComponentDtos) {
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
-        valueMap.put(new String(), new String());
         for (DimensionComponentDto d : dimensionComponentDtos) {
             valueMap.put(d.getUrn(), d.getCode());
         }
@@ -167,6 +166,14 @@ public class CommonUtils extends CommonSharedUtils {
     }
 
     public static LinkedHashMap<String, String> getDescriptorDtoHashMap(List<DescriptorDto> descriptorDtos) {
+        LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
+        for (DescriptorDto descriptorDto : descriptorDtos) {
+            valueMap.put(descriptorDto.getUrn(), descriptorDto.getCode());
+        }
+        return valueMap;
+    }
+
+    public static LinkedHashMap<String, String> getDescriptorDtoHashMapWithEmpty(List<DescriptorDto> descriptorDtos) {
         LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
         valueMap.put(new String(), new String());
         for (DescriptorDto descriptorDto : descriptorDtos) {
