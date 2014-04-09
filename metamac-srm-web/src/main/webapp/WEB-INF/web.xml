@@ -63,6 +63,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>uploadPreview</servlet-name>
+        <servlet-class>org.siemac.metamac.srm.web.server.servlet.ResourceImportationPreviewServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>uploadPreview</servlet-name>
+        <url-pattern>/files/upload-preview/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>download</servlet-name>
         <servlet-class>org.siemac.metamac.srm.web.server.servlet.FileDownloadServlet</servlet-class>
     </servlet>

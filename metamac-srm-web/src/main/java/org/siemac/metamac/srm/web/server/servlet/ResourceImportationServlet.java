@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -119,10 +121,14 @@ public class ResourceImportationServlet extends HttpServlet {
             String successMessage = StringUtils.EMPTY;
 
             if (ImportableResourceTypeEnum.SDMX_STRUCTURE.name().equals(args.get(SrmSharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
-
-                TaskInfo taskInfo = importSDMXStructure(srmCoreServiceFacade, fileName, inputStream);
-                successMessage = updateSuccessMessage(successMessage, taskInfo);
-
+                if (args.containsKey("urns")) {
+                    String[] urns = args.get("urns").split("#");
+                    TaskInfo taskInfo = importSDMXStructureByUrns(srmCoreServiceFacade, fileName, inputStream, urns);
+                    successMessage = updateSuccessMessage(successMessage, taskInfo);
+                } else {
+                    TaskInfo taskInfo = importSDMXStructure(srmCoreServiceFacade, fileName, inputStream);
+                    successMessage = updateSuccessMessage(successMessage, taskInfo);
+                }
             } else if (ImportableResourceTypeEnum.CODES.name().equals(args.get(SrmSharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
 
                 TaskImportationInfo taskImportationInfo = importCodes(srmCoreServiceFacade, fileName, inputStream, args);
@@ -208,6 +214,22 @@ public class ResourceImportationServlet extends HttpServlet {
         contentInputDto.setInput(inputStream);
 
         return srmCoreServiceFacade.importSDMXStructureMsg(ServiceContextHolder.getCurrentServiceContext(), contentInputDto);
+    }
+
+    private TaskInfo importSDMXStructureByUrns(SrmCoreServiceFacade srmCoreServiceFacade, String fileName, InputStream inputStream, String[] urns) throws MetamacException {
+
+        ContentInputDto contentInputDto = new ContentInputDto();
+        contentInputDto.setName(fileName);
+        contentInputDto.setInput(inputStream);
+
+        Set<String> urnsToImport = new TreeSet<String>();
+        if (urns != null) {
+            for (String urn : urns) {
+                urnsToImport.add(urn);
+            }
+        }
+
+        return srmCoreServiceFacade.importSDMXStructureMsg(ServiceContextHolder.getCurrentServiceContext(), contentInputDto, urnsToImport);
     }
 
     // Codes

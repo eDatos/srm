@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.MainPageUiHandlers;
-import org.siemac.metamac.web.common.client.listener.UploadListener;
 import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.RadioToolStripButton;
 
@@ -103,19 +102,6 @@ public class StructuralResourcesMenu extends ToolStrip {
 
         // Window
 
-        final ImportSDMXStructureWindow importSDMXStructureWindow = new ImportSDMXStructureWindow();
-        importSDMXStructureWindow.setUploadListener(new UploadListener() {
-
-            @Override
-            public void uploadFailed(String errorMessage) {
-                getUiHandlers().sDMXResourceImportationFailed(errorMessage);
-            }
-            @Override
-            public void uploadComplete(String message) {
-                getUiHandlers().sDMXResourceImportationSucceed(message);
-            }
-        });
-
         // Button
 
         importSDMXResourceButton = new CustomToolStripButton(getConstants().actionImportSDMXResource(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource()
@@ -125,7 +111,18 @@ public class StructuralResourcesMenu extends ToolStrip {
 
             @Override
             public void onClick(ClickEvent event) {
-                importSDMXStructureWindow.show();
+                new ImportSDMXStructureWindow() {
+
+                    @Override
+                    protected void uploadFailed(String error) {
+                        getUiHandlers().sDMXResourceImportationFailed(error);
+                    }
+
+                    @Override
+                    protected void uploadSuccess(String message) {
+                        getUiHandlers().sDMXResourceImportationSucceed(message);
+                    }
+                }.show();
             }
         });
         addButton(importSDMXResourceButton);
