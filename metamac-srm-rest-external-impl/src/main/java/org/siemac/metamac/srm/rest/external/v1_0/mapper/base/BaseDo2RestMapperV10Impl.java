@@ -14,7 +14,7 @@ import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
-import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
@@ -32,7 +32,6 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.external.exception.RestServiceExceptionType;
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.AnnotableArtefact;
@@ -336,27 +335,19 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
     }
 
-    private String readProperty(String property) {
-        String propertyValue = configurationService.getProperty(property);
-        if (propertyValue == null) {
-            throw new BeanCreationException("Property not found: " + property);
-        }
-        return propertyValue;
-    }
-
     public String getMaintainerUrnDefault() {
         return maintainerUrnDefault;
     }
 
-    private void initEndpoints() {
+    private void initEndpoints() throws MetamacException {
         // Srm External Api V1.0
-        String srmApiExternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_SRM_EXTERNAL_API);
+        String srmApiExternalEndpoint = configurationService.retrieveSrmExternalApiUrlBase();
         srmApiInternalEndpointV10 = RestUtils.createLink(srmApiExternalEndpoint, SrmRestConstants.API_VERSION_1_0);
 
         // Statistical operations External Api (do not add api version! it is already stored in database (~latest))
-        statisticalOperationsApiExternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_EXTERNAL_API);
+        statisticalOperationsApiExternalEndpoint = configurationService.retrieveStatisticalOperationsExternalApiUrlBase();
         statisticalOperationsApiExternalEndpoint = StringUtils.removeEnd(statisticalOperationsApiExternalEndpoint, "/");
 
-        maintainerUrnDefault = readProperty(ConfigurationConstants.METAMAC_ORGANISATION_URN);
+        maintainerUrnDefault = configurationService.retrieveOrganisationUrn();
     }
 }
