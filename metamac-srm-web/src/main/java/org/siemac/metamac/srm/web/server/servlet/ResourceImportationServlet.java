@@ -368,6 +368,7 @@ public class ResourceImportationServlet extends HttpServlet {
         response.setContentType("text/html");
         response.setHeader("Pragma", "No-cache");
         response.setDateHeader("Expires", 0);
+        response.setCharacterEncoding("UTF-8");
         response.setHeader("Cache-Control", "no-cache");
         PrintWriter out = response.getWriter();
         out.println("<html>");

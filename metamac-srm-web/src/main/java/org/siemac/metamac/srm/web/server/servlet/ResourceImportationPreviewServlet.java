@@ -133,88 +133,6 @@ public class ResourceImportationPreviewServlet extends HttpServlet {
         }
     }
 
-    //
-    // IMPORTATION METHODS
-    //
-
-    // SDMX Structure
-
-    // private String serializeResourcesJson(List<RelatedResourceDto> resources) {
-    // StringBuilder builder = new StringBuilder();
-    // builder.append("[");
-    // int processed = 0;
-    // for (RelatedResourceDto resource : resources) {
-    // if (processed > 0) {
-    // builder.append(",");
-    // }
-    // builder.append(serializeResourceJson(resource));
-    // processed++;
-    // }
-    // builder.append("]");
-    // return builder.toString();
-    // }
-    //
-    // private String serializeResourceJson(RelatedResourceDto resource) {
-    // StringBuilder builder = new StringBuilder();
-    // builder.append("{");
-    // builder.append(stringField("urnProvider", resource.getUrnProvider())).append(",");
-    // builder.append(stringField("urn", resource.getUrn())).append(",");
-    // builder.append(stringField("code", resource.getCode())).append(",");
-    // builder.append(stringField("codeNested", resource.getCodeNested())).append(",");
-    // builder.append(stringField("type", resource.getType().name())).append(",");
-    // builder.append(objectField("title", serializeInternationalString(resource.getTitle())));
-    // builder.append("}");
-    // return builder.toString();
-    // }
-    //
-    // private String serializeInternationalString(InternationalStringDto title) {
-    // StringBuilder builder = new StringBuilder();
-    // builder.append("{");
-    // for (LocalisedStringDto localised : title.getTexts()) {
-    // String cleanLabel = localised.getLabel().replaceAll("\n", " ");
-    // builder.append(stringField(localised.getLocale(), cleanLabel));
-    // }
-    // builder.append("}");
-    // return builder.toString();
-    // }
-    private String serializeResourcesJson(List<RelatedResourceDto> resources) {
-        JSONArray list = new JSONArray();
-        for (RelatedResourceDto resource : resources) {
-            list.add(serializeResourceJson(resource));
-        }
-        return list.toJSONString();
-    }
-
-    // CAUTION: The values names must be equal to RelatedResourceBaseDS
-    // That class can't be used here because it's client only
-    private JSONObject serializeResourceJson(RelatedResourceDto resource) {
-        JSONObject obj = new JSONObject();
-        obj.put("urn-provider", resource.getUrnProvider());
-        obj.put("urn", resource.getUrn());
-        obj.put("code", resource.getCode());
-        obj.put("title", serializeInternationalString(resource.getTitle()));
-        return obj;
-    }
-    private JSONObject serializeInternationalString(InternationalStringDto title) {
-        JSONObject obj = new JSONObject();
-        for (LocalisedStringDto localised : title.getTexts()) {
-            String clean = JSONObject.escape(localised.getLabel());
-            obj.put(localised.getLocale(), clean);
-        }
-        return obj;
-    }
-    private String stringField(String fieldName, String value) {
-        return quatify(fieldName) + ": " + quatify(value);
-    }
-
-    private String objectField(String fieldName, String value) {
-        return quatify(fieldName) + ": " + value;
-    }
-
-    private String quatify(String value) {
-        return "\"" + value + "\"";
-    }
-
     private List<RelatedResourceDto> previewSDMXStructures(SrmCoreServiceFacade srmCoreServiceFacade, String fileName, InputStream inputStream) throws MetamacException {
 
         ContentInputDto contentInputDto = new ContentInputDto();
@@ -269,6 +187,7 @@ public class ResourceImportationPreviewServlet extends HttpServlet {
         response.setContentType("text/html");
         response.setHeader("Pragma", "No-cache");
         response.setDateHeader("Expires", 0);
+        response.setCharacterEncoding("UTF-8");
         response.setHeader("Cache-Control", "no-cache");
         PrintWriter out = response.getWriter();
         out.println("<html>");
@@ -300,6 +219,33 @@ public class ResourceImportationPreviewServlet extends HttpServlet {
 
         Locale locale = (Locale) ServiceContextHolder.getCurrentServiceContext().getProperty(LocaleConstants.locale);
         return webTranslateExceptions.getTranslatedMessage(messageCode, locale);
+    }
+
+    private String serializeResourcesJson(List<RelatedResourceDto> resources) {
+        JSONArray list = new JSONArray();
+        for (RelatedResourceDto resource : resources) {
+            list.add(serializeResourceJson(resource));
+        }
+        return list.toJSONString();
+    }
+
+    // CAUTION: The values names must be equal to RelatedResourceBaseDS
+    // That class can't be used here because it's client only
+    private JSONObject serializeResourceJson(RelatedResourceDto resource) {
+        JSONObject obj = new JSONObject();
+        obj.put("urn-provider", resource.getUrnProvider());
+        obj.put("urn", resource.getUrn());
+        obj.put("code", resource.getCode());
+        obj.put("title", serializeInternationalString(resource.getTitle()));
+        return obj;
+    }
+    private JSONObject serializeInternationalString(InternationalStringDto title) {
+        JSONObject obj = new JSONObject();
+        for (LocalisedStringDto localised : title.getTexts()) {
+            String clean = JSONObject.escape(localised.getLabel());
+            obj.put(localised.getLocale(), clean);
+        }
+        return obj;
     }
 
 }
