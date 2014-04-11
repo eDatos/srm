@@ -16,6 +16,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaPropertyEnum;
@@ -44,7 +45,7 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
     }
 
     @Override
-    public void checkConfiguration() {
+    public void checkConfiguration() throws MetamacException {
 
         LOG.info("**************************************************************");
         LOG.info("[metamac-srm-web] Checking application configuration");
@@ -80,7 +81,7 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
         checkEditionLanguagesProperty();
         checkNavBarUrlProperty();
         checkOrganisationProperty();
-        checkRequiredOrganisationUrn(ConfigurationConstants.METAMAC_ORGANISATION_URN);
+        checkRequiredOrganisationUrn();
 
         // SRM properties
 
@@ -89,21 +90,19 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
         checkRequiredProperty(SrmConfigurationConstants.VARIABLE_WORLD);
         checkRequiredProperty(SrmConfigurationConstants.VARIABLE_ELEMENT_WORLD);
 
-        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN);
-        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_TIME_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN);
-        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_MEASURE_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN);
-        checkOptionalCodelistUrn(SrmConfigurationConstants.DEFAULT_CODELIST_GEOGRAPHICAL_GRANULARITY_URN);
+        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN, getSrmConfiguration().retrieveDsdPrimaryMeasureDefaultConceptIdUrn());
+        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_TIME_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN, getSrmConfiguration().retrieveDsdTimeDimensionOrAttributeDefaultConceptIdUrn());
+        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_MEASURE_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN, getSrmConfiguration().retrieveDsdMeasureDimensionOrAttributeDefaultConceptIdUrn());
+        checkOptionalCodelistUrn(SrmConfigurationConstants.DEFAULT_CODELIST_GEOGRAPHICAL_GRANULARITY_URN, getSrmConfiguration().retrieveDefaultCodelistGeographicalGranularityUrn());
 
         LOG.info("**************************************************************");
         LOG.info("[metamac-srm-web] Application configuration checked");
         LOG.info("**************************************************************");
     }
+    private void checkRequiredOrganisationUrn() {
 
-    private void checkRequiredOrganisationUrn(String propertyKey) {
-        checkRequiredProperty(propertyKey);
-
-        String organisationUrn = configurationService.getProperty(propertyKey);
         try {
+            String organisationUrn = configurationService.retrieveOrganisationUrn();
             MetamacCriteria criteria = new MetamacCriteria();
             criteria.setPaginator(new MetamacCriteriaPaginator());
             criteria.getPaginator().setFirstResult(0);
@@ -113,20 +112,18 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
 
             MetamacCriteriaResult<OrganisationMetamacBasicDto> result = srmCoreServiceFacade.findOrganisationsByCondition(getStartupServiceContext(), criteria);
             if (result.getResults().isEmpty()) {
-                String errorMessage = "Property [" + propertyKey + "] is not properly filled. The organisation URN specified is not correct. Aborting application startup...";
+                String errorMessage = "Property [" + SrmConfigurationConstants.METAMAC_ORGANISATION_URN
+                        + "] is not properly filled. The organisation URN specified is not correct. Aborting application startup...";
                 abortApplicationStartup(errorMessage);
             } else {
-                LOG.info("Property [" + propertyKey + "] filled");
+                LOG.info("Property [" + SrmConfigurationConstants.METAMAC_ORGANISATION_URN + "] filled");
             }
         } catch (MetamacException e) {
-            abortApplicationStartup("Error checking the property [" + propertyKey + "]");
+            abortApplicationStartup("Error checking the property [" + SrmConfigurationConstants.METAMAC_ORGANISATION_URN + "]");
         }
     }
 
-    private void checkOptionalConceptUrn(String propertyKey) {
-        checkOptionalProperty(propertyKey);
-
-        String conceptUrn = configurationService.getProperty(propertyKey);
+    private void checkOptionalConceptUrn(String propertyKey, String conceptUrn) {
         if (StringUtils.isNotBlank(conceptUrn)) {
             try {
                 MetamacCriteria criteria = new MetamacCriteria();
@@ -149,10 +146,7 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
         }
     }
 
-    private void checkOptionalCodelistUrn(String propertyKey) {
-        checkOptionalProperty(propertyKey);
-
-        String codelistUrn = configurationService.getProperty(propertyKey);
+    private void checkOptionalCodelistUrn(String propertyKey, String codelistUrn) {
         if (StringUtils.isNotBlank(codelistUrn)) {
             try {
                 MetamacCriteria criteria = new MetamacCriteria();
@@ -188,5 +182,9 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
             serviceContext.setProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
         }
         return serviceContext;
+    }
+
+    private SrmConfiguration getSrmConfiguration() {
+        return (SrmConfiguration) configurationService;
     }
 }

@@ -13,8 +13,7 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
-import org.siemac.metamac.core.common.conf.ConfigurationService;
-import org.siemac.metamac.core.common.constants.shared.ConfigurationConstants;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
@@ -29,11 +28,11 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Resourc
 import org.siemac.metamac.rest.utils.RestCommonUtil;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.InternalWebApplicationNavigation;
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.AnnotableArtefact;
@@ -51,7 +50,7 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 public abstract class BaseDo2RestMapperV10Impl {
 
     @Autowired
-    private ConfigurationService             configurationService;
+    private SrmConfiguration                 configurationService;
 
     private String                           srmInternalWebApplication;
     private String                           srmApiInternalEndpointV10;
@@ -371,29 +370,21 @@ public abstract class BaseDo2RestMapperV10Impl {
         return internalWebApplicationNavigation;
     }
 
-    private String readProperty(String property) {
-        String propertyValue = configurationService.getProperty(property);
-        if (propertyValue == null) {
-            throw new BeanCreationException("Property not found: " + property);
-        }
-        return propertyValue;
-    }
-
-    private void initEndpoints() {
+    private void initEndpoints() throws MetamacException {
         // Srm internal application
-        srmInternalWebApplication = readProperty(ConfigurationConstants.WEB_APPLICATION_SRM_INTERNAL_WEB);
+        srmInternalWebApplication = configurationService.retrieveSrmInternalWebApplicationUrlBase();
         srmInternalWebApplication = StringUtils.removeEnd(srmInternalWebApplication, "/");
 
         // Srm Internal Api V1.0
-        String srmApiInternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_SRM_INTERNAL_API);
+        String srmApiInternalEndpoint = configurationService.retrieveSrmInternalApiUrlBase();
         srmApiInternalEndpointV10 = RestUtils.createLink(srmApiInternalEndpoint, SrmRestConstants.API_VERSION_1_0);
 
         // Statistical operations Internal Api (do not add api version! it is already stored in database (~latest))
-        statisticalOperationsApiInternalEndpoint = readProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_INTERNAL_API);
+        statisticalOperationsApiInternalEndpoint = configurationService.retrieveStatisticalOperationsInternalApiUrlBase();
         statisticalOperationsApiInternalEndpoint = StringUtils.removeEnd(statisticalOperationsApiInternalEndpoint, "/");
 
         // Statistical operations internal application
-        statisticalOperationsInternalWebApplication = readProperty(ConfigurationConstants.WEB_APPLICATION_STATISTICAL_OPERATIONS_INTERNAL_WEB);
+        statisticalOperationsInternalWebApplication = configurationService.retrieveStatisticalOperationsInternalWebApplicationUrlBase();
         statisticalOperationsInternalWebApplication = StringUtils.removeEnd(statisticalOperationsInternalWebApplication, "/");
     }
 }

@@ -7,12 +7,7 @@ import com.arte.statistic.sdmx.srm.core.conf.SdmxSrmConfigurationImpl;
 
 public class SrmConfigurationImpl extends SdmxSrmConfigurationImpl implements SrmConfiguration {
 
-    private String  primaryMeasureConceptIdUrnDefault;
-    private String  variableWorldUrn;
-    private String  variableElementWorldUrn;
-    private Boolean isDatabaseOracle;
-    private Boolean isDatabaseSqlServer;
-    private String  jobDeleteDeprecatedEntitiesCronExpression;
+    private String jobDeleteDeprecatedEntitiesCronExpression;
 
     @Override
     public String retrieveUserGuideFileName() throws MetamacException {
@@ -26,10 +21,7 @@ public class SrmConfigurationImpl extends SdmxSrmConfigurationImpl implements Sr
 
     @Override
     public String retrievePrimaryMeasureConceptIdUrnDefault() throws MetamacException {
-        if (primaryMeasureConceptIdUrnDefault == null) {
-            primaryMeasureConceptIdUrnDefault = retrieveProperty(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN, Boolean.FALSE);
-        }
-        return primaryMeasureConceptIdUrnDefault;
+        return retrieveProperty(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN, Boolean.FALSE);
     }
 
     @Override
@@ -39,44 +31,44 @@ public class SrmConfigurationImpl extends SdmxSrmConfigurationImpl implements Sr
 
     @Override
     public String retrieveVariableWorldUrn() throws MetamacException {
-        if (variableWorldUrn == null) {
-            variableWorldUrn = retrieveProperty(SrmConfigurationConstants.VARIABLE_WORLD, Boolean.TRUE);
-        }
-        return variableWorldUrn;
+        return retrieveProperty(SrmConfigurationConstants.VARIABLE_WORLD, Boolean.TRUE);
     }
 
     @Override
     public String retrieveVariableElementWorldUrn() throws MetamacException {
-        if (variableElementWorldUrn == null) {
-            variableElementWorldUrn = retrieveProperty(SrmConfigurationConstants.VARIABLE_ELEMENT_WORLD, Boolean.TRUE);
-        }
-        return variableElementWorldUrn;
+        return retrieveProperty(SrmConfigurationConstants.VARIABLE_ELEMENT_WORLD, Boolean.TRUE);
     }
 
     @Override
     public String retrieveJobDeleteDeprecatedEntitiesCronExpression() throws MetamacException {
-        if (jobDeleteDeprecatedEntitiesCronExpression == null) {
-            jobDeleteDeprecatedEntitiesCronExpression = retrieveProperty(SrmConfigurationConstants.JOB_DELETE_DEPRECATED_ENTITIES_CRON_EXPRESSION, Boolean.FALSE);
-        }
-        return jobDeleteDeprecatedEntitiesCronExpression;
+        return retrieveProperty(SrmConfigurationConstants.JOB_DELETE_DEPRECATED_ENTITIES_CRON_EXPRESSION, Boolean.FALSE);
     }
 
     @Override
     public Boolean isDatabaseOracle() throws MetamacException {
-        if (isDatabaseOracle == null) {
-            String database = retrieveProperty(SrmConfigurationConstants.DB_DRIVER_NAME, Boolean.TRUE);
-            isDatabaseOracle = SrmConfigurationConstants.DB_DRIVER_NAME_ORACLE.equals(database);
-        }
-        return isDatabaseOracle;
+        String database = retrieveProperty(SrmConfigurationConstants.DB_DRIVER_NAME, Boolean.TRUE);
+        return SrmConfigurationConstants.DB_DRIVER_NAME_ORACLE.equals(database);
     }
 
     @Override
     public Boolean isDatabaseSqlServer() throws MetamacException {
-        if (isDatabaseSqlServer == null) {
-            String database = retrieveProperty(SrmConfigurationConstants.DB_DRIVER_NAME, Boolean.TRUE);
-            isDatabaseSqlServer = SrmConfigurationConstants.DB_DRIVER_NAME_MSSQL.equals(database);
-        }
-        return isDatabaseSqlServer;
+        String database = retrieveProperty(SrmConfigurationConstants.DB_DRIVER_NAME, Boolean.TRUE);
+        return SrmConfigurationConstants.DB_DRIVER_NAME_MSSQL.equals(database);
+    }
+
+    @Override
+    public String retrieveDsdPrimaryMeasureDefaultConceptIdUrn() throws MetamacException {
+        return retrieveProperty(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN, Boolean.TRUE);
+    }
+
+    @Override
+    public String retrieveDsdMeasureDimensionOrAttributeDefaultConceptIdUrn() throws MetamacException {
+        return retrieveProperty(SrmConfigurationConstants.DSD_MEASURE_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN, Boolean.TRUE);
+    }
+
+    @Override
+    public String retrieveDsdTimeDimensionOrAttributeDefaultConceptIdUrn() throws MetamacException {
+        return retrieveProperty(SrmConfigurationConstants.DSD_TIME_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN, Boolean.TRUE);
     }
 
 }
