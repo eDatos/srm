@@ -114,16 +114,26 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @Test
     public void testFindCodelists() throws Exception {
-        testFindCodelists(null, null, null, null, null, null, null); // without limits
-        testFindCodelists(null, null, null, "10000", null, null, null); // without limits
-        testFindCodelists(null, null, null, null, "0", null, null); // without limits, first page
-        testFindCodelists(null, null, null, "2", "0", null, null); // first page with pagination
-        testFindCodelists(null, null, null, "2", "2", null, null); // other page with pagination
-        testFindCodelists(null, null, null, null, null, QUERY_ID_LIKE_1, null); // query by id, without limits
-        testFindCodelists(null, null, null, null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, without limits
-        testFindCodelists(null, null, null, null, null, QUERY_LATEST, null); // latest
-        testFindCodelists(null, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query by id and name, first page
-        testFindCodelists(null, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query by id and name, first page
+        // without limits
+        testFindCodelists(null, null, null, null, null, null, null);
+        // without limits
+        testFindCodelists(null, null, null, "10000", null, null, null);
+        // without limits, first page
+        testFindCodelists(null, null, null, null, "0", null, null);
+        // first page with pagination
+        testFindCodelists(null, null, null, "2", "0", null, null);
+        // other page with pagination
+        testFindCodelists(null, null, null, "2", "2", null, null);
+        // query by id, without limits
+        testFindCodelists(null, null, null, null, null, QUERY_ID_LIKE_1, null);
+        // query by id and name, without limits
+        testFindCodelists(null, null, null, null, null, QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        // latest
+        testFindCodelists(null, null, null, null, null, QUERY_LATEST, null);
+        // query by id and name, first page
+        testFindCodelists(null, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        // query by id and name, first page
+        testFindCodelists(null, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
     @Test
@@ -345,33 +355,58 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     public void testFindCodes() throws Exception {
 
         // without parameters
-        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null); // without limits
-        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "10000", null, null, null); // without limits
-        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, "0", null, null); // without limits, first page
-        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", null, null); // with pagination
-        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        // ---------------------
+        // without limits
+        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null);
+        // without limits
+        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "10000", null, null, null);
+        // without limits, first page
+        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, "0", null, null);
+        // with pagination
+        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", null, null);
+        // query
+        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        // query and order
+        testFindCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
 
         // agency
-        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null); // without limits
-        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "10000", null, null, null); // without limits
-        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, null, "0", null, null); // without limits, first page
-        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", null, null); // with pagination
-        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        // --------
+        // without limits
+        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null);
+        // without limits
+        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "10000", null, null, null);
+        // without limits, first page
+        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, null, "0", null, null);
+        // with pagination
+        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", null, null);
+        // query
+        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        // query and order
+        testFindCodes(AGENCY_1, WILDCARD_ALL, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
 
         // resource
-        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, null, null, null, null); // without limits
-        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "10000", null, null, null); // without limits
-        testFindCodes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, WILDCARD_ALL, null, "0", null, null); // without limits, first page
-        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", null, null); // with pagination
-        testFindCodes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        // ----------
+        // without limits
+        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, null, null, null, null);
+        // without limits
+        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "10000", null, null, null);
+        // without limits, first page
+        testFindCodes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, WILDCARD_ALL, null, "0", null, null);
+        // with pagination
+        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", null, null);
+        // query
+        testFindCodes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        // query and order
+        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, WILDCARD_ALL, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
 
         // version
-        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", null, null); // with pagination
-        testFindCodes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
-        testFindCodes(AGENCY_1, WILDCARD_ALL, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
+        // ----------
+        // with pagination
+        testFindCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", null, null);
+        // query
+        testFindCodes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null);
+        // query and order
+        testFindCodes(AGENCY_1, WILDCARD_ALL, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
     @Test
