@@ -794,7 +794,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     @Test
     public void testFindVariableElementsGeoJson() throws Exception {
         String requestUri = getUriVariableElementsGeo("variable01");
-        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findVariableElementsGeoJson.xml");
+        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findVariableElementsGeoJson.json");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, MediaType.APPLICATION_JSON, Status.OK, responseExpected);
