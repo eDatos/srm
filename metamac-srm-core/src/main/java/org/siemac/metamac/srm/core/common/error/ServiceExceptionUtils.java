@@ -27,13 +27,13 @@ public class ServiceExceptionUtils {
         MetamacException metamacException;
 
         if (exception == null) {
-            if (Status.NOT_FOUND.getStatusCode() == e.getStatus()) {
+            if (Status.NOT_FOUND.getStatusCode() == e.getResponse().getStatus()) {
                 metamacException = new MetamacException(ServiceExceptionType.REST_API_INVOCATION_ERROR_NOT_FOUND_API, apiName);
             } else {
                 metamacException = new MetamacException(ServiceExceptionType.REST_API_INVOCATION_ERROR_UNKNOWN_API, e);
             }
         } else {
-            if (Status.NOT_FOUND.getStatusCode() == e.getStatus()) {
+            if (Status.NOT_FOUND.getStatusCode() == e.getResponse().getStatus()) {
                 metamacException = new MetamacException(ServiceExceptionType.REST_API_INVOCATION_ERROR_NOT_FOUND_RESOURCE, exception.getMessage());
             } else {
                 metamacException = new MetamacException(ServiceExceptionType.REST_API_INVOCATION_ERROR_UNKNOWN_RESOURCE, exception.getMessage());
