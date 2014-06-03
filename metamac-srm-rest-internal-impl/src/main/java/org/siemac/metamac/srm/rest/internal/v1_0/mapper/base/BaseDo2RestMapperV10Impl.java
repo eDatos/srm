@@ -56,6 +56,8 @@ public abstract class BaseDo2RestMapperV10Impl {
     private String                           srmApiInternalEndpointV10;
     private String                           statisticalOperationsInternalWebApplication;
     private String                           statisticalOperationsApiInternalEndpoint;
+    private String                           statisticalResourcesInternalWebApplication;
+    private String                           statisticalResourcesApiInternalEndpoint;
 
     private InternalWebApplicationNavigation internalWebApplicationNavigation;
 
@@ -72,6 +74,14 @@ public abstract class BaseDo2RestMapperV10Impl {
 
     public String getStatisticalOperationsApiInternalEndpoint() {
         return statisticalOperationsApiInternalEndpoint;
+    }
+
+    public String getStatisticalResourcesInternalWebApplication() {
+        return statisticalResourcesInternalWebApplication;
+    }
+
+    public String getStatisticalResourcesApiInternalEndpoint() {
+        return statisticalResourcesApiInternalEndpoint;
     }
 
     public void toAnnotableArtefact(AnnotableArtefact source, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AnnotableArtefact target) {
@@ -386,5 +396,14 @@ public abstract class BaseDo2RestMapperV10Impl {
         // Statistical operations internal application
         statisticalOperationsInternalWebApplication = configurationService.retrieveStatisticalOperationsInternalWebApplicationUrlBase();
         statisticalOperationsInternalWebApplication = StringUtils.removeEnd(statisticalOperationsInternalWebApplication, "/");
+
+        // Statistical resources internal application
+        statisticalResourcesInternalWebApplication = configurationService.retrieveStatisticalResourcesInternalWebApplicationUrlBase();
+        statisticalResourcesInternalWebApplication = StringUtils.removeEnd(statisticalResourcesInternalWebApplication, "/");
+
+        // Statistical resources internal api (do not add api version! it is already stored in database (~latest))
+        statisticalResourcesApiInternalEndpoint = configurationService.retrieveStatisticalResourcesInternalApiUrlBase();
+        statisticalResourcesApiInternalEndpoint = StringUtils.removeEnd(statisticalResourcesApiInternalEndpoint, "/");
+
     }
 }

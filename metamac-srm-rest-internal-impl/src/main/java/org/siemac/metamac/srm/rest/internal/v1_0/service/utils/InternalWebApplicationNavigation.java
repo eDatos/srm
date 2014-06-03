@@ -21,6 +21,7 @@ import org.springframework.web.util.UriTemplate;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
+import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class InternalWebApplicationNavigation {
@@ -84,6 +85,13 @@ public class InternalWebApplicationNavigation {
         variableElementTemplate = new UriTemplate(webApplicationPath + SEPARATOR + PATH_STRUCTURAL_RESOURCES + SEPARATOR + NameTokens.variableListPage + SEPARATOR + NameTokens.variablePage + ";"
                 + PlaceRequestParams.variableParamId + "=" + "{" + VARIABLE_PARAMETER + "}" + SEPARATOR + NameTokens.variableElementPage + ";" + PlaceRequestParams.variableElementParamId + "=" + "{"
                 + RESOURCE_ID_PARAMETER + "}");
+    }
+
+    public String buildContentConstraintUrl(ContentConstraint contentConstraint) {
+        Map<String, String> parameters = new HashMap<String, String>(1);
+        String urlPart = UrnUtils.removePrefix(contentConstraint.getMaintainableArtefact().getUrn());
+        parameters.put(RESOURCE_ID_PARAMETER, urlPart);
+        return dataStructureTemplate.expand(parameters).toString();
     }
 
     public String buildDataStructureDefinitionUrl(DataStructureDefinitionVersionMetamac dataStructureDefinition) {

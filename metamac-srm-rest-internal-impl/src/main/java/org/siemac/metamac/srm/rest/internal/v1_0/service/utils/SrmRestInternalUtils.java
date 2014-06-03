@@ -16,7 +16,9 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionProperties;
+import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationProperties;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxAlias;
+import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersionProperties;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -26,6 +28,18 @@ public class SrmRestInternalUtils {
 
     public static boolean hasField(String fields, String field) {
         return fields != null && fields.contains(field);
+    }
+
+    @SuppressWarnings({"rawtypes"})
+    public static List<ConditionalCriteria> buildConditionalCriteriaContentConstraints(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
+            Class entity) throws MetamacException {
+        return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, ContentConstraintProperties.maintainableArtefact());
+    }
+
+    @SuppressWarnings({"rawtypes"})
+    public static List<ConditionalCriteria> buildConditionalCriteriaCategorisations(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity)
+            throws MetamacException {
+        return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, CategorisationProperties.maintainableArtefact());
     }
 
     @SuppressWarnings({"rawtypes"})
