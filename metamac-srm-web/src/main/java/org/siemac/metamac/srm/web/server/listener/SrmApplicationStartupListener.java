@@ -67,12 +67,14 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
 
         checkRequiredProperty(ConfigurationConstants.WEB_APPLICATION_SRM_INTERNAL_WEB);
         checkRequiredProperty(ConfigurationConstants.WEB_APPLICATION_STATISTICAL_OPERATIONS_INTERNAL_WEB);
+        checkRequiredProperty(ConfigurationConstants.WEB_APPLICATION_STATISTICAL_RESOURCES_INTERNAL_WEB);
 
         // API
 
         checkRequiredProperty(ConfigurationConstants.ENDPOINT_SRM_INTERNAL_API);
         checkRequiredProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_INTERNAL_API);
         checkRequiredProperty(ConfigurationConstants.ENDPOINT_NOTICES_INTERNAL_API);
+        checkRequiredProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_RESOURCES_INTERNAL_API);
 
         // OTHER CONFIGURATION PROPERTIES
 
