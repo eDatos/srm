@@ -1,6 +1,8 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.constraint;
 
 import org.fornax.cartridges.sculptor.framework.domain.Property;
+import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
 import org.siemac.metamac.rest.exception.RestException;
@@ -11,6 +13,9 @@ import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCrite
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraintCriteriaPropertyOrder;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraintCriteriaPropertyRestriction;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyParts;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Keys;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Regions;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +23,11 @@ import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationProperties
 import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItemProperties.ExternalItemProperty;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintProperties;
+import com.arte.statistic.sdmx.srm.core.constraint.domain.KeyPart;
+import com.arte.statistic.sdmx.srm.core.constraint.domain.KeyValue;
+import com.arte.statistic.sdmx.srm.core.constraint.domain.RegionValue;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.ContentConstraintTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RegionValueTypeEnum;
 
 @Component
 public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements ContentConstraintsRest2DoMapper {
@@ -87,4 +97,104 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
 
     }
 
+    @Override
+    public ContentConstraint contentConstraintRestToEntity(ServiceContext ctx, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraint source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        ContentConstraint target = new ContentConstraint();
+
+        target.setType(ContentConstraintTypeEnum.valueOf(source.getType().name()));
+        target.setConstraintAttachment(resourceInternalRestStatisticalResourceToExternalItemDo(source.getConstraintAttachment(), target.getConstraintAttachment()));
+        target.setMaintainableArtefact(maintainableArtefactRestToEntity(source, target.getMaintainableArtefact()));
+
+        // Regions
+        Regions regionsSource = source.getRegions();
+        if (regionsSource != null) {
+            for (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Region regionSource : regionsSource.getRegions()) {
+                RegionValue regionValueEntity = contentConstraintRestToEntity(ctx, regionSource);
+                if (regionValueEntity != null) {
+                    target.addRegion(regionValueEntity);
+                }
+            }
+        }
+
+        return target;
+    }
+
+    private RegionValue contentConstraintRestToEntity(ServiceContext ctx, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Region source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        RegionValue target = new RegionValue();
+
+        target.setRegionValueTypeEnum(RegionValueTypeEnum.valueOf(source.getRegionValueType().name()));
+        target.setCode(source.getCode());
+
+        // Keys
+        Keys sourceKeys = source.getKeys();
+        if (sourceKeys != null) {
+            for (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Key keySource : sourceKeys.getKeies()) {
+                KeyValue keyRestEntity = keyRestToEntity(ctx, keySource);
+                if (keyRestEntity != null) {
+                    target.addKey(keyRestEntity);
+                }
+            }
+        }
+
+        return target;
+    }
+
+    private KeyValue keyRestToEntity(ServiceContext ctx, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Key source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        KeyValue target = new KeyValue();
+
+        target.setIncluded(source.isIncluded());
+
+        // Parts
+        KeyParts keyParts = source.getKeyParts();
+        if (keyParts != null) {
+            for (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPart keyPartSoruce : keyParts.getKeyParts()) {
+                KeyPart keyPartEntity = keyPartToEntity(ctx, keyPartSoruce);
+                if (keyPartEntity != null) {
+                    target.addPart(keyPartEntity);
+                }
+            }
+        }
+        target.getParts();
+
+        return target;
+
+    }
+    private KeyPart keyPartToEntity(ServiceContext ctx, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPart source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        KeyPart target = new KeyPart();
+
+        target.setIdentifier(source.getIdentifier());
+        target.setValue(source.getValue());
+        target.setCascadeValues(source.isCascadeValues());
+        target.setPosition(source.getPosition());
+
+        target.setBeforePeriod(source.getBeforePeriod());
+        target.setBeforePeriodInclusive(source.isBeforePeriodInclusive());
+
+        target.setAfterPeriod(source.getAfterPeriod());
+        target.setAfterPeriodInclusive(source.isAfterPeriodInclusive());
+
+        target.setStartPeriod(source.getStartPeriod());
+        target.setStartPeriodInclusive(source.isStartPeriodInclusive());
+
+        target.setEndPeriod(source.getEndPeriod());
+        target.setEndPeriodInclusive(source.isEndPeriodInclusive());
+
+        return target;
+    }
 }

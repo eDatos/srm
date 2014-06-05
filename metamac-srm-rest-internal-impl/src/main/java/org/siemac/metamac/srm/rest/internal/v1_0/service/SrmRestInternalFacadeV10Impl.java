@@ -1212,6 +1212,25 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return findContentConstraints(agencyID, resourceID, null, query, orderBy, limit, offset);
     }
 
+    @Override
+    public Response createContentConstraint(ContentConstraint contentConstraint) {
+        try {
+            // Transform
+            com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint contentConstraintEntity = contentConstraintsRest2DoMapper.contentConstraintRestToEntity(ctx, contentConstraint);
+
+            // Create
+            persistContentConstraint(contentConstraintEntity);
+            // noticesService.createNotice(NoticesRestConstants.SERVICE_CONTEXT, noticeEntity);
+            return Response.status(Response.Status.CREATED).build();
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    /**************************************************************************
+     * PRIVATE
+     **************************************************************************/
+
     private ConceptSchemes findConceptSchemes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
         try {
             SculptorCriteria sculptorCriteria = conceptsRest2DoMapper.getConceptSchemeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
@@ -1891,4 +1910,14 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return miscMetamacService.findLastUpdatedVariableElementsGeographicalInformation(ctx);
     }
 
+    private void persistContentConstraint(com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint contentConstraintEntity) throws MetamacException {
+        if (contentConstraintEntity == null) {
+            return;
+        }
+
+        // Save graph
+        com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint createContentConstraint = constraintsService.createContentConstraint(ctx, contentConstraintEntity, Boolean.FALSE);
+        int kaka = 2;
+
+    }
 }
