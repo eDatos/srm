@@ -1,10 +1,20 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.base;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.domain.LeafProperty;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.siemac.metamac.core.common.constants.CoreCommonConstants;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
 import org.siemac.metamac.rest.exception.RestException;
@@ -13,23 +23,56 @@ import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteria;
 import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaDisjunction;
 import org.siemac.metamac.rest.search.criteria.utils.CriteriaUtils;
 import org.siemac.metamac.rest.search.criteria.utils.CriteriaUtils.PropertyValueRestToPropertyValueEntityInterface;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Annotations;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.AnnotableArtefact;
+import com.arte.statistic.sdmx.srm.core.base.domain.Annotation;
+import com.arte.statistic.sdmx.srm.core.base.domain.AnnotationRepository;
+import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.IdentifiableArtefactProperties.IdentifiableArtefactProperty;
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperties.MaintainableArtefactProperty;
+import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
+import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
+import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItem;
+import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItemRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.InternationalString;
+import com.arte.statistic.sdmx.srm.core.common.domain.InternationalStringRepository;
+import com.arte.statistic.sdmx.srm.core.common.domain.LocalisedString;
+import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters;
+import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParametersInternal;
+import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
+import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public abstract class BaseRest2DoMapperV10Impl {
 
     private final Logger                                    logger                                 = LoggerFactory.getLogger(BaseRest2DoMapperV10Impl.class);
+
+    @Autowired
+    private SrmConfiguration                                configurationService;
+
+    @Autowired
+    private ExternalItemRepository                          externalItemRepository;
+
+    @Autowired
+    private AnnotationRepository                            annotationRepository;
+
+    @Autowired
+    private InternationalStringRepository                   internationalStringRepository;
+
+    private final Whitelist                                 whitelist                              = Whitelist.none().addTags(new String[]{"b", "i", "br", "a", "p"}).addAttributes("a", "href");
 
     private PropertyValueRestToPropertyValueEntityInterface propertyValueRestToPropertyValueEntity = null;
 
@@ -147,4 +190,259 @@ public abstract class BaseRest2DoMapperV10Impl {
         }
     }
 
+    public <T extends org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.MaintainableArtefact, U extends MaintainableArtefact> U maintainableArtefactRestToEntity(T source, U target)
+            throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        target.setIsExternalReference(source.isIsExternalReference());
+        target.setStructureURL(source.getStructureUrl());
+        target.setServiceURL(source.getServiceUrl());
+
+        // Related entities
+        // Maintainer
+        // target.setMaintainer(maintainer); // TODO LOAD Organisation
+
+        return nameableArtefactRestToEntity(source, target);
+    }
+
+    public <T extends org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.NameableArtefact, U extends NameableArtefact> U nameableArtefactRestToEntity(T source, U target)
+            throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        // Related entities
+        // Name
+        target.setName(internationalStringRestToEntity(source.getName(), target.getName(), ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME));
+
+        // Description
+        target.setDescription(internationalStringRestToEntity(source.getDescription(), target.getDescription(), ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION));
+
+        // Comment
+        target.setComment(internationalStringRestToEntity(source.getComment(), target.getComment(), ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT));
+
+        return identifiableArtefactRestToEntity(source, target);
+    }
+
+    public <T extends org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.IdentifiableArtefact, U extends IdentifiableArtefact> U identifiableArtefactRestToEntity(T source, U target)
+            throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        // Metadata modifiable
+        // If code has been updated, it is necessary to update artefact URN and artefact children URN
+        target.setIsCodeUpdated(!StringUtils.equals(source.getId(), target.getCode()));
+
+        target.setCode(source.getId());
+
+        return target;
+    }
+
+    public <T extends org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AnnotableArtefact, U extends AnnotableArtefact> U annotableArtefactRestToEntity(T source, U target)
+            throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        // Required target entity because this class is abstract
+        if (target == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.PARAMETER_REQUIRED).withMessageParameters(ServiceExceptionParameters.ANNOTABLE_ARTEFACT).build();
+        }
+
+        // Related entities: Annotations
+        int annotationCount = 1;
+        Set<Annotation> targetsBefore = target.getAnnotations();
+        Set<Annotation> targets = new HashSet<Annotation>();
+
+        Annotations annotations = source.getAnnotations();
+        if (annotations != null) {
+            for (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Annotation sourceAnnotationDto : annotations.getAnnotations()) {
+                String code = generateCodeForAnnotation(annotationCount); // Generate sequential CODE for Annotation
+                annotationCount++;
+
+                boolean existsBefore = false;
+                for (Annotation targetAnnotation : targetsBefore) {
+                    if (targetAnnotation.getId().equals(sourceAnnotationDto.getId())) {
+                        Annotation annotationUpdate = annotationRestToEntity(sourceAnnotationDto, targetAnnotation, target);
+                        annotationUpdate.setCode(code);
+                        targets.add(annotationUpdate); // Update
+                        existsBefore = true;
+                        break;
+                    }
+                }
+                if (!existsBefore) {
+                    Annotation annotationNew = annotationRestToEntity(sourceAnnotationDto, null, target);
+                    annotationNew.setCode(code);
+                    targets.add(annotationNew);
+                }
+            }
+
+            target.getAnnotations().clear();
+            target.getAnnotations().addAll(targets);
+
+        }
+        return target;
+    }
+
+    // -------------------------------------------------------------------
+    // EXTERNAL ITEM: STATISTICAL RESOURCES
+    // -------------------------------------------------------------------
+    public ExternalItem resourceInternalRestStatisticalResourceToExternalItemDo(org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal source, ExternalItem target)
+            throws MetamacException {
+
+        target = externalItemRestToExternalItem(source, target);
+        if (target != null) {
+            target.setUri(CoreCommonUtil.externalItemUrlDtoToUrlDo(getStatisticalResourceInternalApiUrlBase(), source.getSelfLink().getHref()));
+            target.setManagementAppUrl(CoreCommonUtil.externalItemUrlDtoToUrlDo(getStatisticalResourceInternalWebApplicationUrlBase(), source.getManagementAppLink()));
+        }
+        return target;
+    }
+
+    public ExternalItem externalItemRestToExternalItem(org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal source, ExternalItem target) throws MetamacException {
+        if (source == null) {
+            if (target != null) {
+                // delete previous entity
+                externalItemRepository.delete(target);
+            }
+            return null;
+        }
+
+        if (target == null) {
+            // New
+            target = new ExternalItem();
+        }
+        target.setCode(source.getId());
+        target.setCodeNested(source.getNestedId());
+        target.setUrn(source.getUrn());
+        target.setUrnProvider(source.getUrnProvider());
+        target.setTitle(internationalStringRestToEntity(source.getName(), target.getTitle(), ServiceExceptionParametersInternal.EXTERNAL_ITEM_TITLE));
+
+        return target;
+    }
+
+    private String getStatisticalResourceInternalWebApplicationUrlBase() throws MetamacException {
+        return configurationService.retrieveStatisticalResourcesInternalWebApplicationUrlBase();
+    }
+
+    private String getStatisticalResourceInternalApiUrlBase() throws MetamacException {
+        return configurationService.retrieveStatisticalResourcesInternalApiUrlBase();
+    }
+
+    private Annotation annotationRestToEntity(org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Annotation source, Annotation target, AnnotableArtefact annotableArtefactTarget)
+            throws MetamacException {
+
+        if (source == null) {
+            if (target != null) {
+                // Delete old entity
+                annotationRepository.delete(target);
+            }
+            return null;
+        }
+
+        if (target == null) {
+            target = new Annotation();
+        }
+
+        // Metadata modifiable
+        target.setCode(source.getId());
+        target.setTitle(source.getTitle());
+        target.setType(source.getType());
+        target.setUrl(source.getUrl());
+        target.setAnnotableArtefact(annotableArtefactTarget);
+        // Related entities
+        target.setText(internationalStringRestToEntity(source.getText(), target.getText(), ServiceExceptionParameters.ANNOTATION_TEXT));
+
+        return target;
+    }
+
+    private InternationalString internationalStringRestToEntity(org.siemac.metamac.rest.common.v1_0.domain.InternationalString source, InternationalString target, String metadataName)
+            throws MetamacException {
+
+        // Skip html
+        internationalStringHtmlToTextPlain(source);
+
+        // TODO Check it is valid
+
+        // Transform
+        if (source == null) {
+            if (target != null) {
+                // Delete old entity
+                internationalStringRepository.delete(target);
+            }
+            return null;
+        }
+
+        if (ValidationUtils.isEmpty(source)) {
+            // international string is not complete
+            throw new MetamacException(ServiceExceptionType.METADATA_REQUIRED, metadataName);
+        }
+
+        if (target == null) {
+            target = new InternationalString();
+        }
+        Set<LocalisedString> localisedStringEntities = localisedStringRestToEntity(source.getTexts(), target.getTexts(), target);
+        target.getTexts().clear();
+        target.getTexts().addAll(localisedStringEntities);
+        return target;
+    }
+
+    private Set<LocalisedString> localisedStringRestToEntity(List<org.siemac.metamac.rest.common.v1_0.domain.LocalisedString> sources, Set<LocalisedString> targets,
+            InternationalString internationalStringTarget) {
+
+        Set<LocalisedString> targetsBefore = targets;
+        targets = new HashSet<LocalisedString>();
+
+        for (org.siemac.metamac.rest.common.v1_0.domain.LocalisedString source : sources) {
+            boolean existsBefore = false;
+            for (LocalisedString target : targetsBefore) {
+                if (source.getLang().equals(target.getLocale())) {
+                    targets.add(localisedStringRestToEntity(source, target, internationalStringTarget));
+                    existsBefore = true;
+                    break;
+                }
+            }
+            if (!existsBefore) {
+                targets.add(localisedStringRestToEntity(source, internationalStringTarget));
+            }
+        }
+        return targets;
+    }
+
+    private LocalisedString localisedStringRestToEntity(org.siemac.metamac.rest.common.v1_0.domain.LocalisedString source, InternationalString internationalStringTarget) {
+        LocalisedString target = new LocalisedString();
+        localisedStringRestToEntity(source, target, internationalStringTarget);
+        return target;
+    }
+
+    private LocalisedString localisedStringRestToEntity(org.siemac.metamac.rest.common.v1_0.domain.LocalisedString source, LocalisedString target, InternationalString internationalStringTarget) {
+        target.setLabel(source.getValue());
+        target.setLocale(source.getLang());
+        // target.setIsUnmodifiable(source.getIsUnmodifiable());
+        target.setInternationalString(internationalStringTarget);
+        return target;
+    }
+
+    private String generateCodeForAnnotation(int annotationCount) {
+        return SdmxConstants.GENERATOR_ANNOTATION_CODE_PREFIX + "_" + StringUtils.leftPad(String.valueOf(annotationCount), 2, '0');
+    }
+
+    // --------------------------------------------------------------------------------
+    // COMMON
+    // --------------------------------------------------------------------------------
+    private void internationalStringHtmlToTextPlain(org.siemac.metamac.rest.common.v1_0.domain.InternationalString source) {
+        if (source == null) {
+            return;
+        }
+        for (org.siemac.metamac.rest.common.v1_0.domain.LocalisedString localisedString : source.getTexts()) {
+            String labelSource = localisedString.getValue();
+            if (labelSource != null) {
+                String labelTarget = Jsoup.clean(labelSource, whitelist);
+                labelTarget = StringEscapeUtils.unescapeHtml(labelTarget);
+                localisedString.setValue(labelTarget);
+            }
+        }
+    }
 }
