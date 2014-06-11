@@ -1,55 +1,29 @@
 package org.siemac.metamac.srm.web.external;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.siemac.metamac.core.common.conf.ConfigurationService;
-import org.siemac.metamac.core.common.util.ApplicationContextProvider;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.listener.ApplicationStartupListener;
 import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
 
-public class ApplicationStartup implements ServletContextListener {
-
-    private static final Log     LOG = LogFactory.getLog(ApplicationStartup.class);
-
-    private ConfigurationService configurationService;
+public class ApplicationStartup extends ApplicationStartupListener {
 
     @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        try {
-            configurationService = ApplicationContextProvider.getApplicationContext().getBean(ConfigurationService.class);
-            checkConfiguration();
-        } catch (Exception e) {
-            // Abort startup application
-            throw new RuntimeException(e);
-        }
+    public String projectName() {
+        return "structural-resources";
     }
 
-    private void checkConfiguration() {
-        LOG.info("**************************************************************");
-        LOG.info("[metamac-srm-external-web] Checking application configuration");
-        LOG.info("**************************************************************");
-
+    @Override
+    public void checkApplicationProperties() throws MetamacException {
         // Datasource
-        configurationService.checkRequiredProperty(SrmConfigurationConstants.DB_DRIVER_NAME);
-        configurationService.checkRequiredProperty(SrmConfigurationConstants.DB_URL);
-        configurationService.checkRequiredProperty(SrmConfigurationConstants.DB_USERNAME);
-        configurationService.checkRequiredProperty(SrmConfigurationConstants.DB_PASSWORD);
-        configurationService.checkRequiredProperty(SrmConfigurationConstants.DB_DIALECT);
+        checkRequiredProperty(SrmConfigurationConstants.DB_DRIVER_NAME);
+        checkRequiredProperty(SrmConfigurationConstants.DB_URL);
+        checkRequiredProperty(SrmConfigurationConstants.DB_USERNAME);
+        checkRequiredProperty(SrmConfigurationConstants.DB_PASSWORD);
+        checkRequiredProperty(SrmConfigurationConstants.DB_DIALECT);
 
         // Api
-        configurationService.checkRequiredProperty(SrmConfigurationConstants.ENDPOINT_SRM_EXTERNAL_API);
-        configurationService.checkRequiredProperty(SrmConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_EXTERNAL_API);
-        configurationService.checkRequiredProperty(SrmConfigurationConstants.METAMAC_ORGANISATION_URN);
-
-        LOG.info("**************************************************************");
-        LOG.info("[metamac-srm-external-web] Application configuration checked");
-        LOG.info("**************************************************************");
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
+        checkRequiredProperty(SrmConfigurationConstants.ENDPOINT_SRM_EXTERNAL_API);
+        checkRequiredProperty(SrmConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_EXTERNAL_API);
+        checkRequiredProperty(SrmConfigurationConstants.METAMAC_ORGANISATION_URN);
     }
 
 }

@@ -34,7 +34,7 @@ public interface SrmConfiguration extends SdmxSrmConfiguration {
     /**
      * Retrieves the Cron expression to perform a cleanup of deleted entities
      */
-    public String retrieveJobDeleteDeprecatedEntitiesCronExpression() throws MetamacException;
+    public String findJobDeleteDeprecatedEntitiesCronExpression() throws MetamacException;
 
     /**
      * Checks if Database is Oracle

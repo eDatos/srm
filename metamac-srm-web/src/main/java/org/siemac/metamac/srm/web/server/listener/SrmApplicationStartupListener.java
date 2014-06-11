@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.web.server.listener;
 
-import javax.servlet.ServletContextEvent;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,10 +11,8 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
-import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.criteria.CodelistVersionMetamacCriteriaPropertyEnum;
@@ -29,80 +25,71 @@ import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.sso.client.MetamacPrincipalAccess;
 import org.siemac.metamac.sso.client.SsoClientConstants;
-import org.siemac.metamac.web.common.server.listener.ApplicationStartupListener;
+import org.siemac.metamac.web.common.server.listener.InternalApplicationStartupListener;
 
-public class SrmApplicationStartupListener extends ApplicationStartupListener {
+public class SrmApplicationStartupListener extends InternalApplicationStartupListener {
 
     private static final Log     LOG = LogFactory.getLog(SrmApplicationStartupListener.class);
 
     private SrmCoreServiceFacade srmCoreServiceFacade;
     private ServiceContext       serviceContext;
 
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        srmCoreServiceFacade = ApplicationContextProvider.getApplicationContext().getBean(SrmCoreServiceFacade.class);
-        super.contextInitialized(sce);
-    }
+    // -----------------------------------------------------------------------------------
+    // OVERRIDE METHODS
+    // -----------------------------------------------------------------------------------
 
     @Override
-    public void checkConfiguration() throws MetamacException {
-
-        LOG.info("**************************************************************");
-        LOG.info("[metamac-srm-web] Checking application configuration");
-        LOG.info("**************************************************************");
-
-        // SECURITY
-
-        checkSecurityProperties();
-
-        // DATASOURCE
-
+    public void checkDatasourceProperties() {
         checkRequiredProperty(SrmConfigurationConstants.DB_DRIVER_NAME);
         checkRequiredProperty(SrmConfigurationConstants.DB_URL);
         checkRequiredProperty(SrmConfigurationConstants.DB_USERNAME);
         checkRequiredProperty(SrmConfigurationConstants.DB_PASSWORD);
         checkRequiredProperty(SrmConfigurationConstants.DB_DIALECT);
+    }
 
-        // WEB APPLICATIONS
-
+    @Override
+    public void checkWebApplicationsProperties() {
         checkRequiredProperty(ConfigurationConstants.WEB_APPLICATION_SRM_INTERNAL_WEB);
         checkRequiredProperty(ConfigurationConstants.WEB_APPLICATION_STATISTICAL_OPERATIONS_INTERNAL_WEB);
         checkRequiredProperty(ConfigurationConstants.WEB_APPLICATION_STATISTICAL_RESOURCES_INTERNAL_WEB);
+    }
 
-        // API
-
+    @Override
+    public void checkApiProperties() {
         checkRequiredProperty(ConfigurationConstants.ENDPOINT_SRM_INTERNAL_API);
         checkRequiredProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_INTERNAL_API);
         checkRequiredProperty(ConfigurationConstants.ENDPOINT_NOTICES_INTERNAL_API);
         checkRequiredProperty(ConfigurationConstants.ENDPOINT_STATISTICAL_RESOURCES_INTERNAL_API);
+    }
 
-        // OTHER CONFIGURATION PROPERTIES
-
-        // Common properties
-
-        checkEditionLanguagesProperty();
-        checkNavBarUrlProperty();
-        checkOrganisationProperty();
+    @Override
+    public void checkOtherModuleProperties() {
+        // Common
         checkRequiredOrganisationUrn();
 
-        // SRM properties
-
+        // SRM
         checkRequiredProperty(SrmConfigurationConstants.USER_GUIDE_FILE_NAME);
         checkRequiredProperty(SrmConfigurationConstants.JOB_DELETE_DEPRECATED_ENTITIES_CRON_EXPRESSION);
         checkRequiredProperty(SrmConfigurationConstants.VARIABLE_WORLD);
         checkRequiredProperty(SrmConfigurationConstants.VARIABLE_ELEMENT_WORLD);
 
-        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN, getSrmConfiguration().retrieveDsdPrimaryMeasureDefaultConceptIdUrn());
-        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_TIME_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN, getSrmConfiguration().retrieveDsdTimeDimensionOrAttributeDefaultConceptIdUrn());
-        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_MEASURE_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN, getSrmConfiguration().retrieveDsdMeasureDimensionOrAttributeDefaultConceptIdUrn());
-        checkOptionalCodelistUrn(SrmConfigurationConstants.DEFAULT_CODELIST_GEOGRAPHICAL_GRANULARITY_URN, getSrmConfiguration().retrieveDefaultCodelistGeographicalGranularityUrn());
+        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_PRIMARY_MEASURE_DEFAULT_CONCEPT_ID_URN);
+        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_TIME_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN);
 
-        LOG.info("**************************************************************");
-        LOG.info("[metamac-srm-web] Application configuration checked");
-        LOG.info("**************************************************************");
+        checkOptionalConceptUrn(SrmConfigurationConstants.DSD_MEASURE_DIMENSION_OR_ATTRIBUTE_DEFAULT_CONCEPT_ID_URN);
+        checkOptionalCodelistUrn(SrmConfigurationConstants.DEFAULT_CODELIST_GEOGRAPHICAL_GRANULARITY_URN);
     }
-    private void checkRequiredOrganisationUrn() {
 
+    @Override
+    public String projectName() {
+        return "structural-resources-internal";
+    }
+
+    // -----------------------------------------------------------------------------------
+    // AUXILIAR METHODS
+    // -----------------------------------------------------------------------------------
+
+    private void checkRequiredOrganisationUrn() {
         try {
             String organisationUrn = configurationService.retrieveOrganisationUrn();
             MetamacCriteria criteria = new MetamacCriteria();
@@ -125,9 +112,13 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
         }
     }
 
-    private void checkOptionalConceptUrn(String propertyKey, String conceptUrn) {
-        if (StringUtils.isNotBlank(conceptUrn)) {
-            try {
+    private void checkOptionalConceptUrn(String propertyKey) {
+        try {
+            // We use find because it's optional
+            String conceptUrn = configurationService.findProperty(propertyKey);
+
+            if (StringUtils.isNotBlank(conceptUrn)) {
+
                 MetamacCriteria criteria = new MetamacCriteria();
                 criteria.setPaginator(new MetamacCriteriaPaginator());
                 criteria.getPaginator().setFirstResult(0);
@@ -142,15 +133,18 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
                 } else {
                     LOG.info("Property [" + propertyKey + "] filled");
                 }
-            } catch (MetamacException e) {
-                abortApplicationStartup("Error checking the property [" + propertyKey + "]");
             }
+        } catch (MetamacException e) {
+            abortApplicationStartup("Error checking the property [" + propertyKey + "]");
         }
     }
 
-    private void checkOptionalCodelistUrn(String propertyKey, String codelistUrn) {
-        if (StringUtils.isNotBlank(codelistUrn)) {
-            try {
+    private void checkOptionalCodelistUrn(String propertyKey) {
+        try {
+            // We use find because it's optional
+            String codelistUrn = configurationService.findProperty(propertyKey);
+
+            if (StringUtils.isNotBlank(codelistUrn)) {
                 MetamacCriteria criteria = new MetamacCriteria();
                 criteria.setPaginator(new MetamacCriteriaPaginator());
                 criteria.getPaginator().setFirstResult(0);
@@ -165,9 +159,10 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
                 } else {
                     LOG.info("Property [" + propertyKey + "] filled");
                 }
-            } catch (MetamacException e) {
-                abortApplicationStartup("Error checking the property [" + propertyKey + "]");
+
             }
+        } catch (MetamacException e) {
+            abortApplicationStartup("Error checking the property [" + propertyKey + "]");
         }
     }
 
@@ -184,9 +179,5 @@ public class SrmApplicationStartupListener extends ApplicationStartupListener {
             serviceContext.setProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
         }
         return serviceContext;
-    }
-
-    private SrmConfiguration getSrmConfiguration() {
-        return (SrmConfiguration) configurationService;
     }
 }
