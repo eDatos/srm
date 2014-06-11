@@ -4,4 +4,5 @@
     <comment>Web applications</comment>
     <entry key="metamac.srm.web.internal">http://localhost:8080/metamac-srm-web</entry>
     <entry key="metamac.statistical_operations.web.internal">http://localhost:8080/metamac-statistical-operations-web</entry>
+    <entry key="metamac.statistical_resources.web.internal">http://localhost:8080/metamac-statistical-resources-web</entry>
 </properties>

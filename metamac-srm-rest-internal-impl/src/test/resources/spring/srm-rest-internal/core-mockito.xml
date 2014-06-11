@@ -67,4 +67,20 @@
         <constructor-arg value="com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository" />
     </bean>     
     
+    <bean id="externalItemRepository" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.arte.statistic.sdmx.srm.core.common.domain.ExternalItemRepository" />
+    </bean>
+    
+    <bean id="annotationRepository" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.arte.statistic.sdmx.srm.core.base.domain.AnnotationRepository" />
+    </bean>
+    
+    <bean id="internationalStringRepository" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.arte.statistic.sdmx.srm.core.common.domain.InternationalStringRepository" />
+    </bean> 
+    
+    <bean id="constraintsService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="    com.arte.statistic.sdmx.srm.core.constraint.serviceapi.ConstraintsService" />
+    </bean> 
+
 </beans>

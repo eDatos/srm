@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.server.listener;
 
+import javax.servlet.ServletContextEvent;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,6 +13,7 @@ import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestrictio
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.concept.dto.ConceptMetamacBasicDto;
 import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
@@ -33,6 +36,12 @@ public class SrmApplicationStartupListener extends InternalApplicationStartupLis
 
     private SrmCoreServiceFacade srmCoreServiceFacade;
     private ServiceContext       serviceContext;
+
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        srmCoreServiceFacade = ApplicationContextProvider.getApplicationContext().getBean(SrmCoreServiceFacade.class);
+        super.contextInitialized(sce);
+    }
 
     // -----------------------------------------------------------------------------------
     // OVERRIDE METHODS
