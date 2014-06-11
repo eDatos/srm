@@ -3,5 +3,7 @@
     <wb-module deploy-name="metamac-srm-rest-internal-impl">
         <wb-resource deploy-path="/" source-path="/src/main/java"/>
         <wb-resource deploy-path="/" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/" source-path="/src/generated/java"/>
+        <wb-resource deploy-path="/" source-path="/src/generated/resources"/>
     </wb-module>
 </project-modules>
