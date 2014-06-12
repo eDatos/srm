@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:contentConstraint xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#dataStructure">
+    <sr:annotations total="2">
+        <sr:annotation>
+            <sr:id>code2</sr:id>
+            <sr:title>title-code2</sr:title>
+            <sr:type>type-code2</sr:type>
+            <sr:url>url-code2</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+        <sr:annotation>
+            <sr:id>code1</sr:id>
+            <sr:title>title-code1</sr:title>
+            <sr:type>type-code1</sr:type>
+            <sr:url>url-code1</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+    </sr:annotations>
+    <sr:id>contentConstraint1</sr:id>
+    <sr:urn>urn:sdmx:org.sdmx.infomodel.xxx=contentConstraint1(01.000)</sr:urn>
+    <sr:uri>http://data.istac.es/apis/structural-resources-internal/v1.0/contentconstraints/agency1/contentConstraint1/01.000</sr:uri>
+    <sr:selfLink kind="structuralResources#contentConstraint" href="http://data.istac.es/apis/structural-resources-internal/v1.0/contentconstraints/agency1/contentConstraint1/01.000"/>
+    <sr:parentLink kind="structuralResources#contentConstraints" href="http://data.istac.es/apis/structural-resources-internal/v1.0/contentconstraints"/>
+    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/dsds/dsd;id=contentConstraint1(01.000)</sr:managementAppLink>
+    <sr:name>
+        <cdomain:text xml:lang="en">name-contentConstraint1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">name-contentConstraint1v01.000 en Español</cdomain:text>
+    </sr:name>
+    <sr:description>
+        <cdomain:text xml:lang="en">description-contentConstraint1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">description-contentConstraint1v01.000 en Español</cdomain:text>
+    </sr:description>
+    <sr:comment>
+        <cdomain:text xml:lang="en">comment-contentConstraint1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">comment-contentConstraint1v01.000 en Español</cdomain:text>
+    </sr:comment>
+    <sr:version>01.000</sr:version>
+    <sr:validFrom>2012-11-05T10:12:13.014Z</sr:validFrom>
+    <sr:validTo>2013-10-04T10:12:13.014+01:00</sr:validTo>
+    <sr:agencyID>agency1</sr:agencyID>
+    <sr:isFinal>true</sr:isFinal>
+    <sr:isExternalReference>false</sr:isExternalReference>
+    <sr:serviceUrl>serviceUrl-contentConstraint1</sr:serviceUrl>
+    <sr:structureUrl>structureUrl-contentConstraint1</sr:structureUrl>
+    <sr:type>ALLOWED</sr:type>
+    <sr:constraintAttachment kind="structuralResources#category">
+        <cdomain:id>codecode01</cdomain:id>
+        <cdomain:nestedId>codecode01nested</cdomain:nestedId>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=code01</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#category" href="http://data.istac.es/apis/resources-internal/uri:code01"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">title-code01 in English</cdomain:text>
+            <cdomain:text xml:lang="es">title-code01 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.xxx=code01-provider</sr:urnProvider>
+        <sr:managementAppLink>http://localhost:8080/metamac-statistical-resources-web/managementAppUrl4wRX5LAFGb</sr:managementAppLink>
+    </sr:constraintAttachment>
+    <sr:regions total="2">
+        <sr:region>
+            <sr:regionValueType>CUBE</sr:regionValueType>
+            <sr:code>code_codeRegion_01</sr:code>
+            <sr:keys total="3">
+                <sr:key>
+                    <sr:included>false</sr:included>
+                    <sr:keyParts total="4">
+                        <sr:keyPart>
+                            <sr:identifier>identifier_0</sr:identifier>
+                            <sr:value>val_prefixB_0</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>0</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_1</sr:identifier>
+                            <sr:value>val_prefixB_1</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>1</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_2</sr:identifier>
+                            <sr:value>val_prefixB_2</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>2</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_3</sr:identifier>
+                            <sr:value>val_prefixB_3</sr:value>
+                            <sr:cascadeValues>true</sr:cascadeValues>
+                            <sr:position>3</sr:position>
+                        </sr:keyPart>
+                    </sr:keyParts>
+                </sr:key>
+                <sr:key>
+                    <sr:included>false</sr:included>
+                    <sr:keyParts total="4">
+                        <sr:keyPart>
+                            <sr:identifier>identifier_0</sr:identifier>
+                            <sr:value>val_prefixA_0</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>0</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_1</sr:identifier>
+                            <sr:value>val_prefixA_1</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>1</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_2</sr:identifier>
+                            <sr:value>val_prefixA_2</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>2</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_3</sr:identifier>
+                            <sr:value>val_prefixA_3</sr:value>
+                            <sr:cascadeValues>true</sr:cascadeValues>
+                            <sr:position>3</sr:position>
+                        </sr:keyPart>
+                    </sr:keyParts>
+                </sr:key>
+                <sr:key>
+                    <sr:included>false</sr:included>
+                    <sr:keyParts total="4">
+                        <sr:keyPart>
+                            <sr:identifier>identifier_0</sr:identifier>
+                            <sr:value>val_prefixC_0</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>0</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_1</sr:identifier>
+                            <sr:value>val_prefixC_1</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>1</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_2</sr:identifier>
+                            <sr:value>val_prefixC_2</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>2</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_3</sr:identifier>
+                            <sr:value>val_prefixC_3</sr:value>
+                            <sr:cascadeValues>true</sr:cascadeValues>
+                            <sr:position>3</sr:position>
+                        </sr:keyPart>
+                    </sr:keyParts>
+                </sr:key>
+            </sr:keys>
+        </sr:region>
+        <sr:region>
+            <sr:regionValueType>CUBE</sr:regionValueType>
+            <sr:code>code_codeRegion_02</sr:code>
+            <sr:keys total="3">
+                <sr:key>
+                    <sr:included>false</sr:included>
+                    <sr:keyParts total="4">
+                        <sr:keyPart>
+                            <sr:identifier>identifier_0</sr:identifier>
+                            <sr:value>val_prefixB_0</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>0</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_1</sr:identifier>
+                            <sr:value>val_prefixB_1</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>1</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_2</sr:identifier>
+                            <sr:value>val_prefixB_2</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>2</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_3</sr:identifier>
+                            <sr:value>val_prefixB_3</sr:value>
+                            <sr:cascadeValues>true</sr:cascadeValues>
+                            <sr:position>3</sr:position>
+                        </sr:keyPart>
+                    </sr:keyParts>
+                </sr:key>
+                <sr:key>
+                    <sr:included>false</sr:included>
+                    <sr:keyParts total="4">
+                        <sr:keyPart>
+                            <sr:identifier>identifier_0</sr:identifier>
+                            <sr:value>val_prefixA_0</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>0</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_1</sr:identifier>
+                            <sr:value>val_prefixA_1</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>1</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_2</sr:identifier>
+                            <sr:value>val_prefixA_2</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>2</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_3</sr:identifier>
+                            <sr:value>val_prefixA_3</sr:value>
+                            <sr:cascadeValues>true</sr:cascadeValues>
+                            <sr:position>3</sr:position>
+                        </sr:keyPart>
+                    </sr:keyParts>
+                </sr:key>
+                <sr:key>
+                    <sr:included>false</sr:included>
+                    <sr:keyParts total="4">
+                        <sr:keyPart>
+                            <sr:identifier>identifier_0</sr:identifier>
+                            <sr:value>val_prefixC_0</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>0</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_1</sr:identifier>
+                            <sr:value>val_prefixC_1</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>1</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_2</sr:identifier>
+                            <sr:value>val_prefixC_2</sr:value>
+                            <sr:cascadeValues>false</sr:cascadeValues>
+                            <sr:position>2</sr:position>
+                        </sr:keyPart>
+                        <sr:keyPart>
+                            <sr:identifier>identifier_3</sr:identifier>
+                            <sr:value>val_prefixC_3</sr:value>
+                            <sr:cascadeValues>true</sr:cascadeValues>
+                            <sr:position>3</sr:position>
+                        </sr:keyPart>
+                    </sr:keyParts>
+                </sr:key>
+            </sr:keys>
+        </sr:region>
+    </sr:regions>
+</sr:contentConstraint>

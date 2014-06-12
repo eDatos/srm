@@ -80,7 +80,7 @@
     </bean> 
     
     <bean id="constraintsService" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg value="    com.arte.statistic.sdmx.srm.core.constraint.serviceapi.ConstraintsService" />
+        <constructor-arg value="com.arte.statistic.sdmx.srm.core.constraint.serviceapi.ConstraintsService" />
     </bean> 
 
 </beans>

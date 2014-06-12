@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.rest.common.v1_0.domain.ChildLinks;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
@@ -56,7 +57,7 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
         org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraint target = new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraint();
 
         // API
-        target.setKind(SrmRestConstants.KIND_DATA_STRUCTURE);
+        target.setKind(SrmRestConstants.KIND_CONTENT_CONSTRAINT);
         target.setSelfLink(toContentConstraintSelfLink(source));
         target.setParentLink(toContentConstraintParentLink(source));
         target.setChildLinks(toContentConstraintChildLinks(source));
@@ -193,7 +194,7 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
     private Key toKey(KeyValue source) {
         Key target = new Key();
 
-        target.setIncluded(source.getIncluded());
+        target.setIncluded(BooleanUtils.toBoolean(source.getIncluded()));
         target.setKeyParts(toKeyParts(source.getParts()));
 
         return target;
@@ -221,7 +222,7 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
         org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPart keyPart = new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPart();
         keyPart.setIdentifier(source.getIdentifier());
         keyPart.setValue(source.getValue());
-        keyPart.setCascadeValues(source.getCascadeValues());
+        keyPart.setCascadeValues(BooleanUtils.toBoolean(source.getCascadeValues()));
         keyPart.setPosition(source.getPosition());
 
         keyPart.setBeforePeriod(source.getBeforePeriod());

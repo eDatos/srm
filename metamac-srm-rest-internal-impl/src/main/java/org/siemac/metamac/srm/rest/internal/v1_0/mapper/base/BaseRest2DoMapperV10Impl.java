@@ -53,6 +53,8 @@ import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParameters;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionParametersInternal;
 import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxConstants;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationRepository;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -71,6 +73,9 @@ public abstract class BaseRest2DoMapperV10Impl {
 
     @Autowired
     private InternationalStringRepository                   internationalStringRepository;
+
+    @Autowired
+    private OrganisationRepository                          organisationRepository;
 
     private final Whitelist                                 whitelist                              = Whitelist.none().addTags(new String[]{"b", "i", "br", "a", "p"}).addAttributes("a", "href");
 
@@ -201,8 +206,13 @@ public abstract class BaseRest2DoMapperV10Impl {
         target.setServiceURL(source.getServiceUrl());
 
         // Related entities
+
         // Maintainer
-        // target.setMaintainer(maintainer); // TODO LOAD Organisation
+        Organisation organisation = organisationRepository.retrieveOrganisationsByIdAsMaintainer(source.getAgencyID());
+        if (organisation == null) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.MAINTAINABLE_ARTEFACT_MAINTAINER_BY_CODE_NOT_FOUND).withMessageParameters(source.getAgencyID()).build();
+        }
+        target.setMaintainer(organisation);
 
         return nameableArtefactRestToEntity(source, target);
     }
@@ -238,7 +248,7 @@ public abstract class BaseRest2DoMapperV10Impl {
 
         target.setCode(source.getId());
 
-        return target;
+        return annotableArtefactRestToEntity(source, target);
     }
 
     public <T extends org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AnnotableArtefact, U extends AnnotableArtefact> U annotableArtefactRestToEntity(T source, U target)

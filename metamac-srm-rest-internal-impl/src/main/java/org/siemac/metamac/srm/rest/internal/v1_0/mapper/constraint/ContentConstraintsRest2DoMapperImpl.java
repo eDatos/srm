@@ -19,6 +19,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Regions
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
 import org.springframework.stereotype.Component;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationProperties;
 import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItemProperties.ExternalItemProperty;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint;
@@ -104,6 +105,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
         }
 
         ContentConstraint target = new ContentConstraint();
+        target.setMaintainableArtefact(new MaintainableArtefact());
 
         target.setType(ContentConstraintTypeEnum.valueOf(source.getType().name()));
         target.setConstraintAttachment(resourceInternalRestStatisticalResourceToExternalItemDo(source.getConstraintAttachment(), target.getConstraintAttachment()));
