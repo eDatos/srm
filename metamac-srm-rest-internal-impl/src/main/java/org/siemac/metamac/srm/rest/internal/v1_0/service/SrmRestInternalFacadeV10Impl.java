@@ -4,7 +4,10 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInt
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -70,6 +73,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organis
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnitSchemes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.OrganisationUnits;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisations;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RegionReference;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElement;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements;
@@ -134,6 +138,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.constraint.domain.KeyValue;
+import com.arte.statistic.sdmx.srm.core.constraint.domain.RegionValue;
 import com.arte.statistic.sdmx.srm.core.constraint.serviceapi.ConstraintsService;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
@@ -1175,13 +1181,13 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public ContentConstraint retrieveContentConstraint(String agencyID, String resourceID, String version) {
+    public ContentConstraint retrieveContentConstraint(String agencyID, String resourceID, String version, String includeDraft) {
         try {
             checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
 
             // Find one
             PagedResult<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint> entitiesPagedResult = findContentConstraintsCore(agencyID, resourceID, version, null,
-                    pagingParameterOneResult);
+                    pagingParameterOneResult, includeDraft);
             if (entitiesPagedResult.getValues().size() != 1) {
                 org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONTENT_CONSTRAINT_NOT_FOUND, resourceID, version, agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
@@ -1196,20 +1202,20 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public ContentConstraints findContentConstraints(String query, String orderBy, String limit, String offset) {
-        return findContentConstraints(null, null, null, query, orderBy, limit, offset);
+    public ContentConstraints findContentConstraints(String query, String orderBy, String limit, String offset, String includeDraft) {
+        return findContentConstraints(null, null, null, query, orderBy, limit, offset, includeDraft);
     }
 
     @Override
-    public ContentConstraints findContentConstraints(String agencyID, String query, String orderBy, String limit, String offset) {
+    public ContentConstraints findContentConstraints(String agencyID, String query, String orderBy, String limit, String offset, String includeDraft) {
         checkParameterNotWildcardFindItemSchemes(agencyID);
-        return findContentConstraints(agencyID, null, null, query, orderBy, limit, offset);
+        return findContentConstraints(agencyID, null, null, query, orderBy, limit, offset, includeDraft);
     }
 
     @Override
-    public ContentConstraints findContentConstraints(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
+    public ContentConstraints findContentConstraints(String agencyID, String resourceID, String query, String orderBy, String limit, String offset, String includeDraft) {
         checkParameterNotWildcardFindItemSchemes(agencyID, resourceID);
-        return findContentConstraints(agencyID, resourceID, null, query, orderBy, limit, offset);
+        return findContentConstraints(agencyID, resourceID, null, query, orderBy, limit, offset, includeDraft);
     }
 
     @Override
@@ -1219,8 +1225,22 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint contentConstraintEntity = contentConstraintsRest2DoMapper.contentConstraintRestToEntity(ctx, contentConstraint);
 
             // Create
-            persistContentConstraint(contentConstraintEntity);
-            // noticesService.createNotice(NoticesRestConstants.SERVICE_CONTEXT, noticeEntity);
+            saveContentConstraint(contentConstraintEntity);
+            return Response.status(Response.Status.CREATED).build();
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public Response saveRegionForContentConstraint(RegionReference regionReference) {
+        try {
+            // Transform
+            RegionValue regionReferenceToEntity = contentConstraintsRest2DoMapper.regionReferenceRestToEntity(ctx, regionReference);
+
+            // Save
+            saveRegionForContentConstraint(regionReference.getContentConstraintUrn(), regionReferenceToEntity);
+
             return Response.status(Response.Status.CREATED).build();
         } catch (Exception e) {
             throw manageException(e);
@@ -1346,10 +1366,11 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     private PagedResult<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint> findContentConstraintsCore(String agencyID, String resourceID, String version,
-            List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter) throws MetamacException {
+            List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter, String includeDraft) throws MetamacException {
 
         // Criteria to find by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaContentConstraints(agencyID, resourceID, version, conditionalCriteriaQuery, Categorisation.class);
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaContentConstraints(agencyID, resourceID, version, includeDraft, conditionalCriteriaQuery,
+                Categorisation.class);
 
         // Find
         PagedResult<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint> entitiesPagedResult = constraintsService.findContentConstraintsByCondition(ctx, conditionalCriteria,
@@ -1614,13 +1635,13 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
     }
 
-    private ContentConstraints findContentConstraints(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+    private ContentConstraints findContentConstraints(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset, String includeDraft) {
         try {
             SculptorCriteria sculptorCriteria = contentConstraintsRest2DoMapper.getContentConstraintCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
 
             // Find
             PagedResult<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint> entitiesPagedResult = findContentConstraintsCore(agencyID, resourceID, version,
-                    sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+                    sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter(), includeDraft);
 
             // Transform
             ContentConstraints contentConstraints = contentConstraintsDo2RestMapper.toContentConstraints(entitiesPagedResult, agencyID, resourceID, query, orderBy, sculptorCriteria.getLimit());
@@ -1910,14 +1931,55 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return miscMetamacService.findLastUpdatedVariableElementsGeographicalInformation(ctx);
     }
 
-    private void persistContentConstraint(com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint contentConstraintEntity) throws MetamacException {
+    private com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint saveContentConstraint(com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint contentConstraintEntity)
+            throws MetamacException {
         if (contentConstraintEntity == null) {
-            return;
+            return null;
         }
 
         // Save graph
-        com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint createContentConstraint = constraintsService.createContentConstraint(ctx, contentConstraintEntity, Boolean.FALSE);
-        int kaka = 2;
+        // 1 - Save content constraint without regions
+        Set<RegionValue> regionsToPersist = new HashSet<RegionValue>(contentConstraintEntity.getRegions());
+        contentConstraintEntity.removeAllRegions();
 
+        contentConstraintEntity.getMaintainableArtefact().setFinalLogic(Boolean.FALSE);
+        com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint createContentConstraint = constraintsService.createContentConstraint(ctx, contentConstraintEntity, Boolean.FALSE);
+
+        // TODO evitar que este servicio persista regiones ??, pensarlo y quitarlo o arreglar todo el codigo a continuacion
+        if (!regionsToPersist.isEmpty()) {
+            throw new UnsupportedOperationException();
+        }
+
+        Iterator<RegionValue> itRegion = regionsToPersist.iterator();
+        while (itRegion.hasNext()) {
+            RegionValue regionValue = itRegion.next();
+
+            // 2 - Save content constraint without keys
+            Set<KeyValue> keysToPersist = new HashSet<KeyValue>(regionValue.getKeys());
+            regionValue.removeAllKeys();
+            regionValue = constraintsService.saveRegion(ctx, createContentConstraint.getMaintainableArtefact().getUrn(), regionValue);
+
+            // 3 - Save keys
+            regionValue = constraintsService.addToRegionKeys(ctx, createContentConstraint.getMaintainableArtefact().getUrn(), regionValue.getCode(), keysToPersist);
+        }
+
+        return createContentConstraint;
     }
+
+    private void saveRegionForContentConstraint(String contentConstraintUrn, RegionValue regionValue) throws MetamacException {
+        // Create or update keys
+        Set<KeyValue> keysToPersist = null;
+        RegionValue findRegionValue = constraintsService.findRegionValueByUrn(ctx, contentConstraintUrn, regionValue.getCode());
+        if (findRegionValue == null) {
+            keysToPersist = new HashSet<KeyValue>(regionValue.getKeys());
+            regionValue.removeAllKeys();
+            constraintsService.saveRegion(ctx, contentConstraintUrn, regionValue);
+        } else {
+            keysToPersist = regionValue.getKeys();
+        }
+
+        // Update keys
+        constraintsService.updateRegionKeys(ctx, contentConstraintUrn, regionValue.getCode(), keysToPersist);
+    }
+
 }

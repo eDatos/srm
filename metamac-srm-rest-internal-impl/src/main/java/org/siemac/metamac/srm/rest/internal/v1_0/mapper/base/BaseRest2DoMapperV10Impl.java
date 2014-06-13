@@ -13,6 +13,7 @@ import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.siemac.metamac.core.common.constants.CoreCommonConstants;
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.util.CoreCommonUtil;
@@ -205,6 +206,22 @@ public abstract class BaseRest2DoMapperV10Impl {
         target.setStructureURL(source.getStructureUrl());
         target.setServiceURL(source.getServiceUrl());
 
+        // Other metatada
+        target.setVersionLogic(source.getVersion());
+        target.setValidFrom(CoreCommonUtil.transformDateToDateTime(source.getValidFrom()));
+        target.setValidTo(CoreCommonUtil.transformDateToDateTime(source.getValidTo()));
+
+        // target.setFinalLogic(Boolean.FALSE);
+        // target.setFinalLogicClient(finalLogicClient);
+        // target.setLatestFinal(latestFinal);
+        // target.setPublicLogic(publicLogic);
+        // target.setLatestPublic(latestPublic);
+        // target.setIsLastVersion(isLastVersion);
+        target.setReplacedByVersion(source.getReplacedByVersion());
+        target.setReplaceToVersion(source.getReplaceToVersion());
+        target.setIsImported(Boolean.FALSE);
+        target.setIsTemporal(Boolean.FALSE);
+
         // Related entities
 
         // Maintainer
@@ -329,6 +346,7 @@ public abstract class BaseRest2DoMapperV10Impl {
         target.setUrn(source.getUrn());
         target.setUrnProvider(source.getUrnProvider());
         target.setTitle(internationalStringRestToEntity(source.getName(), target.getTitle(), ServiceExceptionParametersInternal.EXTERNAL_ITEM_TITLE));
+        target.setType(TypeExternalArtefactsEnum.fromValue(source.getKind()));
 
         return target;
     }

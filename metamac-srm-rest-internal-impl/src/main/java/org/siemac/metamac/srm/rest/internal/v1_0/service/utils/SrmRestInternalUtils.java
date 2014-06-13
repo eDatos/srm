@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -31,21 +32,21 @@ public class SrmRestInternalUtils {
     }
 
     @SuppressWarnings({"rawtypes"})
-    public static List<ConditionalCriteria> buildConditionalCriteriaContentConstraints(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
-            Class entity) throws MetamacException {
-        return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, ContentConstraintProperties.maintainableArtefact());
+    public static List<ConditionalCriteria> buildConditionalCriteriaContentConstraints(String agencyID, String resourceID, String version, String includeDraft,
+            List<ConditionalCriteria> conditionalCriteriaQuery, Class entity) throws MetamacException {
+        return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, includeDraft, conditionalCriteriaQuery, entity, ContentConstraintProperties.maintainableArtefact());
     }
 
     @SuppressWarnings({"rawtypes"})
     public static List<ConditionalCriteria> buildConditionalCriteriaCategorisations(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity)
             throws MetamacException {
-        return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, CategorisationProperties.maintainableArtefact());
+        return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, null, conditionalCriteriaQuery, entity, CategorisationProperties.maintainableArtefact());
     }
 
     @SuppressWarnings({"rawtypes"})
     public static List<ConditionalCriteria> buildConditionalCriteriaItemSchemes(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity)
             throws MetamacException {
-        return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, ItemSchemeVersionProperties.maintainableArtefact());
+        return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, null, conditionalCriteriaQuery, entity, ItemSchemeVersionProperties.maintainableArtefact());
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -59,7 +60,7 @@ public class SrmRestInternalUtils {
     @SuppressWarnings({"rawtypes"})
     public static List<ConditionalCriteria> buildConditionalCriteriaStructures(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity)
             throws MetamacException {
-        return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, StructureVersionProperties.maintainableArtefact());
+        return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, null, conditionalCriteriaQuery, entity, StructureVersionProperties.maintainableArtefact());
     }
 
     public static OrganisationSchemeTypeEnum toOrganisationSchemeType(OrganisationTypeEnum type) {
@@ -103,8 +104,8 @@ public class SrmRestInternalUtils {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static List<ConditionalCriteria> buildConditionalCriteriaMaintainableArtefacts(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
-            Class entity, MaintainableArtefactProperty maintainableArtefactProperty) throws MetamacException {
+    private static List<ConditionalCriteria> buildConditionalCriteriaMaintainableArtefacts(String agencyID, String resourceID, String version, String includeDraft,
+            List<ConditionalCriteria> conditionalCriteriaQuery, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) throws MetamacException {
 
         List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
         if (CollectionUtils.isNotEmpty(conditionalCriteriaQuery)) {
@@ -113,7 +114,9 @@ public class SrmRestInternalUtils {
             // init
             conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).distinctRoot().build());
         }
-        addConditionalCriteriaByMaintainableArtefactPublished(conditionalCriteria, entity, maintainableArtefactProperty);
+        if (BooleanUtils.toBoolean(includeDraft)) {
+            addConditionalCriteriaByMaintainableArtefactPublished(conditionalCriteria, entity, maintainableArtefactProperty);
+        }
         addConditionalCriteriaByMaintainableArtefactAgency(conditionalCriteria, agencyID, entity, maintainableArtefactProperty);
         addConditionalCriteriaByMaintainableArtefactCode(conditionalCriteria, resourceID, entity, maintainableArtefactProperty);
         addConditionalCriteriaByMaintainableArtefactVersion(conditionalCriteria, version, entity, maintainableArtefactProperty);

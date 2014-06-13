@@ -82,5 +82,13 @@
     <bean id="constraintsService" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="com.arte.statistic.sdmx.srm.core.constraint.serviceapi.ConstraintsService" />
     </bean> 
-
+    
+    <bean id="organisationRepository" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationRepository" />
+    </bean> 
+    
+    <bean id="contentConstraintRepository" class="org.mockito.Mockito" factory-method="mock">
+    	<constructor-arg value="com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintRepository" />
+    </bean>
+    
 </beans>

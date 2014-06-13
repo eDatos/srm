@@ -43,7 +43,7 @@ public class SrmRestInternalFacadaV10ConstraintsTest extends SrmRestInternalFaca
     @Test
     public void testFindContentConstraints() throws Exception {
         // without limits
-        testFindContentConstraints(null, null, null, null, null, null, null);
+        testFindContentConstraints(null, null, null, null, null, null, null, null);
         // // without limits
         // testFindContentConstraints(null, null, null, "10000", null, null, null);
         // // without limits, first page
@@ -64,17 +64,17 @@ public class SrmRestInternalFacadaV10ConstraintsTest extends SrmRestInternalFaca
         // testFindContentConstraints(null, null, null, "1", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC);
     }
 
-    private void testFindContentConstraints(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
+    private void testFindContentConstraints(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy, String includeDraft) throws Exception {
         resetMocks();
 
         // Find
         ContentConstraints findContentConstraints = null;
         if (agencyID == null) {
-            findContentConstraints = getSrmRestInternalFacadeClientXml().findContentConstraints(query, orderBy, limit, offset);
+            findContentConstraints = getSrmRestInternalFacadeClientXml().findContentConstraints(query, orderBy, limit, offset, includeDraft);
         } else if (resourceID == null) {
-            findContentConstraints = getSrmRestInternalFacadeClientXml().findContentConstraints(agencyID, query, orderBy, limit, offset);
+            findContentConstraints = getSrmRestInternalFacadeClientXml().findContentConstraints(agencyID, query, orderBy, limit, offset, includeDraft);
         } else {
-            findContentConstraints = getSrmRestInternalFacadeClientXml().findContentConstraints(agencyID, resourceID, query, orderBy, limit, offset);
+            findContentConstraints = getSrmRestInternalFacadeClientXml().findContentConstraints(agencyID, resourceID, query, orderBy, limit, offset, includeDraft);
         }
 
         assertNotNull(findContentConstraints);

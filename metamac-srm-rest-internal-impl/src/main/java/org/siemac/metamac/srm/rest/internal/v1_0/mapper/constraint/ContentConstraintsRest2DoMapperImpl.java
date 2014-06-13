@@ -15,8 +15,10 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Content
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraintCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyParts;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Keys;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RegionReference;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Regions;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
@@ -24,6 +26,7 @@ import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationProperties
 import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItemProperties.ExternalItemProperty;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintProperties;
+import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintRepository;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.KeyPart;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.KeyValue;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.RegionValue;
@@ -34,6 +37,9 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RegionValueTypeEnum;
 public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements ContentConstraintsRest2DoMapper {
 
     private RestCriteria2SculptorCriteria<ContentConstraint> contentConstraintCriteriaMapper = null;
+
+    @Autowired
+    private ContentConstraintRepository                      contentConstraintRepository;
 
     public ContentConstraintsRest2DoMapperImpl() {
         super();
@@ -99,13 +105,29 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
     }
 
     @Override
+    public RegionValue regionReferenceRestToEntity(ServiceContext ctx, RegionReference source) throws MetamacException {
+        if (source == null) {
+            return null;
+        }
+
+        return regionRestToEntity(ctx, source);
+    }
+
+    @Override
     public ContentConstraint contentConstraintRestToEntity(ServiceContext ctx, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraint source) throws MetamacException {
         if (source == null) {
             return null;
         }
 
-        ContentConstraint target = new ContentConstraint();
-        target.setMaintainableArtefact(new MaintainableArtefact());
+        ContentConstraint target = contentConstraintRepository.findByUrn(source.getUrn());;
+
+        // If the message isn't containts the urn, or is a new urn
+        if (source.getUrn() == null || target == null) {
+            target = new ContentConstraint();
+            target.setMaintainableArtefact(new MaintainableArtefact());
+        } else {
+            // OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking()); // TODO check optimisticlocking en rest put service???
+        }
 
         target.setType(ContentConstraintTypeEnum.valueOf(source.getType().name()));
         target.setConstraintAttachment(resourceInternalRestStatisticalResourceToExternalItemDo(source.getConstraintAttachment(), target.getConstraintAttachment()));
@@ -115,7 +137,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
         Regions regionsSource = source.getRegions();
         if (regionsSource != null) {
             for (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Region regionSource : regionsSource.getRegions()) {
-                RegionValue regionValueEntity = contentConstraintRestToEntity(ctx, regionSource);
+                RegionValue regionValueEntity = regionRestToEntity(ctx, regionSource);
                 if (regionValueEntity != null) {
                     target.addRegion(regionValueEntity);
                 }
@@ -125,7 +147,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
         return target;
     }
 
-    private RegionValue contentConstraintRestToEntity(ServiceContext ctx, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Region source) throws MetamacException {
+    private RegionValue regionRestToEntity(ServiceContext ctx, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Region source) throws MetamacException {
         if (source == null) {
             return null;
         }
