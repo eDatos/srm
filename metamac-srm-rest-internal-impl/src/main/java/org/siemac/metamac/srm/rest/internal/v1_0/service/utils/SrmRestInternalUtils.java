@@ -114,7 +114,7 @@ public class SrmRestInternalUtils {
             // init
             conditionalCriteria.addAll(ConditionalCriteriaBuilder.criteriaFor(entity).distinctRoot().build());
         }
-        if (BooleanUtils.toBoolean(includeDraft)) {
+        if (!BooleanUtils.toBoolean(includeDraft)) {
             addConditionalCriteriaByMaintainableArtefactPublished(conditionalCriteria, entity, maintainableArtefactProperty);
         }
         addConditionalCriteriaByMaintainableArtefactAgency(conditionalCriteria, agencyID, entity, maintainableArtefactProperty);
