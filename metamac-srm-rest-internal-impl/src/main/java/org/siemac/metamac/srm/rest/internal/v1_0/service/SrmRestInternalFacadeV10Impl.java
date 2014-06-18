@@ -1973,6 +1973,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint createContentConstraint = null;
         if (StringUtils.isEmpty(contentConstraintEntity.getMaintainableArtefact().getUrn())) {
             // Create
+            contentConstraintEntity.getMaintainableArtefact().setFinalLogic(Boolean.FALSE);
             createContentConstraint = constraintsService.createContentConstraint(ctx, contentConstraintEntity, Boolean.FALSE);
         } else {
             // Update
