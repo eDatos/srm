@@ -130,10 +130,10 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
             return null;
         }
 
-        ContentConstraint target = contentConstraintRepository.findByUrn(source.getUrn());;
+        ContentConstraint target = contentConstraintRepository.findByUrn(source.getUrn());
 
         // If the message isn't containts the urn, or is a new urn
-        if (source.getUrn() == null || target == null) {
+        if (target == null) {
             target = new ContentConstraint();
             target.setMaintainableArtefact(new MaintainableArtefact());
         } else {

@@ -1264,6 +1264,17 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
     }
 
+    @Override
+    public Response deleteContentConstraintByUrn(String contentConstraintUrn, String regionCode) {
+        try {
+            // Delete
+            constraintsService.deleteRegion(ctx, contentConstraintUrn, regionCode);
+            return Response.status(Response.Status.OK).build();
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
     /**************************************************************************
      * PRIVATE
      **************************************************************************/
@@ -1959,9 +1970,14 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             throw new UnsupportedOperationException(); // TODO lanzar excepcion correcta
         }
 
-        // 1 - Save content constraint without regions
-        // contentConstraintEntity.getMaintainableArtefact().setFinalLogic(Boolean.FALSE);
-        com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint createContentConstraint = constraintsService.createContentConstraint(ctx, contentConstraintEntity, Boolean.FALSE);
+        com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint createContentConstraint = null;
+        if (StringUtils.isEmpty(contentConstraintEntity.getMaintainableArtefact().getUrn())) {
+            // Create
+            createContentConstraint = constraintsService.createContentConstraint(ctx, contentConstraintEntity, Boolean.FALSE);
+        } else {
+            // Update
+            throw new UnsupportedOperationException(); // TODO permitir actualizar una CK?, para las descripciones, name, etc??
+        }
 
         return createContentConstraint;
     }
