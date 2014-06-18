@@ -140,7 +140,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         } else {
             target.setAgencyID(SdmxConstants.AGENCY_SDMX_CODE);
         }
-        target.setIsFinal(source.getFinalLogic());
+        target.setIsFinal(BooleanUtils.toBoolean(source.getFinalLogic()));
         target.setIsExternalReference(source.getIsExternalReference());
         target.setValidFrom(toDate(source.getValidFrom()));
         target.setValidTo(toDate(source.getValidTo()));

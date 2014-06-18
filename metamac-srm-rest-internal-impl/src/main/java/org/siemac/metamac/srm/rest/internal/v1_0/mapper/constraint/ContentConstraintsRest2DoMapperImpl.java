@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.constraint;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -15,6 +16,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Content
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraintCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyParts;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Keys;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RegionReference;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Regions;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
@@ -30,6 +32,7 @@ import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintRepos
 import com.arte.statistic.sdmx.srm.core.constraint.domain.KeyPart;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.KeyValue;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.RegionValue;
+import com.arte.statistic.sdmx.srm.core.constraint.serviceimpl.utils.ManipulateDataUtils;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.ContentConstraintTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RegionValueTypeEnum;
 
@@ -69,11 +72,19 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
                     return buildSculptorPropertyCriteriaDisjunctionForArtefactConstrainedUrnProperty(propertyRestriction, ContentConstraintProperties.constraintAttachment());
                 case LATEST:
                     return buildSculptorPropertyCriteria(ContentConstraintProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                case PROC_STATUS:
+                    if (ProcStatus.INTERNALLY_PUBLISHED.equals(propertyRestriction.getValue())) {
+                        propertyRestriction.setValue(BooleanUtils.toStringTrueFalse(true));
+                        return buildSculptorPropertyCriteria(ContentConstraintProperties.maintainableArtefact().finalLogicClient(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                    } else if (ProcStatus.EXTERNALLY_PUBLISHED.equals(propertyRestriction.getValue())) {
+                        propertyRestriction.setValue(BooleanUtils.toStringTrueFalse(true));
+                        return buildSculptorPropertyCriteria(ContentConstraintProperties.maintainableArtefact().publicLogic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                    }
+                    throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
                 default:
                     throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
         }
-
         private SculptorPropertyCriteriaBase buildSculptorPropertyCriteriaDisjunctionForArtefactConstrainedUrnProperty(MetamacRestQueryPropertyRestriction propertyRestriction,
                 ExternalItemProperty<ContentConstraint> constraintAttachment) {
 
@@ -190,7 +201,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
                 }
             }
         }
-        target.getParts();
+        target.setKeyRepresentation(ManipulateDataUtils.generateKeyFromKeyValue(target));
 
         return target;
 

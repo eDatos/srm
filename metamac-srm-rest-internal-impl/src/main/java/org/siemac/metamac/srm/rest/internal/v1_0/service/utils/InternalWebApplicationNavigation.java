@@ -46,6 +46,7 @@ public class InternalWebApplicationNavigation {
     private final UriTemplate variableElementTemplate;
     private final UriTemplate variableFamilyTemplate;
     private final UriTemplate codelistFamilyTemplate;
+    private final UriTemplate contentConstraintTemplate;
 
     public InternalWebApplicationNavigation(String webApplicationPath) {
         // Dsd
@@ -85,15 +86,18 @@ public class InternalWebApplicationNavigation {
         variableElementTemplate = new UriTemplate(webApplicationPath + SEPARATOR + PATH_STRUCTURAL_RESOURCES + SEPARATOR + NameTokens.variableListPage + SEPARATOR + NameTokens.variablePage + ";"
                 + PlaceRequestParams.variableParamId + "=" + "{" + VARIABLE_PARAMETER + "}" + SEPARATOR + NameTokens.variableElementPage + ";" + PlaceRequestParams.variableElementParamId + "=" + "{"
                 + RESOURCE_ID_PARAMETER + "}");
+
+        // Constraints
+        contentConstraintTemplate = new UriTemplate(webApplicationPath + SEPARATOR + PATH_STRUCTURAL_RESOURCES + SEPARATOR + NameTokens.contentConstraintListPage + SEPARATOR
+                + NameTokens.contentConstraintPage + ";" + PlaceRequestParams.contentConstraintElementParamId + "=" + "{" + RESOURCE_ID_PARAMETER + "}");
     }
 
     public String buildContentConstraintUrl(ContentConstraint contentConstraint) {
         Map<String, String> parameters = new HashMap<String, String>(1);
         String urlPart = UrnUtils.removePrefix(contentConstraint.getMaintainableArtefact().getUrn());
         parameters.put(RESOURCE_ID_PARAMETER, urlPart);
-        return dataStructureTemplate.expand(parameters).toString();
+        return contentConstraintTemplate.expand(parameters).toString();
     }
-
     public String buildDataStructureDefinitionUrl(DataStructureDefinitionVersionMetamac dataStructureDefinition) {
         Map<String, String> parameters = new HashMap<String, String>(1);
         String dsdUrlPart = UrnUtils.removePrefix(dataStructureDefinition.getMaintainableArtefact().getUrn());

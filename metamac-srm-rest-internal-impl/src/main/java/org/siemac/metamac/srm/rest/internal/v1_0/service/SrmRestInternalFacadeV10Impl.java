@@ -5,7 +5,6 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInt
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -1225,8 +1224,23 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint contentConstraintEntity = contentConstraintsRest2DoMapper.contentConstraintRestToEntity(ctx, contentConstraint);
 
             // Create
-            saveContentConstraint(contentConstraintEntity);
-            return Response.status(Response.Status.CREATED).build();
+            com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint savedContentConstraint = saveContentConstraint(contentConstraintEntity);
+
+            // Transform
+            contentConstraint = contentConstraintsDo2RestMapper.toContentConstraint(savedContentConstraint);
+
+            return Response.status(Response.Status.CREATED).entity(contentConstraint).build();
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public Response deleteContentConstraintByUrn(String urn) {
+        try {
+            // Delete
+            constraintsService.deleteContentConstraint(ctx, urn);
+            return Response.status(Response.Status.OK).build();
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -1239,9 +1253,12 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             RegionValue regionReferenceToEntity = contentConstraintsRest2DoMapper.regionReferenceRestToEntity(ctx, regionReference);
 
             // Save
-            saveRegionForContentConstraint(regionReference.getContentConstraintUrn(), regionReferenceToEntity);
+            RegionValue updateRegion = saveRegionForContentConstraint(regionReference.getContentConstraintUrn(), regionReferenceToEntity);
 
-            return Response.status(Response.Status.CREATED).build();
+            // Transform
+            RegionReference result = contentConstraintsDo2RestMapper.toRegionReference(regionReference.getContentConstraintUrn(), updateRegion);
+
+            return Response.status(Response.Status.CREATED).entity(result).build();
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -1937,36 +1954,19 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             return null;
         }
 
-        // Save graph
+        // Validation
+        if (!contentConstraintEntity.getRegions().isEmpty()) {
+            throw new UnsupportedOperationException(); // TODO lanzar excepcion correcta
+        }
+
         // 1 - Save content constraint without regions
-        Set<RegionValue> regionsToPersist = new HashSet<RegionValue>(contentConstraintEntity.getRegions());
-        contentConstraintEntity.removeAllRegions();
-
-        contentConstraintEntity.getMaintainableArtefact().setFinalLogic(Boolean.FALSE);
+        // contentConstraintEntity.getMaintainableArtefact().setFinalLogic(Boolean.FALSE);
         com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint createContentConstraint = constraintsService.createContentConstraint(ctx, contentConstraintEntity, Boolean.FALSE);
-
-        // TODO evitar que este servicio persista regiones ??, pensarlo y quitarlo o arreglar todo el codigo a continuacion
-        if (!regionsToPersist.isEmpty()) {
-            throw new UnsupportedOperationException();
-        }
-
-        Iterator<RegionValue> itRegion = regionsToPersist.iterator();
-        while (itRegion.hasNext()) {
-            RegionValue regionValue = itRegion.next();
-
-            // 2 - Save content constraint without keys
-            Set<KeyValue> keysToPersist = new HashSet<KeyValue>(regionValue.getKeys());
-            regionValue.removeAllKeys();
-            regionValue = constraintsService.saveRegion(ctx, createContentConstraint.getMaintainableArtefact().getUrn(), regionValue);
-
-            // 3 - Save keys
-            regionValue = constraintsService.addToRegionKeys(ctx, createContentConstraint.getMaintainableArtefact().getUrn(), regionValue.getCode(), keysToPersist);
-        }
 
         return createContentConstraint;
     }
 
-    private void saveRegionForContentConstraint(String contentConstraintUrn, RegionValue regionValue) throws MetamacException {
+    private RegionValue saveRegionForContentConstraint(String contentConstraintUrn, RegionValue regionValue) throws MetamacException {
         // Create or update keys
         Set<KeyValue> keysToPersist = null;
         RegionValue findRegionValue = constraintsService.findRegionValueByUrn(ctx, contentConstraintUrn, regionValue.getCode());
@@ -1979,7 +1979,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
 
         // Update keys
-        constraintsService.updateRegionKeys(ctx, contentConstraintUrn, regionValue.getCode(), keysToPersist);
+        RegionValue updateRegionValue = constraintsService.updateRegionKeys(ctx, contentConstraintUrn, regionValue.getCode(), keysToPersist);
+        return updateRegionValue;
     }
 
 }

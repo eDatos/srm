@@ -15,6 +15,7 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Key;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyParts;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Keys;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Region;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RegionReference;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RegionValueType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Regions;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
@@ -74,6 +75,22 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
         target.setType(ContentConstraintType.fromValue(source.getType().getName()));
         target.setConstraintAttachment(toResourceExternalItem(source.getConstraintAttachment(), getStatisticalResourcesApiInternalEndpoint(), getStatisticalResourcesInternalWebApplication()));
         target.setRegions(toRegions(source.getRegions()));
+
+        return target;
+    }
+
+    @Override
+    public RegionReference toRegionReference(String contentConstraintUrn, RegionValue source) {
+        if (source == null) {
+            return null;
+        }
+
+        Region region = toRegion(source);
+        RegionReference target = new RegionReference();
+        target.setCode(region.getCode());
+        target.setKeys(region.getKeys());
+        target.setRegionValueType(region.getRegionValueType());
+        target.setContentConstraintUrn(contentConstraintUrn);
 
         return target;
     }
@@ -168,6 +185,10 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
     }
 
     private Region toRegion(RegionValue source) {
+        if (source == null) {
+            return null;
+        }
+
         Region target = new Region();
 
         target.setCode(source.getCode());
@@ -192,6 +213,10 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
     }
 
     private Key toKey(KeyValue source) {
+        if (source == null) {
+            return null;
+        }
+
         Key target = new Key();
 
         target.setIncluded(BooleanUtils.toBoolean(source.getIncluded()));
