@@ -2,6 +2,16 @@
 <sr:contentConstraint xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#contentConstraint">
     <sr:annotations total="2">
         <sr:annotation>
+            <sr:id>code1</sr:id>
+            <sr:title>title-code1</sr:title>
+            <sr:type>type-code1</sr:type>
+            <sr:url>url-code1</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+        <sr:annotation>
             <sr:id>code2</sr:id>
             <sr:title>title-code2</sr:title>
             <sr:type>type-code2</sr:type>
@@ -9,16 +19,6 @@
             <sr:text>
                 <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
-            </sr:text>
-        </sr:annotation>
-        <sr:annotation>
-            <sr:id>code1</sr:id>
-            <sr:title>title-code1</sr:title>
-            <sr:type>type-code1</sr:type>
-            <sr:url>url-code1</sr:url>
-            <sr:text>
-                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
-                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
             </sr:text>
         </sr:annotation>
     </sr:annotations>
