@@ -8,7 +8,7 @@
             <cdomain:text xml:lang="es">name-contentConstraint1v01.000 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-contentConstraint1v01.000 in English</cdomain:text>
         </cdomain:name>
-        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/contentConstrains/contentConstrain;id=contentConstraint1(01.000)</sr:managementAppLink>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/contentConstraints/contentConstraint;id=contentConstraint1(01.000)</sr:managementAppLink>
     </sr:contentConstraint>
     <sr:contentConstraint kind="structuralResources#contentConstraint">
         <cdomain:id>contentConstraint2</cdomain:id>
@@ -18,7 +18,7 @@
             <cdomain:text xml:lang="es">name-contentConstraint2v01.000 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-contentConstraint2v01.000 in English</cdomain:text>
         </cdomain:name>
-        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/contentConstrains/contentConstrain;id=contentConstraint2(01.000)</sr:managementAppLink>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/contentConstraints/contentConstraint;id=contentConstraint2(01.000)</sr:managementAppLink>
     </sr:contentConstraint>
     <sr:contentConstraint kind="structuralResources#contentConstraint">
         <cdomain:id>contentConstraint3</cdomain:id>
@@ -28,6 +28,6 @@
             <cdomain:text xml:lang="es">name-contentConstraint3v01.000 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-contentConstraint3v01.000 in English</cdomain:text>
         </cdomain:name>
-        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/contentConstrains/contentConstrain;id=contentConstraint3(01.000)</sr:managementAppLink>
+        <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/contentConstraints/contentConstraint;id=contentConstraint3(01.000)</sr:managementAppLink>
     </sr:contentConstraint>
 </sr:contentConstraints>

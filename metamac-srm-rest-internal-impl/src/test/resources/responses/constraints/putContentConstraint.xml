@@ -27,7 +27,7 @@
     <sr:uri>http://data.istac.es/apis/structural-resources-internal/v1.0/contentconstraints/idAsMaintaineritem1/contentConstraint1/01.000</sr:uri>
     <sr:selfLink kind="structuralResources#contentConstraint" href="http://data.istac.es/apis/structural-resources-internal/v1.0/contentconstraints/idAsMaintaineritem1/contentConstraint1/01.000"/>
     <sr:parentLink kind="structuralResources#contentConstraints" href="http://data.istac.es/apis/structural-resources-internal/v1.0/contentconstraints"/>
-    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/contentConstrains/contentConstrain;id=agency1.item1:contentConstraint1(01.000)</sr:managementAppLink>
+    <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/contentConstraints/contentConstraint;id=agency1.item1:contentConstraint1(01.000)</sr:managementAppLink>
     <sr:name>
         <cdomain:text xml:lang="es">name-contentConstraint1v01.000 en Español</cdomain:text>
         <cdomain:text xml:lang="en">name-contentConstraint1v01.000 in English</cdomain:text>
