@@ -12,7 +12,7 @@
 <!--     <logger name="org.hibernate.SQL" level="DEBUG" /> -->
 <!--     <logger name="org.hibernate.type" level="TRACE" /> -->
 
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>
