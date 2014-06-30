@@ -37,4 +37,6 @@ public class RestServiceExceptionType extends RestCommonServiceExceptionType {
 
     public static final RestCommonServiceExceptionType DATA_STRUCTURE_NOT_FOUND                  = create("exception.structural_resources.data_structure.not_found");
     public static final RestCommonServiceExceptionType CONTENT_CONSTRAINT_NOT_FOUND              = create("exception.structural_resources.content_constraint.not_found");
+    public static final RestCommonServiceExceptionType CONTENT_CONSTRAINT_REGION_NOT_FOUND       = create("exception.structural_resources.content_constraint.region.not_found");
+    public static final RestCommonServiceExceptionType CONTENT_CONSTRAINT_UNPUBLISHED            = create("exception.structural_resources.content_constraint.unpublished");
 }

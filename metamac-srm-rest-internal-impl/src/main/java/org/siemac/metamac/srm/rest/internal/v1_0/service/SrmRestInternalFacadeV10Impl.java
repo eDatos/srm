@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria.Operator;
@@ -1270,6 +1271,34 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Delete
             constraintsService.deleteRegion(ctx, contentConstraintUrn, regionCode);
             return Response.status(Response.Status.OK).build();
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public RegionReference retrieveRegionForContentConstraint(String agencyID, String contentConstraintUrn, String regionCode, String includeDraft) {
+        try {
+            // Retrieve
+            RegionValue regionValue = constraintsService.findRegionValueByUrn(ctx, contentConstraintUrn, regionCode);
+
+            if (regionValue == null) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONTENT_CONSTRAINT_REGION_NOT_FOUND, regionCode,
+                        contentConstraintUrn);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // If not draft is allowed and isn't final, then is an error.
+            if (!BooleanUtils.toBoolean(includeDraft) && BooleanUtils.isNotTrue(regionValue.getContentConstraint().getMaintainableArtefact().getFinalLogicClient())) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONTENT_CONSTRAINT_UNPUBLISHED, regionCode,
+                        contentConstraintUrn);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            RegionReference result = contentConstraintsDo2RestMapper.toRegionReference(contentConstraintUrn, regionValue);
+
+            return result;
         } catch (Exception e) {
             throw manageException(e);
         }
