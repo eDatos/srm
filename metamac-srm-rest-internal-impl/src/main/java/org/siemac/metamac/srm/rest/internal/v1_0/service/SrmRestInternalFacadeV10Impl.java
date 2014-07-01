@@ -1277,8 +1277,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public RegionReference retrieveRegionForContentConstraint(String agencyID, String contentConstraintUrn, String regionCode, String includeDraft) {
+    public RegionReference retrieveRegionForContentConstraint(String agencyID, String resourceID, String version, String regionCode, String includeDraft) {
         try {
+            String contentConstraintUrn = GeneratorUrnUtils.generateSdmxContentConstraintUrn(new String[]{agencyID}, resourceID, version);
+
             // Retrieve
             RegionValue regionValue = constraintsService.findRegionValueByUrn(ctx, contentConstraintUrn, regionCode);
 
