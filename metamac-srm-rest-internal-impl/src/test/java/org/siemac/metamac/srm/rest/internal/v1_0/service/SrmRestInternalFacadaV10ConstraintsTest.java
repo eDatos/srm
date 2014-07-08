@@ -138,7 +138,7 @@ public class SrmRestInternalFacadaV10ConstraintsTest extends SrmRestInternalFaca
         {
             WebClient create = WebClient.create(baseApi);
             incrementRequestTimeOut(create); // Timeout
-            create.path("contentConstraint");
+            create.path("contentConstraints");
 
             ContentConstraint contentConstraint = ContentConstraintsDoMocks.mockContentConstraint(AGENCY_1, CONTENT_CONSTRAINT_1_CODE, CONTENT_CONSTRAINT_1_VERSION_1);
             contentConstraint.getRegions().clear();
@@ -157,7 +157,9 @@ public class SrmRestInternalFacadaV10ConstraintsTest extends SrmRestInternalFaca
         {
             WebClient create = WebClient.create(baseApi);
             incrementRequestTimeOut(create); // Timeout
-            create.path("contentConstraint/regions");
+            StringBuilder pathBld = new StringBuilder("contentConstraints");
+            pathBld.append("/").append(AGENCY_1).append("/").append(CONTENT_CONSTRAINT_1_CODE).append("/").append(CONTENT_CONSTRAINT_1_VERSION_1).append("/").append("regions");
+            create.path(pathBld.toString());
 
             ContentConstraint contentConstraint = ContentConstraintsDoMocks.mockContentConstraint(AGENCY_1, CONTENT_CONSTRAINT_1_CODE, CONTENT_CONSTRAINT_1_VERSION_1);
             RegionValue regionValue = contentConstraint.getRegions().iterator().next();

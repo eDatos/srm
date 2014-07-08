@@ -2,16 +2,6 @@
 <sr:contentConstraint xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources-internal/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#contentConstraint">
     <sr:annotations total="2">
         <sr:annotation>
-            <sr:id>code1</sr:id>
-            <sr:title>title-code1</sr:title>
-            <sr:type>type-code1</sr:type>
-            <sr:url>url-code1</sr:url>
-            <sr:text>
-                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
-                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
-            </sr:text>
-        </sr:annotation>
-        <sr:annotation>
             <sr:id>code2</sr:id>
             <sr:title>title-code2</sr:title>
             <sr:type>type-code2</sr:type>
@@ -19,6 +9,16 @@
             <sr:text>
                 <cdomain:text xml:lang="es">text-code2 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">text-code2 in English</cdomain:text>
+            </sr:text>
+        </sr:annotation>
+        <sr:annotation>
+            <sr:id>code1</sr:id>
+            <sr:title>title-code1</sr:title>
+            <sr:type>type-code1</sr:type>
+            <sr:url>url-code1</sr:url>
+            <sr:text>
+                <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
             </sr:text>
         </sr:annotation>
     </sr:annotations>
@@ -48,6 +48,9 @@
     <sr:isExternalReference>false</sr:isExternalReference>
     <sr:serviceUrl>serviceUrl-contentConstraint1</sr:serviceUrl>
     <sr:structureUrl>structureUrl-contentConstraint1</sr:structureUrl>
+    <sr:lifeCycle>
+        <sr:procStatus>EXTERNALLY_PUBLISHED</sr:procStatus>
+    </sr:lifeCycle>
     <sr:type>ALLOWED</sr:type>
     <sr:constraintAttachment kind="statisticalResources#dataset">
         <cdomain:id>codecode01</cdomain:id>
@@ -55,16 +58,16 @@
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=code01</cdomain:urn>
         <cdomain:selfLink kind="statisticalResources#dataset" href="http://data.istac.es/apis/resources-internal/uri:code01"/>
         <cdomain:name>
-            <cdomain:text xml:lang="en">title-code01 in English</cdomain:text>
             <cdomain:text xml:lang="es">title-code01 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">title-code01 in English</cdomain:text>
         </cdomain:name>
         <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.xxx=code01-provider</sr:urnProvider>
-        <sr:managementAppLink>http://localhost:8080/metamac-statistical-resources-web/managementAppUrl5cgJdJvbXC</sr:managementAppLink>
+        <sr:managementAppLink>http://localhost:8080/metamac-statistical-resources-web/managementAppUrloEb2vM8wbq</sr:managementAppLink>
     </sr:constraintAttachment>
     <sr:regions total="2">
         <sr:region>
             <sr:regionValueType>CUBE</sr:regionValueType>
-            <sr:code>code_codeRegion_02</sr:code>
+            <sr:code>code_codeRegion_01</sr:code>
             <sr:keys total="3">
                 <sr:key>
                     <sr:included>false</sr:included>
@@ -157,7 +160,7 @@
         </sr:region>
         <sr:region>
             <sr:regionValueType>CUBE</sr:regionValueType>
-            <sr:code>code_codeRegion_01</sr:code>
+            <sr:code>code_codeRegion_02</sr:code>
             <sr:keys total="3">
                 <sr:key>
                     <sr:included>false</sr:included>

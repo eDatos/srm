@@ -1237,10 +1237,12 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public Response deleteContentConstraintByUrn(String urn) {
+    public Response deleteContentConstraintByUrn(String agencyID, String resourceID, String version) {
         try {
+            String contentConstraintUrn = GeneratorUrnUtils.generateSdmxContentConstraintUrn(new String[]{agencyID}, resourceID, version);
+
             // Delete
-            constraintsService.deleteContentConstraint(ctx, urn);
+            constraintsService.deleteContentConstraint(ctx, contentConstraintUrn);
             return Response.status(Response.Status.OK).build();
         } catch (Exception e) {
             throw manageException(e);
@@ -1248,7 +1250,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public Response saveRegionForContentConstraint(RegionReference regionReference) {
+    public Response saveRegionForContentConstraint(String agencyID, String resourceID, String version, RegionReference regionReference) {
         try {
             // Transform
             RegionValue regionReferenceToEntity = contentConstraintsRest2DoMapper.regionReferenceRestToEntity(ctx, regionReference);
@@ -1266,8 +1268,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public Response deleteRegion(String contentConstraintUrn, String regionCode) {
+    public Response deleteRegion(String agencyID, String resourceID, String version, String regionCode) {
         try {
+            String contentConstraintUrn = GeneratorUrnUtils.generateSdmxContentConstraintUrn(new String[]{agencyID}, resourceID, version);
+
             // Delete
             constraintsService.deleteRegion(ctx, contentConstraintUrn, regionCode);
             return Response.status(Response.Status.OK).build();
@@ -1301,6 +1305,25 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             RegionReference result = contentConstraintsDo2RestMapper.toRegionReference(contentConstraintUrn, regionValue);
 
             return result;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public Response publishContentConstraint(String agencyID, String resourceID, String version, Boolean alsoMarkAsPublic) {
+        try {
+            String contentConstraintUrn = GeneratorUrnUtils.generateSdmxContentConstraintUrn(new String[]{agencyID}, resourceID, version);
+
+            com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint contentConstraint = constraintsService.markContentConstraintAsFinal(ctx, contentConstraintUrn, Boolean.TRUE);
+            if (BooleanUtils.isTrue(alsoMarkAsPublic)) {
+                contentConstraint = constraintsService.markContentConstraintAsPublic(ctx, contentConstraintUrn);
+            }
+
+            // Transform
+            ContentConstraint result = contentConstraintsDo2RestMapper.toContentConstraint(contentConstraint);
+
+            return Response.status(Response.Status.CREATED).entity(result).build();
         } catch (Exception e) {
             throw manageException(e);
         }

@@ -19,6 +19,8 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RegionR
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RegionValueType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Regions;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal;
+import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseDo2RestMapperV10Impl;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
@@ -65,7 +67,14 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
         target.setManagementAppLink(toContenConstraintManagementApplicationLink(source));
 
         // Extension
-        toMaintainableArtefact(source.getMaintainableArtefact(), null, target);
+        SrmLifeCycleMetadata srmLifeCycleMetadata = null; // Draft Status is Null in API
+        if (BooleanUtils.isTrue(source.getMaintainableArtefact().getFinalLogic())) {
+            srmLifeCycleMetadata = new SrmLifeCycleMetadata(ProcStatusEnum.INTERNALLY_PUBLISHED);
+        }
+        if (BooleanUtils.isTrue(source.getMaintainableArtefact().getPublicLogic())) {
+            srmLifeCycleMetadata = new SrmLifeCycleMetadata(ProcStatusEnum.EXTERNALLY_PUBLISHED);
+        }
+        toMaintainableArtefact(source.getMaintainableArtefact(), srmLifeCycleMetadata, target);
 
         if (SrmRestInternalUtils.uriMustBeSelfLink(source.getMaintainableArtefact())) {
             target.setUri(target.getSelfLink().getHref());
