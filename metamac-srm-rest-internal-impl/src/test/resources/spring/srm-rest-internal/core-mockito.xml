@@ -91,4 +91,8 @@
     	<constructor-arg value="com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintRepository" />
     </bean>
     
+    <bean id="contentConstraintsCopyCallback" class="org.mockito.Mockito" factory-method="mock">
+    	<constructor-arg value="com.arte.statistic.sdmx.srm.core.constraint.serviceimpl.ContentConstraintsCopyCallback" />
+    </bean>
+    
 </beans>

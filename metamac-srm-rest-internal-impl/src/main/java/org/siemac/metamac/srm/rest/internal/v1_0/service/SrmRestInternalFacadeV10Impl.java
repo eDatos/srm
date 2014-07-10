@@ -24,6 +24,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
+import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.ComparisonOperator;
@@ -135,12 +136,14 @@ import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUt
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.KeyValue;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.RegionValue;
 import com.arte.statistic.sdmx.srm.core.constraint.serviceapi.ConstraintsService;
+import com.arte.statistic.sdmx.srm.core.constraint.serviceimpl.ContentConstraintsCopyCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -206,6 +209,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @Autowired
     private DataStructuresDo2RestMapperV10        dataStructuresDo2RestMapperV10;
+
+    @Autowired
+    @Qualifier("contentConstraintsCopyCallback")
+    private ContentConstraintsCopyCallback        contentConstraintsCopyCallback;
 
     private static final String                   restInternalUser         = "restInternal";
     private static final String                   restInternalApplication  = "restInternal";
@@ -1250,6 +1257,24 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
             // Delete
             constraintsService.deleteContentConstraint(serviceContext, contentConstraintUrn);
+
+            return Response.status(Response.Status.OK).build();
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public Response versioningContentConstraint(String agencyID, String resourceID, String version, String userId, String versionType) {
+        try {
+            ServiceContext serviceContext = new ServiceContext(userId, restInternalApplication, restInternalSession);
+
+            String contentConstraintUrn = GeneratorUrnUtils.generateSdmxContentConstraintUrn(new String[]{agencyID}, resourceID, version);
+
+            VersionTypeEnum valueOf = VersionTypeEnum.valueOf(versionType);
+
+            // Delete
+            constraintsService.versioningContentConstraint(serviceContext, contentConstraintUrn, valueOf, contentConstraintsCopyCallback);
 
             return Response.status(Response.Status.OK).build();
         } catch (Exception e) {
