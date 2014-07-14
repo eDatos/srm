@@ -14,6 +14,7 @@ import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCrite
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraintCriteriaPropertyOrder;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraintCriteriaPropertyRestriction;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPartType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyParts;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Keys;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
@@ -34,6 +35,7 @@ import com.arte.statistic.sdmx.srm.core.constraint.domain.KeyValue;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.RegionValue;
 import com.arte.statistic.sdmx.srm.core.constraint.serviceimpl.utils.ManipulateDataUtils;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.ContentConstraintTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.KeyPartTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RegionValueTypeEnum;
 
 @Component
@@ -215,20 +217,25 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
 
         target.setIdentifier(source.getIdentifier());
         target.setValue(source.getValue());
-        target.setCascadeValues(source.isCascadeValues());
         target.setPosition(source.getPosition());
+        target.setType(KeyPartTypeEnum.valueOf(source.getType().name()));
 
-        target.setBeforePeriod(source.getBeforePeriod());
-        target.setBeforePeriodInclusive(source.isBeforePeriodInclusive());
+        if (KeyPartType.TIME_RANGE.equals(source.getType())) {
+            // Time range
+            target.setBeforePeriod(source.getBeforePeriod());
+            target.setBeforePeriodInclusive(source.isBeforePeriodInclusive());
 
-        target.setAfterPeriod(source.getAfterPeriod());
-        target.setAfterPeriodInclusive(source.isAfterPeriodInclusive());
+            target.setAfterPeriod(source.getAfterPeriod());
+            target.setAfterPeriodInclusive(source.isAfterPeriodInclusive());
 
-        target.setStartPeriod(source.getStartPeriod());
-        target.setStartPeriodInclusive(source.isStartPeriodInclusive());
+            target.setStartPeriod(source.getStartPeriod());
+            target.setStartPeriodInclusive(source.isStartPeriodInclusive());
 
-        target.setEndPeriod(source.getEndPeriod());
-        target.setEndPeriodInclusive(source.isEndPeriodInclusive());
+            target.setEndPeriod(source.getEndPeriod());
+            target.setEndPeriodInclusive(source.isEndPeriodInclusive());
+        } else {
+            target.setCascadeValues(source.isCascadeValues());
+        }
 
         return target;
     }

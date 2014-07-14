@@ -12,6 +12,7 @@ import org.siemac.metamac.rest.search.criteria.mapper.SculptorCriteria2RestCrite
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraintType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraints;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Key;
+import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPartType;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyParts;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Keys;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Region;
@@ -256,20 +257,24 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
         org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPart keyPart = new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPart();
         keyPart.setIdentifier(source.getIdentifier());
         keyPart.setValue(source.getValue());
-        keyPart.setCascadeValues(BooleanUtils.toBoolean(source.getCascadeValues()));
         keyPart.setPosition(source.getPosition());
+        keyPart.setType(KeyPartType.valueOf(source.getType().getName()));
 
-        keyPart.setBeforePeriod(source.getBeforePeriod());
-        keyPart.setBeforePeriodInclusive(source.getBeforePeriodInclusive());
+        if (KeyPartType.TIME_RANGE.equals(source.getType())) {
+            keyPart.setBeforePeriod(source.getBeforePeriod());
+            keyPart.setBeforePeriodInclusive(source.getBeforePeriodInclusive());
 
-        keyPart.setAfterPeriod(source.getAfterPeriod());
-        keyPart.setAfterPeriodInclusive(source.getAfterPeriodInclusive());
+            keyPart.setAfterPeriod(source.getAfterPeriod());
+            keyPart.setAfterPeriodInclusive(source.getAfterPeriodInclusive());
 
-        keyPart.setStartPeriod(source.getStartPeriod());
-        keyPart.setStartPeriodInclusive(source.getStartPeriodInclusive());
+            keyPart.setStartPeriod(source.getStartPeriod());
+            keyPart.setStartPeriodInclusive(source.getStartPeriodInclusive());
 
-        keyPart.setEndPeriod(source.getEndPeriod());
-        keyPart.setEndPeriodInclusive(source.getEndPeriodInclusive());
+            keyPart.setEndPeriod(source.getEndPeriod());
+            keyPart.setEndPeriodInclusive(source.getEndPeriodInclusive());
+        } else {
+            keyPart.setCascadeValues(BooleanUtils.toBoolean(source.getCascadeValues()));
+        }
 
         return keyPart;
     }
