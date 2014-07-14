@@ -8,27 +8,31 @@
             <sr:keyParts total="4">
                 <sr:keyPart>
                     <sr:identifier>identifier_0</sr:identifier>
+                    <sr:type>NORMAL</sr:type>
                     <sr:value>val_prefixB_0</sr:value>
-                    <sr:cascadeValues>false</sr:cascadeValues>
                     <sr:position>0</sr:position>
+                    <sr:cascadeValues>false</sr:cascadeValues>
                 </sr:keyPart>
                 <sr:keyPart>
                     <sr:identifier>identifier_1</sr:identifier>
+                    <sr:type>NORMAL</sr:type>
                     <sr:value>val_prefixB_1</sr:value>
-                    <sr:cascadeValues>false</sr:cascadeValues>
                     <sr:position>1</sr:position>
+                    <sr:cascadeValues>false</sr:cascadeValues>
                 </sr:keyPart>
                 <sr:keyPart>
                     <sr:identifier>identifier_2</sr:identifier>
+                    <sr:type>NORMAL</sr:type>
                     <sr:value>val_prefixB_2</sr:value>
-                    <sr:cascadeValues>false</sr:cascadeValues>
                     <sr:position>2</sr:position>
+                    <sr:cascadeValues>false</sr:cascadeValues>
                 </sr:keyPart>
                 <sr:keyPart>
                     <sr:identifier>identifier_3</sr:identifier>
+                    <sr:type>NORMAL</sr:type>
                     <sr:value>val_prefixB_3</sr:value>
-                    <sr:cascadeValues>true</sr:cascadeValues>
                     <sr:position>3</sr:position>
+                    <sr:cascadeValues>true</sr:cascadeValues>
                 </sr:keyPart>
             </sr:keyParts>
         </sr:key>
@@ -37,27 +41,31 @@
             <sr:keyParts total="4">
                 <sr:keyPart>
                     <sr:identifier>identifier_0</sr:identifier>
+                    <sr:type>NORMAL</sr:type>
                     <sr:value>val_prefixA_0</sr:value>
-                    <sr:cascadeValues>false</sr:cascadeValues>
                     <sr:position>0</sr:position>
+                    <sr:cascadeValues>false</sr:cascadeValues>
                 </sr:keyPart>
                 <sr:keyPart>
                     <sr:identifier>identifier_1</sr:identifier>
+                    <sr:type>NORMAL</sr:type>
                     <sr:value>val_prefixA_1</sr:value>
-                    <sr:cascadeValues>false</sr:cascadeValues>
                     <sr:position>1</sr:position>
+                    <sr:cascadeValues>false</sr:cascadeValues>
                 </sr:keyPart>
                 <sr:keyPart>
                     <sr:identifier>identifier_2</sr:identifier>
+                    <sr:type>NORMAL</sr:type>
                     <sr:value>val_prefixA_2</sr:value>
-                    <sr:cascadeValues>false</sr:cascadeValues>
                     <sr:position>2</sr:position>
+                    <sr:cascadeValues>false</sr:cascadeValues>
                 </sr:keyPart>
                 <sr:keyPart>
                     <sr:identifier>identifier_3</sr:identifier>
+                    <sr:type>NORMAL</sr:type>
                     <sr:value>val_prefixA_3</sr:value>
-                    <sr:cascadeValues>true</sr:cascadeValues>
                     <sr:position>3</sr:position>
+                    <sr:cascadeValues>true</sr:cascadeValues>
                 </sr:keyPart>
             </sr:keyParts>
         </sr:key>
@@ -66,27 +74,31 @@
             <sr:keyParts total="4">
                 <sr:keyPart>
                     <sr:identifier>identifier_0</sr:identifier>
+                    <sr:type>NORMAL</sr:type>
                     <sr:value>val_prefixC_0</sr:value>
-                    <sr:cascadeValues>false</sr:cascadeValues>
                     <sr:position>0</sr:position>
+                    <sr:cascadeValues>false</sr:cascadeValues>
                 </sr:keyPart>
                 <sr:keyPart>
                     <sr:identifier>identifier_1</sr:identifier>
+                    <sr:type>NORMAL</sr:type>
                     <sr:value>val_prefixC_1</sr:value>
-                    <sr:cascadeValues>false</sr:cascadeValues>
                     <sr:position>1</sr:position>
+                    <sr:cascadeValues>false</sr:cascadeValues>
                 </sr:keyPart>
                 <sr:keyPart>
                     <sr:identifier>identifier_2</sr:identifier>
+                    <sr:type>NORMAL</sr:type>
                     <sr:value>val_prefixC_2</sr:value>
-                    <sr:cascadeValues>false</sr:cascadeValues>
                     <sr:position>2</sr:position>
+                    <sr:cascadeValues>false</sr:cascadeValues>
                 </sr:keyPart>
                 <sr:keyPart>
                     <sr:identifier>identifier_3</sr:identifier>
+                    <sr:type>NORMAL</sr:type>
                     <sr:value>val_prefixC_3</sr:value>
-                    <sr:cascadeValues>true</sr:cascadeValues>
                     <sr:position>3</sr:position>
+                    <sr:cascadeValues>true</sr:cascadeValues>
                 </sr:keyPart>
             </sr:keyParts>
         </sr:key>
