@@ -48,7 +48,7 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationReposito
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
-public class SrmRestInternalFacadaV10ConstraintsTest extends SrmRestInternalFacadeV10BaseTest {
+public class SrmRestInternalFacadeV10ConstraintsTest extends SrmRestInternalFacadeV10BaseTest {
 
     private ConstraintsService     contraintsService;
     private OrganisationRepository organisationRepository;
@@ -113,7 +113,7 @@ public class SrmRestInternalFacadaV10ConstraintsTest extends SrmRestInternalFaca
             create.path("contentConstraints/{0}/{1}/{2}", AGENCY_1, CONTENT_CONSTRAINT_1_CODE, CONTENT_CONSTRAINT_1_VERSION_1);
             Response response = create.get();
 
-            InputStream responseExpected = SrmRestInternalFacadaV10ConstraintsTest.class.getResourceAsStream("/responses/constraints/retrieveContentConstraint.id1.xml");
+            InputStream responseExpected = SrmRestInternalFacadeV10ConstraintsTest.class.getResourceAsStream("/responses/constraints/retrieveContentConstraint.id1.xml");
             assertEquals(200, response.getStatus());
             assertInputStream(responseExpected, (InputStream) response.getEntity(), false);
         }
@@ -127,7 +127,7 @@ public class SrmRestInternalFacadaV10ConstraintsTest extends SrmRestInternalFaca
             create.path("contentConstraints");
             Response response = create.get();
 
-            InputStream responseExpected = SrmRestInternalFacadaV10ConstraintsTest.class.getResourceAsStream("/responses/constraints/findContentConstraints.xml");
+            InputStream responseExpected = SrmRestInternalFacadeV10ConstraintsTest.class.getResourceAsStream("/responses/constraints/findContentConstraints.xml");
             assertEquals(200, response.getStatus());
             assertInputStream(responseExpected, (InputStream) response.getEntity(), false);
         }
@@ -146,7 +146,7 @@ public class SrmRestInternalFacadaV10ConstraintsTest extends SrmRestInternalFaca
 
             Response response = create.put(putObject);
 
-            InputStream responseExpected = SrmRestInternalFacadaV10ConstraintsTest.class.getResourceAsStream("/responses/constraints/putContentConstraint.xml");
+            InputStream responseExpected = SrmRestInternalFacadeV10ConstraintsTest.class.getResourceAsStream("/responses/constraints/putContentConstraint.xml");
             assertEquals(201, response.getStatus());
             assertInputStream(responseExpected, (InputStream) response.getEntity(), false);
         }
@@ -166,7 +166,7 @@ public class SrmRestInternalFacadaV10ConstraintsTest extends SrmRestInternalFaca
             RegionReference putObject = contentConstraintsDo2RestMapper.toRegionReference(GeneratorUrnUtils.generateContentConstraintUrn(contentConstraint.getMaintainableArtefact()), regionValue);
             Response response = create.put(putObject);
 
-            InputStream responseExpected = SrmRestInternalFacadaV10ConstraintsTest.class.getResourceAsStream("/responses/constraints/putRegion.xml");
+            InputStream responseExpected = SrmRestInternalFacadeV10ConstraintsTest.class.getResourceAsStream("/responses/constraints/putRegion.xml");
             assertEquals(201, response.getStatus());
             assertInputStream(responseExpected, (InputStream) response.getEntity(), false);
         }

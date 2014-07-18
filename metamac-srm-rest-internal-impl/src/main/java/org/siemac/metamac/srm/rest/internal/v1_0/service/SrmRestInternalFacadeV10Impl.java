@@ -1249,14 +1249,14 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public Response deleteContentConstraintByUrn(String agencyID, String resourceID, String version, String userId) {
+    public Response deleteContentConstraintByUrn(String agencyID, String resourceID, String version, Boolean forceDeleteFinal, String userId) {
         try {
             ServiceContext serviceContext = new ServiceContext(userId, restInternalApplication, restInternalSession);
 
             String contentConstraintUrn = GeneratorUrnUtils.generateSdmxContentConstraintUrn(new String[]{agencyID}, resourceID, version);
 
             // Delete
-            constraintsService.deleteContentConstraint(serviceContext, contentConstraintUrn);
+            constraintsService.deleteContentConstraint(serviceContext, contentConstraintUrn, forceDeleteFinal);
 
             return Response.status(Response.Status.OK).build();
         } catch (Exception e) {
@@ -1482,19 +1482,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
         // Find
         PagedResult<CategoryMetamac> entitiesPagedResult = categoriesService.findCategoriesByCondition(ctx, conditionalCriteria, pagingParameter);
-        return entitiesPagedResult;
-    }
-
-    private PagedResult<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint> findContentConstraintsCore(String agencyID, String resourceID, String version,
-            List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter, String includeDraft) throws MetamacException {
-
-        // Criteria to find by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaContentConstraints(agencyID, resourceID, version, includeDraft, conditionalCriteriaQuery,
-                Categorisation.class);
-
-        // Find
-        PagedResult<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint> entitiesPagedResult = constraintsService.findContentConstraintsByCondition(ctx, conditionalCriteria,
-                pagingParameter);
         return entitiesPagedResult;
     }
 
@@ -1780,6 +1767,19 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
         // Find
         PagedResult<DataStructureDefinitionVersionMetamac> entitiesPagedResult = dataStructureDefinitionService.findDataStructureDefinitionsByCondition(ctx, conditionalCriteria, pagingParameter);
+        return entitiesPagedResult;
+    }
+
+    private PagedResult<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint> findContentConstraintsCore(String agencyID, String resourceID, String version,
+            List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter, String includeDraft) throws MetamacException {
+
+        // Criteria to find by criteria
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaContentConstraints(agencyID, resourceID, version, includeDraft, conditionalCriteriaQuery,
+                ContentConstraint.class);
+
+        // Find
+        PagedResult<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint> entitiesPagedResult = constraintsService.findContentConstraintsByCondition(ctx, conditionalCriteria,
+                pagingParameter);
         return entitiesPagedResult;
     }
 
