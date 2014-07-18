@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:contentConstraints xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#contentConstraints" total="30" limit="25" offset="3" selfLink="http://data.istac.es/apis/structural-resources/v1.0/contentconstraints?limit=25&amp;offset=3" nextLink="http://data.istac.es/apis/structural-resources/v1.0/contentconstraints?limit=25&amp;offset=28" lastLink="http://data.istac.es/apis/structural-resources/v1.0/contentconstraints?limit=25&amp;offset=28">
+    <sr:contentConstraint kind="structuralResources#contentConstraint">
+        <cdomain:id>contentConstraint1</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=contentConstraint1(01.000)</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#contentConstraint" href="http://data.istac.es/apis/structural-resources/v1.0/contentconstraints/agency1/contentConstraint1/01.000"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-contentConstraint1v01.000 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-contentConstraint1v01.000 en Español</cdomain:text>
+        </cdomain:name>
+    </sr:contentConstraint>
+    <sr:contentConstraint kind="structuralResources#contentConstraint">
+        <cdomain:id>contentConstraint2</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=contentConstraint2(01.000)</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#contentConstraint" href="http://data.istac.es/apis/structural-resources/v1.0/contentconstraints/agency1/contentConstraint2/01.000"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">name-contentConstraint2v01.000 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-contentConstraint2v01.000 in English</cdomain:text>
+        </cdomain:name>
+    </sr:contentConstraint>
+    <sr:contentConstraint kind="structuralResources#contentConstraint">
+        <cdomain:id>contentConstraint3</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=contentConstraint3(01.000)</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#contentConstraint" href="http://data.istac.es/apis/structural-resources/v1.0/contentconstraints/agency2/contentConstraint3/01.000"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-contentConstraint3v01.000 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-contentConstraint3v01.000 en Español</cdomain:text>
+        </cdomain:name>
+    </sr:contentConstraint>
+</sr:contentConstraints>

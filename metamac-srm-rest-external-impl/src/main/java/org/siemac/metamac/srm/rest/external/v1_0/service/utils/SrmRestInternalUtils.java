@@ -17,6 +17,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactProperti
 import com.arte.statistic.sdmx.srm.core.base.domain.NameableArtefactProperties.NameableArtefactProperty;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionProperties;
 import com.arte.statistic.sdmx.srm.core.constants.SdmxAlias;
+import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationProperties;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVersionProperties;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -46,6 +47,12 @@ public class SrmRestInternalUtils {
     public static List<ConditionalCriteria> buildConditionalCriteriaStructures(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity)
             throws MetamacException {
         return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, StructureVersionProperties.maintainableArtefact());
+    }
+
+    @SuppressWarnings({"rawtypes"})
+    public static List<ConditionalCriteria> buildConditionalCriteriaContentConstraints(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
+            Class entity) throws MetamacException {
+        return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, ContentConstraintProperties.maintainableArtefact());
     }
 
     public static OrganisationSchemeTypeEnum toOrganisationSchemeType(OrganisationTypeEnum type) {
@@ -191,4 +198,5 @@ public class SrmRestInternalUtils {
     private static void addConditionalCriteriaByPublished(List<ConditionalCriteria> conditionalCriteria, Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
         conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).withProperty(maintainableArtefactProperty.publicLogic()).eq(Boolean.TRUE).buildSingle());
     }
+
 }

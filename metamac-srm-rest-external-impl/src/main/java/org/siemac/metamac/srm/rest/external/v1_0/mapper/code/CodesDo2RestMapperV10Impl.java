@@ -597,7 +597,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
     // API/variablefamilies
     private String toVariableFamiliesLink() {
-        return RestUtils.createLink(getSrmApiInternalEndpointV10(), SrmRestConstants.LINK_SUBPATH_VARIABLE_FAMILIES);
+        return RestUtils.createLink(getSrmApiExternalEndpointV10(), SrmRestConstants.LINK_SUBPATH_VARIABLE_FAMILIES);
     }
 
     // API/variablefamilies/VARIABLE_FAMILY_ID
@@ -626,7 +626,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
     // API/variables
     private String toVariablesLink() {
-        return RestUtils.createLink(getSrmApiInternalEndpointV10(), SrmRestConstants.LINK_SUBPATH_VARIABLES);
+        return RestUtils.createLink(getSrmApiExternalEndpointV10(), SrmRestConstants.LINK_SUBPATH_VARIABLES);
     }
 
     // API/variables/VARIABLE_ID
@@ -685,7 +685,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
     // API/codelistfamilies
     private String toCodelistFamiliesLink() {
-        return RestUtils.createLink(getSrmApiInternalEndpointV10(), SrmRestConstants.LINK_SUBPATH_CODELIST_FAMILIES);
+        return RestUtils.createLink(getSrmApiExternalEndpointV10(), SrmRestConstants.LINK_SUBPATH_CODELIST_FAMILIES);
     }
 
     // API/codelistfamilies/CODELIST_FAMILY_ID

@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria.Operator;
@@ -50,6 +51,8 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concepts;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.ContentConstraint;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.ContentConstraints;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataConsumer;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataConsumerScheme;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataConsumerSchemes;
@@ -68,6 +71,7 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.OrganisationUnit
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.OrganisationUnitSchemes;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.OrganisationUnits;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Organisations;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.RegionReference;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElement;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElements;
@@ -119,6 +123,8 @@ import org.siemac.metamac.srm.rest.external.v1_0.mapper.code.CodesDo2RestMapperV
 import org.siemac.metamac.srm.rest.external.v1_0.mapper.code.CodesRest2DoMapper;
 import org.siemac.metamac.srm.rest.external.v1_0.mapper.concept.ConceptsDo2RestMapperV10;
 import org.siemac.metamac.srm.rest.external.v1_0.mapper.concept.ConceptsRest2DoMapper;
+import org.siemac.metamac.srm.rest.external.v1_0.mapper.constraint.ContentConstraintsDo2RestMapperV10;
+import org.siemac.metamac.srm.rest.external.v1_0.mapper.constraint.ContentConstraintsRest2DoMapper;
 import org.siemac.metamac.srm.rest.external.v1_0.mapper.dsd.DataStructuresDo2RestMapperV10;
 import org.siemac.metamac.srm.rest.external.v1_0.mapper.dsd.DataStructuresRest2DoMapper;
 import org.siemac.metamac.srm.rest.external.v1_0.mapper.organisation.OrganisationsDo2RestMapperV10;
@@ -130,6 +136,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.srm.core.constraint.domain.RegionValue;
+import com.arte.statistic.sdmx.srm.core.constraint.serviceapi.ConstraintsService;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
@@ -150,6 +158,9 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
 
     @Autowired
     private DataStructureDefinitionMetamacService dataStructureDefinitionService;
+
+    @Autowired
+    private ConstraintsService                    constraintsService;
 
     @Autowired
     private MiscMetamacService                    miscMetamacService;
@@ -183,6 +194,12 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
 
     @Autowired
     private CodesDo2RestMapperV10                 codesDo2RestMapper;
+
+    @Autowired
+    private ContentConstraintsRest2DoMapper       contentConstraintsRest2DoMapper;
+
+    @Autowired
+    private ContentConstraintsDo2RestMapperV10    contentConstraintsDo2RestMapper;
 
     @Autowired
     private DataStructuresDo2RestMapperV10        dataStructuresDo2RestMapperV10;
@@ -1161,6 +1178,74 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
         }
     }
 
+    @Override
+    public ContentConstraints findContentConstraints(String query, String orderBy, String limit, String offset) {
+        return findContentConstraints(null, null, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public ContentConstraints findContentConstraints(String agencyID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID);
+        return findContentConstraints(agencyID, null, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public ContentConstraints findContentConstraints(String agencyID, String resourceID, String query, String orderBy, String limit, String offset) {
+        checkParameterNotWildcardFindItemSchemes(agencyID, resourceID);
+        return findContentConstraints(agencyID, resourceID, null, query, orderBy, limit, offset);
+    }
+
+    @Override
+    public ContentConstraint retrieveContentConstraint(String agencyID, String resourceID, String version) {
+        try {
+            checkParameterNotWildcardRetrieveItemScheme(agencyID, resourceID, version);
+
+            // Find one
+            PagedResult<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint> entitiesPagedResult = findContentConstraintsCore(agencyID, resourceID, version, null,
+                    pagingParameterOneResult);
+            if (entitiesPagedResult.getValues().size() != 1) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONTENT_CONSTRAINT_NOT_FOUND, resourceID, version, agencyID);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            ContentConstraint contentConstraint = contentConstraintsDo2RestMapper.toContentConstraint(entitiesPagedResult.getValues().get(0));
+            return contentConstraint;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public RegionReference retrieveRegionForContentConstraint(String agencyID, String resourceID, String version, String regionCode) {
+        try {
+            String contentConstraintUrn = GeneratorUrnUtils.generateSdmxContentConstraintUrn(new String[]{agencyID}, resourceID, version);
+
+            // Retrieve
+            RegionValue regionValue = constraintsService.findRegionValueByUrn(ctx, contentConstraintUrn, regionCode);
+
+            if (regionValue == null) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONTENT_CONSTRAINT_REGION_NOT_FOUND, regionCode,
+                        contentConstraintUrn);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // If not draft is allowed and isn't final, then is an error.
+            if (BooleanUtils.isNotTrue(regionValue.getContentConstraint().getMaintainableArtefact().getFinalLogicClient())) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CONTENT_CONSTRAINT_UNPUBLISHED, regionCode,
+                        contentConstraintUrn);
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
+
+            // Transform
+            RegionReference result = contentConstraintsDo2RestMapper.toRegionReference(contentConstraintUrn, regionValue);
+
+            return result;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
     private ConceptSchemes findConceptSchemes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
         try {
             SculptorCriteria sculptorCriteria = conceptsRest2DoMapper.getConceptSchemeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
@@ -1519,6 +1604,22 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
         return entitiesPagedResult;
     }
 
+    private ContentConstraints findContentConstraints(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
+        try {
+            SculptorCriteria sculptorCriteria = contentConstraintsRest2DoMapper.getContentConstraintCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+
+            // Find
+            PagedResult<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint> entitiesPagedResult = findContentConstraintsCore(agencyID, resourceID, version,
+                    sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+            // Transform
+            ContentConstraints contentConstraints = contentConstraintsDo2RestMapper.toContentConstraints(entitiesPagedResult, agencyID, resourceID, query, orderBy, sculptorCriteria.getLimit());
+            return contentConstraints;
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
     private DataStructures findDataStructures(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset) {
         try {
             SculptorCriteria sculptorCriteria = dataStructuresRest2DoMapper.getDataStructureDefinitionCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
@@ -1533,6 +1634,20 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
         } catch (Exception e) {
             throw manageException(e);
         }
+    }
+
+    private PagedResult<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint> findContentConstraintsCore(String agencyID, String resourceID, String version,
+            List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter) throws MetamacException {
+
+        // Criteria to find by criteria
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaContentConstraints(agencyID, resourceID, version, conditionalCriteriaQuery,
+                ContentConstraint.class);
+
+        // Find
+        PagedResult<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint> entitiesPagedResult = constraintsService.findContentConstraintsByCondition(ctx, conditionalCriteria,
+                pagingParameter);
+
+        return entitiesPagedResult;
     }
 
     private PagedResult<DataStructureDefinitionVersionMetamac> findDataStructuresCore(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,

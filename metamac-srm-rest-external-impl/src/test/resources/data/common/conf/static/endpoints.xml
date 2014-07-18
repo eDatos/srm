@@ -4,4 +4,5 @@
     <comment>Rest endpoints</comment>
     <entry key="metamac.srm.rest.external">http://data.istac.es/apis/structural-resources</entry>
     <entry key="metamac.statistical_operations.rest.external">http://data.istac.es/apis/operations</entry>
+    <entry key="metamac.statistical_resources.rest.external">http://data.istac.es/apis/resources</entry>
 </properties>

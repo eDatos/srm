@@ -51,8 +51,10 @@ public abstract class BaseDo2RestMapperV10Impl {
     @Autowired
     private ConfigurationService configurationService;
 
-    private String               srmApiInternalEndpointV10;
+    private String               srmApiExternalEndpointV10;
     private String               statisticalOperationsApiExternalEndpoint;
+    private String               statisticalResourcesApiExternalEndpoint;
+
     private String               maintainerUrnDefault;
 
     @PostConstruct
@@ -60,12 +62,16 @@ public abstract class BaseDo2RestMapperV10Impl {
         initEndpoints();
     }
 
-    public String getSrmApiInternalEndpointV10() {
-        return srmApiInternalEndpointV10;
+    public String getSrmApiExternalEndpointV10() {
+        return srmApiExternalEndpointV10;
     }
 
-    public String getStatisticalOperationsApiInternalEndpoint() {
+    public String getStatisticalOperationsApiExternalEndpoint() {
         return statisticalOperationsApiExternalEndpoint;
+    }
+
+    public String getStatisticalResourcesApiExternalEndpoint() {
+        return statisticalResourcesApiExternalEndpoint;
     }
 
     public void toAnnotableArtefact(AnnotableArtefact source, org.siemac.metamac.rest.structural_resources.v1_0.domain.AnnotableArtefact target) {
@@ -309,7 +315,7 @@ public abstract class BaseDo2RestMapperV10Impl {
     // API/[schemesSubPath]/{agencyID}/{resourceID}
     // API/[schemesSubPath]/{agencyID}/{resourceID}/{version}
     protected String toMaintainableArtefactLink(String schemesSubPath, String agencyID, String resourceID, String version) {
-        String link = RestUtils.createLink(getSrmApiInternalEndpointV10(), schemesSubPath);
+        String link = RestUtils.createLink(getSrmApiExternalEndpointV10(), schemesSubPath);
         if (agencyID != null) {
             link = RestUtils.createLink(link, agencyID);
             if (resourceID != null) {
@@ -342,11 +348,14 @@ public abstract class BaseDo2RestMapperV10Impl {
     private void initEndpoints() throws MetamacException {
         // Srm External Api V1.0
         String srmApiExternalEndpoint = configurationService.retrieveSrmExternalApiUrlBase();
-        srmApiInternalEndpointV10 = RestUtils.createLink(srmApiExternalEndpoint, SrmRestConstants.API_VERSION_1_0);
+        srmApiExternalEndpointV10 = RestUtils.createLink(srmApiExternalEndpoint, SrmRestConstants.API_VERSION_1_0);
 
         // Statistical operations External Api (do not add api version! it is already stored in database (~latest))
         statisticalOperationsApiExternalEndpoint = configurationService.retrieveStatisticalOperationsExternalApiUrlBase();
         statisticalOperationsApiExternalEndpoint = StringUtils.removeEnd(statisticalOperationsApiExternalEndpoint, "/");
+
+        statisticalResourcesApiExternalEndpoint = configurationService.retrieveStatisticalResourcesExternalApiUrlBase();
+        statisticalResourcesApiExternalEndpoint = StringUtils.removeEnd(statisticalResourcesApiExternalEndpoint, "/");
 
         maintainerUrnDefault = configurationService.retrieveOrganisationUrn();
     }
