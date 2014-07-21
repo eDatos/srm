@@ -18,7 +18,7 @@
         <metamac-srm-rest-internal-api.version>1.1.1-SNAPSHOT</metamac-srm-rest-internal-api.version>
         <metamac-srm-rest-external-api.version>1.1.1-SNAPSHOT</metamac-srm-rest-external-api.version>
         <metamac-srm-rest-api-common.version>1.0.1-SNAPSHOT</metamac-srm-rest-api-common.version>
-        <metamac-web-common.version>2.0.1-SNAPSHOT</metamac-web-common.version>
+        <metamac-web-common.version>2.0.2-SNAPSHOT</metamac-web-common.version>
         <metamac-statistical-operations-rest-internal-api.version>1.5.2</metamac-statistical-operations-rest-internal-api.version>
         <metamac-sso.version>1.5.3</metamac-sso.version>
         <metamac-core-common.version>3.0.0</metamac-core-common.version>
