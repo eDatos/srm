@@ -270,7 +270,7 @@
                     documentation at codehaus.org -->
                 <configuration>
                     <extraJvmArgs>-Xms512M -Xmx1024M -XX:MaxPermSize=512M</extraJvmArgs>
-                    <runTarget>http://localhost:8090/structural-resources-internal/MetamacSrmWeb.jsp</runTarget>
+                    <runTarget>http://localhost:8080/structural-resources-internal/MetamacSrmWeb.jsp</runTarget>
                     <hostedWebapp>${webappDirectory}</hostedWebapp>
                     <noServer>true</noServer>
                     <debugPort>9997</debugPort>
