@@ -35,6 +35,7 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.constants.CommonWebConstants;
 import org.siemac.metamac.web.common.client.listener.UploadListener;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -45,6 +46,7 @@ import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
+import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -72,6 +74,8 @@ import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -109,6 +113,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     private final CustomToolStripButton                  segregateVariableElementButton;
     private NewVariableElementWindow                     newVariableElementWindow;
     private final DeleteConfirmationWindow               deleteConfirmationWindow;
+    private SearchSectionStack                           elementsSectionStack;
 
     private SearchRelatedResourcePaginatedWindow         createFusionWindow;
     private SearchMultipleRelatedResourcePaginatedWindow createSegregationWindow;
@@ -202,7 +207,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveVariableElementsByVariable(firstResult, maxResults, null, variableDto.getUrn());
+                getUiHandlers().retrieveVariableElementsByVariable(firstResult, maxResults, elementsSectionStack.getSearchCriteria(), variableDto.getUrn());
             }
         });
         variableElementListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
@@ -259,8 +264,28 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         layout.setMargin(15);
         layout.setMembersMargin(15);
 
-        CustomSectionStack elementsSectionStack = new CustomSectionStack(getConstants().variableVariableElements());
-        elementsSectionStack.getDefaultSection().setItems(toolStrip, variableElementListGrid);
+        elementsSectionStack = new SearchSectionStack(getConstants().variableVariableElements());
+        elementsSectionStack.getSection().addItem(toolStrip);
+        elementsSectionStack.getSection().addItem(variableElementListGrid);
+        elementsSectionStack.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                getUiHandlers().retrieveVariableElementsByVariable(VariablePresenter.ELEMENT_LIST_FIRST_RESULT, VariablePresenter.ELEMENT_LIST_MAX_RESULTS, elementsSectionStack.getSearchCriteria(),
+                        variableDto.getUrn());
+            }
+        });
+        elementsSectionStack.addSearchItemKeyPressHandler(new KeyPressHandler() {
+
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+                if (StringUtils.equalsIgnoreCase(event.getKeyName(), CommonWebConstants.ENTER_KEY)) {
+                    getUiHandlers().retrieveVariableElementsByVariable(VariablePresenter.ELEMENT_LIST_FIRST_RESULT, VariablePresenter.ELEMENT_LIST_MAX_RESULTS,
+                            elementsSectionStack.getSearchCriteria(), variableDto.getUrn());
+                }
+            }
+        });
+
         layout.addMember(elementsSectionStack);
 
         operationsSectionStack = new CustomSectionStack(getConstants().variableOperationsBetweenElements());
@@ -361,6 +386,11 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         setVariableViewMode(variableDto);
         setVariableEditionMode(variableDto);
+    }
+
+    @Override
+    public void clearSearchSection() {
+        elementsSectionStack.reset();
     }
 
     private void createViewForm() {

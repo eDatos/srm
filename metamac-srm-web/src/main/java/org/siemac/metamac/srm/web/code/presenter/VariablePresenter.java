@@ -110,6 +110,8 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
 
         void setCodelistsForVariableElementGeographicalGranularity(GetRelatedResourcesResult result);
         void setCodesForVariableElementGeographicalGranularity(GetRelatedResourcesResult result);
+
+        void clearSearchSection();
     }
 
     @ContentSlot
@@ -148,6 +150,7 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
         String identifier = PlaceRequestUtils.getVariableParamFromUrl(placeManager);
         if (!StringUtils.isBlank(identifier)) {
             retrieveVariable(identifier);
+            getView().clearSearchSection();
         } else {
             MetamacSrmWeb.showErrorPage();
         }
