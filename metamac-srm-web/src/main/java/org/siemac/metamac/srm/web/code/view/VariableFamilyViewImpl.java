@@ -19,10 +19,11 @@ import org.siemac.metamac.srm.web.code.view.handlers.VariableFamilyUiHandlers;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
+import org.siemac.metamac.web.common.client.constants.CommonWebConstants;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
-import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
+import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
@@ -40,6 +41,10 @@ import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -65,6 +70,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
     private ToolStripButton                              removeVariableToFamilyButton;
     private SearchMultipleRelatedResourcePaginatedWindow variablesWindow;
     private DeleteConfirmationWindow                     removeConfirmationWindow;
+    private SearchSectionStack                           searchSectionStack;
 
     private VariableFamilyDto                            variableFamilyDto;
 
@@ -100,7 +106,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveVariablesByFamily(firstResult, maxResults, null, variableFamilyDto.getUrn());
+                getUiHandlers().retrieveVariablesByFamily(firstResult, maxResults, searchSectionStack.getSearchCriteria(), variableFamilyDto.getUrn());
             }
         });
         variableListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
@@ -148,9 +154,30 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
 
         VLayout variablesLayout = new VLayout();
         variablesLayout.setMargin(15);
-        CustomSectionStack sectionStack = new CustomSectionStack(getConstants().variableFamilyVariables());
-        sectionStack.getDefaultSection().setItems(toolStrip, variableListGrid);
-        variablesLayout.addMember(sectionStack);
+
+        searchSectionStack = new SearchSectionStack(getConstants().variableFamilyVariables());
+        searchSectionStack.getSection().addItem(toolStrip);
+        searchSectionStack.getSection().addItem(variableListGrid);
+        searchSectionStack.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+                getUiHandlers().retrieveVariablesByFamily(VariableFamilyPresenter.VARIABLE_LIST_FIRST_RESULT, VariableFamilyPresenter.VARIABLE_LIST_MAX_RESULTS,
+                        searchSectionStack.getSearchCriteria(), variableFamilyDto.getUrn());
+            }
+        });
+        searchSectionStack.addSearchItemKeyPressHandler(new KeyPressHandler() {
+
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+                if (StringUtils.equalsIgnoreCase(event.getKeyName(), CommonWebConstants.ENTER_KEY)) {
+                    getUiHandlers().retrieveVariablesByFamily(VariableFamilyPresenter.VARIABLE_LIST_FIRST_RESULT, VariableFamilyPresenter.VARIABLE_LIST_MAX_RESULTS,
+                            searchSectionStack.getSearchCriteria(), variableFamilyDto.getUrn());
+                }
+            }
+        });
+
+        variablesLayout.addMember(searchSectionStack);
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);
