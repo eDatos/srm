@@ -70,7 +70,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
     private ToolStripButton                              removeVariableToFamilyButton;
     private SearchMultipleRelatedResourcePaginatedWindow variablesWindow;
     private DeleteConfirmationWindow                     removeConfirmationWindow;
-    private SearchSectionStack                           searchSectionStack;
+    private SearchSectionStack                           variablesSectionStack;
 
     private VariableFamilyDto                            variableFamilyDto;
 
@@ -106,7 +106,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveVariablesByFamily(firstResult, maxResults, searchSectionStack.getSearchCriteria(), variableFamilyDto.getUrn());
+                getUiHandlers().retrieveVariablesByFamily(firstResult, maxResults, variablesSectionStack.getSearchCriteria(), variableFamilyDto.getUrn());
             }
         });
         variableListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
@@ -155,29 +155,29 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         VLayout variablesLayout = new VLayout();
         variablesLayout.setMargin(15);
 
-        searchSectionStack = new SearchSectionStack(getConstants().variableFamilyVariables());
-        searchSectionStack.getSection().addItem(toolStrip);
-        searchSectionStack.getSection().addItem(variableListGrid);
-        searchSectionStack.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+        variablesSectionStack = new SearchSectionStack(getConstants().variableFamilyVariables());
+        variablesSectionStack.getSection().addItem(toolStrip);
+        variablesSectionStack.getSection().addItem(variableListGrid);
+        variablesSectionStack.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
 
             @Override
             public void onFormItemClick(FormItemIconClickEvent event) {
                 getUiHandlers().retrieveVariablesByFamily(VariableFamilyPresenter.VARIABLE_LIST_FIRST_RESULT, VariableFamilyPresenter.VARIABLE_LIST_MAX_RESULTS,
-                        searchSectionStack.getSearchCriteria(), variableFamilyDto.getUrn());
+                        variablesSectionStack.getSearchCriteria(), variableFamilyDto.getUrn());
             }
         });
-        searchSectionStack.addSearchItemKeyPressHandler(new KeyPressHandler() {
+        variablesSectionStack.addSearchItemKeyPressHandler(new KeyPressHandler() {
 
             @Override
             public void onKeyPress(KeyPressEvent event) {
                 if (StringUtils.equalsIgnoreCase(event.getKeyName(), CommonWebConstants.ENTER_KEY)) {
                     getUiHandlers().retrieveVariablesByFamily(VariableFamilyPresenter.VARIABLE_LIST_FIRST_RESULT, VariableFamilyPresenter.VARIABLE_LIST_MAX_RESULTS,
-                            searchSectionStack.getSearchCriteria(), variableFamilyDto.getUrn());
+                            variablesSectionStack.getSearchCriteria(), variableFamilyDto.getUrn());
                 }
             }
         });
 
-        variablesLayout.addMember(searchSectionStack);
+        variablesLayout.addMember(variablesSectionStack);
 
         VLayout subPanel = new VLayout();
         subPanel.setOverflow(Overflow.SCROLL);
@@ -249,6 +249,11 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
 
         setVariableFamilyViewMode(family);
         setVariableFamilyEditionMode(family);
+    }
+
+    @Override
+    public void clearSearchSection() {
+        variablesSectionStack.reset();
     }
 
     private void createViewForm() {

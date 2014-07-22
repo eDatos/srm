@@ -81,6 +81,8 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
         void setVariableFamily(VariableFamilyDto variableFamilyDto);
         void setVariables(GetVariablesResult result);
         void setVariablesOfFamily(GetVariablesResult result);
+
+        void clearSearchSection();
     }
 
     @ContentSlot
@@ -120,6 +122,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
         String identifier = PlaceRequestUtils.getVariableFamilyParamFromUrl(placeManager);
         if (!StringUtils.isBlank(identifier)) {
             retrieveVariableFamily(identifier);
+            getView().clearSearchSection();
         } else {
             MetamacSrmWeb.showErrorPage();
         }
