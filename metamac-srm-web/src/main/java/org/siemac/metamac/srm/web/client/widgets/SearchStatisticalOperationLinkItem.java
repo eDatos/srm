@@ -21,7 +21,6 @@ public abstract class SearchStatisticalOperationLinkItem extends SearchExternalI
 
     @Override
     protected void onSearch() {
-        final int OPERATION_FIRST_RESULT = 0;
         final int OPERATION_MAX_RESULTS = 16;
 
         searchOperationWindow = new SearchSingleExternalItemPaginatedWindow<MetamacWebCriteria>(MetamacWebCommon.getConstants().resourceSelection(), OPERATION_MAX_RESULTS, new SimpleFilterForm(),
@@ -33,8 +32,7 @@ public abstract class SearchStatisticalOperationLinkItem extends SearchExternalI
                     };
                 });
 
-        retrieveStatisticalOperations(OPERATION_FIRST_RESULT, OPERATION_MAX_RESULTS, searchOperationWindow.getSearchCriteria());
-
+        searchOperationWindow.retrieveItems();
         searchOperationWindow.setSaveAction(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
             @Override
