@@ -14,6 +14,7 @@ import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.code.presenter.VariableElementPresenter;
+import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableElementUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.SearchCodeForVariableElementGeographicalGranularity;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementMainFormLayout;
@@ -45,8 +46,11 @@ import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
+import com.smartgwt.client.widgets.form.validator.RequiredIfFunction;
+import com.smartgwt.client.widgets.form.validator.RequiredIfValidator;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementUiHandlers> implements VariableElementPresenter.VariableElementView {
@@ -457,6 +461,13 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
     private SearchCodeForVariableElementGeographicalGranularity createGeographicalGranularityItem(final String name, String title) {
         final SearchCodeForVariableElementGeographicalGranularity item = new SearchCodeForVariableElementGeographicalGranularity(name, title, getCustomLinkItemNavigationClickHandler());
+        item.setValidators(new RequiredIfValidator(new RequiredIfFunction() {
+            
+            @Override
+            public boolean execute(FormItem formItem, Object value) {
+                return !CommonUtils.isVariableElementWorld(variableElementDto);
+            }
+        }));
         item.setSaveClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
             @Override
