@@ -61,9 +61,9 @@ public class CodesFormUtils {
         if (variableDto == null) {
             return false;
         }
-        // when the variable type is geographical, can always be turned into a non geographical variable
+        // when the variable type is geographical, can always be turned into a non geographical variable, unless is the world variable
         if (VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType())) {
-            return true;
+            return org.siemac.metamac.srm.web.code.utils.CommonUtils.isVariableWorld(variableDto) ? false : true;
         } else {
             // the metadata can only be edited when the variable has no variable elements
             return !BooleanUtils.isTrue(variableDto.getHasVariableElements());
