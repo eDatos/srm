@@ -9,7 +9,6 @@ import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
-import org.siemac.metamac.srm.web.client.utils.SemanticIdentifiersUtils;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
@@ -34,7 +33,6 @@ import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomDateItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageRichTextEditorItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
-import org.siemac.metamac.web.common.client.widgets.form.fields.RequiredTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
@@ -285,8 +283,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     private void createEditionForm() {
         // Identifiers
         identifiersEditionForm = new GroupDynamicForm(getConstants().formIdentifiers());
-        RequiredTextItem code = new RequiredTextItem(VariableElementDS.CODE, getConstants().identifiableArtefactCode());
-        code.setValidators(SemanticIdentifiersUtils.getVariableElementIdentifierCustomValidator());
+        ViewTextItem code = new ViewTextItem(VariableElementDS.CODE, getConstants().identifiableArtefactCode());
         MultiLanguageTextItem shortName = new MultiLanguageTextItem(VariableElementDS.SHORT_NAME, getConstants().variableElementShortName(), SrmConstants.METADATA_SHORT_NAME_MAXIMUM_LENGTH);
         shortName.setRequired(true);
         ViewTextItem urn = new ViewTextItem(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
@@ -386,7 +383,6 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
     public void saveVariableElement() {
         // Identifiers
-        variableElementDto.setCode(identifiersEditionForm.getValueAsString(VariableElementDS.CODE));
         variableElementDto.setShortName(identifiersEditionForm.getValueAsInternationalStringDto(VariableElementDS.SHORT_NAME));
 
         // Content descriptors
