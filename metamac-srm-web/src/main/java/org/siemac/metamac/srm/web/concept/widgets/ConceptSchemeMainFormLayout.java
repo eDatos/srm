@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.web.concept.widgets;
 
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
-import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;

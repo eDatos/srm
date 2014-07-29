@@ -2,8 +2,6 @@ package org.siemac.metamac.srm.web.client.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
-import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
-import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
 import org.siemac.metamac.web.common.client.widgets.InformationLabel;
@@ -12,7 +10,6 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.CustomButtonItem
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomTextItem;
 
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 public class CopyResourceWindow extends CustomWindow {

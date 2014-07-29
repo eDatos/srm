@@ -29,7 +29,6 @@ import org.siemac.metamac.srm.web.client.utils.WaitingAsyncCallbackHandlingExpor
 import org.siemac.metamac.srm.web.dsd.utils.CommonUtils;
 import org.siemac.metamac.srm.web.dsd.view.handlers.DsdGeneralTabUiHandlers;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
-import org.siemac.metamac.srm.web.shared.ExportSDMXResourceResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;

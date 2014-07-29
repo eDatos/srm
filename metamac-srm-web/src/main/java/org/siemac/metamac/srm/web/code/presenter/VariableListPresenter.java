@@ -28,7 +28,6 @@ import org.siemac.metamac.srm.web.shared.code.SaveVariableResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
-import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallback;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;

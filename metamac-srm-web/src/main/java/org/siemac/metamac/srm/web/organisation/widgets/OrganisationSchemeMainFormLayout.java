@@ -1,7 +1,6 @@
 package org.siemac.metamac.srm.web.organisation.widgets;
 
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
-import org.siemac.metamac.srm.web.client.utils.TasksClientSecurityUtils;
 import org.siemac.metamac.srm.web.client.widgets.LifeCycleMainFormLayout;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 
