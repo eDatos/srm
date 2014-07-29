@@ -15,7 +15,6 @@ import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.code.presenter.VariableElementPresenter;
-import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableElementUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.SearchCodeForVariableElementGeographicalGranularity;
 import org.siemac.metamac.srm.web.code.widgets.VariableElementMainFormLayout;
@@ -90,7 +89,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         // VARIABLE ELEMENT
         //
 
-        mainFormLayout = new VariableElementMainFormLayout(CodesClientSecurityUtils.canUpdateVariableElement(), CodesClientSecurityUtils.canDeleteVariableElement());
+        mainFormLayout = new VariableElementMainFormLayout();
         mainFormLayout.getSegregate().addClickHandler(new ClickHandler() {
 
             @Override
@@ -194,6 +193,7 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         String defaultLocalized = InternationalStringUtils.getLocalisedString(variableElementDto.getShortName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;
         mainFormLayout.setTitleLabelContents(title);
+        mainFormLayout.setVariableElement(variableElementDto);
 
         mainFormLayout.setViewMode();
 

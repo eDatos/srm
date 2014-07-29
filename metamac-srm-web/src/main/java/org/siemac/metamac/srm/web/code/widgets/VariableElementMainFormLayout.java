@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.web.code.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.web.common.client.widgets.MainFormLayoutButton;
@@ -11,6 +12,7 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public class VariableElementMainFormLayout extends InternationalMainFormLayout {
 
+    private VariableElementDto     variableElementDto;
     protected MainFormLayoutButton segregateButton;
 
     public VariableElementMainFormLayout() {
@@ -21,6 +23,20 @@ public class VariableElementMainFormLayout extends InternationalMainFormLayout {
     public VariableElementMainFormLayout(boolean canEdit, boolean canDelete) {
         super(canEdit, canDelete);
         common();
+    }
+
+    public void setVariableElement(VariableElementDto variableElementDto) {
+        this.variableElementDto = variableElementDto;
+        setCanEdit();
+        setCanDelete();
+    }
+
+    public void setCanEdit() {
+        super.setCanEdit(CodesClientSecurityUtils.canUpdateVariableElement());
+    }
+
+    public void setCanDelete() {
+        super.setCanDelete(CodesClientSecurityUtils.canDeleteVariableElement(variableElementDto));
     }
 
     private void common() {

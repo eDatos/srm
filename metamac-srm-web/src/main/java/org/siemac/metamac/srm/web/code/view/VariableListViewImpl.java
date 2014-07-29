@@ -237,8 +237,18 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
     }
 
     private void showListGridDeleteButton(ListGridRecord[] records) {
-        if (CodesClientSecurityUtils.canDeleteVariable()) {
+        boolean allSelectedVariablesCanBeDeleted = true;
+        for (ListGridRecord record : records) {
+            VariableBasicDto variable = ((VariableRecord) record).getVariableBasicDto();
+            if (!CodesClientSecurityUtils.canDeleteVariable(variable)) {
+                allSelectedVariablesCanBeDeleted = false;
+                break;
+            }
+        }
+        if (allSelectedVariablesCanBeDeleted) {
             deleteVariableButton.show();
+        } else {
+            deleteVariableButton.hide();
         }
     }
 }

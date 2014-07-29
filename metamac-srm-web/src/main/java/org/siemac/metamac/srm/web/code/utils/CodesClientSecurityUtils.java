@@ -6,7 +6,10 @@ import org.siemac.metamac.core.common.util.shared.BooleanUtils;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
+import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.security.shared.SharedCodesSecurityUtils;
@@ -396,7 +399,18 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canCrudVariable(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canDeleteVariable() {
+    public static boolean canDeleteVariable(VariableDto variableDto) {
+        return canDeleteVariable(variableDto.getUrn());
+    }
+
+    public static boolean canDeleteVariable(VariableBasicDto variableBasicDto) {
+        return canDeleteVariable(variableBasicDto.getUrn());
+    }
+
+    public static boolean canDeleteVariable(String variableUrn) {
+        if (org.siemac.metamac.srm.web.code.utils.CommonUtils.isVariableWorld(variableUrn)) {
+            return false;
+        }
         return SharedCodesSecurityUtils.canCrudVariable(MetamacSrmWeb.getCurrentUser());
     }
 
@@ -414,7 +428,18 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canDeleteVariableElement() {
+    public static boolean canDeleteVariableElement(VariableElementDto variableElementDto) {
+        return canDeleteVariableElement(variableElementDto.getUrn());
+    }
+
+    public static boolean canDeleteVariableElement(VariableElementBasicDto variableElementBasicDto) {
+        return canDeleteVariableElement(variableElementBasicDto.getUrn());
+    }
+
+    public static boolean canDeleteVariableElement(String variableElementUrn) {
+        if (org.siemac.metamac.srm.web.code.utils.CommonUtils.isVariableElementWorld(variableElementUrn)) {
+            return false;
+        }
         return SharedCodesSecurityUtils.canCrudVariableElement(MetamacSrmWeb.getCurrentUser());
     }
 

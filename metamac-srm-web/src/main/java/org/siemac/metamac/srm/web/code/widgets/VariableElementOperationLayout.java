@@ -158,7 +158,7 @@ public class VariableElementOperationLayout extends VLayout {
     }
 
     private void showDeleteOperationButton() {
-        if (CodesClientSecurityUtils.canDeleteVariableElement()) {
+        if (CodesClientSecurityUtils.canDeleteVariableElementOperation()) {
             deleteOperationButton.show();
         }
     }

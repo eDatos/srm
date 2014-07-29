@@ -26,6 +26,16 @@ public class VariableMainFormLayout extends InternationalMainFormLayout {
 
     public void setVariable(VariableDto variableDto) {
         this.variableDto = variableDto;
+        setCanEdit();
+        setCanDelete();
+    }
+
+    public void setCanEdit() {
+        super.setCanEdit(CodesClientSecurityUtils.canUpdateVariable());
+    }
+
+    public void setCanDelete() {
+        super.setCanDelete(CodesClientSecurityUtils.canDeleteVariable(variableDto));
     }
 
     private void common() {

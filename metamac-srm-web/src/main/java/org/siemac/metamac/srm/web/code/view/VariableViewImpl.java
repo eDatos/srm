@@ -78,6 +78,7 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -141,7 +142,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         // VARIABLE
         //
 
-        mainFormLayout = new VariableMainFormLayout(CodesClientSecurityUtils.canUpdateVariable(), CodesClientSecurityUtils.canDeleteVariable());
+        mainFormLayout = new VariableMainFormLayout();
         bindMainFormLayoutEvents();
         createViewForm();
         createEditionForm();
@@ -217,10 +218,10 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
             @Override
             public void onSelectionChanged(SelectionEvent event) {
-                int selectedRecords = variableElementListGrid.getListGrid().getSelectedRecords().length;
+                ListGridRecord[] selectedRecords = variableElementListGrid.getListGrid().getSelectedRecords();
                 updateListGridDeleteButtonVisibility(selectedRecords);
-                updateListGridFusionButtonVisibility(selectedRecords);
-                updateListGridSegregateButtonVisibility(selectedRecords);
+                updateListGridFusionButtonVisibility(selectedRecords.length);
+                updateListGridSegregateButtonVisibility(selectedRecords.length);
 
             }
         });
@@ -857,9 +858,9 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         return segregateButton;
     }
 
-    private void updateListGridDeleteButtonVisibility(int selectedRecords) {
-        if (selectedRecords > 0) {
-            showListGridDeleteButton();
+    private void updateListGridDeleteButtonVisibility(ListGridRecord[] selectedRecords) {
+        if (selectedRecords.length > 0) {
+            showListGridDeleteButton(selectedRecords);
         } else {
             deleteVariableElementButton.hide();
         }
@@ -881,9 +882,19 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         }
     }
 
-    private void showListGridDeleteButton() {
-        if (CodesClientSecurityUtils.canDeleteVariableElementOperation()) {
+    private void showListGridDeleteButton(ListGridRecord[] selectedRecords) {
+        boolean allSelectedVariableElementsCanBeDeleted = true;
+        for (ListGridRecord record : selectedRecords) {
+            VariableElementBasicDto variableElement = ((VariableElementRecord) record).getVariableElementBasicDto();
+            if (!CodesClientSecurityUtils.canDeleteVariableElement(variableElement)) {
+                allSelectedVariableElementsCanBeDeleted = false;
+                break;
+            }
+        }
+        if (allSelectedVariableElementsCanBeDeleted) {
             deleteVariableElementButton.show();
+        } else {
+            deleteVariableElementButton.hide();
         }
     }
 

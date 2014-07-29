@@ -22,6 +22,9 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class CommonUtils {
 
+    private static String variableWorldUrn;
+    private static String variableElementWorldUrn;
+
     public static LinkedHashMap<String, String> getAccessTypeHashMap() {
         LinkedHashMap<String, String> accessTypeHashMap = new LinkedHashMap<String, String>();
         accessTypeHashMap.put(StringUtils.EMPTY, StringUtils.EMPTY);
@@ -126,5 +129,33 @@ public class CommonUtils {
 
     public static String getDefaultCodelistOpennessLevelUrn(CodelistMetamacDto codelistMetamacDto) {
         return codelistMetamacDto.getDefaultOpennessVisualisation() != null ? codelistMetamacDto.getDefaultOpennessVisualisation().getUrn() : null;
+    }
+
+    //
+    // WORLD VARIABLE AND VARIABLE ELEMENT
+    //
+
+    public static String getVariableWorldUrn() {
+        return variableWorldUrn;
+    }
+
+    public static void setVariableWorldUrn(String variableWorldUrn) {
+        CommonUtils.variableWorldUrn = variableWorldUrn;
+    }
+
+    public static String getVariableElementWorldUrn() {
+        return variableElementWorldUrn;
+    }
+
+    public static void setVariableElementWorldUrn(String variableElementWorldUrn) {
+        CommonUtils.variableElementWorldUrn = variableElementWorldUrn;
+    }
+
+    public static boolean isVariableWorld(String variableUrn) {
+        return StringUtils.equals(variableUrn, getVariableWorldUrn());
+    }
+
+    public static boolean isVariableElementWorld(String variableElementUrn) {
+        return StringUtils.equals(variableElementUrn, getVariableElementWorldUrn());
     }
 }
