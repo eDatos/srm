@@ -23,6 +23,7 @@ import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariablePresenter;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CodesFormUtils;
+import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.ImportVariableElementShapeWindow;
 import org.siemac.metamac.srm.web.code.widgets.ImportVariableElementsWindow;
@@ -387,6 +388,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         setVariableViewMode(variableDto);
         setVariableEditionMode(variableDto);
+
+        updateVariableElementCreationAndImportationButtons(variableDto);
     }
 
     @Override
@@ -589,6 +592,10 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         }
         variableElementListGrid.getListGrid().setData(records);
     }
+
+    //
+    // ITEMS CREATION
+    //
 
     private RelatedResourceListItem createFamiliesItem() {
         final int FIRST_RESULST = 0;
@@ -858,6 +865,10 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         return segregateButton;
     }
 
+    //
+    // VISIBILITY UPDATE
+    //
+
     private void updateListGridDeleteButtonVisibility(ListGridRecord[] selectedRecords) {
         if (selectedRecords.length > 0) {
             showListGridDeleteButton(selectedRecords);
@@ -907,6 +918,20 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     private void showListGridSegregateButton() {
         if (CodesClientSecurityUtils.canSegregateVariableElement()) {
             segregateVariableElementButton.show();
+        }
+    }
+
+    private void updateVariableElementCreationAndImportationButtons(VariableDto variableDto) {
+        if (CommonUtils.isVariableWorld(variableDto)) {
+            createVariableElementButton.hide();
+            importVariableElementButton.hide();
+        } else {
+            if (CodesClientSecurityUtils.canCreateVariableElement()) {
+                createVariableElementButton.show();
+            }
+            if (CodesClientSecurityUtils.canImportVariableElements()) {
+                importVariableElementButton.show();
+            }
         }
     }
 

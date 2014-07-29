@@ -7,6 +7,7 @@ import java.util.List;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
+import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
@@ -149,6 +150,10 @@ public class CommonUtils {
 
     public static void setVariableElementWorldUrn(String variableElementWorldUrn) {
         CommonUtils.variableElementWorldUrn = variableElementWorldUrn;
+    }
+
+    public static boolean isVariableWorld(VariableDto variableDto) {
+        return isVariableWorld(variableDto.getUrn());
     }
 
     public static boolean isVariableWorld(String variableUrn) {
