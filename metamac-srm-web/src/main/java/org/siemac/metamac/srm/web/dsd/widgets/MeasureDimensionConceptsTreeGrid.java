@@ -82,6 +82,11 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
                 }
             }
         });
+
+        // Remove handlers that store the tree open state
+
+        folderOpenedHandlerRegistration.removeHandler();
+        folderClosedHandlerRegistration.removeHandler();
     }
 
     @Override
@@ -156,6 +161,11 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
 
     @Override
     protected void onNodeContextClick(String nodeName, ItemVisualisationResult concept) {
+        // Overwrite this method to do nothing
+    }
+
+    @Override
+    protected void recoverOpenState() {
         // Overwrite this method to do nothing
     }
 }

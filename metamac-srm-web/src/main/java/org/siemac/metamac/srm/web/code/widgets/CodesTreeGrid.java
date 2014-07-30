@@ -41,7 +41,8 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
 
     private CodeMetamacVisualisationResult    selectedCode;
 
-    private Map<String, String>               treeOpenStates = new HashMap<String, String>(); // Internal representation that helps us to recover opened nodes after reloading tree
+    // Internal representation that helps us to recover opened nodes after reloading tree
+    private Map<String, String>               treeOpenStates = new HashMap<String, String>();
 
     public CodesTreeGrid() {
         super(true, false);
@@ -113,7 +114,6 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
 
         addFolderOpenedHandler(new FolderOpenedHandler() {
 
-            // This method is used to save the open state
             @Override
             public void onFolderOpened(FolderOpenedEvent event) {
                 saveTreeOpenState();
@@ -177,7 +177,6 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
     }
 
     private void recoverOpenState() {
-        // recover opened nodes
         if (treeOpenStates.containsKey(itemSchemeDto.getUrn()) && !StringUtils.isBlank(treeOpenStates.get(itemSchemeDto.getUrn()))) {
             setOpenState(treeOpenStates.get(itemSchemeDto.getUrn()));
         }
