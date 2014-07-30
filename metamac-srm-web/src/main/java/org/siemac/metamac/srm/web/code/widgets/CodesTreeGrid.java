@@ -2,8 +2,11 @@ package org.siemac.metamac.srm.web.code.widgets;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.domain.shared.CodeMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.code.dto.CodeMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
@@ -12,12 +15,19 @@ import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ItemSchemeDto;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.events.ClickHandler;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 import com.smartgwt.client.widgets.tree.TreeNode;
+import com.smartgwt.client.widgets.tree.events.FolderClosedEvent;
+import com.smartgwt.client.widgets.tree.events.FolderClosedHandler;
+import com.smartgwt.client.widgets.tree.events.FolderOpenedEvent;
+import com.smartgwt.client.widgets.tree.events.FolderOpenedHandler;
 
 public class CodesTreeGrid extends BaseCodesTreeGrid {
 
@@ -30,6 +40,8 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
     private MenuItem                          deleteCodeMenuItem;
 
     private CodeMetamacVisualisationResult    selectedCode;
+
+    private Map<String, String>               treeOpenStates = new HashMap<String, String>(); // Internal representation that helps us to recover opened nodes after reloading tree
 
     public CodesTreeGrid() {
         super(true, false);
@@ -96,6 +108,25 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
         });
 
         addItemsToContextMenu(createCodeMenuItem, addCodeMenuItem, deleteCodeMenuItem);
+
+        // Tree open state
+
+        addFolderOpenedHandler(new FolderOpenedHandler() {
+
+            // This method is used to save the open state
+            @Override
+            public void onFolderOpened(FolderOpenedEvent event) {
+                saveTreeOpenState();
+            }
+        });
+
+        addFolderClosedHandler(new FolderClosedHandler() {
+
+            @Override
+            public void onFolderClosed(FolderClosedEvent event) {
+                saveTreeOpenState();
+            }
+        });
     }
 
     @Override
@@ -113,6 +144,12 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
         showContextMenu();
     }
 
+    @Override
+    public void setItems(ItemSchemeDto itemSchemeDto, List<CodeMetamacVisualisationResult> itemMetamacResults) {
+        super.setItems(itemSchemeDto, itemMetamacResults);
+        recoverOpenState();
+    }
+
     public void setCodelistsToCreateComplexCodelist(GetCodelistsResult result) {
         searchMultipleCodeHierarchyWindow.setCodelists(result);
     }
@@ -127,5 +164,22 @@ public class CodesTreeGrid extends BaseCodesTreeGrid {
 
     private boolean canDeleteCode(String nodeName) {
         return !SCHEME_NODE_NAME.equals(nodeName) && CodesClientSecurityUtils.canDeleteCode(codelistMetamacDto);
+    }
+
+    private void saveTreeOpenState() {
+        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+
+            @Override
+            public void execute() {
+                treeOpenStates.put(itemSchemeDto.getUrn(), getOpenState());
+            }
+        });
+    }
+
+    private void recoverOpenState() {
+        // recover opened nodes
+        if (treeOpenStates.containsKey(itemSchemeDto.getUrn()) && !StringUtils.isBlank(treeOpenStates.get(itemSchemeDto.getUrn()))) {
+            setOpenState(treeOpenStates.get(itemSchemeDto.getUrn()));
+        }
     }
 }
