@@ -1233,7 +1233,7 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         final String fieldName = DataAttributeDS.ROLE;
 
-        SearchRelatedResourceListItemWithSchemeFilterItem item = new SearchRelatedResourceListItemWithSchemeFilterItem(fieldName, getConstants().dsdDimensionsRole(),
+        SearchRelatedResourceListItemWithSchemeFilterItem item = new SearchRelatedResourceListItemWithSchemeFilterItem(fieldName, getConstants().dsdAttributeRole(),
                 SrmWebConstants.FORM_LIST_MAX_RESULTS, getListRecordNavigationClickHandler()) {
 
             @Override

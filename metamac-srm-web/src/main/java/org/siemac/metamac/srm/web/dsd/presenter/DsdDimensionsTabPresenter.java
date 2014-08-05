@@ -103,8 +103,6 @@ public class DsdDimensionsTabPresenter extends Presenter<DsdDimensionsTabPresent
         void onDimensionSaved(DimensionComponentDto dimensionComponentDto);
         boolean validate();
 
-        void setConceptsAsRole(List<RelatedResourceDto> roles, int firstResult, int totalResults);
-
         void setDefaultConceptSchemeEnumeratedRepresentation(RelatedResourceDto conceptScheme);
 
         HasClickHandlers getSave();

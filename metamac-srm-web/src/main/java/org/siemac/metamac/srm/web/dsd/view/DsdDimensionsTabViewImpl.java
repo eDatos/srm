@@ -17,8 +17,8 @@ import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.NavigableListGrid;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceListItemWithSchemeFilterItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.dsd.model.ds.DimensionDS;
@@ -35,6 +35,8 @@ import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.RelatedResourceItemWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.RelatedResourceWebCriteria;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 import org.siemac.metamac.web.common.client.widgets.CustomLinkListGridField;
@@ -92,39 +94,38 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTabUiHandlers> implements DsdDimensionsTabPresenter.DsdDimensionsTabView {
 
-    private DataStructureDefinitionMetamacDto            dataStructureDefinitionMetamacDto;
+    private DataStructureDefinitionMetamacDto    dataStructureDefinitionMetamacDto;
 
-    private DimensionComponentDto                        dimensionComponentDto;
+    private DimensionComponentDto                dimensionComponentDto;
 
-    private VLayout                                      panel;
-    private VLayout                                      selectedComponentLayout;
-    private NavigableListGrid                            dimensionsGrid;
-    private InternationalMainFormLayout                  mainFormLayout;
+    private VLayout                              panel;
+    private VLayout                              selectedComponentLayout;
+    private NavigableListGrid                    dimensionsGrid;
+    private InternationalMainFormLayout          mainFormLayout;
 
-    private AnnotationsPanel                             viewAnnotationsPanel;
-    private AnnotationsPanel                             editionAnnotationsPanel;
+    private AnnotationsPanel                     viewAnnotationsPanel;
+    private AnnotationsPanel                     editionAnnotationsPanel;
 
     // VIEW FORM
 
-    private GroupDynamicForm                             form;
-    private StaticFacetForm                              facetForm;
+    private GroupDynamicForm                     form;
+    private StaticFacetForm                      facetForm;
 
     // EDITION FORM
 
-    private GroupDynamicForm                             editionForm;
-    private DsdFacetForm                                 facetEditionForm;
-    private StaticFacetForm                              facetStaticEditionForm;
+    private GroupDynamicForm                     editionForm;
+    private DsdFacetForm                         facetEditionForm;
+    private StaticFacetForm                      facetStaticEditionForm;
 
-    private ToolStripButton                              newToolStripButton;
-    private ToolStripButton                              deleteToolStripButton;
+    private ToolStripButton                      newToolStripButton;
+    private ToolStripButton                      deleteToolStripButton;
 
-    private DeleteConfirmationWindow                     deleteConfirmationWindow;
+    private DeleteConfirmationWindow             deleteConfirmationWindow;
 
-    private NewDimensionWindow                           newDimensionWindow;
-    private SearchRelatedResourcePaginatedWindow         searchConceptWindow;
-    private SearchMultipleRelatedResourcePaginatedWindow searchConceptsForRolesWindow;
-    private SearchRelatedResourcePaginatedWindow         searchConceptSchemeForEnumeratedRepresentationWindow;
-    private SearchRelatedResourcePaginatedWindow         searchCodelistForEnumeratedRepresentationWindow;
+    private NewDimensionWindow                   newDimensionWindow;
+    private SearchRelatedResourcePaginatedWindow searchConceptWindow;
+    private SearchRelatedResourcePaginatedWindow searchConceptSchemeForEnumeratedRepresentationWindow;
+    private SearchRelatedResourcePaginatedWindow searchCodelistForEnumeratedRepresentationWindow;
 
     @Inject
     public DsdDimensionsTabViewImpl() {
@@ -344,17 +345,18 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
         // CONCEPT
 
-        SearchRelatedResourceLinkItem concept = createConceptItem(DimensionDS.CONCEPT, getConstants().concept()); // Shown in editionMode, only when the concept is editable
+        // Shown in editionMode, only when the concept is editable
+        SearchRelatedResourceLinkItem concept = createConceptItem(DimensionDS.CONCEPT, getConstants().concept());
         concept.setShowIfCondition(getConceptFormItemIfFunction());
 
-        RelatedResourceLinkItem staticConcept = new RelatedResourceLinkItem(DimensionDS.CONCEPT_VIEW, getConstants().concept(), getCustomLinkItemNavigationClickHandler()); // This item is shown when
-                                                                                                                                                                            // the concept can not be
-                                                                                                                                                                            // edited
+        // This item is shown when the concept can not be edited
+        RelatedResourceLinkItem staticConcept = new RelatedResourceLinkItem(DimensionDS.CONCEPT_VIEW, getConstants().concept(), getCustomLinkItemNavigationClickHandler());
+
         staticConcept.setShowIfCondition(getStaticConceptFormItemIfFunction());
 
         // ROLES
 
-        RelatedResourceListItem conceptRoleItem = createRoleItem(DimensionDS.ROLE, getConstants().dsdDimensionsRole());
+        RelatedResourceListItem conceptRoleItem = createRoleItem();
         conceptRoleItem.setShowIfCondition(getRoleFormItemIfFunction());
 
         RelatedResourceListItem staticConceptRoleItem = new RelatedResourceListItem(DimensionDS.ROLE_VIEW, getConstants().dsdDimensionsRole(), false, getListRecordNavigationClickHandler());
@@ -485,17 +487,13 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     @Override
     public void setConceptSchemesForDimensionRole(GetRelatedResourcesResult result) {
-        if (searchConceptsForRolesWindow != null) {
-            searchConceptsForRolesWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
-        }
+        ((SearchRelatedResourceListItemWithSchemeFilterItem) editionForm.getItem(DimensionDS.ROLE)).setFilterResources(result.getRelatedResourceDtos(), result.getFirstResultOut(),
+                result.getTotalResults());
     }
 
     @Override
     public void setConceptsForDimensionRole(GetRelatedResourcesResult result) {
-        if (searchConceptsForRolesWindow != null) {
-            searchConceptsForRolesWindow.setSourceRelatedResources(result.getRelatedResourceDtos());
-            searchConceptsForRolesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
-        }
+        ((SearchRelatedResourceListItemWithSchemeFilterItem) editionForm.getItem(DimensionDS.ROLE)).setResources(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
     }
 
     @Override
@@ -517,14 +515,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         if (searchConceptSchemeForEnumeratedRepresentationWindow != null) {
             searchConceptSchemeForEnumeratedRepresentationWindow.setRelatedResources(result.getRelatedResourceDtos());
             searchConceptSchemeForEnumeratedRepresentationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
-        }
-    }
-
-    @Override
-    public void setConceptsAsRole(List<RelatedResourceDto> concepts, int firstResult, int totalResults) {
-        if (searchConceptsForRolesWindow != null) {
-            searchConceptsForRolesWindow.setSourceRelatedResources(concepts);
-            searchConceptsForRolesWindow.refreshSourcePaginationInfo(firstResult, concepts.size(), totalResults);
         }
     }
 
@@ -934,78 +924,28 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         return representationTypeItem;
     }
 
-    private RelatedResourceListItem createRoleItem(String name, String title) {
-        final int FIRST_RESULT = 0;
-        final int MAX_RESULTS = 8;
+    private RelatedResourceListItem createRoleItem() {
 
-        RelatedResourceListItem relatedResources = new RelatedResourceListItem(name, title, true, getListRecordNavigationClickHandler());
-        relatedResources.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+        final String fieldName = DimensionDS.ROLE;
+
+        SearchRelatedResourceListItemWithSchemeFilterItem item = new SearchRelatedResourceListItemWithSchemeFilterItem(fieldName, getConstants().dsdDimensionsRole(),
+                SrmWebConstants.FORM_LIST_MAX_RESULTS, getListRecordNavigationClickHandler()) {
 
             @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-                SelectItem conceptSchemeSelectItem = new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme());
-                searchConceptsForRolesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().dsdDimensionsRole(), MAX_RESULTS, conceptSchemeSelectItem, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        retrieveConceptsForDimensionRole(firstResult, maxResults, searchConceptsForRolesWindow.getRelatedResourceCriteria(), searchConceptsForRolesWindow.getInitialSelectionValue(),
-                                searchConceptsForRolesWindow.getIsLastVersionValue());
-
-                    }
-                });
-
-                searchConceptsForRolesWindow.showIsLastVersionItem();
-                searchConceptsForRolesWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
-
-                    @Override
-                    public void onChanged(ChangedEvent event) {
-                        retrieveConceptSchemesForDimensionRole(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptsForRolesWindow.getIsLastVersionValue());
-                        retrieveConceptsForDimensionRole(FIRST_RESULT, MAX_RESULTS, searchConceptsForRolesWindow.getRelatedResourceCriteria(), searchConceptsForRolesWindow.getInitialSelectionValue(),
-                                searchConceptsForRolesWindow.getIsLastVersionValue());
-                    }
-                });
-
-                // Load concept schemes and concepts (to populate the selection window)
-                retrieveConceptSchemesForDimensionRole(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptsForRolesWindow.getIsLastVersionValue());
-                retrieveConceptsForDimensionRole(FIRST_RESULT, MAX_RESULTS, null, null, searchConceptsForRolesWindow.getIsLastVersionValue());
-
-                // Set the selected concepts
-                List<RelatedResourceDto> selectedConcepts = ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).getRelatedResourceDtos();
-                searchConceptsForRolesWindow.setTargetRelatedResources(selectedConcepts);
-
-                searchConceptsForRolesWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
-
-                    @Override
-                    public void onChanged(ChangedEvent event) {
-                        retrieveConceptsForDimensionRole(FIRST_RESULT, MAX_RESULTS, searchConceptsForRolesWindow.getRelatedResourceCriteria(), searchConceptsForRolesWindow.getInitialSelectionValue(),
-                                searchConceptsForRolesWindow.getIsLastVersionValue());
-                    }
-                });
-
-                searchConceptsForRolesWindow.setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        retrieveConceptsForDimensionRole(firstResult, maxResults, criteria, searchConceptsForRolesWindow.getInitialSelectionValue(),
-                                searchConceptsForRolesWindow.getIsLastVersionValue());
-                    }
-                });
-                searchConceptsForRolesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        List<RelatedResourceDto> selectedRelatedResources = searchConceptsForRolesWindow.getSelectedRelatedResources();
-                        ((RelatedResourceListItem) editionForm.getItem(DimensionDS.ROLE)).setRelatedResources(selectedRelatedResources);
-                        searchConceptsForRolesWindow.markForDestroy();
-                    }
-                });
+            protected void retrieveItemSchemes(int firstResult, int maxResults, RelatedResourceWebCriteria webCriteria) {
+                retrieveConceptSchemesForDimensionRole(firstResult, maxResults, webCriteria.getCriteria(), webCriteria.isOnlyLastVersion());
             }
-        });
-        return relatedResources;
+            @Override
+            protected void retrieveItems(int firstResult, int maxResults, RelatedResourceItemWebCriteria webCriteria) {
+                retrieveConceptsForDimensionRole(firstResult, maxResults, webCriteria.getCriteria(), webCriteria.getItemSchemeUrn(), webCriteria.isItemSchemeLastVersion());
+            }
+        };
+
+        return item;
     }
 
-    private void retrieveConceptSchemesForDimensionRole(int firstResult, int maxResults, boolean isLastVersion) {
-        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+    private void retrieveConceptSchemesForDimensionRole(int firstResult, int maxResults, String criteria, boolean isLastVersion) {
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria(criteria);
         conceptSchemeWebCriteria.setDsdUrn(dataStructureDefinitionMetamacDto.getUrn());
         conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
 
