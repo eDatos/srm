@@ -8,6 +8,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 /**
  * Window with a {@link SearchRelatedResourcePaginatedDragAndDropItem} and a {@link SearchRelatedResourcePaginatedItem} as a filter.
  */
+@Deprecated
 public class SearchMultipleRelatedResourcePaginatedWithRelatedResourceFilterWindow extends SearchMultipleRelatedResourceBasePaginatedWithRelatedResourceFilterWindow<RelatedResourceDto> {
 
     public SearchMultipleRelatedResourcePaginatedWithRelatedResourceFilterWindow(String title, String filterListTitle, String filterTextTitle, String selectionListTitle, int maxResults,

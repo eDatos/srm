@@ -6,6 +6,7 @@ import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
 
+@Deprecated
 public class SearchCategoriesForCategorisation extends SearchMultipleRelatedResourcePaginatedWithRelatedResourceFilterWindow {
 
     protected static final String FIELD_IS_LAST_VERSION = "is-last-version";
