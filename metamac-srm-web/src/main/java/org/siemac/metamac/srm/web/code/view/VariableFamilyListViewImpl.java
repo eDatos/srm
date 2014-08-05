@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyBasicDto;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableFamilyRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariableFamilyListPresenter;
@@ -16,7 +17,6 @@ import org.siemac.metamac.srm.web.code.utils.CodesRecordUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableFamilyListUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.NewVariableFamilyWindow;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
-import org.siemac.metamac.web.common.client.constants.CommonWebConstants;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
@@ -115,7 +115,7 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
 
             @Override
             public void onKeyPress(KeyPressEvent event) {
-                if (StringUtils.equalsIgnoreCase(event.getKeyName(), CommonWebConstants.ENTER_KEY)) {
+                if (StringUtils.equalsIgnoreCase(event.getKeyName(), SrmWebConstants.ENTER_KEY)) {
                     getUiHandlers().retrieveVariableFamilies(VariableFamilyListPresenter.FAMILY_LIST_FIRST_RESULT, VariableFamilyListPresenter.FAMILY_LIST_MAX_RESULTS,
                             searchSectionStack.getSearchCriteria());
                 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyBasicDto;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistFamilyDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistFamilyRecord;
 import org.siemac.metamac.srm.web.code.presenter.CodelistFamilyListPresenter;
@@ -15,7 +16,6 @@ import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistFamilyListUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.NewCodelistFamilyWindow;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesResult;
-import org.siemac.metamac.web.common.client.constants.CommonWebConstants;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
@@ -113,7 +113,7 @@ public class CodelistFamilyListViewImpl extends ViewWithUiHandlers<CodelistFamil
 
             @Override
             public void onKeyPress(KeyPressEvent event) {
-                if (StringUtils.equalsIgnoreCase(event.getKeyName(), CommonWebConstants.ENTER_KEY)) {
+                if (StringUtils.equalsIgnoreCase(event.getKeyName(), SrmWebConstants.ENTER_KEY)) {
                     getUiHandlers().retrieveCodelistFamilies(CodelistFamilyListPresenter.FAMILY_LIST_FIRST_RESULT, CodelistFamilyListPresenter.FAMILY_LIST_MAX_RESULTS,
                             searchSectionStack.getSearchCriteria());
                 }

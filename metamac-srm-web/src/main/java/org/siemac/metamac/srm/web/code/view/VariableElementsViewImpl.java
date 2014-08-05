@@ -6,12 +6,12 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableElementBasicDto;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariableElementsPresenter;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableElementsUiHandlers;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
-import org.siemac.metamac.web.common.client.constants.CommonWebConstants;
 import org.siemac.metamac.web.common.client.widgets.CustomListGridField;
 import org.siemac.metamac.web.common.client.widgets.PaginatedListGrid;
 import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
@@ -58,7 +58,7 @@ public class VariableElementsViewImpl extends ViewWithUiHandlers<VariableElement
 
             @Override
             public void onKeyPress(KeyPressEvent event) {
-                if (StringUtils.equalsIgnoreCase(event.getKeyName(), CommonWebConstants.ENTER_KEY)) {
+                if (StringUtils.equalsIgnoreCase(event.getKeyName(), SrmWebConstants.ENTER_KEY)) {
                     getUiHandlers().retrieveVariableElements(VariableElementsPresenter.ELEMENT_LIST_FIRST_RESULT, VariableElementsPresenter.ELEMENT_LIST_MAX_RESULTS,
                             searchSectionStack.getSearchCriteria());
                 }

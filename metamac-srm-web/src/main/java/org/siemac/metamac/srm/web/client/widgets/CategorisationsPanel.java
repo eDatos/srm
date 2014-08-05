@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
 import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.model.ds.CategorisationDS;
@@ -42,8 +43,6 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public abstract class CategorisationsPanel extends VLayout {
-
-    private static final int                                                 MAX_RESULTS = 8;
 
     protected ToolStripButton                                                newCategorisationButton;
     protected ToolStripButton                                                deleteCategorisationButton;
@@ -238,7 +237,7 @@ public abstract class CategorisationsPanel extends VLayout {
             }
         };
 
-        window = new SearchMultipleRelatedResourceItemWithSchemeFilterPaginatedWindow(MetamacWebCommon.getConstants().resourceSelection(), MAX_RESULTS, filterSearchAction,
+        window = new SearchMultipleRelatedResourceItemWithSchemeFilterPaginatedWindow(MetamacWebCommon.getConstants().resourceSelection(), SrmWebConstants.FORM_LIST_MAX_RESULTS, filterSearchAction,
                 new org.siemac.metamac.web.common.client.widgets.actions.search.SearchPaginatedAction<RelatedResourceItemWebCriteria>() {
 
                     @Override
