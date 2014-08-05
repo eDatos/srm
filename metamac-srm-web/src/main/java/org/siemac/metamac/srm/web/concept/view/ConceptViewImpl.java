@@ -22,8 +22,8 @@ import org.siemac.metamac.srm.web.client.widgets.AnnotationsPanel;
 import org.siemac.metamac.srm.web.client.widgets.CustomVLayout;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceListItemWithSchemeFilterItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
@@ -44,6 +44,8 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.RelatedResourceItemWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.RelatedResourceWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
@@ -90,46 +92,45 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> implements ConceptPresenter.ConceptView {
 
-    private VLayout                                      panel;
-    private ConceptMainFormLayout                        mainFormLayout;
+    private VLayout                                 panel;
+    private ConceptMainFormLayout                   mainFormLayout;
 
-    private ConceptsTreeGrid                             conceptsTreeGrid;
+    private ConceptsTreeGrid                        conceptsTreeGrid;
 
     // View forms
-    private GroupDynamicForm                             identifiersForm;
-    private GroupDynamicForm                             productionDescriptorsForm;
-    private GroupDynamicForm                             contentDescriptorsForm;
-    private StaticFacetForm                              facetForm;
-    private GroupDynamicForm                             classDescriptorsForm;
-    private GroupDynamicForm                             relationBetweenConceptsForm;
-    private ViewQuantityForm                             quantityForm;
-    private GroupDynamicForm                             legalActsForm;
-    private GroupDynamicForm                             commentsForm;
-    private AnnotationsPanel                             annotationsPanel;
+    private GroupDynamicForm                        identifiersForm;
+    private GroupDynamicForm                        productionDescriptorsForm;
+    private GroupDynamicForm                        contentDescriptorsForm;
+    private StaticFacetForm                         facetForm;
+    private GroupDynamicForm                        classDescriptorsForm;
+    private GroupDynamicForm                        relationBetweenConceptsForm;
+    private ViewQuantityForm                        quantityForm;
+    private GroupDynamicForm                        legalActsForm;
+    private GroupDynamicForm                        commentsForm;
+    private AnnotationsPanel                        annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                             identifiersEditionForm;
-    private GroupDynamicForm                             productionDescriptorsEditionForm;
-    private GroupDynamicForm                             contentDescriptorsEditionForm;
-    private ConceptFacetForm                             facetEditionForm;
-    private StaticFacetForm                              facetStaticEditionForm;
-    private GroupDynamicForm                             classDescriptorsEditionForm;
-    private GroupDynamicForm                             relationBetweenConceptsEditionForm;
-    private QuantityForm                                 quantityEditionForm;
-    private GroupDynamicForm                             legalActsEditionForm;
-    private GroupDynamicForm                             commentsEditionForm;
-    private AnnotationsPanel                             annotationsEditionPanel;
+    private GroupDynamicForm                        identifiersEditionForm;
+    private GroupDynamicForm                        productionDescriptorsEditionForm;
+    private GroupDynamicForm                        contentDescriptorsEditionForm;
+    private ConceptFacetForm                        facetEditionForm;
+    private StaticFacetForm                         facetStaticEditionForm;
+    private GroupDynamicForm                        classDescriptorsEditionForm;
+    private GroupDynamicForm                        relationBetweenConceptsEditionForm;
+    private QuantityForm                            quantityEditionForm;
+    private GroupDynamicForm                        legalActsEditionForm;
+    private GroupDynamicForm                        commentsEditionForm;
+    private AnnotationsPanel                        annotationsEditionPanel;
 
-    private List<ConceptTypeDto>                         conceptTypeDtos;
+    private List<ConceptTypeDto>                    conceptTypeDtos;
 
-    private ConceptSchemeMetamacDto                      conceptSchemeMetamacDto;
-    private List<ConceptMetamacVisualisationResult>      itemVisualisationResults;
-    private ConceptMetamacDto                            conceptDto;
+    private ConceptSchemeMetamacDto                 conceptSchemeMetamacDto;
+    private List<ConceptMetamacVisualisationResult> itemVisualisationResults;
+    private ConceptMetamacDto                       conceptDto;
 
-    private SearchMultipleRelatedResourcePaginatedWindow searchRolesWindow;
-    private SearchRelatedResourcePaginatedWindow         searchExtendsWindow;
-    private SearchRelatedResourcePaginatedWindow         searchVariableWindow;
-    private SearchRelatedResourcePaginatedWindow         searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow;
+    private SearchRelatedResourcePaginatedWindow    searchExtendsWindow;
+    private SearchRelatedResourcePaginatedWindow    searchVariableWindow;
+    private SearchRelatedResourcePaginatedWindow    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow;
 
     @Inject
     public ConceptViewImpl() {
@@ -368,7 +369,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         RelatedResourceLinkItem staticVariable = new RelatedResourceLinkItem(ConceptDS.VARIABLE_VIEW, getConstants().variable(), getCustomLinkItemNavigationClickHandler());
         staticVariable.setShowIfCondition(getStaticVariableFormItemIfFunction());
         SelectItem type = new SelectItem(ConceptDS.TYPE, getConstants().conceptType()); // Value map set in setConceptTypes method
-        RelatedResourceListItem roles = createRolesItem(ConceptDS.ROLES, getConstants().conceptRoles());
+        RelatedResourceListItem roles = createRolesItem();
         roles.setShowIfCondition(getRolesFormItemIfFunction());
 
         // Representation type
@@ -703,11 +704,13 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     @Override
-    public void setConceptThatCanBeRoles(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults) {
-        if (searchRolesWindow != null) {
-            searchRolesWindow.setSourceRelatedResources(conceptDtos);
-            searchRolesWindow.refreshSourcePaginationInfo(firstResult, conceptDtos.size(), totalResults);
-        }
+    public void setConceptSchemesWithConceptsThatCanBeRole(List<RelatedResourceDto> conceptSchemes, int firstResult, int totalResults) {
+        ((SearchRelatedResourceListItemWithSchemeFilterItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setFilterResources(conceptSchemes, firstResult, totalResults);
+    }
+
+    @Override
+    public void setConceptThatCanBeRoles(List<RelatedResourceDto> concepts, int firstResult, int totalResults) {
+        ((SearchRelatedResourceListItemWithSchemeFilterItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setResources(concepts, firstResult, totalResults);
     }
 
     @Override
@@ -715,13 +718,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         if (searchExtendsWindow != null) {
             searchExtendsWindow.setRelatedResources(conceptDtos);
             searchExtendsWindow.refreshSourcePaginationInfo(firstResult, conceptDtos.size(), totalResults);
-        }
-    }
-
-    @Override
-    public void setConceptSchemesWithConceptsThatCanBeRole(List<RelatedResourceDto> conceptSchemes) {
-        if (searchRolesWindow != null) {
-            searchRolesWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(conceptSchemes));
         }
     }
 
@@ -802,6 +798,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             quantityEditionForm.setConceptsForQuantityNumerator(conceptDtos, firstResult, totalResults);
         }
     }
+
     @Override
     public void setConceptSchemesForQuantityDenominatorFilter(List<RelatedResourceDto> conceptSchemesDtos, int firstResult, int totalResults) {
         if (quantityEditionForm != null) {
@@ -824,77 +821,27 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         return ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).getSelectedRelatedResourceUrns();
     }
 
-    private RelatedResourceListItem createRolesItem(String name, String title) {
-        final int FIRST_RESULT = 0;
-        final int MAX_RESULTS = 8;
+    private RelatedResourceListItem createRolesItem() {
+        final String fieldName = ConceptDS.ROLES;
 
-        RelatedResourceListItem rolesItem = new RelatedResourceListItem(name, title, true, getListRecordNavigationClickHandler());
-        rolesItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+        SearchRelatedResourceListItemWithSchemeFilterItem item = new SearchRelatedResourceListItemWithSchemeFilterItem(fieldName, getConstants().conceptRoles(), SrmWebConstants.FORM_LIST_MAX_RESULTS,
+                getListRecordNavigationClickHandler()) {
 
             @Override
-            public void onFormItemClick(FormItemIconClickEvent arg0) {
-                searchRolesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().conceptSelection(), MAX_RESULTS,
-                        new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme()), new PaginatedAction() {
-
-                            @Override
-                            public void retrieveResultSet(int firstResult, int maxResults) {
-                                retrieveConceptsThatCanBeRole(firstResult, maxResults, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getInitialSelectionValue(),
-                                        searchRolesWindow.getIsLastVersionValue());
-                            }
-                        });
-
-                searchRolesWindow.showIsLastVersionItem();
-                searchRolesWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
-
-                    @Override
-                    public void onChanged(ChangedEvent event) {
-                        retrieveConceptSchemesWithConceptsThatCanBeRole(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchRolesWindow.getIsLastVersionValue());
-                        retrieveConceptsThatCanBeRole(FIRST_RESULT, MAX_RESULTS, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getInitialSelectionValue(),
-                                searchRolesWindow.getIsLastVersionValue());
-                    }
-                });
-
-                // Load the list of concepts and concept schemes that can be roles
-                retrieveConceptSchemesWithConceptsThatCanBeRole(FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchRolesWindow.getIsLastVersionValue());
-                retrieveConceptsThatCanBeRole(FIRST_RESULT, MAX_RESULTS, null, null, searchRolesWindow.getIsLastVersionValue());
-
-                searchRolesWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
-
-                    @Override
-                    public void onChanged(ChangedEvent event) {
-                        retrieveConceptsThatCanBeRole(FIRST_RESULT, MAX_RESULTS, searchRolesWindow.getRelatedResourceCriteria(), searchRolesWindow.getInitialSelectionValue(),
-                                searchRolesWindow.getIsLastVersionValue());
-                    }
-                });
-
-                // Set the selected concepts
-                List<RelatedResourceDto> selectedRoles = ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).getRelatedResourceDtos();
-                searchRolesWindow.setTargetRelatedResources(selectedRoles);
-
-                searchRolesWindow.setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        retrieveConceptsThatCanBeRole(firstResult, maxResults, concept, searchRolesWindow.getInitialSelectionValue(), searchRolesWindow.getIsLastVersionValue());
-                    }
-                });
-                searchRolesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
-                        List<RelatedResourceDto> conceptDtos = searchRolesWindow.getSelectedRelatedResources();
-                        searchRolesWindow.markForDestroy();
-                        // Set selected concepts in form
-                        ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(ConceptDS.ROLES)).setRelatedResources(conceptDtos);
-                    }
-                });
+            protected void retrieveItemSchemes(int firstResult, int maxResults, RelatedResourceWebCriteria webCriteria) {
+                retrieveConceptSchemesWithConceptsThatCanBeRole(firstResult, maxResults, webCriteria.getCriteria(), webCriteria.isOnlyLastVersion());
             }
-        });
-        return rolesItem;
+            @Override
+            protected void retrieveItems(int firstResult, int maxResults, RelatedResourceItemWebCriteria webCriteria) {
+                retrieveConceptsThatCanBeRole(firstResult, maxResults, webCriteria.getCriteria(), webCriteria.getItemSchemeUrn(), webCriteria.isItemSchemeLastVersion());
+            }
+        };
+
+        return item;
     }
 
-    private void retrieveConceptSchemesWithConceptsThatCanBeRole(int firstResult, int maxResults, boolean isLastVersion) {
-        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+    private void retrieveConceptSchemesWithConceptsThatCanBeRole(int firstResult, int maxResults, String criteria, boolean isLastVersion) {
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria(criteria);
         conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
 
         getUiHandlers().retrieveConceptSchemesWithConceptsThatCanBeRole(firstResult, maxResults, conceptSchemeWebCriteria);

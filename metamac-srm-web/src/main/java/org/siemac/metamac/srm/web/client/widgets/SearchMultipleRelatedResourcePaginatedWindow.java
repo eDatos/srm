@@ -11,6 +11,7 @@ import com.smartgwt.client.widgets.grid.ListGrid;
  * Window with a {@link SearchRelatedResourcePaginatedDragAndDropItem}. The source {@link ListGrid} is paginated. An extra simple item can be added in order to filter the
  * results showed in the source {@link ListGrid}.
  */
+@Deprecated
 public class SearchMultipleRelatedResourcePaginatedWindow extends SearchMultipleRelatedResourceBasePaginatedWindow<RelatedResourceDto> {
 
     public SearchMultipleRelatedResourcePaginatedWindow(String title, int maxResults, PaginatedAction action) {
