@@ -15,6 +15,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
 import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.utils.RequiredFieldUtils;
@@ -25,8 +26,8 @@ import org.siemac.metamac.srm.web.client.widgets.CopyResourceWindow;
 import org.siemac.metamac.srm.web.client.widgets.CustomTabSet;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceListItemWithSchemeFilterItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
@@ -46,6 +47,8 @@ import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.RelatedResourceItemWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.RelatedResourceWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
@@ -79,8 +82,6 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -90,55 +91,54 @@ import com.smartgwt.client.widgets.tab.Tab;
 
 public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> implements CodelistPresenter.CodelistView {
 
-    private final TitleLabel                             titleLabel;
-    private final InformationLabel                       informationLabel;
-    private final VLayout                                panel;
-    private final CodelistMainFormLayout                 mainFormLayout;
+    private final TitleLabel                         titleLabel;
+    private final InformationLabel                   informationLabel;
+    private final VLayout                            panel;
+    private final CodelistMainFormLayout             mainFormLayout;
 
-    private final CustomTabSet                           tabSet;
-    private final Tab                                    codelistTab;
+    private final CustomTabSet                       tabSet;
+    private final Tab                                codelistTab;
 
     // View forms
-    private GroupDynamicForm                             identifiersForm;
-    private GroupDynamicForm                             contentDescriptorsForm;
-    private GroupDynamicForm                             productionDescriptorsForm;
-    private GroupDynamicForm                             diffusionDescriptorsForm;
-    private GroupDynamicForm                             versionResponsibilityForm;
-    private GroupDynamicForm                             commentsForm;
-    private AnnotationsPanel                             annotationsPanel;
+    private GroupDynamicForm                         identifiersForm;
+    private GroupDynamicForm                         contentDescriptorsForm;
+    private GroupDynamicForm                         productionDescriptorsForm;
+    private GroupDynamicForm                         diffusionDescriptorsForm;
+    private GroupDynamicForm                         versionResponsibilityForm;
+    private GroupDynamicForm                         commentsForm;
+    private AnnotationsPanel                         annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                             identifiersEditionForm;
-    private GroupDynamicForm                             contentDescriptorsEditionForm;
-    private GroupDynamicForm                             productionDescriptorsEditionForm;
-    private GroupDynamicForm                             diffusionDescriptorsEditionForm;
-    private GroupDynamicForm                             versionResponsibilityEditionForm;
-    private GroupDynamicForm                             commentsEditionForm;
-    private AnnotationsPanel                             annotationsEditionPanel;
+    private GroupDynamicForm                         identifiersEditionForm;
+    private GroupDynamicForm                         contentDescriptorsEditionForm;
+    private GroupDynamicForm                         productionDescriptorsEditionForm;
+    private GroupDynamicForm                         diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                         versionResponsibilityEditionForm;
+    private GroupDynamicForm                         commentsEditionForm;
+    private AnnotationsPanel                         annotationsEditionPanel;
 
-    private SearchRelatedResourcePaginatedWindow         searchFamilyWindow;
-    private SearchRelatedResourcePaginatedWindow         searchVariableWindow;
-    private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToCodelistsWindow;
+    private SearchRelatedResourcePaginatedWindow     searchFamilyWindow;
+    private SearchRelatedResourcePaginatedWindow     searchVariableWindow;
 
     // Versions
-    private final CodelistVersionsSectionStack           versionsSectionStack;
+    private final CodelistVersionsSectionStack       versionsSectionStack;
 
     // Codes
-    private final CodelistCodesPanel                     codelistCodesPanel;
+    private final CodelistCodesPanel                 codelistCodesPanel;
 
     // Variable elements assignment
-    private final CodelistCodesVariableElementsPanel     codelistCodesVariableElementsPanel;
+    private final CodelistCodesVariableElementsPanel codelistCodesVariableElementsPanel;
 
     // Orders
-    private final CodelistOrdersPanel                    codelistOrdersPanel;
+    private final CodelistOrdersPanel                codelistOrdersPanel;
 
     // Openness levels
-    private final CodelistOpennesssLevelsPanel           codelistOpennesssLevelsPanel;
+    private final CodelistOpennesssLevelsPanel       codelistOpennesssLevelsPanel;
 
     // Categorisations
-    private final CodelistCategorisationsPanel           categorisationsPanel;
+    private final CodelistCategorisationsPanel       categorisationsPanel;
 
-    private CodelistMetamacDto                           codelistDto;
+    private CodelistMetamacDto                       codelistDto;
 
     @Inject
     public CodelistViewImpl() {
@@ -605,10 +605,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
     @Override
     public void setCodelistsToReplace(List<RelatedResourceDto> codelists, int firstResult, int totalResults) {
-        if (searchReplaceToCodelistsWindow != null) {
-            searchReplaceToCodelistsWindow.setSourceRelatedResources(codelists);
-            searchReplaceToCodelistsWindow.refreshSourcePaginationInfo(firstResult, codelists.size(), totalResults);
-        }
+        ((SearchRelatedResourceListItemWithSchemeFilterItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setResources(codelists, firstResult, totalResults);
     }
 
     private void createViewForm() {
@@ -733,7 +730,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
         // DIFFUSION DESCRIPTORS
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
-        RelatedResourceListItem replaceToCodelists = createReplaceToCodelistsItem(CodelistDS.REPLACE_TO_CODELISTS, getConstants().codelistReplaceToCodelists());
+        RelatedResourceListItem replaceToCodelists = createReplaceToCodelistsItem();
         RelatedResourceLinkItem replacedByCodelist = new RelatedResourceLinkItem(CodelistDS.REPLACED_BY_CODELIST, getConstants().codelistReplacedByCodelist(),
                 getCustomLinkItemNavigationClickHandler());
         CustomSelectItem accessType = new CustomSelectItem(CodelistDS.ACCESS_TYPE, getConstants().codelistAccessType());
@@ -1095,60 +1092,27 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         searchFamilyWindow.getSave().addClickHandler(acceptButtonHandler);
     }
 
-    private RelatedResourceListItem createReplaceToCodelistsItem(String name, String title) {
-        final int FIRST_RESULST = 0;
-        final int MAX_RESULTS = 8;
+    private RelatedResourceListItem createReplaceToCodelistsItem() {
 
-        RelatedResourceListItem replaceToItem = new RelatedResourceListItem(name, title, true, getListRecordNavigationClickHandler());
-        replaceToItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+        String fieldName = CodelistDS.REPLACE_TO_CODELISTS;
+
+        SearchRelatedResourceListItemWithSchemeFilterItem item = new SearchRelatedResourceListItemWithSchemeFilterItem(fieldName, getConstants().codelistReplaceToCodelists(),
+                SrmWebConstants.FORM_LIST_MAX_RESULTS, getListRecordNavigationClickHandler()) {
 
             @Override
-            public void onFormItemClick(FormItemIconClickEvent arg0) {
-                searchReplaceToCodelistsWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().codelistsSelection(), MAX_RESULTS, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        retrieveCodelistsThatCanBeReplaced(firstResult, maxResults, searchReplaceToCodelistsWindow.getRelatedResourceCriteria(), searchReplaceToCodelistsWindow.getIsLastVersionValue());
-                    }
-                });
-
-                searchReplaceToCodelistsWindow.showIsLastVersionItem();
-                searchReplaceToCodelistsWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
-
-                    @Override
-                    public void onChanged(ChangedEvent event) {
-                        retrieveCodelistsThatCanBeReplaced(FIRST_RESULST, MAX_RESULTS, searchReplaceToCodelistsWindow.getRelatedResourceCriteria(),
-                                searchReplaceToCodelistsWindow.getIsLastVersionValue());
-                    }
-                });
-
-                // Load the list codelists that can be replaced
-                retrieveCodelistsThatCanBeReplaced(FIRST_RESULST, MAX_RESULTS, null, searchReplaceToCodelistsWindow.getIsLastVersionValue());
-
-                // Set the selected codelists
-                List<RelatedResourceDto> selectedCodelists = ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).getRelatedResourceDtos();
-                searchReplaceToCodelistsWindow.setTargetRelatedResources(selectedCodelists);
-
-                searchReplaceToCodelistsWindow.setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        retrieveCodelistsThatCanBeReplaced(firstResult, maxResults, criteria, searchReplaceToCodelistsWindow.getIsLastVersionValue());
-                    }
-                });
-                searchReplaceToCodelistsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
-                        List<RelatedResourceDto> selectedCodelists = searchReplaceToCodelistsWindow.getSelectedRelatedResources();
-                        searchReplaceToCodelistsWindow.markForDestroy();
-                        // Set selected codelists in form
-                        ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(selectedCodelists);
-                    }
-                });
+            protected void retrieveItemSchemes(int firstResult, int maxResults, RelatedResourceWebCriteria webCriteria) {
+                // No item scheme filter
             }
-        });
-        return replaceToItem;
+            @Override
+            protected void retrieveItems(int firstResult, int maxResults, RelatedResourceItemWebCriteria webCriteria) {
+                retrieveCodelistsThatCanBeReplaced(firstResult, maxResults, webCriteria.getCriteria(), webCriteria.isItemSchemeLastVersion());
+            }
+            @Override
+            protected boolean isItemSchemeFilterFacetVisible() {
+                return false;
+            }
+        };
+        return item;
     }
 
     private void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, String criteria, boolean isLastVersion) {
