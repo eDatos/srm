@@ -16,9 +16,9 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.search.SearchMultiRelatedResourceSimpleItem;
+import org.siemac.metamac.srm.web.client.widgets.search.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.VariableDS;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
@@ -562,7 +562,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariableElementsForSegregation(GetVariableElementsResult result) {
         if (createSegregationWindow != null) {
-            createSegregationWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableElementBasicDtosAsRelatedResourceDtos(result.getVariableElements()));
+            createSegregationWindow.setResources(RelatedResourceUtils.getVariableElementBasicDtosAsRelatedResourceDtos(result.getVariableElements()));
             createSegregationWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
         }
     }
@@ -748,8 +748,6 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     }
 
     private CustomToolStripButton createSegregateButton() {
-        final int FIRST_RESULST = 0;
-        final int MAX_RESULTS = 8;
         CustomToolStripButton segregateButton = new CustomToolStripButton(getConstants().actionSegregate(), GlobalResources.RESOURCE.segregate().getURL());
         segregateButton.setValign(VerticalAlignment.CENTER);
         segregateButton.setVisible(false);
@@ -757,29 +755,23 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
             @Override
             public void onClick(ClickEvent event) {
-                createSegregationWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().actionSegregate(), MAX_RESULTS, new PaginatedAction() {
+
+                createSegregationWindow = new SearchMultipleRelatedResourcePaginatedWindow(MetamacWebCommon.getConstants().resourceSelection(), SrmWebConstants.FORM_LIST_MAX_RESULTS,
+                        new org.siemac.metamac.web.common.client.widgets.actions.search.SearchPaginatedAction<MetamacWebCriteria>() {
+
+                            @Override
+                            public void retrieveResultSet(int firstResult, int maxResults, MetamacWebCriteria webCriteria) {
+                                getUiHandlers().retrieveVariableElementsByVariableForSegregationOperation(firstResult, maxResults, webCriteria.getCriteria(), variableDto.getUrn());
+                            }
+                        });
+
+                createSegregationWindow.retrieveItems();
+
+                createSegregationWindow.setSaveAction(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariableElementsByVariableForSegregationOperation(firstResult, maxResults, createSegregationWindow.getRelatedResourceCriteria(), variableDto.getUrn());
-                    }
-                });
-
-                // Load variable elements (to populate the selection window)
-                getUiHandlers().retrieveVariableElementsByVariableForSegregationOperation(FIRST_RESULST, MAX_RESULTS, null, variableDto.getUrn());
-
-                createSegregationWindow.setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveVariableElementsByVariableForSegregationOperation(firstResult, maxResults, criteria, variableDto.getUrn());
-                    }
-                });
-                createSegregationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
-                        List<RelatedResourceDto> selectedVariableElements = createSegregationWindow.getSelectedRelatedResources();
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        List<RelatedResourceDto> selectedVariableElements = createSegregationWindow.getSelectedResources();
                         createSegregationWindow.markForDestroy();
                         // Segregate the selected variable elements
                         String sourceUrn = org.siemac.metamac.srm.web.code.utils.CommonUtils.getUrnsFromSelectedVariableElements(variableElementListGrid.getListGrid().getSelectedRecords()).get(0);
