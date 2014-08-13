@@ -9,7 +9,7 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.search.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.VariableDS;
 import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
@@ -25,12 +25,12 @@ import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
-import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
+import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.user.client.ui.Widget;
@@ -307,7 +307,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
     @Override
     public void setVariables(GetVariablesResult result) {
         if (variablesWindow != null) {
-            variablesWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableBasicDtosAsRelatedResourceDtos(result.getVariables()));
+            variablesWindow.setResources(RelatedResourceUtils.getVariableBasicDtosAsRelatedResourceDtos(result.getVariables()));
             variablesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
         }
     }
@@ -328,43 +328,36 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
     }
 
     private ToolStripButton createAddVariableToFamilyButton() {
-        final int FIRST_RESULT = 0;
-        final int MAX_RESULTS = 8;
 
         ToolStripButton button = new ToolStripButton(MetamacWebCommon.getConstants().add(), RESOURCE.newListGrid().getURL());
         button.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent arg0) {
-                variablesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().variablesSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                variablesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().variablesSelection(), SrmWebConstants.FORM_LIST_MAX_RESULTS,
+                        new org.siemac.metamac.web.common.client.widgets.actions.search.SearchPaginatedAction<MetamacWebCriteria>() {
+
+                            @Override
+                            public void retrieveResultSet(int firstResult, int maxResults, MetamacWebCriteria webCriteria) {
+                                getUiHandlers().retrieveVariables(firstResult, maxResults, webCriteria.getCriteria());
+                            }
+                        });
+
+                variablesWindow.retrieveItems();
+
+                variablesWindow.setSaveAction(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariables(firstResult, maxResults, variablesWindow.getRelatedResourceCriteria());
-                    }
-                });
-
-                // Load the list variables to be included in this family
-                getUiHandlers().retrieveVariables(FIRST_RESULT, MAX_RESULTS, null);
-
-                variablesWindow.setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveVariables(firstResult, maxResults, criteria);
-                    }
-                });
-                variablesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
-                        List<RelatedResourceDto> selectedVariables = variablesWindow.getSelectedRelatedResources();
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+                        List<RelatedResourceDto> selectedVariables = variablesWindow.getSelectedResources();
                         variablesWindow.markForDestroy();
                         if (selectedVariables != null && !selectedVariables.isEmpty()) {
                             getUiHandlers().addVariablesToFamily(RelatedResourceUtils.getUrnsFromRelatedResourceDtos(selectedVariables), variableFamilyDto.getUrn());
                         }
                     }
                 });
+
             }
         });
         button.setVisible(CodesClientSecurityUtils.canAddVariablesToVariableFamily());
