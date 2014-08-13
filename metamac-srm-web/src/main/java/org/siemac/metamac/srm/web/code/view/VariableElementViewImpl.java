@@ -9,9 +9,11 @@ import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementOperationDto;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.search.SearchMultiRelatedResourceSimpleItem;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.code.presenter.VariableElementPresenter;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
@@ -38,6 +40,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguag
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
 import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigationClickHandler;
+import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.user.client.ui.Widget;
@@ -47,8 +50,6 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.form.validator.RequiredIfFunction;
 import com.smartgwt.client.widgets.form.validator.RequiredIfValidator;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -72,7 +73,6 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     private GroupDynamicForm                             geographicalInformationEditionForm;
     private GroupDynamicForm                             annotationsEditionForm;
 
-    private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToElementsWindow;
     private SearchMultipleRelatedResourcePaginatedWindow createSegregationWindow;
 
     // Variable element operations
@@ -226,10 +226,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
     @Override
     public void setVariableElementsForReplaceTo(GetVariableElementsResult result) {
-        if (searchReplaceToElementsWindow != null) {
-            searchReplaceToElementsWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableElementBasicDtosAsRelatedResourceDtos(result.getVariableElements()));
-            searchReplaceToElementsWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
-        }
+        ((SearchMultiRelatedResourceSimpleItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.REPLACE_TO_ELEMENTS)).setResources(
+                RelatedResourceUtils.getVariableElementBasicDtosAsRelatedResourceDtos(result.getVariableElements()), result.getFirstResultOut(), result.getTotalResults());
     }
 
     @Override
@@ -411,58 +409,20 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
     }
 
     private RelatedResourceListItem createReplaceToElementsItem() {
-        final int FIRST_RESULST = 0;
-        final int MAX_RESULTS = 8;
-
-        RelatedResourceListItem replaceToItem = new RelatedResourceListItem(VariableElementDS.REPLACE_TO_ELEMENTS, getConstants().variableElementReplaceToVariableElements(), true,
-                getListRecordNavigationClickHandler());
-        replaceToItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+        return new SearchMultiRelatedResourceSimpleItem(VariableElementDS.REPLACE_TO_ELEMENTS, getConstants().variableElementReplaceToVariableElements(), SrmWebConstants.FORM_LIST_MAX_RESULTS,
+                getListRecordNavigationClickHandler()) {
 
             @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-                searchReplaceToElementsWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().variableElementsSelection(), MAX_RESULTS, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariableElementsByVariableForReplaceTo(firstResult, maxResults, searchReplaceToElementsWindow.getRelatedResourceCriteria(),
-                                variableElementDto.getVariable().getUrn());
-                    }
-                });
-
-                // Load variables
-                getUiHandlers().retrieveVariableElementsByVariableForReplaceTo(FIRST_RESULST, MAX_RESULTS, null, variableElementDto.getVariable().getUrn());
-
-                // Set the selected variables
-                List<RelatedResourceDto> selectedElements = ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.REPLACE_TO_ELEMENTS)).getRelatedResourceDtos();
-                searchReplaceToElementsWindow.setTargetRelatedResources(selectedElements);
-
-                searchReplaceToElementsWindow.setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveVariableElementsByVariableForReplaceTo(firstResult, maxResults, criteria, variableElementDto.getVariable().getUrn());
-                    }
-                });
-
-                searchReplaceToElementsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        List<RelatedResourceDto> selectedVariables = searchReplaceToElementsWindow.getSelectedRelatedResources();
-                        searchReplaceToElementsWindow.markForDestroy();
-                        // Set selected variables in form
-                        ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.REPLACE_TO_ELEMENTS)).setRelatedResources(selectedVariables);
-                    }
-                });
+            protected void retrieveResources(int firstResult, int maxResults, MetamacWebCriteria webCriteria) {
+                getUiHandlers().retrieveVariableElementsByVariableForReplaceTo(firstResult, maxResults, webCriteria.getCriteria(), variableElementDto.getVariable().getUrn());
             }
-        });
-        return replaceToItem;
+        };
     }
 
     private SearchCodeForVariableElementGeographicalGranularity createGeographicalGranularityItem(final String name, String title) {
         final SearchCodeForVariableElementGeographicalGranularity item = new SearchCodeForVariableElementGeographicalGranularity(name, title, getCustomLinkItemNavigationClickHandler());
         item.setValidators(new RequiredIfValidator(new RequiredIfFunction() {
-            
+
             @Override
             public boolean execute(FormItem formItem, Object value) {
                 return !CommonUtils.isVariableElementWorld(variableElementDto);
