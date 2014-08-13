@@ -104,8 +104,6 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     private GroupDynamicForm                             contentDescriptorsEditionForm;
     private GroupDynamicForm                             diffusionDescriptorsEditionForm;
 
-    private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToVariablesWindow;
-
     // Variable elements
 
     private final PaginatedCheckListGrid                 variableElementListGrid;
@@ -543,10 +541,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     @Override
     public void setVariables(GetVariablesResult result) {
-        if (searchReplaceToVariablesWindow != null) {
-            searchReplaceToVariablesWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableBasicDtosAsRelatedResourceDtos(result.getVariables()));
-            searchReplaceToVariablesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
-        }
+        ((SearchMultiRelatedResourceSimpleItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setResources(
+                RelatedResourceUtils.getVariableBasicDtosAsRelatedResourceDtos(result.getVariables()), result.getFirstResultOut(), result.getTotalResults());
     }
 
     @Override
@@ -622,50 +618,14 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     }
 
     private RelatedResourceListItem createReplaceToVariablesItem() {
-        final int FIRST_RESULST = 0;
-        final int MAX_RESULTS = 8;
-
-        RelatedResourceListItem replaceToItem = new RelatedResourceListItem(VariableDS.REPLACE_TO_VARIABLES, getConstants().variableReplaceToVariables(), true, getListRecordNavigationClickHandler());
-        replaceToItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+        return new SearchMultiRelatedResourceSimpleItem(VariableDS.REPLACE_TO_VARIABLES, getConstants().variableReplaceToVariables(), SrmWebConstants.FORM_LIST_MAX_RESULTS,
+                getListRecordNavigationClickHandler()) {
 
             @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-                searchReplaceToVariablesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().variablesSelection(), MAX_RESULTS, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariables(firstResult, maxResults, searchReplaceToVariablesWindow.getRelatedResourceCriteria());
-                    }
-                });
-
-                // Load variables
-                getUiHandlers().retrieveVariables(FIRST_RESULST, MAX_RESULTS, null);
-
-                // Set the selected variables
-                List<RelatedResourceDto> selectedVariables = ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).getRelatedResourceDtos();
-                searchReplaceToVariablesWindow.setTargetRelatedResources(selectedVariables);
-
-                searchReplaceToVariablesWindow.setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveVariables(firstResult, maxResults, criteria);
-                    }
-                });
-
-                searchReplaceToVariablesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        List<RelatedResourceDto> selectedVariables = searchReplaceToVariablesWindow.getSelectedRelatedResources();
-                        searchReplaceToVariablesWindow.markForDestroy();
-                        // Set selected variables in form
-                        ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setRelatedResources(selectedVariables);
-                    }
-                });
+            protected void retrieveResources(int firstResult, int maxResults, MetamacWebCriteria webCriteria) {
+                getUiHandlers().retrieveVariables(firstResult, maxResults, webCriteria.getCriteria());
             }
-        });
-        return replaceToItem;
+        };
     }
 
     private CustomToolStripButton createCreateVariableElementButton() {
