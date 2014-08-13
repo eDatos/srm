@@ -9,7 +9,7 @@ import com.gwtplatform.mvp.client.UiHandlers;
 public interface CodelistFamilyUiHandlers extends UiHandlers {
 
     void retrieveCodelistFamilyByUrn(String identifier);
-    void retrieveCodelists(int firstResult, int maxResults, final String criteria);
+    void retrieveCodelists(int firstResult, int maxResults, final String criteria, boolean isLastVersion);
     void retrieveCodelistsByFamily(int firstResult, int maxResults, final String criteria, String familyUrn);
     void saveCodelistFamily(CodelistFamilyDto codelistFamilyDto);
     void addCodelistsToFamily(List<String> codelists, String familyUrn);

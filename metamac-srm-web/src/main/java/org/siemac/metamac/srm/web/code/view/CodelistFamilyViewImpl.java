@@ -8,7 +8,8 @@ import java.util.List;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistFamilyDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacBasicDto;
-import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
+import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourceItemWithSchemeFilterPaginatedWindow;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistFamilyDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
@@ -17,6 +18,7 @@ import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistFamilyUiHandlers;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
+import org.siemac.metamac.srm.web.shared.criteria.RelatedResourceItemWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -24,7 +26,7 @@ import org.siemac.metamac.web.common.client.widgets.CustomSectionStack;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
-import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.actions.search.SearchPaginatedAction;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.InternationalMainFormLayout;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTextItem;
@@ -51,22 +53,22 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiHandlers> implements CodelistFamilyPresenter.CodelistFamilyView {
 
-    private VLayout                                      panel;
-    private InternationalMainFormLayout                  mainFormLayout;
+    private VLayout                                                          panel;
+    private InternationalMainFormLayout                                      mainFormLayout;
 
     // View forms
-    private GroupDynamicForm                             identifiersForm;
+    private GroupDynamicForm                                                 identifiersForm;
 
     // Edition forms
-    private GroupDynamicForm                             identifiersEditionForm;
+    private GroupDynamicForm                                                 identifiersEditionForm;
 
-    private PaginatedCheckListGrid                       codelistListGrid;
-    private ToolStripButton                              addCodelistToFamilyButton;
-    private ToolStripButton                              removeCodelistToFamilyButton;
-    private SearchMultipleRelatedResourcePaginatedWindow codelistsWindow;
-    private DeleteConfirmationWindow                     removeConfirmationWindow;
+    private PaginatedCheckListGrid                                           codelistListGrid;
+    private ToolStripButton                                                  addCodelistToFamilyButton;
+    private ToolStripButton                                                  removeCodelistToFamilyButton;
+    private SearchMultipleRelatedResourceItemWithSchemeFilterPaginatedWindow codelistsWindow;
+    private DeleteConfirmationWindow                                         removeConfirmationWindow;
 
-    private CodelistFamilyDto                            codelistFamilyDto;
+    private CodelistFamilyDto                                                codelistFamilyDto;
 
     @Inject
     public CodelistFamilyViewImpl() {
@@ -275,7 +277,7 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
     @Override
     public void setCodelists(GetCodelistsResult result) {
         if (codelistsWindow != null) {
-            codelistsWindow.setSourceRelatedResources(RelatedResourceUtils.getCodelistBasicDtosAsRelatedResourceDtos(result.getCodelists()));
+            codelistsWindow.setResources(RelatedResourceUtils.getCodelistBasicDtosAsRelatedResourceDtos(result.getCodelists()));
             codelistsWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getCodelists().size(), result.getTotalResults());
         }
     }
@@ -296,8 +298,6 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
     }
 
     private ToolStripButton createAddCodelistToFamilyButton() {
-        final int FIRST_RESULT = 0;
-        final int MAX_RESULTS = 8;
 
         ToolStripButton button = new ToolStripButton(MetamacWebCommon.getConstants().add(), RESOURCE.newListGrid().getURL());
         button.setVisible(CodesClientSecurityUtils.canAddCodelistToCodelistFamily());
@@ -305,29 +305,26 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
 
             @Override
             public void onClick(ClickEvent arg0) {
-                codelistsWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().codelistsSelection(), MAX_RESULTS, new PaginatedAction() {
+
+                codelistsWindow = new SearchMultipleRelatedResourceItemWithSchemeFilterPaginatedWindow(getConstants().variablesSelection(), SrmWebConstants.FORM_LIST_MAX_RESULTS, null,
+                        new SearchPaginatedAction<RelatedResourceItemWebCriteria>() {
+
+                            @Override
+                            public void retrieveResultSet(int firstResult, int maxResults, RelatedResourceItemWebCriteria webCriteria) {
+                                getUiHandlers().retrieveCodelists(firstResult, maxResults, webCriteria.getCriteria(), webCriteria.isItemSchemeLastVersion());
+                            }
+                        });
+
+                codelistsWindow.getFilter().getItemSchemeFilterFacet().getFormItem().setVisible(false);
+
+                codelistsWindow.retrieveItems();
+
+                codelistsWindow.setSaveAction(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
                     @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveCodelists(firstResult, maxResults, codelistsWindow.getRelatedResourceCriteria());
-                    }
-                });
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
 
-                // Load the list codelists to be included in this family
-                getUiHandlers().retrieveCodelists(FIRST_RESULT, MAX_RESULTS, null);
-
-                codelistsWindow.setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveCodelists(firstResult, maxResults, criteria);
-                    }
-                });
-                codelistsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
-                        List<RelatedResourceDto> selectedCodelists = codelistsWindow.getSelectedRelatedResources();
+                        List<RelatedResourceDto> selectedCodelists = codelistsWindow.getSelectedResources();
                         codelistsWindow.markForDestroy();
                         if (selectedCodelists != null && !selectedCodelists.isEmpty()) {
                             getUiHandlers().addCodelistsToFamily(RelatedResourceUtils.getUrnsFromRelatedResourceDtos(selectedCodelists), codelistFamilyDto.getUrn());

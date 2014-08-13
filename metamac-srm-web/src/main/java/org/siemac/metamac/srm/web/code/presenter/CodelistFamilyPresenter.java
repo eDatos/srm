@@ -150,9 +150,10 @@ public class CodelistFamilyPresenter extends Presenter<CodelistFamilyPresenter.C
     }
 
     @Override
-    public void retrieveCodelists(int firstResult, int maxResults, String criteria) {
+    public void retrieveCodelists(int firstResult, int maxResults, String criteria, boolean isLastVersion) {
         CodelistWebCriteria codelistWebCriteria = new CodelistWebCriteria();
         codelistWebCriteria.setCriteria(criteria);
+        codelistWebCriteria.setIsLastVersion(isLastVersion);
         dispatcher.execute(new GetCodelistsAction(firstResult, maxResults, codelistWebCriteria), new WaitingAsyncCallbackHandlingError<GetCodelistsResult>(this) {
 
             @Override
