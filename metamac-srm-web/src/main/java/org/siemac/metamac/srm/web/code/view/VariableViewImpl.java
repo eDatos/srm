@@ -701,15 +701,13 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     }
 
     private CustomToolStripButton createFusionButton() {
-        final int FIRST_RESULST = 0;
-        final int MAX_RESULTS = 8;
         CustomToolStripButton fusionButton = new CustomToolStripButton(getConstants().actionFusion(), GlobalResources.RESOURCE.fusion().getURL());
         fusionButton.setVisible(false);
         fusionButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                createFusionWindow = new SearchRelatedResourcePaginatedWindow(getConstants().actionFusion(), MAX_RESULTS, new PaginatedAction() {
+                createFusionWindow = new SearchRelatedResourcePaginatedWindow(getConstants().actionFusion(), SrmWebConstants.FORM_LIST_MAX_RESULTS, new PaginatedAction() {
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
@@ -718,7 +716,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
                 });
 
                 // Load variable elements (to populate the selection window)
-                getUiHandlers().retrieveVariableElementsByVariableForFusionOperation(FIRST_RESULST, MAX_RESULTS, null, variableDto.getUrn());
+                getUiHandlers().retrieveVariableElementsByVariableForFusionOperation(0, SrmWebConstants.FORM_LIST_MAX_RESULTS, null, variableDto.getUrn());
 
                 createFusionWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
                 createFusionWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
