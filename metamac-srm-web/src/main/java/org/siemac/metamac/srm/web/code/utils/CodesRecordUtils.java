@@ -26,7 +26,6 @@ import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableFamilyRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
 import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
@@ -37,7 +36,7 @@ public class CodesRecordUtils extends org.siemac.metamac.srm.web.client.utils.Re
     public static CodelistRecord getCodelistRecord(CodelistMetamacBasicDto codelistDto) {
         CodelistRecord record = new CodelistRecord();
         record = (CodelistRecord) getItemSchemeRecord(record, codelistDto, codelistDto.getLifeCycle());
-        record.setIsRecommended(CommonWebUtils.getBooleanValueAsString(codelistDto.getIsRecommended()));
+        record.setIsRecommended(BooleanWebUtils.getBooleanLabel(codelistDto.getIsRecommended()));
         record.setVariable(codelistDto.getVariable());
         record.setCodelistBasicDto(codelistDto);
         return record;
