@@ -18,6 +18,7 @@ import org.siemac.metamac.srm.web.client.resources.GlobalResources;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchMultipleRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.search.SearchMultiRelatedResourceSimpleItem;
 import org.siemac.metamac.srm.web.code.model.ds.VariableDS;
 import org.siemac.metamac.srm.web.code.model.ds.VariableElementDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
@@ -57,6 +58,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageTex
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguageTextItem;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigationClickHandler;
+import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.google.gwt.user.client.ui.Widget;
@@ -102,7 +104,6 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     private GroupDynamicForm                             contentDescriptorsEditionForm;
     private GroupDynamicForm                             diffusionDescriptorsEditionForm;
 
-    private SearchMultipleRelatedResourcePaginatedWindow searchFamiliesWindow;
     private SearchMultipleRelatedResourcePaginatedWindow searchReplaceToVariablesWindow;
 
     // Variable elements
@@ -536,10 +537,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     @Override
     public void setVariableFamilies(GetVariableFamiliesResult result) {
-        if (searchFamiliesWindow != null) {
-            searchFamiliesWindow.setSourceRelatedResources(RelatedResourceUtils.getVariableFamilyBasicDtosAsRelatedResourceDtos(result.getFamilies()));
-            searchFamiliesWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getFamilies().size(), result.getTotalResults());
-        }
+        ((SearchMultiRelatedResourceSimpleItem) contentDescriptorsEditionForm.getItem(VariableDS.FAMILIES)).setResources(
+                RelatedResourceUtils.getVariableFamilyBasicDtosAsRelatedResourceDtos(result.getFamilies()), result.getFirstResultOut(), result.getTotalResults());
     }
 
     @Override
@@ -598,48 +597,15 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     //
 
     private RelatedResourceListItem createFamiliesItem() {
-        final int FIRST_RESULST = 0;
-        final int MAX_RESULTS = 8;
 
-        final RelatedResourceListItem familiesItem = new RelatedResourceListItem(VariableDS.FAMILIES, getConstants().variableFamilies(), true, getListRecordNavigationClickHandler());
-        familiesItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+        final SearchMultiRelatedResourceSimpleItem familiesItem = new SearchMultiRelatedResourceSimpleItem(VariableDS.FAMILIES, getConstants().variableFamilies(),
+                SrmWebConstants.FORM_LIST_MAX_RESULTS, getListRecordNavigationClickHandler()) {
 
             @Override
-            public void onFormItemClick(FormItemIconClickEvent arg0) {
-                searchFamiliesWindow = new SearchMultipleRelatedResourcePaginatedWindow(getConstants().familiesSelection(), MAX_RESULTS, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariableFamilies(firstResult, maxResults, searchFamiliesWindow.getRelatedResourceCriteria());
-                    }
-                });
-
-                // Load the list of families
-                getUiHandlers().retrieveVariableFamilies(FIRST_RESULST, MAX_RESULTS, null);
-
-                // Set the selected families
-                List<RelatedResourceDto> selectedFamilies = ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(VariableDS.FAMILIES)).getRelatedResourceDtos();
-                searchFamiliesWindow.setTargetRelatedResources(selectedFamilies);
-
-                searchFamiliesWindow.setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveVariableFamilies(firstResult, maxResults, criteria);
-                    }
-                });
-                searchFamiliesWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
-                        List<RelatedResourceDto> selectedFamilies = searchFamiliesWindow.getSelectedRelatedResources();
-                        searchFamiliesWindow.markForDestroy();
-                        // Set selected families in form
-                        ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(VariableDS.FAMILIES)).setRelatedResources(selectedFamilies);
-                    }
-                });
+            protected void retrieveResources(int firstResult, int maxResults, MetamacWebCriteria webCriteria) {
+                getUiHandlers().retrieveVariableFamilies(firstResult, maxResults, webCriteria.getCriteria());
             }
-        });
+        };
 
         // Set required with a customValidator
         CustomValidator customValidator = new CustomValidator() {
@@ -651,6 +617,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         };
         familiesItem.setValidators(customValidator);
         familiesItem.setTitleStyle("staticFormItemTitle");
+
         return familiesItem;
     }
 
