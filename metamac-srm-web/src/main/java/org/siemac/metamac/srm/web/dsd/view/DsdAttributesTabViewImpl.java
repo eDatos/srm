@@ -22,7 +22,7 @@ import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceListItemWithSchemeFilterItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
-import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
+import org.siemac.metamac.srm.web.client.widgets.search.SearchSrmItemLinkItemWithSchemeFilterItem;
 import org.siemac.metamac.srm.web.dsd.model.ds.DataAttributeDS;
 import org.siemac.metamac.srm.web.dsd.model.record.DataAttributeRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdAttributesTabPresenter;
@@ -80,7 +80,6 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
@@ -128,7 +127,6 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     private DeleteConfirmationWindow             deleteConfirmationWindow;
 
-    private SearchRelatedResourcePaginatedWindow searchConceptWindow;
     private SearchRelatedResourcePaginatedWindow searchCodelistForEnumeratedRepresentationWindow;
     private SearchRelatedResourcePaginatedWindow searchConceptSchemeForEnumeratedRepresentationWindow;
 
@@ -329,11 +327,11 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
         // CONCEPT
 
-        SearchRelatedResourceLinkItem concept = createConceptItem(DataAttributeDS.CONCEPT, getConstants().concept());
-        concept.setShowIfCondition(getConceptFormItemIfFunction()); // Shown in editionMode, only when the concept is editable
+        SearchRelatedResourceLinkItem concept = createConceptItem();
+        concept.setShowIfCondition(getConceptFormItemIfFunction());
 
         RelatedResourceLinkItem staticConcept = new RelatedResourceLinkItem(DataAttributeDS.CONCEPT_VIEW, getConstants().concept(), getCustomLinkItemNavigationClickHandler());
-        staticConcept.setShowIfCondition(getStaticConceptFormItemIfFunction()); // This item is shown when the concept can not be edited
+        staticConcept.setShowIfCondition(getStaticConceptFormItemIfFunction());
 
         // ROLE
 
@@ -538,17 +536,14 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
 
     @Override
     public void setConceptSchemes(GetRelatedResourcesResult result) {
-        if (searchConceptWindow != null) {
-            searchConceptWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
-        }
+        ((SearchSrmItemLinkItemWithSchemeFilterItem) editionForm.getItem(DataAttributeDS.CONCEPT)).setFilterResources(result.getRelatedResourceDtos(), result.getFirstResultOut(), result
+                .getRelatedResourceDtos().size(), result.getTotalResults());
     }
 
     @Override
     public void setConcepts(GetRelatedResourcesResult result) {
-        if (searchConceptWindow != null) {
-            searchConceptWindow.setRelatedResources(result.getRelatedResourceDtos());
-            searchConceptWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
-        }
+        ((SearchSrmItemLinkItemWithSchemeFilterItem) editionForm.getItem(DataAttributeDS.CONCEPT)).setResources(result.getRelatedResourceDtos(), result.getFirstResultOut(), result
+                .getRelatedResourceDtos().size(), result.getTotalResults());
     }
 
     @Override
@@ -1135,84 +1130,30 @@ public class DsdAttributesTabViewImpl extends ViewWithUiHandlers<DsdAttributesTa
         return representationTypeItem;
     }
 
-    private SearchRelatedResourceLinkItem createConceptItem(String name, String title) {
-        final int FIRST_RESULST = 0;
-        final int MAX_RESULTS = 8;
-        final SearchRelatedResourceLinkItem conceptItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
-        conceptItem.setRequired(true);
-        conceptItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+    private SearchRelatedResourceLinkItem createConceptItem() {
+        final String fieldName = DataAttributeDS.CONCEPT;
+
+        SearchSrmItemLinkItemWithSchemeFilterItem item = new SearchSrmItemLinkItemWithSchemeFilterItem(fieldName, getConstants().concept(), SrmWebConstants.FORM_LIST_MAX_RESULTS,
+                getCustomLinkItemNavigationClickHandler()) {
 
             @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-
-                final SpecialAttributeTypeEnum specialAttributeTypeEnum = getSpecialAttributeTypeFromEditionForm();
-
-                SelectItem conceptSchemeSelectItem = new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme());
-                searchConceptWindow = new SearchRelatedResourcePaginatedWindow(getConstants().conceptSelection(), MAX_RESULTS, conceptSchemeSelectItem, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        retrieveConcepts(specialAttributeTypeEnum, firstResult, maxResults, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue(),
-                                searchConceptWindow.getIsLastVersionValue());
-                    }
-                });
-
-                searchConceptWindow.showIsLastVersionItem();
-                searchConceptWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
-
-                    @Override
-                    public void onChanged(ChangedEvent event) {
-                        retrieveConceptSchemes(specialAttributeTypeEnum, FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptWindow.getIsLastVersionValue());
-                        retrieveConcepts(specialAttributeTypeEnum, FIRST_RESULST, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue(),
-                                searchConceptWindow.getIsLastVersionValue());
-                    }
-                });
-
-                // Load concept schemes and concepts (to populate the selection window)
-                retrieveConceptSchemes(specialAttributeTypeEnum, FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptWindow.getIsLastVersionValue());
-                retrieveConcepts(specialAttributeTypeEnum, FIRST_RESULST, MAX_RESULTS, null, null, searchConceptWindow.getIsLastVersionValue());
-
-                searchConceptWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
-
-                    @Override
-                    public void onChanged(ChangedEvent event) {
-                        retrieveConcepts(specialAttributeTypeEnum, FIRST_RESULST, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(), searchConceptWindow.getInitialSelectionValue(),
-                                searchConceptWindow.getIsLastVersionValue());
-                    }
-                });
-
-                searchConceptWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
-                searchConceptWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        retrieveConcepts(specialAttributeTypeEnum, firstResult, maxResults, concept, searchConceptWindow.getInitialSelectionValue(), searchConceptWindow.getIsLastVersionValue());
-                    }
-                });
-
-                searchConceptWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        RelatedResourceDto selectedConcept = searchConceptWindow.getSelectedRelatedResource();
-                        searchConceptWindow.markForDestroy();
-                        // Set selected concepts in form
-                        setConceptInEditionForm(selectedConcept);
-
-                        // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
-                        ((SearchRelatedResourceLinkItem) editionForm.getItem(DataAttributeDS.ENUMERATED_REPRESENTATION_CODELIST)).clearRelatedResource();
-
-                        editionForm.markForRedraw();
-                        editionForm.validate(false);
-                    }
-                });
+            protected void retrieveItemSchemes(int firstResult, int maxResults, RelatedResourceWebCriteria webCriteria) {
+                SpecialAttributeTypeEnum specialAttributeTypeEnum = getSpecialAttributeTypeFromEditionForm();
+                retrieveConceptSchemes(specialAttributeTypeEnum, firstResult, maxResults, webCriteria.getCriteria(), webCriteria.isOnlyLastVersion());
             }
-        });
-        return conceptItem;
+            @Override
+            protected void retrieveItems(int firstResult, int maxResults, RelatedResourceItemWebCriteria webCriteria) {
+                SpecialAttributeTypeEnum specialAttributeTypeEnum = getSpecialAttributeTypeFromEditionForm();
+                retrieveConcepts(specialAttributeTypeEnum, firstResult, maxResults, webCriteria.getCriteria(), webCriteria.getItemSchemeUrn(), webCriteria.isItemSchemeLastVersion());
+            }
+        };
+        item.setRequired(true);
+
+        return item;
     }
 
-    private void retrieveConceptSchemes(SpecialAttributeTypeEnum specialAttributeTypeEnum, int firstResult, int maxResults, boolean isLastVersion) {
-        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+    private void retrieveConceptSchemes(SpecialAttributeTypeEnum specialAttributeTypeEnum, int firstResult, int maxResults, String criteria, boolean isLastVersion) {
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria(criteria);
         conceptSchemeWebCriteria.setDsdUrn(dataStructureDefinitionMetamacDto.getUrn());
         conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
 
