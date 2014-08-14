@@ -66,7 +66,7 @@ public class ItemSchemeCriteriaFacetFilter implements FacetFilter {
     }
 
     public void setSelectedItemScheme(RelatedResourceDto selected) {
-        schemeFilter.setExternalItem(ExternalItemUtils.getExternalItemDtoFromRelatedResourceDto(selected, getType(selected)));
+        schemeFilter.setExternalItem(selected != null ? ExternalItemUtils.getExternalItemDtoFromRelatedResourceDto(selected, getType(selected)) : null);
         filterAction.applyFilter();
     }
 
