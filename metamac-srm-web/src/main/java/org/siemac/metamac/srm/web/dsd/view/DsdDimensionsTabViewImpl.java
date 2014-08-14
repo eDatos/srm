@@ -20,7 +20,7 @@ import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceListItemWithSchemeFilterItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
-import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
+import org.siemac.metamac.srm.web.client.widgets.search.SearchSrmItemLinkItemWithSchemeFilterItem;
 import org.siemac.metamac.srm.web.dsd.model.ds.DimensionDS;
 import org.siemac.metamac.srm.web.dsd.model.record.DimensionRecord;
 import org.siemac.metamac.srm.web.dsd.presenter.DsdDimensionsTabPresenter;
@@ -76,7 +76,6 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
-import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
@@ -123,7 +122,6 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
     private DeleteConfirmationWindow             deleteConfirmationWindow;
 
     private NewDimensionWindow                   newDimensionWindow;
-    private SearchRelatedResourcePaginatedWindow searchConceptWindow;
     private SearchRelatedResourcePaginatedWindow searchConceptSchemeForEnumeratedRepresentationWindow;
     private SearchRelatedResourcePaginatedWindow searchCodelistForEnumeratedRepresentationWindow;
 
@@ -346,7 +344,7 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         // CONCEPT
 
         // Shown in editionMode, only when the concept is editable
-        SearchRelatedResourceLinkItem concept = createConceptItem(DimensionDS.CONCEPT, getConstants().concept());
+        SearchRelatedResourceLinkItem concept = createConceptItem();
         concept.setShowIfCondition(getConceptFormItemIfFunction());
 
         // This item is shown when the concept can not be edited
@@ -472,17 +470,14 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
 
     @Override
     public void setConceptSchemes(GetRelatedResourcesResult result) {
-        if (searchConceptWindow != null) {
-            searchConceptWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(result.getRelatedResourceDtos()));
-        }
+        ((SearchSrmItemLinkItemWithSchemeFilterItem) editionForm.getItem(DimensionDS.CONCEPT)).setFilterResources(result.getRelatedResourceDtos(), result.getFirstResultOut(), result
+                .getRelatedResourceDtos().size(), result.getTotalResults());
     }
 
     @Override
     public void setConcepts(GetRelatedResourcesResult result) {
-        if (searchConceptWindow != null) {
-            searchConceptWindow.setRelatedResources(result.getRelatedResourceDtos());
-            searchConceptWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getRelatedResourceDtos().size(), result.getTotalResults());
-        }
+        ((SearchSrmItemLinkItemWithSchemeFilterItem) editionForm.getItem(DimensionDS.CONCEPT)).setResources(result.getRelatedResourceDtos(), result.getFirstResultOut(), result
+                .getRelatedResourceDtos().size(), result.getTotalResults());
     }
 
     @Override
@@ -962,98 +957,32 @@ public class DsdDimensionsTabViewImpl extends ViewWithUiHandlers<DsdDimensionsTa
         getUiHandlers().retrieveConceptsForDimensionRole(firstResult, maxResults, conceptWebCriteria);
     }
 
-    private SearchRelatedResourceLinkItem createConceptItem(String name, String title) {
-        final int FIRST_RESULT = 0;
-        final int MAX_RESULTS = 8;
-        final SearchRelatedResourceLinkItem conceptItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
-        conceptItem.setRequired(true);
-        conceptItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+    private SearchRelatedResourceLinkItem createConceptItem() {
+        final String fieldName = DimensionDS.CONCEPT;
+
+        SearchSrmItemLinkItemWithSchemeFilterItem item = new SearchSrmItemLinkItemWithSchemeFilterItem(fieldName, getConstants().concept(), SrmWebConstants.FORM_LIST_MAX_RESULTS,
+                getCustomLinkItemNavigationClickHandler()) {
 
             @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
+            protected void retrieveItemSchemes(int firstResult, int maxResults, RelatedResourceWebCriteria webCriteria) {
                 final TypeDimensionComponent dimensionType = dimensionComponentDto.getTypeDimensionComponent();
                 final SpecialDimensionTypeEnum specialDimensionType = dimensionComponentDto.getSpecialDimensionType();
-
-                SelectItem conceptSchemeSelectItem = new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme());
-                searchConceptWindow = new SearchRelatedResourcePaginatedWindow(getConstants().conceptSelection(), MAX_RESULTS, conceptSchemeSelectItem, new PaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults) {
-                        retrieveConcepts(dimensionType, specialDimensionType, firstResult, maxResults, searchConceptWindow.getRelatedResourceCriteria(),
-                                searchConceptWindow.getInitialSelectionValue(), searchConceptWindow.getIsLastVersionValue());
-                    }
-                });
-
-                searchConceptWindow.showIsLastVersionItem();
-                searchConceptWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
-
-                    @Override
-                    public void onChanged(ChangedEvent event) {
-                        retrieveConceptSchemes(dimensionType, specialDimensionType, FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptWindow.getIsLastVersionValue());
-                        retrieveConcepts(dimensionType, specialDimensionType, FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(),
-                                searchConceptWindow.getInitialSelectionValue(), searchConceptWindow.getIsLastVersionValue());
-                    }
-                });
-
-                // Load concept schemes and concepts (to populate the selection window)
-                retrieveConceptSchemes(dimensionType, specialDimensionType, FIRST_RESULT, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchConceptWindow.getIsLastVersionValue());
-                retrieveConcepts(dimensionType, specialDimensionType, FIRST_RESULT, MAX_RESULTS, null, null, searchConceptWindow.getIsLastVersionValue());
-
-                searchConceptWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
-
-                    @Override
-                    public void onChanged(ChangedEvent event) {
-                        retrieveConcepts(dimensionType, specialDimensionType, FIRST_RESULT, MAX_RESULTS, searchConceptWindow.getRelatedResourceCriteria(),
-                                searchConceptWindow.getInitialSelectionValue(), searchConceptWindow.getIsLastVersionValue());
-                    }
-                });
-
-                searchConceptWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
-                searchConceptWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        retrieveConcepts(dimensionType, specialDimensionType, firstResult, maxResults, concept, searchConceptWindow.getInitialSelectionValue(),
-                                searchConceptWindow.getIsLastVersionValue());
-                    }
-                });
-
-                searchConceptWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        RelatedResourceDto selectedConcept = searchConceptWindow.getSelectedRelatedResource();
-                        searchConceptWindow.markForDestroy();
-                        // Set selected concepts in form
-                        ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.CONCEPT)).setRelatedResource(selectedConcept);
-
-                        TypeDimensionComponent dimensionType = getDimensionTypeFromEditionForm();
-                        if (TypeDimensionComponent.MEASUREDIMENSION.equals(dimensionType)) {
-                            // If the dimension is a measure dimension, the concept select may have an enumerated representation (with a conceptScheme). If so, set this conceptScheme as the default
-                            // enumerated representation of the dimension (only if the enumerated representation of the dimension was empty)
-
-                            if (selectedConcept != null) {
-                                RelatedResourceDto conceptSchemeEnumeratedRepresentation = getConceptSchemeEnumeratedRepresentationFromEditionForm();
-                                if (conceptSchemeEnumeratedRepresentation == null) {
-                                    getUiHandlers().retrieveConceptSchemeEnumeratedRepresentationFromConcept(selectedConcept.getUrn());
-                                }
-                            }
-                        } else {
-                            // When a concept is selected, reset the value of the codelist (the codelist depends on the concept)
-                            ((SearchRelatedResourceLinkItem) editionForm.getItem(DimensionDS.ENUMERATED_REPRESENTATION_CODELIST)).clearRelatedResource();
-                        }
-
-                        editionForm.markForRedraw();
-                        editionForm.validate(false);
-                    }
-                });
+                retrieveConceptSchemes(dimensionType, specialDimensionType, firstResult, maxResults, webCriteria.getCriteria(), webCriteria.isOnlyLastVersion());
             }
-        });
-        return conceptItem;
+            @Override
+            protected void retrieveItems(int firstResult, int maxResults, RelatedResourceItemWebCriteria webCriteria) {
+                final TypeDimensionComponent dimensionType = dimensionComponentDto.getTypeDimensionComponent();
+                final SpecialDimensionTypeEnum specialDimensionType = dimensionComponentDto.getSpecialDimensionType();
+                retrieveConcepts(dimensionType, specialDimensionType, firstResult, maxResults, webCriteria.getCriteria(), webCriteria.getItemSchemeUrn(), webCriteria.isItemSchemeLastVersion());
+            }
+        };
+        item.setRequired(true);
+
+        return item;
     }
 
-    private void retrieveConceptSchemes(TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionType, int firstResult, int maxResults, boolean isLastVersion) {
-        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+    private void retrieveConceptSchemes(TypeDimensionComponent dimensionType, SpecialDimensionTypeEnum specialDimensionType, int firstResult, int maxResults, String criteria, boolean isLastVersion) {
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria(criteria);
         conceptSchemeWebCriteria.setDsdUrn(dataStructureDefinitionMetamacDto.getUrn());
         conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
 
