@@ -117,7 +117,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
         void setCodeThatCanBeQuantityUnit(List<RelatedResourceDto> codesDtos, int firstResult, int totalResults);
         void setCodeThatCanBeQuantityBaseLocation(List<RelatedResourceDto> codesDtos, int firstResult, int totalResults);
         void setConceptSchemesWithConceptsThatCanBeRole(List<RelatedResourceDto> conceptSchemes, int firstResult, int totalResults);
-        void setConceptSchemesWithConceptsThatCanBeExtended(List<RelatedResourceDto> conceptSchemes);
+        void setConceptSchemesWithConceptsThatCanBeExtended(List<RelatedResourceDto> conceptSchemes, int firstResult, int totalResults);
         void setConceptThatCanBeRoles(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults);
         void setConceptThatCanBeExtended(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults);
         void setConceptThatCanBeQuantityNumerator(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults);
@@ -409,7 +409,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
                     }
                     @Override
                     public void onWaitSuccess(GetRelatedResourcesResult result) {
-                        getView().setConceptSchemesWithConceptsThatCanBeExtended(result.getRelatedResourceDtos());
+                        getView().setConceptSchemesWithConceptsThatCanBeExtended(result.getRelatedResourceDtos(), result.getFirstResultOut(), result.getTotalResults());
                     }
                 });
     }

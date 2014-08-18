@@ -25,9 +25,9 @@ import org.siemac.metamac.srm.web.client.widgets.RelatedResourceListItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceListItemWithSchemeFilterItem;
 import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
+import org.siemac.metamac.srm.web.client.widgets.search.SearchSrmItemLinkItemWithSchemeFilterItem;
 import org.siemac.metamac.srm.web.code.model.ds.VariableFamilyDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
-import org.siemac.metamac.srm.web.concept.model.ds.ConceptSchemeDS;
 import org.siemac.metamac.srm.web.concept.presenter.ConceptPresenter;
 import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsFormUtils;
@@ -128,7 +128,6 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     private List<ConceptMetamacVisualisationResult> itemVisualisationResults;
     private ConceptMetamacDto                       conceptDto;
 
-    private SearchRelatedResourcePaginatedWindow    searchExtendsWindow;
     private SearchRelatedResourcePaginatedWindow    searchVariableWindow;
     private SearchRelatedResourcePaginatedWindow    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow;
 
@@ -406,7 +405,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // RELATION BETWEEN CONCEPTS
 
         relationBetweenConceptsEditionForm = new GroupDynamicForm(getConstants().conceptRelationBetweenConcepts());
-        SearchRelatedResourceLinkItem extendsConcept = createExtendsItem(ConceptDS.EXTENDS, getConstants().conceptExtends());
+        SearchRelatedResourceLinkItem extendsConcept = createExtendsItem();
         ConceptsListItem relatedConcepts = createRelatedConceptsItem(ConceptDS.RELATED_CONCEPTS, getConstants().conceptRelatedConcepts());
         relationBetweenConceptsEditionForm.setFields(extendsConcept, relatedConcepts);
 
@@ -714,18 +713,13 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
     }
 
     @Override
-    public void setConceptThatCanBeExtended(List<RelatedResourceDto> conceptDtos, int firstResult, int totalResults) {
-        if (searchExtendsWindow != null) {
-            searchExtendsWindow.setRelatedResources(conceptDtos);
-            searchExtendsWindow.refreshSourcePaginationInfo(firstResult, conceptDtos.size(), totalResults);
-        }
+    public void setConceptThatCanBeExtended(List<RelatedResourceDto> concepts, int firstResult, int totalResults) {
+        ((SearchSrmItemLinkItemWithSchemeFilterItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.EXTENDS)).setResources(concepts, firstResult, concepts.size(), totalResults);
     }
 
     @Override
-    public void setConceptSchemesWithConceptsThatCanBeExtended(List<RelatedResourceDto> conceptSchemes) {
-        if (searchExtendsWindow != null) {
-            searchExtendsWindow.getInitialSelectionItem().setValueMap(org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils.getRelatedResourceHashMap(conceptSchemes));
-        }
+    public void setConceptSchemesWithConceptsThatCanBeExtended(List<RelatedResourceDto> conceptSchemes, int firstResult, int totalResults) {
+        ((SearchSrmItemLinkItemWithSchemeFilterItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.EXTENDS)).setFilterResources(conceptSchemes, firstResult, conceptSchemes.size(), totalResults);
     }
 
     @Override
@@ -856,73 +850,25 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         getUiHandlers().retrieveConceptsThatCanBeRole(firstResult, maxResults, conceptWebCriteria);
     }
 
-    private SearchRelatedResourceLinkItem createExtendsItem(String name, String title) {
-        final int FIRST_RESULST = 0;
-        final int MAX_RESULTS = 8;
-        SearchRelatedResourceLinkItem extendsItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
-        extendsItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+    private SearchRelatedResourceLinkItem createExtendsItem() {
+        final String fieldName = ConceptDS.EXTENDS;
+        SearchSrmItemLinkItemWithSchemeFilterItem item = new SearchSrmItemLinkItemWithSchemeFilterItem(fieldName, getConstants().conceptExtends(), SrmWebConstants.FORM_LIST_MAX_RESULTS,
+                getCustomLinkItemNavigationClickHandler()) {
 
             @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-
-                searchExtendsWindow = new SearchRelatedResourcePaginatedWindow(getConstants().conceptSelection(), MAX_RESULTS, new SelectItem(ConceptSchemeDS.URN, getConstants().conceptScheme()),
-                        new PaginatedAction() {
-
-                            @Override
-                            public void retrieveResultSet(int firstResult, int maxResults) {
-                                retrieveConceptsThatCanBeExtended(firstResult, maxResults, searchExtendsWindow.getRelatedResourceCriteria(), searchExtendsWindow.getInitialSelectionValue(),
-                                        searchExtendsWindow.getIsLastVersionValue());
-                            }
-                        });
-
-                searchExtendsWindow.showIsLastVersionItem();
-                searchExtendsWindow.getIsLastVersionItem().addChangedHandler(new ChangedHandler() {
-
-                    @Override
-                    public void onChanged(ChangedEvent event) {
-                        retrieveConceptSchemesWithConceptsThatCanBeExtended(FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchExtendsWindow.getIsLastVersionValue());
-                        retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, null, null, searchExtendsWindow.getIsLastVersionValue());
-                    }
-                });
-
-                // Load concepts and concept scheme that can be extended (to populate the selection window)
-                retrieveConceptSchemesWithConceptsThatCanBeExtended(FIRST_RESULST, SrmWebConstants.NO_LIMIT_IN_PAGINATION, searchExtendsWindow.getIsLastVersionValue());
-                retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, null, null, searchExtendsWindow.getIsLastVersionValue());
-
-                searchExtendsWindow.getInitialSelectionItem().addChangedHandler(new ChangedHandler() {
-
-                    @Override
-                    public void onChanged(ChangedEvent event) {
-                        retrieveConceptsThatCanBeExtended(FIRST_RESULST, MAX_RESULTS, searchExtendsWindow.getRelatedResourceCriteria(), searchExtendsWindow.getInitialSelectionValue(),
-                                searchExtendsWindow.getIsLastVersionValue());
-                    }
-                });
-
-                searchExtendsWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
-                searchExtendsWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
-
-                    @Override
-                    public void retrieveResultSet(int firstResult, int maxResults, String concept) {
-                        retrieveConceptsThatCanBeExtended(firstResult, maxResults, concept, searchExtendsWindow.getInitialSelectionValue(), searchExtendsWindow.getIsLastVersionValue());
-                    }
-                });
-                searchExtendsWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
-                        RelatedResourceDto selectedConcept = searchExtendsWindow.getSelectedRelatedResource();
-                        searchExtendsWindow.markForDestroy();
-                        // Set selected concepts in form
-                        ((SearchRelatedResourceLinkItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.EXTENDS)).setRelatedResource(selectedConcept);
-                    }
-                });
+            protected void retrieveItemSchemes(int firstResult, int maxResults, RelatedResourceWebCriteria webCriteria) {
+                retrieveConceptSchemesWithConceptsThatCanBeExtended(firstResult, maxResults, webCriteria.getCriteria(), webCriteria.isOnlyLastVersion());
             }
-        });
-        return extendsItem;
+            @Override
+            protected void retrieveItems(int firstResult, int maxResults, RelatedResourceItemWebCriteria webCriteria) {
+                retrieveConceptsThatCanBeExtended(firstResult, maxResults, webCriteria.getCriteria(), webCriteria.getItemSchemeUrn(), webCriteria.isItemSchemeLastVersion());
+            }
+        };
+        return item;
     }
 
-    private void retrieveConceptSchemesWithConceptsThatCanBeExtended(int firstResult, int maxResults, boolean isLastVersion) {
-        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria();
+    private void retrieveConceptSchemesWithConceptsThatCanBeExtended(int firstResult, int maxResults, String criteria, boolean isLastVersion) {
+        ConceptSchemeWebCriteria conceptSchemeWebCriteria = new ConceptSchemeWebCriteria(criteria);
         conceptSchemeWebCriteria.setIsLastVersion(isLastVersion);
 
         getUiHandlers().retrieveConceptSchemesWithConceptsThatCanBeExtended(firstResult, maxResults, conceptSchemeWebCriteria);

@@ -10,6 +10,7 @@ import com.smartgwt.client.widgets.grid.ListGrid;
 /**
  * Window with a {@link SearchRelatedResourcePaginatedItem}. The source {@link ListGrid} is paginated.
  */
+@SuppressWarnings("deprecation")
 public class SearchRelatedResourcePaginatedWindow extends SearchRelatedResourceBasePaginatedWindow<RelatedResourceDto> {
 
     public SearchRelatedResourcePaginatedWindow(String title, int maxResults, PaginatedAction action) {
