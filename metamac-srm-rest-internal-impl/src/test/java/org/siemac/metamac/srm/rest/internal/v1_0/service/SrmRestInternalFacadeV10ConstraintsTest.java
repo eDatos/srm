@@ -29,7 +29,12 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
+import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
+import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
+import org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Dataset;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraints;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RegionReference;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
@@ -52,6 +57,7 @@ public class SrmRestInternalFacadeV10ConstraintsTest extends SrmRestInternalFaca
 
     private ConstraintsService     contraintsService;
     private OrganisationRepository organisationRepository;
+    private MetamacRestApisLocator metamacRestApisLocator;
 
     public static String           CONTENT_CONSTRAINT_1_CODE      = "contentConstraint1";
     public static String           CONTENT_CONSTRAINT_1_VERSION_1 = "01.000";
@@ -180,12 +186,16 @@ public class SrmRestInternalFacadeV10ConstraintsTest extends SrmRestInternalFaca
         organisationRepository = applicationContext.getBean(OrganisationRepository.class);
         reset(contraintsService);
 
+        metamacRestApisLocator = applicationContext.getBean(MetamacRestApisLocator.class);
+        reset(metamacRestApisLocator);
+
         mockFindConstraintsByCondition();
         mockRetrieveOrganisationsByIdAsMaintainer();
         mockCreateContentConstraint();
         mockSaveRegion();
         mockUpdateRegionKeys();
         mockFindRegionValueByUrn();
+        mockRetrieveDatasetVersion();
 
     }
     @SuppressWarnings("unchecked")
@@ -302,6 +312,39 @@ public class SrmRestInternalFacadeV10ConstraintsTest extends SrmRestInternalFaca
                 });
     }
 
+    @SuppressWarnings("unchecked")
+    private void mockRetrieveDatasetVersion() throws MetamacException {
+        when(metamacRestApisLocator.retrieveDatasetVersion(any(String.class), any(String.class), any(String.class))).thenAnswer(
+                new Answer<org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Dataset>() {
+
+                    @Override
+                    public Dataset answer(InvocationOnMock invocation) throws Throwable {
+                        Dataset result = new Dataset();
+                        result.setKind(TypeExternalArtefactsEnum.DATASET.getValue());
+                        result.setId("C00031A_000002");
+                        result.setUrn("urn:siemac:org.siemac.metamac.infomodel.statisticalresources.Dataset=ISTAC:C00031A_000002(001.005)");
+                        result.setManagementAppLink("http://estadisticas.arte-consultores.com/statistical-resources-internal/#operations/operation;id=C00031A/datasets/dataset;id=ISTAC:C00031A_000002(001.005)");
+                        {
+                            ResourceLink resourceLink = new ResourceLink();
+                            resourceLink.setHref("http://estadisticas.arte-consultores.com/statistical-resources/apis/statistical-resources/v1.0/datasets/ISTAC/C00031A_000002/001.005");
+                            resourceLink.setKind("http://estadisticas.arte-consultores.com/statistical-resources/apis/statistical-resources/v1.0/datasets");
+                            result.setSelfLink(resourceLink);
+                        }
+
+                        {
+                            InternationalString internationalString = new InternationalString();
+                            LocalisedString localisedStringES = new LocalisedString();
+                            localisedStringES.setValue("Índice censal de ocupación según indicadores por islas, provincias y comunidades");
+                            localisedStringES.setLang("es");
+                            internationalString.getTexts().add(localisedStringES);
+                            result.setName(internationalString);
+                        }
+
+                        return result;
+                    }
+
+                });
+    }
     @Override
     protected String getSupathMaintainableArtefacts() {
         return "contentConstraints";

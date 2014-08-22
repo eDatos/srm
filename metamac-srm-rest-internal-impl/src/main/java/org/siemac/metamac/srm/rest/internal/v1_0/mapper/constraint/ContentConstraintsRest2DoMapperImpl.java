@@ -3,7 +3,9 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.constraint;
 import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.domain.Property;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.util.CoreCommonUtil;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestOrder;
 import org.siemac.metamac.rest.common.query.domain.MetamacRestQueryPropertyRestriction;
 import org.siemac.metamac.rest.exception.RestException;
@@ -12,6 +14,7 @@ import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaBase;
 import org.siemac.metamac.rest.search.criteria.SculptorPropertyCriteriaDisjunction;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria;
 import org.siemac.metamac.rest.search.criteria.mapper.RestCriteria2SculptorCriteria.CriteriaCallback;
+import org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Dataset;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraintCriteriaPropertyOrder;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ContentConstraintCriteriaPropertyRestriction;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPartType;
@@ -20,7 +23,9 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Keys;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ProcStatus;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.RegionReference;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Regions;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionParametersInternal;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.BaseRest2DoMapperV10Impl;
+import org.siemac.metamac.srm.rest.internal.v1_0.service.MetamacRestApisLocator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +33,8 @@ import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationProperties;
 import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItem;
 import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItemProperties.ExternalItemProperty;
+import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItemRepository;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintProperties;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintRepository;
@@ -46,6 +53,12 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
 
     @Autowired
     private ContentConstraintRepository                      contentConstraintRepository;
+
+    @Autowired
+    private MetamacRestApisLocator                           metamacRestApisLocator;
+
+    @Autowired
+    private ExternalItemRepository                           externalItemRepository;
 
     public ContentConstraintsRest2DoMapperImpl() {
         super();
@@ -163,7 +176,35 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
 
     private ExternalItem contentConstraintResourceInternalRestStatisticalResourceToExternalItemDo(org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal source,
             ExternalItem target) throws MetamacException {
-        target.setCode(source.getId());
+        if (source == null) {
+            if (target != null) {
+                // delete previous entity
+                externalItemRepository.delete(target);
+            }
+            return null;
+        }
+
+        String[] urnComponents = GeneratorUrnUtils.extractVersionableArtefactParts(source.getUrn());
+        String agencyID = urnComponents[0];
+        String resourceID = urnComponents[1];
+        String version = urnComponents[2];
+        Dataset datasetVersion = metamacRestApisLocator.retrieveDatasetVersion(agencyID, resourceID, version);
+        if (datasetVersion == null) {
+            return null;
+        }
+
+        if (target == null) {
+            // New
+            target = new ExternalItem();
+        }
+
+        target.setCode(datasetVersion.getId());
+        target.setUrn(datasetVersion.getUrn());
+        target.setTitle(internationalStringRestToEntity(source.getName(), target.getTitle(), ServiceExceptionParametersInternal.EXTERNAL_ITEM_TITLE));
+        target.setType(TypeExternalArtefactsEnum.fromValue(datasetVersion.getKind()));
+
+        target.setUri(CoreCommonUtil.externalItemUrlDtoToUrlDo(getStatisticalResourceInternalApiUrlBase(), datasetVersion.getSelfLink().getHref()));
+        target.setManagementAppUrl(CoreCommonUtil.externalItemUrlDtoToUrlDo(getStatisticalResourceInternalWebApplicationUrlBase(), source.getManagementAppLink()));
         return target;
     }
 

@@ -95,4 +95,8 @@
     	<constructor-arg value="com.arte.statistic.sdmx.srm.core.constraint.serviceimpl.ContentConstraintsCopyCallback" />
     </bean>
     
+    <bean id="metamacRestApisLocator" class="org.mockito.Mockito" factory-method="mock">
+    	<constructor-arg value="org.siemac.metamac.srm.rest.internal.v1_0.service.MetamacRestApisLocator" />
+    </bean>
+    
 </beans>

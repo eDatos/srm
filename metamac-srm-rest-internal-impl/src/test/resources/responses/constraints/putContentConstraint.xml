@@ -17,8 +17,8 @@
             <sr:type>type-code1</sr:type>
             <sr:url>url-code1</sr:url>
             <sr:text>
-                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
                 <cdomain:text xml:lang="en">text-code1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">text-code1 en Español</cdomain:text>
             </sr:text>
         </sr:annotation>
     </sr:annotations>
@@ -33,8 +33,8 @@
         <cdomain:text xml:lang="en">name-contentConstraint1v01.000 in English</cdomain:text>
     </sr:name>
     <sr:description>
-        <cdomain:text xml:lang="es">description-contentConstraint1v01.000 en Español</cdomain:text>
         <cdomain:text xml:lang="en">description-contentConstraint1v01.000 in English</cdomain:text>
+        <cdomain:text xml:lang="es">description-contentConstraint1v01.000 en Español</cdomain:text>
     </sr:description>
     <sr:comment>
         <cdomain:text xml:lang="en">comment-contentConstraint1v01.000 in English</cdomain:text>
@@ -50,16 +50,14 @@
     <sr:structureUrl>structureUrl-contentConstraint1</sr:structureUrl>
     <sr:type>ALLOWED</sr:type>
     <sr:constraintAttachment kind="statisticalResources#dataset">
-        <cdomain:id>codecode01</cdomain:id>
-        <cdomain:nestedId>codecode01nested</cdomain:nestedId>
-        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=code01</cdomain:urn>
-        <cdomain:selfLink kind="statisticalResources#dataset" href="http://data.istac.es/apis/resources-internal/uri:code01"/>
+        <cdomain:id>C00031A_000002</cdomain:id>
+        <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.statisticalresources.Dataset=ISTAC:C00031A_000002(001.005)</cdomain:urn>
+        <cdomain:selfLink kind="statisticalResources#dataset" href="http://data.istac.es/apis/resources-internal/http://estadisticas.arte-consultores.com/statistical-resources/apis/statistical-resources/latest/datasets/ISTAC/C00031A_000002/001.005"/>
         <cdomain:name>
-            <cdomain:text xml:lang="en">title-code01 in English</cdomain:text>
-            <cdomain:text xml:lang="es">title-code01 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">title-sub in English</cdomain:text>
+            <cdomain:text xml:lang="es">title-sub en Español</cdomain:text>
         </cdomain:name>
-        <sr:urnProvider>urn:sdmx:org.sdmx.infomodel.xxx=code01-provider</sr:urnProvider>
-        <sr:managementAppLink>http://localhost:8080/metamac-statistical-resources-web/managementAppUrlMNtnk7EL9Y</sr:managementAppLink>
+        <sr:managementAppLink>http://localhost:8080/metamac-statistical-resources-web/managementAppUrlUCcHKPlTBO</sr:managementAppLink>
     </sr:constraintAttachment>
     <sr:regions total="0"/>
 </sr:contentConstraint>

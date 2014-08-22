@@ -351,11 +351,11 @@ public abstract class BaseRest2DoMapperV10Impl {
         return target;
     }
 
-    private String getStatisticalResourceInternalWebApplicationUrlBase() throws MetamacException {
+    protected String getStatisticalResourceInternalWebApplicationUrlBase() throws MetamacException {
         return configurationService.retrieveStatisticalResourcesInternalWebApplicationUrlBase();
     }
 
-    private String getStatisticalResourceInternalApiUrlBase() throws MetamacException {
+    protected String getStatisticalResourceInternalApiUrlBase() throws MetamacException {
         return configurationService.retrieveStatisticalResourcesInternalApiUrlBase();
     }
 
@@ -386,7 +386,7 @@ public abstract class BaseRest2DoMapperV10Impl {
         return target;
     }
 
-    private InternationalString internationalStringRestToEntity(org.siemac.metamac.rest.common.v1_0.domain.InternationalString source, InternationalString target, String metadataName)
+    protected InternationalString internationalStringRestToEntity(org.siemac.metamac.rest.common.v1_0.domain.InternationalString source, InternationalString target, String metadataName)
             throws MetamacException {
 
         // Skip html
