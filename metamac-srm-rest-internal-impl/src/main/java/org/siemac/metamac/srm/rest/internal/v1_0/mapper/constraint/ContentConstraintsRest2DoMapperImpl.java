@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationProperties;
+import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItem;
 import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItemProperties.ExternalItemProperty;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintProperties;
@@ -143,7 +144,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
         }
 
         target.setType(ContentConstraintTypeEnum.valueOf(source.getType().name()));
-        target.setConstraintAttachment(resourceInternalRestStatisticalResourceToExternalItemDo(source.getConstraintAttachment(), target.getConstraintAttachment()));
+        target.setConstraintAttachment(contentConstraintResourceInternalRestStatisticalResourceToExternalItemDo(source.getConstraintAttachment(), target.getConstraintAttachment()));
         target.setMaintainableArtefact(maintainableArtefactRestToEntity(source, target.getMaintainableArtefact()));
 
         // Regions
@@ -157,6 +158,12 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
             }
         }
 
+        return target;
+    }
+
+    private ExternalItem contentConstraintResourceInternalRestStatisticalResourceToExternalItemDo(org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ResourceInternal source,
+            ExternalItem target) throws MetamacException {
+        target.setCode(source.getId());
         return target;
     }
 
