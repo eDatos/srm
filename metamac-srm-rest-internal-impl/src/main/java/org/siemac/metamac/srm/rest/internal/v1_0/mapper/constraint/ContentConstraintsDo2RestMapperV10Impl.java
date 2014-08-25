@@ -82,7 +82,7 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
         }
 
         // Others
-        target.setType(ContentConstraintType.fromValue(source.getType().getName()));
+        target.setType((source.getType() == null) ? null : ContentConstraintType.fromValue(source.getType().getName()));
         target.setConstraintAttachment(toResourceExternalItem(source.getConstraintAttachment(), getStatisticalResourcesApiInternalEndpoint(), getStatisticalResourcesInternalWebApplication()));
         target.setRegions(toRegions(source.getRegions()));
 
@@ -202,7 +202,7 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
         Region target = new Region();
 
         target.setCode(source.getCode());
-        target.setRegionValueType(RegionValueType.fromValue(source.getRegionValueTypeEnum().getName()));
+        target.setRegionValueType((source.getRegionValueTypeEnum() == null) ? null : RegionValueType.fromValue(source.getRegionValueTypeEnum().getName()));
 
         target.setKeys(toKeys(source.getKeys()));
 
