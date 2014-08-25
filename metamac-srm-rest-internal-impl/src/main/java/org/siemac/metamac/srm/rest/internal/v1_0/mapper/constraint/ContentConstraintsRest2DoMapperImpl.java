@@ -156,7 +156,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
             // OptimisticLockingUtils.checkVersion(target.getVersion(), source.getVersionOptimisticLocking()); // TODO check optimisticlocking en rest put service???
         }
 
-        target.setType(ContentConstraintTypeEnum.valueOf(source.getType().name()));
+        target.setType((source.getType() == null) ? null : ContentConstraintTypeEnum.valueOf(source.getType().name()));
         target.setConstraintAttachment(contentConstraintResourceInternalRestStatisticalResourceToExternalItemDo(source.getConstraintAttachment(), target.getConstraintAttachment()));
         target.setMaintainableArtefact(maintainableArtefactRestToEntity(source, target.getMaintainableArtefact()));
 
@@ -215,7 +215,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
 
         RegionValue target = new RegionValue();
 
-        target.setRegionValueTypeEnum(RegionValueTypeEnum.valueOf(source.getRegionValueType().name()));
+        target.setRegionValueTypeEnum((source.getRegionValueType() == null) ? null : RegionValueTypeEnum.valueOf(source.getRegionValueType().name()));
         target.setCode(source.getCode());
 
         // Keys
@@ -266,7 +266,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
         target.setIdentifier(source.getIdentifier());
         target.setValue(source.getValue());
         target.setPosition(source.getPosition());
-        target.setType(KeyPartTypeEnum.valueOf(source.getType().name()));
+        target.setType((source.getType() == null) ? null : KeyPartTypeEnum.valueOf(source.getType().name()));
 
         if (KeyPartType.TIME_RANGE.equals(source.getType())) {
             // Time range
