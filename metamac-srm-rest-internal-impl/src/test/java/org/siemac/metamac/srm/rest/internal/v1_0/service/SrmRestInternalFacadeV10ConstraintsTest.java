@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
+import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
@@ -42,6 +43,7 @@ import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.constraint.utils.ContentConstraintsDoMocks;
 import org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsDoMocks;
 
+import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItem;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintProperties;
@@ -241,14 +243,18 @@ public class SrmRestInternalFacadeV10ConstraintsTest extends SrmRestInternalFaca
 
     @SuppressWarnings("unchecked")
     private void mockCreateContentConstraint() throws MetamacException {
-        when(contraintsService.createContentConstraint(any(ServiceContext.class), any(ContentConstraint.class), any(Boolean.class))).thenAnswer(
+        // createContentConstraint
+        when(contraintsService.createContentConstraint(any(ServiceContext.class), any(ExternalItem.class), any(String.class), any(VersionPatternEnum.class))).thenAnswer(
                 new Answer<com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint>() {
 
                     @Override
                     public ContentConstraint answer(InvocationOnMock invocation) throws Throwable {
 
-                        ContentConstraint result = (ContentConstraint) invocation.getArguments()[1];
-                        result.getMaintainableArtefact().setUrn(GeneratorUrnUtils.generateContentConstraintUrn(result.getMaintainableArtefact()));
+                        ContentConstraint result = ContentConstraintsDoMocks.mockContentConstraint(AGENCY_1, CONTENT_CONSTRAINT_1_CODE, CONTENT_CONSTRAINT_1_VERSION_1);
+
+                        result.getMaintainableArtefact().getMaintainer().getNameableArtefact().setUrn((String) invocation.getArguments()[2]);
+                        result.getRegions().clear();
+
                         return result;
                     }
 
@@ -345,6 +351,7 @@ public class SrmRestInternalFacadeV10ConstraintsTest extends SrmRestInternalFaca
 
                 });
     }
+
     @Override
     protected String getSupathMaintainableArtefacts() {
         return "contentConstraints";
