@@ -2066,12 +2066,11 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint createContentConstraint = null;
         if (StringUtils.isEmpty(contentConstraintEntity.getMaintainableArtefact().getUrn())) {
             // Create
-            // contentConstraintEntity.getMaintainableArtefact().setFinalLogic(Boolean.FALSE);
             createContentConstraint = constraintsService.createContentConstraint(serviceContext, contentConstraintEntity.getConstraintAttachment(), contentConstraintEntity.getMaintainableArtefact()
-                    .getUrn(), VersionPatternEnum.XX_YYY);
+                    .getMaintainer().getNameableArtefact().getUrn(), VersionPatternEnum.XX_YYY);
         } else {
             // Update
-            throw new UnsupportedOperationException(); // TODO permitir actualizar una CK?, para las descripciones, name, etc??
+            throw new UnsupportedOperationException("Cannot update a content constraint");
         }
 
         return createContentConstraint;
