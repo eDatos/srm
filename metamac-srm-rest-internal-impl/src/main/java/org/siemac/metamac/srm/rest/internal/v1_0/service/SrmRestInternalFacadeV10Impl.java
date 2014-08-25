@@ -1230,7 +1230,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public Response createContentConstraint(ContentConstraint contentConstraint, String userId) {
+    public ContentConstraint createContentConstraint(ContentConstraint contentConstraint, String userId) {
         try {
             ServiceContext serviceContext = new ServiceContext(userId, restInternalApplication, restInternalSession);
 
@@ -1243,7 +1243,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Transform
             contentConstraint = contentConstraintsDo2RestMapper.toContentConstraint(savedContentConstraint);
 
-            return Response.status(Response.Status.CREATED).entity(contentConstraint).build();
+            return contentConstraint;
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -1284,7 +1284,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public Response saveRegionForContentConstraint(String agencyID, String resourceID, String version, RegionReference regionReference, String userId) {
+    public RegionReference saveRegionForContentConstraint(String agencyID, String resourceID, String version, RegionReference regionReference, String userId) {
         try {
             ServiceContext serviceContext = new ServiceContext(userId, restInternalApplication, restInternalSession);
 
@@ -1297,7 +1297,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Transform
             RegionReference result = contentConstraintsDo2RestMapper.toRegionReference(regionReference.getContentConstraintUrn(), updateRegion);
 
-            return Response.status(Response.Status.CREATED).entity(result).build();
+            return result;
         } catch (Exception e) {
             throw manageException(e);
         }

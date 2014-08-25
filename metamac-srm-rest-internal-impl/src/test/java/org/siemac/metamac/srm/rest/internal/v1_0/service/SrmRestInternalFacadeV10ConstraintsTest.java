@@ -155,7 +155,7 @@ public class SrmRestInternalFacadeV10ConstraintsTest extends SrmRestInternalFaca
             Response response = create.put(putObject);
 
             InputStream responseExpected = SrmRestInternalFacadeV10ConstraintsTest.class.getResourceAsStream("/responses/constraints/putContentConstraint.xml");
-            assertEquals(201, response.getStatus());
+            assertEquals(200, response.getStatus());
             assertInputStream(responseExpected, (InputStream) response.getEntity(), false);
         }
     }
@@ -175,7 +175,7 @@ public class SrmRestInternalFacadeV10ConstraintsTest extends SrmRestInternalFaca
             Response response = create.put(putObject);
 
             InputStream responseExpected = SrmRestInternalFacadeV10ConstraintsTest.class.getResourceAsStream("/responses/constraints/putRegion.xml");
-            assertEquals(201, response.getStatus());
+            assertEquals(200, response.getStatus());
             assertInputStream(responseExpected, (InputStream) response.getEntity(), false);
         }
     }
