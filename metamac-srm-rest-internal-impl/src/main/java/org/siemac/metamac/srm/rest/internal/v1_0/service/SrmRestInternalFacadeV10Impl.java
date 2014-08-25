@@ -24,6 +24,7 @@ import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
+import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
@@ -2065,8 +2066,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint createContentConstraint = null;
         if (StringUtils.isEmpty(contentConstraintEntity.getMaintainableArtefact().getUrn())) {
             // Create
-            contentConstraintEntity.getMaintainableArtefact().setFinalLogic(Boolean.FALSE);
-            createContentConstraint = constraintsService.createContentConstraint(serviceContext, contentConstraintEntity, Boolean.FALSE);
+            // contentConstraintEntity.getMaintainableArtefact().setFinalLogic(Boolean.FALSE);
+            createContentConstraint = constraintsService.createContentConstraint(serviceContext, contentConstraintEntity.getConstraintAttachment(), contentConstraintEntity.getMaintainableArtefact()
+                    .getUrn(), VersionPatternEnum.XX_YYY);
         } else {
             // Update
             throw new UnsupportedOperationException(); // TODO permitir actualizar una CK?, para las descripciones, name, etc??
