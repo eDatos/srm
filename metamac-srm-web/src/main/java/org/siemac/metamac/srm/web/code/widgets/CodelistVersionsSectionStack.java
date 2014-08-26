@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.web.code.utils.CodesRecordUtils;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
+import com.smartgwt.client.types.SortDirection;
 
 public class CodelistVersionsSectionStack extends ItemSchemeVersionsSectionStack {
 
@@ -23,6 +24,7 @@ public class CodelistVersionsSectionStack extends ItemSchemeVersionsSectionStack
         for (CodelistMetamacBasicDto codelistDto : codelistDtos) {
             listGrid.addData(CodesRecordUtils.getCodelistRecord(codelistDto));
         }
+        listGrid.sort(CodelistDS.VERSION_LOGIC, SortDirection.DESCENDING);
     }
 
     public void selectCodelist(CodelistMetamacDto codelistMetamacDto) {

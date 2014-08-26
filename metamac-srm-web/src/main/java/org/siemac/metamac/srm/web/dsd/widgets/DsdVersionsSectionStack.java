@@ -12,6 +12,7 @@ import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
+import com.smartgwt.client.types.SortDirection;
 import com.smartgwt.client.widgets.grid.ListGridField;
 
 public class DsdVersionsSectionStack extends ItemSchemeVersionsSectionStack {
@@ -38,6 +39,7 @@ public class DsdVersionsSectionStack extends ItemSchemeVersionsSectionStack {
         for (DataStructureDefinitionMetamacBasicDto dsd : dataStructureDefinitionMetamacDtos) {
             listGrid.addData(DsdRecordUtils.getDsdRecord(dsd));
         }
+        listGrid.sort(DataStructureDefinitionDS.VERSION_LOGIC, SortDirection.DESCENDING);
     }
 
     public void selectDataStructureDefinition(DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto) {

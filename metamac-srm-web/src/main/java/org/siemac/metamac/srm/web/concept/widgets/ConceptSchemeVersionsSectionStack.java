@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.web.concept.utils.ConceptsRecordUtils;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
+import com.smartgwt.client.types.SortDirection;
 
 public class ConceptSchemeVersionsSectionStack extends ItemSchemeVersionsSectionStack {
 
@@ -23,6 +24,7 @@ public class ConceptSchemeVersionsSectionStack extends ItemSchemeVersionsSection
         for (ConceptSchemeMetamacBasicDto conceptSchemeDto : conceptSchemeDtos) {
             listGrid.addData(ConceptsRecordUtils.getConceptSchemeRecord(conceptSchemeDto));
         }
+        listGrid.sort(ConceptSchemeDS.VERSION_LOGIC, SortDirection.DESCENDING);
     }
 
     public void selectConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {

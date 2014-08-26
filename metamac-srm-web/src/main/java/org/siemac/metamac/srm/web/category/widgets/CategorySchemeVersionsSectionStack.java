@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.web.client.widgets.ItemSchemeVersionsSectionStack;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
+import com.smartgwt.client.types.SortDirection;
 
 public class CategorySchemeVersionsSectionStack extends ItemSchemeVersionsSectionStack {
 
@@ -23,6 +24,7 @@ public class CategorySchemeVersionsSectionStack extends ItemSchemeVersionsSectio
         for (CategorySchemeMetamacBasicDto categorySchemeDto : categorySchemeDtos) {
             listGrid.addData(CategoriesRecordUtils.getCategorySchemeRecord(categorySchemeDto));
         }
+        listGrid.sort(CategorySchemeDS.VERSION_LOGIC, SortDirection.DESCENDING);
     }
 
     public void selectCategoryScheme(CategorySchemeMetamacDto categorySchemeMetamacDto) {

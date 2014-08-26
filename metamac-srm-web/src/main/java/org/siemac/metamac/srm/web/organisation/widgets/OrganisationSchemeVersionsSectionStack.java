@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.web.organisation.utils.OrganisationsRecordUtils;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
+import com.smartgwt.client.types.SortDirection;
 
 public class OrganisationSchemeVersionsSectionStack extends ItemSchemeVersionsSectionStack {
 
@@ -23,6 +24,7 @@ public class OrganisationSchemeVersionsSectionStack extends ItemSchemeVersionsSe
         for (OrganisationSchemeMetamacBasicDto organisationSchemeDto : organisationSchemeDtos) {
             listGrid.addData(OrganisationsRecordUtils.getOrganisationSchemeRecord(organisationSchemeDto));
         }
+        listGrid.sort(OrganisationSchemeDS.VERSION_LOGIC, SortDirection.DESCENDING);
     }
 
     public void selectOrganisationScheme(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
