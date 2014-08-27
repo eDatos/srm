@@ -63,7 +63,7 @@
     <extend-property name="locale" values="pt" />
 
     <!-- Default locale -->
-    <set-property name="locale" value="en,es" />
+    <set-property name="locale" value="en,es,pt" />
 
     <!-- Fallback locale -->
     <set-property-fallback name="locale" value="en" />
