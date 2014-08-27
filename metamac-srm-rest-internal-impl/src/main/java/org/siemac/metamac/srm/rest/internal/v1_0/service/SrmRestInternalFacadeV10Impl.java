@@ -2077,6 +2077,11 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     private RegionValue saveRegionForContentConstraint(ServiceContext serviceContext, String contentConstraintUrn, RegionValue regionValue) throws MetamacException {
+        // In Metamac only one Region
+        if (StringUtils.isEmpty(regionValue.getCode())) {
+            regionValue.setCode("DefaultRegion"); // Fixed in Metamac
+        }
+
         // Create or update keys
         Set<KeyValue> keysToPersist = null;
         RegionValue findRegionValue = constraintsService.findRegionValueByUrn(serviceContext, contentConstraintUrn, regionValue.getCode());
