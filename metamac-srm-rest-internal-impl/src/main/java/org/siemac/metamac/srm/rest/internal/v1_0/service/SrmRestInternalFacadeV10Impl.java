@@ -2089,7 +2089,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             keysToPersist = new HashSet<KeyValue>(regionValue.getKeys());
             regionValue.removeAllKeys();
             RegionValue newRegion = constraintsService.saveRegion(serviceContext, contentConstraintUrn, regionValue);
-            return newRegion;
+            if (keysToPersist.isEmpty()) {
+                return newRegion;
+            }
         } else {
             keysToPersist = regionValue.getKeys();
         }
