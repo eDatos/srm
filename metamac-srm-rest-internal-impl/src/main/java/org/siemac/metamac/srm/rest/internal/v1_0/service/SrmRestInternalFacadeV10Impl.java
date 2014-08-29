@@ -1,7 +1,5 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
-import static org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils.hasField;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -147,6 +145,8 @@ import com.arte.statistic.sdmx.srm.core.constraint.serviceapi.ConstraintsService
 import com.arte.statistic.sdmx.srm.core.constraint.serviceimpl.ContentConstraintsCopyCallback;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
+
+import static org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils.hasField;
 
 @Service("srmRestInternalFacadeV10")
 public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
@@ -1269,6 +1269,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     public Response versioningContentConstraint(String agencyID, String resourceID, String version, String userId, String versionType) {
         try {
             ServiceContext serviceContext = new ServiceContext(userId, restInternalApplication, restInternalSession);
+
+            // FIXME BUG: Lo que se recibe son las partes de un dataset version y lo que se genera es la URN de una constraint
 
             String contentConstraintUrn = GeneratorUrnUtils.generateSdmxContentConstraintUrn(new String[]{agencyID}, resourceID, version);
 
