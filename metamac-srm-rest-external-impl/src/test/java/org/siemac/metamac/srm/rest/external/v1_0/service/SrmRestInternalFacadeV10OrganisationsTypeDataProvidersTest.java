@@ -2,10 +2,6 @@ package org.siemac.metamac.srm.rest.external.v1_0.service;
 
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.external.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationSchemes;
-import static org.siemac.metamac.srm.rest.external.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisations;
-import static org.siemac.metamac.srm.rest.external.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisation;
-import static org.siemac.metamac.srm.rest.external.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisationScheme;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
@@ -30,11 +26,6 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataProviderSche
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataProviders;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.external.exception.RestServiceExceptionType;
-
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
-
-;
 
 public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends SrmRestInternalFacadeV10OrganisationsTest {
 
@@ -167,9 +158,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
         assertEquals(SrmRestConstants.KIND_DATA_PROVIDER_SCHEME, dataProviderScheme.getKind());
         assertEquals(SrmRestConstants.KIND_DATA_PROVIDER_SCHEME, dataProviderScheme.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_DATA_PROVIDER_SCHEMES, dataProviderScheme.getParentLink().getKind());
-
-        // Verify with Mockito
-        verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
     }
 
     @Test
@@ -181,8 +169,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
         // Validation
         assertNotNull(dataProviderScheme);
-        // Verify with Mockito
-        verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
     }
 
     @Test
@@ -335,9 +321,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
         assertEquals(SrmRestConstants.KIND_DATA_PROVIDERS, dataProvider.getParentLink().getKind());
         assertTrue(dataProvider instanceof DataProvider);
         // other metadata are tested in transformation tests
-
-        // Verify with Mockito
-        verifyRetrieveOrganisation(organisationsService, agencyID, resourceID, version, organsationID, OrganisationTypeEnum.DATA_PROVIDER);
     }
 
     @Test
@@ -464,9 +447,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
         assertNotNull(itemSchemes);
         assertEquals(SrmRestConstants.KIND_DATA_PROVIDER_SCHEMES, itemSchemes.getKind());
-
-        // Verify with Mockito
-        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME);
     }
 
     private void testFindDataProviders(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
@@ -475,9 +455,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataProvidersTest extends 
 
         assertNotNull(items);
         assertEquals(SrmRestConstants.KIND_DATA_PROVIDERS, items.getKind());
-
-        // Verify with Mockito
-        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationTypeEnum.DATA_PROVIDER);
     }
 
     @Override

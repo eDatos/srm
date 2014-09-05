@@ -5,8 +5,6 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.external.v1_0.dsd.utils.DataStructuresMockitoVerify.verifyFindDataStructures;
-import static org.siemac.metamac.srm.rest.external.v1_0.dsd.utils.DataStructuresMockitoVerify.verifyRetrieveDataStructure;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.ARTEFACT_1_CODE;
@@ -184,9 +182,6 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
         assertEquals(SrmRestConstants.KIND_DATA_STRUCTURE, dataStructure.getKind());
         assertEquals(SrmRestConstants.KIND_DATA_STRUCTURE, dataStructure.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_DATA_STRUCTURES, dataStructure.getParentLink().getKind());
-
-        // Verify with Mockito
-        verifyRetrieveDataStructure(dsdsService, agencyID, resourceID, version);
     }
 
     @Test
@@ -205,9 +200,6 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
         assertEquals(SrmRestConstants.KIND_DATA_STRUCTURE, dataStructure.getKind());
         assertEquals(SrmRestConstants.KIND_DATA_STRUCTURE, dataStructure.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_DATA_STRUCTURES, dataStructure.getParentLink().getKind());
-
-        // Verify with Mockito
-        verifyRetrieveDataStructure(dsdsService, agencyID, resourceID, version);
     }
 
     @Test
@@ -318,9 +310,6 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
 
         assertNotNull(dataStructures);
         assertEquals(SrmRestConstants.KIND_DATA_STRUCTURES, dataStructures.getKind());
-
-        // Verify with Mockito
-        verifyFindDataStructures(dsdsService, agencyID, resourceID, null, limit, offset, query, orderBy);
     }
 
     private void mockRetrieveStructureVersionByVersion() throws MetamacException {

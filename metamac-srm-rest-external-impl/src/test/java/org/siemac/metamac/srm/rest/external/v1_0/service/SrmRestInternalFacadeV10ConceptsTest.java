@@ -6,10 +6,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.external.v1_0.concept.utils.ConceptsMockitoVerify.verifyFindConceptSchemes;
-import static org.siemac.metamac.srm.rest.external.v1_0.concept.utils.ConceptsMockitoVerify.verifyFindConcepts;
-import static org.siemac.metamac.srm.rest.external.v1_0.concept.utils.ConceptsMockitoVerify.verifyRetrieveConcept;
-import static org.siemac.metamac.srm.rest.external.v1_0.concept.utils.ConceptsMockitoVerify.verifyRetrieveConceptScheme;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.external.v1_0.utils.RestTestConstants.ITEM_1_CODE;
@@ -201,9 +197,6 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
         assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
-
-        // Verify with Mockito
-        verifyRetrieveConceptScheme(conceptsService, agencyID, resourceID, version);
     }
 
     @Test
@@ -222,9 +215,6 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEME, conceptScheme.getKind());
         assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEME, conceptScheme.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEMES, conceptScheme.getParentLink().getKind());
-
-        // Verify with Mockito
-        verifyRetrieveConceptScheme(conceptsService, agencyID, resourceID, version);
     }
 
     @Test
@@ -408,9 +398,6 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         assertEquals(SrmRestConstants.KIND_CONCEPTS, concept.getParentLink().getKind());
         assertTrue(concept instanceof Concept);
         // other metadata are tested in transformation tests
-
-        // Verify with Mockito
-        verifyRetrieveConcept(conceptsService, agencyID, resourceID, version, conceptID);
     }
 
     @Test
@@ -557,9 +544,6 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
         assertNotNull(conceptSchemes);
         assertEquals(SrmRestConstants.KIND_CONCEPT_SCHEMES, conceptSchemes.getKind());
-
-        // Verify with Mockito
-        verifyFindConceptSchemes(conceptsService, agencyID, resourceID, version, limit, offset, query, orderBy);
     }
 
     private void testFindConcepts(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
@@ -568,9 +552,6 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
         assertNotNull(concepts);
         assertEquals(SrmRestConstants.KIND_CONCEPTS, concepts.getKind());
-
-        // Verify with mockito
-        verifyFindConcepts(conceptsService, agencyID, resourceID, version, limit, offset, query, orderBy);
     }
 
     private void mockRetrieveItemSchemeVersionByVersion() throws MetamacException {
