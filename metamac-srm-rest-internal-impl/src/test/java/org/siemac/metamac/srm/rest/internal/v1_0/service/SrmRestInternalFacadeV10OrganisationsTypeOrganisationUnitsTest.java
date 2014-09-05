@@ -4,10 +4,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationSchemes;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisations;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisation;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisationScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
@@ -38,7 +34,6 @@ import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest extends SrmRestInternalFacadeV10OrganisationsTest {
@@ -180,9 +175,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
         assertEquals(SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEME, organisationUnitScheme.getKind());
         assertEquals(SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEME, organisationUnitScheme.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEMES, organisationUnitScheme.getParentLink().getKind());
-
-        // Verify with Mockito
-        verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
     }
 
     @Test
@@ -194,8 +186,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
 
         // Validation
         assertNotNull(organisationUnitScheme);
-        // Verify with Mockito
-        verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
     }
 
     @Test
@@ -378,9 +368,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
         assertEquals(SrmRestConstants.KIND_ORGANISATION_UNITS, OrganisationUnit.getParentLink().getKind());
         assertTrue(OrganisationUnit instanceof OrganisationUnit);
         // other metadata are tested in transformation tests
-
-        // Verify with Mockito
-        verifyRetrieveOrganisation(organisationsService, agencyID, resourceID, version, organsationID, OrganisationTypeEnum.ORGANISATION_UNIT);
     }
 
     @Test
@@ -507,9 +494,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
 
         assertNotNull(itemSchemes);
         assertEquals(SrmRestConstants.KIND_ORGANISATION_UNIT_SCHEMES, itemSchemes.getKind());
-
-        // Verify with Mockito
-        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME);
     }
 
     private void testFindOrganisationUnits(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
@@ -518,9 +502,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeOrganisationUnitsTest exte
 
         assertNotNull(items);
         assertEquals(SrmRestConstants.KIND_ORGANISATION_UNITS, items.getKind());
-
-        // Verify with Mockito
-        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationTypeEnum.ORGANISATION_UNIT);
     }
 
     @Override

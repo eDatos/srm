@@ -2,10 +2,6 @@ package org.siemac.metamac.srm.rest.internal.v1_0.service;
 
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisationSchemes;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyFindOrganisations;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisation;
-import static org.siemac.metamac.srm.rest.internal.v1_0.organisation.utils.OrganisationsMockitoVerify.verifyRetrieveOrganisationScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_SCHEME_1_CODE;
@@ -30,9 +26,6 @@ import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataCon
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumers;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
-
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends SrmRestInternalFacadeV10OrganisationsTest {
 
@@ -165,9 +158,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEME, dataConsumerScheme.getKind());
         assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEME, dataConsumerScheme.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEMES, dataConsumerScheme.getParentLink().getKind());
-
-        // Verify with Mockito
-        verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
     }
 
     @Test
@@ -179,8 +169,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
         // Validation
         assertNotNull(dataConsumerScheme);
-        // Verify with Mockito
-        verifyRetrieveOrganisationScheme(organisationsService, agencyID, resourceID, version, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
     }
 
     @Test
@@ -333,9 +321,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
         assertEquals(SrmRestConstants.KIND_DATA_CONSUMERS, dataConsumer.getParentLink().getKind());
         assertTrue(dataConsumer instanceof DataConsumer);
         // other metadata are tested in transformation tests
-
-        // Verify with Mockito
-        verifyRetrieveOrganisation(organisationsService, agencyID, resourceID, version, organsationID, OrganisationTypeEnum.DATA_CONSUMER);
     }
 
     @Test
@@ -462,9 +447,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
         assertNotNull(itemSchemes);
         assertEquals(SrmRestConstants.KIND_DATA_CONSUMER_SCHEMES, itemSchemes.getKind());
-
-        // Verify with Mockito
-        verifyFindOrganisationSchemes(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME);
     }
 
     private void testFindDataConsumers(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
@@ -473,9 +455,6 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
         assertNotNull(items);
         assertEquals(SrmRestConstants.KIND_DATA_CONSUMERS, items.getKind());
-
-        // Verify with Mockito
-        verifyFindOrganisations(organisationsService, agencyID, resourceID, version, limit, offset, query, orderBy, OrganisationTypeEnum.DATA_CONSUMER);
     }
 
     @Override

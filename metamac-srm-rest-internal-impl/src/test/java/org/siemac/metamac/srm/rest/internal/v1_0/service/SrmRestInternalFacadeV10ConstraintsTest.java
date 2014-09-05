@@ -107,9 +107,6 @@ public class SrmRestInternalFacadeV10ConstraintsTest extends SrmRestInternalFaca
 
         assertNotNull(findContentConstraints);
         assertEquals(SrmRestConstants.KIND_CONTENT_CONSTRAINTS, findContentConstraints.getKind());
-
-        // Verify with Mockito
-        // TODO verifyFindConstraints(contraintsService, agencyID, resourceID, version, limit, offset, query, orderBy);
     }
 
     @Test

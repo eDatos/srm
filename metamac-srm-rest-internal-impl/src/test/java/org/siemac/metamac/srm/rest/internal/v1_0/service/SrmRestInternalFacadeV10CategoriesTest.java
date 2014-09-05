@@ -6,10 +6,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategories;
-import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategorySchemes;
-import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyRetrieveCategory;
-import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyRetrieveCategoryScheme;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ITEM_1_CODE;
@@ -199,8 +195,6 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertEquals(SrmRestConstants.KIND_CATEGORY_SCHEME, categoryScheme.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_CATEGORY_SCHEMES, categoryScheme.getParentLink().getKind());
 
-        // Verify with Mockito
-        verifyRetrieveCategoryScheme(categoriesService, agencyID, resourceID, version);
     }
 
     @Test
@@ -220,8 +214,6 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertEquals(SrmRestConstants.KIND_CATEGORY_SCHEME, categoryScheme.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_CATEGORY_SCHEMES, categoryScheme.getParentLink().getKind());
 
-        // Verify with Mockito
-        verifyRetrieveCategoryScheme(categoriesService, agencyID, resourceID, version);
     }
 
     @Test
@@ -405,8 +397,6 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertTrue(category instanceof Category);
         // other metadata are tested in transformation tests
 
-        // Verify with Mockito
-        verifyRetrieveCategory(categoriesService, agencyID, resourceID, version, categoryID);
     }
 
     @Test
@@ -534,8 +524,6 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertNotNull(categorySchemes);
         assertEquals(SrmRestConstants.KIND_CATEGORY_SCHEMES, categorySchemes.getKind());
 
-        // Verify with Mockito
-        verifyFindCategorySchemes(categoriesService, agencyID, resourceID, null, limit, offset, query, orderBy);
     }
 
     private void testFindCategories(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
@@ -545,8 +533,6 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
         assertNotNull(categories);
         assertEquals(SrmRestConstants.KIND_CATEGORIES, categories.getKind());
 
-        // Verify with Mockito
-        verifyFindCategories(categoriesService, agencyID, resourceID, version, limit, offset, query, orderBy);
     }
 
     private void mockRetrieveItemSchemeVersionByVersion() throws MetamacException {

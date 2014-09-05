@@ -5,8 +5,6 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyFindCategorisations;
-import static org.siemac.metamac.srm.rest.internal.v1_0.category.utils.CategoriesMockitoVerify.verifyRetrieveCategorisation;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.NOT_EXISTS;
@@ -184,8 +182,6 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
         assertEquals(SrmRestConstants.KIND_CATEGORISATION, categorisation.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_CATEGORISATIONS, categorisation.getParentLink().getKind());
 
-        // Verify with Mockito
-        verifyRetrieveCategorisation(categoriesService, agencyID, resourceID, version);
     }
 
     @Test
@@ -205,8 +201,6 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
         assertEquals(SrmRestConstants.KIND_CATEGORISATION, categorisation.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_CATEGORISATIONS, categorisation.getParentLink().getKind());
 
-        // Verify with Mockito
-        verifyRetrieveCategorisation(categoriesService, agencyID, resourceID, version);
     }
 
     @Test
@@ -318,8 +312,6 @@ public class SrmRestInternalFacadeV10CategorisationsTest extends SrmRestInternal
         assertNotNull(categorisations);
         assertEquals(SrmRestConstants.KIND_CATEGORISATIONS, categorisations.getKind());
 
-        // Verify with Mockito
-        verifyFindCategorisations(categoriesService, agencyID, resourceID, null, limit, offset, query, orderBy);
     }
 
     @SuppressWarnings("unchecked")

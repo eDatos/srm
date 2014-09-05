@@ -6,18 +6,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_ALL;
 import static org.siemac.metamac.rest.api.constants.RestApiConstants.WILDCARD_LATEST;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodelistFamilies;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodelists;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindCodes;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariableElements;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariableElementsRetrieveAll;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariableFamilies;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyFindVariables;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveCode;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveCodelist;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveCodelistFamily;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveVariable;
-import static org.siemac.metamac.srm.rest.internal.v1_0.code.utils.CodesMockitoVerify.verifyRetrieveVariableFamily;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_1;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.AGENCY_2;
 import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.ARTEFACT_1_CODE;
@@ -233,8 +221,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(SrmRestConstants.KIND_CODELIST, codelist.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_CODELISTS, codelist.getParentLink().getKind());
 
-        // Verify with Mockito
-        verifyRetrieveCodelist(codesService, agencyID, resourceID, version);
     }
 
     @Test
@@ -254,8 +240,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(SrmRestConstants.KIND_CODELIST, codelist.getSelfLink().getKind());
         assertEquals(SrmRestConstants.KIND_CODELISTS, codelist.getParentLink().getKind());
 
-        // Verify with Mockito
-        verifyRetrieveCodelist(codesService, agencyID, resourceID, version);
     }
 
     @Test
@@ -472,8 +456,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertTrue(code instanceof Code);
         // other metadata are tested in transformation tests
 
-        // Verify with Mockito
-        verifyRetrieveCode(codesService, agencyID, resourceID, version, codeID);
     }
 
     @Test
@@ -596,8 +578,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         assertNotNull(variableFamilies);
         assertEquals(SrmRestConstants.KIND_VARIABLE_FAMILIES, variableFamilies.getKind());
-        // Verify with Mockito
-        verifyFindVariableFamilies(codesService, null, limit, offset, query, orderBy);
     }
 
     @Test
@@ -621,8 +601,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(SrmRestConstants.KIND_VARIABLE_FAMILY, variableFamily.getKind());
         assertEquals(SrmRestConstants.KIND_VARIABLE_FAMILY, variableFamily.getSelfLink().getKind());
 
-        // Verify with Mockito
-        verifyRetrieveVariableFamily(codesService, resourceID);
     }
 
     @Test
@@ -679,8 +657,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         assertNotNull(variables);
         assertEquals(SrmRestConstants.KIND_VARIABLES, variables.getKind());
-        // Verify with Mockito
-        verifyFindVariables(codesService, null, familyID, limit, offset, query, orderBy);
     }
 
     @Test
@@ -705,8 +681,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         assertNotNull(variables);
         assertEquals(SrmRestConstants.KIND_VARIABLES, variables.getKind());
-        // Verify with Mockito
-        verifyFindVariables(codesService, null, null, limit, offset, query, orderBy);
     }
 
     @Test
@@ -729,9 +703,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(resourceID, variable.getId());
         assertEquals(SrmRestConstants.KIND_VARIABLE, variable.getKind());
         assertEquals(SrmRestConstants.KIND_VARIABLE, variable.getSelfLink().getKind());
-
-        // Verify with Mockito
-        verifyRetrieveVariable(codesService, resourceID);
     }
 
     @Test
@@ -787,8 +758,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         assertNotNull(variableElements);
         assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
-        // Verify with Mockito
-        verifyFindVariableElements(codesService, null, variableID, limit, offset, query, orderBy);
     }
 
     @Test
@@ -810,19 +779,16 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
             String query = null;
             VariableElements variableElements = getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
             assertEquals(SrmRestConstants.KIND_VARIABLE_ELEMENTS, variableElements.getKind());
-            verifyFindVariableElementsRetrieveAll(codesService, variableID, null);
         }
         resetMocks();
         {
             String query = "ID IN ('code1', 'code2')";
             getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
-            verifyFindVariableElementsRetrieveAll(codesService, variableID, Arrays.asList("code1", "code2"));
         }
         resetMocks();
         {
             String query = "ID EQ 'code1'";
             getSrmRestInternalFacadeClientXml().findVariableElements(variableID, query, orderBy, limit, offset);
-            verifyFindVariableElementsRetrieveAll(codesService, variableID, Arrays.asList("code1"));
         }
     }
 
@@ -901,8 +867,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         assertNotNull(codelistFamilies);
         assertEquals(SrmRestConstants.KIND_CODELIST_FAMILIES, codelistFamilies.getKind());
-        // Verify with Mockito
-        verifyFindCodelistFamilies(codesService, null, limit, offset, query, orderBy);
     }
 
     @Test
@@ -925,9 +889,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         assertEquals(resourceID, codelistFamily.getId());
         assertEquals(SrmRestConstants.KIND_CODELIST_FAMILY, codelistFamily.getKind());
         assertEquals(SrmRestConstants.KIND_CODELIST_FAMILY, codelistFamily.getSelfLink().getKind());
-
-        // Verify with Mockito
-        verifyRetrieveCodelistFamily(codesService, resourceID);
     }
 
     @Test
@@ -986,9 +947,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         assertNotNull(codelists);
         assertEquals(SrmRestConstants.KIND_CODELISTS, codelists.getKind());
-
-        // Verify with Mockito
-        verifyFindCodelists(codesService, agencyID, resourceID, version, limit, offset, query, orderBy);
     }
 
     private void testFindCodes(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
@@ -997,9 +955,6 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         assertNotNull(codes);
         assertEquals(SrmRestConstants.KIND_CODES, codes.getKind());
-
-        // Verify with mockito
-        verifyFindCodes(codesService, agencyID, resourceID, version, limit, offset, query, orderBy);
     }
 
     private void mockRetrieveItemSchemeVersionByVersion() throws MetamacException {
