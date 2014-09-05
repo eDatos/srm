@@ -1280,6 +1280,23 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
+    public Response publishContentConstraintsForArtefact(String artefactUrn, Boolean alsoMarkAsPublic, String userId) {
+        try {
+            ServiceContext serviceContext = new ServiceContext(userId, restInternalApplication, restInternalSession);
+
+            constraintsService.markContentConstraintsForArtefactAsFinal(serviceContext, artefactUrn, Boolean.TRUE);
+
+            if (BooleanUtils.isTrue(alsoMarkAsPublic)) {
+                constraintsService.markContentConstraintsForArtefactAsPublic(serviceContext, artefactUrn);
+            }
+
+            return Response.status(Response.Status.OK).build();
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
     public RegionReference saveRegionForContentConstraint(String agencyID, String resourceID, String version, RegionReference regionReference, String userId) {
         try {
             ServiceContext serviceContext = new ServiceContext(userId, restInternalApplication, restInternalSession);
@@ -1338,27 +1355,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             RegionReference result = contentConstraintsDo2RestMapper.toRegionReference(contentConstraintUrn, regionValue);
 
             return result;
-        } catch (Exception e) {
-            throw manageException(e);
-        }
-    }
-
-    @Override
-    public Response publishContentConstraint(String agencyID, String resourceID, String version, Boolean alsoMarkAsPublic, String userId) {
-        try {
-            String contentConstraintUrn = GeneratorUrnUtils.generateSdmxContentConstraintUrn(new String[]{agencyID}, resourceID, version);
-            ServiceContext serviceContext = new ServiceContext(userId, restInternalApplication, restInternalSession);
-
-            com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint contentConstraint = constraintsService
-                    .markContentConstraintAsFinal(serviceContext, contentConstraintUrn, Boolean.TRUE);
-            if (BooleanUtils.isTrue(alsoMarkAsPublic)) {
-                contentConstraint = constraintsService.markContentConstraintAsPublic(serviceContext, contentConstraintUrn);
-            }
-
-            // Transform
-            ContentConstraint result = contentConstraintsDo2RestMapper.toContentConstraint(contentConstraint);
-
-            return Response.status(Response.Status.CREATED).entity(result).build();
         } catch (Exception e) {
             throw manageException(e);
         }
