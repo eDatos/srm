@@ -256,11 +256,10 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
 
         org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPart keyPart = new org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPart();
         keyPart.setIdentifier(source.getIdentifier());
-        keyPart.setValue(source.getValue());
         keyPart.setPosition(source.getPosition());
         keyPart.setType(KeyPartType.valueOf(source.getType().getName()));
 
-        if (KeyPartType.TIME_RANGE.equals(source.getType())) {
+        if (KeyPartType.TIME_RANGE.equals(keyPart.getType())) {
             keyPart.setBeforePeriod(source.getBeforePeriod());
             keyPart.setBeforePeriodInclusive(source.getBeforePeriodInclusive());
 
@@ -274,6 +273,7 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
             keyPart.setEndPeriodInclusive(source.getEndPeriodInclusive());
         } else {
             keyPart.setCascadeValues(BooleanUtils.toBoolean(source.getCascadeValues()));
+            keyPart.setValue(source.getValue());
         }
 
         return keyPart;
