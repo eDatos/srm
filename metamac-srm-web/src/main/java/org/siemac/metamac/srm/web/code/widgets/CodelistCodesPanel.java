@@ -80,6 +80,7 @@ public class CodelistCodesPanel extends VLayout {
     public void setUiHandlers(CodelistUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
         codesTreeGrid.setUiHandlers(uiHandlers);
+        importCodesWindow.setUiHandlers(uiHandlers);
     }
 
     public void updateItemScheme(CodelistMetamacDto codelistMetamacDto) {

@@ -51,6 +51,7 @@ import org.siemac.metamac.srm.web.shared.code.SaveVariableResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
+import org.siemac.metamac.web.common.client.events.ChangeWaitPopupVisibilityEvent;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
@@ -374,11 +375,18 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
     public void resourceImportationSucceed(String successMessage) {
         ShowMessageEvent.fireSuccessMessage(VariablePresenter.this, successMessage);
         retrieveVariableElementsByVariable(ELEMENT_LIST_FIRST_RESULT, ELEMENT_LIST_MAX_RESULTS, null, variableDto.getUrn());
+        ChangeWaitPopupVisibilityEvent.fire(this, false);
     }
 
     @Override
     public void resourceImportationFailed(String errorMessage) {
         ShowMessageEvent.fireErrorMessage(VariablePresenter.this, errorMessage);
+        ChangeWaitPopupVisibilityEvent.fire(this, false);
+    }
+
+    @Override
+    public void showWaitPopup() {
+        ChangeWaitPopupVisibilityEvent.fire(this, true);
     }
 
     //

@@ -29,4 +29,6 @@ public interface VariableUiHandlers extends BaseVariableUiHandlers {
 
     void resourceImportationFailed(String errorMessage);
     void resourceImportationSucceed(String fileName);
+
+    void showWaitPopup();
 }

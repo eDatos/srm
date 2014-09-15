@@ -13,6 +13,7 @@ import org.siemac.metamac.srm.web.code.model.ds.CodelistVisualisationDS;
 import org.siemac.metamac.srm.web.code.model.record.CodelistVisualisationRecord;
 import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
+import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.web.common.client.listener.UploadListener;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
 import org.siemac.metamac.web.common.client.widgets.InformationWindow;
@@ -187,6 +188,12 @@ public class CodelistOrdersSectionStack extends BaseCodelistVisualisationSection
         if (CodesClientSecurityUtils.canDeleteCodelistOrderVisualisation(codelistMetamacDto)) {
             deleteCodelistVisualisationButton.show();
         }
+    }
+
+    @Override
+    public void setUiHandlers(CodelistUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        importCodeOrdersWindow.setUiHandlers(uiHandlers);
     }
 
     private boolean isAlphabeticalOrderSelected() {

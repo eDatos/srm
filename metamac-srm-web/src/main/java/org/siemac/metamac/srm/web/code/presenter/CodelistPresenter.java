@@ -113,6 +113,7 @@ import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
+import org.siemac.metamac.web.common.client.events.ChangeWaitPopupVisibilityEvent;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -1130,11 +1131,18 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
     public void resourceImportationSucceed(String successMessage) {
         ShowMessageEvent.fireSuccessMessage(CodelistPresenter.this, successMessage);
         retrieveCodelistAndCodesByUrn(codelistMetamacDto.getUrn());
+        ChangeWaitPopupVisibilityEvent.fire(this, false);
     }
 
     @Override
     public void resourceImportationFailed(String errorMessage) {
         ShowMessageEvent.fireErrorMessage(CodelistPresenter.this, errorMessage);
+        ChangeWaitPopupVisibilityEvent.fire(this, false);
+    }
+
+    @Override
+    public void showWaitPopup() {
+        ChangeWaitPopupVisibilityEvent.fire(this, true);
     }
 
     //

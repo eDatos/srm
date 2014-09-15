@@ -13,6 +13,8 @@ import org.siemac.metamac.srm.web.shared.GetUserGuideUrlAction;
 import org.siemac.metamac.srm.web.shared.GetUserGuideUrlResult;
 import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.events.ChangeWaitPopupVisibilityEvent;
+import org.siemac.metamac.web.common.client.events.ChangeWaitPopupVisibilityEvent.ChangeWaitPopupVisibilityHandler;
 import org.siemac.metamac.web.common.client.events.HideMessageEvent;
 import org.siemac.metamac.web.common.client.events.HideMessageEvent.HideMessageHandler;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
@@ -53,7 +55,8 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
             ShowMessageHandler,
             HideMessageHandler,
             SetTitleHandler,
-            SelectMenuButtonHandler {
+            SelectMenuButtonHandler,
+            ChangeWaitPopupVisibilityHandler {
 
     private static Logger       logger = Logger.getLogger(MainPagePresenter.class.getName());
 
@@ -82,6 +85,9 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
         void hideMessages();
 
         void selectStructuralResourceMenuButton(ToolStripButtonEnum type);
+
+        void showWaitPopup();
+        void hideWaitPopup();
     }
 
     /**
@@ -162,6 +168,16 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
     @Override
     public void onSelectMenuButton(SelectMenuButtonEvent event) {
         getView().selectStructuralResourceMenuButton(event.getResourceType());
+    }
+
+    @ProxyEvent
+    @Override
+    public void onChangeWaitPopupVisibility(ChangeWaitPopupVisibilityEvent event) {
+        if (event.isShowPopup()) {
+            getView().showWaitPopup();
+        } else {
+            getView().hideWaitPopup();
+        }
     }
 
     public static MasterHead getMasterHead() {

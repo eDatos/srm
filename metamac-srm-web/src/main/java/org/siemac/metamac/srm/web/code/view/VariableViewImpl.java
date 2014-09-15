@@ -305,6 +305,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     public void setUiHandlers(VariableUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         variableElementOperationsLayout.setUiHandlers(uiHandlers);
+        importVariableElementShapeWindow.setUiHandlers(uiHandlers);
+        importVariableElementsWindow.setUiHandlers(uiHandlers);
     }
 
     private void bindMainFormLayoutEvents() {
