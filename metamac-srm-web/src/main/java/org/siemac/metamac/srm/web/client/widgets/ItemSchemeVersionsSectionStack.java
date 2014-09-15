@@ -17,9 +17,10 @@ public class ItemSchemeVersionsSectionStack extends CustomListGridSectionStack {
         ListGridField codeField = new ListGridField(ItemSchemeDS.CODE, getConstants().identifiableArtefactCode());
         codeField.setWidth("30%");
         ListGridField nameField = new ListGridField(ItemSchemeDS.NAME, getConstants().nameableArtefactName());
+        ListGridField procStatusField = new ListGridField(ItemSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         ListGridField versionField = new ListGridField(ItemSchemeDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         versionField.setWidth("15%");
-        listGrid.setFields(codeField, nameField, versionField);
+        listGrid.setFields(codeField, nameField, procStatusField, versionField);
 
         // Add listGrid to sectionStack
         defaultSection.setItems(listGrid);

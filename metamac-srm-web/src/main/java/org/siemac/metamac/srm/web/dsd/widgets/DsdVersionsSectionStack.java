@@ -27,10 +27,12 @@ public class DsdVersionsSectionStack extends ItemSchemeVersionsSectionStack {
 
         ListGridField nameField = new ListGridField(DataStructureDefinitionDS.NAME, getConstants().nameableArtefactName());
 
+        ListGridField procStatusField = new ListGridField(DataStructureDefinitionDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
+
         ListGridField versionField = new ListGridField(DataStructureDefinitionDS.VERSION_LOGIC, getConstants().maintainableArtefactVersionLogic());
         versionField.setWidth("15%");
 
-        listGrid.setFields(codeField, nameField, versionField);
+        listGrid.setFields(codeField, nameField, procStatusField, versionField);
     }
 
     public void setDataStructureDefinitions(List<DataStructureDefinitionMetamacBasicDto> dataStructureDefinitionMetamacDtos) {
