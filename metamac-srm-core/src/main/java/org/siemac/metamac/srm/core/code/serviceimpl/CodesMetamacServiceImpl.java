@@ -1009,7 +1009,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 }
             }
             writer.flush();
-            return file.getAbsolutePath();
+            return file.getName();
         } catch (Exception e) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.EXPORTATION_TSV_ERROR).withMessageParameters(e).build();
         } finally {
@@ -1082,7 +1082,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                 }
             }
             writer.flush();
-            return file.getAbsolutePath();
+            return file.getName();
         } catch (Exception e) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.EXPORTATION_TSV_ERROR).withMessageParameters(e).build();
         } finally {
