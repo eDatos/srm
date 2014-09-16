@@ -22,6 +22,7 @@ import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsse
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.URL;
@@ -9632,11 +9633,11 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Test
     public void testExportCodesTsv() throws Exception {
         String codelistUrn = CODELIST_1_V2;
-        String filename = codesService.exportCodesTsv(getServiceContextAdministrador(), codelistUrn);
-        assertNotNull(filename);
+        String fileName = codesService.exportCodesTsv(getServiceContextAdministrador(), codelistUrn);
+        assertNotNull(fileName);
 
         // Validate
-        File file = new File(filename);
+        File file = new File(tempDirPath() + File.separatorChar + fileName);
         FileInputStream fileInputStream = new FileInputStream(file);
         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -9652,17 +9653,18 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals("CODE04\t\t\tLanzarote\t\t\t\t\t\t\t", bufferedReader.readLine());
         assertEquals("CODE0401\tCODE04\t\tCanarias, Tenerife\t\t\t\t\t\t\t", bufferedReader.readLine());
         assertEquals("CODE040101\tCODE0401\tVARIABLE_ELEMENT_01\tNombre codelist-1-v2-code-4-1-1\t\tName codelist-1-v2-code-4-1-1\t\t\t\t\t", bufferedReader.readLine());
+        bufferedReader.close();
     }
 
     @Override
     @Test
     public void testExportCodeOrdersTsv() throws Exception {
         String codelistUrn = CODELIST_1_V2;
-        String filename = codesService.exportCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn);
-        assertNotNull(filename);
+        String fileName = codesService.exportCodeOrdersTsv(getServiceContextAdministrador(), codelistUrn);
+        assertNotNull(fileName);
 
         // Validate
-        File file = new File(filename);
+        File file = new File(tempDirPath() + File.separatorChar + fileName);
         FileInputStream fileInputStream = new FileInputStream(file);
         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -9676,6 +9678,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertEquals("CODE04\tLanzarote\t1\t\t4\t4\t4", bufferedReader.readLine());
         assertEquals("CODE0401\tCanarias, Tenerife\t2\tCODE04\t1\t1\t1", bufferedReader.readLine());
         assertEquals("CODE040101\tNombre codelist-1-v2-code-4-1-1\t3\tCODE0401\t1\t1\t1", bufferedReader.readLine());
+        bufferedReader.close();
     }
 
     @Override
@@ -10199,9 +10202,16 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
     }
 
+    private String tempDirPath() throws IOException {
+        File temp = File.createTempFile("temp-file-name", ".tmp");
+        String absolutePath = temp.getAbsolutePath();
+        String tempFilePath = absolutePath.substring(0, absolutePath.lastIndexOf(File.separator));
+        temp.delete();
+        return tempFilePath;
+    }
+
     @Override
     protected String getDataSetFile() {
         return "dbunit/SrmCodesTest.xml";
     }
-
 }
