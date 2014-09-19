@@ -212,8 +212,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     private DataStructuresDo2RestMapperV10        dataStructuresDo2RestMapperV10;
 
     @Autowired
-    @Qualifier("contentConstraintsCopyCallback")
-    private ContentConstraintsCopyCallback        contentConstraintsCopyCallback;
+    @Qualifier("contentConstraintsVersioningCallback")
+    private ContentConstraintsCopyCallback        contentConstraintsVersioningCallback;
 
     private static final String                   restInternalUser         = "restInternal";
     private static final String                   restInternalApplication  = "restInternal";
@@ -1266,12 +1266,12 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public Response versioningContentConstraintsForArtefact(String artefactUrn, String userId, String versionType) {
+    public Response versioningContentConstraintsForArtefact(String artefactUrn, String newAttachmentConstraintUrn, String userId, String versionType) {
         try {
             ServiceContext serviceContext = new ServiceContext(userId, restInternalApplication, restInternalSession);
 
             VersionTypeEnum valueOf = VersionTypeEnum.valueOf(versionType);
-            constraintsService.versioningContentConstraintsForArtefact(serviceContext, artefactUrn, valueOf, contentConstraintsCopyCallback);
+            constraintsService.versioningContentConstraintsForArtefact(serviceContext, artefactUrn, newAttachmentConstraintUrn, valueOf, contentConstraintsVersioningCallback);
 
             return Response.status(Response.Status.OK).build();
         } catch (Exception e) {
@@ -1289,6 +1289,19 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             if (BooleanUtils.isTrue(alsoMarkAsPublic)) {
                 constraintsService.markContentConstraintsForArtefactAsPublic(serviceContext, artefactUrn);
             }
+
+            return Response.status(Response.Status.OK).build();
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+    }
+
+    @Override
+    public Response revertToDraft(String artefactUrn, String userId) {
+        try {
+            ServiceContext serviceContext = new ServiceContext(userId, restInternalApplication, restInternalSession);
+
+            constraintsService.revertContentConstraintsForArtefactToDraft(serviceContext, artefactUrn);
 
             return Response.status(Response.Status.OK).build();
         } catch (Exception e) {
