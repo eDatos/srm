@@ -415,6 +415,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                     public void onWaitSuccess(UpdateCodelistProcStatusResult result) {
                         fireSuccessMessage(getMessages().codelistSentToProductionValidation());
                         codelistMetamacDto = result.getCodelistMetamacDto();
+                        retrieveCodelistVersions(codelistMetamacDto.getUrn());
                         getView().setCodelist(codelistMetamacDto);
                     }
                 });
@@ -433,6 +434,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                     public void onWaitSuccess(UpdateCodelistProcStatusResult result) {
                         fireSuccessMessage(getMessages().codelistSentToDiffusionValidation());
                         codelistMetamacDto = result.getCodelistMetamacDto();
+                        retrieveCodelistVersions(codelistMetamacDto.getUrn());
                         getView().setCodelist(codelistMetamacDto);
                     }
                 });
@@ -451,6 +453,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             public void onWaitSuccess(UpdateCodelistProcStatusResult result) {
                 fireSuccessMessage(getMessages().codelistRejected());
                 codelistMetamacDto = result.getCodelistMetamacDto();
+                retrieveCodelistVersions(codelistMetamacDto.getUrn());
                 getView().setCodelist(codelistMetamacDto);
             }
         });
@@ -468,6 +471,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                     @Override
                     public void onWaitSuccess(UpdateCodelistProcStatusResult result) {
                         codelistMetamacDto = result.getCodelistMetamacDto();
+                        retrieveCodelistVersions(codelistMetamacDto.getUrn());
 
                         if (BooleanUtils.isTrue(result.getCodelistMetamacDto().getIsTaskInBackground())) {
 
@@ -484,7 +488,6 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                             // If the version published was a temporal version, reload the complete codelist and the URL. When a temporal version is published, is automatically converted into a normal
                             // version (the URN changes!).
                             if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
-                                retrieveCodelistVersions(codelistMetamacDto.getUrn());
                                 retrieveCompleteCodelistByUrn(codelistMetamacDto.getUrn());
                                 updateUrl();
                             }
@@ -506,6 +509,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                     public void onWaitSuccess(UpdateCodelistProcStatusResult result) {
                         fireSuccessMessage(getMessages().codelistPublishedExternally());
                         codelistMetamacDto = result.getCodelistMetamacDto();
+                        retrieveCodelistVersions(codelistMetamacDto.getUrn());
                         getView().setCodelist(codelistMetamacDto);
                     }
                 });

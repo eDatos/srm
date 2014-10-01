@@ -353,6 +353,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().organisationSchemeSentToProductionValidation());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
+                        retrieveOrganisationSchemeVersions(organisationSchemeMetamacDto.getUrn());
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
                     }
                 });
@@ -367,6 +368,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().organisationSchemeSentToDiffusionValidation());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
+                        retrieveOrganisationSchemeVersions(organisationSchemeMetamacDto.getUrn());
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
                     }
                 });
@@ -381,6 +383,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().organisationSchemeRejected());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
+                        retrieveOrganisationSchemeVersions(organisationSchemeMetamacDto.getUrn());
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
                     }
                 });
@@ -395,12 +398,12 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().organisationSchemePublishedInternally());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
+                        retrieveOrganisationSchemeVersions(organisationSchemeMetamacDto.getUrn());
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
 
                         // If the version published was a temporal version, reload the complete organisation scheme and the URL. When a temporal version is published, is automatically converted into a
                         // normal version (the URN changes!).
                         if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
-                            retrieveOrganisationSchemeVersions(organisationSchemeMetamacDto.getUrn());
                             retrieveCompleteOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
                             updateUrl();
                         }
@@ -417,6 +420,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().organisationSchemePublishedExternally());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
+                        retrieveOrganisationSchemeVersions(organisationSchemeMetamacDto.getUrn());
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
                     }
                 });

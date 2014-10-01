@@ -336,6 +336,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().categorySchemeSentToProductionValidation());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
+                        retrieveCategorySchemeVersions(categorySchemeMetamacDto.getUrn());
                         getView().setCategoryScheme(categorySchemeMetamacDto);
                     }
                 });
@@ -350,6 +351,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().categorySchemeSentToDiffusionValidation());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
+                        retrieveCategorySchemeVersions(categorySchemeMetamacDto.getUrn());
                         getView().setCategoryScheme(categorySchemeMetamacDto);
                     }
                 });
@@ -364,6 +366,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().categorySchemeRejected());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
+                        retrieveCategorySchemeVersions(categorySchemeMetamacDto.getUrn());
                         getView().setCategoryScheme(categorySchemeMetamacDto);
                     }
                 });
@@ -378,12 +381,12 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().categorySchemePublishedInternally());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
+                        retrieveCategorySchemeVersions(categorySchemeMetamacDto.getUrn());
                         getView().setCategoryScheme(categorySchemeMetamacDto);
 
                         // If the version published was a temporal version, reload the complete category scheme and the URL. Wwhen a temporal version is published, is automatically converted into a
                         // normal version (the URN changes!).
                         if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(urnToPublish)) {
-                            retrieveCategorySchemeVersions(categorySchemeMetamacDto.getUrn());
                             retrieveCompleteCategorySchemeByUrn(categorySchemeMetamacDto.getUrn());
                             updateUrl();
                         }
@@ -400,6 +403,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().categorySchemePublishedExternally());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
+                        retrieveCategorySchemeVersions(categorySchemeMetamacDto.getUrn());
                         getView().setCategoryScheme(categorySchemeMetamacDto);
                     }
                 });

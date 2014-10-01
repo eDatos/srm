@@ -334,7 +334,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     @Override
                     public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().conceptSchemeSentToProductionValidation());
-                        ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
+                        conceptSchemeDto = result.getConceptSchemeDto();
+                        retrieveConceptSchemeVersions(conceptSchemeDto.getUrn());
                         getView().setConceptScheme(result.getConceptSchemeDto());
                     }
                 });
@@ -353,6 +354,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().conceptSchemeSentToDiffusionValidation());
                         ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
+                        retrieveConceptSchemeVersions(conceptSchemeDto.getUrn());
                         getView().setConceptScheme(result.getConceptSchemeDto());
                     }
                 });
@@ -371,6 +373,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().conceptSchemeRejected());
                         ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
+                        retrieveConceptSchemeVersions(conceptSchemeDto.getUrn());
                         getView().setConceptScheme(result.getConceptSchemeDto());
                     }
                 });
@@ -389,12 +392,12 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().conceptSchemePublishedInternally());
                         ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
+                        retrieveConceptSchemeVersions(conceptSchemeDto.getUrn());
                         getView().setConceptScheme(result.getConceptSchemeDto());
 
                         // If the version published was a temporal version, reload the complete concept scheme and the URL. When a temporal version is published, is automatically converted into a
                         // normal version (the URN changes!).
                         if (org.siemac.metamac.core.common.util.shared.UrnUtils.isTemporalUrn(conceptSchemeToPublish.getUrn())) {
-                            retrieveConceptSchemeVersions(conceptSchemeDto.getUrn());
                             retrieveCompleteConceptSchemeByUrn(conceptSchemeDto.getUrn());
                             updateUrl();
                         }
@@ -415,6 +418,7 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
                         fireSuccessMessage(getMessages().conceptSchemePublishedExternally());
                         ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
+                        retrieveConceptSchemeVersions(conceptSchemeDto.getUrn());
                         getView().setConceptScheme(result.getConceptSchemeDto());
                     }
                 });

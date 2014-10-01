@@ -272,6 +272,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                     public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                         fireSuccessMessage(MetamacSrmWeb.getMessages().dsdSentToProductionValidation());
                         retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
+                        UpdateMaintainableArtefactVersionsEvent.fire(DsdGeneralTabPresenter.this, result.getDataStructureDefinitionMetamacDto().getUrn());
                     }
                 });
     }
@@ -289,6 +290,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                     public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                         fireSuccessMessage(MetamacSrmWeb.getMessages().dsdSentToDiffusionValidation());
                         retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
+                        UpdateMaintainableArtefactVersionsEvent.fire(DsdGeneralTabPresenter.this, result.getDataStructureDefinitionMetamacDto().getUrn());
                     }
                 });
     }
@@ -306,6 +308,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                     public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                         fireSuccessMessage(MetamacSrmWeb.getMessages().dsdRejected());
                         retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
+                        UpdateMaintainableArtefactVersionsEvent.fire(DsdGeneralTabPresenter.this, result.getDataStructureDefinitionMetamacDto().getUrn());
                     }
                 });
     }
@@ -343,6 +346,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                     public void onWaitSuccess(UpdateDsdProcStatusResult result) {
                         fireSuccessMessage(MetamacSrmWeb.getMessages().dsdPublishedExternally());
                         retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
+                        UpdateMaintainableArtefactVersionsEvent.fire(DsdGeneralTabPresenter.this, result.getDataStructureDefinitionMetamacDto().getUrn());
                     }
                 });
     }
