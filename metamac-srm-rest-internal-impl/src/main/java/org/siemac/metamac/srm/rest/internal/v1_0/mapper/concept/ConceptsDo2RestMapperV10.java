@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
+import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concept;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Concepts;
@@ -32,4 +33,7 @@ public interface ConceptsDo2RestMapperV10 {
     public RoleConcepts toRoleConcepts(Collection sources);
 
     public ConceptTypes toConceptTypes(List<ConceptType> sources);
+
+    public ResourceLink toConceptSchemeSelfLink(String agencyID, String resourceID, String version);
+    public String toConceptSchemeManagementApplicationLink(String conceptSchemeUrn);
 }

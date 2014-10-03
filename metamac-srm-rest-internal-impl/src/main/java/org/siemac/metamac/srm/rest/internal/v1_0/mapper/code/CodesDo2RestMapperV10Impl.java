@@ -491,6 +491,11 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return toResourceLink(SrmRestConstants.KIND_CODELIST, toCodelistLink(source));
     }
 
+    @Override
+    public ResourceLink toCodelistSelfLink(String agencyID, String resourceID, String version) {
+        return toResourceLink(SrmRestConstants.KIND_CODELIST, toCodelistLink(agencyID, resourceID, version));
+    }
+
     private ResourceLink toCodelistParentLink(CodelistVersionMetamac source) {
         return toResourceLink(SrmRestConstants.KIND_CODELISTS, toCodelistsLink(null, null, null));
     }
@@ -589,9 +594,15 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     private String toCodelistsLink(String agencyID, String resourceID, String version) {
         return toMaintainableArtefactLink(toSubpathItemSchemes(), agencyID, resourceID, version);
     }
+
     private String toCodelistLink(ItemSchemeVersion itemSchemeVersion) {
         return toItemSchemeLink(toSubpathItemSchemes(), itemSchemeVersion);
     }
+
+    private String toCodelistLink(String agencyID, String resourceID, String version) {
+        return toMaintainableArtefactLink(toSubpathItemSchemes(), agencyID, resourceID, version);
+    }
+
     private String toCodesLink(String agencyID, String resourceID, String version) {
         return toItemsLink(toSubpathItemSchemes(), toSubpathItems(), agencyID, resourceID, version);
     }
@@ -798,6 +809,11 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
     private String toCodelistManagementApplicationLink(CodelistVersion source) {
         return getInternalWebApplicationNavigation().buildCodelistUrl(source);
+    }
+
+    @Override
+    public String toCodelistManagementApplicationLink(String codelistUrn) {
+        return getInternalWebApplicationNavigation().buildCodelistUrl(codelistUrn);
     }
 
     private String toCodeManagementApplicationLink(CodeMetamac source) {

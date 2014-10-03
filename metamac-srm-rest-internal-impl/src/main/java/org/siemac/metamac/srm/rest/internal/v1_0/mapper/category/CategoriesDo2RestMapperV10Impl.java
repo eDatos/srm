@@ -169,6 +169,11 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
         return toResourceLink(SrmRestConstants.KIND_CATEGORY_SCHEME, toCategorySchemeLink(source));
     }
 
+    @Override
+    public ResourceLink toCategorySchemeSelfLink(String agencyID, String resourceID, String version) {
+        return toResourceLink(SrmRestConstants.KIND_CATEGORY_SCHEME, toCategorySchemeLink(agencyID, resourceID, version));
+    }
+
     private ResourceLink toCategorySchemeParentLink(CategorySchemeVersionMetamac source) {
         return toResourceLink(SrmRestConstants.KIND_CATEGORY_SCHEMES, toCategorySchemesLink(null, null, null));
     }
@@ -250,18 +255,27 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
     private String toCategorySchemesLink(String agencyID, String resourceID, String version) {
         return toMaintainableArtefactLink(toSubpathItemSchemes(), agencyID, resourceID, version);
     }
+
     private String toCategorySchemeLink(ItemSchemeVersion itemSchemeVersion) {
         return toItemSchemeLink(toSubpathItemSchemes(), itemSchemeVersion);
     }
+
+    private String toCategorySchemeLink(String agencyID, String resourceID, String version) {
+        return toMaintainableArtefactLink(toSubpathItemSchemes(), agencyID, resourceID, version);
+    }
+
     private String toCategoriesLink(String agencyID, String resourceID, String version) {
         return toItemsLink(toSubpathItemSchemes(), toSubpathItems(), agencyID, resourceID, version);
     }
+
     private String toCategoriesLink(ItemSchemeVersion itemSchemeVersion) {
         return toItemsLink(toSubpathItemSchemes(), toSubpathItems(), itemSchemeVersion);
     }
+
     private String toCategoryLink(com.arte.statistic.sdmx.srm.core.base.domain.Item item) {
         return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item);
     }
+
     private String toCategoryLink(ItemResult item, ItemSchemeVersion itemSchemeVersion) {
         return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item, itemSchemeVersion);
     }
@@ -269,6 +283,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
     private String toCategorisationsLink(String agencyID, String resourceID, String version) {
         return toMaintainableArtefactLink(toSubpathCategorisations(), agencyID, resourceID, version);
     }
+
     private String toCategorisationLink(Categorisation categorisation) {
         return toMaintainableArtefactLink(toSubpathCategorisations(), categorisation.getMaintainableArtefact());
     }
@@ -285,6 +300,11 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
 
     private String toCategorySchemeManagementApplicationLink(CategorySchemeVersionMetamac source) {
         return getInternalWebApplicationNavigation().buildCategorySchemeUrl(source);
+    }
+
+    @Override
+    public String toCategorySchemeManagementApplicationLink(String categorySchemeUrn) {
+        return getInternalWebApplicationNavigation().buildCategorySchemeUrl(categorySchemeUrn);
     }
 
     private String toCategoryManagementApplicationLink(CategoryMetamac source) {

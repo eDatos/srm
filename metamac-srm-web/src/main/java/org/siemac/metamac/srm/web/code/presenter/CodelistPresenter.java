@@ -118,6 +118,7 @@ import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
+import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -482,7 +483,9 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                         } else {
 
                             // Synchronous internal publication
-                            fireSuccessMessage(getMessages().codelistPublishedInternally());
+
+                            firePublicationMessage(getMessages().codelistPublishedInternally(), getMessages().codelistPublishedInternallyWithNotificationError(), result.getNotificationException());
+
                             getView().setCodelist(codelistMetamacDto);
 
                             // If the version published was a temporal version, reload the complete codelist and the URL. When a temporal version is published, is automatically converted into a normal
@@ -507,7 +510,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                     }
                     @Override
                     public void onWaitSuccess(UpdateCodelistProcStatusResult result) {
-                        fireSuccessMessage(getMessages().codelistPublishedExternally());
+                        firePublicationMessage(getMessages().codelistPublishedExternally(), getMessages().codelistPublishedExternallyWithNotificationError(), result.getNotificationException());
                         codelistMetamacDto = result.getCodelistMetamacDto();
                         retrieveCodelistVersions(codelistMetamacDto.getUrn());
                         getView().setCodelist(codelistMetamacDto);
@@ -581,6 +584,14 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 retrieveCodelistAndCodesByUrn(urn);
             }
         });
+    }
+
+    private void firePublicationMessage(String successMessage, String warningMessage, MetamacWebException notificationException) {
+        if (notificationException == null) {
+            ShowMessageEvent.fireSuccessMessage(this, successMessage);
+        } else {
+            ShowMessageEvent.fireWarningMessageWithError(this, warningMessage, notificationException);
+        }
     }
 
     //

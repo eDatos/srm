@@ -226,6 +226,11 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         return toResourceLink(SrmRestConstants.KIND_CONCEPT_SCHEME, toConceptSchemeLink(source));
     }
 
+    @Override
+    public ResourceLink toConceptSchemeSelfLink(String agencyID, String resourceID, String version) {
+        return toResourceLink(SrmRestConstants.KIND_CONCEPT_SCHEME, toConceptSchemeLink(agencyID, resourceID, version));
+    }
+
     private ResourceLink toConceptSchemeParentLink(ConceptSchemeVersionMetamac source) {
         return toResourceLink(SrmRestConstants.KIND_CONCEPT_SCHEMES, toConceptSchemesLink(null, null, null));
     }
@@ -380,18 +385,27 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
     private String toConceptSchemesLink(String agencyID, String resourceID, String version) {
         return toMaintainableArtefactLink(toSubpathItemSchemes(), agencyID, resourceID, version);
     }
+
     private String toConceptSchemeLink(ItemSchemeVersion itemSchemeVersion) {
         return toItemSchemeLink(toSubpathItemSchemes(), itemSchemeVersion);
     }
+
+    private String toConceptSchemeLink(String agencyID, String resourceID, String version) {
+        return toMaintainableArtefactLink(toSubpathItemSchemes(), agencyID, resourceID, version);
+    }
+
     private String toConceptsLink(String agencyID, String resourceID, String version) {
         return toItemsLink(toSubpathItemSchemes(), toSubpathItems(), agencyID, resourceID, version);
     }
+
     private String toConceptsLink(ItemSchemeVersion itemSchemeVersion) {
         return toItemsLink(toSubpathItemSchemes(), toSubpathItems(), itemSchemeVersion);
     }
+
     private String toConceptLink(com.arte.statistic.sdmx.srm.core.base.domain.Item item) {
         return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item);
     }
+
     private String toConceptLink(ItemResult item, ItemSchemeVersion itemSchemeVersion) {
         return toItemLink(toSubpathItemSchemes(), toSubpathItems(), item, itemSchemeVersion);
     }
@@ -399,12 +413,18 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
     private String toSubpathItemSchemes() {
         return SrmRestConstants.LINK_SUBPATH_CONCEPT_SCHEMES;
     }
+
     private String toSubpathItems() {
         return SrmRestConstants.LINK_SUBPATH_CONCEPTS;
     }
 
     private String toConceptSchemeManagementApplicationLink(ConceptSchemeVersion source) {
         return getInternalWebApplicationNavigation().buildConceptSchemeUrl(source);
+    }
+
+    @Override
+    public String toConceptSchemeManagementApplicationLink(String conceptSchemeUrn) {
+        return getInternalWebApplicationNavigation().buildConceptSchemeUrl(conceptSchemeUrn);
     }
 
     private String toConceptManagementApplicationLink(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source) {

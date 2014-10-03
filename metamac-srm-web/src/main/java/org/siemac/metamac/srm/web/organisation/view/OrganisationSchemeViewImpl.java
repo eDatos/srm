@@ -358,21 +358,21 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().sendToProductionValidation(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus());
+                getUiHandlers().sendToProductionValidation(organisationSchemeDto.getUrn(), organisationSchemeDto.getType(), organisationSchemeDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getSendToDiffusionValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().sendToDiffusionValidation(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus());
+                getUiHandlers().sendToDiffusionValidation(organisationSchemeDto.getUrn(), organisationSchemeDto.getType(), organisationSchemeDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getRejectValidation().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().rejectValidation(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus());
+                getUiHandlers().rejectValidation(organisationSchemeDto.getUrn(), organisationSchemeDto.getType(), organisationSchemeDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getPublishInternally().addClickHandler(new ClickHandler() {
@@ -386,7 +386,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().publishExternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus());
+                getUiHandlers().publishExternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getType(), organisationSchemeDto.getLifeCycle().getProcStatus());
             }
         });
         mainFormLayout.getCreateTemporalVersion().addClickHandler(new ClickHandler() {
@@ -854,7 +854,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     private void publishOrganisationSchemeInternally() {
         if (org.siemac.metamac.srm.web.client.utils.CommonUtils.hasDefaultMaintainerOrIsAgencySchemeSdmxResource(organisationSchemeDto) || CommonUtils.isAgencyScheme(organisationSchemeDto)
                 || CommonUtils.isDataProviderScheme(organisationSchemeDto) || CommonUtils.isDataConsumenScheme(organisationSchemeDto)) {
-            getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus(), null);
+            getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getType(), organisationSchemeDto.getLifeCycle().getProcStatus(), null);
         } else {
             // If the organisation scheme is imported, ask the user if this resource should be the latest one.
             // If there were another organisation scheme marked as final, find it, and inform the user that the organisation scheme to publish will replace the latest one.
@@ -865,7 +865,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     @Override
     public void setLatestOrganisationSchemeForInternalPublication(GetOrganisationSchemesResult result) {
         if (result.getOrganisationSchemeMetamacDtos().isEmpty()) {
-            getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus(), null);
+            getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getType(), organisationSchemeDto.getLifeCycle().getProcStatus(), null);
         } else {
             // If there were other version marked as the latest, ask the user what to do
             OrganisationSchemeMetamacBasicDto latest = result.getOrganisationSchemeMetamacDtos().get(0);
@@ -876,7 +876,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 @Override
                 public void onClick(ClickEvent event) {
                     // Organisation scheme will be the latest
-                    getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus(), true);
+                    getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getType(), organisationSchemeDto.getLifeCycle().getProcStatus(), true);
                 }
             });
             confirmationWindow.getNoButton().addClickHandler(new ClickHandler() {
@@ -884,7 +884,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
                 @Override
                 public void onClick(ClickEvent event) {
                     // Organisation scheme WON'T be the latest
-                    getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getLifeCycle().getProcStatus(), false);
+                    getUiHandlers().publishInternally(organisationSchemeDto.getUrn(), organisationSchemeDto.getType(), organisationSchemeDto.getLifeCycle().getProcStatus(), false);
                 }
             });
         }

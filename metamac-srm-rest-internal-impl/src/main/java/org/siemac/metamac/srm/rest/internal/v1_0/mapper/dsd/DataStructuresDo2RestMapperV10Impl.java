@@ -374,8 +374,14 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         }
         return targets;
     }
+
     private ResourceLink toDataStructureSelfLink(DataStructureDefinitionVersionMetamac source) {
         return toResourceLink(SrmRestConstants.KIND_DATA_STRUCTURE, toDataStructureLink(source));
+    }
+
+    @Override
+    public ResourceLink toDataStructureSelfLink(String agencyID, String resourceID, String version) {
+        return toResourceLink(SrmRestConstants.KIND_DATA_STRUCTURE, toDataStructureLink(agencyID, resourceID, version));
     }
 
     private ResourceLink toDataStructureParentLink(DataStructureDefinitionVersionMetamac source) {
@@ -398,9 +404,15 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
     private String toDataStructuresLink(String agencyID, String resourceID, String version) {
         return toMaintainableArtefactLink(toSubpathDataStructures(), agencyID, resourceID, version);
     }
+
     private String toDataStructureLink(StructureVersion structureVersion) {
         return toMaintainableArtefactLink(toSubpathDataStructures(), structureVersion.getMaintainableArtefact());
     }
+
+    private String toDataStructureLink(String agencyID, String resourceID, String version) {
+        return toMaintainableArtefactLink(toSubpathDataStructures(), agencyID, resourceID, version);
+    }
+
     private String toSubpathDataStructures() {
         return SrmRestConstants.LINK_SUBPATH_DATA_STRUCTURES;
     }
@@ -424,6 +436,11 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
 
     private String toDataStructureManagementApplicationLink(DataStructureDefinitionVersionMetamac source) {
         return getInternalWebApplicationNavigation().buildDataStructureDefinitionUrl(source);
+    }
+
+    @Override
+    public String toDataStructureManagementApplicationLink(String dsdUrn) {
+        return getInternalWebApplicationNavigation().buildDataStructureDefinitionUrl(dsdUrn);
     }
 
     private org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.AttributeUsageStatusType toAttributeUsageStatusType(UsageStatus source) {

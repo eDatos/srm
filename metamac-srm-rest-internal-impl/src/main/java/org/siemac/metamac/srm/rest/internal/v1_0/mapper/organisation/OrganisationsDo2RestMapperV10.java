@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agencies;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.DataConsumer;
@@ -18,6 +19,7 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 
 public interface OrganisationsDo2RestMapperV10 {
 
@@ -65,4 +67,7 @@ public interface OrganisationsDo2RestMapperV10 {
     public DataConsumers toDataConsumers(PagedResult<OrganisationMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
     public DataConsumers toDataConsumers(List<ItemResult> sources, OrganisationSchemeVersionMetamac organisationSchemeVersion);
     public DataConsumer toDataConsumer(OrganisationMetamac source);
+
+    public ResourceLink toOrganisationSchemeSelfLink(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum organisationSchemeType);
+    public String toOrganisationSchemeManagementApplicationLink(String organisationSchemeUrn, OrganisationSchemeTypeEnum organisationSchemeType);
 }

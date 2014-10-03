@@ -60,6 +60,7 @@ import org.siemac.metamac.srm.web.shared.dsd.VersionDsdResult;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
+import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
@@ -323,7 +324,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
             }
             @Override
             public void onWaitSuccess(UpdateDsdProcStatusResult result) {
-                fireSuccessMessage(MetamacSrmWeb.getMessages().dsdPublishedInternally());
+                firePublicationMessage(getMessages().dsdPublishedInternally(), getMessages().dsdPublishedInternallyWithNotificationError(), result.getNotificationException());
                 retrieveCompleteDsd(result.getDataStructureDefinitionMetamacDto().getUrn());
 
                 // If the version published was a temporal version, reload the version list and the URL. When a temporal version is published, is automatically converted into a normal version (the
@@ -344,7 +345,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                     }
                     @Override
                     public void onWaitSuccess(UpdateDsdProcStatusResult result) {
-                        fireSuccessMessage(MetamacSrmWeb.getMessages().dsdPublishedExternally());
+                        firePublicationMessage(getMessages().dsdPublishedExternally(), getMessages().dsdPublishedExternallyWithNotificationError(), result.getNotificationException());
                         retrieveCompleteDsd(dataStructureDefinitionMetamacDto.getUrn());
                         UpdateMaintainableArtefactVersionsEvent.fire(DsdGeneralTabPresenter.this, result.getDataStructureDefinitionMetamacDto().getUrn());
                     }
@@ -401,6 +402,14 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
                 retrieveCompleteDsd(urn);
             }
         });
+    }
+
+    private void firePublicationMessage(String successMessage, String warningMessage, MetamacWebException notificationException) {
+        if (notificationException == null) {
+            ShowMessageEvent.fireSuccessMessage(this, successMessage);
+        } else {
+            ShowMessageEvent.fireWarningMessageWithError(this, warningMessage, notificationException);
+        }
     }
 
     //

@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.server.handlers.dsd;
 import java.util.Locale;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.lang.shared.LocaleConstants;
 import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operation;
@@ -10,6 +11,7 @@ import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.ProcS
 import org.siemac.metamac.srm.core.dsd.dto.DataStructureDefinitionMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
+import org.siemac.metamac.srm.web.server.rest.NoticesRestInternalFacade;
 import org.siemac.metamac.srm.web.server.rest.StatisticalOperationsRestInternalFacade;
 import org.siemac.metamac.srm.web.shared.WebMessageExceptionsConstants;
 import org.siemac.metamac.srm.web.shared.dsd.UpdateDsdProcStatusAction;
@@ -35,6 +37,9 @@ public class UpdateDsdProcStatusActionHandlder extends SecurityActionHandler<Upd
 
     @Autowired
     private WebTranslateExceptions                  webTranslateExceptions;
+
+    @Autowired
+    private NoticesRestInternalFacade               noticesRestInternalFacade;
 
     public UpdateDsdProcStatusActionHandlder() {
         super(UpdateDsdProcStatusAction.class);
@@ -64,6 +69,13 @@ public class UpdateDsdProcStatusActionHandlder extends SecurityActionHandler<Upd
             } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 dataStructureDefinitionMetamacDto = srmCoreServiceFacade.publishDataStructureDefinitionInternally(ServiceContextHolder.getCurrentServiceContext(), dsdToUpdateStatus.getUrn(),
                         action.getForceLatestFinal());
+
+                try {
+                    noticesRestInternalFacade.createInternalPublicationNotification(serviceContext, dataStructureDefinitionMetamacDto, TypeExternalArtefactsEnum.DATASTRUCTURE);
+                } catch (MetamacWebException e) {
+                    return new UpdateDsdProcStatusResult.Builder(dataStructureDefinitionMetamacDto).notificationException(e).build();
+                }
+
             } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 // Check that the associated statistical operation is externally published
                 if (dsdToUpdateStatus.getStatisticalOperation() != null) {
@@ -73,6 +85,12 @@ public class UpdateDsdProcStatusActionHandlder extends SecurityActionHandler<Upd
                     }
                 }
                 dataStructureDefinitionMetamacDto = srmCoreServiceFacade.publishDataStructureDefinitionExternally(ServiceContextHolder.getCurrentServiceContext(), dsdToUpdateStatus.getUrn());
+                try {
+                    noticesRestInternalFacade.createExternalPublicationNotification(serviceContext, dataStructureDefinitionMetamacDto, TypeExternalArtefactsEnum.DATASTRUCTURE);
+                } catch (MetamacWebException e) {
+                    return new UpdateDsdProcStatusResult.Builder(dataStructureDefinitionMetamacDto).notificationException(e).build();
+                }
+
             }
             return new UpdateDsdProcStatusResult(dataStructureDefinitionMetamacDto);
         } catch (MetamacException e) {

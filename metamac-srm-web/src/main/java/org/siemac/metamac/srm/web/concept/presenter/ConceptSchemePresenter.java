@@ -77,6 +77,7 @@ import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
+import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
@@ -390,7 +391,10 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     }
                     @Override
                     public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
-                        fireSuccessMessage(getMessages().conceptSchemePublishedInternally());
+
+                        firePublicationMessage(getMessages().conceptSchemePublishedInternally(), getMessages().conceptSchemePublishedInternallyWithNotificationError(),
+                                result.getNotificationException());
+
                         ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                         retrieveConceptSchemeVersions(conceptSchemeDto.getUrn());
                         getView().setConceptScheme(result.getConceptSchemeDto());
@@ -416,7 +420,10 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                     }
                     @Override
                     public void onWaitSuccess(UpdateConceptSchemeProcStatusResult result) {
-                        fireSuccessMessage(getMessages().conceptSchemePublishedExternally());
+
+                        firePublicationMessage(getMessages().conceptSchemePublishedExternally(), getMessages().conceptSchemePublishedExternallyWithNotificationError(),
+                                result.getNotificationException());
+
                         ConceptSchemePresenter.this.conceptSchemeDto = result.getConceptSchemeDto();
                         retrieveConceptSchemeVersions(conceptSchemeDto.getUrn());
                         getView().setConceptScheme(result.getConceptSchemeDto());
@@ -528,6 +535,14 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                 retrieveConceptsByScheme(conceptSchemeDto.getUrn());
             }
         });
+    }
+
+    private void firePublicationMessage(String successMessage, String warningMessage, MetamacWebException notificationException) {
+        if (notificationException == null) {
+            ShowMessageEvent.fireSuccessMessage(this, successMessage);
+        } else {
+            ShowMessageEvent.fireWarningMessageWithError(this, warningMessage, notificationException);
+        }
     }
 
     //

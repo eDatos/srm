@@ -515,6 +515,11 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         return toResourceLink(toKindItemScheme(source.getOrganisationSchemeType()), toOrganisationSchemeLink(source));
     }
 
+    @Override
+    public ResourceLink toOrganisationSchemeSelfLink(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum organisationSchemeType) {
+        return toResourceLink(toKindItemScheme(organisationSchemeType), toOrganisationSchemeLink(agencyID, resourceID, version, organisationSchemeType));
+    }
+
     private ResourceLink toOrganisationSchemeParentLink(OrganisationSchemeVersionMetamac source) {
         return toResourceLink(toKindItemSchemes(source.getOrganisationSchemeType()), toOrganisationSchemesLink(null, null, null, source.getOrganisationSchemeType()));
     }
@@ -581,22 +586,32 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
     private String toOrganisationSchemesLink(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) {
         return toMaintainableArtefactLink(toSupathItemSchemes(type), agencyID, resourceID, version);
     }
+
     private String toOrganisationSchemeLink(OrganisationSchemeVersion itemSchemeVersion) {
         return toItemSchemeLink(toSupathItemSchemes(itemSchemeVersion.getOrganisationSchemeType()), itemSchemeVersion);
     }
+
+    private String toOrganisationSchemeLink(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum organisationSchemeType) {
+        return toMaintainableArtefactLink(toSupathItemSchemes(organisationSchemeType), agencyID, resourceID, version);
+    }
+
     private String toOrganisationsLink(String agencyID, String resourceID, String version, OrganisationSchemeTypeEnum type) {
         return toItemsLink(toSupathItemSchemes(type), toSubpathItems(type), agencyID, resourceID, version);
     }
+
     private String toOrganisationsLink(OrganisationSchemeVersion itemSchemeVersion) {
         return toItemsLink(toSupathItemSchemes(itemSchemeVersion.getOrganisationSchemeType()), toSubpathItems(itemSchemeVersion.getOrganisationSchemeType()), itemSchemeVersion);
     }
+
     private String toOrganisationsLink(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation item) {
         return toItemsLink(toSupathItemSchemes(item.getOrganisationType()), toSubpathItems(item.getOrganisationType()), item.getItemSchemeVersion());
     }
+
     private String toOrganisationLink(com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation item) {
         return toItemLink(toSupathItemSchemes(item.getOrganisationType()), toSubpathItems(item.getOrganisationType()), item);
     }
     private String toOrganisationLink(ItemResult item, ItemSchemeVersion itemSchemeVersion) {
+
         OrganisationTypeEnum organisationType = getOrganisationTypeEnum(item);
         return toItemLink(toSupathItemSchemes(organisationType), toSubpathItems(organisationType), item, itemSchemeVersion);
     }
@@ -723,6 +738,11 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
     private String toOrganisationSchemeManagementApplicationLink(OrganisationSchemeVersionMetamac source) {
         return getInternalWebApplicationNavigation().buildOrganisationSchemeUrl(source);
+    }
+
+    @Override
+    public String toOrganisationSchemeManagementApplicationLink(String organisationSchemeUrn, OrganisationSchemeTypeEnum organisationSchemeType) {
+        return getInternalWebApplicationNavigation().buildOrganisationSchemeUrl(organisationSchemeType, organisationSchemeUrn);
     }
 
     private String toOrganisationManagementApplicationLink(OrganisationMetamac source) {

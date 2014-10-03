@@ -76,6 +76,7 @@ import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
+import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
@@ -345,8 +346,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
-    public void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus, null),
+    public void sendToProductionValidation(String urn, OrganisationSchemeTypeEnum organisationSchemeType, ProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, organisationSchemeType, ProcStatusEnum.PRODUCTION_VALIDATION, currentProcStatus, null),
                 new WaitingAsyncCallbackHandlingError<UpdateOrganisationSchemeProcStatusResult>(this) {
 
                     @Override
@@ -360,8 +361,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
-    public void sendToDiffusionValidation(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus, null),
+    public void sendToDiffusionValidation(String urn, OrganisationSchemeTypeEnum organisationSchemeType, ProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, organisationSchemeType, ProcStatusEnum.DIFFUSION_VALIDATION, currentProcStatus, null),
                 new WaitingAsyncCallbackHandlingError<UpdateOrganisationSchemeProcStatusResult>(this) {
 
                     @Override
@@ -375,8 +376,8 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
-    public void rejectValidation(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus, null),
+    public void rejectValidation(String urn, OrganisationSchemeTypeEnum organisationSchemeType, ProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, organisationSchemeType, ProcStatusEnum.VALIDATION_REJECTED, currentProcStatus, null),
                 new WaitingAsyncCallbackHandlingError<UpdateOrganisationSchemeProcStatusResult>(this) {
 
                     @Override
@@ -390,13 +391,14 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
-    public void publishInternally(final String urnToPublish, ProcStatusEnum currentProcStatus, Boolean forceLatestFinal) {
-        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urnToPublish, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus, forceLatestFinal),
+    public void publishInternally(final String urnToPublish, OrganisationSchemeTypeEnum organisationSchemeType, ProcStatusEnum currentProcStatus, Boolean forceLatestFinal) {
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urnToPublish, organisationSchemeType, ProcStatusEnum.INTERNALLY_PUBLISHED, currentProcStatus, forceLatestFinal),
                 new WaitingAsyncCallbackHandlingError<UpdateOrganisationSchemeProcStatusResult>(this) {
 
                     @Override
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
-                        fireSuccessMessage(getMessages().organisationSchemePublishedInternally());
+                        firePublicationMessage(getMessages().organisationSchemePublishedInternally(), getMessages().organisationSchemePublishedInternallyWithNotificationError(),
+                                result.getNotificationException());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         retrieveOrganisationSchemeVersions(organisationSchemeMetamacDto.getUrn());
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
@@ -412,13 +414,14 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     }
 
     @Override
-    public void publishExternally(String urn, ProcStatusEnum currentProcStatus) {
-        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus, null),
+    public void publishExternally(String urn, OrganisationSchemeTypeEnum organisationSchemeType, ProcStatusEnum currentProcStatus) {
+        dispatcher.execute(new UpdateOrganisationSchemeProcStatusAction(urn, organisationSchemeType, ProcStatusEnum.EXTERNALLY_PUBLISHED, currentProcStatus, null),
                 new WaitingAsyncCallbackHandlingError<UpdateOrganisationSchemeProcStatusResult>(this) {
 
                     @Override
                     public void onWaitSuccess(UpdateOrganisationSchemeProcStatusResult result) {
-                        fireSuccessMessage(getMessages().organisationSchemePublishedExternally());
+                        firePublicationMessage(getMessages().organisationSchemePublishedExternally(), getMessages().organisationSchemePublishedExternallyWithNotificationError(),
+                                result.getNotificationException());
                         organisationSchemeMetamacDto = result.getOrganisationSchemeDto();
                         retrieveOrganisationSchemeVersions(organisationSchemeMetamacDto.getUrn());
                         getView().setOrganisationScheme(organisationSchemeMetamacDto);
@@ -452,6 +455,14 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                 updateUrl();
             }
         });
+    }
+
+    private void firePublicationMessage(String successMessage, String warningMessage, MetamacWebException notificationException) {
+        if (notificationException == null) {
+            ShowMessageEvent.fireSuccessMessage(this, successMessage);
+        } else {
+            ShowMessageEvent.fireWarningMessageWithError(this, warningMessage, notificationException);
+        }
     }
 
     //

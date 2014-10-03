@@ -71,8 +71,10 @@ import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
+import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
+import org.siemac.metamac.web.common.shared.exception.MetamacWebException;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
@@ -379,7 +381,8 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
                     @Override
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                        fireSuccessMessage(getMessages().categorySchemePublishedInternally());
+                        firePublicationMessage(getMessages().categorySchemePublishedInternally(), getMessages().categorySchemePublishedInternallyWithNotificationError(),
+                                result.getNotificationException());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         retrieveCategorySchemeVersions(categorySchemeMetamacDto.getUrn());
                         getView().setCategoryScheme(categorySchemeMetamacDto);
@@ -401,7 +404,8 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
 
                     @Override
                     public void onWaitSuccess(UpdateCategorySchemeProcStatusResult result) {
-                        fireSuccessMessage(getMessages().categorySchemePublishedExternally());
+                        firePublicationMessage(getMessages().categorySchemePublishedExternally(), getMessages().categorySchemePublishedExternallyWithNotificationError(),
+                                result.getNotificationException());
                         categorySchemeMetamacDto = result.getCategorySchemeDto();
                         retrieveCategorySchemeVersions(categorySchemeMetamacDto.getUrn());
                         getView().setCategoryScheme(categorySchemeMetamacDto);
@@ -434,6 +438,14 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                 updateUrl();
             }
         });
+    }
+
+    private void firePublicationMessage(String successMessage, String warningMessage, MetamacWebException notificationException) {
+        if (notificationException == null) {
+            ShowMessageEvent.fireSuccessMessage(this, successMessage);
+        } else {
+            ShowMessageEvent.fireWarningMessageWithError(this, warningMessage, notificationException);
+        }
     }
 
     //

@@ -26,11 +26,11 @@ public interface OrganisationSchemeUiHandlers extends BaseOrganisationUiHandlers
 
     // Life cycle
 
-    void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus);
-    void sendToDiffusionValidation(String urn, ProcStatusEnum currentProcStatus);
-    void rejectValidation(String urn, ProcStatusEnum currentProcStatus);
-    void publishInternally(String urn, ProcStatusEnum currentProcStatus, Boolean forceLatestFinal);
-    void publishExternally(String urn, ProcStatusEnum currentProcStatus);
+    void sendToProductionValidation(String urn, OrganisationSchemeTypeEnum organisationSchemeTypeEnum, ProcStatusEnum currentProcStatus);
+    void sendToDiffusionValidation(String urn, OrganisationSchemeTypeEnum organisationSchemeTypeEnum, ProcStatusEnum currentProcStatus);
+    void rejectValidation(String urn, OrganisationSchemeTypeEnum organisationSchemeTypeEnum, ProcStatusEnum currentProcStatus);
+    void publishInternally(String urn, OrganisationSchemeTypeEnum organisationSchemeTypeEnum, ProcStatusEnum currentProcStatus, Boolean forceLatestFinal);
+    void publishExternally(String urn, OrganisationSchemeTypeEnum organisationSchemeTypeEnum, ProcStatusEnum currentProcStatus);
     void versioning(String urn, VersionTypeEnum versionType);
     void createTemporalVersion(String urn);
 }

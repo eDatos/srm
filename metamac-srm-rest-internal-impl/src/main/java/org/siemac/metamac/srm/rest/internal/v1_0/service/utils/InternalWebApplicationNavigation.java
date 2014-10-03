@@ -22,6 +22,7 @@ import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 public class InternalWebApplicationNavigation {
@@ -98,17 +99,26 @@ public class InternalWebApplicationNavigation {
         parameters.put(RESOURCE_ID_PARAMETER, urlPart);
         return contentConstraintTemplate.expand(parameters).toString();
     }
+
     public String buildDataStructureDefinitionUrl(DataStructureDefinitionVersionMetamac dataStructureDefinition) {
+        return buildDataStructureDefinitionUrl(dataStructureDefinition.getMaintainableArtefact().getUrn());
+    }
+
+    public String buildDataStructureDefinitionUrl(String urn) {
         Map<String, String> parameters = new HashMap<String, String>(1);
-        String dsdUrlPart = UrnUtils.removePrefix(dataStructureDefinition.getMaintainableArtefact().getUrn());
+        String dsdUrlPart = UrnUtils.removePrefix(urn);
         parameters.put(RESOURCE_ID_PARAMETER, dsdUrlPart);
         return dataStructureTemplate.expand(parameters).toString();
     }
 
     public String buildOrganisationSchemeUrl(OrganisationSchemeVersionMetamac organisationScheme) {
+        return buildOrganisationSchemeUrl(organisationScheme.getOrganisationSchemeType(), organisationScheme.getMaintainableArtefact().getUrn());
+    }
+
+    public String buildOrganisationSchemeUrl(OrganisationSchemeTypeEnum organisationSchemeType, String urn) {
         Map<String, String> parameters = new HashMap<String, String>(2);
-        String organisationSchemeUrlPart = UrnUtils.removePrefix(organisationScheme.getMaintainableArtefact().getUrn());
-        parameters.put(RESOURCE_TYPE_PARAMETER, organisationScheme.getOrganisationSchemeType().getName());
+        String organisationSchemeUrlPart = UrnUtils.removePrefix(urn);
+        parameters.put(RESOURCE_TYPE_PARAMETER, organisationSchemeType.getName());
         parameters.put(RESOURCE_ID_PARAMETER, organisationSchemeUrlPart);
         return organisationSchemeTemplate.expand(parameters).toString();
     }
@@ -128,8 +138,12 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildCategorySchemeUrl(CategorySchemeVersionMetamac categoryScheme) {
+        return buildCategorySchemeUrl(categoryScheme.getMaintainableArtefact().getUrn());
+    }
+
+    public String buildCategorySchemeUrl(String urn) {
         Map<String, String> parameters = new HashMap<String, String>(1);
-        String categorySchemeUrlPart = UrnUtils.removePrefix(categoryScheme.getMaintainableArtefact().getUrn());
+        String categorySchemeUrlPart = UrnUtils.removePrefix(urn);
         parameters.put(RESOURCE_ID_PARAMETER, categorySchemeUrlPart);
         return categorySchemeTemplate.expand(parameters).toString();
     }
@@ -148,8 +162,12 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildConceptSchemeUrl(ConceptSchemeVersion conceptScheme) {
+        return buildConceptSchemeUrl(conceptScheme.getMaintainableArtefact().getUrn());
+    }
+
+    public String buildConceptSchemeUrl(String urn) {
         Map<String, String> parameters = new HashMap<String, String>(1);
-        String conceptSchemeUrlPart = UrnUtils.removePrefix(conceptScheme.getMaintainableArtefact().getUrn());
+        String conceptSchemeUrlPart = UrnUtils.removePrefix(urn);
         parameters.put(RESOURCE_ID_PARAMETER, conceptSchemeUrlPart);
         return conceptSchemeTemplate.expand(parameters).toString();
     }
@@ -168,8 +186,12 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildCodelistUrl(CodelistVersion codelist) {
+        return buildCodelistUrl(codelist.getMaintainableArtefact().getUrn());
+    }
+
+    public String buildCodelistUrl(String urn) {
         Map<String, String> parameters = new HashMap<String, String>(1);
-        String codelistUrlPart = UrnUtils.removePrefix(codelist.getMaintainableArtefact().getUrn());
+        String codelistUrlPart = UrnUtils.removePrefix(urn);
         parameters.put(RESOURCE_ID_PARAMETER, codelistUrlPart);
         return codelistTemplate.expand(parameters).toString();
     }

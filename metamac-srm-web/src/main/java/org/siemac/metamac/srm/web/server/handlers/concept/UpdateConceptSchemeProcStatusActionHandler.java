@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.web.server.handlers.concept;
 
+import static org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum.CONCEPT_SCHEME;
+
 import java.util.Locale;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
@@ -10,6 +12,7 @@ import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.ProcS
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
+import org.siemac.metamac.srm.web.server.rest.NoticesRestInternalFacade;
 import org.siemac.metamac.srm.web.server.rest.StatisticalOperationsRestInternalFacade;
 import org.siemac.metamac.srm.web.shared.WebMessageExceptionsConstants;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAction;
@@ -36,6 +39,9 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
     @Autowired
     private WebTranslateExceptions                  webTranslateExceptions;
 
+    @Autowired
+    private NoticesRestInternalFacade               noticesRestInternalFacade;
+
     public UpdateConceptSchemeProcStatusActionHandler() {
         super(UpdateConceptSchemeProcStatusAction.class);
     }
@@ -50,17 +56,24 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
 
             ConceptSchemeMetamacDto scheme = null;
             if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(action.getNextProcStatus())) {
-                scheme = srmCoreServiceFacade.sendConceptSchemeToProductionValidation(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeToUpdateStatus.getUrn());
+                scheme = srmCoreServiceFacade.sendConceptSchemeToProductionValidation(serviceContext, conceptSchemeToUpdateStatus.getUrn());
             } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(action.getNextProcStatus())) {
-                scheme = srmCoreServiceFacade.sendConceptSchemeToDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeToUpdateStatus.getUrn());
+                scheme = srmCoreServiceFacade.sendConceptSchemeToDiffusionValidation(serviceContext, conceptSchemeToUpdateStatus.getUrn());
             } else if (ProcStatusEnum.VALIDATION_REJECTED.equals(action.getNextProcStatus())) {
                 if (ProcStatusEnum.PRODUCTION_VALIDATION.equals(conceptSchemeToUpdateStatus.getLifeCycle().getProcStatus())) {
-                    scheme = srmCoreServiceFacade.rejectConceptSchemeProductionValidation(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeToUpdateStatus.getUrn());
+                    scheme = srmCoreServiceFacade.rejectConceptSchemeProductionValidation(serviceContext, conceptSchemeToUpdateStatus.getUrn());
                 } else if (ProcStatusEnum.DIFFUSION_VALIDATION.equals(conceptSchemeToUpdateStatus.getLifeCycle().getProcStatus())) {
-                    scheme = srmCoreServiceFacade.rejectConceptSchemeDiffusionValidation(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeToUpdateStatus.getUrn());
+                    scheme = srmCoreServiceFacade.rejectConceptSchemeDiffusionValidation(serviceContext, conceptSchemeToUpdateStatus.getUrn());
                 }
             } else if (ProcStatusEnum.INTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
-                scheme = srmCoreServiceFacade.publishConceptSchemeInternally(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeToUpdateStatus.getUrn(), action.getForceLatestFinal());
+                scheme = srmCoreServiceFacade.publishConceptSchemeInternally(serviceContext, conceptSchemeToUpdateStatus.getUrn(), action.getForceLatestFinal());
+
+                try {
+                    noticesRestInternalFacade.createInternalPublicationNotification(serviceContext, scheme, CONCEPT_SCHEME);
+                } catch (MetamacWebException e) {
+                    return new UpdateConceptSchemeProcStatusResult.Builder(scheme).notificationException(e).build();
+                }
+
             } else if (ProcStatusEnum.EXTERNALLY_PUBLISHED.equals(action.getNextProcStatus())) {
                 // Check that the associated statistical operation is externally published
                 if (conceptSchemeToUpdateStatus.getRelatedOperation() != null) {
@@ -69,7 +82,13 @@ public class UpdateConceptSchemeProcStatusActionHandler extends SecurityActionHa
                         throwStatisticalOperationNotExternallyPublishedException(serviceContext);
                     }
                 }
-                scheme = srmCoreServiceFacade.publishConceptSchemeExternally(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeToUpdateStatus.getUrn());
+                scheme = srmCoreServiceFacade.publishConceptSchemeExternally(serviceContext, conceptSchemeToUpdateStatus.getUrn());
+
+                try {
+                    noticesRestInternalFacade.createExternalPublicationNotification(serviceContext, scheme, CONCEPT_SCHEME);
+                } catch (MetamacWebException e) {
+                    return new UpdateConceptSchemeProcStatusResult.Builder(scheme).notificationException(e).build();
+                }
             }
             return new UpdateConceptSchemeProcStatusResult(scheme);
         } catch (MetamacException e) {
