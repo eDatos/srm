@@ -12,5 +12,6 @@ public class VersionableResourceCustomListGrid extends NavigableListGrid {
         setGroupByField(VersionableResourceDS.RESOURCE_ID);
         setGroupTitleField(VersionableResourceDS.CODE);
         setGroupNodeStyle("customGroupNode");
+        setCanSort(false);
     }
 }
