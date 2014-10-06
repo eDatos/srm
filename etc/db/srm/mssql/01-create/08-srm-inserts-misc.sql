@@ -6,5 +6,3 @@ VALUES
  FILL_WITH_SCHEMA_NAME.GetSequenceNextValue('MISC_VALUES'), 'Europe/London', convert(datetime, GETDATE(), 120), 'Metamac', 'Europe/London', convert(datetime, GETDATE(), 120), 'Metamac', 1);
 
 UPDATE TB_SEQUENCES SET SEQUENCE_NEXT_VALUE = SEQUENCE_NEXT_VALUE + 1 WHERE SEQUENCE_NAME = 'MISC_VALUES';
-
-commit;
