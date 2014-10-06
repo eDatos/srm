@@ -21,7 +21,7 @@ import org.siemac.metamac.rest.notices.v1_0.domain.ResourceInternal;
 import org.siemac.metamac.rest.notices.v1_0.domain.enume.MetamacApplicationsEnum;
 import org.siemac.metamac.rest.notices.v1_0.domain.utils.MessageBuilder;
 import org.siemac.metamac.rest.notices.v1_0.domain.utils.NoticeBuilder;
-import org.siemac.metamac.srm.core.code.invocation.MetamacApisLocator;
+import org.siemac.metamac.srm.core.invocation.MetamacApisLocator;
 import org.siemac.metamac.srm.core.notices.ServiceNoticeAction;
 import org.siemac.metamac.srm.core.notices.ServiceNoticeMessage;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.category.CategoriesDo2RestMapperV10;

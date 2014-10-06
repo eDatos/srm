@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.core.code.invocation;
+package org.siemac.metamac.srm.core.invocation;
 
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.apache.cxf.jaxrs.client.WebClient;

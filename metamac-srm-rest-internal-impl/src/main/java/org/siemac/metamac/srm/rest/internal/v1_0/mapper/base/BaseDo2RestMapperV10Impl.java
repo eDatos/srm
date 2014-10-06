@@ -19,6 +19,7 @@ import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
+import org.siemac.metamac.rest.statistical_operations_internal.v1_0.domain.Operation;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Annotation;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Annotations;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemResourceInternal;
@@ -32,6 +33,7 @@ import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
+import org.siemac.metamac.srm.rest.internal.invocation.StatisticalOperationsRestInternalFacade;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.InternalWebApplicationNavigation;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -50,16 +52,19 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 public abstract class BaseDo2RestMapperV10Impl {
 
     @Autowired
-    private SrmConfiguration                 configurationService;
+    private SrmConfiguration                        configurationService;
 
-    private String                           srmInternalWebApplication;
-    private String                           srmApiInternalEndpointV10;
-    private String                           statisticalOperationsInternalWebApplication;
-    private String                           statisticalOperationsApiInternalEndpoint;
-    private String                           statisticalResourcesInternalWebApplication;
-    private String                           statisticalResourcesApiInternalEndpoint;
+    @Autowired
+    private StatisticalOperationsRestInternalFacade statisticalOperationsRestInternalFacade;
 
-    private InternalWebApplicationNavigation internalWebApplicationNavigation;
+    private String                                  srmInternalWebApplication;
+    private String                                  srmApiInternalEndpointV10;
+    private String                                  statisticalOperationsInternalWebApplication;
+    private String                                  statisticalOperationsApiInternalEndpoint;
+    private String                                  statisticalResourcesInternalWebApplication;
+    private String                                  statisticalResourcesApiInternalEndpoint;
+
+    private InternalWebApplicationNavigation        internalWebApplicationNavigation;
 
     @PostConstruct
     public void init() throws Exception {
@@ -317,7 +322,9 @@ public abstract class BaseDo2RestMapperV10Impl {
         if (source == null) {
             return null;
         }
-        return toResourceExternalItem(source, statisticalOperationsApiInternalEndpoint, statisticalOperationsInternalWebApplication);
+        ResourceInternal resourceInternal = toResourceExternalItem(source, statisticalOperationsApiInternalEndpoint, statisticalOperationsInternalWebApplication);
+        resourceInternal.setName(getUpdatedStatisticalOperationName(source.getCode()));
+        return resourceInternal;
     }
 
     protected ResourceInternal toResourceExternalItem(ExternalItem source, String apiExternalItemBaseUrl, String managementAppBaseUrl) {
@@ -378,6 +385,11 @@ public abstract class BaseDo2RestMapperV10Impl {
 
     protected InternalWebApplicationNavigation getInternalWebApplicationNavigation() {
         return internalWebApplicationNavigation;
+    }
+
+    protected InternationalString getUpdatedStatisticalOperationName(String operationCode) {
+        Operation operation = statisticalOperationsRestInternalFacade.retrieveOperation(operationCode);
+        return operation.getName();
     }
 
     private void initEndpoints() throws MetamacException {
