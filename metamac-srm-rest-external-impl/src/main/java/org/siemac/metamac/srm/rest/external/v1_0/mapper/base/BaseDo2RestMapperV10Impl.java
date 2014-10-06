@@ -21,6 +21,7 @@ import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
+import org.siemac.metamac.rest.statistical_operations.v1_0.domain.Operation;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Annotation;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Annotations;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ItemResource;
@@ -32,6 +33,7 @@ import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.external.exception.RestServiceExceptionType;
+import org.siemac.metamac.srm.rest.external.invocation.StatisticalOperationsRestExternalFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.AnnotableArtefact;
@@ -49,13 +51,16 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 public abstract class BaseDo2RestMapperV10Impl {
 
     @Autowired
-    private ConfigurationService configurationService;
+    private ConfigurationService                    configurationService;
 
-    private String               srmApiExternalEndpointV10;
-    private String               statisticalOperationsApiExternalEndpoint;
-    private String               statisticalResourcesApiExternalEndpoint;
+    @Autowired
+    private StatisticalOperationsRestExternalFacade statisticalOperationsRestExternalFacade;
 
-    private String               maintainerUrnDefault;
+    private String                                  srmApiExternalEndpointV10;
+    private String                                  statisticalOperationsApiExternalEndpoint;
+    private String                                  statisticalResourcesApiExternalEndpoint;
+
+    private String                                  maintainerUrnDefault;
 
     @PostConstruct
     public void init() throws Exception {
@@ -286,7 +291,9 @@ public abstract class BaseDo2RestMapperV10Impl {
         if (source == null) {
             return null;
         }
-        return toResourceExternalItem(source, statisticalOperationsApiExternalEndpoint);
+        Resource resource = toResourceExternalItem(source, statisticalOperationsApiExternalEndpoint);
+        resource.setName(getUpdatedStatisticalOperationName(source.getCode()));
+        return resource;
     }
 
     protected Resource toResourceExternalItem(ExternalItem source, String apiExternalItemBaseUrl) {
@@ -339,6 +346,11 @@ public abstract class BaseDo2RestMapperV10Impl {
             // default SDMX
             return SdmxAlias.SDMX_MAINTAINER;
         }
+    }
+
+    protected InternationalString getUpdatedStatisticalOperationName(String operationCode) {
+        Operation operation = statisticalOperationsRestExternalFacade.retrieveOperation(operationCode);
+        return operation.getName();
     }
 
     public String getMaintainerUrnDefault() {
