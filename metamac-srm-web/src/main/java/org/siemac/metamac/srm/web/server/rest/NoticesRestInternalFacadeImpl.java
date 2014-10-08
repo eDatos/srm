@@ -82,7 +82,7 @@ public class NoticesRestInternalFacadeImpl implements NoticesRestInternalFacade 
         ResourceInternal[] resources = {resource};
 
         String sendingApp = MetamacApplicationsEnum.GESTOR_RECURSOS_ESTRUCTURALES.getName();
-        String subject = buildSubject(ctx, actionCode, sendingApp, resourceType);
+        String subject = buildSubject(ctx, actionCode, resourceType);
         String messageText = buildMessage(ctx, messageCode, maintainableArtefactDto, resourceType);
 
         Message message = MessageBuilder.message().withText(messageText).withResources(resources).build();
@@ -182,12 +182,12 @@ public class NoticesRestInternalFacadeImpl implements NoticesRestInternalFacade 
         return targets;
     }
 
-    private String buildSubject(ServiceContext ctx, String actionCode, String sendingApp, TypeExternalArtefactsEnum resourceType) {
+    private String buildSubject(ServiceContext ctx, String actionCode, TypeExternalArtefactsEnum resourceType) {
         Locale locale = ServiceContextUtils.getLocale(ctx);
         String localizedMessage = getLocalizedMessage(locale, actionCode);
         String localizedResourceTypeName = getLocalizedResourceTypeName(locale, resourceType);
         localizedMessage = MessageFormat.format(localizedMessage, localizedResourceTypeName);
-        return "[" + sendingApp + "] " + localizedMessage;
+        return localizedMessage;
     }
 
     private String buildMessage(ServiceContext ctx, String messageCode, MaintainableArtefactDto maintainableArtefactDto, TypeExternalArtefactsEnum resourceType) {

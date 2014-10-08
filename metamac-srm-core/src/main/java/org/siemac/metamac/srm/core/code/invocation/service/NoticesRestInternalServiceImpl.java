@@ -66,10 +66,8 @@ public class NoticesRestInternalServiceImpl implements NoticesRestInternalServic
     private void createBackgroundNotification(String actionCode, String message, String user) throws MetamacException {
         try {
             Locale locale = configurationService.retrieveLanguageDefaultLocale();
-            String localisedAction = LocaleUtil.getMessageForCode(actionCode, locale);
-
+            String subject = LocaleUtil.getMessageForCode(actionCode, locale);
             String sendingApp = MetamacApplicationsEnum.GESTOR_RECURSOS_ESTRUCTURALES.getName();
-            String subject = "[" + sendingApp + "] " + localisedAction;
 
             // @formatter:off
             Notice notification = NoticeBuilder.notification()
@@ -85,7 +83,6 @@ public class NoticesRestInternalServiceImpl implements NoticesRestInternalServic
         } catch (Exception e) {
             throw manageNoticesInternalRestException(e);
         }
-
     }
 
     // -------------------------------------------------------------------------------------------------
