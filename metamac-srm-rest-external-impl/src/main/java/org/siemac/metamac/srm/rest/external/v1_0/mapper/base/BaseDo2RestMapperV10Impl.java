@@ -350,7 +350,7 @@ public abstract class BaseDo2RestMapperV10Impl {
 
     protected InternationalString getUpdatedStatisticalOperationName(String operationCode) {
         Operation operation = statisticalOperationsRestExternalFacade.retrieveOperation(operationCode);
-        return operation.getName();
+        return operation != null ? operation.getName() : null;
     }
 
     public String getMaintainerUrnDefault() {
