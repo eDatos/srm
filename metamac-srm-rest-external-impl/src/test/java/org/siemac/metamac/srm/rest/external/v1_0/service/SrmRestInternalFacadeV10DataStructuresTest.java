@@ -35,6 +35,7 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.rest.statistical_operations.v1_0.domain.Operation;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataStructure;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataStructures;
 import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMetamac;
@@ -42,15 +43,18 @@ import org.siemac.metamac.srm.core.dsd.domain.DataStructureDefinitionVersionMeta
 import org.siemac.metamac.srm.core.dsd.serviceapi.DataStructureDefinitionMetamacService;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.external.exception.RestServiceExceptionType;
+import org.siemac.metamac.srm.rest.external.invocation.StatisticalOperationsRestExternalFacade;
 import org.siemac.metamac.srm.rest.external.v1_0.dsd.utils.DataStructuresDoMocks;
+import org.siemac.metamac.srm.rest.external.v1_0.utils.StatisticalOperationsRestMocks;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.StructureVersionRepository;
 
 public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalFacadeV10BaseTest {
 
-    private DataStructureDefinitionMetamacService dsdsService;
-    private StructureVersionRepository            structureVersionRepository;
+    private DataStructureDefinitionMetamacService   dsdsService;
+    private StructureVersionRepository              structureVersionRepository;
+    private StatisticalOperationsRestExternalFacade statisticalOperationsRestExternalFacade;
 
     @Test
     public void testJsonAcceptable() throws Exception {
@@ -364,15 +368,30 @@ public class SrmRestInternalFacadeV10DataStructuresTest extends SrmRestInternalF
                 });
     }
 
+    private void mockRetrieveStatisticalOperationById() throws MetamacException {
+        when(statisticalOperationsRestExternalFacade.retrieveOperation(any(String.class))).thenAnswer(new Answer<Operation>() {
+
+            @Override
+            public Operation answer(InvocationOnMock invocation) throws Throwable {
+                return StatisticalOperationsRestMocks.mockOperation("operation-artefact1");
+            };
+        });
+    }
+
     @Override
     protected void resetMocks() throws MetamacException {
         dsdsService = applicationContext.getBean(DataStructureDefinitionMetamacService.class);
         reset(dsdsService);
+
         structureVersionRepository = applicationContext.getBean(StructureVersionRepository.class);
         reset(structureVersionRepository);
 
+        statisticalOperationsRestExternalFacade = applicationContext.getBean(StatisticalOperationsRestExternalFacade.class);
+        reset(statisticalOperationsRestExternalFacade);
+
         mockRetrieveStructureVersionByVersion();
         mockFindDataStructuresByCondition();
+        mockRetrieveStatisticalOperationById();
     }
 
     private String getUriStructures(String agencyID, String resourceID, String version) {

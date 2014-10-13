@@ -42,6 +42,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.rest.statistical_operations.v1_0.domain.Operation;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptSchemes;
@@ -54,7 +55,9 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacPro
 import org.siemac.metamac.srm.core.concept.serviceapi.ConceptsMetamacService;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.external.exception.RestServiceExceptionType;
+import org.siemac.metamac.srm.rest.external.invocation.StatisticalOperationsRestExternalFacade;
 import org.siemac.metamac.srm.rest.external.v1_0.concept.utils.ConceptsDoMocks;
+import org.siemac.metamac.srm.rest.external.v1_0.utils.StatisticalOperationsRestMocks;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
@@ -63,8 +66,9 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 
 public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV10BaseTest {
 
-    private ConceptsMetamacService      conceptsService;
-    private ItemSchemeVersionRepository itemSchemeVersionRepository;
+    private ConceptsMetamacService                  conceptsService;
+    private ItemSchemeVersionRepository             itemSchemeVersionRepository;
+    private StatisticalOperationsRestExternalFacade statisticalOperationsRestExternalFacade;
 
     @Test
     public void testJsonAcceptable() throws Exception {
@@ -671,6 +675,16 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
         when(conceptsService.findAllConceptTypes(any(ServiceContext.class))).thenReturn(ConceptsDoMocks.mockConceptTypes());
     }
 
+    private void mockRetrieveStatisticalOperationById() throws MetamacException {
+        when(statisticalOperationsRestExternalFacade.retrieveOperation(any(String.class))).thenAnswer(new Answer<Operation>() {
+
+            @Override
+            public Operation answer(InvocationOnMock invocation) throws Throwable {
+                return StatisticalOperationsRestMocks.mockOperation("operation-itemScheme1");
+            };
+        });
+    }
+
     private String getUriConceptTypes() {
         return baseApi + "/conceptTypes";
     }
@@ -679,14 +693,19 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     protected void resetMocks() throws MetamacException {
         conceptsService = applicationContext.getBean(ConceptsMetamacService.class);
         reset(conceptsService);
+
         itemSchemeVersionRepository = applicationContext.getBean(ItemSchemeVersionRepository.class);
         reset(itemSchemeVersionRepository);
+
+        statisticalOperationsRestExternalFacade = applicationContext.getBean(StatisticalOperationsRestExternalFacade.class);
+        reset(statisticalOperationsRestExternalFacade);
 
         mockRetrieveItemSchemeVersionByVersion();
         mockFindConceptSchemesByCondition();
         mockFindConceptsByCondition();
         mockRetrieveConceptsByConceptScheme();
         mockRetrieveConceptTypes();
+        mockRetrieveStatisticalOperationById();
     }
 
     @Override

@@ -78,5 +78,9 @@
     <bean id="contentConstraintRepository" class="org.mockito.Mockito" factory-method="mock">
     	<constructor-arg value="com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraintRepository" />
     </bean>
-    
+
+	<bean id="statisticalOperationsRestExternalFacade" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.siemac.metamac.srm.rest.external.invocation.StatisticalOperationsRestExternalFacade" />
+    </bean>
+
 </beans>
