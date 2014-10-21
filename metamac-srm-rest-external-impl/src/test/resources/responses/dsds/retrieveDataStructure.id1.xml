@@ -244,6 +244,9 @@
         <cdomain:id>operation-artefact1</cdomain:id>
         <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-artefact1</cdomain:urn>
         <cdomain:selfLink kind="statisticalOperations#operation" href="http://data.istac.es/apis/operations/operations/operation-artefact1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="es">title-Tn2JaF3RSI en Espanol</cdomain:text>
+        </cdomain:name>
     </sr:statisticalOperation>
     <sr:autoOpen>true</sr:autoOpen>
     <sr:heading total="2">
