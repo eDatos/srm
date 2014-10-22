@@ -389,7 +389,7 @@ public abstract class BaseDo2RestMapperV10Impl {
 
     protected InternationalString getUpdatedStatisticalOperationName(String operationCode) {
         Operation operation = statisticalOperationsRestInternalFacade.retrieveOperation(operationCode);
-        return operation.getName();
+        return operation != null ? operation.getName() : null;
     }
 
     private void initEndpoints() throws MetamacException {

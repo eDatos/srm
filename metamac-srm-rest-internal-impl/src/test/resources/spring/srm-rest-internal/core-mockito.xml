@@ -98,5 +98,9 @@
     <bean id="metamacRestApisLocator" class="org.mockito.Mockito" factory-method="mock">
     	<constructor-arg value="org.siemac.metamac.srm.rest.internal.v1_0.service.MetamacRestApisLocator" />
     </bean>
-    
+
+	<bean id="statisticalOperationsInternalFacade" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.siemac.metamac.srm.rest.internal.invocation.StatisticalOperationsRestInternalFacade" />
+    </bean>
+
 </beans>
