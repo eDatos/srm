@@ -72,6 +72,9 @@
         <cdomain:id>operation-itemScheme1</cdomain:id>
         <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=operation-itemScheme1</cdomain:urn>
         <cdomain:selfLink kind="statisticalOperations#operation" href="http://data.istac.es/apis/operations-internal/latest/operations/operation-itemScheme1"/>
+		<cdomain:name>
+            <cdomain:text xml:lang="es">title-Tn2JaF3RSI en Espanol</cdomain:text>
+        </cdomain:name>
         <sr:managementAppLink>http://localhost:8080/metamac-statistical-operations-web/#operations;id=operation-itemScheme1</sr:managementAppLink>
     </sr:statisticalOperation>
 </sr:conceptScheme>
