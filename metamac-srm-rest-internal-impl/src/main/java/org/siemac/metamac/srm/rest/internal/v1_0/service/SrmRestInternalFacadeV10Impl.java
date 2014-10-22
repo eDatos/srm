@@ -212,7 +212,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     private DataStructuresDo2RestMapperV10        dataStructuresDo2RestMapperV10;
 
     @Autowired
-    @Qualifier("contentConstraintsVersioningCallback")
+    @Qualifier("contentConstraintsCopyCallback")
     private ContentConstraintsCopyCallback        contentConstraintsVersioningCallback;
 
     private static final String                   restInternalUser         = "restInternal";
