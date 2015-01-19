@@ -23,10 +23,10 @@ public class BaseDto2DoMapperImpl implements org.siemac.metamac.srm.core.base.ma
     public ExternalItem externalItemDtoStatisticalOperationsToExternalItemDo(ExternalItemDto source, ExternalItem target, String metadataName) throws MetamacException {
         target = dto2DoMapperSdmxSrm.externalItemDtoToExternalItem(source, target, metadataName);
 
-        // METAMAC-2387: We can not persist statistical operations title because it can change
-        target.setTitle(null);
-
         if (target != null) {
+            // METAMAC-2387: We can not persist statistical operations title because it can change
+            target.setTitle(null);
+
             target.setUri(CoreCommonUtil.externalItemUrlDtoToUrlDo(getStatisticalOperationsInternalApiUrlBase(), target.getUri()));
             target.setManagementAppUrl(CoreCommonUtil.externalItemUrlDtoToUrlDo(getStatisticalOperationsInternalWebApplicationUrlBase(), target.getManagementAppUrl()));
         }
