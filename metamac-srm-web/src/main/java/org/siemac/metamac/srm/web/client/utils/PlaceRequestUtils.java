@@ -600,9 +600,17 @@ public class PlaceRequestUtils {
     private static String getParamFromUrl(PlaceManager placeManager, String nameToken, String paramName) {
         for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
             if (nameToken.equals(request.getNameToken())) {
-                return request.getParameter(paramName, null);
+                String value = request.getParameter(paramName, null);
+                if (value != null) {
+                    return decodeURI(value);
+                }
             }
         }
         return null;
     }
+
+    private static native String decodeURI(String s)
+    /*-{
+        return decodeURIComponent(s);
+     }-*/;
 }
