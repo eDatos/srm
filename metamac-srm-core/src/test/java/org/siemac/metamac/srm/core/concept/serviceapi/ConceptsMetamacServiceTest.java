@@ -1,16 +1,8 @@
 package org.siemac.metamac.srm.core.concept.serviceapi;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
-import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
-
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -81,6 +73,16 @@ import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsAsserts
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.utils.ConceptsDoMocks;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
+import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/srm/applicationContext-test.xml"})
 @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
@@ -139,6 +141,27 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals(ctx.getUserId(), conceptSchemeVersionRetrieved.getCreatedBy());
         assertEquals(ctx.getUserId(), conceptSchemeVersionRetrieved.getLastUpdatedBy());
         ConceptsMetamacAsserts.assertEqualsConceptScheme(conceptSchemeVersion, conceptSchemeVersionRetrieved);
+    }
+
+    @Test
+    public void testCreateConceptSchemeTypeOperations() throws Exception {
+
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme(organisationMetamac);
+        conceptSchemeVersion.setType(ConceptSchemeTypeEnum.OPERATION);
+        conceptSchemeVersion.setRelatedOperation(ConceptsMetamacDoMocks.mockExternalItemOperation(UUID.randomUUID().toString()));
+
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Create
+        ConceptSchemeVersionMetamac conceptSchemeVersionCreated = conceptsService.createConceptScheme(ctx, conceptSchemeVersion);
+
+        // Asserts
+        assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeVersionCreated.getType());
+        assertEquals(conceptSchemeVersion.getRelatedOperation().getCode(), conceptSchemeVersionCreated.getRelatedOperation().getCode());
+        assertEquals(conceptSchemeVersion.getRelatedOperation().getTitle(), conceptSchemeVersionCreated.getRelatedOperation().getTitle());
+        assertEquals(conceptSchemeVersion.getRelatedOperation().getType(), conceptSchemeVersionCreated.getRelatedOperation().getType());
+        assertEquals(conceptSchemeVersion.getRelatedOperation().getUrn(), conceptSchemeVersionCreated.getRelatedOperation().getUrn());
     }
 
     @Test
@@ -236,6 +259,23 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(1, e.getExceptionItems().size());
             assertEquals(ServiceExceptionType.METADATA_REQUIRED.getCode(), e.getExceptionItems().get(0).getCode());
         }
+    }
+
+    @Test
+    public void testUpdateConceptSchemeTypeOperationChangingRelatedOperation() throws Exception {
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_8_V1);
+        conceptSchemeVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        conceptSchemeVersion.setIsTypeUpdated(Boolean.FALSE);
+        conceptSchemeVersion.setRelatedOperation(ConceptsMetamacDoMocks.mockExternalItemOperation(UUID.randomUUID().toString()));
+
+        ConceptSchemeVersionMetamac conceptSchemeVersionUpdated = conceptsService.updateConceptScheme(getServiceContextAdministrador(), conceptSchemeVersion);
+
+        // Asserts
+        assertEquals(ConceptSchemeTypeEnum.OPERATION, conceptSchemeVersionUpdated.getType());
+        assertEquals(conceptSchemeVersion.getRelatedOperation().getCode(), conceptSchemeVersionUpdated.getRelatedOperation().getCode());
+        assertEquals(conceptSchemeVersion.getRelatedOperation().getTitle(), conceptSchemeVersionUpdated.getRelatedOperation().getTitle());
+        assertEquals(conceptSchemeVersion.getRelatedOperation().getType(), conceptSchemeVersionUpdated.getRelatedOperation().getType());
+        assertEquals(conceptSchemeVersion.getRelatedOperation().getUrn(), conceptSchemeVersionUpdated.getRelatedOperation().getUrn());
     }
 
     @Test
