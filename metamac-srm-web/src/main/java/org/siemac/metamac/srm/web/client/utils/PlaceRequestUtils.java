@@ -10,6 +10,7 @@ import org.siemac.metamac.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.srm.core.common.service.utils.shared.SrmUrnParserUtils;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.navigation.shared.PlaceRequestParams;
+import org.siemac.metamac.web.common.client.utils.CommonPlaceRequestUtils;
 
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxSrmUrnParserUtils;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -17,7 +18,7 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 
-public class PlaceRequestUtils {
+public class PlaceRequestUtils extends CommonPlaceRequestUtils {
 
     // ---------------------------------------------------------------------------
     // DATA STRUCTURE DEFINITION
@@ -89,7 +90,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getDsdBreadCrumbTitle(PlaceRequest placeRequest) {
-        String dsdTripletIdentifier = placeRequest.getParameter(PlaceRequestParams.dsdParamId, null);
+        String dsdTripletIdentifier = getRequestParameter(placeRequest, PlaceRequestParams.dsdParamId);
         if (!StringUtils.isBlank(dsdTripletIdentifier)) {
             return UrnUtils.getStructureCodeFromUrnWithoutPrefix(dsdTripletIdentifier);
         }
@@ -126,7 +127,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getConceptSchemeBreadCrumbTitle(PlaceRequest placeRequest) {
-        String conceptSchemeTripletIdentifier = placeRequest.getParameter(PlaceRequestParams.conceptSchemeParamId, null);
+        String conceptSchemeTripletIdentifier = getRequestParameter(placeRequest, PlaceRequestParams.conceptSchemeParamId);
         if (!StringUtils.isBlank(conceptSchemeTripletIdentifier)) {
             return UrnUtils.getItemSchemeCodeFromUrnWithoutPrefix(conceptSchemeTripletIdentifier);
         }
@@ -167,7 +168,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getConceptBreadCrumbTitle(PlaceRequest placeRequest) {
-        String conceptCode = placeRequest.getParameter(PlaceRequestParams.conceptParamId, null);
+        String conceptCode = getRequestParameter(placeRequest, PlaceRequestParams.conceptParamId);
         if (!StringUtils.isBlank(conceptCode)) {
             return conceptCode;
         }
@@ -209,7 +210,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getOrganisationSchemeBreadCrumbTitle(PlaceRequest placeRequest) {
-        String organisationTripletIdentifier = placeRequest.getParameter(PlaceRequestParams.organisationSchemeParamId, null);
+        String organisationTripletIdentifier = getRequestParameter(placeRequest, PlaceRequestParams.organisationSchemeParamId);
         if (!StringUtils.isBlank(organisationTripletIdentifier)) {
             return UrnUtils.getItemSchemeCodeFromUrnWithoutPrefix(organisationTripletIdentifier);
         }
@@ -245,7 +246,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getOrganisationBreadCrumbTitle(PlaceRequest placeRequest) {
-        String organisationCode = placeRequest.getParameter(PlaceRequestParams.organisationParamId, null);
+        String organisationCode = getRequestParameter(placeRequest, PlaceRequestParams.organisationParamId);
         if (!StringUtils.isBlank(organisationCode)) {
             return organisationCode;
         }
@@ -282,7 +283,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getCategorySchemeBreadCrumbTitle(PlaceRequest placeRequest) {
-        String categorySchemeTripletIdentifier = placeRequest.getParameter(PlaceRequestParams.categorySchemeParamId, null);
+        String categorySchemeTripletIdentifier = getRequestParameter(placeRequest, PlaceRequestParams.categorySchemeParamId);
         if (!StringUtils.isBlank(categorySchemeTripletIdentifier)) {
             return UrnUtils.getItemSchemeCodeFromUrnWithoutPrefix(categorySchemeTripletIdentifier);
         }
@@ -318,7 +319,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getCategoryBreadCrumbTitle(PlaceRequest placeRequest) {
-        String categoryCode = placeRequest.getParameter(PlaceRequestParams.categoryParamId, null);
+        String categoryCode = getRequestParameter(placeRequest, PlaceRequestParams.categoryParamId);
         if (!StringUtils.isBlank(categoryCode)) {
             return categoryCode;
         }
@@ -355,7 +356,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getCodelistBreadCrumbTitle(PlaceRequest placeRequest) {
-        String codelistTripletIdentifier = placeRequest.getParameter(PlaceRequestParams.codelistParamId, null);
+        String codelistTripletIdentifier = getRequestParameter(placeRequest, PlaceRequestParams.codelistParamId);
         if (!StringUtils.isBlank(codelistTripletIdentifier)) {
             return UrnUtils.getItemSchemeCodeFromUrnWithoutPrefix(codelistTripletIdentifier);
         }
@@ -391,7 +392,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getCodeBreadCrumbTitle(PlaceRequest placeRequest) {
-        String codeCode = placeRequest.getParameter(PlaceRequestParams.codeParamId, null);
+        String codeCode = getRequestParameter(placeRequest, PlaceRequestParams.codeParamId);
         if (!StringUtils.isBlank(codeCode)) {
             return codeCode;
         }
@@ -424,7 +425,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getCodelistFamilyBreadCrumbTitle(PlaceRequest placeRequest) {
-        String familyCode = placeRequest.getParameter(PlaceRequestParams.codelistFamilyParamId, null);
+        String familyCode = getRequestParameter(placeRequest, PlaceRequestParams.codelistFamilyParamId);
         if (!StringUtils.isBlank(familyCode)) {
             return familyCode;
         }
@@ -457,7 +458,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getVariableFamilyBreadCrumbTitle(PlaceRequest placeRequest) {
-        String familyCode = placeRequest.getParameter(PlaceRequestParams.variableFamilyParamId, null);
+        String familyCode = getRequestParameter(placeRequest, PlaceRequestParams.variableFamilyParamId);
         if (!StringUtils.isBlank(familyCode)) {
             return familyCode;
         }
@@ -490,7 +491,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getVariableBreadCrumbTitle(PlaceRequest placeRequest) {
-        String variableCode = placeRequest.getParameter(PlaceRequestParams.variableParamId, null);
+        String variableCode = getRequestParameter(placeRequest, PlaceRequestParams.variableParamId);
         if (!StringUtils.isBlank(variableCode)) {
             return variableCode;
         }
@@ -529,7 +530,7 @@ public class PlaceRequestUtils {
     }
 
     public static String getVariableElementBreadCrumbTitle(PlaceRequest placeRequest) {
-        String variableElementCode = placeRequest.getParameter(PlaceRequestParams.variableElementParamId, null);
+        String variableElementCode = getRequestParameter(placeRequest, PlaceRequestParams.variableElementParamId);
         if (!StringUtils.isBlank(variableElementCode)) {
             return variableElementCode;
         }
@@ -592,25 +593,4 @@ public class PlaceRequestUtils {
         }
         return null;
     }
-
-    // ---------------------------------------------------------------------------
-    // PRIVATE METHODS
-    // ---------------------------------------------------------------------------
-
-    private static String getParamFromUrl(PlaceManager placeManager, String nameToken, String paramName) {
-        for (PlaceRequest request : placeManager.getCurrentPlaceHierarchy()) {
-            if (nameToken.equals(request.getNameToken())) {
-                String value = request.getParameter(paramName, null);
-                if (value != null) {
-                    return decodeURI(value);
-                }
-            }
-        }
-        return null;
-    }
-
-    private static native String decodeURI(String s)
-    /*-{
-        return decodeURIComponent(s);
-     }-*/;
 }
