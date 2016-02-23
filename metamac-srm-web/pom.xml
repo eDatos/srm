@@ -332,22 +332,22 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.enunciate</groupId>
-                <artifactId>maven-enunciate-plugin</artifactId>
-                <version>${enunciate.version}</version>
-                <configuration>
-                    <configFile>etc/enunciate/enunciate.xml</configFile>
-                    <docsDir>${basedir}/src/main/webapp/docs/api</docsDir>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>docs</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--             <plugin> -->
+<!--                 <groupId>org.codehaus.enunciate</groupId> -->
+<!--                 <artifactId>maven-enunciate-plugin</artifactId> -->
+<!--                 <version>${enunciate.version}</version> -->
+<!--                 <configuration> -->
+<!--                     <configFile>etc/enunciate/enunciate.xml</configFile> -->
+<!--                     <docsDir>${basedir}/src/main/webapp/docs/api</docsDir> -->
+<!--                 </configuration> -->
+<!--                 <executions> -->
+<!--                     <execution> -->
+<!--                         <goals> -->
+<!--                             <goal>docs</goal> -->
+<!--                         </goals> -->
+<!--                     </execution> -->
+<!--                 </executions> -->
+<!--             </plugin> -->
         </plugins>
     </build>
 
