@@ -8,11 +8,12 @@ import org.siemac.metamac.srm.web.client.view.handlers.MainPageUiHandlers;
 import org.siemac.metamac.srm.web.client.widgets.StructuralResourcesMenu;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
+import org.siemac.metamac.web.common.client.utils.ApplicationOrganisation;
 import org.siemac.metamac.web.common.client.widgets.BreadCrumbsPanel;
+import org.siemac.metamac.web.common.client.widgets.FooterLayout;
 import org.siemac.metamac.web.common.client.widgets.MasterHead;
 import org.siemac.metamac.web.common.client.widgets.MessagePanel;
 import org.siemac.metamac.web.common.client.widgets.MetamacNavBar;
-import org.siemac.metamac.web.common.client.widgets.VersionFooter;
 import org.siemac.metamac.web.common.client.widgets.WaitPopup;
 
 import com.google.gwt.user.client.Window;
@@ -40,10 +41,10 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
 
     private final MessagePanel            messagePanel;
 
-    private VLayout                       panel;                  // MAIN
-    private HLayout                       northLayout;
+    private VLayout                       panel;
+    private VLayout                       northLayout;
     private HLayout                       southLayout;
-    private VLayout                       footerLayout;
+    private FooterLayout                  footerLayout;
 
     @Inject
     public MainPageViewImpl(MasterHead masterHead, BreadCrumbsPanel breadCrumbsPanel, StructuralResourcesMenu structuralResourcesMenu, MessagePanel messagePanel) {
@@ -64,7 +65,7 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
         panel.setCanDrag(false);
 
         // Initialize the North layout container
-        northLayout = new HLayout();
+        northLayout = new VLayout();
         northLayout.setHeight(NORTH_HEIGHT);
 
         VLayout breadCrumbLayout = new VLayout();
@@ -85,10 +86,7 @@ public class MainPageViewImpl extends ViewWithUiHandlers<MainPageUiHandlers> imp
         southLayout = new HLayout();
         southLayout.setHeight100();
 
-        footerLayout = new VLayout();
-        footerLayout.addMember(this.messagePanel);
-        footerLayout.addMember(new VersionFooter(MetamacSrmWeb.getProjectVersion()));
-        // footerLayout.setBackgroundColor("SeaShell");
+        footerLayout = new FooterLayout(this.messagePanel, ApplicationOrganisation.getCurrentOrganisation(), MetamacSrmWeb.getProjectVersion());
 
         // Set user name
         masterHead.getUserNameLabel().setContents(getUserName());
