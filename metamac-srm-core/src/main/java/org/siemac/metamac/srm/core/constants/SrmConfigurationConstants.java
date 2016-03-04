@@ -10,7 +10,7 @@ public class SrmConfigurationConstants extends ConfigurationConstants {
 
     public static final String JOB_DELETE_DEPRECATED_ENTITIES_CRON_EXPRESSION = "metamac.srm.jobs.delete_deprecated_entities.cron_expression";
 
-    public static final String USER_GUIDE_FILE_NAME                           = "metamac.srm.user_guide.file_name";
+    public static final String HELP_URL                                       = "metamac.srm.help.url";
     public static final String DOCS_PATH                                      = "metamac.data.docs.srm.path";
 
     // DataSource

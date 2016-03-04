@@ -1,13 +1,12 @@
 package org.siemac.metamac.srm.core.conf;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
 
 import com.arte.statistic.sdmx.srm.core.conf.SdmxSrmConfiguration;
 
 public interface SrmConfiguration extends SdmxSrmConfiguration {
 
-    public String retrieveUserGuideFileName() throws MetamacException;
+    public String retrieveHelpUrl() throws MetamacException;
 
     public String retrieveDocsPath() throws MetamacException;
 

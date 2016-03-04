@@ -8,8 +8,8 @@ import com.arte.statistic.sdmx.srm.core.conf.SdmxSrmConfigurationImpl;
 public class SrmConfigurationImpl extends SdmxSrmConfigurationImpl implements SrmConfiguration {
 
     @Override
-    public String retrieveUserGuideFileName() throws MetamacException {
-        return retrieveProperty(SrmConfigurationConstants.USER_GUIDE_FILE_NAME);
+    public String retrieveHelpUrl() throws MetamacException {
+        return retrieveProperty(SrmConfigurationConstants.HELP_URL);
     }
 
     @Override

@@ -2,7 +2,7 @@ package org.siemac.metamac.srm.web.server;
 
 import org.siemac.metamac.srm.web.server.handlers.ExportSDMXResourceActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.GetRelatedResourcesActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.GetUserGuideUrlActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.GetHelpUrlActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.ValidateTicketActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.CancelCategorisationValidityActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.CancelCategorySchemeValidityActionHandler;
@@ -134,7 +134,7 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.UpdateOrganisatio
 import org.siemac.metamac.srm.web.server.handlers.organisation.VersionOrganisationSchemeActionHandler;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
-import org.siemac.metamac.srm.web.shared.GetUserGuideUrlAction;
+import org.siemac.metamac.srm.web.shared.GetHelpUrlAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
@@ -431,7 +431,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(ExportCodesOrderAction.class, ExportCodesOrderActionHandler.class);
 
         // Common
-        bindHandler(GetUserGuideUrlAction.class, GetUserGuideUrlActionHandler.class);
+        bindHandler(GetHelpUrlAction.class, GetHelpUrlActionHandler.class);
         bindHandler(GetRelatedResourcesAction.class, GetRelatedResourcesActionHandler.class);
 
         bindHandler(ValidateTicketAction.class, ValidateTicketActionHandler.class);

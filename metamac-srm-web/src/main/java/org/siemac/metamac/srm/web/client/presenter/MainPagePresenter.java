@@ -9,9 +9,8 @@ import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent.SelectMenuButtonHandler;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.view.handlers.MainPageUiHandlers;
-import org.siemac.metamac.srm.web.shared.GetUserGuideUrlAction;
-import org.siemac.metamac.srm.web.shared.GetUserGuideUrlResult;
-import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
+import org.siemac.metamac.srm.web.shared.GetHelpUrlAction;
+import org.siemac.metamac.srm.web.shared.GetHelpUrlResult;
 import org.siemac.metamac.web.common.client.enums.MessageTypeEnum;
 import org.siemac.metamac.web.common.client.events.ChangeWaitPopupVisibilityEvent;
 import org.siemac.metamac.web.common.client.events.ChangeWaitPopupVisibilityEvent.ChangeWaitPopupVisibilityHandler;
@@ -21,7 +20,6 @@ import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent.SetTitleHandler;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent.ShowMessageHandler;
-import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
 import org.siemac.metamac.web.common.client.widgets.MasterHead;
 import org.siemac.metamac.web.common.shared.CloseSessionAction;
@@ -205,12 +203,12 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MainPageView,
     }
 
     @Override
-    public void downloadUserGuide() {
-        dispatcher.execute(new GetUserGuideUrlAction(), new WaitingAsyncCallbackHandlingError<GetUserGuideUrlResult>(this) {
+    public void openHelpUrl() {
+        dispatcher.execute(new GetHelpUrlAction(), new WaitingAsyncCallbackHandlingError<GetHelpUrlResult>(this) {
 
             @Override
-            public void onWaitSuccess(GetUserGuideUrlResult result) {
-                CommonWebUtils.showDownloadFileWindow(SrmSharedTokens.FILE_DOWNLOAD_DIR_PATH, SrmSharedTokens.PARAM_DOC, result.getUserGuideUrl());
+            public void onWaitSuccess(GetHelpUrlResult result) {
+                Window.open(result.getHelpUrl(), "_blank", "");
             }
         });
     }
