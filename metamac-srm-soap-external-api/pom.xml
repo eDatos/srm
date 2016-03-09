@@ -31,12 +31,6 @@
             <!-- Does not include in classpath -->
             <scope>provided</scope>
         </dependency>
-                        <!-- JAXB IMPL -->
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>${jaxb.version}</version>
-        </dependency>  
     </dependencies>
 
     <build>
@@ -182,6 +176,16 @@
                             </exclusion>
                         </exclusions>
                     </dependency>
+                    <dependency>
+			            <groupId>com.sun.xml.bind</groupId>
+			            <artifactId>jaxb-impl</artifactId>
+			            <version>2.2.5</version>
+			        </dependency>
+			        <dependency>
+			            <groupId>com.sun.xml.bind</groupId>
+			            <artifactId>jaxb-xjc</artifactId>
+			            <version>2.2.5</version>
+			        </dependency>
                 </dependencies>
             </plugin>
             <plugin>
