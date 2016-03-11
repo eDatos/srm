@@ -1,10 +1,27 @@
 package org.siemac.metamac.srm.web.external;
 
+import javax.servlet.ServletContextEvent;
+
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.listener.ApplicationStartupListener;
 import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ApplicationStartup extends ApplicationStartupListener {
+
+    private static final Logger log = LoggerFactory.getLogger(ApplicationStartup.class);
+
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        super.contextInitialized(sce);
+        try {
+            WebUtils.setOrganisation(configurationService.retrieveOrganisation());
+            WebUtils.setApiBaseURL(configurationService.retrieveSrmExternalApiUrlBase());
+        } catch (MetamacException e) {
+            log.error("Error retrieving application configuration", e);
+        }
+    }
 
     @Override
     public String projectName() {
@@ -25,5 +42,4 @@ public class ApplicationStartup extends ApplicationStartupListener {
         checkRequiredProperty(SrmConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_EXTERNAL_API);
         checkRequiredProperty(SrmConfigurationConstants.METAMAC_ORGANISATION_URN);
     }
-
 }
