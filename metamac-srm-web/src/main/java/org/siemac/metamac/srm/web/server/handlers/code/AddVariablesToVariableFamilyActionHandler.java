@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.web.server.handlers.code;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.srm.core.code.dto.VariableFamilyDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.web.shared.code.AddVariablesToVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.AddVariablesToVariableFamilyResult;
@@ -26,7 +27,8 @@ public class AddVariablesToVariableFamilyActionHandler extends SecurityActionHan
     public AddVariablesToVariableFamilyResult executeSecurityAction(AddVariablesToVariableFamilyAction action) throws ActionException {
         try {
             srmCoreServiceFacade.addVariablesToVariableFamily(ServiceContextHolder.getCurrentServiceContext(), action.getVariableUrns(), action.getVariableFamilyUrn());
-            return new AddVariablesToVariableFamilyResult();
+            VariableFamilyDto variableFamilyDto = srmCoreServiceFacade.retrieveVariableFamilyByUrn(ServiceContextHolder.getCurrentServiceContext(), action.getVariableFamilyUrn());
+            return new AddVariablesToVariableFamilyResult(variableFamilyDto);
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }

@@ -219,6 +219,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
             @Override
             public void onWaitSuccess(AddVariablesToVariableFamilyResult result) {
                 fireSuccessMessage(getMessages().variablesAddedToFamily());
+                getView().setVariableFamily(result.getVariableFamilyDto());
                 retrieveVariablesByFamily(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null, familyUrn);
             }
         });
