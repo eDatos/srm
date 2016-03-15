@@ -308,6 +308,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             // IMPORTANT: Update order and open urn efficiently to avoid one update for each code
             getCodelistOrderVisualisationRepository().updateUrnAllCodelistOrderVisualisationsByCodelistEfficiently(codelistVersionMetamac, oldUrn);
             getCodelistOpennessVisualisationRepository().updateUrnAllCodelistOpennessVisualisationsByCodelistEfficiently(codelistVersionMetamac, oldUrn);
+            codelistVersionMetamac = retrieveCodelistByUrn(ctx, codelistVersion.getMaintainableArtefact().getUrn());
         }
 
         // Save codelist

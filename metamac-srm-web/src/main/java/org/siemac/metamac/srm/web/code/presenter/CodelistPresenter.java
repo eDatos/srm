@@ -329,6 +329,9 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 fireSuccessMessage(getMessages().codelistSaved());
                 getView().setCodelist(codelistMetamacDto);
 
+                retrieveCodelistOpennessLevels(codelistMetamacDto.getUrn());
+                retrieveCodelistOrders(codelistMetamacDto.getUrn());
+
                 updateUrl();
             }
         });
