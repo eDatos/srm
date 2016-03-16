@@ -1,7 +1,7 @@
 {
    "swagger":"2.0",
    "info":{
-      "description":"Los recursos estructurales son aquellos que sirven de apoyo para normalizar a los recursos estad�sticos que produce la organización. Los principales recursos estructurales existente son los esquemas de organizaciones, esquemas de temas, esquemas de conceptos, clasificaciones y definiciones de estructuras de datos. Esta API permite consultar el inventario completo de los recursos estructurales que maneja la organización.",
+      "description":"Los recursos estructurales son aquellos que sirven de apoyo para normalizar a los recursos estadísticos que produce la organización. Los principales recursos estructurales existente son los esquemas de organizaciones, esquemas de temas, esquemas de conceptos, clasificaciones y definiciones de estructuras de datos. Esta API permite consultar el inventario completo de los recursos estructurales que maneja la organización.",
       "version":"1.0",
       "title":"API de recursos estructurales"
    },
@@ -4935,6 +4935,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/AgencySchemes"
+                  },
                   "headers":{
 
                   },
@@ -4991,6 +4995,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/AgencySchemes"
+                  },
                   "headers":{
 
                   },
@@ -5053,6 +5061,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/AgencySchemes"
+                  },
                   "headers":{
 
                   },
@@ -5097,6 +5109,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/AgencyScheme"
+                  },
                   "headers":{
 
                   },
@@ -5165,6 +5181,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Agencies"
+                  },
                   "headers":{
 
                   },
@@ -5215,6 +5235,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Agency"
+                  },
                   "headers":{
 
                   },
@@ -5265,6 +5289,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Categorisations"
+                  },
                   "headers":{
 
                   },
@@ -5321,6 +5349,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Categorisations"
+                  },
                   "headers":{
 
                   },
@@ -5383,6 +5415,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Categorisations"
+                  },
                   "headers":{
 
                   },
@@ -5427,6 +5463,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Categorisation"
+                  },
                   "headers":{
 
                   },
@@ -5477,6 +5517,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/CategorySchemes"
+                  },               
                   "headers":{
 
                   },
@@ -5533,6 +5577,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/CategorySchemes"
+                  },                
                   "headers":{
 
                   },
@@ -5595,6 +5643,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/CategorySchemes"
+                  },                
                   "headers":{
 
                   },
@@ -5639,6 +5691,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/CategoryScheme"
+                  },                
                   "headers":{
 
                   },
@@ -5707,6 +5763,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Categories"
+                  },               
                   "headers":{
 
                   },
@@ -5757,6 +5817,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Category"
+                  },
                   "headers":{
 
                   },
@@ -5807,6 +5871,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/CodelistFamilies"
+                  },               
                   "headers":{
 
                   },
@@ -5839,6 +5907,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/CodelistFamily"
+                  },                
                   "headers":{
 
                   },
@@ -5889,6 +5961,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Codelists"
+                  },               
                   "headers":{
 
                   },
@@ -5945,6 +6021,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Codelists"
+                  },               
                   "headers":{
 
                   },
@@ -6007,6 +6087,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Codelists"
+                  },               
                   "headers":{
 
                   },
@@ -6051,6 +6135,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Codelist"
+                  },               
                   "headers":{
 
                   },
@@ -6131,6 +6219,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Codes"
+                  },               
                   "headers":{
 
                   },
@@ -6181,6 +6273,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Code"
+                  },
                   "headers":{
 
                   },
@@ -6208,6 +6304,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/ConceptTypes"
+                  },               
                   "headers":{
 
                   },
@@ -6222,7 +6322,7 @@
       "/v1.0/conceptschemes":{
          "get":{
             "tags":[
-               "\/v1.0/conceptschemes"
+               "Conceptos"
             ],
             "description":"",
             "operationId":"resource__v1.0_conceptschemes_findConceptSchemes_GET",
@@ -6258,6 +6358,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/ConceptSchemes"
+                  },               
                   "headers":{
 
                   },
@@ -6314,6 +6418,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/ConceptSchemes"
+                  },                 
                   "headers":{
 
                   },
@@ -6376,6 +6484,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/ConceptSchemes"
+                  },                 
                   "headers":{
 
                   },
@@ -6420,6 +6532,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/ConceptScheme"
+                  },                 
                   "headers":{
 
                   },
@@ -6488,6 +6604,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Concepts"
+                  },                   
                   "headers":{
 
                   },
@@ -6538,6 +6658,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Concept"
+                  },                   
                   "headers":{
 
                   },
@@ -6588,6 +6712,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/ContentConstraints"
+                  },               
                   "headers":{
 
                   },
@@ -6644,6 +6772,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/ContentConstraints"
+                  },               
                   "headers":{
 
                   },
@@ -6706,6 +6838,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/ContentConstraints"
+                  },               
                   "headers":{
 
                   },
@@ -6750,6 +6886,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/ContentConstraint"
+                  },               
                   "headers":{
 
                   },
@@ -6800,6 +6940,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/RegionReference"
+                  },                
                   "headers":{
 
                   },
@@ -6850,6 +6994,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataConsumerSchemes"
+                  },               
                   "headers":{
 
                   },
@@ -6906,6 +7054,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataConsumerSchemes"
+                  },                  
                   "headers":{
 
                   },
@@ -6968,6 +7120,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataConsumerSchemes"
+                  },
                   "headers":{
 
                   },
@@ -7012,6 +7168,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataConsumerScheme"
+                  },                  
                   "headers":{
 
                   },
@@ -7080,6 +7240,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataConsumers"
+                  },                 
                   "headers":{
 
                   },
@@ -7130,6 +7294,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataConsumer"
+                  },
                   "headers":{
 
                   },
@@ -7180,6 +7348,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataProviderSchemes"
+                  },
                   "headers":{
 
                   },
@@ -7236,6 +7408,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataProviderSchemes"
+                  },               
                   "headers":{
 
                   },
@@ -7298,6 +7474,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataProviderSchemes"
+                  },               
                   "headers":{
 
                   },
@@ -7342,6 +7522,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataProviderScheme"
+                  },               
                   "headers":{
 
                   },
@@ -7410,6 +7594,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataProviders"
+                  },                
                   "headers":{
 
                   },
@@ -7460,6 +7648,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataProvider"
+                  },                
                   "headers":{
 
                   },
@@ -7510,6 +7702,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataStructures"
+                  },               
                   "headers":{
 
                   },
@@ -7566,6 +7762,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataStructures"
+                  },               
                   "headers":{
 
                   },
@@ -7628,6 +7828,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataStructures"
+                  },               
                   "headers":{
 
                   },
@@ -7672,6 +7876,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/DataStructure"
+                  },               
                   "headers":{
 
                   },
@@ -7722,6 +7930,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/OrganisationSchemes"
+                  },               
                   "headers":{
 
                   },
@@ -7778,6 +7990,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/OrganisationSchemes"
+                  },                
                   "headers":{
 
                   },
@@ -7840,6 +8056,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/OrganisationSchemes"
+                  },               
                   "headers":{
 
                   },
@@ -7884,6 +8104,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/OrganisationScheme"
+                  },                
                   "headers":{
 
                   },
@@ -7952,6 +8176,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Organisations"
+                  },                 
                   "headers":{
 
                   },
@@ -8002,6 +8230,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Organisation"
+                  },               
                   "headers":{
 
                   },
@@ -8052,6 +8284,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/OrganisationUnitSchemes"
+                  },
                   "headers":{
 
                   },
@@ -8108,6 +8344,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/OrganisationUnitSchemes"
+                  },               
                   "headers":{
 
                   },
@@ -8170,6 +8410,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/OrganisationUnitSchemes"
+                  },               
                   "headers":{
 
                   },
@@ -8214,6 +8458,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/OrganisationUnitScheme"
+                  },               
                   "headers":{
 
                   },
@@ -8282,6 +8530,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/OrganisationUnits"
+                  },                      
                   "headers":{
 
                   },
@@ -8332,6 +8584,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/OrganisationUnit"
+                  },                  
                   "headers":{
 
                   },
@@ -8382,6 +8638,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/VariableFamilies"
+                  },               
                   "headers":{
 
                   },
@@ -8414,6 +8674,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/VariableFamily"
+                  },                 
                   "headers":{
 
                   },
@@ -8470,6 +8734,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Variables"
+                  },                
                   "headers":{
 
                   },
@@ -8520,6 +8788,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Variables"
+                  },                
                   "headers":{
 
                   },
@@ -8552,6 +8824,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/Variable"
+                  },                
                   "headers":{
 
                   },
@@ -8608,6 +8884,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/VariableElements"
+                  },                
                   "headers":{
 
                   },
@@ -8646,6 +8926,10 @@
             ],
             "responses":{
                "200":{
+               	  "schema":{
+                     "description":"",
+                     "$ref":"#/definitions/VariableElement"
+                  },               
                   "headers":{
 
                   },
