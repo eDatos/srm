@@ -14,10 +14,13 @@
 		<from>^/apis/structural-resources/v1.0$</from>
 		<to type="redirect">/structural-resources/v1.0/</to>
 	</rule>
+	<rule>
+		<from>/apis/structural-resources/swagger-ui/(.*)$</from>
+		<to type="forward">/swagger-ui/$1</to>
+	</rule>
 
 	<rule>
 		<from>/apis/soap/latest/structuralResources</from>
 		<to type="redirect">%{context-path}/apis/soap/v1.0/structuralResources</to>
 	</rule>
-
 </urlrewrite>
