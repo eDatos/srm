@@ -5,7 +5,7 @@
     
     <!-- Database -->
     <!-- ORACLE -->
-    <entry key="metamac.srm.db.url">jdbc:oracle:thin:@oracle-dev.arte:1521:XE</entry>
+    <entry key="metamac.srm.db.url">jdbc:oracle:thin:@teide.arte:1521:orcl</entry>
     <entry key="metamac.srm.db.username">JENKINS_METAMAC_SRM</entry>
     <entry key="metamac.srm.db.password">JENKINS_METAMAC_SRM</entry>
     <entry key="metamac.srm.db.dialect">org.siemac.metamac.hibernate.dialect.Oracle10gDialectMetamac</entry>
