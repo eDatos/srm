@@ -257,6 +257,7 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                 getView().setCategoryScheme(categorySchemeMetamacDto);
 
                 updateUrl();
+                retrieveCategorySchemeVersions(result.getCategorySchemeSaved().getUrn());
             }
         });
     }

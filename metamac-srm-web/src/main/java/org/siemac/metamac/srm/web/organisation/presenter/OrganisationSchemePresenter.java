@@ -290,6 +290,7 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
                 getView().setOrganisationScheme(organisationSchemeMetamacDto);
 
                 updateUrl();
+                retrieveOrganisationSchemeVersions(result.getOrganisationSchemeSaved().getUrn());
             }
         });
     }

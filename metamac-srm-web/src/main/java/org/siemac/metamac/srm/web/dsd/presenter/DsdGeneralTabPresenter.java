@@ -163,6 +163,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
                 // Redirect to the DSD page to update the URL
                 goToDsd(result.getDsdSaved().getUrn()); // To update the URL (the method placeManager.updateHistory only allow to update the last placeRequest)
+                UpdateMaintainableArtefactVersionsEvent.fire(DsdGeneralTabPresenter.this, result.getDsdSaved().getUrn());
             }
         });
     }

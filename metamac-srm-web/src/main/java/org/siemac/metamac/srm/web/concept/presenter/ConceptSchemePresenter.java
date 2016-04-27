@@ -257,8 +257,8 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                 ConceptSchemePresenter.this.conceptSchemeDto = result.getSavedConceptSchemeDto();
                 getView().setConceptScheme(result.getSavedConceptSchemeDto());
 
-                // Update URL
                 updateUrl();
+                retrieveConceptSchemeVersions(result.getSavedConceptSchemeDto().getUrn());
             }
         });
     }

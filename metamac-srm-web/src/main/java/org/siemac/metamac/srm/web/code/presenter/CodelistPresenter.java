@@ -333,6 +333,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                 retrieveCodelistOrders(codelistMetamacDto.getUrn());
 
                 updateUrl();
+                retrieveCodelistVersions(result.getSavedCodelistDto().getUrn());
             }
         });
     }
