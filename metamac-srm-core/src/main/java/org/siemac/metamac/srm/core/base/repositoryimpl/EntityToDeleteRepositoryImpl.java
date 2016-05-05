@@ -56,7 +56,8 @@ public class EntityToDeleteRepositoryImpl extends EntityToDeleteRepositoryBase {
         Statement statement = null;
         try {
             statement = connection.createStatement();
-            logger.info(sb); // TODO remove this log in future (METAMAC-2076)
+            // TODO remove this log in future (METAMAC-2076)
+            logger.info(sb);
             statement.execute(sb.toString());
         } finally {
             if (statement != null) {
