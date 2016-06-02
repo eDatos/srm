@@ -91,6 +91,10 @@ public class SharedOrganisationsSecurityUtils extends SharedItemsSecurityUtils {
         return canRetrieveOrFindResource(metamacPrincipal);
     }
 
+    public static boolean canExportOrganisationsTsv(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
     /**
      * Determines if items from an organisation scheme can be created, deleted or updated
      */

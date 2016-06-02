@@ -84,6 +84,7 @@ import org.siemac.metamac.srm.web.server.handlers.concept.CopyConceptSchemeActio
 import org.siemac.metamac.srm.web.server.handlers.concept.CreateConceptSchemeTemporalVersionActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.DeleteConceptSchemesActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.ExportConceptsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.FindAllConceptTypesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemeActionHandler;
@@ -120,6 +121,7 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.CopyOrganisationS
 import org.siemac.metamac.srm.web.server.handlers.organisation.CreateOrganisationSchemeTemporalVersionActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisationSchemeListActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.DeleteOrganisationsActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.organisation.ExportOrganisationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetDefaultMaintainerActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.organisation.GetOrganisationContactsActionHandler;
@@ -214,6 +216,7 @@ import org.siemac.metamac.srm.web.shared.concept.CopyConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.CreateConceptSchemeTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemesAction;
+import org.siemac.metamac.srm.web.shared.concept.ExportConceptsAction;
 import org.siemac.metamac.srm.web.shared.concept.FindAllConceptTypesAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
@@ -251,6 +254,7 @@ import org.siemac.metamac.srm.web.shared.organisation.CopyOrganisationSchemeActi
 import org.siemac.metamac.srm.web.shared.organisation.CreateOrganisationSchemeTemporalVersionAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
+import org.siemac.metamac.srm.web.shared.organisation.ExportOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetDefaultMaintainerAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationContactsAction;
@@ -330,6 +334,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(FindAllConceptTypesAction.class, FindAllConceptTypesActionHandler.class);
         bindHandler(CreateConceptSchemeTemporalVersionAction.class, CreateConceptSchemeTemporalVersionActionHandler.class);
         bindHandler(CopyConceptSchemeAction.class, CopyConceptSchemeActionHandler.class);
+        bindHandler(ExportConceptsAction.class, ExportConceptsActionHandler.class);
 
         // Organisations
         bindHandler(GetOrganisationSchemesAction.class, GetOrganisationSchemesActionHandler.class);
@@ -349,6 +354,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetOrganisationContactsAction.class, GetOrganisationContactsActionHandler.class);
         bindHandler(CreateOrganisationSchemeTemporalVersionAction.class, CreateOrganisationSchemeTemporalVersionActionHandler.class);
         bindHandler(CopyOrganisationSchemeAction.class, CopyOrganisationSchemeActionHandler.class);
+        bindHandler(ExportOrganisationsAction.class, ExportOrganisationsActionHandler.class);
 
         // Categories
         bindHandler(GetCategorySchemesAction.class, GetCategorySchemesActionHandler.class);

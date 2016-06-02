@@ -353,6 +353,8 @@ Application SrmFacadeCore {
             deleteOrganisation(String urn) throws MetamacException;
     		"Retrieves organisations by organisation scheme in locale requested"
     		List<OrganisationMetamacVisualisationResult> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn, String locale) throws MetamacException;
+            "Exports organisations in TSV format"
+    		String exportOrganisationsTsv(String organisationSchemeUrn) throws MetamacException;
 
             "Finds contacts by criteria"
             MetamacCriteriaResult<@ContactDto> findOrganisationContactsByCondition(MetamacCriteria criteria) throws MetamacException;
@@ -416,6 +418,8 @@ Application SrmFacadeCore {
             @ConceptMetamacDto updateConcept(@ConceptMetamacDto conceptDto) throws MetamacException;
 	   		"Retrieves a concept by URN"
             @ConceptMetamacDto retrieveConceptByUrn(String urn) throws MetamacException;
+            "Exports concepts in TSV format"
+    		String exportConceptsTsv(String conceptSchemeUrn) throws MetamacException;
             "Finds concepts by criteria"
             MetamacCriteriaResult<@ConceptMetamacBasicDto> findConceptsByCondition(MetamacCriteria criteria) throws MetamacException;
             "Finds concepts that can be role by criteria"

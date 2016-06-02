@@ -25,4 +25,8 @@ public class SrmSharedTokens extends org.siemac.metamac.web.common.shared.utils.
     public static final String UPLOAD_PARAM_VARIABLE_URN                = "variable-urn";
     public static final String UPLOAD_PARAM_UPDATE_EXISTING             = "update-existing";
     public static final String UPLOAD_PARAM_VARIABLE_ELEMENT_SHAPE_TYPE = "var-ele-shp-type";
+
+    // Concepts upload configuration
+
+    public static final String UPLOAD_PARAM_CONCEPT_SCHEME_URN          = "concept-scheme-urn";
 }

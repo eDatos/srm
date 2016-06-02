@@ -79,7 +79,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
@@ -3794,6 +3793,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
         assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
         assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
+    }
+
+    @Test
+    @Override
+    public void testExportConceptsTsv() throws Exception {
+        // TODO METAMAC-2453
     }
 
     @Test

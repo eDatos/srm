@@ -2583,6 +2583,15 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return organisationMetamacDto;
     }
 
+    @Override
+    public String exportOrganisationsTsv(ServiceContext ctx, String organisationSchemeUrn) throws MetamacException {
+        // Security
+        OrganisationsSecurityUtils.canExportOrganisationsTsv(ctx);
+
+        // Export
+        return getOrganisationsMetamacService().exportOrganisationsTsv(ctx, organisationSchemeUrn);
+    }
+
     /**************************************************************************
      * CONCEPTS
      *************************************************************************/
@@ -3021,6 +3030,16 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ConceptMetamacDto conceptMetamacDto = conceptsDo2DtoMapper.conceptMetamacDoToDto(conceptMetamac);
 
         return conceptMetamacDto;
+    }
+
+    @Override
+    public String exportConceptsTsv(ServiceContext ctx, String conceptSchemeUrn) throws MetamacException {
+
+        // Security
+        ConceptsSecurityUtils.canExportConceptsTsv(ctx);
+
+        // Export
+        return getConceptsMetamacService().exportConceptsTsv(ctx, conceptSchemeUrn);
     }
 
     @Override

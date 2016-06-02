@@ -29,6 +29,7 @@ import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacI
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
@@ -43,6 +44,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.common.service.utils.TsvExportationUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
@@ -724,6 +726,20 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
         }
         return concept;
+    }
+
+    @Override
+    public String exportConceptsTsv(ServiceContext ctx, String conceptSchemetUrn) throws MetamacException {
+
+        ConceptsMetamacInvocationValidator.checkExportConceptsTsv(conceptSchemetUrn, null);
+
+        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemetUrn);
+
+        List<ItemResult> items = getConceptMetamacRepository().findConceptsByConceptSchemeUnordered(conceptSchemeVersion.getId(), CodeMetamacResultSelection.EXPORT);
+
+        List<String> languages = srmConfiguration.retrieveLanguages();
+
+        return TsvExportationUtils.exportConcepts(items, languages);
     }
 
     @Override

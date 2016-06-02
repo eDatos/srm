@@ -177,4 +177,19 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canDeleteConcept(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(), operationCode)
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(conceptSchemeMetamacDto);
     }
+
+    public static boolean canExportConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        if (isTaskInBackground(conceptSchemeMetamacDto.getIsTaskInBackground())) {
+            return false;
+        }
+        return SharedConceptsSecurityUtils.canExportConceptsTsv(MetamacSrmWeb.getCurrentUser());
+    }
+
+    //
+    // PRIVATE METHODS
+    //
+
+    private static boolean isTaskInBackground(Boolean isTaskInBackground) {
+        return BooleanUtils.isTrue(isTaskInBackground);
+    }
 }

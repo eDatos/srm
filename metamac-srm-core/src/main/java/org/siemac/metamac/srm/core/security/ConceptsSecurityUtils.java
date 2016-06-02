@@ -204,6 +204,12 @@ public class ConceptsSecurityUtils extends CommonSecurityUtils {
         }
     }
 
+    public static void canExportConceptsTsv(ServiceContext ctx) throws MetamacException {
+        if (!SharedConceptsSecurityUtils.canExportConceptsTsv(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     // CATEGORISATIONS
 
     public static void canModifyCategorisation(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {

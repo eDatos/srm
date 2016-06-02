@@ -158,6 +158,12 @@ public class OrganisationsSecurityUtils extends CommonSecurityUtils {
         }
     }
 
+    public static void canExportOrganisationsTsv(ServiceContext ctx) throws MetamacException {
+        if (!SharedOrganisationsSecurityUtils.canExportOrganisationsTsv(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     //
     // CATEGORISATIONS
     //

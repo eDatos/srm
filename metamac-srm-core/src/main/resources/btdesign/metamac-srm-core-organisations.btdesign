@@ -84,6 +84,8 @@ Application OrganisationsMetamac {
     		List<OrganisationMetamacVisualisationResult> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn, String locale) throws MetamacException;
     		"Retrieves organisations by organisation scheme unordered"
     		List<ItemResult> retrieveOrganisationsByOrganisationSchemeUrnUnordered(String organisationSchemeUrn, ItemResultSelection itemResultSelection) throws MetamacException;
+			"Exports organisations in TSV format"
+    		String exportOrganisationsTsv(String organisationSchemetUrn) throws MetamacException; 
 
     		"Finds contacts by criteria"
     		PagedResult<@Contact> findOrganisationContactsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;

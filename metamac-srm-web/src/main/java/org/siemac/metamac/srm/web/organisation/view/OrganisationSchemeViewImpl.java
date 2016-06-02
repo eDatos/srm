@@ -2,14 +2,11 @@ package org.siemac.metamac.srm.web.organisation.view;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getMessages;
-import static org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
-import org.siemac.metamac.srm.core.organisation.dto.OrganisationMetamacDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacBasicDto;
 import org.siemac.metamac.srm.core.organisation.dto.OrganisationSchemeMetamacDto;
 import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
@@ -23,28 +20,22 @@ import org.siemac.metamac.srm.web.client.widgets.CustomTabSet;
 import org.siemac.metamac.srm.web.client.widgets.RelatedResourceLinkItem;
 import org.siemac.metamac.srm.web.client.widgets.VersionWindow;
 import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
-import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationDS;
 import org.siemac.metamac.srm.web.organisation.model.ds.OrganisationSchemeDS;
-import org.siemac.metamac.srm.web.organisation.model.record.OrganisationRecord;
 import org.siemac.metamac.srm.web.organisation.model.record.OrganisationSchemeRecord;
 import org.siemac.metamac.srm.web.organisation.presenter.OrganisationSchemePresenter;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
-import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsFormUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
-import org.siemac.metamac.srm.web.organisation.widgets.NewOrganisationWindow;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeCategorisationsPanel;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeMainFormLayout;
+import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeOrganisationsPanel;
 import org.siemac.metamac.srm.web.organisation.widgets.OrganisationSchemeVersionsSectionStack;
-import org.siemac.metamac.srm.web.organisation.widgets.OrganisationsTreeGrid;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemesResult;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
-import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
-import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.MultiLanguageRichTextEditorItem;
@@ -56,27 +47,19 @@ import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavig
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
-import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.FormItemIfFunction;
 import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
-import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
-import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.toolbar.ToolStrip;
-import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationSchemeUiHandlers> implements OrganisationSchemePresenter.OrganisationSchemeView {
 
@@ -108,20 +91,13 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     // Versions
     private final OrganisationSchemeVersionsSectionStack versionsSectionStack;
 
-    // Organisation list
-    private final ToolStrip                              toolStrip;
-    private final ToolStripButton                        newButton;
-    private final ToolStripButton                        deleteOrganisationButton;
-    private NewOrganisationWindow                        newOrganisationWindow;
-    private final DeleteConfirmationWindow               deleteConfirmationWindow;
-    private final CustomListGrid                         organisationListGrid;
-    private OrganisationSchemeMetamacDto                 organisationSchemeDto;
-
-    // OrganisationTree
-    private final OrganisationsTreeGrid                  organisationsTreeGrid;
+    // Organisation
+    private final OrganisationSchemeOrganisationsPanel   organisationSchemeOrganisationsPanel;
 
     // Categorisations
     private final OrganisationSchemeCategorisationsPanel categorisationsPanel;
+
+    private OrganisationSchemeMetamacDto                 organisationSchemeDto;
 
     @Inject
     public OrganisationSchemeViewImpl() {
@@ -158,96 +134,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         // ORGANISATIONS
         //
 
-        // ToolStrip
-
-        toolStrip = new ToolStrip();
-        toolStrip.setWidth100();
-
-        newButton = new ToolStripButton(getConstants().actionNew(), RESOURCE.newListGrid().getURL());
-        newButton.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                newOrganisationWindow = new NewOrganisationWindow(getConstants().organisationCreate());
-                newOrganisationWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
-
-                    @Override
-                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
-                        if (newOrganisationWindow.validateForm()) {
-                            OrganisationMetamacDto organisationToCreate = newOrganisationWindow.getNewOrganisationDto(CommonUtils.getOrganisationTypeEnum(organisationSchemeDto.getType()));
-                            organisationToCreate.setItemSchemeVersionUrn(organisationSchemeDto.getUrn());
-                            getUiHandlers().createOrganisation(organisationToCreate);
-                            newOrganisationWindow.destroy();
-                        }
-                    }
-                });
-            }
-        });
-
-        deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().organisationDeleteConfirmationTitle(), getConstants().organisationDeleteConfirmation());
-        deleteConfirmationWindow.setVisible(false);
-        deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                getUiHandlers().deleteOrganisations(getSelectedOrganisationUrns());
-                deleteConfirmationWindow.hide();
-            }
-        });
-
-        deleteOrganisationButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
-        deleteOrganisationButton.setVisible(false);
-        deleteOrganisationButton.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                deleteConfirmationWindow.show();
-            }
-        });
-
-        toolStrip.addButton(newButton);
-        toolStrip.addButton(deleteOrganisationButton);
-
-        // ListGrid
-
-        organisationListGrid = new CustomListGrid();
-        organisationListGrid.setAutoFitData(Autofit.VERTICAL);
-        ListGridField codeField = new ListGridField(OrganisationDS.CODE, getConstants().identifiableArtefactCode());
-        ListGridField nameField = new ListGridField(OrganisationDS.NAME, getConstants().nameableArtefactName());
-        organisationListGrid.setFields(codeField, nameField);
-        organisationListGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
-
-            @Override
-            public void onSelectionChanged(SelectionEvent event) {
-                if (organisationListGrid.getSelectedRecords().length > 0) {
-                    // Show delete button
-                    showListGridDeleteButton(organisationListGrid.getSelectedRecords());
-                } else {
-                    deleteOrganisationButton.hide();
-                }
-            }
-        });
-
-        organisationListGrid.addRecordClickHandler(new RecordClickHandler() {
-
-            @Override
-            public void onRecordClick(RecordClickEvent event) {
-                if (event.getFieldNum() != 0) { // Clicking checkBox will be ignored
-                    String urn = ((OrganisationRecord) event.getRecord()).getAttribute(OrganisationDS.URN);
-                    getUiHandlers().goToOrganisation(urn);
-                }
-            }
-        });
-
-        // TreeGrid
-
-        organisationsTreeGrid = new OrganisationsTreeGrid();
-
-        VLayout organisationsLayout = new VLayout();
-        organisationsLayout.setMargin(15);
-        organisationsLayout.addMember(toolStrip);
-        organisationsLayout.addMember(organisationListGrid);
-        organisationsLayout.addMember(organisationsTreeGrid);
+        organisationSchemeOrganisationsPanel = new OrganisationSchemeOrganisationsPanel();
 
         // CATEGORISATIONS
 
@@ -271,7 +158,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
         // Organisations tab
         Tab organisationsTab = new Tab(getConstants().organisations());
-        organisationsTab.setPane(organisationsLayout);
+        organisationsTab.setPane(organisationSchemeOrganisationsPanel);
         tabSet.addTab(organisationsTab);
 
         // Categorisations tab
@@ -290,7 +177,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
     @Override
     public void setUiHandlers(OrganisationSchemeUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
-        organisationsTreeGrid.setUiHandlers(getUiHandlers());
+        organisationSchemeOrganisationsPanel.setUiHandlers(uiHandlers);
         categorisationsPanel.setUiHandlers(uiHandlers);
     }
 
@@ -621,18 +508,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         setOrganisationSchemeViewMode(organisationSchemeMetamacDto);
         setOrganisationSchemeEditionMode(organisationSchemeMetamacDto);
 
-        // Show/hide organisation list and tree, depending on the organisation scheme type
-        if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
-            showOrganisationTree();
-        } else {
-            showOrganisationList();
-            // Security to create organisations
-            newButton.setVisible(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeMetamacDto));
-            toolStrip.markForRedraw();
-        }
-
-        // Update organisation scheme in tree grid
-        organisationsTreeGrid.updateItemScheme(organisationSchemeMetamacDto);
+        organisationSchemeOrganisationsPanel.updateItemScheme(organisationSchemeMetamacDto);
     }
 
     @Override
@@ -643,20 +519,7 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
 
     @Override
     public void setOrganisationList(List<OrganisationMetamacVisualisationResult> organisations) {
-        if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
-            // Organisation hierarchy
-            organisationsTreeGrid.setOrganisations(organisationSchemeDto, organisations);
-            organisationsTreeGrid.setAutoFitMaxRecords(organisations.size() + 1);
-        } else {
-            // Organisation list
-            OrganisationTypeEnum organisationTypeEnum = CommonUtils.getOrganisationTypeEnum(organisationSchemeDto.getType());
-            OrganisationRecord[] records = new OrganisationRecord[organisations.size()];
-            for (int i = 0; i < organisations.size(); i++) {
-                records[i] = org.siemac.metamac.srm.web.organisation.utils.OrganisationsRecordUtils.getOrganisationRecord(organisations.get(i), organisationTypeEnum);
-            }
-            organisationListGrid.setData(records);
-            organisationListGrid.setAutoFitMaxRecords(organisations.size() + 1);
-        }
+        organisationSchemeOrganisationsPanel.setOrganisationList(organisationSchemeDto, organisations);
     }
 
     @Override
@@ -813,42 +676,6 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         organisationSchemeDto.getAnnotations().addAll(annotationsEditionPanel.getAnnotations());
 
         return organisationSchemeDto;
-    }
-
-    private List<String> getSelectedOrganisationUrns() {
-        List<String> urns = new ArrayList<String>();
-        for (ListGridRecord record : organisationListGrid.getSelectedRecords()) {
-            OrganisationRecord organisationRecord = (OrganisationRecord) record;
-            urns.add(organisationRecord.getUrn());
-        }
-        return urns;
-    }
-
-    private void showOrganisationList() {
-        toolStrip.show();
-        organisationListGrid.show();
-        organisationsTreeGrid.hide();
-    }
-
-    private void showOrganisationTree() {
-        toolStrip.hide();
-        organisationListGrid.hide();
-        organisationsTreeGrid.show();
-    }
-
-    private void showListGridDeleteButton(ListGridRecord[] records) {
-        boolean allOrganisationsCanBeDeleted = true;
-        for (ListGridRecord record : records) {
-            Boolean hasBeenPublished = ((OrganisationRecord) record).getSpecialOrganisationHasBeenPublished();
-            if (!OrganisationsClientSecurityUtils.canDeleteOrganisation(organisationSchemeDto, hasBeenPublished)) {
-                allOrganisationsCanBeDeleted = false;
-            }
-        }
-        if (allOrganisationsCanBeDeleted) {
-            deleteOrganisationButton.show();
-        } else {
-            deleteOrganisationButton.hide();
-        }
     }
 
     private void publishOrganisationSchemeInternally() {

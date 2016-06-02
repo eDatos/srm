@@ -23,6 +23,7 @@ import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.utils.WaitingAsyncCallbackHandlingExportResult;
 import org.siemac.metamac.srm.web.concept.enums.ConceptsToolStripButtonEnum;
@@ -50,6 +51,8 @@ import org.siemac.metamac.srm.web.shared.concept.DeleteConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.concept.DeleteConceptSchemesResult;
+import org.siemac.metamac.srm.web.shared.concept.ExportConceptsAction;
+import org.siemac.metamac.srm.web.shared.concept.ExportConceptsResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemeVersionsAction;
@@ -73,6 +76,7 @@ import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.StatisticalOperationWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
+import org.siemac.metamac.web.common.client.events.ChangeWaitPopupVisibilityEvent;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -545,6 +549,21 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
         }
     }
 
+    @Override
+    public void exportConcepts(String conceptSchemeUrn) {
+        dispatcher.execute(new ExportConceptsAction(conceptSchemeUrn), new WaitingAsyncCallbackHandlingError<ExportConceptsResult>(this) {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(ConceptSchemePresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(ExportConceptsResult result) {
+                CommonUtils.downloadFile(result.getFileName());
+            }
+        });
+    }
+
     //
     // RELATED RESOURCES
     //
@@ -668,6 +687,28 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
                         getView().setCategoriesForCategorisations(result);
                     }
                 });
+    }
+
+    //
+    // IMPORTATION
+    //
+
+    @Override
+    public void resourceImportationSucceed(String successMessage) {
+        ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, successMessage);
+        retrieveConceptSchemeByUrn(conceptSchemeDto.getUrn());
+        ChangeWaitPopupVisibilityEvent.fire(this, false);
+    }
+
+    @Override
+    public void resourceImportationFailed(String errorMessage) {
+        ShowMessageEvent.fireErrorMessage(ConceptSchemePresenter.this, errorMessage);
+        ChangeWaitPopupVisibilityEvent.fire(this, false);
+    }
+
+    @Override
+    public void showWaitPopup() {
+        ChangeWaitPopupVisibilityEvent.fire(this, true);
     }
 
     //

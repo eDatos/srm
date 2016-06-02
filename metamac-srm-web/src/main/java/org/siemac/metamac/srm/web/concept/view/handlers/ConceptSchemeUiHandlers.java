@@ -19,6 +19,9 @@ public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
     void copyConceptScheme(String urn);
     void copyConceptScheme(String urn, String code);
 
+    // Codes
+    void exportConcepts(String conceptSchemeUrn);
+
     // Life cycle
 
     void sendToProductionValidation(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
@@ -28,4 +31,11 @@ public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
     void publishExternally(ConceptSchemeMetamacDto conceptSchemeMetamacDto);
     void versioning(String urn, VersionTypeEnum versionType);
     void createTemporalVersion(String urn);
+
+    // Importation
+
+    void resourceImportationFailed(String errorMessage);
+    void resourceImportationSucceed(String fileName);
+
+    void showWaitPopup();
 }

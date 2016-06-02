@@ -97,6 +97,7 @@ import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SemanticIdentifierValidationUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.common.service.utils.TsvExportationUtils;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -950,73 +951,11 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
         Integer orderColumnIndex = orderVisualisationToRetrieveCodes.getColumnIndex();
 
+        List<ItemResult> items = getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, null, CodeMetamacResultSelection.EXPORT);
+
         List<String> languages = srmConfiguration.retrieveLanguages();
 
-        // Export
-        OutputStream outputStream = null;
-        OutputStreamWriter writer = null;
-        try {
-            File file = File.createTempFile("codes", ".tsv");
-            outputStream = new FileOutputStream(file);
-            writer = new OutputStreamWriter(outputStream, SrmConstants.TSV_EXPORTATION_ENCODING);
-
-            // header
-            writer.write(SrmConstants.TSV_HEADER_CODE);
-            writer.write(SrmConstants.TSV_SEPARATOR);
-            writer.write(SrmConstants.TSV_HEADER_PARENT);
-            writer.write(SrmConstants.TSV_SEPARATOR);
-            writer.write(SrmConstants.TSV_HEADER_VARIABLE_ELEMENT);
-            for (String language : languages) {
-                writer.write(SrmConstants.TSV_SEPARATOR);
-                writer.write(SrmConstants.TSV_HEADER_NAME + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
-            }
-            for (String language : languages) {
-                writer.write(SrmConstants.TSV_SEPARATOR);
-                writer.write(SrmConstants.TSV_HEADER_DESCRIPTION + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
-            }
-
-            // codes
-            List<ItemResult> items = getCodeMetamacRepository().findCodesByCodelistOrderedInDepth(codelistVersion.getId(), orderColumnIndex, null, CodeMetamacResultSelection.EXPORT);
-            for (ItemResult itemResult : items) {
-                writer.write(SrmConstants.TSV_LINE_SEPARATOR);
-                // Code
-                writer.write(itemResult.getCode());
-                // Parent
-                writer.write(SrmConstants.TSV_SEPARATOR);
-                if (itemResult.getParent() != null) {
-                    writer.write(itemResult.getParent().getCode());
-                }
-                // Variable element
-                writer.write(SrmConstants.TSV_SEPARATOR);
-                String variableElement = SrmServiceUtils.getCodeItemResultVariableElementCode(itemResult);
-                if (variableElement != null) {
-                    writer.write(variableElement);
-                }
-                // Name
-                for (String language : languages) {
-                    String nameInLocale = itemResult.getName().get(language);
-                    writer.write(SrmConstants.TSV_SEPARATOR);
-                    if (nameInLocale != null) {
-                        writer.write(nameInLocale);
-                    }
-                }
-                // Description
-                for (String language : languages) {
-                    String descriptionInLocale = itemResult.getDescription().get(language);
-                    writer.write(SrmConstants.TSV_SEPARATOR);
-                    if (descriptionInLocale != null) {
-                        writer.write(descriptionInLocale);
-                    }
-                }
-            }
-            writer.flush();
-            return file.getName();
-        } catch (Exception e) {
-            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.EXPORTATION_TSV_ERROR).withMessageParameters(e).build();
-        } finally {
-            IOUtils.closeQuietly(outputStream);
-            IOUtils.closeQuietly(writer);
-        }
+        return TsvExportationUtils.exportCodes(items, languages);
     }
 
     @Override

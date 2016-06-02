@@ -29,9 +29,9 @@ import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsFormUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeCategorisationsPanel;
+import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeConceptsPanel;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptSchemeVersionsSectionStack;
-import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesResult;
@@ -41,7 +41,6 @@ import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
 import org.siemac.metamac.web.common.client.utils.DateUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
-import org.siemac.metamac.web.common.client.widgets.InformationLabel;
 import org.siemac.metamac.web.common.client.widgets.TitleLabel;
 import org.siemac.metamac.web.common.client.widgets.form.GroupDynamicForm;
 import org.siemac.metamac.web.common.client.widgets.form.fields.ExternalItemLinkItem;
@@ -102,9 +101,8 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     private GroupDynamicForm                        commentsEditionForm;
     private AnnotationsPanel                        annotationsEditionPanel;
 
-    private final InformationLabel                  conceptsNoVisibleInfoMessage;
-    private final ConceptsTreeGrid                  conceptsTreeGrid;
     private final ConceptSchemeVersionsSectionStack versionsSectionStack;
+    private final ConceptSchemeConceptsPanel        conceptSchemeConceptsPanel;
     private final ConceptSchemeCategorisationsPanel categorisationsPanel;
 
     private ConceptSchemeMetamacDto                 conceptSchemeDto;
@@ -144,15 +142,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         // CONCEPTS
         //
 
-        conceptsNoVisibleInfoMessage = new InformationLabel(getConstants().conceptSchemeConceptsNoVisibleInfoMessage());
-        conceptsNoVisibleInfoMessage.setMargin(10);
-
-        conceptsTreeGrid = new ConceptsTreeGrid();
-
-        VLayout conceptsLayout = new VLayout();
-        conceptsLayout.setMargin(15);
-        conceptsLayout.addMember(conceptsNoVisibleInfoMessage);
-        conceptsLayout.addMember(conceptsTreeGrid);
+        conceptSchemeConceptsPanel = new ConceptSchemeConceptsPanel();
 
         //
         // CATEGORISATIONS
@@ -180,7 +170,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
         // Concepts tab
         Tab conceptsTab = new Tab(getConstants().concepts());
-        conceptsTab.setPane(conceptsLayout);
+        conceptsTab.setPane(conceptSchemeConceptsPanel);
         tabSet.addTab(conceptsTab);
 
         // Categorisations tab
@@ -371,7 +361,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
     @Override
     public void setUiHandlers(ConceptSchemeUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
-        this.conceptsTreeGrid.setUiHandlers(uiHandlers);
+        this.conceptSchemeConceptsPanel.setUiHandlers(uiHandlers);
         this.categorisationsPanel.setUiHandlers(uiHandlers);
     }
 
@@ -402,16 +392,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         setConceptSchemeViewMode(conceptScheme);
         setConceptSchemeEditionMode(conceptScheme);
 
-        // Update concept scheme in tree grid
-        conceptsTreeGrid.updateItemScheme(conceptScheme);
-        // The concepts scheme type can be null (if have been imported). Do not show concepts until the concept scheme type is specified.
-        if (conceptScheme.getType() == null) {
-            conceptsNoVisibleInfoMessage.show();
-            conceptsTreeGrid.hide();
-        } else {
-            conceptsNoVisibleInfoMessage.hide();
-            conceptsTreeGrid.show();
-        }
+        conceptSchemeConceptsPanel.updateItemScheme(conceptScheme);
     }
 
     @Override
@@ -421,9 +402,7 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
     @Override
     public void setConcepts(List<ConceptMetamacVisualisationResult> itemHierarchyDtos) {
-        conceptsTreeGrid.setConcepts(conceptSchemeDto, itemHierarchyDtos);
-        // Set the max records to the size of the items list (plus the item scheme node)
-        conceptsTreeGrid.setAutoFitMaxRecords(itemHierarchyDtos.size() + 1);
+        conceptSchemeConceptsPanel.setConcepts(conceptSchemeDto, itemHierarchyDtos);
     }
 
     @Override

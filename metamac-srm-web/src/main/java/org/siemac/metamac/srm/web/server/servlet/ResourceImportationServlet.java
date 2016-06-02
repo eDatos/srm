@@ -148,6 +148,9 @@ public class ResourceImportationServlet extends HttpServlet {
 
                 TaskImportationInfo taskImportationInfo = importVariableElementShape(srmCoreServiceFacade, fileName, inputStream, args);
                 successMessage = updateSuccessMessage(successMessage, taskImportationInfo);
+
+            } else if (ImportableResourceTypeEnum.CONCEPTS.name().equals(args.get(SrmSharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
+                // TODO METAMAC-2453 concepts importation
             }
 
             sendSuccessImportationResponse(response, successMessage);

@@ -25,6 +25,7 @@ import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTempora
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
@@ -32,6 +33,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.common.service.utils.TsvExportationUtils;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -516,6 +518,20 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         Map<String, MetamacExceptionItem> exceptionItemsByUrn = new HashMap<String, MetamacExceptionItem>();
         categoriesMetamacService.checkCategorisationsWithRelatedResourcesExternallyPublished(ctx, itemSchemeVersionUrn, exceptionItemsByUrn);
         ExceptionUtils.throwIfException(new ArrayList<MetamacExceptionItem>(exceptionItemsByUrn.values()));
+    }
+
+    @Override
+    public String exportOrganisationsTsv(ServiceContext ctx, String organisationSchemetUrn) throws MetamacException {
+
+        OrganisationsMetamacInvocationValidator.checkExportOrganisationsTsv(organisationSchemetUrn, null);
+
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemetUrn);
+
+        List<ItemResult> items = getOrganisationMetamacRepository().findOrganisationsByOrganisationSchemeUnordered(organisationSchemeVersion.getId(), CodeMetamacResultSelection.EXPORT);
+
+        List<String> languages = srmConfiguration.retrieveLanguages();
+
+        return TsvExportationUtils.exportOrganisations(items, languages);
     }
 
     /**
