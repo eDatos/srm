@@ -4,15 +4,15 @@
 <urlrewrite use-query-string="true">
 	<rule>
 		<from>/apis/structural-resources/latest/</from>
-		<to type="redirect">/structural-resources/v1.0/</to>
+		<to type="redirect">%{context-path}/v1.0/</to>
 	</rule>
 	<rule>
-		<from>/apis/structural-resources/latest</from>
-		<to type="redirect">/structural-resources/v1.0/</to>
+		<from>/apis/structural-resources/latest$</from>
+		<to type="redirect">%{context-path}/v1.0/</to>
 	</rule>
 	<rule>
-		<from>^/apis/structural-resources/v1.0$</from>
-		<to type="redirect">/structural-resources/v1.0/</to>
+		<from>/apis/structural-resources/v1.0$</from>
+		<to type="redirect">%{context-path}/v1.0/</to>
 	</rule>
 	<rule>
 		<from>/apis/structural-resources/swagger-ui/(.*)$</from>
