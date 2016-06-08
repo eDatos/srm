@@ -39,6 +39,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
 
         // Api
         checkRequiredProperty(SrmConfigurationConstants.ENDPOINT_SRM_EXTERNAL_API);
+        checkRequiredProperty(SrmConfigurationConstants.ENDPOINT_SRM_EXTERNAL_SOAP);
         checkRequiredProperty(SrmConfigurationConstants.ENDPOINT_STATISTICAL_OPERATIONS_EXTERNAL_API);
         checkRequiredProperty(SrmConfigurationConstants.METAMAC_ORGANISATION_URN);
     }
