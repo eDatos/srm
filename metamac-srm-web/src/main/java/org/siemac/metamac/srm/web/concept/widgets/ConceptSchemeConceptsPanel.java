@@ -58,7 +58,7 @@ public class ConceptSchemeConceptsPanel extends VLayout {
                 importConceptsWindow.show();
             }
         });
-        toolStrip.addButton(importConceptsButton);
+        // TODO - METAMAC-2453 toolStrip.addButton(importConceptsButton);
 
         exportConceptsButton = new CustomToolStripButton(getConstants().actionExportConcepts(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         exportConceptsButton.addClickHandler(new ClickHandler() {
