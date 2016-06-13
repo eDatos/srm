@@ -15,9 +15,11 @@ Application TaskMetamac {
 			TaskInfo importSDMXStructure(InputStream inputMessage, String fileName, Set<String> resourcesUrnToImport) throws MetamacException;
 			"Does a preview of sdmx importation, without persist"
     		List<Object> previewImportSDMXStructure(InputStream inputMessage) throws MetamacException;
-			
+
 			"Prepares importation of codes in tsv format"
     		String plannifyImportCodesTsvInBackground(String codelistUrn, java.io.File file, String fileName, boolean updateAlreadyExisting) throws MetamacException;
+			"Prepares importation of concepts in tsv format"
+    		String plannifyImportConceptsTsvInBackground(String conceptSchemeUrn, java.io.File file, String fileName, boolean updateAlreadyExisting) throws MetamacException;    		
 			"Prepares importation of code orders in tsv format"
     		String plannifyImportCodeOrdersTsvInBackground(String codelistUrn, java.io.File file, String fileName) throws MetamacException;
 			"Prepares importation of variable elements in tsv format"
@@ -28,7 +30,7 @@ Application TaskMetamac {
     		String plannifyImportVariableElementsPointsInBackground(String variableUrn, URL shapeFileUrl) throws MetamacException;
     		"Prepares a merge between codelists"
     		String plannifyPublicationInternallyCodelist(String urn, Boolean forceLatestFinal) throws MetamacException;
-			
+
 			// TASKS
     		"Retrieves task"
     		@Task retrieveTaskByJob(String job) throws MetamacException;
@@ -38,7 +40,7 @@ Application TaskMetamac {
     		markTaskAsFailed(String job, java.lang.Exception exception) throws MetamacException;
     		"Find information about tasks"
 			PagedResult<@Task> findTasksByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException;
-			
+
 			// MISC
 			"Delete entities marked to delete"
     		deleteEntitiesMarkedToDelete() throws MetamacException;

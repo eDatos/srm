@@ -207,6 +207,10 @@ public class SharedConceptsSecurityUtils extends SharedItemsSecurityUtils {
         return canRetrieveOrFindResource(metamacPrincipal);
     }
 
+    public static boolean canImportConceptsTsv(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {
+        return canCreateConcept(metamacPrincipal, procStatus, type, operationCode);
+    }
+
     // Categorisations
 
     public static boolean canModifyCategorisation(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus, ConceptSchemeTypeEnum type, String operationCode) {

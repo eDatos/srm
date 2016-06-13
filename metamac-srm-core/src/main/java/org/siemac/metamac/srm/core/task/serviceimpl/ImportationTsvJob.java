@@ -34,9 +34,10 @@ public class ImportationTsvJob implements Job {
     public static final String        FILE_PATH                          = "filePath";
     public static final String        FILE_NAME                          = "fileName";
     public static final String        VARIABLE_URN                       = "variableUrn";
-    public static final String        CODELIST_URN                       = "codelistUrn";
+    public static final String        ITEM_SCHEME_URN                    = "codelistUrn";
     public static final String        UPDATE_ALREADY_EXISTING            = "updateAlreadyExisting";
     public static final String        OPERATION                          = "operation";
+    public static final String        OPERATION_IMPORT_CONCEPTS          = "importConcepts";
     public static final String        OPERATION_IMPORT_CODES             = "importCodes";
     public static final String        OPERATION_IMPORT_CODE_ORDERS       = "importCodeOrdes";
     public static final String        OPERATION_IMPORT_VARIABLE_ELEMENTS = "importVariableElements";
@@ -56,7 +57,7 @@ public class ImportationTsvJob implements Job {
         JobKey jobKey = context.getJobDetail().getKey();
         ServiceContext serviceContext = null;
         JobDataMap data = context.getJobDetail().getJobDataMap();
-        String urnToCopy = data.getString(CODELIST_URN);
+        String urnToCopy = data.getString(ITEM_SCHEME_URN);
         String user = data.getString(USER);
         String fileName = data.getString(FILE_NAME);
         serviceContext = new ServiceContext(user, context.getFireInstanceId(), "sdmx-srm-core");
@@ -64,7 +65,9 @@ public class ImportationTsvJob implements Job {
 
         try {
             String operation = data.getString(OPERATION);
-            if (OPERATION_IMPORT_CODES.equals(operation)) {
+            if (OPERATION_IMPORT_CONCEPTS.equals(operation)) {
+                importConcepts(jobKey, data, serviceContext);
+            } else if (OPERATION_IMPORT_CODES.equals(operation)) {
                 importCodes(jobKey, data, serviceContext);
             } else if (OPERATION_IMPORT_CODE_ORDERS.equals(operation)) {
                 importCodeOrders(jobKey, data, serviceContext);
@@ -108,10 +111,23 @@ public class ImportationTsvJob implements Job {
         logger.info("ImportationJob [importVariableElements]: " + jobKey + " finished at " + new Date());
     }
 
+    private void importConcepts(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws MetamacException {
+
+        // Parameters
+        String conceptSchemeUrn = data.getString(ITEM_SCHEME_URN);
+        String filePath = data.getString(FILE_PATH);
+        String fileName = data.getString(FILE_NAME);
+        Boolean updateAlreadyExisting = data.getBoolean(UPDATE_ALREADY_EXISTING);
+
+        logger.info("ImportationJob [importConcepts]: " + jobKey + " starting at " + new Date());
+        getTaskMetamacServiceFacade().processImportConceptsTsv(serviceContext, conceptSchemeUrn, new File(filePath), fileName, jobKey.getName(), updateAlreadyExisting);
+        logger.info("ImportationJob [importConcepts]: " + jobKey + " finished at " + new Date());
+    }
+
     private void importCodes(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws MetamacException {
 
         // Parameters
-        String codelistUrn = data.getString(CODELIST_URN);
+        String codelistUrn = data.getString(ITEM_SCHEME_URN);
         String filePath = data.getString(FILE_PATH);
         String fileName = data.getString(FILE_NAME);
         Boolean updateAlreadyExisting = data.getBoolean(UPDATE_ALREADY_EXISTING);
@@ -124,7 +140,7 @@ public class ImportationTsvJob implements Job {
     private void importCodeOrders(JobKey jobKey, JobDataMap data, ServiceContext serviceContext) throws MetamacException {
 
         // Parameters
-        String codelistUrn = data.getString(CODELIST_URN);
+        String codelistUrn = data.getString(ITEM_SCHEME_URN);
         String filePath = data.getString(FILE_PATH);
         String fileName = data.getString(FILE_NAME);
 

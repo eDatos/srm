@@ -3033,6 +3033,17 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public TaskImportationInfo importConceptsTsv(ServiceContext ctx, String conceptSchemeUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+        // Security
+        ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
+        ConceptsSecurityUtils.canImportConcepts(ctx, conceptSchemeVersionMetamac);
+
+        // Import (can be in background)
+        File file = createTempFile(tsvStream, fileName);
+        return getConceptsMetamacService().importConceptsTsv(ctx, conceptSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+    }
+
+    @Override
     public String exportConceptsTsv(ServiceContext ctx, String conceptSchemeUrn) throws MetamacException {
 
         // Security

@@ -87,6 +87,15 @@ public class ConceptsClientSecurityUtils {
         return TasksClientSecurityUtils.canExportResource(versionLogic);
     }
 
+    public static boolean canImportConcepts(ConceptSchemeMetamacDto conceptSchemeMetamacDto, String operationCode) {
+        if (isTaskInBackground(conceptSchemeMetamacDto.getIsTaskInBackground())) {
+            return false;
+        }
+        // ConceptSchemeTypeEnum type, String operationCode
+        return SharedConceptsSecurityUtils.canImportConceptsTsv(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(),
+                operationCode) && CommonUtils.canSdmxMetadataAndStructureBeModified(conceptSchemeMetamacDto);
+    }
+
     public static boolean canCancelConceptSchemeValidity(String urn, ConceptSchemeTypeEnum type, String relatedOperationCode, RelatedResourceDto maintainer, String versionLogic,
             ProcStatusEnum procStatus, Date validTo) {
 

@@ -101,8 +101,10 @@ Application ConceptsMetamac {
 			MetamacExceptionItem checkConceptRepresentation(@ConceptSchemeVersionMetamac conceptSchemeVersion, @ConceptMetamac concept, boolean throwException) throws MetamacException;
     		"Retrieves concept by urn"
     		@ConceptMetamac retrieveConceptByUrn(String urn) throws MetamacException;
+    		"Imports concepts in TSV format"
+    		TaskImportationInfo importConceptsTsv(String conceptSchemeUrn, java.io.File file, String fileName, boolean updateAlreadyExisting, Boolean canBeBackground) throws MetamacException;
 			"Exports concepts in TSV format"
-    		String exportConceptsTsv(String conceptSchemetUrn) throws MetamacException;    		
+    		String exportConceptsTsv(String conceptSchemetUrn) throws MetamacException;
 			"Deletes concept"
     		deleteConcept(String urn) throws MetamacException;
     		"Retrieves concepts by concept scheme in locale requested"

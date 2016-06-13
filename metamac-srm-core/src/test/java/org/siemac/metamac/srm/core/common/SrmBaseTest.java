@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.core.common;
 
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -618,5 +620,13 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         }
         fail("Exception item not found");
         return null;
+    }
+
+    protected String tempDirPath() throws IOException {
+        File temp = File.createTempFile("temp-file-name", ".tmp");
+        String absolutePath = temp.getAbsolutePath();
+        String tempFilePath = absolutePath.substring(0, absolutePath.lastIndexOf(File.separator));
+        temp.delete();
+        return tempFilePath;
     }
 }

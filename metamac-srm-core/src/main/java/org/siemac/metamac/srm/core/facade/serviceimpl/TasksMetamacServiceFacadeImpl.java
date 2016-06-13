@@ -26,6 +26,12 @@ public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImpl
     private final Boolean CAN_NOT_BE_BACKGROUND = Boolean.FALSE;
 
     @Override
+    public void processImportConceptsTsv(ServiceContext ctx, String conceptSchemeUrn, File tsvFile, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException {
+        TaskImportationInfo taskImportationInfo = getConceptsMetamacService().importConceptsTsv(ctx, conceptSchemeUrn, tsvFile, fileName, updateAlreadyExisting, CAN_NOT_BE_BACKGROUND);
+        getTasksMetamacService().markTaskAsFinished(ctx, jobKey, taskImportationInfo.getInformationItems());
+    }
+
+    @Override
     public void processImportCodesTsv(ServiceContext ctx, String codelistUrn, File file, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException {
         TaskImportationInfo taskImportationInfo = getCodesMetamacService().importCodesTsv(ctx, codelistUrn, file, fileName, updateAlreadyExisting, CAN_NOT_BE_BACKGROUND);
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, taskImportationInfo.getInformationItems());

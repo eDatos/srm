@@ -210,6 +210,13 @@ public class ConceptsSecurityUtils extends CommonSecurityUtils {
         }
     }
 
+    public static void canImportConcepts(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersionMetamac) throws MetamacException {
+        if (!SharedConceptsSecurityUtils.canImportConceptsTsv(getMetamacPrincipal(ctx), conceptSchemeVersionMetamac.getLifeCycleMetadata().getProcStatus(), conceptSchemeVersionMetamac.getType(),
+                getOperationCode(conceptSchemeVersionMetamac))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     // CATEGORISATIONS
 
     public static void canModifyCategorisation(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeMetamac) throws MetamacException {

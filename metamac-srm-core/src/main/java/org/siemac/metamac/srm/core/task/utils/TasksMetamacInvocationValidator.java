@@ -14,6 +14,20 @@ import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 
 public class TasksMetamacInvocationValidator extends BaseInvocationValidator {
 
+    public static void checkImportConceptsTsvInBackground(String conceptSchemeUrn, File file, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(conceptSchemeUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(file, ServiceExceptionParameters.STREAM, exceptions);
+        ValidationUtils.checkParameterRequired(fileName, ServiceExceptionParameters.FILE_NAME, exceptions);
+        ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_TSV_UPDATE_ALREADY_EXISTING, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     public static void checkImportCodesTsvInBackground(String codelistUrn, File file, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();

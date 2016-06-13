@@ -150,7 +150,9 @@ public class ResourceImportationServlet extends HttpServlet {
                 successMessage = updateSuccessMessage(successMessage, taskImportationInfo);
 
             } else if (ImportableResourceTypeEnum.CONCEPTS.name().equals(args.get(SrmSharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
-                // TODO METAMAC-2453 concepts importation
+
+                TaskImportationInfo taskImportationInfo = importConcepts(srmCoreServiceFacade, fileName, inputStream, args);
+                successMessage = updateSuccessMessage(successMessage, taskImportationInfo);
             }
 
             sendSuccessImportationResponse(response, successMessage);
@@ -233,6 +235,16 @@ public class ResourceImportationServlet extends HttpServlet {
         }
 
         return srmCoreServiceFacade.importSDMXStructureMsg(ServiceContextHolder.getCurrentServiceContext(), contentInputDto, urnsToImport);
+    }
+
+    // Concepts
+
+    private TaskImportationInfo importConcepts(SrmCoreServiceFacade srmCoreServiceFacade, String fileName, InputStream inputStream, HashMap<String, String> args) throws MetamacException {
+
+        String conceptSchemeUrn = args.get(SrmSharedTokens.UPLOAD_PARAM_CONCEPT_SCHEME_URN);
+        Boolean updateAlreadyExisting = Boolean.parseBoolean(args.get(SrmSharedTokens.UPLOAD_PARAM_UPDATE_EXISTING));
+
+        return srmCoreServiceFacade.importConceptsTsv(ServiceContextHolder.getCurrentServiceContext(), conceptSchemeUrn, inputStream, fileName, updateAlreadyExisting);
     }
 
     // Codes

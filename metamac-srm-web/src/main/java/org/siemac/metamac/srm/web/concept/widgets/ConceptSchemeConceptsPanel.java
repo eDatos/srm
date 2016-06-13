@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.dto.ConceptSchemeMetamacDto;
+import org.siemac.metamac.srm.web.concept.utils.CommonUtils;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
 import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
 import org.siemac.metamac.web.common.client.listener.UploadListener;
@@ -58,7 +59,7 @@ public class ConceptSchemeConceptsPanel extends VLayout {
                 importConceptsWindow.show();
             }
         });
-        // TODO - METAMAC-2453 toolStrip.addButton(importConceptsButton);
+        toolStrip.addButton(importConceptsButton);
 
         exportConceptsButton = new CustomToolStripButton(getConstants().actionExportConcepts(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         exportConceptsButton.addClickHandler(new ClickHandler() {
@@ -117,12 +118,11 @@ public class ConceptSchemeConceptsPanel extends VLayout {
     }
 
     private void updateImportConceptsButtonVisibility(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
-        // TODO METAMAC-2543
-        // if (ConceptsClientSecurityUtils.canImportConcepts(conceptSchemeMetamacDto)) {
-        // importConceptsButton.show();
-        // } else {
-        // importConceptsButton.hide();
-        // }
+        if (ConceptsClientSecurityUtils.canImportConcepts(conceptSchemeMetamacDto, CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto))) {
+            importConceptsButton.show();
+        } else {
+            importConceptsButton.hide();
+        }
     }
 
     private void updateExportConceptsButtonVisibility(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {

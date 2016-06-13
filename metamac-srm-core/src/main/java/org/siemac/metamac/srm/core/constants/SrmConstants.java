@@ -46,7 +46,7 @@ public class SrmConstants {
     public static final String             SHAPE_OPERATION_IMPORT_POINTS                                          = "importPoints";
 
     // Tasks
-    public static long                     NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION                            = 250000;
+    public static long                     NUM_BYTES_TO_PLANNIFY_TSV_ITEMS_IMPORTATION                            = 250000;
     public static long                     NUM_BYTES_TO_PLANNIFY_TSV_CODES_ORDERS_IMPORTATION                     = 50000;
     public static long                     NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_IMPORTATION                = 150000;
     public static long                     NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_GEO_IMPORTATION            = 1000000;

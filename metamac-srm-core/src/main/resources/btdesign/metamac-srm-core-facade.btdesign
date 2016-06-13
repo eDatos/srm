@@ -418,6 +418,8 @@ Application SrmFacadeCore {
             @ConceptMetamacDto updateConcept(@ConceptMetamacDto conceptDto) throws MetamacException;
 	   		"Retrieves a concept by URN"
             @ConceptMetamacDto retrieveConceptByUrn(String urn) throws MetamacException;
+            "Imports concepts in tsv format"
+    		TaskImportationInfo importConceptsTsv(String conceptSchemeUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
             "Exports concepts in TSV format"
     		String exportConceptsTsv(String conceptSchemeUrn) throws MetamacException;
             "Finds concepts by criteria"
@@ -740,9 +742,12 @@ Application SrmFacadeCore {
     	}
 
 		Service TasksMetamacServiceFacade {
+			> @ConceptsMetamacService
        		> @CodesMetamacService
        		> @TasksMetamacService
 
+			"Imports concepts in tsv format"
+    		processImportConceptsTsv(String conceptSchemeUrn, java.io.File tsvFile, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
     		"Imports codes in tsv format"
     		processImportCodesTsv(String codelistUrn, java.io.File tsvFile, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
 			"Imports code orders in tsv format"
@@ -755,7 +760,7 @@ Application SrmFacadeCore {
     		processImportVariableElementsPoints(String variableUrn, URL shapeFileUrl, String jobKey) throws MetamacException;
     		"Perform a merge with temporal codelist"
 			processPublishInternallyCodelist(String urnToCopy, boolean forceLatestFinal, String jobKey) throws MetamacException;
-    		
+
     		"Marks job as failed"
     		markTaskAsFailed(String job, java.lang.Exception exception) throws MetamacException;
     		"Mark a specific Item Scheme with a failed flag"

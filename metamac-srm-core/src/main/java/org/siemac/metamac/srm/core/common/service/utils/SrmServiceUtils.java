@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.common.service.utils;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -571,5 +572,13 @@ public class SrmServiceUtils extends SdmxSrmUtils {
             throw MetamacExceptionBuilder.builder().withExceptionItems(Arrays.asList(exceptionItem)).build();
         }
         return exceptionItem;
+    }
+
+    public static boolean taskMustBeBackground(File file, Boolean canBeBackground, long maximumBytesToNonBackground) {
+        if (canBeBackground && file.length() > maximumBytesToNonBackground) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

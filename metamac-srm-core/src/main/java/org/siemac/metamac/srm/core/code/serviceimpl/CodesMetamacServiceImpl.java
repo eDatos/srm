@@ -98,6 +98,7 @@ import org.siemac.metamac.srm.core.common.service.utils.SemanticIdentifierValida
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.common.service.utils.TsvExportationUtils;
+import org.siemac.metamac.srm.core.common.service.utils.TsvImportationUtils;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -108,7 +109,6 @@ import org.siemac.metamac.srm.core.task.domain.ImportationCodeOrdersTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationCodesTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationVariableElementsTsvHeader;
 import org.siemac.metamac.srm.core.task.serviceapi.TasksMetamacService;
-import org.siemac.metamac.srm.core.task.utils.ImportationTsvUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -723,12 +723,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         if (codelistVersion.getVariable() == null) {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.METADATA_REQUIRED).withMessageParameters(ServiceExceptionParameters.CODELIST_VARIABLE).build();
         }
-        checkCodelistCanExecuteImportation(codelistVersion, canBeBackground);
+        TsvImportationUtils.checkItemSchemeCanExecuteImportation(codelistVersion, codelistVersion.getLifeCycleMetadata(), canBeBackground);
 
         srmValidation.checkItemsStructureCanBeModified(ctx, codelistVersion);
 
         // Decide if task must be executed in background
-        boolean executeInBackground = taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION);
+        boolean executeInBackground = SrmServiceUtils.taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_ITEMS_IMPORTATION);
 
         // Plannify task if background
         if (executeInBackground) {
@@ -755,7 +755,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
             // Header
             String line = bufferedReader.readLine();
-            ImportationCodesTsvHeader header = ImportationTsvUtils.parseTsvHeaderToImportCodes(line, exceptionItems);
+            ImportationCodesTsvHeader header = TsvImportationUtils.parseTsvHeaderToImportCodes(line, exceptionItems);
 
             // Codes
             if (CollectionUtils.isEmpty(exceptionItems)) {
@@ -784,8 +784,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                         continue;
                     }
                     // Transform code and add to list to persist
-                    CodeMetamac code = tsvLineToCode(header, columns, lineNumber, codelistVersion, variableElementsInVariableByCode, updateAlreadyExisting, codesPreviousInCodelistByCode,
-                            codesToPersistByCode, exceptionItems, informationItems);
+                    CodeMetamac code = TsvImportationUtils.tsvLineToCode(header, columns, lineNumber, codelistVersion, variableElementsInVariableByCode, updateAlreadyExisting,
+                            codesPreviousInCodelistByCode, codesToPersistByCode, exceptionItems, informationItems);
                     if (code != null) {
                         codesToPersist.add(code);
                         codesToPersistByCode.put(code.getNameableArtefact().getCode(), code);
@@ -834,10 +834,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Validation
         CodesMetamacInvocationValidator.checkImportCodeOrdersTsv(codelistUrn, file, fileName, canBeBackground, null);
         CodelistVersionMetamac codelistVersion = retrieveCodelistByUrn(ctx, codelistUrn);
-        checkCodelistCanExecuteImportation(codelistVersion, canBeBackground);
+        TsvImportationUtils.checkItemSchemeCanExecuteImportation(codelistVersion, codelistVersion.getLifeCycleMetadata(), canBeBackground);
 
         // Decide if task must be executed in background
-        boolean executeInBackground = taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_ORDERS_IMPORTATION);
+        boolean executeInBackground = SrmServiceUtils.taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_ORDERS_IMPORTATION);
 
         // Plannify task if can be in background
         if (executeInBackground) {
@@ -863,7 +863,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
             // Header
             String line = bufferedReader.readLine();
-            ImportationCodeOrdersTsvHeader header = ImportationTsvUtils.parseTsvHeaderToImportCodeOrders(line, exceptionItems);
+            ImportationCodeOrdersTsvHeader header = TsvImportationUtils.parseTsvHeaderToImportCodeOrders(line, exceptionItems);
             if (CollectionUtils.isEmpty(exceptionItems)) {
                 orderVisualisations = tsvHeadToOrderVisualisations(codelistVersion, header, exceptionItems);
             }
@@ -1941,7 +1941,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         checkVariableIsNotSpecialVariableWorld(variable);
 
         // Decide if task must be executed in background
-        boolean executeInBackground = taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_IMPORTATION);
+        boolean executeInBackground = SrmServiceUtils.taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_IMPORTATION);
 
         // Plannify task if background
         if (executeInBackground) {
@@ -1963,7 +1963,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
             // Header
             String line = bufferedReader.readLine();
-            ImportationVariableElementsTsvHeader header = ImportationTsvUtils.parseTsvHeaderToImportVariableElements(line, exceptionItems);
+            ImportationVariableElementsTsvHeader header = TsvImportationUtils.parseTsvHeaderToImportVariableElements(line, exceptionItems);
             if (CollectionUtils.isEmpty(exceptionItems)) {
                 if (VariableTypeEnum.GEOGRAPHICAL.equals(variable.getType()) && !header.isGeographicalGranularitySetted()) {
                     exceptionItems
@@ -2545,13 +2545,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     private void checkCodelistCanBeModified(CodelistVersionMetamac codelistVersion) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(codelistVersion.getLifeCycleMetadata(), codelistVersion.getMaintainableArtefact().getUrn());
         SrmValidationUtils.checkArtefactWithoutTaskInBackground(codelistVersion);
-    }
-
-    private void checkCodelistCanExecuteImportation(CodelistVersionMetamac codelistVersion, Boolean canBeBackground) throws MetamacException {
-        SrmValidationUtils.checkArtefactCanBeModified(codelistVersion.getLifeCycleMetadata(), codelistVersion.getMaintainableArtefact().getUrn());
-        if (BooleanUtils.isTrue(canBeBackground)) {
-            SrmValidationUtils.checkArtefactWithoutTaskInBackground(codelistVersion);
-        }
     }
 
     /**
@@ -3202,121 +3195,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     /**
-     * Transforms tsv line to Code. IMPORTANT: Do not execute save or update operation
-     */
-    private CodeMetamac tsvLineToCode(ImportationCodesTsvHeader header, String[] columns, int lineNumber, CodelistVersionMetamac codelistVersion,
-            Map<String, VariableElement> variableElementsInVariableByCode, boolean updateAlreadyExisting, Map<String, CodeMetamac> codesPreviousInCodelist,
-            Map<String, CodeMetamac> codesToPersistByCode, List<MetamacExceptionItem> exceptionItems, List<MetamacExceptionItem> infoItems) throws MetamacException {
-
-        // semantic identifier
-        String codeIdentifier = columns[header.getCodePosition()];
-        if (StringUtils.isBlank(codeIdentifier)) {
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber));
-            return null;
-        }
-        if (codesToPersistByCode.containsKey(codeIdentifier)) {
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_RESOURCE_DUPLICATED, codeIdentifier, lineNumber));
-            return null;
-        }
-        if (!SemanticIdentifierValidationUtils.isCodeSemanticIdentifier(codeIdentifier)) {
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, codeIdentifier,
-                    ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE));
-            return null;
-        }
-        // parent
-        CodeMetamac codeParent = null;
-        String codeParentIdentifier = columns[header.getParentPosition()];
-        if (!StringUtils.isBlank(codeParentIdentifier)) {
-            if (codesToPersistByCode.containsKey(codeParentIdentifier)) {
-                codeParent = codesToPersistByCode.get(codeParentIdentifier);
-            } else {
-                codeParent = codesPreviousInCodelist.get(codeParentIdentifier); // try code already exists in codelist before this importation
-            }
-            if (codeParent == null) {
-                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_PARENT_NOT_FOUND, codeParentIdentifier, codeIdentifier));
-                return null;
-            }
-        }
-        // variable element
-        String variableElementIdentifier = columns[header.getVariableElementPosition()];
-        VariableElement variableElement = null;
-        boolean updateVariableElement = true;
-        if (!StringUtils.isBlank(variableElementIdentifier)) {
-            variableElement = variableElementsInVariableByCode.get(variableElementIdentifier);
-            if (variableElement == null) {
-                // do not abort importation. Only inform about this
-                infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, variableElementIdentifier, codeIdentifier));
-                updateVariableElement = false;
-            }
-
-        }
-        // init code
-        CodeMetamac code = codesPreviousInCodelist.get(codeIdentifier);
-        if (code == null) {
-            code = new CodeMetamac();
-            code.setNameableArtefact(new NameableArtefact());
-            code.getNameableArtefact().setCode(codeIdentifier);
-            String urn = GeneratorUrnUtils.generateCodeUrn(codelistVersion, code.getNameableArtefact().getCode());
-            code.getNameableArtefact().setUrn(urn);
-            code.getNameableArtefact().setUrnProvider(urn);
-            code.setParent(codeParent);
-        } else {
-            if (!updateAlreadyExisting) {
-                infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, code.getNameableArtefact().getCode()));
-                return null;
-            } else {
-                infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, code.getNameableArtefact().getCode()));
-                if (SdmxSrmUtils.isItemParentChanged(code.getParent(), codeParent)) {
-                    // Clear all order columns to put at the end of new level
-                    SrmServiceUtils.clearCodeOrders(code);
-                }
-                code.setParent(codeParent);
-                code.setUpdateDate(new DateTime());
-            }
-        }
-        code.getNameableArtefact().setName(ImportationTsvUtils.tsvLineToInternationalString(header.getName(), columns, code.getNameableArtefact().getName()));
-        if (code.getNameableArtefact().getName() == null) {
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, code.getNameableArtefact().getCode(),
-                    ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_NAME));
-        }
-        code.getNameableArtefact().setDescription(ImportationTsvUtils.tsvLineToInternationalString(header.getDescription(), columns, code.getNameableArtefact().getDescription()));
-        if (updateVariableElement) {
-            code.setVariableElement(variableElement);
-            if (variableElement != null) {
-                code.setShortName(null);
-            }
-        }
-
-        // Do not persist if any error ocurrs
-        if (!CollectionUtils.isEmpty(exceptionItems)) {
-            return null;
-        }
-
-        try {
-            // extra validation to avoid save some incorrect
-            if (code.getId() == null) {
-                CodesMetamacInvocationValidator.checkCreateCode(codelistVersion, code, null);
-            } else {
-                CodesMetamacInvocationValidator.checkUpdateCode(codelistVersion, code, null);
-            }
-        } catch (MetamacException metamacException) {
-            logger.error("Error importing code from tsv file", metamacException);
-            MetamacExceptionItem metamacExceptionItem = new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber);
-            metamacExceptionItem.setExceptionItems(metamacException.getExceptionItems());
-            exceptionItems.add(metamacExceptionItem);
-        }
-
-        code.setItemSchemeVersion(codelistVersion);
-        if (codeParent == null) {
-            code.setItemSchemeVersionFirstLevel(codelistVersion);
-        } else {
-            code.setItemSchemeVersionFirstLevel(null);
-        }
-
-        return code;
-    }
-
-    /**
      * Transforms tsv line to Code order. IMPORTANT: Do not execute save or update operation
      */
     private CodeMetamac tsvLineToCodeOrder(ImportationCodeOrdersTsvHeader header, String[] columns, int lineNumber, Map<String, CodeMetamac> codesInCodelist,
@@ -3396,7 +3274,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             }
         }
         // short name
-        variableElement.setShortName(ImportationTsvUtils.tsvLineToInternationalString(header.getShortName(), columns, variableElement.getShortName()));
+        variableElement.setShortName(TsvImportationUtils.tsvLineToInternationalString(header.getShortName(), columns, variableElement.getShortName()));
         if (variableElement.getShortName() == null) {
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, variableElement.getIdentifiableArtefact().getCode(),
                     ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_SHORT_NAME));
@@ -3645,7 +3523,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.TASKS_ERROR).withMessageParameters(e.getMessage()).withCause(e).withLoggedLevel(ExceptionLevelEnum.ERROR)
                     .build();
         }
-        boolean executeInBackground = taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_GEO_IMPORTATION);
+        boolean executeInBackground = SrmServiceUtils.taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_VARIABLE_ELEMENTS_GEO_IMPORTATION);
 
         // Plannify task if background
         if (executeInBackground) {
@@ -3763,13 +3641,4 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         String urnOriginal = GeneratorUrnUtils.makeUrnFromTemporal(urnTemporal);
         return retrieveCodelistByUrn(ctx, urnOriginal);
     }
-
-    private boolean taskMustBeBackground(File file, Boolean canBeBackground, long maximumBytesToNonBackground) {
-        if (canBeBackground && file.length() > maximumBytesToNonBackground) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
 }

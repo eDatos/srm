@@ -75,13 +75,26 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
     }
 
     @Override
+    public String plannifyImportConceptsTsvInBackground(ServiceContext ctx, String conceptSchemeUrn, File file, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+        // Validation
+        TasksMetamacInvocationValidator.checkImportConceptsTsvInBackground(conceptSchemeUrn, file, fileName, updateAlreadyExisting, null);
+
+        // Plan job
+        JobDataMap jobDataAdditional = new JobDataMap();
+        jobDataAdditional.put(ImportationTsvJob.ITEM_SCHEME_URN, conceptSchemeUrn);
+        jobDataAdditional.put(ImportationTsvJob.UPDATE_ALREADY_EXISTING, updateAlreadyExisting);
+        jobDataAdditional.put(ImportationTsvJob.OPERATION, ImportationTsvJob.OPERATION_IMPORT_CONCEPTS);
+        return importTsvInBackground(ctx, file, fileName, jobDataAdditional);
+    }
+
+    @Override
     public String plannifyImportCodesTsvInBackground(ServiceContext ctx, String codelistUrn, File file, String fileName, boolean updateAlreadyExisting) throws MetamacException {
         // Validation
         TasksMetamacInvocationValidator.checkImportCodesTsvInBackground(codelistUrn, file, fileName, updateAlreadyExisting, null);
 
         // Plan job
         JobDataMap jobDataAdditional = new JobDataMap();
-        jobDataAdditional.put(ImportationTsvJob.CODELIST_URN, codelistUrn);
+        jobDataAdditional.put(ImportationTsvJob.ITEM_SCHEME_URN, codelistUrn);
         jobDataAdditional.put(ImportationTsvJob.UPDATE_ALREADY_EXISTING, updateAlreadyExisting);
         jobDataAdditional.put(ImportationTsvJob.OPERATION, ImportationTsvJob.OPERATION_IMPORT_CODES);
         return importTsvInBackground(ctx, file, fileName, jobDataAdditional);
@@ -94,7 +107,7 @@ public class TasksMetamacServiceImpl extends TasksMetamacServiceImplBase {
 
         // Plan job
         JobDataMap jobDataAdditional = new JobDataMap();
-        jobDataAdditional.put(ImportationTsvJob.CODELIST_URN, codelistUrn);
+        jobDataAdditional.put(ImportationTsvJob.ITEM_SCHEME_URN, codelistUrn);
         jobDataAdditional.put(ImportationTsvJob.OPERATION, ImportationTsvJob.OPERATION_IMPORT_CODE_ORDERS);
         return importTsvInBackground(ctx, file, fileName, jobDataAdditional);
     }

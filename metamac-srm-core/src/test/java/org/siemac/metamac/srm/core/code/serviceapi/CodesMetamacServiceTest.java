@@ -22,7 +22,6 @@ import static org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacAsse
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.URL;
@@ -4402,8 +4401,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         final boolean updateAlreadyExisting = false;
 
         // force background
-        long numBytesPlannifyPrevious = SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION;
-        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION = 1;
+        long numBytesPlannifyPrevious = SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_ITEMS_IMPORTATION;
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_ITEMS_IMPORTATION = 1;
         final StringBuilder jobKey = new StringBuilder();
 
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);
@@ -4425,7 +4424,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         });
         waitUntilJobFinished();
 
-        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION = numBytesPlannifyPrevious;
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_ITEMS_IMPORTATION = numBytesPlannifyPrevious;
 
         // Validate
         Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
@@ -4627,8 +4626,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         final boolean updateAlreadyExisting = false;
 
         // force background
-        long numBytesPlannifyPrevious = SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION;
-        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION = 1;
+        long numBytesPlannifyPrevious = SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_ITEMS_IMPORTATION;
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_ITEMS_IMPORTATION = 1;
         final StringBuilder jobKey = new StringBuilder();
 
         final TransactionTemplate tt = new TransactionTemplate(transactionManager);
@@ -4650,7 +4649,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         });
         waitUntilJobFinished();
 
-        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_CODES_IMPORTATION = numBytesPlannifyPrevious;
+        SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_ITEMS_IMPORTATION = numBytesPlannifyPrevious;
 
         // Validate
         Task task = tasksService.retrieveTaskByJob(getServiceContextAdministrador(), jobKey.toString());
@@ -10200,14 +10199,6 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         } else {
             assertTrue(results == 0);
         }
-    }
-
-    private String tempDirPath() throws IOException {
-        File temp = File.createTempFile("temp-file-name", ".tmp");
-        String absolutePath = temp.getAbsolutePath();
-        String tempFilePath = absolutePath.substring(0, absolutePath.lastIndexOf(File.separator));
-        temp.delete();
-        return tempFilePath;
     }
 
     @Override
