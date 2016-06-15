@@ -3,8 +3,4 @@
         "http://tuckey.org/res/dtds/urlrewrite3.2.dtd">
 <urlrewrite use-query-string="true">
     <class-rule class="org.siemac.metamac.srm.web.external.urlrewrite.SrmRewriteRule"/>
-	<rule>
-		<from>/apis/structural-resources/swagger-ui/(.*)$</from>
-		<to type="forward">/swagger-ui/$1</to>
-	</rule>
 </urlrewrite>
