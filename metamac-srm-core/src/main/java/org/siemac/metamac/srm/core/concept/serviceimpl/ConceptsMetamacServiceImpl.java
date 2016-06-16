@@ -38,10 +38,10 @@ import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacI
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacProperties;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
+import org.siemac.metamac.srm.core.code.domain.ConceptMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
 import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
@@ -865,7 +865,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemetUrn);
 
-        List<ItemResult> items = getConceptMetamacRepository().findConceptsByConceptSchemeUnordered(conceptSchemeVersion.getId(), CodeMetamacResultSelection.EXPORT);
+        List<ItemResult> items = getConceptMetamacRepository().findConceptsByConceptSchemeUnordered(conceptSchemeVersion.getId(), ConceptMetamacResultSelection.EXPORT);
 
         List<String> languages = srmConfiguration.retrieveLanguages();
 

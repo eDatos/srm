@@ -15,7 +15,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -3859,16 +3861,22 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         assertEquals("code\tparent\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca", bufferedReader.readLine());
-        assertEquals("CONCEPT01\t\tNombre conceptScheme-1-v2-concept-1\t\tName conceptScheme-1-v2-concept-1\t\tDescripción conceptScheme-1-v2-concept-1\t\t\t", bufferedReader.readLine());
-        assertEquals("CONCEPT02\t\tNombre conceptScheme-1-v2-concept-2\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals(
-                "CONCEPT0201\tCONCEPT02\tNombre conceptScheme-1-v2-concept-2-1\t\tName conceptScheme-1-v2-concept-2-1\t\tDescripción conceptScheme-1-v2-concept-2-1\t\tDescription conceptScheme-1-v2-concept-2-1\t",
-                bufferedReader.readLine());
-        assertEquals("CONCEPT020101\tCONCEPT0201\tNombre conceptScheme-1-v2-concept-2-1-1\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CONCEPT03\t\tnombre concept-3\t\tname concept-3\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CONCEPT04\t\tnombre concept-4\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CONCEPT0401\tCONCEPT04\tnombre concept 4-1\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CONCEPT040101\tCONCEPT0401\tNombre conceptScheme-1-v2-concept-4-1-1\t\tName conceptScheme-1-v2-concept-4-1-1\t\t\t\t\t", bufferedReader.readLine());
+        Set<String> lines = new HashSet<String>();
+        String line = null;
+        while ((line = bufferedReader.readLine()) != null) {
+            lines.add(line);
+        }
+        assertEquals(8, lines.size());
+
+        assertTrue(lines.contains("CONCEPT01\t\tNombre conceptScheme-1-v2-concept-1\t\tName conceptScheme-1-v2-concept-1\t\tDescripción conceptScheme-1-v2-concept-1\t\t\t"));
+        assertTrue(lines.contains("CONCEPT02\t\tNombre conceptScheme-1-v2-concept-2\t\t\t\t\t\t\t"));
+        assertTrue(lines
+                .contains("CONCEPT0201\tCONCEPT02\tNombre conceptScheme-1-v2-concept-2-1\t\tName conceptScheme-1-v2-concept-2-1\t\tDescripción conceptScheme-1-v2-concept-2-1\t\tDescription conceptScheme-1-v2-concept-2-1\t"));
+        assertTrue(lines.contains("CONCEPT020101\tCONCEPT0201\tNombre conceptScheme-1-v2-concept-2-1-1\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CONCEPT03\t\tnombre concept-3\t\tname concept-3\t\t\t\t\t"));
+        assertTrue(lines.contains("CONCEPT04\t\tnombre concept-4\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CONCEPT0401\tCONCEPT04\tnombre concept 4-1\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CONCEPT040101\tCONCEPT0401\tNombre conceptScheme-1-v2-concept-4-1-1\t\tName conceptScheme-1-v2-concept-4-1-1\t\t\t\t\t"));
         bufferedReader.close();
     }
 
