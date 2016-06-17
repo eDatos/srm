@@ -141,6 +141,18 @@ public class CategoriesSecurityUtils extends CommonSecurityUtils {
         }
     }
 
+    public static void canExportCategoriesTsv(ServiceContext ctx) throws MetamacException {
+        if (!SharedCategoriesSecurityUtils.canExportCategoriesTsv(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
+    public static void canImportCategories(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersionMetamac) throws MetamacException {
+        if (!SharedCategoriesSecurityUtils.canImportCategoriesTsv(getMetamacPrincipal(ctx), categorySchemeVersionMetamac.getLifeCycleMetadata().getProcStatus())) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     // CATEGORISATIONS
 
     public static void canRetrieveCategorisationByUrn(ServiceContext ctx) throws MetamacException {

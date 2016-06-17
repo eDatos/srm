@@ -88,6 +88,10 @@ Application CategoriesMetamac {
     		List<ItemVisualisationResult> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn, String locale) throws MetamacException;
     		"Retrieves categories by category scheme unordered"
     		List<ItemResult> retrieveCategoriesByCategorySchemeUrnUnordered(String categorySchemeUrn, ItemResultSelection itemResultSelection) throws MetamacException;
+    		"Imports categories in TSV format"
+    		TaskImportationInfo importCategoriesTsv(String categorySchemeUrn, java.io.File file, String fileName, boolean updateAlreadyExisting, Boolean canBeBackground) throws MetamacException;
+			"Exports categories in TSV format"
+    		String exportCategoriesTsv(String categorySchemetUrn) throws MetamacException;
     		
     		// Categorisations
     		"Creates categorisation"
@@ -143,6 +147,7 @@ Application CategoriesMetamac {
 			hint="idSequence=M_CATEGORIES"
 			
 			Repository CategoryMetamacRepository {
+				save;
 				findByQuery;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@CategoryMetamac findByUrn(String urn);

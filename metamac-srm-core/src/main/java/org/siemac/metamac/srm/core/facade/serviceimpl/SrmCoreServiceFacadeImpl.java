@@ -3638,6 +3638,26 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public TaskImportationInfo importCategoriesTsv(ServiceContext ctx, String categorySchemeUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+        // Security
+        CategorySchemeVersionMetamac categorySchemeVersionMetamac = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
+        CategoriesSecurityUtils.canImportCategories(ctx, categorySchemeVersionMetamac);
+
+        // Import (can be in background)
+        File file = createTempFile(tsvStream, fileName);
+        return getCategoriesMetamacService().importCategoriesTsv(ctx, categorySchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+    }
+
+    @Override
+    public String exportCategoriesTsv(ServiceContext ctx, String categorySchemeUrn) throws MetamacException {
+        // Security
+        CategoriesSecurityUtils.canExportCategoriesTsv(ctx);
+
+        // Export
+        return getCategoriesMetamacService().exportCategoriesTsv(ctx, categorySchemeUrn);
+    }
+
+    @Override
     public void deleteCategory(ServiceContext ctx, String urn) throws MetamacException {
         // Security
         CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByCategoryUrn(ctx, urn);

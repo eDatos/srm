@@ -844,20 +844,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return new TaskImportationInfo(Boolean.FALSE, informationItems);
     }
 
-    private void saveConceptsEfficiently(Collection<ConceptMetamac> conceptsToPersist, Map<String, Item> conceptsToPersistByCode) {
-        for (ConceptMetamac conceptMetamac : conceptsToPersist) {
-            if (conceptMetamac.getParent() != null) {
-                if (conceptsToPersistByCode.containsKey(conceptMetamac.getParent().getNameableArtefact().getCode())) {
-                    // update reference because it was saved
-                    conceptMetamac.setParent(conceptsToPersistByCode.get(conceptMetamac.getParent().getNameableArtefact().getCode()));
-                }
-            }
-            conceptMetamac = getConceptMetamacRepository().save(conceptMetamac);
-            // update reference after save to assign to children
-            conceptsToPersistByCode.put(conceptMetamac.getNameableArtefact().getCode(), conceptMetamac);
-        }
-    }
-
     @Override
     public String exportConceptsTsv(ServiceContext ctx, String conceptSchemetUrn) throws MetamacException {
 
@@ -1666,5 +1652,19 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.IDENTIFIABLE_ARTEFACT_NOT_FOUND).withMessageParameters(urn).build();
         }
         return conceptSchemeVersion;
+    }
+
+    private void saveConceptsEfficiently(Collection<ConceptMetamac> conceptsToPersist, Map<String, Item> conceptsToPersistByCode) {
+        for (ConceptMetamac conceptMetamac : conceptsToPersist) {
+            if (conceptMetamac.getParent() != null) {
+                if (conceptsToPersistByCode.containsKey(conceptMetamac.getParent().getNameableArtefact().getCode())) {
+                    // update reference because it was saved
+                    conceptMetamac.setParent(conceptsToPersistByCode.get(conceptMetamac.getParent().getNameableArtefact().getCode()));
+                }
+            }
+            conceptMetamac = getConceptMetamacRepository().save(conceptMetamac);
+            // update reference after save to assign to children
+            conceptsToPersistByCode.put(conceptMetamac.getNameableArtefact().getCode(), conceptMetamac);
+        }
     }
 }

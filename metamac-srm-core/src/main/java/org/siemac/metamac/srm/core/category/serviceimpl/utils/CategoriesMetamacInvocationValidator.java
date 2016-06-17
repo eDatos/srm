@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.category.serviceimpl.utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +84,31 @@ public class CategoriesMetamacInvocationValidator extends CategoriesInvocationVa
 
     public static void checkRetrieveCategoriesByCategorySchemeUrnUnordered(String categorySchemeUrn, ItemResultSelection itemResultSelection, List<MetamacExceptionItem> exceptions)
             throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(categorySchemeUrn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkImportCategoriesTsv(String categorySchemeUrn, File file, String fileName, boolean updateAlreadyExisting, Boolean canBeBackground, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(categorySchemeUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(file, ServiceExceptionParameters.STREAM, exceptions);
+        ValidationUtils.checkParameterRequired(fileName, ServiceExceptionParameters.FILE_NAME, exceptions);
+        ValidationUtils.checkParameterRequired(canBeBackground, ServiceExceptionParameters.CAN_BE_BACKGROUND, exceptions);
+        ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_TSV_UPDATE_ALREADY_EXISTING, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkExportCategoriesTsv(String categorySchemeUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
         }

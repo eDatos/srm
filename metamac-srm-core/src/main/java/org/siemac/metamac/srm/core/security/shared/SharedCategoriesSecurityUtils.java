@@ -110,4 +110,12 @@ public class SharedCategoriesSecurityUtils extends SharedItemsSecurityUtils {
             return canUpdateCategoryScheme(metamacPrincipal, procStatus);
         }
     }
+
+    public static boolean canExportCategoriesTsv(MetamacPrincipal metamacPrincipal) {
+        return canRetrieveOrFindResource(metamacPrincipal);
+    }
+
+    public static boolean canImportCategoriesTsv(MetamacPrincipal metamacPrincipal, ProcStatusEnum procStatus) {
+        return canModifyCategoryFromCategoryScheme(metamacPrincipal, procStatus);
+    }
 }

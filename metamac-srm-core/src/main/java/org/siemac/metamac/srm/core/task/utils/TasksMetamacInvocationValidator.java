@@ -42,6 +42,20 @@ public class TasksMetamacInvocationValidator extends BaseInvocationValidator {
         ExceptionUtils.throwIfException(exceptions);
     }
 
+    public static void checkImportCategoriesTsvInBackground(String categorySchemeUrn, File file, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions)
+            throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(categorySchemeUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(file, ServiceExceptionParameters.STREAM, exceptions);
+        ValidationUtils.checkParameterRequired(fileName, ServiceExceptionParameters.FILE_NAME, exceptions);
+        ValidationUtils.checkParameterRequired(updateAlreadyExisting, ServiceExceptionParameters.IMPORTATION_TSV_UPDATE_ALREADY_EXISTING, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
     public static void checkImportCodesTsvInBackground(String codelistUrn, File file, String fileName, boolean updateAlreadyExisting, List<MetamacExceptionItem> exceptions) throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();

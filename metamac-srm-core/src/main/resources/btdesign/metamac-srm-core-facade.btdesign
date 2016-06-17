@@ -520,6 +520,10 @@ Application SrmFacadeCore {
             deleteCategory(String urn) throws MetamacException;
     		"Retrieves categories by category scheme in locale requested"
     		List<ItemVisualisationResult> retrieveCategoriesByCategorySchemeUrn(String categorySchemeUrn, String locale) throws MetamacException;
+    		"Imports categories in tsv format"
+    		TaskImportationInfo importCategoriesTsv(String categorySchemeUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
+            "Exports categories in TSV format"
+    		String exportCategoriesTsv(String categorySchemeUrn) throws MetamacException;
     		
     		// Categorisations
     		"Creates categorisation"
@@ -745,12 +749,15 @@ Application SrmFacadeCore {
 
 		Service TasksMetamacServiceFacade {
 			> @ConceptsMetamacService
+			> @CategoriesMetamacService
 			> @OrganisationsMetamacService
        		> @CodesMetamacService
        		> @TasksMetamacService
 
 			"Imports concepts in tsv format"
     		processImportConceptsTsv(String conceptSchemeUrn, java.io.File tsvFile, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+			"Imports categories in tsv format"
+    		processImportCategoriesTsv(String categorySchemeUrn, java.io.File tsvFile, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;    		
     		"Imports organisations in tsv format"
     		processImportOrganisationsTsv(String organisationSchemeUrn, java.io.File tsvFile, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
     		"Imports codes in tsv format"

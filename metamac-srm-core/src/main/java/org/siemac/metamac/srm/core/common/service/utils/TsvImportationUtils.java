@@ -14,6 +14,9 @@ import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
+import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
+import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
@@ -27,6 +30,7 @@ import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsMetamacInvocationValidator;
+import org.siemac.metamac.srm.core.task.domain.ImportationCategoriesTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationCodeOrdersTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationCodesTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationConceptsTsvHeader;
@@ -148,6 +152,24 @@ public class TsvImportationUtils {
             throws MetamacException {
         return (ConceptMetamac) tsvLineToItem(header, columns, lineNumber, itemSchemeVersion, updateAlreadyExisting, itemsPreviousInItemScheme, itemsToPersistByCode, exceptionItems, infoItems,
                 TypeExternalArtefactsEnum.CONCEPT);
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------
+    // CATEGORIES
+    // ---------------------------------------------------------------------------------------------------------------
+
+    public static ImportationCategoriesTsvHeader parseTsvHeaderToImportCategories(String line, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        return (ImportationCategoriesTsvHeader) parseTsvHeaderToImportItems(line, exceptions, new ImportationCategoriesTsvHeader());
+    }
+
+    /**
+     * Transforms TSV line to {@link CategoryMetamac}. IMPORTANT: Do not execute save or update operation
+     */
+    public static CategoryMetamac tsvLineToCategory(ImportationItemsTsvHeader header, String[] columns, int lineNumber, ItemSchemeVersion itemSchemeVersion, boolean updateAlreadyExisting,
+            Map<String, Item> itemsPreviousInItemScheme, Map<String, Item> itemsToPersistByCode, List<MetamacExceptionItem> exceptionItems, List<MetamacExceptionItem> infoItems)
+            throws MetamacException {
+        return (CategoryMetamac) tsvLineToItem(header, columns, lineNumber, itemSchemeVersion, updateAlreadyExisting, itemsPreviousInItemScheme, itemsToPersistByCode, exceptionItems, infoItems,
+                TypeExternalArtefactsEnum.CATEGORY);
     }
 
     // ---------------------------------------------------------------------------------------------------------------
@@ -539,7 +561,7 @@ public class TsvImportationUtils {
             item = createItem(itemType);
             item.setNameableArtefact(new NameableArtefact());
             item.getNameableArtefact().setCode(itemIdentifier);
-            String urn = generateItemUrn(itemSchemeVersion, item.getNameableArtefact().getCode(), itemType);
+            String urn = generateItemUrn(itemSchemeVersion, item, itemType);
             item.getNameableArtefact().setUrn(urn);
             item.getNameableArtefact().setUrnProvider(urn);
             item.setParent(itemParent);
@@ -596,8 +618,8 @@ public class TsvImportationUtils {
         } else if (TypeExternalArtefactsEnum.AGENCY.equals(itemType) || TypeExternalArtefactsEnum.DATA_CONSUMER.equals(itemType) || TypeExternalArtefactsEnum.DATA_PROVIDER.equals(itemType)
                 || TypeExternalArtefactsEnum.ORGANISATION_UNIT.equals(itemType)) {
             OrganisationsMetamacInvocationValidator.checkCreateOrganisation((OrganisationSchemeVersionMetamac) itemSchemeVersion, (OrganisationMetamac) item, null);
-        } else {
-            // TODO METAMAC-2453
+        } else if (TypeExternalArtefactsEnum.CATEGORY.equals(itemType)) {
+            CategoriesMetamacInvocationValidator.checkCreateCategory((CategorySchemeVersionMetamac) itemSchemeVersion, (CategoryMetamac) item, null);
         }
     }
 
@@ -607,10 +629,9 @@ public class TsvImportationUtils {
         } else if (TypeExternalArtefactsEnum.AGENCY.equals(itemType) || TypeExternalArtefactsEnum.DATA_CONSUMER.equals(itemType) || TypeExternalArtefactsEnum.DATA_PROVIDER.equals(itemType)
                 || TypeExternalArtefactsEnum.ORGANISATION_UNIT.equals(itemType)) {
             OrganisationsMetamacInvocationValidator.checkUpdateOrganisation((OrganisationMetamac) item, null);
-        } else {
-            // TODO METAMAC-2453
+        } else if (TypeExternalArtefactsEnum.CATEGORY.equals(itemType)) {
+            CategoriesMetamacInvocationValidator.checkUpdateCategory((CategoryMetamac) item, null);
         }
-
     }
 
     private static Item createItem(TypeExternalArtefactsEnum type) {
@@ -620,8 +641,8 @@ public class TsvImportationUtils {
         } else if (TypeExternalArtefactsEnum.AGENCY.equals(type) || TypeExternalArtefactsEnum.DATA_CONSUMER.equals(type) || TypeExternalArtefactsEnum.DATA_PROVIDER.equals(type)
                 || TypeExternalArtefactsEnum.ORGANISATION_UNIT.equals(type)) {
             item = new OrganisationMetamac();
-        } else {
-            // TODO METAMAC-2453
+        } else if (TypeExternalArtefactsEnum.CATEGORY.equals(type)) {
+            item = new CategoryMetamac();
         }
         return item;
     }
@@ -637,20 +658,20 @@ public class TsvImportationUtils {
             return SemanticIdentifierValidationUtils.isDataProviderSemanticIdentifier(itemIdentifier);
         } else if (TypeExternalArtefactsEnum.ORGANISATION_UNIT.equals(type)) {
             return SemanticIdentifierValidationUtils.isOrganisationUnitSemanticIdentifier(itemIdentifier);
-        } else {
-            // TODO METAMAC-2453
+        } else if (TypeExternalArtefactsEnum.CATEGORY.equals(type)) {
+            return SemanticIdentifierValidationUtils.isCategorySemanticIdentifier(itemIdentifier);
         }
         return false;
     }
 
-    private static String generateItemUrn(ItemSchemeVersion itemSchemeVersion, String itemIdentifier, TypeExternalArtefactsEnum itemType) {
+    private static String generateItemUrn(ItemSchemeVersion itemSchemeVersion, Item item, TypeExternalArtefactsEnum itemType) {
         if (TypeExternalArtefactsEnum.CONCEPT.equals(itemType)) {
-            return GeneratorUrnUtils.generateConceptUrn(itemSchemeVersion, itemIdentifier);
+            return GeneratorUrnUtils.generateConceptUrn(itemSchemeVersion, item.getNameableArtefact().getCode());
         } else if (TypeExternalArtefactsEnum.AGENCY.equals(itemType) || TypeExternalArtefactsEnum.DATA_CONSUMER.equals(itemType) || TypeExternalArtefactsEnum.DATA_PROVIDER.equals(itemType)
                 || TypeExternalArtefactsEnum.ORGANISATION_UNIT.equals(itemType)) {
-            return GeneratorUrnUtils.generateOrganisationUrn(itemSchemeVersion, itemIdentifier);
-        } else {
-            // TODO METAMAC-2453
+            return GeneratorUrnUtils.generateOrganisationUrn(itemSchemeVersion, item.getNameableArtefact().getCode());
+        } else if (TypeExternalArtefactsEnum.CATEGORY.equals(itemType)) {
+            return GeneratorUrnUtils.generateCategoryUrn(itemSchemeVersion, item);
         }
         return null;
     }

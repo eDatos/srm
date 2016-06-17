@@ -35,7 +35,7 @@ import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTempora
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
+import org.siemac.metamac.srm.core.code.domain.OrganisationMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
@@ -557,7 +557,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemetUrn);
 
-        List<ItemResult> items = getOrganisationMetamacRepository().findOrganisationsByOrganisationSchemeUnordered(organisationSchemeVersion.getId(), CodeMetamacResultSelection.EXPORT);
+        List<ItemResult> items = getOrganisationMetamacRepository().findOrganisationsByOrganisationSchemeUnordered(organisationSchemeVersion.getId(), OrganisationMetamacResultSelection.EXPORT);
 
         List<String> languages = srmConfiguration.retrieveLanguages();
 

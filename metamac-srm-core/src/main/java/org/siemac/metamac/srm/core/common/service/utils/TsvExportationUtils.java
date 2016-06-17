@@ -167,6 +167,51 @@ public class TsvExportationUtils {
     }
 
     // ---------------------------------------------------------------------------------------------------------------
+    // CATEGORIES
+    // ---------------------------------------------------------------------------------------------------------------
+
+    public static String exportCategories(List<ItemResult> items, List<String> languages) throws MetamacException {
+        OutputStream outputStream = null;
+        OutputStreamWriter writer = null;
+        try {
+            File file = File.createTempFile("categories", ".tsv");
+            outputStream = new FileOutputStream(file);
+            writer = new OutputStreamWriter(outputStream, SrmConstants.TSV_EXPORTATION_ENCODING);
+
+            writeCategoriesHeader(writer, languages);
+
+            for (ItemResult itemResult : items) {
+                writer.write(SrmConstants.TSV_LINE_SEPARATOR);
+                writeItemCode(writer, itemResult);
+                writeParentCode(writer, itemResult);
+                writeItemName(writer, itemResult, languages);
+                writeItemDescription(writer, itemResult, languages);
+            }
+            writer.flush();
+            return file.getName();
+        } catch (Exception e) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.EXPORTATION_TSV_ERROR).withMessageParameters(e).build();
+        } finally {
+            IOUtils.closeQuietly(outputStream);
+            IOUtils.closeQuietly(writer);
+        }
+    }
+
+    private static void writeCategoriesHeader(OutputStreamWriter writer, List<String> languages) throws IOException {
+        writer.write(SrmConstants.TSV_HEADER_CODE);
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        writer.write(SrmConstants.TSV_HEADER_PARENT);
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_NAME + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_DESCRIPTION + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------
     // COMMON UTILS
     // ---------------------------------------------------------------------------------------------------------------
 

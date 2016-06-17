@@ -2,7 +2,13 @@ package org.siemac.metamac.srm.core.category.serviceimpl;
 
 import static org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils.addExceptionToExceptionItemsByResource;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +17,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -23,6 +31,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
+import org.siemac.metamac.core.common.io.FileUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
@@ -31,6 +40,8 @@ import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
+import org.siemac.metamac.srm.core.code.domain.CategoryMetamacResultSelection;
+import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
@@ -38,21 +49,29 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
+import org.siemac.metamac.srm.core.common.service.utils.TsvExportationUtils;
+import org.siemac.metamac.srm.core.common.service.utils.TsvImportationUtils;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
+import org.siemac.metamac.srm.core.task.domain.ImportationCategoriesTsvHeader;
+import org.siemac.metamac.srm.core.task.serviceapi.TasksMetamacService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefact;
 import com.arte.statistic.sdmx.srm.core.base.domain.MaintainableArtefactRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategorisationRepository;
@@ -76,6 +95,11 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
  */
 @Service("categoriesMetamacService")
 public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBase {
+
+    private static Logger                  logger = LoggerFactory.getLogger(CategoriesMetamacServiceImpl.class);
+
+    @Autowired
+    private BaseService                    baseService;
 
     @Autowired
     private CategoriesService              categoriesService;
@@ -106,6 +130,9 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     private ItemSchemesCopyCallback        categoriesCopyCallback;
 
     @Autowired
+    private TasksMetamacService            tasksMetamacService;
+
+    @Autowired
     private MaintainableArtefactRepository maintainableArtefactRepository;
 
     @Autowired
@@ -119,6 +146,9 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
     @Autowired
     private InternationalStringRepository  internationalStringRepository;
+
+    @Autowired
+    private ItemSchemeRepository           itemSchemeRepository;
 
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
     protected EntityManager                entityManager;
@@ -438,6 +468,112 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
         // Delete
         categoriesService.deleteCategory(ctx, urn);
+    }
+
+    @Override
+    public TaskImportationInfo importCategoriesTsv(ServiceContext ctx, String categorySchemeUrn, File file, String fileName, boolean updateAlreadyExisting, Boolean canBeBackground)
+            throws MetamacException {
+        // Validation
+        CategoriesMetamacInvocationValidator.checkImportCategoriesTsv(categorySchemeUrn, file, fileName, updateAlreadyExisting, canBeBackground, null);
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemeUrn);
+        TsvImportationUtils.checkItemSchemeCanExecuteImportation(categorySchemeVersion, categorySchemeVersion.getLifeCycleMetadata(), canBeBackground);
+
+        srmValidation.checkItemsStructureCanBeModified(ctx, categorySchemeVersion);
+
+        // Decide if task must be executed in background
+        boolean executeInBackground = SrmServiceUtils.taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_ITEMS_IMPORTATION);
+
+        // Plannify task if background
+        if (executeInBackground) {
+            categorySchemeVersion.getItemScheme().setIsTaskInBackground(Boolean.TRUE);
+            itemSchemeRepository.save(categorySchemeVersion.getItemScheme());
+
+            String jobKey = tasksMetamacService.plannifyImportCategoriesTsvInBackground(ctx, categorySchemeUrn, file, fileName, updateAlreadyExisting); 
+            return new TaskImportationInfo(Boolean.TRUE, jobKey);
+        }
+
+        // Execute importation now
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+        List<CategoryMetamac> categtoriesToPersist = null;
+        Map<String, Item> categoriesToPersistByCode = null;
+        Map<String, Item> categoriesPreviousInCategorySchemeByCode = null;
+        try {
+            InputStream stream = new FileInputStream(file);
+            String charset = FileUtils.guessCharset(file);
+            inputStreamReader = new InputStreamReader(stream, charset);
+            bufferedReader = new BufferedReader(inputStreamReader);
+
+            // Header
+            String line = bufferedReader.readLine();
+            ImportationCategoriesTsvHeader header = TsvImportationUtils.parseTsvHeaderToImportCategories(line, exceptionItems);
+
+            // Categories
+            if (CollectionUtils.isEmpty(exceptionItems)) {
+
+                // Retrieve actual categories in category scheme
+                categtoriesToPersist = new ArrayList<CategoryMetamac>(); // save in order is required (first parent and then children)
+                categoriesToPersistByCode = new HashMap<String, Item>();
+                categoriesPreviousInCategorySchemeByCode = new HashMap<String, Item>();
+                for (Item item : categorySchemeVersion.getItems()) {
+                    categoriesPreviousInCategorySchemeByCode.put(item.getNameableArtefact().getCode(), (CategoryMetamac) item);
+                }
+
+                int lineNumber = 2;
+                while ((line = bufferedReader.readLine()) != null) {
+                    if (StringUtils.isBlank(line)) {
+                        continue;
+                    }
+                    String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
+                    if (columns.length != header.getColumnsSize()) {
+                        exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber));
+                        continue;
+                    }
+                    // Transform category and add to list to persist
+                    CategoryMetamac category = TsvImportationUtils.tsvLineToCategory(header, columns, lineNumber, categorySchemeVersion, updateAlreadyExisting,
+                            categoriesPreviousInCategorySchemeByCode, categoriesToPersistByCode, exceptionItems, informationItems);
+                    if (category != null) {
+                        categtoriesToPersist.add(category);
+                        categoriesToPersistByCode.put(category.getNameableArtefact().getCode(), category);
+                    }
+                    lineNumber++;
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Error importing tsv file", e);
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_FILE_PARSING, e.getMessage()));
+        } finally {
+            IOUtils.closeQuietly(inputStreamReader);
+            IOUtils.closeQuietly(bufferedReader);
+        }
+        if (!CollectionUtils.isEmpty(exceptionItems)) {
+            // rollback and inform about errors
+            throw MetamacExceptionBuilder.builder().withPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, fileName)).withExceptionItems(exceptionItems).build();
+        }
+
+        // Save categories and scheme
+        saveCategoriesEfficiently(categtoriesToPersist, categoriesToPersistByCode);
+        baseService.updateItemSchemeLastUpdated(ctx, categorySchemeVersion);
+        categorySchemeVersion.getItemScheme().setIsTaskInBackground(Boolean.FALSE);
+        itemSchemeRepository.save(categorySchemeVersion.getItemScheme());
+
+        return new TaskImportationInfo(Boolean.FALSE, informationItems);
+    }
+
+    @Override
+    public String exportCategoriesTsv(ServiceContext ctx, String categorySchemetUrn) throws MetamacException {
+
+        CategoriesMetamacInvocationValidator.checkExportCategoriesTsv(categorySchemetUrn, null);
+
+        CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemetUrn);
+
+        List<ItemResult> items = getCategoryMetamacRepository().findCategoriesByCategorySchemeUnordered(categorySchemeVersion.getId(), CategoryMetamacResultSelection.EXPORT);
+
+        List<String> languages = srmConfiguration.retrieveLanguages();
+
+        return TsvExportationUtils.exportCategories(items, languages);
     }
 
     @Override
@@ -787,4 +923,17 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return categorySchemeVersion;
     }
 
+    private void saveCategoriesEfficiently(Collection<CategoryMetamac> categoriesToPersist, Map<String, Item> categoriesToPersistByCode) {
+        for (CategoryMetamac categoryMetamac : categoriesToPersist) {
+            if (categoryMetamac.getParent() != null) {
+                if (categoriesToPersistByCode.containsKey(categoryMetamac.getParent().getNameableArtefact().getCode())) {
+                    // update reference because it was saved
+                    categoryMetamac.setParent(categoriesToPersistByCode.get(categoryMetamac.getParent().getNameableArtefact().getCode()));
+                }
+            }
+            categoryMetamac = getCategoryMetamacRepository().save(categoryMetamac);
+            // update reference after save to assign to children
+            categoriesToPersistByCode.put(categoryMetamac.getNameableArtefact().getCode(), categoryMetamac);
+        }
+    }
 }

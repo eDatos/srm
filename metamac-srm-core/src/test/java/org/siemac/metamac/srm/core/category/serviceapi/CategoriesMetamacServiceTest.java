@@ -9,8 +9,14 @@ import static org.junit.Assert.fail;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -1920,6 +1926,45 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     }
 
     @Override
+    public void testImportCategoriesTsv() throws Exception {
+        // TODO METAMAC-2453
+
+    }
+
+    @Test
+    @Override
+    public void testExportCategoriesTsv() throws Exception {
+        String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
+        String fileName = categoriesService.exportCategoriesTsv(getServiceContextAdministrador(), categorySchemeUrn);
+        assertNotNull(fileName);
+
+        // Validate
+        File file = new File(tempDirPath() + File.separatorChar + fileName);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        assertEquals("code\tparent\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca", bufferedReader.readLine());
+        Set<String> lines = new HashSet<String>();
+        String line = null;
+        while ((line = bufferedReader.readLine()) != null) {
+            System.out.println(line);
+            lines.add(line);
+        }
+        assertEquals(8, lines.size());
+
+        assertTrue(lines.contains("CATEGORY01\t\tNombre categoryScheme-1-v2-category-1\t\tName categoryScheme-1-v2-category-1\t\tDescripción categoryScheme-1-v2-category-1\t\t\t"));
+        assertTrue(lines.contains("CATEGORY02\t\tNombre categoryScheme-1-v2-category-2\t\t\t\t\t\t\t"));
+        assertTrue(lines
+                .contains("CATEGORY0201\tCATEGORY02\tNombre categoryScheme-1-v2-category-2-1\t\tName categoryScheme-1-v2-category-2-1\t\tDescripción cat2-1\t\tDescription cat2-1\t"));
+        assertTrue(lines.contains("CATEGORY020101\tCATEGORY0201\tNombre categoryScheme-1-v2-category-2-1-1\t\t\t\tDescripción cat2-1-1\t\t\t"));
+        assertTrue(lines.contains("CATEGORY03\t\tnombre category-3\t\tname category-3\t\t\t\t\t"));
+        assertTrue(lines.contains("CATEGORY04\t\tnombre category-4\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CATEGORY0401\tCATEGORY04\tnombre category 4-1\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CATEGORY040101\tCATEGORY0401\tNombre categoryScheme-1-v2-category-4-1-1\t\tName categoryScheme-1-v2-category-4-1-1\t\t\t\t\t"));
+        bufferedReader.close();
+    }
+
+    @Override
     @Test
     public void testRetrieveCategoriesByCategorySchemeUrn() throws Exception {
 
@@ -2372,5 +2417,4 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     protected String getDataSetFile() {
         return "dbunit/SrmCategoriesTest.xml";
     }
-
 }
