@@ -95,6 +95,7 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType IMPORTATION_TSV_METADATA_INCORRECT                                                 = create("exception.srm.importation.tsv.error.metadata_incorrect");
     public static final CommonServiceExceptionType IMPORTATION_TSV_METADATA_UNEXPECTED                                                = create("exception.srm.importation.tsv.error.metadata_unexpected");
     public static final CommonServiceExceptionType IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER                             = create("exception.srm.importation.tsv.error.metadata_incorrect_semantic_identifier");
+    public static final CommonServiceExceptionType IMPORTATION_TSV_METADATA_UNEXPECTED_PARENT                                         = create("exception.srm.importation.tsv.error.metadata_unexpected_parent");
     public static final CommonServiceExceptionType IMPORTATION_TSV_ERROR_PARENT_NOT_FOUND                                             = create("exception.srm.importation.tsv.error.parent.not_found");
     public static final CommonServiceExceptionType IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED                                          = create("info.srm.importation.tsv.resource_not_updated");
     public static final CommonServiceExceptionType IMPORTATION_TSV_INFO_RESOURCE_UPDATED                                              = create("info.srm.importation.tsv.resource_updated");

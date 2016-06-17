@@ -2902,6 +2902,28 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         }
     }
 
+    @Test
+    public void testImportOrganisationWithWrongHierarchyTsv() throws Exception {
+        String organisationSchemeUrn = ORGANISATION_SCHEME_2_V1;
+        String fileName = "importation-organisation-unit-01.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        try {
+            organisationsService.importOrganisationsTsv(getServiceContextAdministrador(), organisationSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+            fail("The hierarchy of organisations cannot be imported into a data consumer scheme");
+        } catch (MetamacException e) {
+            assertEquals(11, e.getExceptionItems().size());
+            for (MetamacExceptionItem item : e.getExceptionItems()) {
+                assertEquals(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED_PARENT.getCode(), item.getCode());
+            }
+            assertEquals("VICEPRESIDENCIA", e.getExceptionItems().get(0).getMessageParameters()[0]);
+            assertEquals("PRESIDENCIA", e.getExceptionItems().get(0).getMessageParameters()[1]);
+            assertEquals("DGRAL_PROMOCION_TURISTICA", e.getExceptionItems().get(9).getMessageParameters()[0]);
+            assertEquals("VICECONSEJERIA_TURISMO", e.getExceptionItems().get(9).getMessageParameters()[1]);
+        }
+    }
+
     protected OrganisationMetamacVisualisationResult getOrganisationVisualisationResult(List<OrganisationMetamacVisualisationResult> actuals, String codeUrn) {
         for (OrganisationMetamacVisualisationResult actual : actuals) {
             if (actual.getUrn().equals(codeUrn)) {

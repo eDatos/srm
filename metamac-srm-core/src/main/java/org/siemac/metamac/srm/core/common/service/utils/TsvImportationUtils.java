@@ -519,6 +519,10 @@ public class TsvImportationUtils {
         Item itemParent = null;
         String itemParentIdentifier = columns[header.getParentPosition()];
         if (!StringUtils.isBlank(itemParentIdentifier)) {
+            if (TypeExternalArtefactsEnum.AGENCY.equals(itemType) || TypeExternalArtefactsEnum.DATA_CONSUMER.equals(itemType) || TypeExternalArtefactsEnum.DATA_PROVIDER.equals(itemType)) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED_PARENT, itemIdentifier, itemParentIdentifier));
+                return null;
+            }
             if (itemsToPersistByCode.containsKey(itemParentIdentifier)) {
                 itemParent = itemsToPersistByCode.get(itemParentIdentifier);
             } else {
@@ -539,6 +543,7 @@ public class TsvImportationUtils {
             item.getNameableArtefact().setUrn(urn);
             item.getNameableArtefact().setUrnProvider(urn);
             item.setParent(itemParent);
+            item.getNameableArtefact().setIsCodeUpdated(false);
         } else {
             if (!updateAlreadyExisting) {
                 infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, item.getNameableArtefact().getCode()));
@@ -548,6 +553,7 @@ public class TsvImportationUtils {
                 item.setParent(itemParent);
                 item.setUpdateDate(new DateTime());
             }
+            item.getNameableArtefact().setIsCodeUpdated(false);
         }
         item.getNameableArtefact().setName(TsvImportationUtils.tsvLineToInternationalString(header.getName(), columns, item.getNameableArtefact().getName()));
         if (item.getNameableArtefact().getName() == null) {
@@ -596,7 +602,15 @@ public class TsvImportationUtils {
     }
 
     private static void checkCanUpdateItem(ItemSchemeVersion itemSchemeVersion, Item item, TypeExternalArtefactsEnum itemType) throws MetamacException {
-        ConceptsMetamacInvocationValidator.checkUpdateConcept((ConceptSchemeVersionMetamac) itemSchemeVersion, (ConceptMetamac) item, null);
+        if (TypeExternalArtefactsEnum.CONCEPT.equals(itemType)) {
+            ConceptsMetamacInvocationValidator.checkUpdateConcept((ConceptSchemeVersionMetamac) itemSchemeVersion, (ConceptMetamac) item, null);
+        } else if (TypeExternalArtefactsEnum.AGENCY.equals(itemType) || TypeExternalArtefactsEnum.DATA_CONSUMER.equals(itemType) || TypeExternalArtefactsEnum.DATA_PROVIDER.equals(itemType)
+                || TypeExternalArtefactsEnum.ORGANISATION_UNIT.equals(itemType)) {
+            OrganisationsMetamacInvocationValidator.checkUpdateOrganisation((OrganisationMetamac) item, null);
+        } else {
+            // TODO METAMAC-2453
+        }
+
     }
 
     private static Item createItem(TypeExternalArtefactsEnum type) {
