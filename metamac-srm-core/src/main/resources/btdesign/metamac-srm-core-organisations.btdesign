@@ -85,12 +85,14 @@ Application OrganisationsMetamac {
     		"Retrieves organisations by organisation scheme unordered"
     		List<ItemResult> retrieveOrganisationsByOrganisationSchemeUrnUnordered(String organisationSchemeUrn, ItemResultSelection itemResultSelection) throws MetamacException;
 			"Exports organisations in TSV format"
-    		String exportOrganisationsTsv(String organisationSchemetUrn) throws MetamacException; 
+    		String exportOrganisationsTsv(String organisationSchemetUrn) throws MetamacException;
+    		"Imports organisations in TSV format"
+    		TaskImportationInfo importOrganisationsTsv(String organisationSchemeUrn, java.io.File file, String fileName, boolean updateAlreadyExisting, Boolean canBeBackground) throws MetamacException;
 
     		"Finds contacts by criteria"
     		PagedResult<@Contact> findOrganisationContactsByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter)  throws MetamacException;
 		}
-		
+
 		// ----------------------------------------------------------------
 		// 							ENTITIES
 		// ----------------------------------------------------------------
@@ -121,6 +123,7 @@ Application OrganisationsMetamac {
 			Boolean specialOrganisationHasBeenPublished nullable databaseColumn="SPECIAL_ORG_HAS_BEEN_PUBLISHED";
 			
 			Repository OrganisationMetamacRepository {
+				save;
 				findByQuery;
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);
 				@OrganisationMetamac findByUrn(String urn);

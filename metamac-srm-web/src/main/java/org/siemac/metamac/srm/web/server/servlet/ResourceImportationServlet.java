@@ -153,6 +153,11 @@ public class ResourceImportationServlet extends HttpServlet {
 
                 TaskImportationInfo taskImportationInfo = importConcepts(srmCoreServiceFacade, fileName, inputStream, args);
                 successMessage = updateSuccessMessage(successMessage, taskImportationInfo);
+
+            } else if (ImportableResourceTypeEnum.ORGANISATIONS.name().equals(args.get(SrmSharedTokens.UPLOAD_PARAM_FILE_TYPE))) {
+
+                TaskImportationInfo taskImportationInfo = importOrganisations(srmCoreServiceFacade, fileName, inputStream, args);
+                successMessage = updateSuccessMessage(successMessage, taskImportationInfo);
             }
 
             sendSuccessImportationResponse(response, successMessage);
@@ -235,6 +240,16 @@ public class ResourceImportationServlet extends HttpServlet {
         }
 
         return srmCoreServiceFacade.importSDMXStructureMsg(ServiceContextHolder.getCurrentServiceContext(), contentInputDto, urnsToImport);
+    }
+
+    // Organisations
+
+    private TaskImportationInfo importOrganisations(SrmCoreServiceFacade srmCoreServiceFacade, String fileName, InputStream inputStream, HashMap<String, String> args) throws MetamacException {
+
+        String organisationSchemeUrn = args.get(SrmSharedTokens.UPLOAD_PARAM_ORGANISATION_SCHEME_URN);
+        Boolean updateAlreadyExisting = Boolean.parseBoolean(args.get(SrmSharedTokens.UPLOAD_PARAM_UPDATE_EXISTING));
+
+        return srmCoreServiceFacade.importOrganisationsTsv(ServiceContextHolder.getCurrentServiceContext(), organisationSchemeUrn, inputStream, fileName, updateAlreadyExisting);
     }
 
     // Concepts

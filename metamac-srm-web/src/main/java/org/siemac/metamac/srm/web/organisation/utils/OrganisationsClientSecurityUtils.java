@@ -231,6 +231,20 @@ public class OrganisationsClientSecurityUtils {
                 organisationSchemeMetamacDto.getType());
     }
 
+    public static boolean canExportOrganisations(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        if (isTaskInBackground(organisationSchemeMetamacDto.getIsTaskInBackground())) {
+            return false;
+        }
+        return SharedOrganisationsSecurityUtils.canExportOrganisationsTsv(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canImportOrganisations(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
+        if (isTaskInBackground(organisationSchemeMetamacDto.getIsTaskInBackground())) {
+            return false;
+        }
+        return canCreateOrganisation(organisationSchemeMetamacDto);
+    }
+
     // CONTACTS
 
     public static boolean canCreateContact(OrganisationSchemeMetamacDto organisationSchemeMetamacDto) {
@@ -286,5 +300,13 @@ public class OrganisationsClientSecurityUtils {
 
             return OrganisationsClientSecurityUtils.canUpdateOrganisation(organisationSchemeMetamacDto.getLifeCycle().getProcStatus(), organisationSchemeMetamacDto.getType());
         }
+    }
+
+    //
+    // PRIVATE METHODS
+    //
+
+    private static boolean isTaskInBackground(Boolean isTaskInBackground) {
+        return BooleanUtils.isTrue(isTaskInBackground);
     }
 }

@@ -24,6 +24,10 @@ public interface OrganisationSchemeUiHandlers extends BaseOrganisationUiHandlers
     void copyOrganisationScheme(String urn);
     void copyOrganisationScheme(String urn, String code);
 
+    // Organisations
+
+    void exportOrganisations(String conceptSchemeUrn);
+
     // Life cycle
 
     void sendToProductionValidation(String urn, OrganisationSchemeTypeEnum organisationSchemeTypeEnum, ProcStatusEnum currentProcStatus);
@@ -33,4 +37,11 @@ public interface OrganisationSchemeUiHandlers extends BaseOrganisationUiHandlers
     void publishExternally(String urn, OrganisationSchemeTypeEnum organisationSchemeTypeEnum, ProcStatusEnum currentProcStatus);
     void versioning(String urn, VersionTypeEnum versionType);
     void createTemporalVersion(String urn);
+
+    // Importation
+
+    void resourceImportationFailed(String errorMessage);
+    void resourceImportationSucceed(String fileName);
+
+    void showWaitPopup();
 }

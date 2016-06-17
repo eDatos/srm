@@ -20,6 +20,8 @@ Application TaskMetamac {
     		String plannifyImportCodesTsvInBackground(String codelistUrn, java.io.File file, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 			"Prepares importation of concepts in tsv format"
     		String plannifyImportConceptsTsvInBackground(String conceptSchemeUrn, java.io.File file, String fileName, boolean updateAlreadyExisting) throws MetamacException;    		
+			"Prepares importation of organisations in tsv format"
+    		String plannifyImportOrganisationsTsvInBackground(String organisationSchemeUrn, java.io.File file, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 			"Prepares importation of code orders in tsv format"
     		String plannifyImportCodeOrdersTsvInBackground(String codelistUrn, java.io.File file, String fileName) throws MetamacException;
 			"Prepares importation of variable elements in tsv format"

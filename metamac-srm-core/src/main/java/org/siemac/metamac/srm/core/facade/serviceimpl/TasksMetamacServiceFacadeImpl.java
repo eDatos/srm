@@ -32,6 +32,12 @@ public class TasksMetamacServiceFacadeImpl extends TasksMetamacServiceFacadeImpl
     }
 
     @Override
+    public void processImportOrganisationsTsv(ServiceContext ctx, String organisationSchemeUrn, File tsvFile, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException {
+        TaskImportationInfo taskImportationInfo = getOrganisationsMetamacService().importOrganisationsTsv(ctx, organisationSchemeUrn, tsvFile, fileName, updateAlreadyExisting, CAN_NOT_BE_BACKGROUND);
+        getTasksMetamacService().markTaskAsFinished(ctx, jobKey, taskImportationInfo.getInformationItems());
+    }
+
+    @Override
     public void processImportCodesTsv(ServiceContext ctx, String codelistUrn, File file, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException {
         TaskImportationInfo taskImportationInfo = getCodesMetamacService().importCodesTsv(ctx, codelistUrn, file, fileName, updateAlreadyExisting, CAN_NOT_BE_BACKGROUND);
         getTasksMetamacService().markTaskAsFinished(ctx, jobKey, taskImportationInfo.getInformationItems());

@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.organisation.serviceapi;
 
+import static com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts.assertEqualsInternationalString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -9,8 +10,14 @@ import static org.junit.Assert.fail;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsDate;
 import static org.siemac.metamac.common.test.utils.MetamacAsserts.assertEqualsMetamacExceptionItem;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,6 +28,7 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
@@ -32,6 +40,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
+import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -2806,7 +2815,91 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     @Test
     @Override
     public void testExportOrganisationsTsv() throws Exception {
-        // TODO METAMAC-2453
+        String organisationSchemeUrn = ORGANISATION_SCHEME_1_V2;
+        String fileName = organisationsService.exportOrganisationsTsv(getServiceContextAdministrador(), organisationSchemeUrn);
+        assertNotNull(fileName);
+
+        // Validate
+        File file = new File(tempDirPath() + File.separatorChar + fileName);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        assertEquals("code\tparent\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca", bufferedReader.readLine());
+        Set<String> lines = new HashSet<String>();
+        String line = null;
+        while ((line = bufferedReader.readLine()) != null) {
+            System.out.println(line);
+            lines.add(line);
+        }
+        assertEquals(8, lines.size());
+
+        assertTrue(lines
+                .contains("ORGANISATION01\t\tNombre organisationScheme-1-v2-organisation-1\t\tName organisationScheme-1-v2-organisation-1\t\tDescripción organisationScheme-1-v2-organisation-1\t\t\t"));
+        assertTrue(lines
+                .contains("ORGANISATION02\t\tNombre organisationScheme-1-v2-organisation-2\t\t\t\tDescripción organisationScheme-1-v2-organisation-2\t\tDescription organisationScheme-1-v2-organisation-2\t"));
+        assertTrue(lines
+                .contains("ORGANISATION0201\tORGANISATION02\tNombre organisationScheme-1-v2-organisation-2-1\t\tName organisationScheme-1-v2-organisation-2-1\t\tDescripción organisationScheme-1-v2-organisation-2-1\t\tDescription organisationScheme-1-v2-organisation-2-1\t"));
+        assertTrue(lines.contains("ORGANISATION020101\tORGANISATION0201\tNombre organisationScheme-1-v2-organisation-2-1-1\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("ORGANISATION03\t\tnombre organisation-3\t\tname organisation-3\t\t\t\t\t"));
+        assertTrue(lines.contains("ORGANISATION04\t\tnombre organisation-4\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("ORGANISATION0401\tORGANISATION04\tnombre organisation 4-1\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("ORGANISATION040101\tORGANISATION0401\tNombre organisationScheme-1-v2-organisation-4-1-1\t\tName organisationScheme-1-v2-organisation-4-1-1\t\t\t\t\t"));
+        bufferedReader.close();
+    }
+
+    @Test
+    @Override
+    public void testImportOrganisationsTsv() throws Exception {
+        String organisationSchemeUrn = ORGANISATION_SCHEME_5_V1;
+        String fileName = "importation-organisation-unit-01.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        TaskImportationInfo taskImportTsvInfo = organisationsService.importOrganisationsTsv(getServiceContextAdministrador(), organisationSchemeUrn, file, fileName, updateAlreadyExisting,
+                Boolean.TRUE);
+
+        // Validate
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(0, taskImportTsvInfo.getInformationItems().size());
+
+        // Validate item scheme
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = organisationsService.retrieveOrganisationSchemeByUrn(getServiceContextAdministrador(), organisationSchemeUrn);
+        assertEqualsDate("2011-01-01 01:02:03", organisationSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+        assertTrue(DateUtils.isSameDay(new Date(), organisationSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
+        assertEquals(false, organisationSchemeVersion.getItemScheme().getIsTaskInBackground());
+
+        // Validate organisations
+        List<ItemResult> result = organisationsService.retrieveOrganisationsByOrganisationSchemeUrnUnordered(getServiceContextAdministrador(), ORGANISATION_SCHEME_5_V1, ItemResultSelection.ALL);
+        assertEquals(result.size(), 20);
+
+        String organisationSchemeUrnPart = "urn:sdmx:org.sdmx.infomodel.base.OrganisationUnit=SDMX01:ORGANISATIONSCHEME05(01.000).";
+        {
+            String semanticIdentifier = "ORGANISATION01";
+            OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), organisationSchemeUrnPart + semanticIdentifier);
+            assertEquals(semanticIdentifier, organisation.getNameableArtefact().getCode());
+            assertEquals(organisation.getNameableArtefact().getUrn(), organisation.getNameableArtefact().getUrnProvider());
+            assertEquals(null, organisation.getParent());
+            assertEqualsDate("2011-01-22 01:02:03", organisation.getLastUpdated().toDate());
+        }
+        {
+            String semanticIdentifier = "PRESIDENCIA";
+            OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), organisationSchemeUrnPart + semanticIdentifier);
+            assertEquals(semanticIdentifier, organisation.getNameableArtefact().getCode());
+            assertEquals(organisation.getNameableArtefact().getUrn(), organisation.getNameableArtefact().getUrnProvider());
+            assertEquals(null, organisation.getParent());
+            assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "es", "Presidencia del Gobierno", null, null);
+            BaseAsserts.assertEqualsDay(new DateTime(), organisation.getLastUpdated());
+        }
+        {
+            String semanticIdentifier = "DGRAL_PROMOCION_TURISTICA";
+            OrganisationMetamac organisation = organisationsService.retrieveOrganisationByUrn(getServiceContextAdministrador(), organisationSchemeUrnPart + semanticIdentifier);
+            assertEquals(semanticIdentifier, organisation.getNameableArtefact().getCode());
+            assertEquals(organisation.getNameableArtefact().getUrn(), organisation.getNameableArtefact().getUrnProvider());
+            assertEquals("VICECONSEJERIA_TURISMO", organisation.getParent().getNameableArtefact().getCode());
+            assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "es", "Dirección General de Ordenación y Promoción Turística", null, null);
+            BaseAsserts.assertEqualsDay(new DateTime(), organisation.getLastUpdated());
+        }
     }
 
     protected OrganisationMetamacVisualisationResult getOrganisationVisualisationResult(List<OrganisationMetamacVisualisationResult> actuals, String codeUrn) {
@@ -2823,5 +2916,4 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     protected String getDataSetFile() {
         return "dbunit/SrmOrganisationsTest.xml";
     }
-
 }

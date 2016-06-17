@@ -780,8 +780,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         InputStreamReader inputStreamReader = null;
         BufferedReader bufferedReader = null;
         List<ConceptMetamac> conceptsToPersist = null;
-        Map<String, ConceptMetamac> conceptsToPersistByCode = null;
-        Map<String, ConceptMetamac> conceptsPreviousInConceptSchemeByCode = null;
+        Map<String, Item> conceptsToPersistByCode = null;
+        Map<String, Item> conceptsPreviousInConceptSchemeByCode = null;
         try {
             InputStream stream = new FileInputStream(file);
             String charset = FileUtils.guessCharset(file);
@@ -797,8 +797,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
                 // Retrieve actual concepts in concept scheme
                 conceptsToPersist = new ArrayList<ConceptMetamac>(); // save in order is required (first parent and then children)
-                conceptsToPersistByCode = new HashMap<String, ConceptMetamac>();
-                conceptsPreviousInConceptSchemeByCode = new HashMap<String, ConceptMetamac>();
+                conceptsToPersistByCode = new HashMap<String, Item>();
+                conceptsPreviousInConceptSchemeByCode = new HashMap<String, Item>();
                 for (Item item : conceptSchemeVersion.getItems()) {
                     conceptsPreviousInConceptSchemeByCode.put(item.getNameableArtefact().getCode(), (ConceptMetamac) item);
                 }
@@ -844,7 +844,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         return new TaskImportationInfo(Boolean.FALSE, informationItems);
     }
 
-    private void saveConceptsEfficiently(Collection<ConceptMetamac> conceptsToPersist, Map<String, ConceptMetamac> conceptsToPersistByCode) {
+    private void saveConceptsEfficiently(Collection<ConceptMetamac> conceptsToPersist, Map<String, Item> conceptsToPersistByCode) {
         for (ConceptMetamac conceptMetamac : conceptsToPersist) {
             if (conceptMetamac.getParent() != null) {
                 if (conceptsToPersistByCode.containsKey(conceptMetamac.getParent().getNameableArtefact().getCode())) {

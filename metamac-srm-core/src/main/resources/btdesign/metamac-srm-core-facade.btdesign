@@ -355,6 +355,8 @@ Application SrmFacadeCore {
     		List<OrganisationMetamacVisualisationResult> retrieveOrganisationsByOrganisationSchemeUrn(String organisationSchemeUrn, String locale) throws MetamacException;
             "Exports organisations in TSV format"
     		String exportOrganisationsTsv(String organisationSchemeUrn) throws MetamacException;
+			"Imports organisations in TSV format"
+    		TaskImportationInfo importOrganisationsTsv(String organisationSchemeUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException;
 
             "Finds contacts by criteria"
             MetamacCriteriaResult<@ContactDto> findOrganisationContactsByCondition(MetamacCriteria criteria) throws MetamacException;
@@ -743,11 +745,14 @@ Application SrmFacadeCore {
 
 		Service TasksMetamacServiceFacade {
 			> @ConceptsMetamacService
+			> @OrganisationsMetamacService
        		> @CodesMetamacService
        		> @TasksMetamacService
 
 			"Imports concepts in tsv format"
     		processImportConceptsTsv(String conceptSchemeUrn, java.io.File tsvFile, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
+    		"Imports organisations in tsv format"
+    		processImportOrganisationsTsv(String organisationSchemeUrn, java.io.File tsvFile, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
     		"Imports codes in tsv format"
     		processImportCodesTsv(String codelistUrn, java.io.File tsvFile, String fileName, String jobKey, boolean updateAlreadyExisting) throws MetamacException;
 			"Imports code orders in tsv format"

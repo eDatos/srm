@@ -2592,6 +2592,17 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         return getOrganisationsMetamacService().exportOrganisationsTsv(ctx, organisationSchemeUrn);
     }
 
+    @Override
+    public TaskImportationInfo importOrganisationsTsv(ServiceContext ctx, String organisationSchemeUrn, InputStream tsvStream, String fileName, boolean updateAlreadyExisting) throws MetamacException {
+        // Security
+        OrganisationSchemeVersionMetamac organisationSchemeVersionMetamac = getOrganisationsMetamacService().retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
+        OrganisationsSecurityUtils.canImportOrganisationsTsv(ctx, organisationSchemeVersionMetamac);
+
+        // Import (can be in background)
+        File file = createTempFile(tsvStream, fileName);
+        return getOrganisationsMetamacService().importOrganisationsTsv(ctx, organisationSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+    }
+
     /**************************************************************************
      * CONCEPTS
      *************************************************************************/

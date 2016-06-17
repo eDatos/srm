@@ -164,6 +164,10 @@ public class OrganisationsSecurityUtils extends CommonSecurityUtils {
         }
     }
 
+    public static void canImportOrganisationsTsv(ServiceContext ctx, OrganisationSchemeVersionMetamac organisationSchemeVersion) throws MetamacException {
+        canCreateOrganisation(ctx, organisationSchemeVersion);
+    }
+
     //
     // CATEGORISATIONS
     //

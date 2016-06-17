@@ -1,6 +1,12 @@
 package org.siemac.metamac.srm.core.organisation.serviceimpl;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,8 +14,11 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
@@ -20,12 +29,14 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
+import org.siemac.metamac.core.common.io.FileUtils;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
 import org.siemac.metamac.srm.core.base.serviceimpl.utils.BaseReplaceFromTemporalMetamac;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategoriesMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.category.serviceimpl.utils.CategorisationsUtils;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultSelection;
+import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
 import org.siemac.metamac.srm.core.common.LifeCycle;
 import org.siemac.metamac.srm.core.common.SrmValidation;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
@@ -34,6 +45,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
 import org.siemac.metamac.srm.core.common.service.utils.TsvExportationUtils;
+import org.siemac.metamac.srm.core.common.service.utils.TsvImportationUtils;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
@@ -41,13 +53,19 @@ import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.organisation.serviceimpl.utils.OrganisationsMetamacInvocationValidator;
+import org.siemac.metamac.srm.core.task.domain.ImportationOrganisationsTsvHeader;
+import org.siemac.metamac.srm.core.task.serviceapi.TasksMetamacService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
+import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback;
 import com.arte.statistic.sdmx.srm.core.common.domain.InternationalStringRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
@@ -64,12 +82,18 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationSchemeVe
 import com.arte.statistic.sdmx.srm.core.organisation.serviceapi.OrganisationsService;
 import com.arte.statistic.sdmx.srm.core.organisation.serviceimpl.utils.OrganisationsInvocationValidator;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 /**
  * Implementation of OrganisationsMetamacService.
  */
 @Service("organisationsMetamacService")
 public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacServiceImplBase {
+
+    private static Logger                 logger = LoggerFactory.getLogger(OrganisationsMetamacServiceImpl.class);
+
+    @Autowired
+    private BaseService                   baseService;
 
     @Autowired
     private OrganisationsService          organisationsService;
@@ -94,7 +118,13 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
     private OrganisationRepository        organisationRepository;
 
     @Autowired
+    private ItemSchemeRepository          itemSchemeRepository;
+
+    @Autowired
     private InternationalStringRepository internationalStringRepository;
+
+    @Autowired
+    private TasksMetamacService           tasksMetamacService;
 
     @Autowired
     @Qualifier("organisationsVersioningCallbackMetamac")
@@ -532,6 +562,128 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
         List<String> languages = srmConfiguration.retrieveLanguages();
 
         return TsvExportationUtils.exportOrganisations(items, languages);
+    }
+
+    @Override
+    public TaskImportationInfo importOrganisationsTsv(ServiceContext ctx, String organisationSchemeUrn, File file, String fileName, boolean updateAlreadyExisting, Boolean canBeBackground)
+            throws MetamacException {
+        // Validation
+        OrganisationsMetamacInvocationValidator.checkImportOrganisationsTsv(organisationSchemeUrn, file, fileName, updateAlreadyExisting, canBeBackground, null);
+        OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemeUrn);
+        TsvImportationUtils.checkItemSchemeCanExecuteImportation(organisationSchemeVersion, organisationSchemeVersion.getLifeCycleMetadata(), canBeBackground);
+
+        srmValidation.checkItemsStructureCanBeModified(ctx, organisationSchemeVersion);
+
+        // Decide if task must be executed in background
+        boolean executeInBackground = SrmServiceUtils.taskMustBeBackground(file, canBeBackground, SrmConstants.NUM_BYTES_TO_PLANNIFY_TSV_ITEMS_IMPORTATION);
+
+        // Plannify task if background
+        if (executeInBackground) {
+            organisationSchemeVersion.getItemScheme().setIsTaskInBackground(Boolean.TRUE);
+            itemSchemeRepository.save(organisationSchemeVersion.getItemScheme());
+
+            String jobKey = tasksMetamacService.plannifyImportOrganisationsTsvInBackground(ctx, organisationSchemeUrn, file, fileName, updateAlreadyExisting);
+            return new TaskImportationInfo(Boolean.TRUE, jobKey);
+        }
+
+        // Execute importation now
+        List<MetamacExceptionItem> exceptionItems = new ArrayList<MetamacExceptionItem>();
+        List<MetamacExceptionItem> informationItems = new ArrayList<MetamacExceptionItem>();
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+        List<OrganisationMetamac> organisationsToPersist = null;
+        Map<String, Item> organisationsToPersistByCode = null;
+        Map<String, Item> organisationsPreviousInOrganisationSchemeByCode = null;
+        try {
+            InputStream stream = new FileInputStream(file);
+            String charset = FileUtils.guessCharset(file);
+            inputStreamReader = new InputStreamReader(stream, charset);
+            bufferedReader = new BufferedReader(inputStreamReader);
+
+            // Header
+            String line = bufferedReader.readLine();
+            ImportationOrganisationsTsvHeader header = TsvImportationUtils.parseTsvHeaderToImportOrganisations(line, exceptionItems);
+
+            // Organisations
+            if (CollectionUtils.isEmpty(exceptionItems)) {
+
+                // Retrieve actual organisations in organisation scheme
+                organisationsToPersist = new ArrayList<OrganisationMetamac>(); // save in order is required (first parent and then children)
+                organisationsToPersistByCode = new HashMap<String, Item>();
+                organisationsPreviousInOrganisationSchemeByCode = new HashMap<String, Item>();
+                for (Item item : organisationSchemeVersion.getItems()) {
+                    organisationsPreviousInOrganisationSchemeByCode.put(item.getNameableArtefact().getCode(), (OrganisationMetamac) item);
+                }
+
+                int lineNumber = 2;
+                while ((line = bufferedReader.readLine()) != null) {
+                    if (StringUtils.isBlank(line)) {
+                        continue;
+                    }
+                    String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
+                    if (columns.length != header.getColumnsSize()) {
+                        exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber));
+                        continue;
+                    }
+                    // Transform organisation and add to list to persist
+                    OrganisationMetamac organisation = TsvImportationUtils.tsvLineToOrganisation(header, columns, lineNumber, organisationSchemeVersion, updateAlreadyExisting,
+                            organisationsPreviousInOrganisationSchemeByCode, organisationsToPersistByCode, exceptionItems, informationItems);
+                    if (organisation != null) {
+                        organisationsToPersist.add(organisation);
+                        organisationsToPersistByCode.put(organisation.getNameableArtefact().getCode(), organisation);
+                    }
+                    lineNumber++;
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Error importing tsv file", e);
+            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_FILE_PARSING, e.getMessage()));
+        } finally {
+            IOUtils.closeQuietly(inputStreamReader);
+            IOUtils.closeQuietly(bufferedReader);
+        }
+        if (!CollectionUtils.isEmpty(exceptionItems)) {
+            // rollback and inform about errors
+            throw MetamacExceptionBuilder.builder().withPrincipalException(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, fileName)).withExceptionItems(exceptionItems).build();
+        }
+
+        // Save organisations and scheme
+        saveOrganisationsEfficiently(organisationSchemeVersion.getOrganisationSchemeType(), organisationsToPersist, organisationsToPersistByCode);
+        baseService.updateItemSchemeLastUpdated(ctx, organisationSchemeVersion);
+        organisationSchemeVersion.getItemScheme().setIsTaskInBackground(Boolean.FALSE);
+        itemSchemeRepository.save(organisationSchemeVersion.getItemScheme());
+
+        return new TaskImportationInfo(Boolean.FALSE, informationItems);
+    }
+
+    private void saveOrganisationsEfficiently(OrganisationSchemeTypeEnum organisationSchemeType, Collection<OrganisationMetamac> organisationsToPersist, Map<String, Item> organisationsToPersistByCode) {
+        for (OrganisationMetamac organisationMetamac : organisationsToPersist) {
+            if (organisationMetamac.getParent() != null) {
+                if (organisationsToPersistByCode.containsKey(organisationMetamac.getParent().getNameableArtefact().getCode())) {
+                    // update reference because it was saved
+                    organisationMetamac.setParent(organisationsToPersistByCode.get(organisationMetamac.getParent().getNameableArtefact().getCode()));
+                }
+            }
+            organisationMetamac.setOrganisationType(getOrganisationTypeFromSchemeType(organisationSchemeType));
+            organisationMetamac = getOrganisationMetamacRepository().save(organisationMetamac);
+            // update reference after save to assign to children
+            organisationsToPersistByCode.put(organisationMetamac.getNameableArtefact().getCode(), organisationMetamac);
+        }
+    }
+
+    private OrganisationTypeEnum getOrganisationTypeFromSchemeType(OrganisationSchemeTypeEnum organisationSchemeTypeEnum) {
+        switch (organisationSchemeTypeEnum) {
+            case AGENCY_SCHEME:
+                return OrganisationTypeEnum.AGENCY;
+            case DATA_CONSUMER_SCHEME:
+                return OrganisationTypeEnum.DATA_CONSUMER;
+            case DATA_PROVIDER_SCHEME:
+                return OrganisationTypeEnum.DATA_PROVIDER;
+            case ORGANISATION_UNIT_SCHEME:
+                return OrganisationTypeEnum.ORGANISATION_UNIT;
+            default:
+                return null;
+        }
     }
 
     /**

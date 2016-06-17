@@ -55,6 +55,8 @@ import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeLi
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationSchemeListResult;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsAction;
 import org.siemac.metamac.srm.web.shared.organisation.DeleteOrganisationsResult;
+import org.siemac.metamac.srm.web.shared.organisation.ExportOrganisationsAction;
+import org.siemac.metamac.srm.web.shared.organisation.ExportOrganisationsResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeResult;
 import org.siemac.metamac.srm.web.shared.organisation.GetOrganisationSchemeVersionsAction;
@@ -72,6 +74,7 @@ import org.siemac.metamac.srm.web.shared.organisation.UpdateOrganisationSchemePr
 import org.siemac.metamac.srm.web.shared.organisation.VersionOrganisationSchemeAction;
 import org.siemac.metamac.srm.web.shared.organisation.VersionOrganisationSchemeResult;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
+import org.siemac.metamac.web.common.client.events.ChangeWaitPopupVisibilityEvent;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -512,6 +515,21 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
         });
     }
 
+    @Override
+    public void exportOrganisations(String organisationSchemeUrn) {
+        dispatcher.execute(new ExportOrganisationsAction(organisationSchemeUrn), new WaitingAsyncCallbackHandlingError<ExportOrganisationsResult>(this) {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(ExportOrganisationsResult result) {
+                org.siemac.metamac.srm.web.client.utils.CommonUtils.downloadFile(result.getFileName());
+            }
+        });
+    }
+
     //
     // CATEGORISATIONS
     //
@@ -625,5 +643,27 @@ public class OrganisationSchemePresenter extends Presenter<OrganisationSchemePre
     private void updateUrl() {
         PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeOrganisationSchemePlaceRequest(organisationSchemeMetamacDto.getUrn(), organisationSchemeMetamacDto.getType());
         placeManager.updateHistory(placeRequest, true);
+    }
+
+    //
+    // IMPORTATION
+    //
+
+    @Override
+    public void resourceImportationSucceed(String successMessage) {
+        ShowMessageEvent.fireSuccessMessage(OrganisationSchemePresenter.this, successMessage);
+        retrieveOrganisationSchemeByUrn(organisationSchemeMetamacDto.getUrn());
+        ChangeWaitPopupVisibilityEvent.fire(this, false);
+    }
+
+    @Override
+    public void resourceImportationFailed(String errorMessage) {
+        ShowMessageEvent.fireErrorMessage(OrganisationSchemePresenter.this, errorMessage);
+        ChangeWaitPopupVisibilityEvent.fire(this, false);
+    }
+
+    @Override
+    public void showWaitPopup() {
+        ChangeWaitPopupVisibilityEvent.fire(this, true);
     }
 }

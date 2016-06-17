@@ -19,7 +19,7 @@ public interface ConceptSchemeUiHandlers extends BaseConceptUiHandlers {
     void copyConceptScheme(String urn);
     void copyConceptScheme(String urn, String code);
 
-    // Codes
+    // Concepts
     void exportConcepts(String conceptSchemeUrn);
 
     // Life cycle

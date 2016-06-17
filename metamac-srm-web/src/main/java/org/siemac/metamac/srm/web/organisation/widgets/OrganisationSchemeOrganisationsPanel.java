@@ -14,7 +14,9 @@ import org.siemac.metamac.srm.web.organisation.model.record.OrganisationRecord;
 import org.siemac.metamac.srm.web.organisation.utils.CommonUtils;
 import org.siemac.metamac.srm.web.organisation.utils.OrganisationsClientSecurityUtils;
 import org.siemac.metamac.srm.web.organisation.view.handlers.OrganisationSchemeUiHandlers;
+import org.siemac.metamac.web.common.client.listener.UploadListener;
 import org.siemac.metamac.web.common.client.widgets.CustomListGrid;
+import org.siemac.metamac.web.common.client.widgets.CustomToolStripButton;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
@@ -34,26 +36,108 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class OrganisationSchemeOrganisationsPanel extends VLayout {
 
-    private OrganisationSchemeMetamacDto   organisationSchemeDto;
+    private OrganisationSchemeMetamacDto organisationSchemeDto;
 
-    private OrganisationSchemeUiHandlers   uiHandlers;
+    private OrganisationSchemeUiHandlers uiHandlers;
+
+    private ToolStrip                    toolStrip;
+    private ToolStripButton              importOrganisationsButton;
+    private ToolStripButton              exportOrganisationsButton;
+    private ImportOrganisationsWindow    importOrganisationsWindow;
 
     // Organisation list
-    private final ToolStrip                toolStrip;
-    private final ToolStripButton          listGridNewButton;
-    private final ToolStripButton          listGridDeleteOrganisationButton;
-    private NewOrganisationWindow          newOrganisationWindow;
-    private final DeleteConfirmationWindow deleteConfirmationWindow;
-    private final CustomListGrid           organisationListGrid;
+    private ToolStripButton              listGridNewButton;
+    private ToolStripButton              listGridDeleteOrganisationButton;
+    private NewOrganisationWindow        newOrganisationWindow;
+    private DeleteConfirmationWindow     deleteConfirmationWindow;
+    private CustomListGrid               organisationListGrid;
 
     // OrganisationTree
-    private final OrganisationsTreeGrid    organisationsTreeGrid;
+    private OrganisationsTreeGrid        organisationsTreeGrid;
 
     public OrganisationSchemeOrganisationsPanel() {
         setMargin(15);
 
-        // ToolStrip
+        createImportationWindow();
+        createDeleteConfirmationWindow();
 
+        createToolStrip();
+        createListGrid();
+        createTreeGrid();
+    }
+
+    public void setUiHandlers(OrganisationSchemeUiHandlers uiHandlers) {
+        this.uiHandlers = uiHandlers;
+        organisationsTreeGrid.setUiHandlers(uiHandlers);
+        importOrganisationsWindow.setUiHandlers(uiHandlers);
+    }
+
+    public void updateItemScheme(OrganisationSchemeMetamacDto organisationSchemeDto) {
+        this.organisationSchemeDto = organisationSchemeDto;
+        // Show/hide organisation list and tree, depending on the organisation scheme type
+        if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
+            showOrganisationTree();
+        } else {
+            showOrganisationList();
+            // Security to create organisations
+            listGridNewButton.setVisible(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeDto));
+        }
+        importOrganisationsButton.setVisible(OrganisationsClientSecurityUtils.canImportOrganisations(organisationSchemeDto));
+        exportOrganisationsButton.setVisible(OrganisationsClientSecurityUtils.canExportOrganisations(organisationSchemeDto));
+        toolStrip.markForRedraw();
+
+        // Update organisation scheme in tree grid
+        organisationsTreeGrid.updateItemScheme(organisationSchemeDto);
+    }
+
+    public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeDto, List<OrganisationMetamacVisualisationResult> organisations) {
+        this.organisationSchemeDto = organisationSchemeDto;
+        this.importOrganisationsWindow.setOrganisationScheme(organisationSchemeDto);
+        if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
+            // Organisation hierarchy
+            organisationsTreeGrid.setOrganisations(organisationSchemeDto, organisations);
+            organisationsTreeGrid.setAutoFitMaxRecords(organisations.size() + 1);
+        } else {
+            // Organisation list
+            OrganisationTypeEnum organisationTypeEnum = CommonUtils.getOrganisationTypeEnum(organisationSchemeDto.getType());
+            OrganisationRecord[] records = new OrganisationRecord[organisations.size()];
+            for (int i = 0; i < organisations.size(); i++) {
+                records[i] = org.siemac.metamac.srm.web.organisation.utils.OrganisationsRecordUtils.getOrganisationRecord(organisations.get(i), organisationTypeEnum);
+            }
+            organisationListGrid.setData(records);
+            organisationListGrid.setAutoFitMaxRecords(organisations.size() + 1);
+        }
+    }
+
+    private void createImportationWindow() {
+        importOrganisationsWindow = new ImportOrganisationsWindow();
+        importOrganisationsWindow.setUploadListener(new UploadListener() {
+
+            @Override
+            public void uploadFailed(String errorMessage) {
+                uiHandlers.resourceImportationFailed(errorMessage);
+            }
+            @Override
+            public void uploadComplete(String fileName) {
+                uiHandlers.resourceImportationSucceed(fileName);
+            }
+        });
+    }
+
+    private void createDeleteConfirmationWindow() {
+        deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().organisationDeleteConfirmationTitle(), getConstants().organisationDeleteConfirmation());
+        deleteConfirmationWindow.setVisible(false);
+        deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                uiHandlers.deleteOrganisations(getSelectedOrganisationUrns());
+                deleteConfirmationWindow.hide();
+            }
+        });
+    }
+
+    private void createToolStrip() {
         toolStrip = new ToolStrip();
         toolStrip.setWidth100();
 
@@ -77,17 +161,7 @@ public class OrganisationSchemeOrganisationsPanel extends VLayout {
                 });
             }
         });
-
-        deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().organisationDeleteConfirmationTitle(), getConstants().organisationDeleteConfirmation());
-        deleteConfirmationWindow.setVisible(false);
-        deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                uiHandlers.deleteOrganisations(getSelectedOrganisationUrns());
-                deleteConfirmationWindow.hide();
-            }
-        });
+        toolStrip.addButton(listGridNewButton);
 
         listGridDeleteOrganisationButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         listGridDeleteOrganisationButton.setVisible(false);
@@ -98,12 +172,34 @@ public class OrganisationSchemeOrganisationsPanel extends VLayout {
                 deleteConfirmationWindow.show();
             }
         });
-
-        toolStrip.addButton(listGridNewButton);
         toolStrip.addButton(listGridDeleteOrganisationButton);
 
-        // ListGrid
+        importOrganisationsButton = new CustomToolStripButton(getConstants().actionImportOrganisations(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource()
+                .getURL());
+        importOrganisationsButton.addClickHandler(new ClickHandler() {
 
+            @Override
+            public void onClick(ClickEvent event) {
+                importOrganisationsWindow.show();
+            }
+        });
+        toolStrip.addButton(importOrganisationsButton);
+
+        exportOrganisationsButton = new CustomToolStripButton(getConstants().actionExportOrganisations(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource()
+                .getURL());
+        exportOrganisationsButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                uiHandlers.exportOrganisations(organisationSchemeDto.getUrn());
+            }
+        });
+        toolStrip.addButton(exportOrganisationsButton);
+
+        addMember(toolStrip);
+    }
+
+    private void createListGrid() {
         organisationListGrid = new CustomListGrid();
         organisationListGrid.setAutoFitData(Autofit.VERTICAL);
         ListGridField codeField = new ListGridField(OrganisationDS.CODE, getConstants().identifiableArtefactCode());
@@ -133,52 +229,12 @@ public class OrganisationSchemeOrganisationsPanel extends VLayout {
             }
         });
 
-        // TreeGrid
-
-        organisationsTreeGrid = new OrganisationsTreeGrid();
-
-        addMember(toolStrip);
         addMember(organisationListGrid);
+    }
+
+    private void createTreeGrid() {
+        organisationsTreeGrid = new OrganisationsTreeGrid();
         addMember(organisationsTreeGrid);
-    }
-
-    public void setUiHandlers(OrganisationSchemeUiHandlers uiHandlers) {
-        this.uiHandlers = uiHandlers;
-        organisationsTreeGrid.setUiHandlers(uiHandlers);
-    }
-
-    public void updateItemScheme(OrganisationSchemeMetamacDto organisationSchemeDto) {
-        this.organisationSchemeDto = organisationSchemeDto;
-        // Show/hide organisation list and tree, depending on the organisation scheme type
-        if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
-            showOrganisationTree();
-        } else {
-            showOrganisationList();
-            // Security to create organisations
-            listGridNewButton.setVisible(OrganisationsClientSecurityUtils.canCreateOrganisation(organisationSchemeDto));
-            toolStrip.markForRedraw();
-        }
-
-        // Update organisation scheme in tree grid
-        organisationsTreeGrid.updateItemScheme(organisationSchemeDto);
-    }
-
-    public void setOrganisationList(OrganisationSchemeMetamacDto organisationSchemeDto, List<OrganisationMetamacVisualisationResult> organisations) {
-        this.organisationSchemeDto = organisationSchemeDto;
-        if (OrganisationSchemeTypeEnum.ORGANISATION_UNIT_SCHEME.equals(organisationSchemeDto.getType())) {
-            // Organisation hierarchy
-            organisationsTreeGrid.setOrganisations(organisationSchemeDto, organisations);
-            organisationsTreeGrid.setAutoFitMaxRecords(organisations.size() + 1);
-        } else {
-            // Organisation list
-            OrganisationTypeEnum organisationTypeEnum = CommonUtils.getOrganisationTypeEnum(organisationSchemeDto.getType());
-            OrganisationRecord[] records = new OrganisationRecord[organisations.size()];
-            for (int i = 0; i < organisations.size(); i++) {
-                records[i] = org.siemac.metamac.srm.web.organisation.utils.OrganisationsRecordUtils.getOrganisationRecord(organisations.get(i), organisationTypeEnum);
-            }
-            organisationListGrid.setData(records);
-            organisationListGrid.setAutoFitMaxRecords(organisations.size() + 1);
-        }
     }
 
     private void showOrganisationList() {
