@@ -17,6 +17,9 @@ public interface CategorySchemeUiHandlers extends BaseCategoryUiHandlers {
     void copyCategoryScheme(String urn);
     void copyCategoryScheme(String urn, String code);
 
+    // Categories
+    void exportCategories(String categorySchemeUrn);
+
     // Life cycle
 
     void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus);
@@ -26,4 +29,11 @@ public interface CategorySchemeUiHandlers extends BaseCategoryUiHandlers {
     void publishExternally(String urn, ProcStatusEnum currentProcStatus);
     void versioning(String urn, VersionTypeEnum versionType);
     void createTemporalVersion(String urn);
+
+    // Importation
+
+    void resourceImportationFailed(String errorMessage);
+    void resourceImportationSucceed(String fileName);
+
+    void showWaitPopup();
 }

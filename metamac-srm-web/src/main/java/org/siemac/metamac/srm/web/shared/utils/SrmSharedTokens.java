@@ -33,4 +33,8 @@ public class SrmSharedTokens extends org.siemac.metamac.web.common.shared.utils.
     // Organisations upload configuration
 
     public static final String UPLOAD_PARAM_ORGANISATION_SCHEME_URN     = "organisation-scheme-urn";
+
+    // Categories upload configuration
+
+    public static final String UPLOAD_PARAM_CATEGORY_SCHEME_URN         = "category-scheme-urn";
 }

@@ -13,7 +13,7 @@ import org.siemac.metamac.srm.web.category.model.record.CategorySchemeRecord;
 import org.siemac.metamac.srm.web.category.presenter.CategorySchemePresenter;
 import org.siemac.metamac.srm.web.category.utils.CategoriesFormUtils;
 import org.siemac.metamac.srm.web.category.view.handlers.CategorySchemeUiHandlers;
-import org.siemac.metamac.srm.web.category.widgets.CategoriesTreeGrid;
+import org.siemac.metamac.srm.web.category.widgets.CategorySchemeCategoriesPanel;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeCategorisationsPanel;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeMainFormLayout;
 import org.siemac.metamac.srm.web.category.widgets.CategorySchemeVersionsSectionStack;
@@ -89,8 +89,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     // Versions
     private final CategorySchemeVersionsSectionStack versionsSectionStack;
 
-    // CategoriesTree
-    private final CategoriesTreeGrid                 categoriesTreeGrid;
+    private final CategorySchemeCategoriesPanel      categoriesPanel;
 
     // Categorisations
     private final CategorySchemeCategorisationsPanel categorisationsPanel;
@@ -130,11 +129,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         // CATEGORIES
         //
 
-        categoriesTreeGrid = new CategoriesTreeGrid();
-
-        VLayout categoriesLayout = new VLayout();
-        categoriesLayout.setMargin(15);
-        categoriesLayout.addMember(categoriesTreeGrid);
+        categoriesPanel = new CategorySchemeCategoriesPanel();
 
         //
         // CATEGORISATIONS
@@ -160,7 +155,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         // Categories tab
         Tab categoriesTab = new Tab(getConstants().categories());
-        categoriesTab.setPane(categoriesLayout);
+        categoriesTab.setPane(categoriesPanel);
         tabSet.addTab(categoriesTab);
 
         // Categorisations tab
@@ -179,6 +174,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     @Override
     public void setUiHandlers(CategorySchemeUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
+        this.categoriesPanel.setUiHandlers(uiHandlers);
         this.categorisationsPanel.setUiHandlers(uiHandlers);
     }
 
@@ -508,7 +504,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         setCategorySchemeEditionMode(categorySchemeDto);
 
         // Update category scheme in tree grid
-        categoriesTreeGrid.updateItemScheme(categorySchemeDto);
+        categoriesPanel.updateItemScheme(categorySchemeDto);
     }
 
     @Override
@@ -655,11 +651,7 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
     @Override
     public void setCategories(List<ItemVisualisationResult> categoryDtos) {
-        // Category hierarchy
-        categoriesTreeGrid.setUiHandlers(getUiHandlers()); // UiHandlers cannot be set in constructor because is still null
-        categoriesTreeGrid.setCategories(categorySchemeDto, categoryDtos);
-        // Set the max records to the size of the items list (plus the item scheme node)
-        categoriesTreeGrid.setAutoFitMaxRecords(categoryDtos.size() + 1);
+        categoriesPanel.setCategories(categoryDtos);
     }
 
     public CategorySchemeMetamacDto getCategorySchemeDto() {

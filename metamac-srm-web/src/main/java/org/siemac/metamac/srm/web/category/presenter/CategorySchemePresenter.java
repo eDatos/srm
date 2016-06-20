@@ -27,6 +27,7 @@ import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.utils.WaitingAsyncCallbackHandlingExportResult;
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
@@ -47,6 +48,8 @@ import org.siemac.metamac.srm.web.shared.category.DeleteCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategoryResult;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemesAction;
 import org.siemac.metamac.srm.web.shared.category.DeleteCategorySchemesResult;
+import org.siemac.metamac.srm.web.shared.category.ExportCategoriesAction;
+import org.siemac.metamac.srm.web.shared.category.ExportCategoriesResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategoriesBySchemeResult;
 import org.siemac.metamac.srm.web.shared.category.GetCategorisationsByArtefactAction;
@@ -70,6 +73,7 @@ import org.siemac.metamac.srm.web.shared.concept.CopyCategorySchemeResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
+import org.siemac.metamac.web.common.client.events.ChangeWaitPopupVisibilityEvent;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -486,6 +490,39 @@ public class CategorySchemePresenter extends Presenter<CategorySchemePresenter.C
                 retrieveCategoriesByScheme(categorySchemeMetamacDto.getUrn());
             }
         });
+    }
+
+    @Override
+    public void exportCategories(String categorySchemeUrn) {
+        dispatcher.execute(new ExportCategoriesAction(categorySchemeUrn), new WaitingAsyncCallbackHandlingError<ExportCategoriesResult>(this) {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(ExportCategoriesResult result) {
+                CommonUtils.downloadFile(result.getFileName());
+            }
+        });
+    }
+
+    @Override
+    public void resourceImportationSucceed(String successMessage) {
+        ShowMessageEvent.fireSuccessMessage(CategorySchemePresenter.this, successMessage);
+        retrieveCategorySchemeByUrn(categorySchemeMetamacDto.getUrn());
+        ChangeWaitPopupVisibilityEvent.fire(this, false);
+    }
+
+    @Override
+    public void resourceImportationFailed(String errorMessage) {
+        ShowMessageEvent.fireErrorMessage(CategorySchemePresenter.this, errorMessage);
+        ChangeWaitPopupVisibilityEvent.fire(this, false);
+    }
+
+    @Override
+    public void showWaitPopup() {
+        ChangeWaitPopupVisibilityEvent.fire(this, true);
     }
 
     // CATEGORISATIONS

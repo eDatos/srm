@@ -168,4 +168,27 @@ public class CategoriesClientSecurityUtils {
         return SharedCategoriesSecurityUtils.canModifyCategoryFromCategoryScheme(MetamacSrmWeb.getCurrentUser(), categorySchemeMetamacDto.getLifeCycle().getProcStatus())
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(categorySchemeMetamacDto);
     }
+
+    public static boolean canExportCategories(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        if (isTaskInBackground(categorySchemeMetamacDto.getIsTaskInBackground())) {
+            return false;
+        }
+        return SharedCategoriesSecurityUtils.canExportCategoriesTsv(MetamacSrmWeb.getCurrentUser());
+    }
+
+    public static boolean canImportCategories(CategorySchemeMetamacDto categorySchemeMetamacDto) {
+        if (isTaskInBackground(categorySchemeMetamacDto.getIsTaskInBackground())) {
+            return false;
+        }
+        return SharedCategoriesSecurityUtils.canImportCategoriesTsv(MetamacSrmWeb.getCurrentUser(), categorySchemeMetamacDto.getLifeCycle().getProcStatus())
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(categorySchemeMetamacDto);
+    }
+
+    //
+    // PRIVATE METHODS
+    //
+
+    private static boolean isTaskInBackground(Boolean isTaskInBackground) {
+        return BooleanUtils.isTrue(isTaskInBackground);
+    }
 }
