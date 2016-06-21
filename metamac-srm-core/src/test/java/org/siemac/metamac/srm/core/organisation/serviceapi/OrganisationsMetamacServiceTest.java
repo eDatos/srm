@@ -40,6 +40,7 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.utils.BaseAsserts;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.category.serviceapi.CategoriesMetamacService;
+import org.siemac.metamac.srm.core.code.domain.OrganisationMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
@@ -2922,6 +2923,32 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals("DGRAL_PROMOCION_TURISTICA", e.getExceptionItems().get(9).getMessageParameters()[0]);
             assertEquals("VICECONSEJERIA_TURISMO", e.getExceptionItems().get(9).getMessageParameters()[1]);
         }
+    }
+
+    @Test
+    public void testRetrieveOrganisationsOrderedInDepthByOrganisationSchemeUrn() throws Exception {
+
+        List<ItemResult> organisations = organisationMetamacRepository.findOrganisationsByOrganisationSchemeOrderedInDepth(Long.valueOf(12), new OrganisationMetamacResultSelection(true, true, true, true));
+
+        assertEquals(8, organisations.size());
+
+        Set<String> readOrganisationCodes = new HashSet<String>();
+
+        for (ItemResult organisation : organisations) {
+            if (organisation.getParent() != null) {
+                assertTrue(readOrganisationCodes.contains(organisation.getParent().getCode()));
+            }
+            readOrganisationCodes.add(organisation.getCode());
+        }
+
+        assertTrue(readOrganisationCodes.contains("ORGANISATION01"));
+        assertTrue(readOrganisationCodes.contains("ORGANISATION02"));
+        assertTrue(readOrganisationCodes.contains("ORGANISATION0201"));
+        assertTrue(readOrganisationCodes.contains("ORGANISATION020101"));
+        assertTrue(readOrganisationCodes.contains("ORGANISATION03"));
+        assertTrue(readOrganisationCodes.contains("ORGANISATION04"));
+        assertTrue(readOrganisationCodes.contains("ORGANISATION0401"));
+        assertTrue(readOrganisationCodes.contains("ORGANISATION040101"));
     }
 
     protected OrganisationMetamacVisualisationResult getOrganisationVisualisationResult(List<OrganisationMetamacVisualisationResult> actuals, String codeUrn) {

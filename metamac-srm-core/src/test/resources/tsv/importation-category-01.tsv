@@ -1,0 +1,15 @@
+code	parent	name#es	name#en	name#it	description#en	description#es
+impCATEGORY01		nombre nuevo 1	new name 1		description new 1	
+impcategory1		Nombre 1	Name 1	Nombre it 1	Description 1	Descripción 1
+impCATEGORY02		nombre nuevo con ácéntós 2	new name 2	nombre nuevo it 2	description new 2	descripción nueva 2
+impcategory2	impcategory1	Nombre 2	Name 2		Description 2	
+impcategory01b			Name 01B	Nombre it 01B		
+impcategory8	impCATEGORY01	Nombre 8				
+impcategory3			Name 3	Nombre it 3		
+impCATEGORY04		nombre nuevo 03				
+impCATEGORY0401	impCATEGORY04	Nombre 4	name 4	Nombre it 4	Description 4	Descripción 4
+impCATEGORY040102	impCATEGORY0401	Nombre CATEGORY040102	name CATEGORY040102	Nombre it CATEGORY040102		Descripción CATEGORY040102
+impcategory5	impcategory1			Nombre it 5	Description 5	Descripción 5
+impcategory6	impcategory2			Nombre it 6		
+impcategory7		Nombre 7				
+impCATEGORY0201	impCATEGORY01	Nombre CATEGORY0201	name CATEGORY0201	Nombre it CATEGORY0201		Descripción CATEGORY0201

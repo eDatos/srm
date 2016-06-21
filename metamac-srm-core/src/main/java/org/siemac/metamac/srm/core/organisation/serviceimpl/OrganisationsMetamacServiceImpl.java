@@ -557,7 +557,7 @@ public class OrganisationsMetamacServiceImpl extends OrganisationsMetamacService
 
         OrganisationSchemeVersionMetamac organisationSchemeVersion = retrieveOrganisationSchemeByUrn(ctx, organisationSchemetUrn);
 
-        List<ItemResult> items = getOrganisationMetamacRepository().findOrganisationsByOrganisationSchemeUnordered(organisationSchemeVersion.getId(), OrganisationMetamacResultSelection.EXPORT);
+        List<ItemResult> items = getOrganisationMetamacRepository().findOrganisationsByOrganisationSchemeOrderedInDepth(organisationSchemeVersion.getId(), OrganisationMetamacResultSelection.EXPORT);
 
         List<String> languages = srmConfiguration.retrieveLanguages();
 

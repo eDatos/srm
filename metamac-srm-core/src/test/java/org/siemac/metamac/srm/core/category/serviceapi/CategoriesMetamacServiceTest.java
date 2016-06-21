@@ -1,5 +1,6 @@
 package org.siemac.metamac.srm.core.category.serviceapi;
 
+import static com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts.assertEqualsInternationalString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -27,6 +28,7 @@ import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBui
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
@@ -36,10 +38,13 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.category.domain.CategoryMetamac;
+import org.siemac.metamac.srm.core.category.domain.CategoryMetamacRepository;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamac;
 import org.siemac.metamac.srm.core.category.domain.CategorySchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacAsserts;
 import org.siemac.metamac.srm.core.category.serviceapi.utils.CategoriesMetamacDoMocks;
+import org.siemac.metamac.srm.core.code.domain.CategoryMetamacResultSelection;
+import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -57,6 +62,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.category.domain.Category;
 import com.arte.statistic.sdmx.srm.core.category.domain.CategoryProperties;
@@ -81,6 +87,9 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
+
+    @Autowired
+    private CategoryMetamacRepository     categoryMetamacRepository;
 
     @Autowired
     private ItemSchemeVersionRepository   itemSchemeRepository;
@@ -1925,10 +1934,63 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
     }
 
+    @Test
     @Override
     public void testImportCategoriesTsv() throws Exception {
-        // TODO METAMAC-2453
+        String categorySchemeUrn = CATEGORY_SCHEME_2_V1;
+        String fileName = "importation-category-01.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
 
+        TaskImportationInfo taskImportTsvInfo = categoriesService.importCategoriesTsv(getServiceContextAdministrador(), categorySchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+
+        // Validate
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(0, taskImportTsvInfo.getInformationItems().size());
+
+        // Validate item scheme
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
+        assertEqualsDate("2011-01-01 01:02:03", categorySchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+        assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
+        assertEquals(false, categorySchemeVersion.getItemScheme().getIsTaskInBackground());
+
+        // Validate categories
+
+        List<ItemVisualisationResult> result = categoriesService.retrieveCategoriesByCategorySchemeUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_2_V1, "es");
+        assertEquals(result.size(), 16);
+
+        String categorySchemeUrnPart = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME02(01.000).";
+        {
+            String semanticIdentifier = "impCATEGORY01";
+            CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), categorySchemeUrnPart + semanticIdentifier);
+            assertEquals(semanticIdentifier, category.getNameableArtefact().getCode());
+            assertEquals(category.getNameableArtefact().getUrn(), category.getNameableArtefact().getUrnProvider());
+            assertEquals(null, category.getParent());
+            assertEqualsInternationalString(category.getNameableArtefact().getName(), "es", "nombre nuevo 1", "en", "new name 1");
+            assertEqualsInternationalString(category.getNameableArtefact().getDescription(), "en", "description new 1", null, null);
+            BaseAsserts.assertEqualsDay(new DateTime(), category.getLastUpdated());
+        }
+        {
+            String semanticIdentifier = "impCATEGORY040102";
+            CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), categorySchemeUrnPart + semanticIdentifier);
+            assertEquals(semanticIdentifier, category.getNameableArtefact().getCode());
+            assertEquals(category.getNameableArtefact().getUrn(), category.getNameableArtefact().getUrnProvider());
+            assertEquals("impCATEGORY0401", category.getParent().getNameableArtefact().getCode());
+            assertEqualsInternationalString(category.getNameableArtefact().getName(), "es", "Nombre CATEGORY040102", "en", "name CATEGORY040102", "it", "Nombre it CATEGORY040102");
+            assertEqualsInternationalString(category.getNameableArtefact().getDescription(), "es", "Descripción CATEGORY040102", null, null);
+            BaseAsserts.assertEqualsDay(new DateTime(), category.getLastUpdated());
+        }
+        {
+            String semanticIdentifier = "impCATEGORY0201";
+            CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), categorySchemeUrnPart + semanticIdentifier);
+            assertEquals(semanticIdentifier, category.getNameableArtefact().getCode());
+            assertEquals(category.getNameableArtefact().getUrn(), category.getNameableArtefact().getUrnProvider());
+            assertEquals("impCATEGORY01", category.getParent().getNameableArtefact().getCode());
+            assertEqualsInternationalString(category.getNameableArtefact().getName(), "es", "Nombre CATEGORY0201", "en", "name CATEGORY0201", "it", "Nombre it CATEGORY0201");
+            assertEqualsInternationalString(category.getNameableArtefact().getDescription(), "es", "Descripción CATEGORY0201", null, null);
+            BaseAsserts.assertEqualsDay(new DateTime(), category.getLastUpdated());
+        }
     }
 
     @Test
@@ -1954,14 +2016,39 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
 
         assertTrue(lines.contains("CATEGORY01\t\tNombre categoryScheme-1-v2-category-1\t\tName categoryScheme-1-v2-category-1\t\tDescripción categoryScheme-1-v2-category-1\t\t\t"));
         assertTrue(lines.contains("CATEGORY02\t\tNombre categoryScheme-1-v2-category-2\t\t\t\t\t\t\t"));
-        assertTrue(lines
-                .contains("CATEGORY0201\tCATEGORY02\tNombre categoryScheme-1-v2-category-2-1\t\tName categoryScheme-1-v2-category-2-1\t\tDescripción cat2-1\t\tDescription cat2-1\t"));
+        assertTrue(lines.contains("CATEGORY0201\tCATEGORY02\tNombre categoryScheme-1-v2-category-2-1\t\tName categoryScheme-1-v2-category-2-1\t\tDescripción cat2-1\t\tDescription cat2-1\t"));
         assertTrue(lines.contains("CATEGORY020101\tCATEGORY0201\tNombre categoryScheme-1-v2-category-2-1-1\t\t\t\tDescripción cat2-1-1\t\t\t"));
         assertTrue(lines.contains("CATEGORY03\t\tnombre category-3\t\tname category-3\t\t\t\t\t"));
         assertTrue(lines.contains("CATEGORY04\t\tnombre category-4\t\t\t\t\t\t\t"));
         assertTrue(lines.contains("CATEGORY0401\tCATEGORY04\tnombre category 4-1\t\t\t\t\t\t\t"));
         assertTrue(lines.contains("CATEGORY040101\tCATEGORY0401\tNombre categoryScheme-1-v2-category-4-1-1\t\tName categoryScheme-1-v2-category-4-1-1\t\t\t\t\t"));
         bufferedReader.close();
+    }
+
+    @Test
+    public void testRetrieveCategoriesOrderedInDepthByCategorySchemeUrn() throws Exception {
+
+        List<ItemResult> categories = categoryMetamacRepository.findCategoriesByCategorySchemeOrderedInDepth(Long.valueOf(12), new CategoryMetamacResultSelection(true, true, true, true));
+
+        assertEquals(8, categories.size());
+
+        Set<String> readCategoriesCodes = new HashSet<String>();
+
+        for (ItemResult category : categories) {
+            if (category.getParent() != null) {
+                assertTrue(readCategoriesCodes.contains(category.getParent().getCode()));
+            }
+            readCategoriesCodes.add(category.getCode());
+        }
+
+        assertTrue(readCategoriesCodes.contains("CATEGORY01"));
+        assertTrue(readCategoriesCodes.contains("CATEGORY02"));
+        assertTrue(readCategoriesCodes.contains("CATEGORY0201"));
+        assertTrue(readCategoriesCodes.contains("CATEGORY020101"));
+        assertTrue(readCategoriesCodes.contains("CATEGORY03"));
+        assertTrue(readCategoriesCodes.contains("CATEGORY04"));
+        assertTrue(readCategoriesCodes.contains("CATEGORY0401"));
+        assertTrue(readCategoriesCodes.contains("CATEGORY040101"));
     }
 
     @Override

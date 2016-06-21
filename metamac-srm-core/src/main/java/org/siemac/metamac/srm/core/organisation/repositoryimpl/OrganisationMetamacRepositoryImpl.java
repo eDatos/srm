@@ -13,8 +13,11 @@ import java.util.Map;
 import javax.persistence.Query;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
+import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.shared.OrganisationMetamacVisualisationResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationRepository;
+import com.arte.statistic.sdmx.srm.core.organisation.domain.OrganisationResultExtensionPoint;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationTypeEnum;
 
 /**
@@ -38,6 +42,9 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
 
     @Autowired
     private OrganisationRepository organisationRepository;
+
+    @Autowired
+    private SrmConfiguration       srmConfiguration;
 
     public OrganisationMetamacRepositoryImpl() {
     }
@@ -60,6 +67,53 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
         List<ItemResult> items = organisationRepository.findOrganisationsByOrganisationSchemeUnordered(itemSchemeVersionId, resultSelection);
         // no extension point
         return items;
+    }
+
+    @Override
+    public List<ItemResult> findOrganisationsByOrganisationSchemeOrderedInDepth(Long itemSchemeVersionId, ItemMetamacResultSelection resultSelection) throws MetamacException {
+        // Find organisations
+        List<ItemResult> organisations = organisationRepository.findOrganisationsByOrganisationSchemeUnordered(itemSchemeVersionId, resultSelection);
+
+        // Init extension point and index by id
+        Map<Long, ItemResult> mapOrganisationByItemId = new HashMap<Long, ItemResult>(organisations.size());
+        for (ItemResult itemResult : organisations) {
+            itemResult.setExtensionPoint(new OrganisationResultExtensionPoint());
+            mapOrganisationByItemId.put(itemResult.getItemIdDatabase(), itemResult);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        if (srmConfiguration.isDatabaseOracle()) {
+            sb.append("SELECT c1.ID ");
+            sb.append("FROM TB_ORGANISATIONS c1 ");
+            sb.append("WHERE c1.ITEM_SCHEME_VERSION_FK = :organisationSchemeVersion ");
+            sb.append("START WITH c1.PARENT_FK is null ");
+            sb.append("CONNECT BY PRIOR c1.ID = c1.PARENT_FK ");
+        } else if (srmConfiguration.isDatabaseSqlServer()) {
+            sb.append("WITH parents(ID) AS ");
+            sb.append("   (SELECT ID ");
+            sb.append("    FROM TB_ORGANISATIONS ");
+            sb.append("    WHERE PARENT_FK is null and ITEM_SCHEME_VERSION_FK = :organisationSchemeVersion ");
+            sb.append("        UNION ALL ");
+            sb.append("    SELECT c2.ID ");
+            sb.append("    FROM TB_ORGANISATIONS as c2, parents ");
+            sb.append("    WHERE parents.ID = c2.PARENT_FK) ");
+            sb.append("SELECT ID FROM parents ");
+        } else {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN).withMessageParameters("Database unsupported").build();
+        }
+        Query queryOrder = getEntityManager().createNativeQuery(sb.toString());
+        queryOrder.setParameter("organisationSchemeVersion", itemSchemeVersionId);
+        @SuppressWarnings("rawtypes")
+        List resultsOrder = queryOrder.getResultList();
+
+        // Order previous result list thanks to ordered list of items id
+        List<ItemResult> ordered = new ArrayList<ItemResult>(organisations.size());
+        for (Object resultOrder : resultsOrder) {
+            Long organisationId = getLong(resultOrder);
+            ItemResult organisation = mapOrganisationByItemId.get(organisationId);
+            ordered.add(organisation);
+        }
+        return ordered;
     }
 
     @SuppressWarnings("rawtypes")

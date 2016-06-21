@@ -3886,7 +3886,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
-    public void testRetrieveCodesOrderedByCodelistUrn() throws Exception {
+    public void testRetrieveConceptsOrderedInDepthByConceptSchemeUrn() throws Exception {
 
         List<ItemResult> concepts = conceptMetamacRepository.findConceptsByConceptSchemeOrderedInDepth(Long.valueOf(12), new ConceptMetamacResultSelection(true, true, true, true));
 

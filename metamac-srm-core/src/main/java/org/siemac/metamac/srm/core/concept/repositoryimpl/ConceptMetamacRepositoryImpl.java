@@ -19,7 +19,6 @@ import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -140,14 +139,14 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
 
     @Override
     public List<ItemResult> findConceptsByConceptSchemeOrderedInDepth(Long conceptSchemeVersionId, ItemMetamacResultSelection resultSelection) throws MetamacException {
-        // Find codes
+        // Find concepts
         List<ItemResult> concepts = conceptRepository.findConceptsByConceptSchemeUnordered(conceptSchemeVersionId, resultSelection);
 
         // Init extension point and index by id
-        Map<Long, ItemResult> mapCodeByItemId = new HashMap<Long, ItemResult>(concepts.size());
+        Map<Long, ItemResult> mapConceptByItemId = new HashMap<Long, ItemResult>(concepts.size());
         for (ItemResult itemResult : concepts) {
-            itemResult.setExtensionPoint(new CodeMetamacResultExtensionPoint());
-            mapCodeByItemId.put(itemResult.getItemIdDatabase(), itemResult);
+            itemResult.setExtensionPoint(new ConceptMetamacResultExtensionPoint());
+            mapConceptByItemId.put(itemResult.getItemIdDatabase(), itemResult);
         }
 
         StringBuilder sb = new StringBuilder();
@@ -178,9 +177,9 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         // Order previous result list thanks to ordered list of items id
         List<ItemResult> ordered = new ArrayList<ItemResult>(concepts.size());
         for (Object resultOrder : resultsOrder) {
-            Long codeId = getLong(resultOrder);
-            ItemResult code = mapCodeByItemId.get(codeId);
-            ordered.add(code);
+            Long conceptId = getLong(resultOrder);
+            ItemResult concept = mapConceptByItemId.get(conceptId);
+            ordered.add(concept);
         }
         return ordered;
     }
