@@ -17,7 +17,9 @@ import javax.persistence.Query;
 
 import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -25,6 +27,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -47,6 +50,9 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
 
     @Autowired
     private ConceptRepository   conceptRepository;
+
+    @Autowired
+    private SrmConfiguration    srmConfiguration;
 
     private static final String COLUMN_NAME_PLURAL_NAME        = "PLURAL_NAME_FK";
     private static final String COLUMN_NAME_ACRONYM            = "ACRONYM_FK";
@@ -130,6 +136,53 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
             }
         }
         return targets;
+    }
+
+    @Override
+    public List<ItemResult> findConceptsByConceptSchemeOrderedInDepth(Long conceptSchemeVersionId, ItemMetamacResultSelection resultSelection) throws MetamacException {
+        // Find codes
+        List<ItemResult> concepts = conceptRepository.findConceptsByConceptSchemeUnordered(conceptSchemeVersionId, resultSelection);
+
+        // Init extension point and index by id
+        Map<Long, ItemResult> mapCodeByItemId = new HashMap<Long, ItemResult>(concepts.size());
+        for (ItemResult itemResult : concepts) {
+            itemResult.setExtensionPoint(new CodeMetamacResultExtensionPoint());
+            mapCodeByItemId.put(itemResult.getItemIdDatabase(), itemResult);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        if (srmConfiguration.isDatabaseOracle()) {
+            sb.append("SELECT c1.ID ");
+            sb.append("FROM TB_CONCEPTS c1 ");
+            sb.append("WHERE c1.ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
+            sb.append("START WITH c1.PARENT_FK is null ");
+            sb.append("CONNECT BY PRIOR c1.ID = c1.PARENT_FK ");
+        } else if (srmConfiguration.isDatabaseSqlServer()) {
+            sb.append("WITH parents(ID) AS ");
+            sb.append("   (SELECT ID ");
+            sb.append("    FROM TB_CONCEPTS ");
+            sb.append("    WHERE PARENT_FK is null and ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
+            sb.append("        UNION ALL ");
+            sb.append("    SELECT c2.ID ");
+            sb.append("    FROM TB_CONCEPTS as c2, parents ");
+            sb.append("    WHERE parents.ID = c2.PARENT_FK) ");
+            sb.append("SELECT ID FROM parents ");
+        } else {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN).withMessageParameters("Database unsupported").build();
+        }
+        Query queryOrder = getEntityManager().createNativeQuery(sb.toString());
+        queryOrder.setParameter("conceptSchemeVersion", conceptSchemeVersionId);
+        @SuppressWarnings("rawtypes")
+        List resultsOrder = queryOrder.getResultList();
+
+        // Order previous result list thanks to ordered list of items id
+        List<ItemResult> ordered = new ArrayList<ItemResult>(concepts.size());
+        for (Object resultOrder : resultsOrder) {
+            Long codeId = getLong(resultOrder);
+            ItemResult code = mapCodeByItemId.get(codeId);
+            ordered.add(code);
+        }
+        return ordered;
     }
 
     @Override

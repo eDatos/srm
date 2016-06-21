@@ -42,6 +42,7 @@ import org.siemac.metamac.srm.core.base.utils.BaseDoMocks;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.ConceptMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
@@ -50,6 +51,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
@@ -107,6 +109,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
+
+    @Autowired
+    private ConceptMetamacRepository      conceptMetamacRepository;
 
     @Autowired
     private ItemSchemeVersionRepository   itemSchemeRepository;
@@ -3878,6 +3883,32 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertTrue(lines.contains("CONCEPT0401\tCONCEPT04\tnombre concept 4-1\t\t\t\t\t\t\t"));
         assertTrue(lines.contains("CONCEPT040101\tCONCEPT0401\tNombre conceptScheme-1-v2-concept-4-1-1\t\tName conceptScheme-1-v2-concept-4-1-1\t\t\t\t\t"));
         bufferedReader.close();
+    }
+
+    @Test
+    public void testRetrieveCodesOrderedByCodelistUrn() throws Exception {
+
+        List<ItemResult> concepts = conceptMetamacRepository.findConceptsByConceptSchemeOrderedInDepth(Long.valueOf(12), new ConceptMetamacResultSelection(true, true, true, true));
+
+        assertEquals(8, concepts.size());
+
+        Set<String> readConceptCodes = new HashSet<String>();
+
+        for (ItemResult concept : concepts) {
+            if (concept.getParent() != null) {
+                assertTrue(readConceptCodes.contains(concept.getParent().getCode()));
+            }
+            readConceptCodes.add(concept.getCode());
+        }
+
+        assertTrue(readConceptCodes.contains("CONCEPT01"));
+        assertTrue(readConceptCodes.contains("CONCEPT02"));
+        assertTrue(readConceptCodes.contains("CONCEPT0201"));
+        assertTrue(readConceptCodes.contains("CONCEPT020101"));
+        assertTrue(readConceptCodes.contains("CONCEPT03"));
+        assertTrue(readConceptCodes.contains("CONCEPT04"));
+        assertTrue(readConceptCodes.contains("CONCEPT0401"));
+        assertTrue(readConceptCodes.contains("CONCEPT040101"));
     }
 
     @Test

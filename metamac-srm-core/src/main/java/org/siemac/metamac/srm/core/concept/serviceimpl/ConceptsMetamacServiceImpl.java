@@ -851,7 +851,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemetUrn);
 
-        List<ItemResult> items = getConceptMetamacRepository().findConceptsByConceptSchemeUnordered(conceptSchemeVersion.getId(), ConceptMetamacResultSelection.EXPORT);
+        List<ItemResult> items = getConceptMetamacRepository().findConceptsByConceptSchemeOrderedInDepth(conceptSchemeVersion.getId(), ConceptMetamacResultSelection.EXPORT);
 
         List<String> languages = srmConfiguration.retrieveLanguages();
 

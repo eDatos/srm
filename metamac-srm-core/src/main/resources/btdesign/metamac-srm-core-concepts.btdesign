@@ -210,7 +210,7 @@ Application ConceptsMetamac {
 			- @Variable variable nullable cascade="none" fetch="lazy" databaseColumn="VARIABLE_FK" <-> concepts;
 			"Quantity"
 			- @Quantity quantity nullable cascade="all" fetch="lazy" databaseColumn="QUANTITY_FK";
-			
+
 			Repository ConceptMetamacRepository {
 				save;
 				findByQuery;
@@ -218,17 +218,18 @@ Application ConceptsMetamac {
 				@ConceptMetamac findByUrn(String urn);
 				findByCondition(PagingParameter pagingParameter);
 				List<ItemResult> findConceptsByConceptSchemeUnordered(Long conceptSchemeVersionId, ItemMetamacResultSelection resultSelection) throws MetamacException;
+				List<ItemResult> findConceptsByConceptSchemeOrderedInDepth(Long conceptSchemeVersionId, ItemMetamacResultSelection resultSelection) throws MetamacException;
 				List<ConceptMetamacVisualisationResult> findConceptsByConceptSchemeUnorderedToVisualisation(Long conceptSchemeVersionId, String locale) throws MetamacException;
 				checkConceptTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
 				@ConceptMetamac retrieveConceptWithQuantityId(Long quantityId);
-				
+
 				checkConceptsWithConceptExtendsExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 				checkConceptsWithConceptRoleExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 				checkConceptsWithQuantityExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 				checkConceptsWithRepresentationExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 			}
 		}
-		
+
 		"Metric characteristics of concept"
 	    Entity Quantity {
         	databaseTable = "TB_M_QUANTITIES"
