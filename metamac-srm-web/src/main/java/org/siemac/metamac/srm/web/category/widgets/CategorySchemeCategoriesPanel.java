@@ -95,6 +95,7 @@ public class CategorySchemeCategoriesPanel extends VLayout {
 
     public void setUiHandlers(CategorySchemeUiHandlers uiHandlers) {
         this.uiHandlers = uiHandlers;
+        importCategoriesWindow.setUiHandlers(uiHandlers);
     }
 
     public CategorySchemeUiHandlers getUiHandlers() {

@@ -527,7 +527,7 @@ public class TsvImportationUtils {
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber));
             return null;
         }
-        if (itemsToPersistByCode.containsKey(itemIdentifier)) {
+        if (!TypeExternalArtefactsEnum.CATEGORY.equals(itemType) && itemsToPersistByCode.containsKey(itemIdentifier)) {
             exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_RESOURCE_DUPLICATED, itemIdentifier, lineNumber));
             return null;
         }
@@ -556,16 +556,26 @@ public class TsvImportationUtils {
             }
         }
         // initialize item
-        Item item = itemsPreviousInItemScheme.get(itemIdentifier);
+        Item item = TypeExternalArtefactsEnum.CATEGORY.equals(itemType) ? (itemsPreviousInItemScheme.get(StringUtils.isNotBlank(itemParentIdentifier)
+                ? itemParentIdentifier + "." + itemIdentifier
+                : itemIdentifier)) : itemsPreviousInItemScheme.get(itemIdentifier);
         if (item == null) {
             item = createItem(itemType);
             item.setNameableArtefact(new NameableArtefact());
             item.getNameableArtefact().setCode(itemIdentifier);
+            item.setParent(itemParent);
+            item.getNameableArtefact().setIsCodeUpdated(false);
+            if (TypeExternalArtefactsEnum.CATEGORY.equals(itemType)) {
+                String codeFull = GeneratorUrnUtils.generateCategoryCodeFull(item);
+                item.getNameableArtefact().setCodeFull(codeFull);
+                if (itemsToPersistByCode.containsKey(codeFull)) {
+                    exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_RESOURCE_DUPLICATED, itemIdentifier, lineNumber));
+                    return null;
+                }
+            }
             String urn = generateItemUrn(itemSchemeVersion, item, itemType);
             item.getNameableArtefact().setUrn(urn);
             item.getNameableArtefact().setUrnProvider(urn);
-            item.setParent(itemParent);
-            item.getNameableArtefact().setIsCodeUpdated(false);
         } else {
             if (!updateAlreadyExisting) {
                 infoItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, item.getNameableArtefact().getCode()));

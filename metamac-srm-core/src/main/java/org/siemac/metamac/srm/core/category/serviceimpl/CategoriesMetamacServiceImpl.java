@@ -488,7 +488,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
             categorySchemeVersion.getItemScheme().setIsTaskInBackground(Boolean.TRUE);
             itemSchemeRepository.save(categorySchemeVersion.getItemScheme());
 
-            String jobKey = tasksMetamacService.plannifyImportCategoriesTsvInBackground(ctx, categorySchemeUrn, file, fileName, updateAlreadyExisting); 
+            String jobKey = tasksMetamacService.plannifyImportCategoriesTsvInBackground(ctx, categorySchemeUrn, file, fileName, updateAlreadyExisting);
             return new TaskImportationInfo(Boolean.TRUE, jobKey);
         }
 
@@ -518,7 +518,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
                 categoriesToPersistByCode = new HashMap<String, Item>();
                 categoriesPreviousInCategorySchemeByCode = new HashMap<String, Item>();
                 for (Item item : categorySchemeVersion.getItems()) {
-                    categoriesPreviousInCategorySchemeByCode.put(item.getNameableArtefact().getCode(), (CategoryMetamac) item);
+                    categoriesPreviousInCategorySchemeByCode.put(item.getNameableArtefact().getCodeFull(), (CategoryMetamac) item);
                 }
 
                 int lineNumber = 2;
@@ -536,7 +536,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
                             categoriesPreviousInCategorySchemeByCode, categoriesToPersistByCode, exceptionItems, informationItems);
                     if (category != null) {
                         categtoriesToPersist.add(category);
-                        categoriesToPersistByCode.put(category.getNameableArtefact().getCode(), category);
+                        categoriesToPersistByCode.put(category.getNameableArtefact().getCodeFull(), category);
                     }
                     lineNumber++;
                 }
@@ -569,7 +569,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
 
         CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemeByUrn(ctx, categorySchemetUrn);
 
-        List<ItemResult> items = getCategoryMetamacRepository().findCategoriesByCategorySchemeUnordered(categorySchemeVersion.getId(), CategoryMetamacResultSelection.EXPORT);
+        List<ItemResult> items = getCategoryMetamacRepository().findCategoriesByCategorySchemeOrderedInDepth(categorySchemeVersion.getId(), CategoryMetamacResultSelection.EXPORT);
 
         List<String> languages = srmConfiguration.retrieveLanguages();
 
@@ -923,17 +923,17 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         return categorySchemeVersion;
     }
 
-    private void saveCategoriesEfficiently(Collection<CategoryMetamac> categoriesToPersist, Map<String, Item> categoriesToPersistByCode) {
+    private void saveCategoriesEfficiently(Collection<CategoryMetamac> categoriesToPersist, Map<String, Item> categoriesToPersistByCodeFull) {
         for (CategoryMetamac categoryMetamac : categoriesToPersist) {
             if (categoryMetamac.getParent() != null) {
-                if (categoriesToPersistByCode.containsKey(categoryMetamac.getParent().getNameableArtefact().getCode())) {
+                if (categoriesToPersistByCodeFull.containsKey(categoryMetamac.getParent().getNameableArtefact().getCodeFull())) {
                     // update reference because it was saved
-                    categoryMetamac.setParent(categoriesToPersistByCode.get(categoryMetamac.getParent().getNameableArtefact().getCode()));
+                    categoryMetamac.setParent(categoriesToPersistByCodeFull.get(categoryMetamac.getParent().getNameableArtefact().getCodeFull()));
                 }
             }
             categoryMetamac = getCategoryMetamacRepository().save(categoryMetamac);
             // update reference after save to assign to children
-            categoriesToPersistByCode.put(categoryMetamac.getNameableArtefact().getCode(), categoryMetamac);
+            categoriesToPersistByCodeFull.put(categoryMetamac.getNameableArtefact().getCodeFull(), categoryMetamac);
         }
     }
 }

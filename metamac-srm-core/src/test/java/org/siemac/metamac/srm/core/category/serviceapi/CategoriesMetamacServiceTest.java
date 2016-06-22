@@ -22,6 +22,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -1994,6 +1995,87 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
     }
 
     @Test
+    public void testImportCategoriesThreeLTsv() throws Exception {
+        String categorySchemeUrn = CATEGORY_SCHEME_2_V1;
+        String fileName = "importation-category-02-three-levels.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        TaskImportationInfo taskImportTsvInfo = categoriesService.importCategoriesTsv(getServiceContextAdministrador(), categorySchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+
+        // Validate
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(0, taskImportTsvInfo.getInformationItems().size());
+
+        // Validate item scheme
+        CategorySchemeVersionMetamac categorySchemeVersion = categoriesService.retrieveCategorySchemeByUrn(getServiceContextAdministrador(), categorySchemeUrn);
+        assertEqualsDate("2011-01-01 01:02:03", categorySchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+        assertTrue(DateUtils.isSameDay(new Date(), categorySchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
+        assertEquals(false, categorySchemeVersion.getItemScheme().getIsTaskInBackground());
+
+        // Validate categories
+        List<ItemVisualisationResult> result = categoriesService.retrieveCategoriesByCategorySchemeUrn(getServiceContextAdministrador(), CATEGORY_SCHEME_2_V1, "es");
+        assertEquals(result.size(), 42);
+        String categorySchemeUrnPart = "urn:sdmx:org.sdmx.infomodel.categoryscheme.Category=SDMX01:CATEGORYSCHEME02(01.000).";
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2", null, "cat2", "Estadísticas económicas", "Economic statistics");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat5", "cat2", "cat5", "Finanzas públicas, fiscales y de estadísticas del sector público",
+                "Government finance, fiscal and public sector statistics");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat4", "cat2", "cat4", "Estadísticas sectoriales", "Sectoral statistics");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat4.cat5", "cat2.cat4", "cat5", "Turismo", "Tourism");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat4.cat2", "cat2.cat4", "cat2", "Energía", "Energy");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat4.cat1", "cat2.cat4", "cat1", "Agricultura, silvicultura y pesca", "Agriculture, forestry, fisheries");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat4.cat6", "cat2.cat4", "cat6", "Banca, seguros y estadísticas financieras", "Banking, insurance, financial statistics");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat4.cat3", "cat2.cat4", "cat3", "Minería, manufactura y construcción", "Mining, manufacturing, construction");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat4.cat4", "cat2.cat4", "cat4", "Transporte", "Transport");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat7", "cat2", "cat7", "Precios", "Prices");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat8", "cat2", "cat8", "Coste laboral", "Labor cost");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat1", "cat2", "cat1", "Estadísticas macroeconómicas", "Macroeconomic statistics");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat3", "cat2", "cat3", "Estadísticas empresariales", "Business statistics");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat9", "cat2", "cat9", "Ciencia, tecnología e innovación", "Science, technology and innovation");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat2", "cat2", "cat2", "Cuentas económicas", "Economic accounts");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat2.cat6", "cat2", "cat6", "Comercio internacional y balanza de pagos", "International trade and balance of payments");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat1", null, "cat1", "Estadísticas demográficas y sociales", "Demographic and social statistics");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat1.cat3", "cat1", "cat3", "Educación", "Education");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat1.cat10", "cat1", "cat10", "Política y otras actividades de la comunidad", "Political and other community activities");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat1.cat4", "cat1", "cat4", "Salud", "Health");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat1.cat5", "cat1", "cat5", "Ingresos y consumo", "Income and consumption");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat1.cat9", "cat1", "cat9", "Cultura", "Culture");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat1.cat1", "cat1", "cat1", "Población y migración", "Population and migration");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat1.cat11", "cat1", "cat11", "Ocio", "Time use");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat1.cat6", "cat1", "cat6", "Protección social", "Social protection");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat1.cat7", "cat1", "cat7", "Asentamientos y vivienda", "Human settlements and housing");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat1.cat2", "cat1", "cat2", "Trabajo", "Labour");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat1.cat8", "cat1", "cat8", "Justicia y crímenes", "Justice and crime");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat3", null, "cat3", "Medio Ambiente y estadísticas multi-dominio", "Environment and multi-domain statistics");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat3.cat3", "cat3", "cat3", "Estadísticas e indicadores multi-dominio", "Multi-domain statistics and indicators");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat3.cat3.cat7", "cat3.cat3", "cat7", "Espíritu empresarial", "Entrepreneurship");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat3.cat3.cat6", "cat3.cat3", "cat6", "Desarrollo sostenible", "Sustainable development");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat3.cat3.cat2", "cat3.cat3", "cat2", "Género y grupos especiales de población", "Gender and special population groups");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat3.cat3.cat3", "cat3.cat3", "cat3", "Sociedad de la información", "Information society");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat3.cat3.cat4", "cat3.cat3", "cat4", "Globalización", "Globalisation");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat3.cat3.cat5", "cat3.cat3", "cat5", "Indicadores relacionados con los Objetivos de Desarrollo del Milenio",
+                "Indicators related to the Millennium Development Goals");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat3.cat3.cat1", "cat3.cat3", "cat1", "Condiciones de vida, pobreza y cuestiones sociales transversales",
+                "Living conditions, poverty, and cross-cutting social issues");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat3.cat1", "cat3", "cat1", "Medio Ambiente", "Environment");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat3.cat2", "cat3", "cat2", "Estadísticas regionales y en áreas pequeñas", "Regional and small area statistics");
+        assertEqualsImportedCategory(categorySchemeUrnPart + "cat3.cat4", "cat3", "cat4", "Anuarios y recopilaciones similares", "Yearbooks and similar compendia");
+
+    }
+
+    private void assertEqualsImportedCategory(String urn, String expectedCategoryParentCodeFull, String expectedCategoryCode, String nameEs, String nameEn) throws MetamacException {
+        String codeFull = StringUtils.isNotBlank(expectedCategoryParentCodeFull) ? expectedCategoryParentCodeFull + "." + expectedCategoryCode : expectedCategoryCode;
+        CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), urn);
+        assertEquals(expectedCategoryCode, category.getNameableArtefact().getCode());
+        assertEquals(codeFull, category.getNameableArtefact().getCodeFull());
+        assertEquals(category.getNameableArtefact().getUrn(), category.getNameableArtefact().getUrnProvider());
+        assertEquals(expectedCategoryParentCodeFull, category.getParent() != null ? category.getParent().getNameableArtefact().getCodeFull() : null);
+        assertEqualsInternationalString(category.getNameableArtefact().getName(), "es", nameEs, "en", nameEn);
+        BaseAsserts.assertEqualsDay(new DateTime(), category.getLastUpdated());
+    }
+
+    @Test
     @Override
     public void testExportCategoriesTsv() throws Exception {
         String categorySchemeUrn = CATEGORY_SCHEME_1_V2;
@@ -2017,11 +2099,11 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         assertTrue(lines.contains("CATEGORY01\t\tNombre categoryScheme-1-v2-category-1\t\tName categoryScheme-1-v2-category-1\t\tDescripción categoryScheme-1-v2-category-1\t\t\t"));
         assertTrue(lines.contains("CATEGORY02\t\tNombre categoryScheme-1-v2-category-2\t\t\t\t\t\t\t"));
         assertTrue(lines.contains("CATEGORY0201\tCATEGORY02\tNombre categoryScheme-1-v2-category-2-1\t\tName categoryScheme-1-v2-category-2-1\t\tDescripción cat2-1\t\tDescription cat2-1\t"));
-        assertTrue(lines.contains("CATEGORY020101\tCATEGORY0201\tNombre categoryScheme-1-v2-category-2-1-1\t\t\t\tDescripción cat2-1-1\t\t\t"));
+        assertTrue(lines.contains("CATEGORY020101\tCATEGORY02.CATEGORY0201\tNombre categoryScheme-1-v2-category-2-1-1\t\t\t\tDescripción cat2-1-1\t\t\t"));
         assertTrue(lines.contains("CATEGORY03\t\tnombre category-3\t\tname category-3\t\t\t\t\t"));
         assertTrue(lines.contains("CATEGORY04\t\tnombre category-4\t\t\t\t\t\t\t"));
         assertTrue(lines.contains("CATEGORY0401\tCATEGORY04\tnombre category 4-1\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("CATEGORY040101\tCATEGORY0401\tNombre categoryScheme-1-v2-category-4-1-1\t\tName categoryScheme-1-v2-category-4-1-1\t\t\t\t\t"));
+        assertTrue(lines.contains("CATEGORY040101\tCATEGORY04.CATEGORY0401\tNombre categoryScheme-1-v2-category-4-1-1\t\tName categoryScheme-1-v2-category-4-1-1\t\t\t\t\t"));
         bufferedReader.close();
     }
 

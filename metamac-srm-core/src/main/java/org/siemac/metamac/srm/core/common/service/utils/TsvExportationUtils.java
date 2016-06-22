@@ -183,7 +183,7 @@ public class TsvExportationUtils {
             for (ItemResult itemResult : items) {
                 writer.write(SrmConstants.TSV_LINE_SEPARATOR);
                 writeItemCode(writer, itemResult);
-                writeParentCode(writer, itemResult);
+                writeParentCodeFull(writer, itemResult);
                 writeItemName(writer, itemResult, languages);
                 writeItemDescription(writer, itemResult, languages);
             }
@@ -223,6 +223,13 @@ public class TsvExportationUtils {
         writer.write(SrmConstants.TSV_SEPARATOR);
         if (itemResult.getParent() != null) {
             writer.write(itemResult.getParent().getCode());
+        }
+    }
+
+    private static void writeParentCodeFull(OutputStreamWriter writer, ItemResult itemResult) throws IOException {
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        if (itemResult.getParent() != null) {
+            writer.write(itemResult.getParent().getCodeFull());
         }
     }
 

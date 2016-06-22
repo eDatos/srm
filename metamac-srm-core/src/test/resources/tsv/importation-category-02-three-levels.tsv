@@ -1,0 +1,41 @@
+code	parent	name#es	name#en	description#es	description#en
+cat2		Estadísticas económicas	Economic statistics		
+cat5	cat2	Finanzas públicas, fiscales y de estadísticas del sector público	Government finance, fiscal and public sector statistics		
+cat4	cat2	Estadísticas sectoriales	Sectoral statistics		
+cat5	cat2.cat4	Turismo	Tourism		
+cat2	cat2.cat4	Energía	Energy		
+cat1	cat2.cat4	Agricultura, silvicultura y pesca	Agriculture, forestry, fisheries		
+cat6	cat2.cat4	Banca, seguros y estadísticas financieras	Banking, insurance, financial statistics		
+cat3	cat2.cat4	Minería, manufactura y construcción	Mining, manufacturing, construction		
+cat4	cat2.cat4	Transporte	Transport		
+cat7	cat2	Precios	Prices		
+cat8	cat2	Coste laboral	Labor cost		
+cat1	cat2	Estadísticas macroeconómicas	Macroeconomic statistics		
+cat3	cat2	Estadísticas empresariales	Business statistics		
+cat9	cat2	Ciencia, tecnología e innovación	Science, technology and innovation		
+cat2	cat2	Cuentas económicas	Economic accounts		
+cat6	cat2	Comercio internacional y balanza de pagos	International trade and balance of payments		
+cat1		Estadísticas demográficas y sociales	Demographic and social statistics		
+cat3	cat1	Educación	Education		
+cat10	cat1	Política y otras actividades de la comunidad	Political and other community activities		
+cat4	cat1	Salud	Health		
+cat5	cat1	Ingresos y consumo	Income and consumption		
+cat9	cat1	Cultura	Culture		
+cat1	cat1	Población y migración	Population and migration		
+cat11	cat1	Ocio	Time use		
+cat6	cat1	Protección social	Social protection		
+cat7	cat1	Asentamientos y vivienda	Human settlements and housing		
+cat2	cat1	Trabajo	Labour		
+cat8	cat1	Justicia y crímenes	Justice and crime		
+cat3		Medio Ambiente y estadísticas multi-dominio	Environment and multi-domain statistics		
+cat3	cat3	Estadísticas e indicadores multi-dominio	Multi-domain statistics and indicators		
+cat7	cat3.cat3	Espíritu empresarial	Entrepreneurship		
+cat6	cat3.cat3	Desarrollo sostenible	Sustainable development		
+cat2	cat3.cat3	Género y grupos especiales de población	Gender and special population groups		
+cat3	cat3.cat3	Sociedad de la información	Information society		
+cat4	cat3.cat3	Globalización	Globalisation		
+cat5	cat3.cat3	Indicadores relacionados con los Objetivos de Desarrollo del Milenio	Indicators related to the Millennium Development Goals		
+cat1	cat3.cat3	Condiciones de vida, pobreza y cuestiones sociales transversales	Living conditions, poverty, and cross-cutting social issues		
+cat1	cat3	Medio Ambiente	Environment		
+cat2	cat3	Estadísticas regionales y en áreas pequeñas	Regional and small area statistics		
+cat4	cat3	Anuarios y recopilaciones similares	Yearbooks and similar compendia		
