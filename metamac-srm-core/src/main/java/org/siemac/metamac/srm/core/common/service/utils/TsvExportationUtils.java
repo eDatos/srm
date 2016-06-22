@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
@@ -246,10 +247,22 @@ public class TsvExportationUtils {
     private static void writeItemDescription(OutputStreamWriter writer, ItemResult itemResult, List<String> languages) throws IOException {
         for (String language : languages) {
             String descriptionInLocale = itemResult.getDescription().get(language);
+            descriptionInLocale = removeUnsupportedCharaters(descriptionInLocale);
             writer.write(SrmConstants.TSV_SEPARATOR);
             if (descriptionInLocale != null) {
                 writer.write(descriptionInLocale);
             }
         }
+    }
+
+    private static String removeUnsupportedCharaters(String string) {
+        if (StringUtils.isNotBlank(string)) {
+            string = string.replace('\n', ' ');
+            string = string.replace('\t', ' ');
+            string = string.replace('\r', ' ');
+            string = string.replace('\b', ' ');
+            string = string.replace('\f', ' ');
+        }
+        return string;
     }
 }

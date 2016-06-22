@@ -1974,7 +1974,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
         {
             String semanticIdentifier = "impCATEGORY040102";
-            CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), categorySchemeUrnPart + semanticIdentifier);
+            CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), categorySchemeUrnPart + "impCATEGORY04.impCATEGORY0401." + semanticIdentifier);
             assertEquals(semanticIdentifier, category.getNameableArtefact().getCode());
             assertEquals(category.getNameableArtefact().getUrn(), category.getNameableArtefact().getUrnProvider());
             assertEquals("impCATEGORY0401", category.getParent().getNameableArtefact().getCode());
@@ -1984,7 +1984,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         }
         {
             String semanticIdentifier = "impCATEGORY0201";
-            CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), categorySchemeUrnPart + semanticIdentifier);
+            CategoryMetamac category = categoriesService.retrieveCategoryByUrn(getServiceContextAdministrador(), categorySchemeUrnPart + "impCATEGORY01." + semanticIdentifier);
             assertEquals(semanticIdentifier, category.getNameableArtefact().getCode());
             assertEquals(category.getNameableArtefact().getUrn(), category.getNameableArtefact().getUrnProvider());
             assertEquals("impCATEGORY01", category.getParent().getNameableArtefact().getCode());
