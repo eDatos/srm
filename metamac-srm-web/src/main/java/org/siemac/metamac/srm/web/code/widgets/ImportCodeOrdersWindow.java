@@ -16,7 +16,7 @@ public class ImportCodeOrdersWindow extends ImportResourceWindow {
     private CodelistUiHandlers uiHandlers;
 
     public ImportCodeOrdersWindow() {
-        super(getConstants().actionImportCodeOrders());
+        super(getConstants().actionImportCodeOrdersTsv());
 
         UploadOrdersForm form = new UploadOrdersForm();
         setForm(form);

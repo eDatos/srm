@@ -86,7 +86,7 @@ public abstract class CategorisationsPanel extends VLayout {
             }
         });
 
-        exportCategorisationButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
+        exportCategorisationButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExportSdmxMl(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         exportCategorisationButton.setVisible(false);
         exportCategorisationButton.addClickHandler(new ClickHandler() {
 

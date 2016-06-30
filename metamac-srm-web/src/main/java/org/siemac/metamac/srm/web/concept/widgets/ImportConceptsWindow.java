@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.web.concept.view.handlers.ConceptSchemeUiHandlers;
 import org.siemac.metamac.srm.web.shared.ImportableResourceTypeEnum;
 import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 import org.siemac.metamac.web.common.client.widgets.ImportResourceWindow;
+import org.siemac.metamac.web.common.client.widgets.InformationLabel;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
 
 import com.smartgwt.client.widgets.form.fields.HiddenItem;
@@ -17,10 +18,15 @@ public class ImportConceptsWindow extends ImportResourceWindow {
     private ConceptSchemeUiHandlers uiHandlers;
 
     public ImportConceptsWindow() {
-        super(getConstants().actionImportConcepts());
+        super(getConstants().actionImportConceptsTsv());
 
         UploadConceptsForm form = new UploadConceptsForm();
         setForm(form);
+        
+        InformationLabel informationLabel = new InformationLabel(getConstants().itemImportationNotDeletingElementsInfoMessage());
+        informationLabel.setWidth(getWidth());
+        informationLabel.setMargin(10);
+        body.addMember(informationLabel, 1);
     }
 
     public void setConceptScheme(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {

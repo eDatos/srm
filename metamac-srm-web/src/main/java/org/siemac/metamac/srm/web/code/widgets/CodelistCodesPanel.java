@@ -51,7 +51,7 @@ public class CodelistCodesPanel extends VLayout {
 
         toolStrip = new ToolStrip();
 
-        importCodesButton = new CustomToolStripButton(getConstants().actionImportCodes(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource().getURL());
+        importCodesButton = new CustomToolStripButton(getConstants().actionImportCodesTsv(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource().getURL());
         importCodesButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -61,7 +61,7 @@ public class CodelistCodesPanel extends VLayout {
         });
         toolStrip.addButton(importCodesButton);
 
-        exportCodesButton = new CustomToolStripButton(getConstants().codesExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
+        exportCodesButton = new CustomToolStripButton(getConstants().actionExportCodesTsv(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         exportCodesButton.addClickHandler(new ClickHandler() {
 
             @Override

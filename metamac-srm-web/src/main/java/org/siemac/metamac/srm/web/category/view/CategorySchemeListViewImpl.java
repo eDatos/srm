@@ -97,7 +97,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
             }
         });
 
-        exportButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
+        exportButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExportSdmxMl(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         exportButton.setVisible(false);
         exportButton.addClickHandler(new ClickHandler() {
 

@@ -174,7 +174,7 @@ public class OrganisationSchemeOrganisationsPanel extends VLayout {
         });
         toolStrip.addButton(listGridDeleteOrganisationButton);
 
-        importOrganisationsButton = new CustomToolStripButton(getConstants().actionImportOrganisations(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource()
+        importOrganisationsButton = new CustomToolStripButton(getConstants().actionImportOrganisationsTsv(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource()
                 .getURL());
         importOrganisationsButton.addClickHandler(new ClickHandler() {
 
@@ -185,7 +185,7 @@ public class OrganisationSchemeOrganisationsPanel extends VLayout {
         });
         toolStrip.addButton(importOrganisationsButton);
 
-        exportOrganisationsButton = new CustomToolStripButton(getConstants().actionExportOrganisations(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource()
+        exportOrganisationsButton = new CustomToolStripButton(getConstants().actionExportOrganisationsTsv(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource()
                 .getURL());
         exportOrganisationsButton.addClickHandler(new ClickHandler() {
 

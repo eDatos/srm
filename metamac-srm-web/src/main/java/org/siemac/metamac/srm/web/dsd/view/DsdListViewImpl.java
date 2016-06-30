@@ -91,7 +91,7 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
         });
         newToolStripButton.setVisible(DsdClientSecurityUtils.canCreateDsd());
 
-        exportToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
+        exportToolStripButton = new ToolStripButton(MetamacSrmWeb.getConstants().actionExportSdmxMl(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         exportToolStripButton.setVisible(false);
         exportToolStripButton.addClickHandler(new ClickHandler() {
 

@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.shared.ImportableResourceTypeEnum;
 import org.siemac.metamac.srm.web.shared.utils.SrmSharedTokens;
 import org.siemac.metamac.web.common.client.widgets.ImportResourceWindow;
+import org.siemac.metamac.web.common.client.widgets.InformationLabel;
 import org.siemac.metamac.web.common.client.widgets.form.fields.CustomCheckboxItem;
 
 import com.smartgwt.client.widgets.form.fields.HiddenItem;
@@ -17,10 +18,15 @@ public class ImportCategoriesWindow extends ImportResourceWindow {
     private CategorySchemeUiHandlers uiHandlers;
 
     public ImportCategoriesWindow() {
-        super(getConstants().actionImportCategories());
+        super(getConstants().actionImportCategoriesTsv());
 
         UploadCategoriesForm form = new UploadCategoriesForm();
         setForm(form);
+
+        InformationLabel informationLabel = new InformationLabel(getConstants().itemImportationNotDeletingElementsInfoMessage());
+        informationLabel.setWidth(getWidth());
+        informationLabel.setMargin(10);
+        body.addMember(informationLabel, 1);
     }
 
     public void setCategorycheme(CategorySchemeMetamacDto categorySchemeMetamacDto) {

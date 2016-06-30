@@ -47,7 +47,7 @@ public class CategorySchemeCategoriesPanel extends VLayout {
 
         toolStrip = new ToolStrip();
 
-        importCategoriesButton = new CustomToolStripButton(getConstants().actionImportCategories(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource().getURL());
+        importCategoriesButton = new CustomToolStripButton(getConstants().actionImportCategoriesTsv(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource().getURL());
         importCategoriesButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -57,7 +57,7 @@ public class CategorySchemeCategoriesPanel extends VLayout {
         });
         toolStrip.addButton(importCategoriesButton);
 
-        exportCategoriesButton = new CustomToolStripButton(getConstants().actionExportCategories(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
+        exportCategoriesButton = new CustomToolStripButton(getConstants().actionExportCategoriesTsv(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         exportCategoriesButton.addClickHandler(new ClickHandler() {
 
             @Override

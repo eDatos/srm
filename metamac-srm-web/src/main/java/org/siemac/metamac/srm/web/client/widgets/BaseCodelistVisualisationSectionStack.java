@@ -88,7 +88,7 @@ public abstract class BaseCodelistVisualisationSectionStack extends CustomListGr
         deleteCodelistVisualisationButton = new ToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteCodelistVisualisationButton.setVisible(false);
 
-        importCodelistVisualisationButton = new ToolStripButton(getConstants().actionImportCodeOrders(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource()
+        importCodelistVisualisationButton = new ToolStripButton(getConstants().actionImportCodeOrdersTsv(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource()
                 .getURL());
 
         exportCodelistVisualisationButton = new ToolStripButton(getConstants().codesOrderExport(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());

@@ -51,7 +51,7 @@ public class ConceptSchemeConceptsPanel extends VLayout {
 
         toolStrip = new ToolStrip();
 
-        importConceptsButton = new CustomToolStripButton(getConstants().actionImportConcepts(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource().getURL());
+        importConceptsButton = new CustomToolStripButton(getConstants().actionImportConceptsTsv(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource().getURL());
         importConceptsButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -61,7 +61,7 @@ public class ConceptSchemeConceptsPanel extends VLayout {
         });
         toolStrip.addButton(importConceptsButton);
 
-        exportConceptsButton = new CustomToolStripButton(getConstants().actionExportConcepts(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
+        exportConceptsButton = new CustomToolStripButton(getConstants().actionExportConceptsTsv(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         exportConceptsButton.addClickHandler(new ClickHandler() {
 
             @Override
