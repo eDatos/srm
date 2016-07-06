@@ -5,6 +5,7 @@ import javax.servlet.ServletContextEvent;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.listener.ApplicationStartupListener;
 import org.siemac.metamac.srm.core.constants.SrmConfigurationConstants;
+import org.siemac.metamac.web.common.server.utils.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,10 @@ public class ApplicationStartup extends ApplicationStartupListener {
         try {
             WebUtils.setOrganisation(configurationService.retrieveOrganisation());
             WebUtils.setApiBaseURL(configurationService.retrieveSrmExternalApiUrlBase());
+            
+            WebUtils.setApiStyleHeaderUrl(configurationService.retrieveApiStyleHeaderUrl());
+            WebUtils.setApiStyleCssUrl(configurationService.retrieveApiStyleCssUrl());
+            WebUtils.setApiStyleFooterUrl(configurationService.retrieveApiStyleFooterUrl());
         } catch (MetamacException e) {
             log.error("Error retrieving application configuration", e);
         }

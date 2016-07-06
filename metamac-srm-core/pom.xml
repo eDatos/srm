@@ -407,6 +407,12 @@
             <groupId>net.java.dev.stax-utils</groupId>
             <artifactId>stax-utils</artifactId>
             <version>20070216</version>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>jsr173-ri</artifactId>
+            		<groupId>com.bea.xml</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>

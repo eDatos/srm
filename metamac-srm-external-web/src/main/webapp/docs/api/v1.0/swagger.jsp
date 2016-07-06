@@ -5,7 +5,7 @@
       "version":"1.0",
       "title":"API de recursos estructurales"
    },
-   "host":"<%=org.siemac.metamac.srm.web.external.WebUtils.getApiBaseURL()%>",
+   "host":"<%=org.siemac.metamac.web.common.server.utils.WebUtils.getApiBaseURL()%>",
    "schemes":[
 
    ],

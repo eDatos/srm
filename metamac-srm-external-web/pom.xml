@@ -1,58 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.siemac.metamac.metamac-srm</groupId>
-        <artifactId>metamac-srm-parent</artifactId>
-        <version>1.6.1-SNAPSHOT</version>
-        <relativePath>../metamac-srm-parent/pom.xml</relativePath>
-    </parent>
+	<parent>
+		<groupId>org.siemac.metamac.metamac-srm</groupId>
+		<artifactId>metamac-srm-parent</artifactId>
+		<version>1.6.1-SNAPSHOT</version>
+		<relativePath>../metamac-srm-parent/pom.xml</relativePath>
+	</parent>
 
-    <groupId>org.siemac.metamac.metamac-srm</groupId>
-    <artifactId>metamac-srm-external-web</artifactId>
-    <packaging>war</packaging>
-    <name>SIEMAC :: METAMAC :: SRM :: EXTERNAL WEB</name>
-    <description>SIEMAC :: METAMAC :: SRM :: EXTERNAL WEB</description>
+	<groupId>org.siemac.metamac.metamac-srm</groupId>
+	<artifactId>metamac-srm-external-web</artifactId>
+	<packaging>war</packaging>
+	<name>SIEMAC :: METAMAC :: SRM :: EXTERNAL WEB</name>
+	<description>SIEMAC :: METAMAC :: SRM :: EXTERNAL WEB</description>
 
-    <properties>
-        <!-- Convenience property to set the GWT version -->
-        <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
-    </properties>
+	<properties>
+		<!-- Convenience property to set the GWT version -->
+		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.siemac.metamac.metamac-srm</groupId>
-            <artifactId>metamac-srm-soap-external-impl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-		    <groupId>org.siemac.metamac.metamac-srm</groupId>
-		    <artifactId>metamac-srm-rest-external-impl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ibm.icu</groupId>
-            <artifactId>icu4j</artifactId>
-            <version>${icu4j.version}</version>
-        </dependency>      
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>${servlet-api.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.siemac.metamac.metamac-srm</groupId>
+			<artifactId>metamac-srm-soap-external-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.siemac.metamac.metamac-srm</groupId>
+			<artifactId>metamac-srm-rest-external-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.siemac.metamac</groupId>
+			<artifactId>metamac-web-common</artifactId>
+			<version>${metamac-web-common.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.icu</groupId>
+			<artifactId>icu4j</artifactId>
+			<version>${icu4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl.version}</version>
+		</dependency>
+	</dependencies>
 
-    <build>
-        <finalName>structural-resources-${project.version}</finalName>
-    </build>
-    
+	<build>
+		<finalName>structural-resources-${project.version}</finalName>
+	</build>
+
 </project>
