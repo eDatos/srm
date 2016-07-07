@@ -96,7 +96,7 @@
   </script>
 </head>
 
-<body class="swagger-section">
+<body>
 	<c:import url="<%=org.siemac.metamac.web.common.server.utils.WebUtils.getApiStyleHeaderUrl()%>" />
 	
 	<div class="swagger-section">
