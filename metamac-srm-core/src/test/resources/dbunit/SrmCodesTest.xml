@@ -711,7 +711,7 @@
                 
                 NAME_FK="12"
                 DESCRIPTION_FK="13"
-                COMMENT_FK="[null]"
+                COMMENT_FK="160"
                 
                 UUID="annotableArtefact-99121"
                 VERSION="1"
@@ -9476,7 +9476,28 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="159"
-    />             
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="160"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1601"
+        LABEL="Comentario codelist-1-v2-code-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="160"
+    /> 
+    
+    <TB_LOCALISED_STRINGS
+        ID="1602"
+        LABEL="Comment codelist-1-v2-code-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="160"
+    />              
     
                  
 </dataset>

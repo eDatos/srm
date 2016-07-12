@@ -518,7 +518,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
                 categoriesToPersistByCode = new HashMap<String, Item>();
                 categoriesPreviousInCategorySchemeByCode = new HashMap<String, Item>();
                 for (Item item : categorySchemeVersion.getItems()) {
-                    categoriesPreviousInCategorySchemeByCode.put(item.getNameableArtefact().getCodeFull(), (CategoryMetamac) item);
+                    categoriesPreviousInCategorySchemeByCode.put(item.getNameableArtefact().getCodeFull(), item);
                 }
 
                 int lineNumber = 2;

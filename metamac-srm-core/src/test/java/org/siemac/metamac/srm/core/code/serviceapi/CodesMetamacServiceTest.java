@@ -4086,6 +4086,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEquals(null, code.getParent());
             assertEqualsInternationalString(code.getNameableArtefact().getName(), "es", "nombre nuevo 1", "en", "new name 1");
             assertEqualsInternationalString(code.getNameableArtefact().getDescription(), "en", "description new 1", null, null);
+            assertEqualsInternationalString(code.getNameableArtefact().getComment(), "en", "Comentario EN", "es", "Comentario ES");
             assertEquals(null, code.getVariableElement());
             BaseAsserts.assertEqualsDay(new DateTime(2011, 01, 01, 01, 02, 03, 0), code.getCreatedDate());
             BaseAsserts.assertEqualsDay(new DateTime(), code.getLastUpdated()); // today
@@ -9640,18 +9641,22 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         FileInputStream fileInputStream = new FileInputStream(file);
         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        assertEquals("code\tparent\tvariable_element\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca", bufferedReader.readLine());
-        assertEquals("CODE01\t\tVARIABLE_ELEMENT_02\tIsla de Tenerife\t\tName codelist-1-v2-code-1\t\tDescripción codelist-1-v2-code-1\t\t\t", bufferedReader.readLine());
-        assertEquals("CODE02\t\t\tNombre codelist-1-v2-code-2 Canaria, Gran\t\t\t\t\t\t\t", bufferedReader.readLine());
         assertEquals(
-                "CODE0201\tCODE02\tVARIABLE_ELEMENT_01\tcodelist-1-v2-code-2- Isla de La Gomera\t\tName codelist-1-v2-code-2-1\t\tdescripción CODELIST_1_V2_CODE_2_1\t\tdescription CODELIST_1_V2_CODE_2_1\t",
+                "code\tparent\tvariable_element\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca\tcomment#es\tcomment#pt\tcomment#en\tcomment#ca",
                 bufferedReader.readLine());
-        assertEquals("CODE020101\tCODE0201\t\tSanta Cruz de La Palma codelist-1-v2-code-2-1-1\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CODE0202\tCODE02\t\tIsla de El Hierro\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CODE03\t\tVARIABLE_ELEMENT_03\tFuerteventura\t\tname code-3\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CODE04\t\t\tLanzarote\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CODE0401\tCODE04\t\tCanarias, Tenerife\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CODE040101\tCODE0401\tVARIABLE_ELEMENT_01\tNombre codelist-1-v2-code-4-1-1\t\tName codelist-1-v2-code-4-1-1\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals(
+                "CODE01\t\tVARIABLE_ELEMENT_02\tIsla de Tenerife\t\tName codelist-1-v2-code-1\t\tDescripción codelist-1-v2-code-1\t\t\t\tComentario codelist-1-v2-code-1\t\tComment codelist-1-v2-code-1\t",
+                bufferedReader.readLine());
+        assertEquals("CODE02\t\t\tNombre codelist-1-v2-code-2 Canaria, Gran\t\t\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals(
+                "CODE0201\tCODE02\tVARIABLE_ELEMENT_01\tcodelist-1-v2-code-2- Isla de La Gomera\t\tName codelist-1-v2-code-2-1\t\tdescripción CODELIST_1_V2_CODE_2_1\t\tdescription CODELIST_1_V2_CODE_2_1\t\tcomentarios CODELIST_1_V2_CODE_2_1\t\t\t",
+                bufferedReader.readLine());
+        assertEquals("CODE020101\tCODE0201\t\tSanta Cruz de La Palma codelist-1-v2-code-2-1-1\t\t\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals("CODE0202\tCODE02\t\tIsla de El Hierro\t\t\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals("CODE03\t\tVARIABLE_ELEMENT_03\tFuerteventura\t\tname code-3\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals("CODE04\t\t\tLanzarote\t\t\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals("CODE0401\tCODE04\t\tCanarias, Tenerife\t\t\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
+        assertEquals("CODE040101\tCODE0401\tVARIABLE_ELEMENT_01\tNombre codelist-1-v2-code-4-1-1\t\tName codelist-1-v2-code-4-1-1\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
         bufferedReader.close();
     }
 

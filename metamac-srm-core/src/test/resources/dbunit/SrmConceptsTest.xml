@@ -554,7 +554,7 @@
                 
                 NAME_FK="12"
                 DESCRIPTION_FK="13"
-                COMMENT_FK="[null]"
+                COMMENT_FK="110"
                 
                 UUID="annotableArtefact-99121"
                 VERSION="1"
@@ -7859,5 +7859,26 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="107"
-    />                                                                 
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="110"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="1101"
+        LABEL="Comentario conceptScheme-1-v2-concept-1"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="110"
+    />  
+    
+    <TB_LOCALISED_STRINGS
+        ID="1102"
+        LABEL="Comment conceptScheme-1-v2-concept-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="110"
+    />                                                                  
 </dataset>

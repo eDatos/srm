@@ -1970,6 +1970,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
             assertEquals(null, category.getParent());
             assertEqualsInternationalString(category.getNameableArtefact().getName(), "es", "nombre nuevo 1", "en", "new name 1");
             assertEqualsInternationalString(category.getNameableArtefact().getDescription(), "en", "description new 1", null, null);
+            assertEqualsInternationalString(category.getNameableArtefact().getComment(), "es", "Comentario de categoría 1", null, null);
             BaseAsserts.assertEqualsDay(new DateTime(), category.getLastUpdated());
         }
         {
@@ -2087,23 +2088,25 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         FileInputStream fileInputStream = new FileInputStream(file);
         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        assertEquals("code\tparent\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca", bufferedReader.readLine());
+        assertEquals("code\tparent\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca\tcomment#es\tcomment#pt\tcomment#en\tcomment#ca",
+                bufferedReader.readLine());
         Set<String> lines = new HashSet<String>();
         String line = null;
         while ((line = bufferedReader.readLine()) != null) {
-            System.out.println(line);
+            System.out.println(line.replaceAll("\t", "\\\\t"));
             lines.add(line);
         }
         assertEquals(8, lines.size());
 
-        assertTrue(lines.contains("CATEGORY01\t\tNombre categoryScheme-1-v2-category-1\t\tName categoryScheme-1-v2-category-1\t\tDescripción categoryScheme-1-v2-category-1\t\t\t"));
-        assertTrue(lines.contains("CATEGORY02\t\tNombre categoryScheme-1-v2-category-2\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("CATEGORY0201\tCATEGORY02\tNombre categoryScheme-1-v2-category-2-1\t\tName categoryScheme-1-v2-category-2-1\t\tDescripción cat2-1\t\tDescription cat2-1\t"));
-        assertTrue(lines.contains("CATEGORY020101\tCATEGORY02.CATEGORY0201\tNombre categoryScheme-1-v2-category-2-1-1\t\t\t\tDescripción cat2-1-1\t\t\t"));
-        assertTrue(lines.contains("CATEGORY03\t\tnombre category-3\t\tname category-3\t\t\t\t\t"));
-        assertTrue(lines.contains("CATEGORY04\t\tnombre category-4\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("CATEGORY0401\tCATEGORY04\tnombre category 4-1\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("CATEGORY040101\tCATEGORY04.CATEGORY0401\tNombre categoryScheme-1-v2-category-4-1-1\t\tName categoryScheme-1-v2-category-4-1-1\t\t\t\t\t"));
+        assertTrue(lines.contains("CATEGORY01\t\tNombre categoryScheme-1-v2-category-1\t\tName categoryScheme-1-v2-category-1\t\tDescripción categoryScheme-1-v2-category-1\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CATEGORY02\t\tNombre categoryScheme-1-v2-category-2\t\t\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CATEGORY0201\tCATEGORY02\tNombre categoryScheme-1-v2-category-2-1\t\tName categoryScheme-1-v2-category-2-1\t\tDescripción cat2-1\t\tDescription cat2-1\t\t\t\t\t"));
+        assertTrue(lines
+                .contains("CATEGORY020101\tCATEGORY02.CATEGORY0201\tNombre categoryScheme-1-v2-category-2-1-1\t\t\t\tDescripción cat2-1-1\t\t\t\t\t\tComment categoryScheme-1-v2-category-2-1-1\t"));
+        assertTrue(lines.contains("CATEGORY03\t\tnombre category-3\t\tname category-3\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CATEGORY04\t\tnombre category-4\t\t\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CATEGORY0401\tCATEGORY04\tnombre category 4-1\t\t\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CATEGORY040101\tCATEGORY04.CATEGORY0401\tNombre categoryScheme-1-v2-category-4-1-1\t\tName categoryScheme-1-v2-category-4-1-1\t\t\t\t\t\t\t\t\t"));
         bufferedReader.close();
     }
 

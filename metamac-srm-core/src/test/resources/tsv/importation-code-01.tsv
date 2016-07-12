@@ -1,15 +1,15 @@
-code	parent	variable_element	name#es	name#en	name#it	description#en	description#es
-CODE01			nombre nuevo 1	new name 1		description new 1	
-code1		VARIABLE_ELEMENT_01	Nombre 1	Name 1	Nombre it 1	Description 1	Descripción 1
-CODE02		VARIABLE_ELEMENT_03	nombre nuevo con ácéntós 2	new name 2	nombre nuevo it 2	description new 2	descripción nueva 2
-code2	code1	VARIABLE_ELEMENT_01	Nombre 2	Name 2		Description 2	
-code01b		VARIABLE_ELEMENT_NOT_EXISTS		Name 01B	Nombre it 01B		
-code8	CODE01	VARIABLE_ELEMENT_NOT_EXISTS	Nombre 8				
-code3		VARIABLE_ELEMENT_02		Name 3	Nombre it 3		
-CODE03		VARIABLE_ELEMENT_04	nombre nuevo 03				
-CODE0400	CODE04		Nombre 4	name 4	Nombre it 4	Description 4	Descripción 4
-CODE040102	CODE0401		Nombre CODE040102	name CODE040102	Nombre it CODE040102		Descripción CODE040102
-code5	code1	VARIABLE_ELEMENT_03			Nombre it 5	Description 5	Descripción 5
-code6	code2				Nombre it 6		
-code7		VARIABLE_ELEMENT_01	Nombre 7				
-CODE0201	CODE01		Nombre CODE0201	name CODE0201	Nombre it CODE0201		Descripción CODE0201
+code	parent	variable_element	name#es	name#en	name#it	description#en	description#es	comment#en	comment#es
+CODE01			nombre nuevo 1	new name 1		description new 1		Comentario EN	Comentario ES
+code1		VARIABLE_ELEMENT_01	Nombre 1	Name 1	Nombre it 1	Description 1	Descripción 1		
+CODE02		VARIABLE_ELEMENT_03	nombre nuevo con ácéntós 2	new name 2	nombre nuevo it 2	description new 2	descripción nueva 2		
+code2	code1	VARIABLE_ELEMENT_01	Nombre 2	Name 2		Description 2			
+code01b		VARIABLE_ELEMENT_NOT_EXISTS		Name 01B	Nombre it 01B				
+code8	CODE01	VARIABLE_ELEMENT_NOT_EXISTS	Nombre 8						
+code3		VARIABLE_ELEMENT_02		Name 3	Nombre it 3				
+CODE03		VARIABLE_ELEMENT_04	nombre nuevo 03						
+CODE0400	CODE04		Nombre 4	name 4	Nombre it 4	Description 4	Descripción 4		
+CODE040102	CODE0401		Nombre CODE040102	name CODE040102	Nombre it CODE040102		Descripción CODE040102		
+code5	code1	VARIABLE_ELEMENT_03			Nombre it 5	Description 5	Descripción 5		
+code6	code2				Nombre it 6				
+code7		VARIABLE_ELEMENT_01	Nombre 7						
+CODE0201	CODE01		Nombre CODE0201	name CODE0201	Nombre it CODE0201		Descripción CODE0201		

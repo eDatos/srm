@@ -2825,26 +2825,27 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
         FileInputStream fileInputStream = new FileInputStream(file);
         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        assertEquals("code\tparent\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca", bufferedReader.readLine());
+        assertEquals("code\tparent\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca\tcomment#es\tcomment#pt\tcomment#en\tcomment#ca",
+                bufferedReader.readLine());
         Set<String> lines = new HashSet<String>();
         String line = null;
         while ((line = bufferedReader.readLine()) != null) {
-            System.out.println(line);
+            System.out.println(line.replaceAll("\t", "\\\\t"));
             lines.add(line);
         }
         assertEquals(8, lines.size());
 
         assertTrue(lines
-                .contains("ORGANISATION01\t\tNombre organisationScheme-1-v2-organisation-1\t\tName organisationScheme-1-v2-organisation-1\t\tDescripción organisationScheme-1-v2-organisation-1\t\t\t"));
+                .contains("ORGANISATION01\t\tNombre organisationScheme-1-v2-organisation-1\t\tName organisationScheme-1-v2-organisation-1\t\tDescripción organisationScheme-1-v2-organisation-1\t\t\t\t\t\t\t"));
         assertTrue(lines
-                .contains("ORGANISATION02\t\tNombre organisationScheme-1-v2-organisation-2\t\t\t\tDescripción organisationScheme-1-v2-organisation-2\t\tDescription organisationScheme-1-v2-organisation-2\t"));
+                .contains("ORGANISATION02\t\tNombre organisationScheme-1-v2-organisation-2\t\t\t\tDescripción organisationScheme-1-v2-organisation-2\t\tDescription organisationScheme-1-v2-organisation-2\t\tComentario organisationScheme-1-v2-organisation-2\t\tComment organisationScheme-1-v2-organisation-2\t"));
         assertTrue(lines
-                .contains("ORGANISATION0201\tORGANISATION02\tNombre organisationScheme-1-v2-organisation-2-1\t\tName organisationScheme-1-v2-organisation-2-1\t\tDescripción organisationScheme-1-v2-organisation-2-1\t\tDescription organisationScheme-1-v2-organisation-2-1\t"));
-        assertTrue(lines.contains("ORGANISATION020101\tORGANISATION0201\tNombre organisationScheme-1-v2-organisation-2-1-1\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("ORGANISATION03\t\tnombre organisation-3\t\tname organisation-3\t\t\t\t\t"));
-        assertTrue(lines.contains("ORGANISATION04\t\tnombre organisation-4\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("ORGANISATION0401\tORGANISATION04\tnombre organisation 4-1\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("ORGANISATION040101\tORGANISATION0401\tNombre organisationScheme-1-v2-organisation-4-1-1\t\tName organisationScheme-1-v2-organisation-4-1-1\t\t\t\t\t"));
+                .contains("ORGANISATION0201\tORGANISATION02\tNombre organisationScheme-1-v2-organisation-2-1\t\tName organisationScheme-1-v2-organisation-2-1\t\tDescripción organisationScheme-1-v2-organisation-2-1\t\tDescription organisationScheme-1-v2-organisation-2-1\t\t\t\t\t"));
+        assertTrue(lines.contains("ORGANISATION020101\tORGANISATION0201\tNombre organisationScheme-1-v2-organisation-2-1-1\t\t\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("ORGANISATION03\t\tnombre organisation-3\t\tname organisation-3\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("ORGANISATION04\t\tnombre organisation-4\t\t\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("ORGANISATION0401\tORGANISATION04\tnombre organisation 4-1\t\t\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("ORGANISATION040101\tORGANISATION0401\tNombre organisationScheme-1-v2-organisation-4-1-1\t\tName organisationScheme-1-v2-organisation-4-1-1\t\t\t\t\t\t\t\t\t"));
         bufferedReader.close();
     }
 
@@ -2890,6 +2891,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
             assertEquals(organisation.getNameableArtefact().getUrn(), organisation.getNameableArtefact().getUrnProvider());
             assertEquals(null, organisation.getParent());
             assertEqualsInternationalString(organisation.getNameableArtefact().getName(), "es", "Presidencia del Gobierno", null, null);
+            assertEqualsInternationalString(organisation.getNameableArtefact().getDescription(), "es", "Descripción ES", "en", "Descripción EN");
+            assertEqualsInternationalString(organisation.getNameableArtefact().getComment(), "es", "Comentario ES", "en", "Comentario EN");
             BaseAsserts.assertEqualsDay(new DateTime(), organisation.getLastUpdated());
         }
         {
@@ -2928,7 +2931,8 @@ public class OrganisationsMetamacServiceTest extends SrmBaseTest implements Orga
     @Test
     public void testRetrieveOrganisationsOrderedInDepthByOrganisationSchemeUrn() throws Exception {
 
-        List<ItemResult> organisations = organisationMetamacRepository.findOrganisationsByOrganisationSchemeOrderedInDepth(Long.valueOf(12), new OrganisationMetamacResultSelection(true, true, true, true));
+        List<ItemResult> organisations = organisationMetamacRepository.findOrganisationsByOrganisationSchemeOrderedInDepth(Long.valueOf(12), new OrganisationMetamacResultSelection(true, true, true,
+                true));
 
         assertEquals(8, organisations.size());
 

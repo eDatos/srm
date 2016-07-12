@@ -726,7 +726,7 @@
                         
                         NAME_FK="16"
                         DESCRIPTION_FK="55"
-                        COMMENT_FK="[null]"
+                        COMMENT_FK="17"
                         
                         UUID="annotableArtefact-12211"
                         VERSION="1"
@@ -3001,6 +3001,19 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="16"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="17"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="171"
+        LABEL="Comment categoryScheme-1-v2-category-2-1-1"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="17"
     />
     
     <TB_INTERNATIONAL_STRINGS

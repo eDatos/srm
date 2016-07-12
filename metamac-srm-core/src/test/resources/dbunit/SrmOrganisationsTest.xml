@@ -587,7 +587,7 @@
                 
                 NAME_FK="14"
                 DESCRIPTION_FK="62"
-                COMMENT_FK="[null]"
+                COMMENT_FK="63"
                 
                 UUID="annotableArtefact-112"
                 VERSION="1"
@@ -4588,7 +4588,28 @@
         LOCALE="es"
         VERSION="1"
         INTERNATIONAL_STRING_FK="62"
+    />
+    
+    <TB_INTERNATIONAL_STRINGS
+        ID="63"
+        VERSION="1"
+    />
+    
+    <TB_LOCALISED_STRINGS
+        ID="631"
+        LABEL="Comment organisationScheme-1-v2-organisation-2"
+        LOCALE="en"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="63"
     />      
+
+    <TB_LOCALISED_STRINGS
+        ID="632"
+        LABEL="Comentario organisationScheme-1-v2-organisation-2"
+        LOCALE="es"
+        VERSION="1"
+        INTERNATIONAL_STRING_FK="63"
+    />    
     
    <TB_INTERNATIONAL_STRINGS
         ID="64"

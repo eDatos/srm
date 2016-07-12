@@ -42,6 +42,7 @@ public class TsvExportationUtils {
                 writeCodeVariableElement(writer, itemResult);
                 writeItemName(writer, itemResult, languages);
                 writeItemDescription(writer, itemResult, languages);
+                writeItemComment(writer, itemResult, languages);
             }
             writer.flush();
             return file.getName();
@@ -66,6 +67,10 @@ public class TsvExportationUtils {
         for (String language : languages) {
             writer.write(SrmConstants.TSV_SEPARATOR);
             writer.write(SrmConstants.TSV_HEADER_DESCRIPTION + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_COMMENT + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
         }
     }
 
@@ -97,6 +102,7 @@ public class TsvExportationUtils {
                 writeParentCode(writer, itemResult);
                 writeItemName(writer, itemResult, languages);
                 writeItemDescription(writer, itemResult, languages);
+                writeItemComment(writer, itemResult, languages);
             }
             writer.flush();
             return file.getName();
@@ -120,6 +126,10 @@ public class TsvExportationUtils {
             writer.write(SrmConstants.TSV_SEPARATOR);
             writer.write(SrmConstants.TSV_HEADER_DESCRIPTION + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
         }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_COMMENT + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
     }
 
     // ---------------------------------------------------------------------------------------------------------------
@@ -142,6 +152,7 @@ public class TsvExportationUtils {
                 writeParentCode(writer, itemResult);
                 writeItemName(writer, itemResult, languages);
                 writeItemDescription(writer, itemResult, languages);
+                writeItemComment(writer, itemResult, languages);
             }
             writer.flush();
             return file.getName();
@@ -165,6 +176,10 @@ public class TsvExportationUtils {
             writer.write(SrmConstants.TSV_SEPARATOR);
             writer.write(SrmConstants.TSV_HEADER_DESCRIPTION + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
         }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_COMMENT + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
     }
 
     // ---------------------------------------------------------------------------------------------------------------
@@ -187,6 +202,7 @@ public class TsvExportationUtils {
                 writeParentCodeFull(writer, itemResult);
                 writeItemName(writer, itemResult, languages);
                 writeItemDescription(writer, itemResult, languages);
+                writeItemComment(writer, itemResult, languages);
             }
             writer.flush();
             return file.getName();
@@ -209,6 +225,10 @@ public class TsvExportationUtils {
         for (String language : languages) {
             writer.write(SrmConstants.TSV_SEPARATOR);
             writer.write(SrmConstants.TSV_HEADER_DESCRIPTION + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_COMMENT + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
         }
     }
 
@@ -251,6 +271,17 @@ public class TsvExportationUtils {
             writer.write(SrmConstants.TSV_SEPARATOR);
             if (descriptionInLocale != null) {
                 writer.write(descriptionInLocale);
+            }
+        }
+    }
+
+    private static void writeItemComment(OutputStreamWriter writer, ItemResult itemResult, List<String> languages) throws IOException {
+        for (String language : languages) {
+            String textInLocale = itemResult.getComment().get(language);
+            textInLocale = removeUnsupportedCharaters(textInLocale);
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            if (textInLocale != null) {
+                writer.write(textInLocale);
             }
         }
     }

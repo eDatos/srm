@@ -3849,6 +3849,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                     "es",
                     "<span style=\"color: rgb(84, 84, 84); font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 18px; text-align: justify; background-color: rgb(255, 255, 255);\">Medida de la relación existente entre dos variables. Su valor está comprendido entre –1 y 1. Si es negativo la relación entre las variables es inversa, es decir, a medida que aumentan los valores de una decrecen los de la otra. Si es positivo la asociación es directa, es decir, los valores de una variable aumentan con la otra. Un valor de cero indica ausencia de relación. Cuando las variables son continuas y tienen una relación lineal, el coeficiente de correlación lineal de Pearson es una medida de asociación adecuada. Cuando las variables no son continuas se utilizan otros coeficientes de correlación.</span>",
                     null, null);
+            assertEqualsInternationalString(code.getNameableArtefact().getComment(), "ru", "Comment RU", "zh", "Comment ZH");
             BaseAsserts.assertEqualsDay(new DateTime(), code.getLastUpdated());
         }
     }
@@ -3865,23 +3866,26 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         FileInputStream fileInputStream = new FileInputStream(file);
         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        assertEquals("code\tparent\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca", bufferedReader.readLine());
+        assertEquals("code\tparent\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca\tcomment#es\tcomment#pt\tcomment#en\tcomment#ca",
+                bufferedReader.readLine());
         Set<String> lines = new HashSet<String>();
         String line = null;
         while ((line = bufferedReader.readLine()) != null) {
+            System.out.println(line.replaceAll("\t", "\\\\t"));
             lines.add(line);
         }
         assertEquals(8, lines.size());
 
-        assertTrue(lines.contains("CONCEPT01\t\tNombre conceptScheme-1-v2-concept-1\t\tName conceptScheme-1-v2-concept-1\t\tDescripción conceptScheme-1-v2-concept-1\t\t\t"));
-        assertTrue(lines.contains("CONCEPT02\t\tNombre conceptScheme-1-v2-concept-2\t\t\t\t\t\t\t"));
         assertTrue(lines
-                .contains("CONCEPT0201\tCONCEPT02\tNombre conceptScheme-1-v2-concept-2-1\t\tName conceptScheme-1-v2-concept-2-1\t\tDescripción conceptScheme-1-v2-concept-2-1\t\tDescription conceptScheme-1-v2-concept-2-1\t"));
-        assertTrue(lines.contains("CONCEPT020101\tCONCEPT0201\tNombre conceptScheme-1-v2-concept-2-1-1\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("CONCEPT03\t\tnombre concept-3\t\tname concept-3\t\t\t\t\t"));
-        assertTrue(lines.contains("CONCEPT04\t\tnombre concept-4\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("CONCEPT0401\tCONCEPT04\tnombre concept 4-1\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("CONCEPT040101\tCONCEPT0401\tNombre conceptScheme-1-v2-concept-4-1-1\t\tName conceptScheme-1-v2-concept-4-1-1\t\t\t\t\t"));
+                .contains("CONCEPT01\t\tNombre conceptScheme-1-v2-concept-1\t\tName conceptScheme-1-v2-concept-1\t\tDescripción conceptScheme-1-v2-concept-1\t\t\t\tComentario conceptScheme-1-v2-concept-1\t\tComment conceptScheme-1-v2-concept-1\t"));
+        assertTrue(lines.contains("CONCEPT02\t\tNombre conceptScheme-1-v2-concept-2\t\t\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines
+                .contains("CONCEPT0201\tCONCEPT02\tNombre conceptScheme-1-v2-concept-2-1\t\tName conceptScheme-1-v2-concept-2-1\t\tDescripción conceptScheme-1-v2-concept-2-1\t\tDescription conceptScheme-1-v2-concept-2-1\t\t\t\t\t"));
+        assertTrue(lines.contains("CONCEPT020101\tCONCEPT0201\tNombre conceptScheme-1-v2-concept-2-1-1\t\t\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CONCEPT03\t\tnombre concept-3\t\tname concept-3\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CONCEPT04\t\tnombre concept-4\t\t\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CONCEPT0401\tCONCEPT04\tnombre concept 4-1\t\t\t\t\t\t\t\t\t\t\t"));
+        assertTrue(lines.contains("CONCEPT040101\tCONCEPT0401\tNombre conceptScheme-1-v2-concept-4-1-1\t\tName conceptScheme-1-v2-concept-4-1-1\t\t\t\t\t\t\t\t\t"));
         bufferedReader.close();
     }
 

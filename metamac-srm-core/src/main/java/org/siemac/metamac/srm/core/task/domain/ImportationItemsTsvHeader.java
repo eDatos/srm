@@ -7,6 +7,7 @@ public class ImportationItemsTsvHeader {
     private int                    parentPosition;
     private InternationalStringTsv name;
     private InternationalStringTsv description;
+    private InternationalStringTsv comment;
 
     public int getColumnsSize() {
         return columnsSize;
@@ -46,5 +47,13 @@ public class ImportationItemsTsvHeader {
 
     public void setDescription(InternationalStringTsv description) {
         this.description = description;
+    }
+
+    public InternationalStringTsv getComment() {
+        return comment;
+    }
+
+    public void setComment(InternationalStringTsv comment) {
+        this.comment = comment;
     }
 }

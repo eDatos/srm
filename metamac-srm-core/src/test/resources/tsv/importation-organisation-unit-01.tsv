@@ -1,20 +1,20 @@
-code	parent	name#es	name#en	description#es	description#en
-PRESIDENCIA		Presidencia del Gobierno			
-VICEPRESIDENCIA	PRESIDENCIA	Vicepresidencia del Gobierno			
-DGRAL_GABINETE_VICEPRESIDENCIA	VICEPRESIDENCIA	Dirección General del Gabinete de la Vicepresidencia			
-CONSEJERIA_CULTURA	DGRAL_GABINETE_VICEPRESIDENCIA	Consejería de Cultura, Deportes, Políticas Sociales y Vivienda			
-CONSEJERIA_EDUCACION		Consejería de Educación, Universidades y Sostenibilidad			
-VICECONSEJERIA_ACCION_EXT	PRESIDENCIA	Viceconsejería de Acción Exterior			
-VICECONSEJERIA_COMUNICACION	PRESIDENCIA	Viceconsejería de Comunicación y Relaciones con los Medios			
-DGRAL_COMUNICACION	VICECONSEJERIA_COMUNICACION	Dirección General de Comunicación			
-VICECONSEJERIA_TURISMO	PRESIDENCIA	Viceconsejería de Turismo			
-CONSEJERIA_ECONOMIA		Consejería de Economía, Hacienda y Seguridad			
-VICECONSEJERIA_PRESIDENCIA	PRESIDENCIA	Viceconsejería de la Presidencia			
-CONSEJERIA_EMPLEO		Consejería de Empleo, Industria y Comercio			
-CONSEJERIA_AGRICULTURA		Consejería de Agricultura, Ganadería, Pesca y Aguas			
-CONSEJERIA_PRESIDENCIA		Consejería de Presidencia, Justicia e Igualdad			
-ISTAC	CONSEJERIA_PRESIDENCIA	Instituto Canario de Estadística			
-DGRAL_PROMOCION_TURISTICA	VICECONSEJERIA_TURISMO	Dirección General de Ordenación y Promoción Turística			
-CONSEJERIA_SANIDAD		Consejería de Sanidad			
-CONSEJERIA_OBRAS		Consejería de Obras Públicas, Transportes y Política Territorial			
-DGRAL_INFRAESTRUCTURA_TURISTICA	VICECONSEJERIA_TURISMO	Dirección General de Infraestructura Turística			
+code	parent	name#es	name#en	description#es	description#en	comment#es	comment#en
+PRESIDENCIA		Presidencia del Gobierno		Descripción ES	Descripción EN	Comentario ES	Comentario EN
+VICEPRESIDENCIA	PRESIDENCIA	Vicepresidencia del Gobierno					
+DGRAL_GABINETE_VICEPRESIDENCIA	VICEPRESIDENCIA	Dirección General del Gabinete de la Vicepresidencia					
+CONSEJERIA_CULTURA	DGRAL_GABINETE_VICEPRESIDENCIA	Consejería de Cultura, Deportes, Políticas Sociales y Vivienda					
+CONSEJERIA_EDUCACION		Consejería de Educación, Universidades y Sostenibilidad					
+VICECONSEJERIA_ACCION_EXT	PRESIDENCIA	Viceconsejería de Acción Exterior					
+VICECONSEJERIA_COMUNICACION	PRESIDENCIA	Viceconsejería de Comunicación y Relaciones con los Medios					
+DGRAL_COMUNICACION	VICECONSEJERIA_COMUNICACION	Dirección General de Comunicación					
+VICECONSEJERIA_TURISMO	PRESIDENCIA	Viceconsejería de Turismo					
+CONSEJERIA_ECONOMIA		Consejería de Economía, Hacienda y Seguridad					
+VICECONSEJERIA_PRESIDENCIA	PRESIDENCIA	Viceconsejería de la Presidencia					
+CONSEJERIA_EMPLEO		Consejería de Empleo, Industria y Comercio					
+CONSEJERIA_AGRICULTURA		Consejería de Agricultura, Ganadería, Pesca y Aguas					
+CONSEJERIA_PRESIDENCIA		Consejería de Presidencia, Justicia e Igualdad					
+ISTAC	CONSEJERIA_PRESIDENCIA	Instituto Canario de Estadística					
+DGRAL_PROMOCION_TURISTICA	VICECONSEJERIA_TURISMO	Dirección General de Ordenación y Promoción Turística					
+CONSEJERIA_SANIDAD		Consejería de Sanidad					
+CONSEJERIA_OBRAS		Consejería de Obras Públicas, Transportes y Política Territorial					
+DGRAL_INFRAESTRUCTURA_TURISTICA	VICECONSEJERIA_TURISMO	Dirección General de Infraestructura Turística					

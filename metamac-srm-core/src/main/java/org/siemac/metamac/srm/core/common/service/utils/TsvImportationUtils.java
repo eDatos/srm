@@ -182,7 +182,7 @@ public class TsvImportationUtils {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT, 4));
         }
         List<String> headersExpected = Arrays.asList(SrmConstants.TSV_HEADER_CODE, SrmConstants.TSV_HEADER_PARENT, SrmConstants.TSV_HEADER_VARIABLE_ELEMENT, SrmConstants.TSV_HEADER_NAME,
-                SrmConstants.TSV_HEADER_DESCRIPTION);
+                SrmConstants.TSV_HEADER_DESCRIPTION, SrmConstants.TSV_HEADER_COMMENT);
         int headerExpectedIndex = 0;
         ImportationCodesTsvHeader header = new ImportationCodesTsvHeader();
         header.setColumnsSize(headerColumns.length);
@@ -219,6 +219,14 @@ public class TsvImportationUtils {
                     break;
                 }
                 if (header.getDescription().isEndPositionSetted()) {
+                    headerExpectedIndex++;
+                }
+            } else if (SrmConstants.TSV_HEADER_COMMENT.equals(columnName)) {
+                header.setComment(columnHeaderToInternationalStringTsv(headerColumns, i, columnSplited, headerExpected, header.getComment(), exceptions));
+                if (header.getComment() == null) {
+                    break;
+                }
+                if (header.getComment().isEndPositionSetted()) {
                     headerExpectedIndex++;
                 }
             }
@@ -314,6 +322,7 @@ public class TsvImportationUtils {
                     ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_NAME));
         }
         code.getNameableArtefact().setDescription(TsvImportationUtils.tsvLineToInternationalString(header.getDescription(), columns, code.getNameableArtefact().getDescription()));
+        code.getNameableArtefact().setComment(TsvImportationUtils.tsvLineToInternationalString(header.getComment(), columns, code.getNameableArtefact().getComment()));
         if (updateVariableElement) {
             code.setVariableElement(variableElement);
             if (variableElement != null) {
@@ -468,7 +477,8 @@ public class TsvImportationUtils {
         if (headerColumns == null || headerColumns.length < 4) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT, 4));
         }
-        List<String> headersExpected = Arrays.asList(SrmConstants.TSV_HEADER_CODE, SrmConstants.TSV_HEADER_PARENT, SrmConstants.TSV_HEADER_NAME, SrmConstants.TSV_HEADER_DESCRIPTION);
+        List<String> headersExpected = Arrays.asList(SrmConstants.TSV_HEADER_CODE, SrmConstants.TSV_HEADER_PARENT, SrmConstants.TSV_HEADER_NAME, SrmConstants.TSV_HEADER_DESCRIPTION,
+                SrmConstants.TSV_HEADER_COMMENT);
         int headerExpectedIndex = 0;
         header.setColumnsSize(headerColumns.length);
         for (int i = 0; i < headerColumns.length; i++) {
@@ -501,6 +511,14 @@ public class TsvImportationUtils {
                     break;
                 }
                 if (header.getDescription().isEndPositionSetted()) {
+                    headerExpectedIndex++;
+                }
+            } else if (SrmConstants.TSV_HEADER_COMMENT.equals(columnName)) {
+                header.setComment(columnHeaderToInternationalStringTsv(headerColumns, i, columnSplited, headerExpected, header.getComment(), exceptions));
+                if (header.getComment() == null) {
+                    break;
+                }
+                if (header.getComment().isEndPositionSetted()) {
                     headerExpectedIndex++;
                 }
             }
@@ -593,6 +611,7 @@ public class TsvImportationUtils {
                     ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_NAME));
         }
         item.getNameableArtefact().setDescription(TsvImportationUtils.tsvLineToInternationalString(header.getDescription(), columns, item.getNameableArtefact().getDescription()));
+        item.getNameableArtefact().setComment(TsvImportationUtils.tsvLineToInternationalString(header.getComment(), columns, item.getNameableArtefact().getComment()));
 
         // Do not persist if any error ocurrs
         if (!CollectionUtils.isEmpty(exceptionItems)) {

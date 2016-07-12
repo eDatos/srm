@@ -4,7 +4,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 
 public class SrmConstants {
 
-    public static final String             APPLICATION_ID                                                = "GESTOR_RECURSOS_ESTRUCTURALES";
+    public static final String             APPLICATION_ID                                                         = "GESTOR_RECURSOS_ESTRUCTURALES";
 
     // Attribute name used in repository, is a metamac reserved keyword
     public static String                   ATTRIBUTE_DATA_SOURCE_ID                                               = "DATA_SOURCE_ID";
@@ -29,6 +29,7 @@ public class SrmConstants {
     public static final String             TSV_HEADER_PARENT                                                      = "parent";
     public static final String             TSV_HEADER_NAME                                                        = "name";
     public static final String             TSV_HEADER_DESCRIPTION                                                 = "description";
+    public static final String             TSV_HEADER_COMMENT                                                     = "comment";
     public static final String             TSV_HEADER_SHORT_NAME                                                  = "short_name";
     public static final String             TSV_HEADER_VARIABLE_ELEMENT                                            = "variable_element";
     public static final String             TSV_HEADER_LABEL                                                       = "label";
