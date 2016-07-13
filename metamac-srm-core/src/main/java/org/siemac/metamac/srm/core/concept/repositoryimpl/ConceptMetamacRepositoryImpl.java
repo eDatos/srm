@@ -149,6 +149,16 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
             mapConceptByItemId.put(itemResult.getItemIdDatabase(), itemResult);
         }
 
+        if (resultSelection.isInternationalStringsMetamac()) {
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapConceptByItemId, ConceptExtensionPointUtilities.PLURAL_NAME);
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapConceptByItemId, ConceptExtensionPointUtilities.ACRONYM);
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapConceptByItemId, ConceptExtensionPointUtilities.DESCRIPTION_SOURCE);
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapConceptByItemId, ConceptExtensionPointUtilities.CONTEXT);
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapConceptByItemId, ConceptExtensionPointUtilities.DOC_METHOD);
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapConceptByItemId, ConceptExtensionPointUtilities.DERIVATION);
+            executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapConceptByItemId, ConceptExtensionPointUtilities.LEGAL_ACTS);
+        }
+
         StringBuilder sb = new StringBuilder();
         if (srmConfiguration.isDatabaseOracle()) {
             sb.append("SELECT c1.ID ");

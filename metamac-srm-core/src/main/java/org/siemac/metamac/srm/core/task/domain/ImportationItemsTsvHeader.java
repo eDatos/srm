@@ -2,9 +2,9 @@ package org.siemac.metamac.srm.core.task.domain;
 
 public class ImportationItemsTsvHeader {
 
-    private int                    columnsSize;
-    private int                    codePosition;
-    private int                    parentPosition;
+    private int                    columnsSize;   // Number of columns of TSV File
+    private int                    codePosition;  // Number of column for Code field (zero-index based)
+    private int                    parentPosition; // Number of column for Parent field (zero-index based)
     private InternationalStringTsv name;
     private InternationalStringTsv description;
     private InternationalStringTsv comment;

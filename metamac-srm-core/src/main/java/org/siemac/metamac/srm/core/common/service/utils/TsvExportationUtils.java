@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
+import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
@@ -103,6 +104,13 @@ public class TsvExportationUtils {
                 writeItemName(writer, itemResult, languages);
                 writeItemDescription(writer, itemResult, languages);
                 writeItemComment(writer, itemResult, languages);
+                writeItemExtensionPointPluralName(writer, itemResult, languages);
+                writeItemExtensionPointAcronym(writer, itemResult, languages);
+                writeItemExtensionPointDescriptionSource(writer, itemResult, languages);
+                writeItemExtensionPointContext(writer, itemResult, languages);
+                writeItemExtensionPointDocMethod(writer, itemResult, languages);
+                writeItemExtensionPointDerivation(writer, itemResult, languages);
+                writeItemExtensionPointLegalActs(writer, itemResult, languages);
             }
             writer.flush();
             return file.getName();
@@ -129,6 +137,34 @@ public class TsvExportationUtils {
         for (String language : languages) {
             writer.write(SrmConstants.TSV_SEPARATOR);
             writer.write(SrmConstants.TSV_HEADER_COMMENT + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_PLURAL_NAME + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_ACRONYM + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_DESCRIPTION_SOURCE + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_CONTEXT + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_DOC_METHOD + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_DERIVATION + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_LEGAL_ACTS + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
         }
     }
 
@@ -278,6 +314,85 @@ public class TsvExportationUtils {
     private static void writeItemComment(OutputStreamWriter writer, ItemResult itemResult, List<String> languages) throws IOException {
         for (String language : languages) {
             String textInLocale = itemResult.getComment().get(language);
+            textInLocale = removeUnsupportedCharaters(textInLocale);
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            if (textInLocale != null) {
+                writer.write(textInLocale);
+            }
+        }
+    }
+
+    private static void writeItemExtensionPointPluralName(OutputStreamWriter writer, ItemResult itemResult, List<String> languages) throws IOException {
+        ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        for (String language : languages) {
+            String textInLocale = extensionPoint.getPluralName().get(language);
+            textInLocale = removeUnsupportedCharaters(textInLocale);
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            if (textInLocale != null) {
+                writer.write(textInLocale);
+            }
+        }
+    }
+
+    private static void writeItemExtensionPointAcronym(OutputStreamWriter writer, ItemResult itemResult, List<String> languages) throws IOException {
+        ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        for (String language : languages) {
+            String textInLocale = extensionPoint.getAcronym().get(language);
+            textInLocale = removeUnsupportedCharaters(textInLocale);
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            if (textInLocale != null) {
+                writer.write(textInLocale);
+            }
+        }
+    }
+    private static void writeItemExtensionPointDescriptionSource(OutputStreamWriter writer, ItemResult itemResult, List<String> languages) throws IOException {
+        ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        for (String language : languages) {
+            String textInLocale = extensionPoint.getDescriptionSource().get(language);
+            textInLocale = removeUnsupportedCharaters(textInLocale);
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            if (textInLocale != null) {
+                writer.write(textInLocale);
+            }
+        }
+    }
+    private static void writeItemExtensionPointContext(OutputStreamWriter writer, ItemResult itemResult, List<String> languages) throws IOException {
+        ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        for (String language : languages) {
+            String textInLocale = extensionPoint.getContext().get(language);
+            textInLocale = removeUnsupportedCharaters(textInLocale);
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            if (textInLocale != null) {
+                writer.write(textInLocale);
+            }
+        }
+    }
+    private static void writeItemExtensionPointDocMethod(OutputStreamWriter writer, ItemResult itemResult, List<String> languages) throws IOException {
+        ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        for (String language : languages) {
+            String textInLocale = extensionPoint.getDocMethod().get(language);
+            textInLocale = removeUnsupportedCharaters(textInLocale);
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            if (textInLocale != null) {
+                writer.write(textInLocale);
+            }
+        }
+    }
+    private static void writeItemExtensionPointDerivation(OutputStreamWriter writer, ItemResult itemResult, List<String> languages) throws IOException {
+        ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        for (String language : languages) {
+            String textInLocale = extensionPoint.getDerivation().get(language);
+            textInLocale = removeUnsupportedCharaters(textInLocale);
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            if (textInLocale != null) {
+                writer.write(textInLocale);
+            }
+        }
+    }
+    private static void writeItemExtensionPointLegalActs(OutputStreamWriter writer, ItemResult itemResult, List<String> languages) throws IOException {
+        ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        for (String language : languages) {
+            String textInLocale = extensionPoint.getLegalActs().get(language);
             textInLocale = removeUnsupportedCharaters(textInLocale);
             writer.write(SrmConstants.TSV_SEPARATOR);
             if (textInLocale != null) {

@@ -3850,6 +3850,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                     "<span style=\"color: rgb(84, 84, 84); font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 18px; text-align: justify; background-color: rgb(255, 255, 255);\">Medida de la relación existente entre dos variables. Su valor está comprendido entre –1 y 1. Si es negativo la relación entre las variables es inversa, es decir, a medida que aumentan los valores de una decrecen los de la otra. Si es positivo la asociación es directa, es decir, los valores de una variable aumentan con la otra. Un valor de cero indica ausencia de relación. Cuando las variables son continuas y tienen una relación lineal, el coeficiente de correlación lineal de Pearson es una medida de asociación adecuada. Cuando las variables no son continuas se utilizan otros coeficientes de correlación.</span>",
                     null, null);
             assertEqualsInternationalString(code.getNameableArtefact().getComment(), "ru", "Comment RU", "zh", "Comment ZH");
+            assertEqualsInternationalString(code.getPluralName(), "es", "Plura ES", null, null);
+            assertEqualsInternationalString(code.getAcronym(), "es", "Acrónimo ES", null, null);
+            assertEqualsInternationalString(code.getDescriptionSource(), "es", "Descripción Source ES", "pt", "Descripción Source PT");
+            assertEqualsInternationalString(code.getContext(), "es", "Contexto ES", null, null);
+            assertEqualsInternationalString(code.getDocMethod(), "es", "Documentación Metodológica ES", null, null);
+            assertEqualsInternationalString(code.getDerivation(), "es", "Derivación Es", null, null);
+            assertEqualsInternationalString(code.getLegalActs(), "es", "Lega ES", null, null);
             BaseAsserts.assertEqualsDay(new DateTime(), code.getLastUpdated());
         }
     }
@@ -3866,8 +3873,29 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         FileInputStream fileInputStream = new FileInputStream(file);
         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        assertEquals("code\tparent\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca\tcomment#es\tcomment#pt\tcomment#en\tcomment#ca",
-                bufferedReader.readLine());
+        StringBuilder header = new StringBuilder("code\tparent");
+        String nameHeader = "name#es\tname#pt\tname#en\tname#ca";
+        header.append("\t" + nameHeader);
+        String descriptionHeader = "description#es\tdescription#pt\tdescription#en\tdescription#ca";
+        header.append("\t" + descriptionHeader);
+        String commentHeader = "comment#es\tcomment#pt\tcomment#en\tcomment#ca";
+        header.append("\t" + commentHeader);
+        String pluralNameHeader = "plural_name#es\tplural_name#pt\tplural_name#en\tplural_name#ca";
+        header.append("\t" + pluralNameHeader);
+        String acronymNameHeader = "acronym#es\tacronym#pt\tacronym#en\tacronym#ca";
+        header.append("\t" + acronymNameHeader);
+        String descriptionSourceHeader = "description_source#es\tdescription_source#pt\tdescription_source#en\tdescription_source#ca";
+        header.append("\t" + descriptionSourceHeader);
+        String contextHeader = "context#es\tcontext#pt\tcontext#en\tcontext#ca";
+        header.append("\t" + contextHeader);
+        String docMethodHeader = "docMethod#es\tdocMethod#pt\tdocMethod#en\tdocMethod#ca";
+        header.append("\t" + docMethodHeader);
+        String derivationHeader = "derivation#es\tderivation#pt\tderivation#en\tderivation#ca";
+        header.append("\t" + derivationHeader);
+        String legalActsHeader = "legal_acts#es\tlegal_acts#pt\tlegal_acts#en\tlegal_acts#ca";
+        header.append("\t" + legalActsHeader);
+
+        assertEquals(header.toString(), bufferedReader.readLine());
         Set<String> lines = new HashSet<String>();
         String line = null;
         while ((line = bufferedReader.readLine()) != null) {
@@ -3876,16 +3904,30 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
         assertEquals(8, lines.size());
 
-        assertTrue(lines
-                .contains("CONCEPT01\t\tNombre conceptScheme-1-v2-concept-1\t\tName conceptScheme-1-v2-concept-1\t\tDescripción conceptScheme-1-v2-concept-1\t\t\t\tComentario conceptScheme-1-v2-concept-1\t\tComment conceptScheme-1-v2-concept-1\t"));
-        assertTrue(lines.contains("CONCEPT02\t\tNombre conceptScheme-1-v2-concept-2\t\t\t\t\t\t\t\t\t\t\t"));
-        assertTrue(lines
-                .contains("CONCEPT0201\tCONCEPT02\tNombre conceptScheme-1-v2-concept-2-1\t\tName conceptScheme-1-v2-concept-2-1\t\tDescripción conceptScheme-1-v2-concept-2-1\t\tDescription conceptScheme-1-v2-concept-2-1\t\t\t\t\t"));
-        assertTrue(lines.contains("CONCEPT020101\tCONCEPT0201\tNombre conceptScheme-1-v2-concept-2-1-1\t\t\t\t\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("CONCEPT03\t\tnombre concept-3\t\tname concept-3\t\t\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("CONCEPT04\t\tnombre concept-4\t\t\t\t\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("CONCEPT0401\tCONCEPT04\tnombre concept 4-1\t\t\t\t\t\t\t\t\t\t\t"));
-        assertTrue(lines.contains("CONCEPT040101\tCONCEPT0401\tNombre conceptScheme-1-v2-concept-4-1-1\t\tName conceptScheme-1-v2-concept-4-1-1\t\t\t\t\t\t\t\t\t"));
+        String concepto01Line = "CONCEPT01\t\tNombre conceptScheme-1-v2-concept-1\t\tName conceptScheme-1-v2-concept-1\t\tDescripción conceptScheme-1-v2-concept-1\t\t\t\tComentario conceptScheme-1-v2-concept-1\t\tComment conceptScheme-1-v2-concept-1\t\tPluralName conceptScheme-1-v2-concept-1\t\t\t\tAcrónimo conceptScheme-1-v2-concept-1\t\tAcronym conceptScheme-1-v2-concept-1\t\tDescriptionSource conceptScheme-1-v2-concept-1\t\t\t\tContext conceptScheme-1-v2-concept-1\t\t\t\tDocMethod conceptScheme-1-v2-concept-1\t\t\t\tDerivation conceptScheme-1-v2-concept-1\t\t\t\tLegalActs conceptScheme-1-v2-concept-1\t\t\t";
+        assertTrue(lines.contains(concepto01Line));
+
+        String concepto02Line = "CONCEPT02\t\tNombre conceptScheme-1-v2-concept-2\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        assertTrue(lines.contains(concepto02Line));
+
+        String concepto0201Line = "CONCEPT0201\tCONCEPT02\tNombre conceptScheme-1-v2-concept-2-1\t\tName conceptScheme-1-v2-concept-2-1\t\tDescripción conceptScheme-1-v2-concept-2-1\t\tDescription conceptScheme-1-v2-concept-2-1\t\t\t\t\t\t\t\t\t\tAcrónimo conceptScheme-1-v2-concept-2-1\t\tAcronym conceptScheme-1-v2-concept-2-1\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        assertTrue(lines.contains(concepto0201Line));
+
+        String concepto020101Line = "CONCEPT020101\tCONCEPT0201\tNombre conceptScheme-1-v2-concept-2-1-1\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        assertTrue(lines.contains(concepto020101Line));
+
+        String concepto03Line = "CONCEPT03\t\tnombre concept-3\t\tname concept-3\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        assertTrue(lines.contains(concepto03Line));
+
+        String concepto04Line = "CONCEPT04\t\tnombre concept-4\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        assertTrue(lines.contains(concepto04Line));
+
+        String concepto0401Line = "CONCEPT0401\tCONCEPT04\tnombre concept 4-1\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        assertTrue(lines.contains(concepto0401Line));
+
+        String concepto040101Line = "CONCEPT040101\tCONCEPT0401\tNombre conceptScheme-1-v2-concept-4-1-1\t\tName conceptScheme-1-v2-concept-4-1-1\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        assertTrue(lines.contains(concepto040101Line));
+
         bufferedReader.close();
     }
 
