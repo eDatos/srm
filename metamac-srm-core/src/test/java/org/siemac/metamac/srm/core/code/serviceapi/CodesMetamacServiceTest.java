@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9641,25 +9642,35 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         FileInputStream fileInputStream = new FileInputStream(file);
         InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+        List<String> lines = new ArrayList<String>();
+        String line = null;
+        while ((line = bufferedReader.readLine()) != null) {
+            System.out.println(line.replaceAll("\t", "\\\\t"));
+            lines.add(line);
+        }
+
+        Iterator<String> iterator = lines.iterator();
+
         assertEquals(
-                "code\tparent\tvariable_element\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca\tcomment#es\tcomment#pt\tcomment#en\tcomment#ca",
-                bufferedReader.readLine());
+                "code\tparent\tvariable_element\tname#es\tname#pt\tname#en\tname#ca\tdescription#es\tdescription#pt\tdescription#en\tdescription#ca\tcomment#es\tcomment#pt\tcomment#en\tcomment#ca\tshort_name#es\tshort_name#pt\tshort_name#en\tshort_name#ca",
+                iterator.next());
         assertEquals(
-                "CODE01\t\tVARIABLE_ELEMENT_02\tIsla de Tenerife\t\tName codelist-1-v2-code-1\t\tDescripción codelist-1-v2-code-1\t\t\t\tComentario codelist-1-v2-code-1\t\tComment codelist-1-v2-code-1\t",
-                bufferedReader.readLine());
-        assertEquals("CODE02\t\t\tNombre codelist-1-v2-code-2 Canaria, Gran\t\t\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
+                "CODE01\t\tVARIABLE_ELEMENT_02\tIsla de Tenerife\t\tName codelist-1-v2-code-1\t\tDescripción codelist-1-v2-code-1\t\t\t\tComentario codelist-1-v2-code-1\t\tComment codelist-1-v2-code-1\t\tFuerteventura\t\tShort name variableElement 2-2\t",
+                iterator.next());
+        assertEquals("CODE02\t\t\tNombre codelist-1-v2-code-2 Canaria, Gran\t\t\t\t\t\t\t\t\t\t\t\tnombre corto code2\t\tshort name code2\t", iterator.next());
         assertEquals(
-                "CODE0201\tCODE02\tVARIABLE_ELEMENT_01\tcodelist-1-v2-code-2- Isla de La Gomera\t\tName codelist-1-v2-code-2-1\t\tdescripción CODELIST_1_V2_CODE_2_1\t\tdescription CODELIST_1_V2_CODE_2_1\t\tcomentarios CODELIST_1_V2_CODE_2_1\t\t\t",
-                bufferedReader.readLine());
-        assertEquals("CODE020101\tCODE0201\t\tSanta Cruz de La Palma codelist-1-v2-code-2-1-1\t\t\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CODE0202\tCODE02\t\tIsla de El Hierro\t\t\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CODE03\t\tVARIABLE_ELEMENT_03\tFuerteventura\t\tname code-3\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CODE04\t\t\tLanzarote\t\t\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CODE0401\tCODE04\t\tCanarias, Tenerife\t\t\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
-        assertEquals("CODE040101\tCODE0401\tVARIABLE_ELEMENT_01\tNombre codelist-1-v2-code-4-1-1\t\tName codelist-1-v2-code-4-1-1\t\t\t\t\t\t\t\t\t", bufferedReader.readLine());
+                "CODE0201\tCODE02\tVARIABLE_ELEMENT_01\tcodelist-1-v2-code-2- Isla de La Gomera\t\tName codelist-1-v2-code-2-1\t\tdescripción CODELIST_1_V2_CODE_2_1\t\tdescription CODELIST_1_V2_CODE_2_1\t\tcomentarios CODELIST_1_V2_CODE_2_1\t\t\t\tEl Hierro\t\tshort name variableElement 2-1\t",
+                iterator.next());
+        assertEquals("CODE020101\tCODE0201\t\tSanta Cruz de La Palma codelist-1-v2-code-2-1-1\t\t\t\t\t\t\t\t\t\t\t\tnombre corto 2-1-1\t\t\t", iterator.next());
+        assertEquals("CODE0202\tCODE02\t\tIsla de El Hierro\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t", iterator.next());
+        assertEquals("CODE03\t\tVARIABLE_ELEMENT_03\tFuerteventura\t\tname code-3\t\t\t\t\t\t\t\t\t\tGran Canaria\t\t\t", iterator.next());
+        assertEquals("CODE04\t\t\tLanzarote\t\t\t\t\t\t\t\t\t\t\t\tLanzarote\t\tLanzarote en\t", iterator.next());
+        assertEquals("CODE0401\tCODE04\t\tCanarias, Tenerife\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t", iterator.next());
+        assertEquals("CODE040101\tCODE0401\tVARIABLE_ELEMENT_01\tNombre codelist-1-v2-code-4-1-1\t\tName codelist-1-v2-code-4-1-1\t\t\t\t\t\t\t\t\t\tEl Hierro\t\tshort name variableElement 2-1\t",
+                iterator.next());
         bufferedReader.close();
     }
-
     @Override
     @Test
     public void testExportCodeOrdersTsv() throws Exception {

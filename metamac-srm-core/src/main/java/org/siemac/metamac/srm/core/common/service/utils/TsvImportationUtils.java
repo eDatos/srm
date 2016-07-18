@@ -38,6 +38,7 @@ import org.siemac.metamac.srm.core.task.domain.ImportationItemsTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationOrganisationsTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.ImportationVariableElementsTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.InternationalStringTsv;
+import org.siemac.metamac.srm.core.task.domain.RepresentationsTsv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -145,7 +146,8 @@ public class TsvImportationUtils {
     public static ImportationConceptsTsvHeader parseTsvHeaderToImportConcepts(String line, List<MetamacExceptionItem> exceptions) throws MetamacException {
         List<String> headersExpected = Arrays.asList(SrmConstants.TSV_HEADER_CODE, SrmConstants.TSV_HEADER_PARENT, SrmConstants.TSV_HEADER_NAME, SrmConstants.TSV_HEADER_DESCRIPTION,
                 SrmConstants.TSV_HEADER_COMMENT, SrmConstants.TSV_HEADER_PLURAL_NAME, SrmConstants.TSV_HEADER_ACRONYM, SrmConstants.TSV_HEADER_DESCRIPTION_SOURCE, SrmConstants.TSV_HEADER_CONTEXT,
-                SrmConstants.TSV_HEADER_DOC_METHOD, SrmConstants.TSV_HEADER_DERIVATION, SrmConstants.TSV_HEADER_LEGAL_ACTS);
+                SrmConstants.TSV_HEADER_DOC_METHOD, SrmConstants.TSV_HEADER_DERIVATION, SrmConstants.TSV_HEADER_LEGAL_ACTS, SrmConstants.TSV_HEADER_CONCEPT_TYPE,
+                SrmConstants.TSV_HEADER_REPRESENTATION, SrmConstants.TSV_HEADER_CONCEPT_EXTENDS);
 
         String[] headerColumns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
         if (headerColumns == null || headerColumns.length < headersExpected.size()) {
@@ -251,6 +253,17 @@ public class TsvImportationUtils {
                 if (header.getLegalActs().isEndPositionSetted()) {
                     headerExpectedIndex++;
                 }
+            } else if (SrmConstants.TSV_HEADER_CONCEPT_TYPE.equals(columnName)) {
+                header.setConceptTypePosition(i);
+                headerExpectedIndex++;
+            } else if (SrmConstants.TSV_HEADER_REPRESENTATION.equals(columnName)) {
+                header.setRepresentation(columnHeaderToRepresentationTsv(headerColumns, i, columnSplited, headerExpected, header.getRepresentation(), exceptions));
+                if (header.getRepresentation().isRepresentationHeaderComplete()) {
+                    headerExpectedIndex++;
+                }
+            } else if (SrmConstants.TSV_HEADER_CONCEPT_EXTENDS.equals(columnName)) {
+                header.setConceptExtendsPosition(i);
+                headerExpectedIndex++;
             }
         }
         if (CollectionUtils.isEmpty(exceptions)) {
@@ -274,6 +287,10 @@ public class TsvImportationUtils {
         ConceptMetamac conceptMetamac = (ConceptMetamac) tsvLineToItem(header, columns, lineNumber, itemSchemeVersion, updateAlreadyExisting, itemsPreviousInItemScheme, itemsToPersistByCode,
                 exceptionItems, infoItems, TypeExternalArtefactsEnum.CONCEPT);
 
+        if (conceptMetamac == null) {
+            return null;
+        }
+
         ImportationConceptsTsvHeader conceptTsvHeader = (ImportationConceptsTsvHeader) header;
 
         conceptMetamac.setPluralName(TsvImportationUtils.tsvLineToInternationalString(conceptTsvHeader.getPluralName(), columns, conceptMetamac.getPluralName()));
@@ -286,7 +303,6 @@ public class TsvImportationUtils {
 
         return conceptMetamac;
     }
-
     // ---------------------------------------------------------------------------------------------------------------
     // CATEGORIES
     // ---------------------------------------------------------------------------------------------------------------
@@ -596,6 +612,30 @@ public class TsvImportationUtils {
         return target;
     }
 
+    private static RepresentationsTsv columnHeaderToRepresentationTsv(String[] headerColumns, int headerColumnIndex, String[] columnSplited, String headerExpected, RepresentationsTsv target,
+            List<MetamacExceptionItem> exceptions) {
+
+        if (columnSplited == null || columnSplited.length != 2) {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, ServiceExceptionParameters.createCodeImportation(headerExpected)));
+            return null;
+        }
+
+        if (target == null) {
+            target = new RepresentationsTsv();
+        }
+
+        String subfield = columnSplited[1];
+        if (SrmConstants.TSV_HEADER_REPRESENTATION_SUB_TYPE.equals(subfield.toLowerCase())) {
+            target.setTypePosition(headerColumnIndex);
+        } else if (SrmConstants.TSV_HEADER_REPRESENTATION_SUB_VALUE.equals(subfield.toLowerCase())) {
+            target.setValuePosition(headerColumnIndex);
+        } else {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, ServiceExceptionParameters.createCodeImportation(headerExpected)));
+            return null;
+        }
+        return target;
+    }
+
     public static void checkItemSchemeCanExecuteImportation(ItemSchemeVersion itemSchemeVersion, SrmLifeCycleMetadata srmLifeCycleMetadata, Boolean canBeBackground) throws MetamacException {
         SrmValidationUtils.checkArtefactCanBeModified(srmLifeCycleMetadata, itemSchemeVersion.getMaintainableArtefact().getUrn());
         if (BooleanUtils.isTrue(canBeBackground)) {
@@ -839,4 +879,5 @@ public class TsvImportationUtils {
         }
         return null;
     }
+
 }

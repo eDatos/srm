@@ -27,6 +27,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionP
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
+import org.siemac.metamac.srm.core.task.domain.RepresentationsTsv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -36,6 +37,7 @@ import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationRe
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.RelatedResourceVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 /**
@@ -157,6 +159,10 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
             executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapConceptByItemId, ConceptExtensionPointUtilities.DOC_METHOD);
             executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapConceptByItemId, ConceptExtensionPointUtilities.DERIVATION);
             executeQueryRetrieveConceptInternationalString(conceptSchemeVersionId, mapConceptByItemId, ConceptExtensionPointUtilities.LEGAL_ACTS);
+
+            executeQueryRetrieveConceptConceptType(conceptSchemeVersionId, mapConceptByItemId);
+            executeQueryRetrieveConceptRepresentation(conceptSchemeVersionId, mapConceptByItemId);
+            executeQueryRetrieveConceptConceptExtends(conceptSchemeVersionId, mapConceptByItemId);
         }
 
         StringBuilder sb = new StringBuilder();
@@ -449,6 +455,136 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
             Long actualItemId = getLong(resultSqlArray[0]);
             ItemResult target = mapItemByItemId.get(actualItemId);
             internationalStringResultSqltoInternationalStringResult(resultSqlArray, extractor.getMetadata(target));
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    private void executeQueryRetrieveConceptConceptType(Long itemSchemVersionId, Map<Long, ItemResult> mapItemByItemId) {
+        StringBuilder sqlQuery = new StringBuilder();
+        sqlQuery.append("SELECT c.TB_CONCEPTS, ct.IDENTIFIER ");
+        sqlQuery.append("FROM TB_M_CONCEPTS c ");
+        sqlQuery.append("INNER JOIN TB_CONCEPTS cb on cb.ID = c.TB_CONCEPTS ");
+        sqlQuery.append("INNER JOIN TB_M_LIS_CONCEPT_TYPES ct on ct.id = c.CONCEPT_TYPE_FK ");
+        sqlQuery.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :itemSchemVersionId and c.CONCEPT_TYPE_FK IS NOT NULL");
+
+        Query query = getEntityManager().createNativeQuery(sqlQuery.toString());
+        query.setParameter("itemSchemVersionId", itemSchemVersionId);
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            Object[] resultSqlArray = (Object[]) resultSql;
+            Long actualItemId = getLong(resultSqlArray[0]);
+            String identifier = getString(resultSqlArray[1]);
+            ItemResult target = mapItemByItemId.get(actualItemId);
+            ((ConceptMetamacResultExtensionPoint) target.getExtensionPoint()).setConceptTypeIdentifier(identifier);
+        }
+    }
+
+    @SuppressWarnings({"rawtypes", "static-access"})
+    private void executeQueryRetrieveConceptRepresentation(Long itemSchemVersionId, Map<Long, ItemResult> mapItemByItemId) {
+        StringBuilder sqlQuery = new StringBuilder();
+        sqlQuery.append("SELECT c.TB_CONCEPTS, r.REPRESENTATION_TYPE, r.TEXT_FORMAT_FK, r.CONCEPT_SCHEME_FK, r.CODELIST_FK ");
+        sqlQuery.append("FROM TB_M_CONCEPTS c ");
+        sqlQuery.append("INNER JOIN TB_CONCEPTS cb on cb.ID = c.TB_CONCEPTS ");
+        sqlQuery.append("INNER JOIN TB_REPRESENTATIONS r ON r.ID = cb.CORE_REPRESENTATION_FK ");
+        sqlQuery.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :itemSchemVersionId AND cb.CORE_REPRESENTATION_FK IS NOT NULL");
+
+        Query query = getEntityManager().createNativeQuery(sqlQuery.toString());
+        query.setParameter("itemSchemVersionId", itemSchemVersionId);
+        List resultsSql = query.getResultList();
+
+        Map<Long, String> cachedItemSchemeUrnMap = new HashMap<Long, String>();
+        Map<Long, FacetValueTypeEnum> cachedFacetValueEnumMap = new HashMap<Long, FacetValueTypeEnum>();
+        for (Object resultSql : resultsSql) {
+            Object[] resultSqlArray = (Object[]) resultSql;
+            Long actualItemId = getLong(resultSqlArray[0]);
+            String representationType = getString(resultSqlArray[1]);
+            Long textFormatFK = getLong(resultSqlArray[2]);
+            Long conceptSchemeFK = getLong(resultSqlArray[3]);
+            Long codelistFK = getLong(resultSqlArray[4]);
+
+            ItemResult target = mapItemByItemId.get(actualItemId);
+
+            RepresentationTypeEnum representationTypeEnum = RepresentationTypeEnum.ENUMERATION.valueOf(representationType);
+            if (RepresentationTypeEnum.ENUMERATION.equals(representationTypeEnum)) {
+                String itemSchemeVersionUrn = null;
+                if (codelistFK != null) {
+                    itemSchemeVersionUrn = getUrnFromItemSchemeVersionId(cachedItemSchemeUrnMap, codelistFK, itemSchemeVersionUrn);
+                } else if (conceptSchemeFK != null) {
+                    itemSchemeVersionUrn = getUrnFromItemSchemeVersionId(conceptSchemeFK);
+                }
+                ((ConceptMetamacResultExtensionPoint) target.getExtensionPoint()).setRepresentationType(RepresentationsTsv.RepresentationEum.ENUMERATED);
+                ((ConceptMetamacResultExtensionPoint) target.getExtensionPoint()).setRepresentationValue(itemSchemeVersionUrn);
+            } else {
+                // TEXT_FORMAT_FK
+                FacetValueTypeEnum facetValueTypeEnum = null;
+                if (cachedFacetValueEnumMap.containsKey(textFormatFK)) {
+                    facetValueTypeEnum = cachedFacetValueEnumMap.get(textFormatFK);
+                } else {
+                    facetValueTypeEnum = getFacetValueTypeEnum(textFormatFK);
+                    cachedFacetValueEnumMap.put(textFormatFK, facetValueTypeEnum);
+                }
+                ((ConceptMetamacResultExtensionPoint) target.getExtensionPoint()).setRepresentationType(RepresentationsTsv.RepresentationEum.NON_ENUMERATED);
+                ((ConceptMetamacResultExtensionPoint) target.getExtensionPoint()).setRepresentationValue(facetValueTypeEnum.getValue());
+            }
+        }
+    }
+
+    private String getUrnFromItemSchemeVersionId(Map<Long, String> cachedItemSchemeUrnMap, Long codelistFK, String itemSchemeVersionUrn) {
+        if (cachedItemSchemeUrnMap.containsKey(codelistFK)) {
+            itemSchemeVersionUrn = cachedItemSchemeUrnMap.get(codelistFK);
+        } else {
+            itemSchemeVersionUrn = getUrnFromItemSchemeVersionId(codelistFK);
+            cachedItemSchemeUrnMap.put(codelistFK, itemSchemeVersionUrn);
+        }
+        return itemSchemeVersionUrn;
+    }
+    @SuppressWarnings("rawtypes")
+    private String getUrnFromItemSchemeVersionId(Long itemSchemeVersionId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT aa.urn ");
+        sb.append("FROM TB_ITEM_SCHEMES_VERSIONS isv ");
+        sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS aa on aa.id = isv.MAINTAINABLE_ARTEFACT_FK ");
+        sb.append("WHERE isv.id = :itemSchemeVersionId ");
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
+        return (String) query.getSingleResult();
+    }
+
+    @SuppressWarnings("rawtypes")
+    private FacetValueTypeEnum getFacetValueTypeEnum(Long facetId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT f.FACET_VALUE ");
+        sb.append("FROM TB_FACETS f ");
+        sb.append("WHERE f.id = :facetId ");
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        query.setParameter("facetId", facetId);
+        String facetValue = (String) query.getSingleResult();
+        FacetValueTypeEnum facetValueTypeEnum = FacetValueTypeEnum.valueOf(facetValue);
+        return facetValueTypeEnum;
+    }
+
+    @SuppressWarnings("rawtypes")
+    private void executeQueryRetrieveConceptConceptExtends(Long itemSchemVersionId, Map<Long, ItemResult> mapItemByItemId) {
+        StringBuilder sqlQuery = new StringBuilder();
+        sqlQuery.append("SELECT c1.TB_CONCEPTS, acb2.URN ");
+        sqlQuery.append("FROM TB_M_CONCEPTS c1 ");
+        sqlQuery.append("INNER JOIN TB_CONCEPTS cb1 on cb1.ID = c1.TB_CONCEPTS ");
+        sqlQuery.append("INNER JOIN TB_CONCEPTS cb2 ON cb2.ID = c1.EXTENDS_FK ");
+
+        sqlQuery.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS acb2 ON acb2.ID = cb2.NAMEABLE_ARTEFACT_FK ");
+        sqlQuery.append("WHERE cb1.ITEM_SCHEME_VERSION_FK = :itemSchemVersionId");
+
+        Query query = getEntityManager().createNativeQuery(sqlQuery.toString());
+        query.setParameter("itemSchemVersionId", itemSchemVersionId);
+        List resultsSql = query.getResultList();
+        for (Object resultSql : resultsSql) {
+            Object[] resultSqlArray = (Object[]) resultSql;
+            Long actualItemId = getLong(resultSqlArray[0]);
+            String urn = getString(resultSqlArray[1]);
+            ItemResult target = mapItemByItemId.get(actualItemId);
+            ((ConceptMetamacResultExtensionPoint) target.getExtensionPoint()).setConceptExtendsUrn(urn);
         }
     }
 

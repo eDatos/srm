@@ -41,10 +41,13 @@ public class SrmConstants {
     public static final String             TSV_HEADER_DESCRIPTION_SOURCE                                          = "description_source";
     public static final String             TSV_HEADER_CONTEXT                                                     = "context";
     public static final String             TSV_HEADER_DOC_METHOD                                                  = "docMethod";
-    public static final String             TSV_HEADER_CONCEPT_TYPE                                                = "concept_type";
     public static final String             TSV_HEADER_DERIVATION                                                  = "derivation";
-    public static final String             TSV_HEADER_CONCEPT_EXTENDS                                             = "concept_extends";
     public static final String             TSV_HEADER_LEGAL_ACTS                                                  = "legal_acts";
+    public static final String             TSV_HEADER_CONCEPT_TYPE                                                = "concept_type";
+    public static final String             TSV_HEADER_REPRESENTATION                                              = "representation";
+    public static final String             TSV_HEADER_REPRESENTATION_SUB_TYPE                                     = "type";
+    public static final String             TSV_HEADER_REPRESENTATION_SUB_VALUE                                    = "value";
+    public static final String             TSV_HEADER_CONCEPT_EXTENDS                                             = "concept_extends";
 
     public static final String             TSV_EXPORTATION_ENCODING                                               = "UTF-8";
 

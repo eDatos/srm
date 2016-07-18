@@ -2,13 +2,17 @@ package org.siemac.metamac.srm.core.task.domain;
 
 public class ImportationConceptsTsvHeader extends ImportationItemsTsvHeader {
 
-    private InternationalStringTsv pluralName;
-    private InternationalStringTsv acronym;
-    private InternationalStringTsv descriptionSource;
-    private InternationalStringTsv context;
-    private InternationalStringTsv docMethod;
-    private InternationalStringTsv derivation;
-    private InternationalStringTsv legalActs;
+    private InternationalStringTsv   pluralName;
+    private InternationalStringTsv   acronym;
+    private InternationalStringTsv   descriptionSource;
+    private InternationalStringTsv   context;
+    private InternationalStringTsv   docMethod;
+    private InternationalStringTsv   derivation;
+    private InternationalStringTsv   legalActs;
+
+    private int                      conceptTypePosition;   // Number of columns of TSV File
+    private RepresentationsTsv representation;
+    private int                      conceptExtendsPosition; // Number of column for Parent field (zero-index based)
 
     public InternationalStringTsv getPluralName() {
         return pluralName;
@@ -64,6 +68,30 @@ public class ImportationConceptsTsvHeader extends ImportationItemsTsvHeader {
 
     public void setLegalActs(InternationalStringTsv legalActs) {
         this.legalActs = legalActs;
+    }
+
+    public int getConceptTypePosition() {
+        return conceptTypePosition;
+    }
+
+    public void setConceptTypePosition(int conceptTypePosition) {
+        this.conceptTypePosition = conceptTypePosition;
+    }
+
+    public RepresentationsTsv getRepresentation() {
+        return representation;
+    }
+
+    public void setRepresentation(RepresentationsTsv representation) {
+        this.representation = representation;
+    }
+
+    public int getConceptExtendsPosition() {
+        return conceptExtendsPosition;
+    }
+
+    public void setConceptExtendsPosition(int conceptExtendsPosition) {
+        this.conceptExtendsPosition = conceptExtendsPosition;
     }
 
 }

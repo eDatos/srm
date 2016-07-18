@@ -11,6 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
+import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
@@ -44,6 +45,7 @@ public class TsvExportationUtils {
                 writeItemName(writer, itemResult, languages);
                 writeItemDescription(writer, itemResult, languages);
                 writeItemComment(writer, itemResult, languages);
+                writeItemExtensionPointShortName(writer, itemResult, languages);
             }
             writer.flush();
             return file.getName();
@@ -72,6 +74,10 @@ public class TsvExportationUtils {
         for (String language : languages) {
             writer.write(SrmConstants.TSV_SEPARATOR);
             writer.write(SrmConstants.TSV_HEADER_COMMENT + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_SHORT_NAME + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
         }
     }
 
@@ -111,6 +117,9 @@ public class TsvExportationUtils {
                 writeItemExtensionPointDocMethod(writer, itemResult, languages);
                 writeItemExtensionPointDerivation(writer, itemResult, languages);
                 writeItemExtensionPointLegalActs(writer, itemResult, languages);
+                writeConceptType(writer, itemResult);
+                writeRepresentation(writer, itemResult);
+                writeConceptExtends(writer, itemResult);
             }
             writer.flush();
             return file.getName();
@@ -166,6 +175,14 @@ public class TsvExportationUtils {
             writer.write(SrmConstants.TSV_SEPARATOR);
             writer.write(SrmConstants.TSV_HEADER_LEGAL_ACTS + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
         }
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        writer.write(SrmConstants.TSV_HEADER_CONCEPT_TYPE);
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        writer.write(SrmConstants.TSV_HEADER_REPRESENTATION + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + SrmConstants.TSV_HEADER_REPRESENTATION_SUB_TYPE);
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        writer.write(SrmConstants.TSV_HEADER_REPRESENTATION + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + SrmConstants.TSV_HEADER_REPRESENTATION_SUB_VALUE);
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        writer.write(SrmConstants.TSV_HEADER_CONCEPT_EXTENDS);
     }
 
     // ---------------------------------------------------------------------------------------------------------------
@@ -398,6 +415,47 @@ public class TsvExportationUtils {
             if (textInLocale != null) {
                 writer.write(textInLocale);
             }
+        }
+    }
+
+    private static void writeItemExtensionPointShortName(OutputStreamWriter writer, ItemResult itemResult, List<String> languages) throws IOException {
+        CodeMetamacResultExtensionPoint extensionPoint = (CodeMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+
+        for (String language : languages) {
+            String textInLocale = extensionPoint.getShortName().get(language);
+            textInLocale = removeUnsupportedCharaters(textInLocale);
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            if (textInLocale != null) {
+                writer.write(textInLocale);
+            }
+        }
+    }
+
+    private static void writeConceptType(OutputStreamWriter writer, ItemResult itemResult) throws IOException {
+        ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        if (!StringUtils.isBlank(extensionPoint.getConceptTypeIdentifier())) {
+            writer.write(extensionPoint.getConceptTypeIdentifier());
+        }
+    }
+
+    private static void writeRepresentation(OutputStreamWriter writer, ItemResult itemResult) throws IOException {
+        ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        if (extensionPoint.getRepresentationType() != null) {
+            writer.write(extensionPoint.getRepresentationType().name());
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(extensionPoint.getRepresentationValue());
+        } else {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+        }
+    }
+
+    private static void writeConceptExtends(OutputStreamWriter writer, ItemResult itemResult) throws IOException {
+        ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        if (!StringUtils.isBlank(extensionPoint.getConceptExtendsUrn())) {
+            writer.write(extensionPoint.getConceptExtendsUrn());
         }
     }
 

@@ -61,6 +61,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacProperties;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamacRepository;
 import org.siemac.metamac.srm.core.concept.domain.ConceptType;
 import org.siemac.metamac.srm.core.concept.domain.Quantity;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
@@ -70,6 +71,8 @@ import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.task.domain.ImportationConceptsTsvHeader;
+import org.siemac.metamac.srm.core.task.domain.RepresentationsTsv;
+import org.siemac.metamac.srm.core.task.domain.RepresentationsTsv.RepresentationEum;
 import org.siemac.metamac.srm.core.task.serviceapi.TasksMetamacService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,10 +80,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.arte.statistic.sdmx.srm.core.base.domain.Facet;
 import com.arte.statistic.sdmx.srm.core.base.domain.Item;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeRepository;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
+import com.arte.statistic.sdmx.srm.core.base.domain.Representation;
 import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.ItemSchemesCopyCallback;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.BaseCopyAllMetadataUtils;
@@ -93,12 +98,14 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
+import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxSrmUrnParserUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.shared.SdmxVersionUtils;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.concept.serviceapi.ConceptsService;
 import com.arte.statistic.sdmx.srm.core.concept.serviceimpl.utils.ConceptsInvocationValidator;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
 
 /**
@@ -107,65 +114,68 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEn
 @Service("conceptsMetamacService")
 public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
-    private static Logger                    logger = LoggerFactory.getLogger(ConceptsMetamacServiceImpl.class);
+    private static Logger                         logger = LoggerFactory.getLogger(ConceptsMetamacServiceImpl.class);
 
     @Autowired
-    private BaseService                      baseService;
+    private BaseService                           baseService;
 
     @Autowired
-    private ConceptsService                  conceptsService;
+    private ConceptsService                       conceptsService;
 
     @Autowired
-    private CategoriesMetamacService         categoriesMetamacService;
+    private CategoriesMetamacService              categoriesMetamacService;
 
     @Autowired
-    private CodesMetamacService              codesMetamacService;
+    private CodesMetamacService                   codesMetamacService;
 
     @Autowired
-    private ItemSchemeVersionRepository      itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository           itemSchemeVersionRepository;
 
     @Autowired
-    private ConceptRepository                conceptRepository;
+    private ConceptRepository                     conceptRepository;
 
     @Autowired
-    private ItemSchemeRepository             itemSchemeRepository;
+    private ItemSchemeRepository                  itemSchemeRepository;
 
     @Autowired
     @Qualifier("conceptSchemeLifeCycle")
-    private LifeCycle                        conceptSchemeLifeCycle;
+    private LifeCycle                             conceptSchemeLifeCycle;
 
     @Autowired
-    private SrmConfiguration                 srmConfiguration;
+    private SrmConfiguration                      srmConfiguration;
 
     @Autowired
-    private SrmValidation                    srmValidation;
+    private SrmValidation                         srmValidation;
 
     @Autowired
-    private CodelistVersionMetamacRepository codelistVersionMetamacRepository;
+    private CodelistVersionMetamacRepository      codelistVersionMetamacRepository;
+
+    @Autowired
+    private ConceptSchemeVersionMetamacRepository conceptSchemeVersionMetamacRepository;
 
     @Autowired
     @Qualifier("conceptsVersioningCallbackMetamac")
-    private ItemSchemesCopyCallback          conceptsVersioningCallback;
+    private ItemSchemesCopyCallback               conceptsVersioningCallback;
 
     @Autowired
     @Qualifier("conceptsCopyCallbackMetamac")
-    private ItemSchemesCopyCallback          conceptsCopyCallback;
+    private ItemSchemesCopyCallback               conceptsCopyCallback;
 
     @Autowired
     @Qualifier("conceptsDummyVersioningCallbackMetamac")
-    private ItemSchemesCopyCallback          conceptsDummyVersioningCallback;
+    private ItemSchemesCopyCallback               conceptsDummyVersioningCallback;
 
     @Autowired
-    private TasksMetamacService              tasksMetamacService;
+    private TasksMetamacService                   tasksMetamacService;
 
     @Autowired
-    private InternationalStringRepository    internationalStringRepository;
+    private InternationalStringRepository         internationalStringRepository;
 
     @Autowired
-    private ExternalItemRepository           externalItemRepository;
+    private ExternalItemRepository                externalItemRepository;
 
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
-    protected EntityManager                  entityManager;
+    protected EntityManager                       entityManager;
 
     public ConceptsMetamacServiceImpl() {
     }
@@ -800,10 +810,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 conceptsToPersistByCode = new HashMap<String, Item>();
                 conceptsPreviousInConceptSchemeByCode = new HashMap<String, Item>();
                 for (Item item : conceptSchemeVersion.getItems()) {
-                    conceptsPreviousInConceptSchemeByCode.put(item.getNameableArtefact().getCode(), (ConceptMetamac) item);
+                    conceptsPreviousInConceptSchemeByCode.put(item.getNameableArtefact().getCode(), item);
                 }
 
                 int lineNumber = 2;
+                Map<String, ConceptType> cachedConceptTypeMap = new HashMap<String, ConceptType>();
                 while ((line = bufferedReader.readLine()) != null) {
                     if (StringUtils.isBlank(line)) {
                         continue;
@@ -816,6 +827,20 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                     // Transform concept and add to list to persist
                     ConceptMetamac concept = TsvImportationUtils.tsvLineToConcept(header, columns, lineNumber, conceptSchemeVersion, updateAlreadyExisting, conceptsPreviousInConceptSchemeByCode,
                             conceptsToPersistByCode, exceptionItems, informationItems);
+
+                    // Import other specials Metadata
+                    ImportationConceptsTsvHeader conceptTsvHeader = header;
+                    if (concept != null) {
+                        // ConceptType
+                        concept.setConceptType(tsvLineToConceptType(ctx, conceptTsvHeader, columns, cachedConceptTypeMap));
+
+                        // Representation
+                        concept.setCoreRepresentation(tsvLineToRepresentation(ctx, conceptTsvHeader.getRepresentation(), columns, lineNumber, concept, exceptionItems));
+
+                        // ConceptsExtends
+                        concept.setConceptExtends(tsvLineToConceptExtends(ctx, conceptTsvHeader, columns, lineNumber, concept, exceptionItems));
+                    }
+
                     if (concept != null) {
                         conceptsToPersist.add(concept);
                         conceptsToPersistByCode.put(concept.getNameableArtefact().getCode(), concept);
@@ -842,6 +867,85 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         itemSchemeRepository.save(conceptSchemeVersion.getItemScheme());
 
         return new TaskImportationInfo(Boolean.FALSE, informationItems);
+    }
+
+    private ConceptType tsvLineToConceptType(ServiceContext ctx, ImportationConceptsTsvHeader conceptTsvHeader, String[] columns, Map<String, ConceptType> cachedConceptTypeMap)
+            throws MetamacException {
+        String conceptTypeIdentifier = columns[conceptTsvHeader.getConceptTypePosition()];
+        if (!StringUtils.isBlank(conceptTypeIdentifier)) {
+            if (cachedConceptTypeMap.containsKey(conceptTypeIdentifier)) {
+                return cachedConceptTypeMap.get(conceptTypeIdentifier);
+            } else {
+                ConceptType conceptType = retrieveConceptTypeByIdentifier(ctx, conceptTypeIdentifier);
+                cachedConceptTypeMap.put(conceptTypeIdentifier, conceptType);
+                return conceptType;
+            }
+        }
+        return null;
+    }
+
+    private Representation tsvLineToRepresentation(ServiceContext ctx, RepresentationsTsv representationsTsv, String[] columns, int lineNumber, ConceptMetamac conceptMetamac,
+            List<MetamacExceptionItem> exceptionItems) {
+        if (representationsTsv == null) {
+            return null;
+        }
+
+        // Representation
+        Representation target = conceptMetamac.getCoreRepresentation();
+        String representationType = columns[representationsTsv.getTypePosition()];
+        String representationValue = columns[representationsTsv.getValuePosition()];
+        if (!StringUtils.isBlank(representationType)) {
+            if (target == null) {
+                target = new Representation();
+            }
+
+            if (StringUtils.isBlank(representationValue)) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, conceptMetamac.getNameableArtefact().getCode(),
+                        ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_REPRESENTATION_VALUE));
+                return null;
+            }
+
+            RepresentationEum representationEum = RepresentationsTsv.RepresentationEum.valueOf(representationType);
+            if (RepresentationEum.ENUMERATED.equals(representationEum)) {
+                target.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+                if (SdmxSrmUrnParserUtils.isCodelistUrn(representationValue)) {
+                    CodelistVersionMetamac enumeratedCodelist = codelistVersionMetamacRepository.findByUrn(representationValue);
+                    target.setEnumerationCodelist(enumeratedCodelist);
+                } else if (SdmxSrmUrnParserUtils.isConceptSchemeUrn(representationValue)) {
+                    ConceptSchemeVersionMetamac enumeratedConceptScheme = conceptSchemeVersionMetamacRepository.findByUrn(representationValue);
+                    target.setEnumerationConceptScheme(enumeratedConceptScheme);
+                } else {
+                    exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT, conceptMetamac.getNameableArtefact().getCode(),
+                            ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_REPRESENTATION_VALUE));
+                    return null;
+                }
+            } else {
+                target.setRepresentationType(RepresentationTypeEnum.TEXT_FORMAT);
+                // Facet
+                target.setTextFormat(new Facet(FacetValueTypeEnum.fromValue(representationValue)));
+            }
+        }
+
+        return target;
+    }
+
+    private ConceptMetamac tsvLineToConceptExtends(ServiceContext ctx, ImportationConceptsTsvHeader conceptTsvHeader, String[] columns, int lineNumber, ConceptMetamac conceptMetamac,
+            List<MetamacExceptionItem> exceptionItems) throws MetamacException {
+        String conceptExtendsUrn = columns[conceptTsvHeader.getConceptExtendsPosition()];
+        if (!StringUtils.isBlank(conceptExtendsUrn)) {
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).withProperty(ConceptMetamacProperties.nameableArtefact().urn()).eq(conceptExtendsUrn)
+                    .build();
+
+            PagedResult<ConceptMetamac> result = findConceptsCanBeExtendedByCondition(ctx, conditions, PagingParameter.pageAccess(1, 1));
+            if (result.getValues().size() != 1) {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT, conceptMetamac.getNameableArtefact().getCode(),
+                        ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CONCEPTS_EXTENDS_VALUE));
+                return null;
+            }
+            return result.getValues().get(0);
+        }
+
+        return null;
     }
 
     @Override

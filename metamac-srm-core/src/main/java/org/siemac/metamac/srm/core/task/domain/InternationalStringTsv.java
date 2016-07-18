@@ -5,8 +5,8 @@ import java.util.List;
 
 public class InternationalStringTsv {
 
-    private int                startPosition = -1;
-    private int                endPosition   = -1;
+    private int                startPosition = -1;                     // Number of column for the first IString field (zero-index based)
+    private int                endPosition   = -1;                     // Number of column for the last IString field (zero-index based)
     private final List<String> locales       = new ArrayList<String>();
 
     public int getStartPosition() {
