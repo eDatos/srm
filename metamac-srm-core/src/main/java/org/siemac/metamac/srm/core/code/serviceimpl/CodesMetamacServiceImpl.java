@@ -2268,6 +2268,20 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return codelistVersion.getOpennessVisualisations();
     }
 
+    @Override
+    public String exportVariableElementsTsv(ServiceContext ctx, String variableUrn) throws MetamacException {
+
+        CodesMetamacInvocationValidator.checkExportVariableElementsTsv(variableUrn, null);
+        Variable variable = retrieveVariableByUrn(variableUrn);
+
+        // Find
+        VariableElementResultSelection selection = new VariableElementResultSelection();
+        List<VariableElementResult> variableElements = getVariableElementRepository().findVariableElementsByVariableEfficiently(variable.getId(), null, selection);
+
+        List<String> languages = srmConfiguration.retrieveLanguages();
+        return TsvExportationUtils.exportVariableElements(variableElements, languages);
+    }
+
     // ------------------------------------------------------------------------------------
     // PRIVATE METHODS
     // ------------------------------------------------------------------------------------
@@ -3641,4 +3655,5 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         String urnOriginal = GeneratorUrnUtils.makeUrnFromTemporal(urnTemporal);
         return retrieveCodelistByUrn(ctx, urnOriginal);
     }
+
 }

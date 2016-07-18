@@ -252,6 +252,8 @@ Application CodesMetamac {
     		TaskImportationInfo importVariableElementsShape(String variableUrn, URL shapeFileUrl, Boolean canBeBackground) throws MetamacException;
     		"Imports geographical information (latitude and longitude) of variable elements"
     		TaskImportationInfo importVariableElementsPoints(String variableUrn, URL shapeFileUrl, Boolean canBeBackground) throws MetamacException;
+    		"Exports variable elements in tsv format"
+    		String exportVariableElementsTsv(String variableUrn) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------

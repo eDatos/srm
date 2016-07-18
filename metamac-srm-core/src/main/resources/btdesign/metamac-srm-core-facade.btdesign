@@ -714,6 +714,8 @@ Application SrmFacadeCore {
     		TaskImportationInfo importVariableElementsShape(String variableUrn, URL shapeFileUrl) throws MetamacException;
 			"Imports geographical information (points) of variable elements"
     		TaskImportationInfo importVariableElementsPoints(String variableUrn, URL shapeFileUrl) throws MetamacException;
+			"Exports variable elements in tsv format"
+    		String exportVariableElementsTsv(String variableUrn) throws MetamacException;
     		    		
     		/**************************************************************************
 		     * COMMON

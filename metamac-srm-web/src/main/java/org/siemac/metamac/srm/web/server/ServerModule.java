@@ -44,6 +44,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.DeleteVariableFamiliesAct
 import org.siemac.metamac.srm.web.server.handlers.code.DeleteVariablesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.ExportCodesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.ExportCodesOrderActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.ExportVariableElementsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetCodelistFamiliesActionHandler;
@@ -177,6 +178,7 @@ import org.siemac.metamac.srm.web.shared.code.DeleteVariableFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.ExportCodesAction;
 import org.siemac.metamac.srm.web.shared.code.ExportCodesOrderAction;
+import org.siemac.metamac.srm.web.shared.code.ExportVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodeAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistFamiliesAction;
@@ -438,6 +440,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(CopyCodelistAction.class, CopyCodelistActionHandler.class);
         bindHandler(ExportCodesAction.class, ExportCodesActionHandler.class);
         bindHandler(ExportCodesOrderAction.class, ExportCodesOrderActionHandler.class);
+        bindHandler(ExportVariableElementsAction.class, ExportVariableElementsActionHandler.class);
 
         // Common
         bindHandler(GetHelpUrlAction.class, GetHelpUrlActionHandler.class);

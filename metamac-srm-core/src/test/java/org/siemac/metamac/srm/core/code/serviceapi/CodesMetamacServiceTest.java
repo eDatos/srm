@@ -9188,6 +9188,37 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Override
     @Test
+    public void testExportVariableElementsTsv() throws Exception {
+        String variableUrn = VARIABLE_5;
+        String fileName = codesService.exportVariableElementsTsv(getServiceContextAdministrador(), variableUrn);
+        assertNotNull(fileName);
+
+        // Validate
+        File file = new File(tempDirPath() + File.separatorChar + fileName);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+        List<String> lines = new ArrayList<String>();
+        String line = null;
+        while ((line = bufferedReader.readLine()) != null) {
+            System.out.println(line.replaceAll("\t", "\\\\t"));
+            lines.add(line);
+        }
+
+        Iterator<String> iterator = lines.iterator();
+
+        assertEquals("code\tshort_name#es\tshort_name#pt\tshort_name#en\tshort_name#ca", iterator.next());
+
+        assertTrue(lines.contains("VARIABLE_ELEMENT_04\tnombre\t\t\t"));
+        assertTrue(lines.contains("VARIABLE_ELEMENT_01\tNombre corto 5-1\t\tShort name 5-1\t"));
+        assertTrue(lines.contains("VARIABLE_ELEMENT_02\ttítulo ve-5-2\t\t\t"));
+        assertTrue(lines.contains("VARIABLE_ELEMENT_03\ttítulo ve5-3\t\tshort name ve5-3\t"));
+        bufferedReader.close();
+    }
+
+    @Override
+    @Test
     @DirtyDatabase
     public void testImportVariableElementsTsv() throws Exception {
 
@@ -9671,6 +9702,7 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 iterator.next());
         bufferedReader.close();
     }
+
     @Override
     @Test
     public void testExportCodeOrdersTsv() throws Exception {

@@ -109,6 +109,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     private final PaginatedCheckListGrid                 variableElementListGrid;
     private final CustomToolStripButton                  createVariableElementButton;
     private final CustomToolStripButton                  importVariableElementButton;
+    private final CustomToolStripButton                  exportVariableElementButton;
     private final CustomToolStripButton                  deleteVariableElementButton;
     private final CustomToolStripButton                  fusionVariableElementButton;
     private final CustomToolStripButton                  segregateVariableElementButton;
@@ -192,6 +193,9 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         importVariableElementButton = createImportVariableElementsButton();
         toolStrip.addButton(importVariableElementButton);
+
+        exportVariableElementButton = createExportVariableElementsButton();
+        toolStrip.addButton(exportVariableElementButton);
 
         deleteVariableElementButton = createDeleteVariableElementButton();
         toolStrip.addButton(deleteVariableElementButton);
@@ -689,6 +693,20 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         return importButton;
     }
 
+    private CustomToolStripButton createExportVariableElementsButton() {
+        CustomToolStripButton exportButton = new CustomToolStripButton(getConstants().actionExportVariableElements(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE
+                .exportResource().getURL());
+        exportButton.setVisible(CodesClientSecurityUtils.canExportVariableElements());
+        exportButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().exportVariableElements(variableDto.getUrn());
+            }
+        });
+        return exportButton;
+    }
+
     private CustomToolStripButton createDeleteVariableElementButton() {
         CustomToolStripButton deleteButton = new CustomToolStripButton(getConstants().actionDelete(), RESOURCE.deleteListGrid().getURL());
         deleteButton.setVisible(false);
@@ -844,12 +862,16 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         if (CommonUtils.isVariableWorld(variableDto)) {
             createVariableElementButton.hide();
             importVariableElementButton.hide();
+            exportVariableElementButton.hide();
         } else {
             if (CodesClientSecurityUtils.canCreateVariableElement()) {
                 createVariableElementButton.show();
             }
             if (CodesClientSecurityUtils.canImportVariableElements()) {
                 importVariableElementButton.show();
+            }
+            if (CodesClientSecurityUtils.canExportVariableElements()) {
+                exportVariableElementButton.show();
             }
         }
     }

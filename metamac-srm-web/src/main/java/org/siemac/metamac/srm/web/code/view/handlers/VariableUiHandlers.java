@@ -30,5 +30,9 @@ public interface VariableUiHandlers extends BaseVariableUiHandlers {
     void resourceImportationFailed(String errorMessage);
     void resourceImportationSucceed(String fileName);
 
+    // Exportation
+
+    void exportVariableElements(String variableUrn);
+
     void showWaitPopup();
 }

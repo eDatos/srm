@@ -462,6 +462,10 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canImportVariableElements(MetamacSrmWeb.getCurrentUser());
     }
 
+    public static boolean canExportVariableElements() {
+        return SharedCodesSecurityUtils.canExportVariableElementsTsv(MetamacSrmWeb.getCurrentUser());
+    }
+
     //
     // PRIVATE METHODS
     //

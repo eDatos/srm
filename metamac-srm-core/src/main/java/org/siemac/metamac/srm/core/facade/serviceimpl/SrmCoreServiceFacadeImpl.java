@@ -2092,6 +2092,14 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public String exportVariableElementsTsv(ServiceContext ctx, String variableUrn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canExportVariableElements(ctx);
+
+        return getCodesMetamacService().exportVariableElementsTsv(ctx, variableUrn);
+    }
+
+    @Override
     public VariableElementDto updateVariableElement(ServiceContext ctx, VariableElementDto variableElementDto) throws MetamacException {
         // Security
         CodesSecurityUtils.canCrudVariableElement(ctx);

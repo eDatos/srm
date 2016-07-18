@@ -284,4 +284,10 @@ public class CodesSecurityUtils extends CommonSecurityUtils {
             throwExceptionIfOperationNotAllowed(ctx);
         }
     }
+
+    public static void canExportVariableElements(ServiceContext ctx) throws MetamacException {
+        if (!SharedCodesSecurityUtils.canExportVariableElementsTsv(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
 }

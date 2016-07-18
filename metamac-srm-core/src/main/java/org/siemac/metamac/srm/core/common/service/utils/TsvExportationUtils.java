@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
 import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
+import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
@@ -286,6 +287,43 @@ public class TsvExportationUtils {
     }
 
     // ---------------------------------------------------------------------------------------------------------------
+    // VARIABLE ELEMENTS
+    // ---------------------------------------------------------------------------------------------------------------
+
+    public static String exportVariableElements(List<VariableElementResult> variableElements, List<String> languages) throws MetamacException {
+        OutputStream outputStream = null;
+        OutputStreamWriter writer = null;
+        try {
+            File file = File.createTempFile("variable_elements", ".tsv");
+            outputStream = new FileOutputStream(file);
+            writer = new OutputStreamWriter(outputStream, SrmConstants.TSV_EXPORTATION_ENCODING);
+
+            writeVariableElementsHeader(writer, languages);
+
+            for (VariableElementResult variableElementResult : variableElements) {
+                writer.write(SrmConstants.TSV_LINE_SEPARATOR);
+                writeVariableElementCode(writer, variableElementResult);
+                writeVariableElementShortName(writer, variableElementResult, languages);
+            }
+            writer.flush();
+            return file.getName();
+        } catch (Exception e) {
+            throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.EXPORTATION_TSV_ERROR).withMessageParameters(e).build();
+        } finally {
+            IOUtils.closeQuietly(outputStream);
+            IOUtils.closeQuietly(writer);
+        }
+    }
+
+    private static void writeVariableElementsHeader(OutputStreamWriter writer, List<String> languages) throws IOException {
+        writer.write(SrmConstants.TSV_HEADER_CODE);
+        for (String language : languages) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_SHORT_NAME + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------
     // COMMON UTILS
     // ---------------------------------------------------------------------------------------------------------------
 
@@ -468,5 +506,19 @@ public class TsvExportationUtils {
             string = string.replace('\f', ' ');
         }
         return string;
+    }
+
+    private static void writeVariableElementCode(OutputStreamWriter writer, VariableElementResult variableElementResult) throws IOException {
+        writer.write(variableElementResult.getCode());
+    }
+
+    private static void writeVariableElementShortName(OutputStreamWriter writer, VariableElementResult variableElementResult, List<String> languages) throws IOException {
+        for (String language : languages) {
+            String nameInLocale = variableElementResult.getShortName().get(language);
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            if (nameInLocale != null) {
+                writer.write(nameInLocale);
+            }
+        }
     }
 }

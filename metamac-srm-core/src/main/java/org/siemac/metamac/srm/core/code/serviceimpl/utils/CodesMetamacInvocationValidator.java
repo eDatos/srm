@@ -718,4 +718,14 @@ public class CodesMetamacInvocationValidator extends CodesInvocationValidator {
         }
     }
 
+    public static void checkExportVariableElementsTsv(String variableUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(variableUrn, ServiceExceptionParameters.URN, exceptions);
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
 }

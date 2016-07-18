@@ -19,6 +19,7 @@ import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.client.enums.ToolStripButtonEnum;
 import org.siemac.metamac.srm.web.client.events.SelectMenuButtonEvent;
 import org.siemac.metamac.srm.web.client.presenter.MainPagePresenter;
+import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableUiHandlers;
@@ -34,6 +35,8 @@ import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteVariablesResult;
+import org.siemac.metamac.srm.web.shared.code.ExportVariableElementsAction;
+import org.siemac.metamac.srm.web.shared.code.ExportVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementOperationsByVariableAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementOperationsByVariableResult;
@@ -383,6 +386,25 @@ public class VariablePresenter extends Presenter<VariablePresenter.VariableView,
         ShowMessageEvent.fireErrorMessage(VariablePresenter.this, errorMessage);
         ChangeWaitPopupVisibilityEvent.fire(this, false);
     }
+
+    //
+    // EXPORTATION
+    //
+
+    @Override
+    public void exportVariableElements(String variableUrn) {
+        dispatcher.execute(new ExportVariableElementsAction(variableUrn), new WaitingAsyncCallbackHandlingError<ExportVariableElementsResult>(this) {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(VariablePresenter.this, caught);
+            }
+            @Override
+            public void onWaitSuccess(ExportVariableElementsResult result) {
+                CommonUtils.downloadFile(result.getFileName());
+            }
+        });
+    };
 
     @Override
     public void showWaitPopup() {
