@@ -2102,7 +2102,7 @@ public class CategoriesMetamacServiceTest extends SrmBaseTest implements Categor
         assertTrue(lines.contains("CATEGORY02\t\tNombre categoryScheme-1-v2-category-2\t\t\t\t\t\t\t\t\t\t\t"));
         assertTrue(lines.contains("CATEGORY0201\tCATEGORY02\tNombre categoryScheme-1-v2-category-2-1\t\tName categoryScheme-1-v2-category-2-1\t\tDescripción cat2-1\t\tDescription cat2-1\t\t\t\t\t"));
         assertTrue(lines
-                .contains("CATEGORY020101\tCATEGORY02.CATEGORY0201\tNombre categoryScheme-1-v2-category-2-1-1\t\t\t\tDescripción cat2-1-1\t\t\t\t\t\tComment categoryScheme-1-v2-category-2-1-1\t"));
+                .contains("CATEGORY020101\tCATEGORY02.CATEGORY0201\tNombre categoryScheme-1-v2-category-2-1-1\t\t\t\tDescripción cat2-1-1\t\t\t\tComment categoryScheme-1-v2-category-2-1-1\t\t\t"));
         assertTrue(lines.contains("CATEGORY03\t\tnombre category-3\t\tname category-3\t\t\t\t\t\t\t\t\t"));
         assertTrue(lines.contains("CATEGORY04\t\tnombre category-4\t\t\t\t\t\t\t\t\t\t\t"));
         assertTrue(lines.contains("CATEGORY0401\tCATEGORY04\tnombre category 4-1\t\t\t\t\t\t\t\t\t\t\t"));
