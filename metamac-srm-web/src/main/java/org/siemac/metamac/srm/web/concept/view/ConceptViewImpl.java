@@ -46,6 +46,7 @@ import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.RelatedResourceItemWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.RelatedResourceWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
 import org.siemac.metamac.web.common.client.utils.FormItemUtils;
@@ -719,7 +720,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
     @Override
     public void setConceptSchemesWithConceptsThatCanBeExtended(List<RelatedResourceDto> conceptSchemes, int firstResult, int totalResults) {
-        ((SearchSrmItemLinkItemWithSchemeFilterItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.EXTENDS)).setFilterResources(conceptSchemes, firstResult, conceptSchemes.size(), totalResults);
+        ((SearchSrmItemLinkItemWithSchemeFilterItem) relationBetweenConceptsEditionForm.getItem(ConceptDS.EXTENDS))
+                .setFilterResources(conceptSchemes, firstResult, conceptSchemes.size(), totalResults);
     }
 
     @Override
@@ -1016,7 +1018,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariables(firstResult, maxResults, searchVariableWindow.getRelatedResourceCriteria(), searchVariableWindow.getInitialSelectionValue());
+                        getUiHandlers().retrieveVariables(firstResult, maxResults, new VariableWebCriteria(searchVariableWindow.getRelatedResourceCriteria()),
+                                searchVariableWindow.getInitialSelectionValue());
                     }
                 });
 
@@ -1028,7 +1031,8 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void onChanged(ChangedEvent event) {
-                        getUiHandlers().retrieveVariables(FIRST_RESULT, MAX_RESULTS, searchVariableWindow.getRelatedResourceCriteria(), searchVariableWindow.getInitialSelectionValue());
+                        getUiHandlers().retrieveVariables(FIRST_RESULT, MAX_RESULTS, new VariableWebCriteria(searchVariableWindow.getRelatedResourceCriteria()),
+                                searchVariableWindow.getInitialSelectionValue());
                     }
                 });
 
@@ -1037,7 +1041,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveVariables(firstResult, maxResults, criteria, searchVariableWindow.getInitialSelectionValue());
+                        getUiHandlers().retrieveVariables(firstResult, maxResults, new VariableWebCriteria(criteria), searchVariableWindow.getInitialSelectionValue());
                     }
                 });
 

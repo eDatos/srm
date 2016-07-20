@@ -5,9 +5,7 @@ import static org.siemac.metamac.web.common.client.resources.GlobalResources.RES
 
 import java.util.List;
 
-import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
-import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
 import org.siemac.metamac.srm.web.code.model.ds.VariableDS;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
 import org.siemac.metamac.srm.web.code.presenter.VariableListPresenter;
@@ -15,10 +13,11 @@ import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableListUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.NewVariableWindow;
+import org.siemac.metamac.srm.web.code.widgets.VariableSearchSectionStack;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 import org.siemac.metamac.web.common.client.widgets.DeleteConfirmationWindow;
 import org.siemac.metamac.web.common.client.widgets.PaginatedCheckListGrid;
-import org.siemac.metamac.web.common.client.widgets.SearchSectionStack;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
@@ -30,10 +29,6 @@ import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
-import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -46,17 +41,17 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandlers> implements VariableListPresenter.VariableListView {
 
-    private VLayout                  panel;
+    private VLayout                    panel;
 
-    private ToolStripButton          newVariableButton;
-    private ToolStripButton          deleteVariableButton;
+    private ToolStripButton            newVariableButton;
+    private ToolStripButton            deleteVariableButton;
 
-    private SearchSectionStack       searchSectionStack;
+    private VariableSearchSectionStack searchSectionStack;
 
-    private PaginatedCheckListGrid   variablesList;
+    private PaginatedCheckListGrid     variablesList;
 
-    private NewVariableWindow        newVariableWindow;
-    private DeleteConfirmationWindow deleteConfirmationWindow;
+    private NewVariableWindow          newVariableWindow;
+    private DeleteConfirmationWindow   deleteConfirmationWindow;
 
     @Inject
     public VariableListViewImpl() {
@@ -103,24 +98,7 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
         toolStrip.addButton(deleteVariableButton);
 
         // Search
-
-        searchSectionStack = new SearchSectionStack();
-        searchSectionStack.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
-
-            @Override
-            public void onFormItemClick(FormItemIconClickEvent event) {
-                getUiHandlers().retrieveVariables(VariableListPresenter.VARIABLE_LIST_FIRST_RESULT, VariableListPresenter.VARIABLE_LIST_MAX_RESULTS, searchSectionStack.getSearchCriteria());
-            }
-        });
-        searchSectionStack.addSearchItemKeyPressHandler(new KeyPressHandler() {
-
-            @Override
-            public void onKeyPress(KeyPressEvent event) {
-                if (StringUtils.equalsIgnoreCase(event.getKeyName(), SrmWebConstants.ENTER_KEY)) {
-                    getUiHandlers().retrieveVariables(VariableListPresenter.VARIABLE_LIST_FIRST_RESULT, VariableListPresenter.VARIABLE_LIST_MAX_RESULTS, searchSectionStack.getSearchCriteria());
-                }
-            }
-        });
+        searchSectionStack = new VariableSearchSectionStack();
 
         // Variable list
 
@@ -128,7 +106,7 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                getUiHandlers().retrieveVariables(firstResult, maxResults, searchSectionStack.getSearchCriteria());
+                getUiHandlers().retrieveVariables(firstResult, maxResults, searchSectionStack.getVariableWebCriteria());
             }
         });
         variablesList.getListGrid().setAutoFitData(Autofit.VERTICAL);
@@ -192,6 +170,12 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
     }
 
     @Override
+    public void setUiHandlers(VariableListUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        searchSectionStack.setUiHandlers(uiHandlers);
+    }
+
+    @Override
     public void setInSlot(Object slot, Widget content) {
         if (slot == VariableListPresenter.TYPE_SetContextAreaContentCodesToolBar) {
             if (content != null) {
@@ -228,12 +212,12 @@ public class VariableListViewImpl extends ViewWithUiHandlers<VariableListUiHandl
 
     @Override
     public void clearSearchSection() {
-        searchSectionStack.reset();
+        searchSectionStack.clearSearchSection();
     }
 
     @Override
-    public String getVariableCriteria() {
-        return searchSectionStack.getSearchCriteria();
+    public VariableWebCriteria getVariableCriteria() {
+        return searchSectionStack.getVariableWebCriteria();
     }
 
     private void showListGridDeleteButton(ListGridRecord[] records) {

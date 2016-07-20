@@ -3,6 +3,7 @@ package org.siemac.metamac.srm.web.shared.code;
 import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;
@@ -18,7 +19,7 @@ public class GetVariables {
     int                    maxResults;
 
     @In(3)
-    String                 criteria;
+    VariableWebCriteria    criteria;
 
     @In(4)
     String                 variableFamilyUrn;

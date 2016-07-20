@@ -1053,8 +1053,14 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().code(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case NAME:
                     return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().name().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
+                case SHORT_NAME:
+                    return new SculptorPropertyCriteria(VariableProperties.shortName().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
+                case URN:
+                    return new SculptorPropertyCriteria(VariableProperties.nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case VARIABLE_FAMILY_URN:
                     return new SculptorPropertyCriteria(VariableProperties.families().nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
+                case GEOGRAPHICAL:
+                    return new SculptorPropertyCriteria(VariableProperties.type(), propertyRestriction.getEnumValue(), propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }
@@ -1098,6 +1104,19 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                     return new SculptorPropertyCriteria(VariableElementProperties.shortName().texts().label(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
                 case VARIABLE_URN:
                     return new SculptorPropertyCriteria(VariableElementProperties.variable().nameableArtefact().urn(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
+                case IS_GEOGRAPHICAL_VARIABLE_ELEMENT:
+                    return new SculptorPropertyCriteria(VariableElementProperties.variable().type(), propertyRestriction.getEnumValue(), propertyRestriction.getOperationType());
+                case HAS_SHAPE:
+                    return new SculptorPropertyCriteria(VariableElementProperties.shapeWkt(), propertyRestriction.getStringValue(), propertyRestriction.getOperationType());
+                case GEOGRAPHICAL_GRANULARITY:
+                    return new SculptorPropertyCriteria(VariableElementProperties.geographicalGranularity().nameableArtefact().urn(), propertyRestriction.getStringValue(),
+                            propertyRestriction.getOperationType());
+                case VALID_FROM_DATE:
+                    return new SculptorPropertyCriteria(getDatetimeLeafPropertyEmbedded(VariableElementProperties.validFrom(), VariableElement.class), propertyRestriction.getDateValue(),
+                            propertyRestriction.getOperationType());
+                case VALID_TO_DATE:
+                    return new SculptorPropertyCriteria(getDatetimeLeafPropertyEmbedded(VariableElementProperties.validTo(), VariableElement.class), propertyRestriction.getDateValue(),
+                            propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());
             }

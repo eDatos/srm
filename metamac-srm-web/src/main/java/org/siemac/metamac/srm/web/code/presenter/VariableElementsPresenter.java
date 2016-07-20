@@ -2,6 +2,8 @@ package org.siemac.metamac.srm.web.code.presenter;
 
 import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 
+import java.util.List;
+
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.navigation.shared.NameTokens;
 import org.siemac.metamac.srm.web.client.LoggedInGatekeeper;
@@ -13,8 +15,12 @@ import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableElementsUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
+import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
+import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
+import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -69,6 +75,7 @@ public class VariableElementsPresenter extends Presenter<VariableElementsPresent
 
         void setVariableElements(GetVariableElementsResult result);
         void clearSearchSection();
+        void setCodesForVariableElementGeographicalGranularity(GetRelatedResourcesResult result);
     }
 
     @Inject
@@ -107,9 +114,8 @@ public class VariableElementsPresenter extends Presenter<VariableElementsPresent
     }
 
     @Override
-    public void retrieveVariableElements(int firstResult, int maxResults, String criteria) {
-        VariableElementWebCriteria variableElementWebCriteria = new VariableElementWebCriteria(criteria);
-        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, variableElementWebCriteria), new WaitingAsyncCallbackHandlingError<GetVariableElementsResult>(this) {
+    public void retrieveVariableElements(int firstResult, int maxResults, VariableElementWebCriteria criteria) {
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, criteria), new WaitingAsyncCallbackHandlingError<GetVariableElementsResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
@@ -126,6 +132,29 @@ public class VariableElementsPresenter extends Presenter<VariableElementsPresent
     public void goToVariableElement(String variableCode, String variableElementCode) {
         if (!StringUtils.isBlank(variableCode) && !StringUtils.isBlank(variableElementCode)) {
             placeManager.revealPlaceHierarchy(PlaceRequestUtils.buildAbsoluteVariableElementPlaceRequest(variableCode, variableElementCode));
+        }
+    }
+
+    @Override
+    public void retrieveCodesForVariableElementGeographicalGranularity(int firstResult, int maxResults, CodeWebCriteria codeWebCriteria) {
+        dispatcher.execute(new GetRelatedResourcesAction(StructuralResourcesRelationEnum.CODES_WITH_VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY, firstResult, maxResults, codeWebCriteria),
+                new WaitingAsyncCallbackHandlingError<GetRelatedResourcesResult>(this) {
+
+                    @Override
+                    public void onWaitSuccess(GetRelatedResourcesResult result) {
+                        getView().setCodesForVariableElementGeographicalGranularity(result);
+                    }
+                });
+    }
+
+    //
+    // NAVIGATION
+    //
+
+    @Override
+    public void goTo(List<PlaceRequest> location) {
+        if (location != null && !location.isEmpty()) {
+            placeManager.revealPlaceHierarchy(location);
         }
     }
 }

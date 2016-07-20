@@ -11,6 +11,7 @@ import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedI
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistListUiHandlers;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
 import org.siemac.metamac.web.common.client.widgets.CustomWindow;
@@ -50,7 +51,7 @@ public class NewCodelistWindow extends CustomWindow {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults) {
-                uiHandlers.retrieveVariables(firstResult, maxResults, variableItem.getSearchCriteria());
+                uiHandlers.retrieveVariables(firstResult, maxResults, new VariableWebCriteria(variableItem.getSearchCriteria()));
             }
         });
         variableItem.setRequired(true);
@@ -62,7 +63,7 @@ public class NewCodelistWindow extends CustomWindow {
 
             @Override
             public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                uiHandlers.retrieveVariables(firstResult, maxResults, variableItem.getSearchCriteria());
+                uiHandlers.retrieveVariables(firstResult, maxResults, new VariableWebCriteria(variableItem.getSearchCriteria()));
             }
         });
 

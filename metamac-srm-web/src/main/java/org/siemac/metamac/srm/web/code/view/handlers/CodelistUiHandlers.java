@@ -10,6 +10,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
 import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 
 public interface CodelistUiHandlers extends BaseCodeUiHandlers {
 
@@ -24,7 +25,7 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void copyCodelist(String urn);
 
     void retrieveFamilies(int firstResult, int maxResults, String criteria);
-    void retrieveVariables(int firstResult, int maxResults, String criteria);
+    void retrieveVariables(int firstResult, int maxResults, VariableWebCriteria criteria);
 
     void retrieveCodelistsThatCanBeReplaced(int firstResult, int maxResults, CodelistWebCriteria codelistWebCriteria);
 

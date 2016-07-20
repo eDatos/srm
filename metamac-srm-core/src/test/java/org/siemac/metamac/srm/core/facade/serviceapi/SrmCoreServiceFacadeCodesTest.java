@@ -2035,6 +2035,20 @@ public class SrmCoreServiceFacadeCodesTest extends SrmBaseTest {
             result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
             assertEquals(0, result.getPaginatorResult().getTotalResults().intValue());
         }
+
+        // Find by Name
+        {
+            metamacCriteria.setRestriction(new MetamacCriteriaPropertyRestriction(VariableCriteriaPropertyEnum.SHORT_NAME.name(), "variable-63", OperationType.EQ));
+
+            MetamacCriteriaResult<VariableBasicDto> result = srmCoreServiceFacade.findVariablesByCondition(getServiceContextAdministrador(), metamacCriteria);
+            assertEquals(1, result.getPaginatorResult().getTotalResults().intValue());
+            int i = 0;
+            {
+                VariableBasicDto variableDto = result.getResults().get(i++);
+                assertEquals(VARIABLE_1, variableDto.getUrn());
+            }
+            assertEquals(result.getPaginatorResult().getTotalResults().intValue(), i);
+        }
     }
 
     @Test

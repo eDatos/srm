@@ -25,6 +25,7 @@ import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableResult;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
@@ -84,7 +85,7 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
 
         // Search
         void clearSearchSection();
-        String getVariableCriteria();
+        VariableWebCriteria getVariableCriteria();
 
         void setVariableFamilies(List<RelatedResourceDto> families, int firstResult, int totalResults);
     }
@@ -107,7 +108,7 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
     @Override
     protected void onReset() {
         super.onReset();
-        retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, null);
+        retrieveVariables(VARIABLE_LIST_FIRST_RESULT, VARIABLE_LIST_MAX_RESULTS, new VariableWebCriteria());
     }
 
     @Override
@@ -156,7 +157,7 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
         });
     }
     @Override
-    public void retrieveVariables(int firstResult, int maxResults, final String criteria) {
+    public void retrieveVariables(int firstResult, int maxResults, final VariableWebCriteria criteria) {
         dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallbackHandlingError<GetVariablesResult>(this) {
 
             @Override
@@ -166,7 +167,7 @@ public class VariableListPresenter extends Presenter<VariableListPresenter.Varia
             @Override
             public void onWaitSuccess(GetVariablesResult result) {
                 getView().setVariablePaginatedList(result);
-                if (StringUtils.isBlank(criteria)) {
+                if (StringUtils.isBlank(criteria.getCriteria())) {
                     getView().clearSearchSection();
                 }
             }

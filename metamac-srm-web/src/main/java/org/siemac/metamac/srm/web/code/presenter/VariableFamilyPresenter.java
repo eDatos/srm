@@ -32,6 +32,7 @@ import org.siemac.metamac.srm.web.shared.code.RemoveVariablesFromVariableFamilyA
 import org.siemac.metamac.srm.web.shared.code.RemoveVariablesFromVariableFamilyResult;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveVariableFamilyResult;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
@@ -152,7 +153,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
     }
 
     @Override
-    public void retrieveVariables(int firstResult, int maxResults, String criteria) {
+    public void retrieveVariables(int firstResult, int maxResults, VariableWebCriteria criteria) {
         dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallbackHandlingError<GetVariablesResult>(this) {
 
             @Override
@@ -168,7 +169,7 @@ public class VariableFamilyPresenter extends Presenter<VariableFamilyPresenter.V
 
     @Override
     public void retrieveVariablesByFamily(int firstResult, int maxResults, final String criteria, String familyUrn) {
-        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, familyUrn), new WaitingAsyncCallbackHandlingError<GetVariablesResult>(this) {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, new VariableWebCriteria(criteria), familyUrn), new WaitingAsyncCallbackHandlingError<GetVariablesResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {

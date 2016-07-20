@@ -17,6 +17,7 @@ import org.siemac.metamac.srm.core.criteria.DataStructureDefinitionVersionMetama
 import org.siemac.metamac.srm.core.criteria.OrganisationContactCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationMetamacCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.OrganisationSchemeVersionMetamacCriteriaPropertyEnum;
+import org.siemac.metamac.srm.core.criteria.VariableCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.criteria.VariableElementCriteriaPropertyEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
@@ -29,6 +30,7 @@ import org.siemac.metamac.srm.web.shared.criteria.OrganisationContactWebCriteria
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.OrganisationWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 
 public class MetamacWebCriteriaUtils {
 
@@ -342,6 +344,33 @@ public class MetamacWebCriteriaUtils {
         return conjunctionRestriction;
     }
 
+    public static MetamacCriteriaConjunctionRestriction getVariableCriteriaRestriction(VariableWebCriteria criteria) {
+        MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
+
+        if (criteria != null) {
+
+            // General criteria
+
+            if (StringUtils.isNotBlank(criteria.getCriteria())) {
+                MetamacCriteriaDisjunctionRestriction variableElementCriteriaDisjunction = new MetamacCriteriaDisjunctionRestriction();
+                variableElementCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
+                variableElementCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableCriteriaPropertyEnum.NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+                variableElementCriteriaDisjunction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(VariableCriteriaPropertyEnum.SHORT_NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
+                variableElementCriteriaDisjunction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+                conjunctionRestriction.getRestrictions().add(variableElementCriteriaDisjunction);
+            }
+
+            // Specific criteria
+            if (criteria.getVariableType() != null) {
+                conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableCriteriaPropertyEnum.GEOGRAPHICAL.name(), criteria.getVariableType(), OperationType.EQ));
+            }
+
+        }
+
+        return conjunctionRestriction;
+    }
+
     public static MetamacCriteriaConjunctionRestriction getVariableElementCriteriaRestriction(VariableElementWebCriteria criteria) {
         MetamacCriteriaConjunctionRestriction conjunctionRestriction = new MetamacCriteriaConjunctionRestriction();
 
@@ -355,6 +384,8 @@ public class MetamacWebCriteriaUtils {
                         new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.CODE.name(), criteria.getCriteria(), OperationType.ILIKE));
                 variableElementCriteriaDisjunction.getRestrictions().add(
                         new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.URN.name(), criteria.getCriteria(), OperationType.ILIKE));
+                variableElementCriteriaDisjunction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.SHORT_NAME.name(), criteria.getCriteria(), OperationType.ILIKE));
                 conjunctionRestriction.getRestrictions().add(variableElementCriteriaDisjunction);
             }
 
@@ -373,6 +404,26 @@ public class MetamacWebCriteriaUtils {
                 MetamacCriteriaPropertyRestriction variableElementPropertyRestriction = new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.VARIABLE_URN.name(),
                         criteria.getVariableUrn(), OperationType.EQ);
                 conjunctionRestriction.getRestrictions().add(variableElementPropertyRestriction);
+            }
+            if (criteria.getVariableType() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.IS_GEOGRAPHICAL_VARIABLE_ELEMENT.name(), criteria.getVariableType(), OperationType.EQ));
+            }
+            if (BooleanUtils.isTrue(criteria.getIsHasShape())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.HAS_SHAPE.name(), criteria.getIsHasShape(), OperationType.IS_NOT_NULL));
+            }
+            if (StringUtils.isNotBlank(criteria.getGranularityCodeUrn())) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.GEOGRAPHICAL_GRANULARITY.name(), criteria.getGranularityCodeUrn(), OperationType.ILIKE));
+            }
+            if (criteria.getValidFromDate() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.VALID_FROM_DATE.name(), criteria.getValidFromDate(), OperationType.EQ));
+            }
+            if (criteria.getValidToDate() != null) {
+                conjunctionRestriction.getRestrictions().add(
+                        new MetamacCriteriaPropertyRestriction(VariableElementCriteriaPropertyEnum.VALID_TO_DATE.name(), criteria.getValidToDate(), OperationType.EQ));
             }
         }
 

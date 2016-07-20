@@ -49,6 +49,7 @@ import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.RelatedResourceItemWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.RelatedResourceWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.BooleanWebUtils;
@@ -1136,7 +1137,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults) {
-                        getUiHandlers().retrieveVariables(firstResult, maxResults, searchVariableWindow.getRelatedResourceCriteria());
+                        getUiHandlers().retrieveVariables(firstResult, maxResults, new VariableWebCriteria(searchVariableWindow.getRelatedResourceCriteria()));
                     }
                 });
 
@@ -1151,7 +1152,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
                     @Override
                     public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
-                        getUiHandlers().retrieveVariables(firstResult, maxResults, criteria);
+                        getUiHandlers().retrieveVariables(firstResult, maxResults, new VariableWebCriteria(criteria));
                     }
                 });
                 searchVariableWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {

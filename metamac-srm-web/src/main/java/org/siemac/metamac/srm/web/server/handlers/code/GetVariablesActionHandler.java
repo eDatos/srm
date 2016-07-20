@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.criteria.MetamacCriteria;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaConjunctionRestriction;
-import org.siemac.metamac.core.common.criteria.MetamacCriteriaDisjunctionRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPropertyRestriction.OperationType;
@@ -18,8 +17,10 @@ import org.siemac.metamac.srm.core.code.dto.VariableBasicDto;
 import org.siemac.metamac.srm.core.criteria.VariableCriteriaOrderEnum;
 import org.siemac.metamac.srm.core.criteria.VariableCriteriaPropertyEnum;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
+import org.siemac.metamac.srm.web.server.utils.MetamacWebCriteriaUtils;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 import org.siemac.metamac.web.common.server.ServiceContextHolder;
 import org.siemac.metamac.web.common.server.handlers.SecurityActionHandler;
 import org.siemac.metamac.web.common.server.utils.WebExceptionUtils;
@@ -53,12 +54,10 @@ public class GetVariablesActionHandler extends SecurityActionHandler<GetVariable
         MetamacCriteriaConjunctionRestriction restriction = new MetamacCriteriaConjunctionRestriction();
 
         // Variable Criteria
-        if (StringUtils.isNotBlank(action.getCriteria())) {
-            MetamacCriteriaDisjunctionRestriction variableCriteriaDisjuction = new MetamacCriteriaDisjunctionRestriction();
-            variableCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableCriteriaPropertyEnum.CODE.name(), action.getCriteria(), OperationType.ILIKE));
-            variableCriteriaDisjuction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(VariableCriteriaPropertyEnum.NAME.name(), action.getCriteria(), OperationType.ILIKE));
-            restriction.getRestrictions().add(variableCriteriaDisjuction);
-        }
+        VariableWebCriteria variableWebCriteria = action.getCriteria();
+
+        // Codelist criteria
+        restriction.getRestrictions().add(MetamacWebCriteriaUtils.getVariableCriteriaRestriction(variableWebCriteria));
 
         // Variable family restriction
         if (StringUtils.isNotBlank(action.getVariableFamilyUrn())) {

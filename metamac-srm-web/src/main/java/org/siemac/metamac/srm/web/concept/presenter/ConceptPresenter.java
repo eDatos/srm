@@ -50,6 +50,7 @@ import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.ApplicationEditionLanguages;
@@ -431,7 +432,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void retrieveVariables(int firstResult, int maxResults, String criteria, String variableFamilyUrn) {
+    public void retrieveVariables(int firstResult, int maxResults, VariableWebCriteria criteria, String variableFamilyUrn) {
         dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, variableFamilyUrn), new WaitingAsyncCallbackHandlingError<GetVariablesResult>(this) {
 
             @Override

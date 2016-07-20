@@ -6,6 +6,7 @@ import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.web.client.enums.ExportDetailEnum;
 import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
 
 public interface CodelistListUiHandlers extends BaseUiHandlers {
@@ -17,5 +18,5 @@ public interface CodelistListUiHandlers extends BaseUiHandlers {
     void exportCodelists(List<String> urns, ExportDetailEnum infoAmount, ExportReferencesEnum references);
     void cancelValidity(List<String> urns);
 
-    void retrieveVariables(int firstResult, int maxResults, String criteria);
+    void retrieveVariables(int firstResult, int maxResults, VariableWebCriteria criteria);
 }

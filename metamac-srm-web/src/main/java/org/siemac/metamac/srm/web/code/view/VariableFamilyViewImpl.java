@@ -18,6 +18,7 @@ import org.siemac.metamac.srm.web.code.utils.CodesClientSecurityUtils;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.VariableFamilyUiHandlers;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
 import org.siemac.metamac.web.common.client.MetamacWebCommon;
 import org.siemac.metamac.web.common.client.utils.InternationalStringUtils;
@@ -340,7 +341,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
 
                             @Override
                             public void retrieveResultSet(int firstResult, int maxResults, MetamacWebCriteria webCriteria) {
-                                getUiHandlers().retrieveVariables(firstResult, maxResults, webCriteria.getCriteria());
+                                getUiHandlers().retrieveVariables(firstResult, maxResults, new VariableWebCriteria(webCriteria.getCriteria()));
                             }
                         });
 

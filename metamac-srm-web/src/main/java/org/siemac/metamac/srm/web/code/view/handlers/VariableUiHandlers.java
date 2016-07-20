@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 
 public interface VariableUiHandlers extends BaseVariableUiHandlers {
 
@@ -11,7 +12,7 @@ public interface VariableUiHandlers extends BaseVariableUiHandlers {
 
     void retrieveVariableByUrn(String identifier);
     void retrieveVariableFamilies(int firstResult, int maxResults, final String criteria);
-    void retrieveVariables(int firstResult, int maxResults, final String criteria);
+    void retrieveVariables(int firstResult, int maxResults, final VariableWebCriteria criteria);
     void saveVariable(VariableDto variableDto);
     void deleteVariable(String urn);
 

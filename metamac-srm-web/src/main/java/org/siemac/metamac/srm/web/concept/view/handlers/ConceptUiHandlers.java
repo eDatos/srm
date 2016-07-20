@@ -5,6 +5,7 @@ import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptSchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.ConceptWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 
@@ -26,7 +27,7 @@ public interface ConceptUiHandlers extends BaseConceptUiHandlers {
     void retrieveCodelistsOrConceptSchemesForEnumeratedRepresentation(RelatedResourceTypeEnum relatedResourceTypeEnum, String variableUrn, int firstResult, int maxResults, String criteria,
             String conceptUrn, boolean isLastVersion);
 
-    void retrieveVariables(int firstResult, int maxResults, String criteria, String variableFamilyUrn);
+    void retrieveVariables(int firstResult, int maxResults, VariableWebCriteria criteria, String variableFamilyUrn);
     void retrieveVariableFamilies(int firstResult, int maxResults, String criteria);
 
     // RELATED RESOURCE RELATIONS
