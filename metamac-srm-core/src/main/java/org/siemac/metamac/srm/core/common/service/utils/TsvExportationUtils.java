@@ -303,6 +303,7 @@ public class TsvExportationUtils {
             for (VariableElementResult variableElementResult : variableElements) {
                 writer.write(SrmConstants.TSV_LINE_SEPARATOR);
                 writeVariableElementCode(writer, variableElementResult);
+                writeVariableElementGeographicalGranularity(writer, variableElementResult);
                 writeVariableElementShortName(writer, variableElementResult, languages);
             }
             writer.flush();
@@ -317,6 +318,8 @@ public class TsvExportationUtils {
 
     private static void writeVariableElementsHeader(OutputStreamWriter writer, List<String> languages) throws IOException {
         writer.write(SrmConstants.TSV_HEADER_CODE);
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        writer.write(SrmConstants.TSV_HEADER_GEOGRAPHICAL_GRANULARITY);
         for (String language : languages) {
             writer.write(SrmConstants.TSV_SEPARATOR);
             writer.write(SrmConstants.TSV_HEADER_SHORT_NAME + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + language);
@@ -510,6 +513,14 @@ public class TsvExportationUtils {
 
     private static void writeVariableElementCode(OutputStreamWriter writer, VariableElementResult variableElementResult) throws IOException {
         writer.write(variableElementResult.getCode());
+    }
+
+    private static void writeVariableElementGeographicalGranularity(OutputStreamWriter writer, VariableElementResult variableElementResult) throws IOException {
+        ItemResult geographicalGranularity = variableElementResult.getGeographicalGranularity();
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        if (geographicalGranularity != null) {
+            writer.write(geographicalGranularity.getCode());
+        }
     }
 
     private static void writeVariableElementShortName(OutputStreamWriter writer, VariableElementResult variableElementResult, List<String> languages) throws IOException {

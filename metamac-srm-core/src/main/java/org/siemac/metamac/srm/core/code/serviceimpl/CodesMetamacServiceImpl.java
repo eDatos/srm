@@ -2276,6 +2276,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Find
         VariableElementResultSelection selection = new VariableElementResultSelection();
+        selection.setGeographicalGranularity(true);
         List<VariableElementResult> variableElements = getVariableElementRepository().findVariableElementsByVariableEfficiently(variable.getId(), null, selection);
 
         List<String> languages = srmConfiguration.retrieveLanguages();
