@@ -1,3 +1,3 @@
-codeee	parent	variable_element	name#es	name#en	name#it	description#en	description#es
-code1		VARIABLE_ELEMENT_01	Nombre 1	Name 1	Nombre it 1	Description 1	Descripción 1
+codeee	parent	variable_element	name#es	name#en	name#it	description#en	description#es	short_name#es
+code1		VARIABLE_ELEMENT_01	Nombre 1	Name 1	Nombre it 1	Description 1	Descripción 1	
 code2	code1	VARIABLE_ELEMENT_01	Nombre 2	Name 2		Description 2		

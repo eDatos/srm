@@ -1,5 +1,5 @@
-code	parent	variable_element	name#es	name#en	name#it	description#en	description#es
-%code1			Nombre				
-codeParentNotExists	parentNotExists		nombre				
-codeWithoutName							
+code	parent	variable_element	name#es	name#en	name#it	description#en	description#es	comment#es	short_name#es
+%code1			Nombre						
+codeParentNotExists	parentNotExists		nombre						
+codeWithoutName									
 codeWithIncorrectColumns		nombre		

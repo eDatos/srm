@@ -9210,10 +9210,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
         assertEquals("code\tgeographical_granularity\tshort_name#es\tshort_name#pt\tshort_name#en\tshort_name#ca", iterator.next());
 
-        assertTrue(lines.contains("VARIABLE_ELEMENT_04\t\tnombre\t\t\t"));
-        assertTrue(lines.contains("VARIABLE_ELEMENT_01\t\tNombre corto 5-1\t\tShort name 5-1\t"));
-        assertTrue(lines.contains("VARIABLE_ELEMENT_02\t\ttítulo ve-5-2\t\t\t"));
-        assertTrue(lines.contains("VARIABLE_ELEMENT_03\t\ttítulo ve5-3\t\tshort name ve5-3\t"));
+        assertTrue(lines.contains("VARIABLE_ELEMENT_04\tCODE02\tnombre\t\t\t"));
+        assertTrue(lines.contains("VARIABLE_ELEMENT_01\tCODE01\tNombre corto 5-1\t\tShort name 5-1\t"));
+        assertTrue(lines.contains("VARIABLE_ELEMENT_02\tCODE01\ttítulo ve-5-2\t\t\t"));
+        assertTrue(lines.contains("VARIABLE_ELEMENT_03\tCODE01\ttítulo ve5-3\t\tshort name ve5-3\t"));
         bufferedReader.close();
     }
 
