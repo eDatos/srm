@@ -209,39 +209,12 @@
         <plugins>
 
             <!-- Maven Compiler Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                    <compilerArgument>-proc:none</compilerArgument>
-                </configuration>
-            </plugin>
-
-            <!-- WORKAROUND: El plugin de maven-compiler-plugin tiene un problema a la hora de crear clases usando anotaciones. Por ello se pasa en el compilar el argumento "-proc:none" y se añade el plugin maven-processor-plugin.
-                Véase: http://docs.jboss.org/hibernate/validator/4.2/reference/en-US/html/validator-annotation-processor.html#d0e3740 y http://jira.codehaus.org/browse/MCOMPILER-157 -->
-            <plugin>
-                <groupId>org.bsc.maven</groupId>
-                <artifactId>maven-processor-plugin</artifactId>
-                <version>2.0.5</version>
-                <executions>
-                    <execution>
-                        <id>process</id>
-                        <goals>
-                            <goal>process</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <defaultOutputDirectory>${project.build.directory}/generated-sources/gwt</defaultOutputDirectory>
-                    <processors>
-                        <processor>com.gwtplatform.dispatch.annotation.processor.GenDispatchProcessor</processor>
-                    </processors>
-                </configuration>
-            </plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessors>com.gwtplatform.dispatch.annotation.processor.GenDispatchProcessor</annotationProcessors>
+				</configuration>
+			</plugin>
 
             <!-- GWT Maven Plugin -->
 
