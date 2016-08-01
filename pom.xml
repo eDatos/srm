@@ -24,10 +24,11 @@
 		<module>metamac-srm-web</module>
     </modules>
 
-    <scm>
-        <connection>scm:svn:http://svn.arte-consultores.com/svn/arte/istac/metamac/metamac-srm/trunk/</connection>
-        <developerConnection>scm:svn:http://svn.arte-consultores.com/svn/arte/istac/metamac/metamac-srm/trunk/</developerConnection>
-        <url>http://svn.arte-consultores.com/viewvc/arte/istac/metamac/metamac-srm/trunk/</url>
+	<scm>
+        <connection>scm:git:https://git.arte-consultores.com/r/istac/metamac-srm.git</connection>
+        <developerConnection>scm:git:https://git.arte-consultores.com/r/istac/metamac-srm.git</developerConnection>
+        <url>https://git.arte-consultores.com/r/istac/metamac-srm.git</url>
+        <tag>HEAD</tag>
     </scm>
 
     <build>
