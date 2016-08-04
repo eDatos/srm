@@ -9,7 +9,7 @@
   <link href="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/css/screen.css" media='screen' rel='stylesheet' type='text/css'/>
   <link href="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/css/reset.css" media='print' rel='stylesheet' type='text/css'/>
   <link href="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/css/print.css" media='print' rel='stylesheet' type='text/css'/>
-  <link href="<%=org.siemac.metamac.web.common.server.utils.WebUtils.getFavicon()%>" rel="shortcut icon"/>
+  <link href="<%=org.siemac.metamac.core.common.util.WebUtils.getFavicon()%>" rel="shortcut icon"/>
   <script src="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/lib/jquery-1.8.0.min.js" type='text/javascript'></script>
   <script src="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/lib/jquery.slideto.min.js" type='text/javascript'></script>
   <script src="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/lib/jquery.wiggle.min.js" type='text/javascript'></script>
@@ -26,8 +26,12 @@
   <!-- Some basic translations -->
   <script src="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/lang/translator.js" type='text/javascript'></script>
   <script src="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/lang/es.js" type='text/javascript'></script>
+  
+  <c:set var="apiStyleCssUrl" value="<%=org.siemac.metamac.core.common.util.WebUtils.getApiStyleCssUrl()%>" />
 
-  <link href="<%=org.siemac.metamac.web.common.server.utils.WebUtils.getApiStyleCssUrl()%>" media='screen' rel='stylesheet' type='text/css' />
+  <c:if test="${!empty apiStyleCssUrl}">
+    <link href="<c:out value='${apiStyleCssUrl}'/>" media='screen' rel='stylesheet' type='text/css' />
+  </c:if>
 
   <script type="text/javascript">
     $(function () {
@@ -97,8 +101,8 @@
 </head>
 
 <body>
-	<c:set var="apiStyleHeaderUrl" value="<%=org.siemac.metamac.web.common.server.utils.WebUtils.getApiStyleHeaderUrl()%>" />
-	<c:set var="apiStyleFooterUrl" value="<%=org.siemac.metamac.web.common.server.utils.WebUtils.getApiStyleFooterUrl()%>" />
+	<c:set var="apiStyleHeaderUrl" value="<%=org.siemac.metamac.core.common.util.WebUtils.getApiStyleHeaderUrl()%>" />
+	<c:set var="apiStyleFooterUrl" value="<%=org.siemac.metamac.core.common.util.WebUtils.getApiStyleFooterUrl()%>" />
 	
 	<c:if test="${!empty apiStyleHeaderUrl}">
 	   <c:import url="${apiStyleHeaderUrl}" />
