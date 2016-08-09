@@ -209,12 +209,14 @@
         <plugins>
 
             <!-- Maven Compiler Plugin -->
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<annotationProcessors>com.gwtplatform.dispatch.annotation.processor.GenDispatchProcessor</annotationProcessors>
-				</configuration>
-			</plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessors>
+                        <annotationProcessor>com.gwtplatform.dispatch.annotation.processor.GenDispatchProcessor</annotationProcessor>
+                    </annotationProcessors>
+                </configuration>
+            </plugin>
 
             <!-- GWT Maven Plugin -->
 
@@ -242,7 +244,7 @@
                 <!-- Plugin configuration. There are many available options, see gwt-maven-plugin
                     documentation at codehaus.org -->
                 <configuration>
-                    <extraJvmArgs>-Xms512M -Xmx1024M -XX:MaxPermSize=512M</extraJvmArgs>
+                    <extraJvmArgs>-Xms512M -Xmx1024M</extraJvmArgs>
                     <runTarget>http://localhost:8080/structural-resources-internal/MetamacSrmWeb.jsp</runTarget>
                     <hostedWebapp>${webappDirectory}</hostedWebapp>
                     <noServer>true</noServer>

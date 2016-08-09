@@ -589,7 +589,7 @@
                 <version>2.14</version>
                 <configuration>
                     <forkMode>once</forkMode>
-                    <argLine>-Xms512m -Xmx1256m -XX:PermSize=64m -XX:MaxPermSize=128m</argLine>
+                    <argLine>-Xms512m -Xmx1256m -XX:PermSize=64m</argLine>
                 </configuration>
                 <executions>
                     <!-- Oracle -->
