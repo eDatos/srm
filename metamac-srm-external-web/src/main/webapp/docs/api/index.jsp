@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -105,7 +106,7 @@
 	<c:set var="apiStyleFooterUrl" value="<%=org.siemac.metamac.core.common.util.WebUtils.getApiStyleFooterUrl()%>" />
 	
 	<c:if test="${!empty apiStyleHeaderUrl}">
-	   <c:import url="${apiStyleHeaderUrl}" />
+	   <c:import charEncoding="UTF-8" url="${apiStyleHeaderUrl}" />
 	</c:if>
 	
 	<div class="swagger-section">
@@ -114,7 +115,7 @@
 	</div>
 	
 	<c:if test="${!empty apiStyleFooterUrl}">
-	   <c:import url="${apiStyleFooterUrl}" />
+	   <c:import charEncoding="UTF-8" url="${apiStyleFooterUrl}" />
 	</c:if>
 </body>
 </html>

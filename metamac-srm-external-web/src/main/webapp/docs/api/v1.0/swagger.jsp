@@ -1,3 +1,4 @@
+<%@page pageEncoding="UTF-8"%>
 {
    "swagger":"2.0",
    "info":{
