@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.siemac.metamac</groupId>
         <artifactId>metamac-parent</artifactId>
-        <version>2.0.4-SNAPSHOT</version>
+        <version>3.0.0</version>
     </parent>
 
     <groupId>org.siemac.metamac.metamac-srm</groupId>
