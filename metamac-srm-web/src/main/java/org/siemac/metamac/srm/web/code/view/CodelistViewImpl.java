@@ -73,6 +73,7 @@ import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigatio
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -92,54 +93,54 @@ import com.smartgwt.client.widgets.tab.Tab;
 
 public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> implements CodelistPresenter.CodelistView {
 
-    private final TitleLabel                         titleLabel;
-    private final InformationLabel                   informationLabel;
-    private final VLayout                            panel;
-    private final CodelistMainFormLayout             mainFormLayout;
+    private final TitleLabel titleLabel;
+    private final InformationLabel informationLabel;
+    private final VLayout panel;
+    private final CodelistMainFormLayout mainFormLayout;
 
-    private final CustomTabSet                       tabSet;
-    private final Tab                                codelistTab;
+    private final CustomTabSet tabSet;
+    private final Tab codelistTab;
 
     // View forms
-    private GroupDynamicForm                         identifiersForm;
-    private GroupDynamicForm                         contentDescriptorsForm;
-    private GroupDynamicForm                         productionDescriptorsForm;
-    private GroupDynamicForm                         diffusionDescriptorsForm;
-    private GroupDynamicForm                         versionResponsibilityForm;
-    private GroupDynamicForm                         commentsForm;
-    private AnnotationsPanel                         annotationsPanel;
+    private GroupDynamicForm identifiersForm;
+    private GroupDynamicForm contentDescriptorsForm;
+    private GroupDynamicForm productionDescriptorsForm;
+    private GroupDynamicForm diffusionDescriptorsForm;
+    private GroupDynamicForm versionResponsibilityForm;
+    private GroupDynamicForm commentsForm;
+    private AnnotationsPanel annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                         identifiersEditionForm;
-    private GroupDynamicForm                         contentDescriptorsEditionForm;
-    private GroupDynamicForm                         productionDescriptorsEditionForm;
-    private GroupDynamicForm                         diffusionDescriptorsEditionForm;
-    private GroupDynamicForm                         versionResponsibilityEditionForm;
-    private GroupDynamicForm                         commentsEditionForm;
-    private AnnotationsPanel                         annotationsEditionPanel;
+    private GroupDynamicForm identifiersEditionForm;
+    private GroupDynamicForm contentDescriptorsEditionForm;
+    private GroupDynamicForm productionDescriptorsEditionForm;
+    private GroupDynamicForm diffusionDescriptorsEditionForm;
+    private GroupDynamicForm versionResponsibilityEditionForm;
+    private GroupDynamicForm commentsEditionForm;
+    private AnnotationsPanel annotationsEditionPanel;
 
-    private SearchRelatedResourcePaginatedWindow     searchFamilyWindow;
-    private SearchRelatedResourcePaginatedWindow     searchVariableWindow;
+    private SearchRelatedResourcePaginatedWindow searchFamilyWindow;
+    private SearchRelatedResourcePaginatedWindow searchVariableWindow;
 
     // Versions
-    private final CodelistVersionsSectionStack       versionsSectionStack;
+    private final CodelistVersionsSectionStack versionsSectionStack;
 
     // Codes
-    private final CodelistCodesPanel                 codelistCodesPanel;
+    private final CodelistCodesPanel codelistCodesPanel;
 
     // Variable elements assignment
     private final CodelistCodesVariableElementsPanel codelistCodesVariableElementsPanel;
 
     // Orders
-    private final CodelistOrdersPanel                codelistOrdersPanel;
+    private final CodelistOrdersPanel codelistOrdersPanel;
 
     // Openness levels
-    private final CodelistOpennesssLevelsPanel       codelistOpennesssLevelsPanel;
+    private final CodelistOpennesssLevelsPanel codelistOpennesssLevelsPanel;
 
     // Categorisations
-    private final CodelistCategorisationsPanel       categorisationsPanel;
+    private final CodelistCategorisationsPanel categorisationsPanel;
 
-    private CodelistMetamacDto                       codelistDto;
+    private CodelistMetamacDto codelistDto;
 
     @Inject
     public CodelistViewImpl() {
@@ -304,7 +305,16 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
             public void onClick(ClickEvent event) {
                 if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && productionDescriptorsEditionForm.validate(false)
                         && diffusionDescriptorsEditionForm.validate(false)) {
-                    getUiHandlers().saveCodelist(getCodelistDto());
+                    // See: METAMAC-2516
+                    // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                    getCodelistDto();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                        @Override
+                        public void execute() {
+                            getUiHandlers().saveCodelist(getCodelistDto());
+                        }
+                    });
                 }
             }
         });
@@ -448,9 +458,9 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
 
     @Override
     public void setCodelist(CodelistMetamacDto codelist) {
-        this.codelistDto = codelist;
-        this.codelistOrdersPanel.getCodelistOrdersSectionStack().setCodelist(codelist);
-        this.codelistOpennesssLevelsPanel.getCodelistOpennessLevelsSectionStack().setCodelist(codelist);
+        codelistDto = codelist;
+        codelistOrdersPanel.getCodelistOrdersSectionStack().setCodelist(codelist);
+        codelistOpennesssLevelsPanel.getCodelistOpennessLevelsSectionStack().setCodelist(codelist);
 
         // Set title
         titleLabel.setContents(org.siemac.metamac.srm.web.client.utils.CommonUtils.getResourceTitle(codelist));
@@ -792,11 +802,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION, codelistDto.getDescription());
         contentDescriptorsForm.setValue(CodelistDS.DESCRIPTION_SOURCE, codelistDto.getDescriptionSource());
         contentDescriptorsForm.setValue(CodelistDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(codelistDto.getIsPartial()));
-        contentDescriptorsForm.setValue(CodelistDS.IS_EXTERNAL_REFERENCE, codelistDto.getIsExternalReference() != null ? (codelistDto.getIsExternalReference()
-                ? MetamacWebCommon.getConstants().yes()
-                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
-        contentDescriptorsForm.setValue(CodelistDS.FINAL, codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants()
-                .no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(CodelistDS.IS_EXTERNAL_REFERENCE, codelistDto.getIsExternalReference() != null
+                ? (codelistDto.getIsExternalReference() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no())
+                : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(CodelistDS.FINAL,
+                codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsForm.setValue(CodelistDS.IS_RECOMMENDED, BooleanWebUtils.getBooleanLabel(codelistDto.getIsRecommended()));
         ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(CodelistDS.FAMILY)).setRelatedResource(codelistDto.getFamily());
         ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(CodelistDS.VARIABLE)).setRelatedResource(codelistDto.getVariable());
@@ -863,10 +873,11 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         contentDescriptorsEditionForm.setValue(CodelistDS.DESCRIPTION, codelistDto.getDescription());
         contentDescriptorsEditionForm.setValue(CodelistDS.DESCRIPTION_SOURCE, codelistDto.getDescriptionSource());
         contentDescriptorsEditionForm.setValue(CodelistDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(codelistDto.getIsPartial()));
-        contentDescriptorsEditionForm.setValue(CodelistDS.IS_EXTERNAL_REFERENCE, codelistDto.getIsExternalReference() != null ? (codelistDto.getIsExternalReference() ? MetamacWebCommon.getConstants()
-                .yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
-        contentDescriptorsEditionForm.setValue(CodelistDS.FINAL, codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
-                .getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(CodelistDS.IS_EXTERNAL_REFERENCE, codelistDto.getIsExternalReference() != null
+                ? (codelistDto.getIsExternalReference() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no())
+                : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(CodelistDS.FINAL,
+                codelistDto.getFinalLogic() != null ? (codelistDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         ((BooleanSelectItem) contentDescriptorsEditionForm.getItem(CodelistDS.IS_RECOMMENDED)).setBooleanValue(codelistDto.getIsRecommended());
         ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.FAMILY)).setRelatedResource(codelistDto.getFamily());
         ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(CodelistDS.VARIABLE)).setRelatedResource(codelistDto.getVariable());
@@ -888,11 +899,10 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         ((RelatedResourceLinkItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACED_BY_CODELIST)).setRelatedResource(codelistDto.getReplacedByCodelist());
         ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).setRelatedResources(codelistDto.getReplaceToCodelists());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.ACCESS_TYPE, codelistDto.getAccessType() != null ? codelistDto.getAccessType().name() : StringUtils.EMPTY);
-        diffusionDescriptorsEditionForm
-                .setValue(CodelistDS.DEFAULT_ORDER, codelistDto.getDefaultOrderVisualisation() != null ? codelistDto.getDefaultOrderVisualisation().getUrn() : StringUtils.EMPTY);
-        diffusionDescriptorsEditionForm.setValue(CodelistDS.DEFAULT_OPENNESS_LEVEL, codelistDto.getDefaultOpennessVisualisation() != null
-                ? codelistDto.getDefaultOpennessVisualisation().getUrn()
-                : StringUtils.EMPTY);
+        diffusionDescriptorsEditionForm.setValue(CodelistDS.DEFAULT_ORDER,
+                codelistDto.getDefaultOrderVisualisation() != null ? codelistDto.getDefaultOrderVisualisation().getUrn() : StringUtils.EMPTY);
+        diffusionDescriptorsEditionForm.setValue(CodelistDS.DEFAULT_OPENNESS_LEVEL,
+                codelistDto.getDefaultOpennessVisualisation() != null ? codelistDto.getDefaultOpennessVisualisation().getUrn() : StringUtils.EMPTY);
         diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACED_BY_VERSION, codelistDto.getReplacedByVersion());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.REPLACE_TO_VERSION, codelistDto.getReplaceToVersion());
         diffusionDescriptorsEditionForm.setValue(CodelistDS.VALID_FROM, DateUtils.getFormattedDate(codelistDto.getValidFrom()));
@@ -937,12 +947,15 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         // Diffusion descriptors
         codelistDto.getReplaceToCodelists().clear();
         codelistDto.getReplaceToCodelists().addAll(((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(CodelistDS.REPLACE_TO_CODELISTS)).getSelectedRelatedResources());
-        codelistDto.setAccessType(!StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.ACCESS_TYPE)) ? AccessTypeEnum.valueOf(diffusionDescriptorsEditionForm
-                .getValueAsString(CodelistDS.ACCESS_TYPE)) : null);
-        codelistDto.setDefaultOrderVisualisation(!StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.DEFAULT_ORDER)) ? RelatedResourceUtils
-                .createRelatedResourceDto(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.DEFAULT_ORDER)) : null);
-        codelistDto.setDefaultOpennessVisualisation(!StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.DEFAULT_OPENNESS_LEVEL)) ? RelatedResourceUtils
-                .createRelatedResourceDto(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.DEFAULT_OPENNESS_LEVEL)) : null);
+        codelistDto.setAccessType(!StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.ACCESS_TYPE))
+                ? AccessTypeEnum.valueOf(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.ACCESS_TYPE))
+                : null);
+        codelistDto.setDefaultOrderVisualisation(!StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.DEFAULT_ORDER))
+                ? RelatedResourceUtils.createRelatedResourceDto(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.DEFAULT_ORDER))
+                : null);
+        codelistDto.setDefaultOpennessVisualisation(!StringUtils.isBlank(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.DEFAULT_OPENNESS_LEVEL))
+                ? RelatedResourceUtils.createRelatedResourceDto(diffusionDescriptorsEditionForm.getValueAsString(CodelistDS.DEFAULT_OPENNESS_LEVEL))
+                : null);
 
         // Comments
         codelistDto.setComment(commentsEditionForm.getValueAsInternationalStringDto(CodelistDS.COMMENTS));

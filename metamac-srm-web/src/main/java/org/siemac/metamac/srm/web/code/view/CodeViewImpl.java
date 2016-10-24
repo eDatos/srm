@@ -54,29 +54,29 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements CodePresenter.CodeView {
 
-    private VLayout                              panel;
-    private CodeMainFormLayout                   mainFormLayout;
+    private VLayout panel;
+    private CodeMainFormLayout mainFormLayout;
 
-    private CodesTreeGrid                        codesTreeGrid;
+    private CodesTreeGrid codesTreeGrid;
 
     // View forms
-    private GroupDynamicForm                     identifiersForm;
-    private GroupDynamicForm                     productionDescriptorsForm;
-    private GroupDynamicForm                     contentDescriptorsForm;
-    private GroupDynamicForm                     commentsForm;
-    private AnnotationsPanel                     annotationsPanel;
+    private GroupDynamicForm identifiersForm;
+    private GroupDynamicForm productionDescriptorsForm;
+    private GroupDynamicForm contentDescriptorsForm;
+    private GroupDynamicForm commentsForm;
+    private AnnotationsPanel annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                     identifiersEditionForm;
-    private GroupDynamicForm                     productionDescriptorsEditionForm;
-    private GroupDynamicForm                     contentDescriptorsEditionForm;
-    private GroupDynamicForm                     commentsEditionForm;
-    private AnnotationsPanel                     annotationsEditionPanel;
+    private GroupDynamicForm identifiersEditionForm;
+    private GroupDynamicForm productionDescriptorsEditionForm;
+    private GroupDynamicForm contentDescriptorsEditionForm;
+    private GroupDynamicForm commentsEditionForm;
+    private AnnotationsPanel annotationsEditionPanel;
 
     private SearchRelatedResourcePaginatedWindow searchVariableElementWindow;
 
-    private CodelistMetamacDto                   codelistMetamacDto;
-    private CodeMetamacDto                       codeDto;
+    private CodelistMetamacDto codelistMetamacDto;
+    private CodeMetamacDto codeDto;
 
     @Inject
     public CodeViewImpl() {
@@ -155,9 +155,8 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
             public void onClick(ClickEvent event) {
                 if (validateEditionForms()) {
                     // See: METAMAC-2516
-                    // Two invokes to getCodeDto() is needed for Chrome, please don't remove this two call fix.
-                    @SuppressWarnings("unused")
-                    final CodeMetamacDto codeDto = getCodeDto();
+                    // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                    getCodeDto();
                     Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 
                         @Override

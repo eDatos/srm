@@ -34,6 +34,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguag
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -53,22 +54,22 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiHandlers> implements CodelistFamilyPresenter.CodelistFamilyView {
 
-    private VLayout                                                          panel;
-    private InternationalMainFormLayout                                      mainFormLayout;
+    private VLayout panel;
+    private InternationalMainFormLayout mainFormLayout;
 
     // View forms
-    private GroupDynamicForm                                                 identifiersForm;
+    private GroupDynamicForm identifiersForm;
 
     // Edition forms
-    private GroupDynamicForm                                                 identifiersEditionForm;
+    private GroupDynamicForm identifiersEditionForm;
 
-    private PaginatedCheckListGrid                                           codelistListGrid;
-    private ToolStripButton                                                  addCodelistToFamilyButton;
-    private ToolStripButton                                                  removeCodelistToFamilyButton;
+    private PaginatedCheckListGrid codelistListGrid;
+    private ToolStripButton addCodelistToFamilyButton;
+    private ToolStripButton removeCodelistToFamilyButton;
     private SearchMultipleRelatedResourceItemWithSchemeFilterPaginatedWindow codelistsWindow;
-    private DeleteConfirmationWindow                                         removeConfirmationWindow;
+    private DeleteConfirmationWindow removeConfirmationWindow;
 
-    private CodelistFamilyDto                                                codelistFamilyDto;
+    private CodelistFamilyDto codelistFamilyDto;
 
     @Inject
     public CodelistFamilyViewImpl() {
@@ -179,7 +180,17 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
             @Override
             public void onClick(ClickEvent event) {
                 if (identifiersEditionForm.validate(false)) {
-                    getUiHandlers().saveCodelistFamily(getCodelistFamilyDto());
+                    // See: METAMAC-2516
+                    // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                    getCodelistFamilyDto();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                        @Override
+                        public void execute() {
+                            getUiHandlers().saveCodelistFamily(getCodelistFamilyDto());
+                        }
+                    });
+
                 }
             }
         });

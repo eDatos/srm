@@ -41,6 +41,7 @@ import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigatio
 import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -54,30 +55,30 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementUiHandlers> implements VariableElementPresenter.VariableElementView {
 
-    private VLayout                                      panel;
-    private VariableElementMainFormLayout                mainFormLayout;
+    private VLayout panel;
+    private VariableElementMainFormLayout mainFormLayout;
 
     // View forms
-    private GroupDynamicForm                             identifiersForm;
-    private GroupDynamicForm                             contentDescriptorsForm;
-    private GroupDynamicForm                             diffusionDescriptorsForm;
-    private GroupDynamicForm                             geographicalInformationForm;
-    private GroupDynamicForm                             annotationsForm;
+    private GroupDynamicForm identifiersForm;
+    private GroupDynamicForm contentDescriptorsForm;
+    private GroupDynamicForm diffusionDescriptorsForm;
+    private GroupDynamicForm geographicalInformationForm;
+    private GroupDynamicForm annotationsForm;
 
     // Edition forms
-    private GroupDynamicForm                             identifiersEditionForm;
-    private GroupDynamicForm                             contentDescriptorsEditionForm;
-    private GroupDynamicForm                             diffusionDescriptorsEditionForm;
-    private GroupDynamicForm                             geographicalInformationEditionForm;
-    private GroupDynamicForm                             annotationsEditionForm;
+    private GroupDynamicForm identifiersEditionForm;
+    private GroupDynamicForm contentDescriptorsEditionForm;
+    private GroupDynamicForm diffusionDescriptorsEditionForm;
+    private GroupDynamicForm geographicalInformationEditionForm;
+    private GroupDynamicForm annotationsEditionForm;
 
     private SearchMultipleRelatedResourcePaginatedWindow createSegregationWindow;
 
     // Variable element operations
-    private CustomSectionStack                           operationsSectionStack;
-    private VariableElementOperationLayout               variableElementOperationsLayout;
+    private CustomSectionStack operationsSectionStack;
+    private VariableElementOperationLayout variableElementOperationsLayout;
 
-    private VariableElementDto                           variableElementDto;
+    private VariableElementDto variableElementDto;
 
     @Inject
     public VariableElementViewImpl() {
@@ -151,9 +152,19 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
             @Override
             public void onClick(ClickEvent event) {
-                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)
-                        && annotationsEditionForm.validate(false) && (geographicalInformationEditionForm.isVisible() ? geographicalInformationEditionForm.validate(false) : true)) {
-                    saveVariableElement();
+                if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false) && annotationsEditionForm.validate(false)
+                        && (geographicalInformationEditionForm.isVisible() ? geographicalInformationEditionForm.validate(false) : true)) {
+                    // See: METAMAC-2516
+                    // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                    getVariableElementDto();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                        @Override
+                        public void execute() {
+                            getUiHandlers().saveVariableElement(getVariableElementDto());
+                        }
+                    });
+
                 }
             }
         });
@@ -224,8 +235,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
     @Override
     public void setVariableElementsForReplaceTo(GetVariableElementsResult result) {
-        ((SearchMultiRelatedResourceSimpleItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.REPLACE_TO_ELEMENTS)).setResources(
-                RelatedResourceUtils.getVariableElementBasicDtosAsRelatedResourceDtos(result.getVariableElements()), result.getFirstResultOut(), result.getTotalResults());
+        ((SearchMultiRelatedResourceSimpleItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.REPLACE_TO_ELEMENTS))
+                .setResources(RelatedResourceUtils.getVariableElementBasicDtosAsRelatedResourceDtos(result.getVariableElements()), result.getFirstResultOut(), result.getTotalResults());
     }
 
     @Override
@@ -296,8 +307,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
         // Geographical information
         geographicalInformationEditionForm = new GroupDynamicForm(getConstants().formGeographicalInformation());
-        SearchCodeForVariableElementGeographicalGranularity geographicalGranularity = createGeographicalGranularityItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY, getConstants()
-                .variableElementGeographicalGranularity());
+        SearchCodeForVariableElementGeographicalGranularity geographicalGranularity = createGeographicalGranularityItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY,
+                getConstants().variableElementGeographicalGranularity());
         DoubleItem latitude = new DoubleItem(VariableElementDS.LATITUDE, getConstants().variableElementLatitude());
         latitude.setStartRow(true);
         DoubleItem longitude = new DoubleItem(VariableElementDS.LONGITUDE, getConstants().variableElementLongitude());
@@ -341,8 +352,8 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         ((RelatedResourceLinkItem) geographicalInformationForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY)).setRelatedResource(variableElementDto.getGeographicalGranularity());
         geographicalInformationForm.setValue(VariableElementDS.LATITUDE, variableElementDto.getLatitude() != null ? variableElementDto.getLatitude().toString() : StringUtils.EMPTY);
         geographicalInformationForm.setValue(VariableElementDS.LONGITUDE, variableElementDto.getLongitude() != null ? variableElementDto.getLongitude().toString() : StringUtils.EMPTY);
-        geographicalInformationForm.setValue(VariableElementDS.SHAPE_WKT, StringUtils.isBlank(variableElementDto.getShapeWkt()) ? MetamacWebCommon.getConstants().no() : MetamacWebCommon
-                .getConstants().yes());
+        geographicalInformationForm.setValue(VariableElementDS.SHAPE_WKT,
+                StringUtils.isBlank(variableElementDto.getShapeWkt()) ? MetamacWebCommon.getConstants().no() : MetamacWebCommon.getConstants().yes());
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(VariableElementDS.VALID_FROM, DateUtils.getFormattedDate(variableElementDto.getValidFrom()));
@@ -364,12 +375,12 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(VariableElementDS.VARIABLE)).setRelatedResource(variableElementDto.getVariable());
 
         // Geographical information
-        ((SearchCodeForVariableElementGeographicalGranularity) geographicalInformationEditionForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY)).setRelatedResource(variableElementDto
-                .getGeographicalGranularity());
+        ((SearchCodeForVariableElementGeographicalGranularity) geographicalInformationEditionForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY))
+                .setRelatedResource(variableElementDto.getGeographicalGranularity());
         geographicalInformationEditionForm.setValue(VariableElementDS.LATITUDE, variableElementDto.getLatitude() != null ? variableElementDto.getLatitude().toString() : StringUtils.EMPTY);
         geographicalInformationEditionForm.setValue(VariableElementDS.LONGITUDE, variableElementDto.getLongitude() != null ? variableElementDto.getLongitude().toString() : StringUtils.EMPTY);
-        geographicalInformationEditionForm.setValue(VariableElementDS.SHAPE_WKT, StringUtils.isBlank(variableElementDto.getShapeWkt()) ? MetamacWebCommon.getConstants().no() : MetamacWebCommon
-                .getConstants().yes());
+        geographicalInformationEditionForm.setValue(VariableElementDS.SHAPE_WKT,
+                StringUtils.isBlank(variableElementDto.getShapeWkt()) ? MetamacWebCommon.getConstants().no() : MetamacWebCommon.getConstants().yes());
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm.setValue(VariableElementDS.VALID_FROM, variableElementDto.getValidFrom());
@@ -381,15 +392,15 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         annotationsEditionForm.setValue(VariableElementDS.COMMENTS, variableElementDto.getComment());
     }
 
-    public void saveVariableElement() {
+    private VariableElementDto getVariableElementDto() {
         // Identifiers
         variableElementDto.setShortName(identifiersEditionForm.getValueAsInternationalStringDto(VariableElementDS.SHORT_NAME));
 
         // Content descriptors
 
         // Geographical information
-        variableElementDto.setGeographicalGranularity(((SearchCodeForVariableElementGeographicalGranularity) geographicalInformationEditionForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY))
-                .getRelatedResourceDto());
+        variableElementDto.setGeographicalGranularity(
+                ((SearchCodeForVariableElementGeographicalGranularity) geographicalInformationEditionForm.getItem(VariableElementDS.GEOGRAPHICAL_GRANULARITY)).getRelatedResourceDto());
         variableElementDto.setLatitude(((DoubleItem) geographicalInformationEditionForm.getItem(VariableElementDS.LATITUDE)).getValueAsDouble());
         variableElementDto.setLongitude(((DoubleItem) geographicalInformationEditionForm.getItem(VariableElementDS.LONGITUDE)).getValueAsDouble());
 
@@ -397,13 +408,13 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
         variableElementDto.setValidFrom(((CustomDateItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.VALID_FROM)).getValueAsDate());
         variableElementDto.setValidTo(((CustomDateItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.VALID_TO)).getValueAsDate());
         variableElementDto.getReplaceToVariableElements().clear();
-        variableElementDto.getReplaceToVariableElements().addAll(
-                ((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.REPLACE_TO_ELEMENTS)).getSelectedRelatedResources());
+        variableElementDto.getReplaceToVariableElements()
+                .addAll(((RelatedResourceListItem) diffusionDescriptorsEditionForm.getItem(VariableElementDS.REPLACE_TO_ELEMENTS)).getSelectedRelatedResources());
 
         // Annotations
         variableElementDto.setComment(annotationsEditionForm.getValueAsInternationalStringDto(VariableElementDS.COMMENTS));
 
-        getUiHandlers().saveVariableElement(variableElementDto);
+        return variableElementDto;
     }
 
     private RelatedResourceListItem createReplaceToElementsItem() {
