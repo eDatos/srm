@@ -37,6 +37,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -153,7 +154,17 @@ public class CodeViewImpl extends ViewWithUiHandlers<CodeUiHandlers> implements 
             @Override
             public void onClick(ClickEvent event) {
                 if (validateEditionForms()) {
-                    getUiHandlers().saveCode(getCodeDto());
+                    // See: METAMAC-2516
+                    // Two invokes to getCodeDto() is needed for Chrome, please don't remove this two call fix.
+                    @SuppressWarnings("unused")
+                    final CodeMetamacDto codeDto = getCodeDto();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                        @Override
+                        public void execute() {
+                            getUiHandlers().saveCode(getCodeDto());
+                        }
+                    });
                 }
             }
         });
