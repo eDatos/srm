@@ -54,6 +54,7 @@ import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavig
 import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -74,40 +75,40 @@ import com.smartgwt.client.widgets.tab.Tab;
 
 public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHandlers> implements ConceptSchemePresenter.ConceptSchemeView {
 
-    private final TitleLabel                        titleLabel;
-    private final VLayout                           panel;
-    private final ConceptSchemeMainFormLayout       mainFormLayout;
+    private final TitleLabel titleLabel;
+    private final VLayout panel;
+    private final ConceptSchemeMainFormLayout mainFormLayout;
 
-    private final CustomTabSet                      tabSet;
-    private final Tab                               conceptSchemeTab;
+    private final CustomTabSet tabSet;
+    private final Tab conceptSchemeTab;
 
     // View forms
-    private GroupDynamicForm                        identifiersForm;
-    private GroupDynamicForm                        contentDescriptorsForm;
-    private GroupDynamicForm                        classDescriptorsForm;
-    private GroupDynamicForm                        productionDescriptorsForm;
-    private GroupDynamicForm                        diffusionDescriptorsForm;
-    private GroupDynamicForm                        versionResponsibilityForm;
-    private GroupDynamicForm                        commentsForm;
-    private AnnotationsPanel                        annotationsPanel;
+    private GroupDynamicForm identifiersForm;
+    private GroupDynamicForm contentDescriptorsForm;
+    private GroupDynamicForm classDescriptorsForm;
+    private GroupDynamicForm productionDescriptorsForm;
+    private GroupDynamicForm diffusionDescriptorsForm;
+    private GroupDynamicForm versionResponsibilityForm;
+    private GroupDynamicForm commentsForm;
+    private AnnotationsPanel annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                        identifiersEditionForm;
-    private GroupDynamicForm                        contentDescriptorsEditionForm;
-    private GroupDynamicForm                        classDescriptorsEditionForm;
-    private GroupDynamicForm                        productionDescriptorsEditionForm;
-    private GroupDynamicForm                        diffusionDescriptorsEditionForm;
-    private GroupDynamicForm                        versionResponsibilityEditionForm;
-    private GroupDynamicForm                        commentsEditionForm;
-    private AnnotationsPanel                        annotationsEditionPanel;
+    private GroupDynamicForm identifiersEditionForm;
+    private GroupDynamicForm contentDescriptorsEditionForm;
+    private GroupDynamicForm classDescriptorsEditionForm;
+    private GroupDynamicForm productionDescriptorsEditionForm;
+    private GroupDynamicForm diffusionDescriptorsEditionForm;
+    private GroupDynamicForm versionResponsibilityEditionForm;
+    private GroupDynamicForm commentsEditionForm;
+    private AnnotationsPanel annotationsEditionPanel;
 
     private final ConceptSchemeVersionsSectionStack versionsSectionStack;
-    private final ConceptSchemeConceptsPanel        conceptSchemeConceptsPanel;
+    private final ConceptSchemeConceptsPanel conceptSchemeConceptsPanel;
     private final ConceptSchemeCategorisationsPanel categorisationsPanel;
 
-    private ConceptSchemeMetamacDto                 conceptSchemeDto;
-    private ConceptSchemeTypeEnum                   conceptSchemeType;               // this field stores the initial type of the concept scheme
-    private SearchStatisticalOperationLinkItem      operationItem;
+    private ConceptSchemeMetamacDto conceptSchemeDto;
+    private ConceptSchemeTypeEnum conceptSchemeType; // this field stores the initial type of the concept scheme
+    private SearchStatisticalOperationLinkItem operationItem;
 
     @Inject
     public ConceptSchemeViewImpl() {
@@ -244,7 +245,16 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
             public void onClick(ClickEvent event) {
                 if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && classDescriptorsEditionForm.validate(false)
                         && productionDescriptorsEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)) {
-                    getUiHandlers().saveConceptScheme(getConceptSchemeDto());
+                    // See: METAMAC-2516
+                    // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                    getConceptSchemeDto();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                        @Override
+                        public void execute() {
+                            getUiHandlers().saveConceptScheme(getConceptSchemeDto());
+                        }
+                    });
                 }
             }
         });
@@ -630,10 +640,11 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
         // Content descriptors
         contentDescriptorsForm.setValue(ConceptSchemeDS.DESCRIPTION, conceptSchemeDto.getDescription());
         contentDescriptorsForm.setValue(ConceptSchemeDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(conceptSchemeDto.getIsPartial()));
-        contentDescriptorsForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon
-                .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
-        contentDescriptorsForm.setValue(ConceptSchemeDS.FINAL, conceptSchemeDto.getFinalLogic() != null ? (conceptSchemeDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
-                .getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null
+                ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no())
+                : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(ConceptSchemeDS.FINAL,
+                conceptSchemeDto.getFinalLogic() != null ? (conceptSchemeDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Class descriptors
         classDescriptorsForm.setValue(ConceptSchemeDS.TYPE_VIEW, conceptSchemeDto.getType() != null ? conceptSchemeDto.getType().name() : null);
@@ -696,11 +707,11 @@ public class ConceptSchemeViewImpl extends ViewWithUiHandlers<ConceptSchemeUiHan
 
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.DESCRIPTION, conceptSchemeDto.getDescription());
         contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(conceptSchemeDto.getIsPartial()));
-        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon
-                .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
-        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.FINAL, conceptSchemeDto.getFinalLogic() != null ? (conceptSchemeDto.getFinalLogic()
-                ? MetamacWebCommon.getConstants().yes()
-                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.IS_EXTERNAL_REFERENCE, conceptSchemeDto.getIsExternalReference() != null
+                ? (conceptSchemeDto.getIsExternalReference() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no())
+                : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(ConceptSchemeDS.FINAL,
+                conceptSchemeDto.getFinalLogic() != null ? (conceptSchemeDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
         // CLASS DESCRIPTORS

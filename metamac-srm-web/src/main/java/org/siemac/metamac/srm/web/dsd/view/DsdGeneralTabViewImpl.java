@@ -52,6 +52,7 @@ import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.DimensionComponentDto;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -66,35 +67,35 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHandlers> implements DsdGeneralTabPresenter.DsdGeneralTabView {
 
-    private final VLayout                      panel;
+    private final VLayout panel;
 
-    private final DsdMainFormLayout            mainFormLayout;
+    private final DsdMainFormLayout mainFormLayout;
 
     // VIEW FORM
 
-    private GroupDynamicForm                   identifiersForm;
-    private GroupDynamicForm                   contentDescriptorsForm;
-    private GroupDynamicForm                   classDescriptorsForm;
-    private GroupDynamicForm                   productionDescriptorsForm;
-    private GroupDynamicForm                   diffusionDescriptorsForm;
-    private GroupDynamicForm                   versionResponsibilityForm;
-    private GroupDynamicForm                   visualisationMetadataForm;
-    private GroupDynamicForm                   commentsForm;
-    private AnnotationsPanel                   annotationsPanel;
+    private GroupDynamicForm identifiersForm;
+    private GroupDynamicForm contentDescriptorsForm;
+    private GroupDynamicForm classDescriptorsForm;
+    private GroupDynamicForm productionDescriptorsForm;
+    private GroupDynamicForm diffusionDescriptorsForm;
+    private GroupDynamicForm versionResponsibilityForm;
+    private GroupDynamicForm visualisationMetadataForm;
+    private GroupDynamicForm commentsForm;
+    private AnnotationsPanel annotationsPanel;
 
     // EDITION FORM
 
-    private GroupDynamicForm                   identifiersEditionForm;
-    private GroupDynamicForm                   contentDescriptorsEditionForm;
-    private GroupDynamicForm                   classDescriptorsEditionForm;
-    private GroupDynamicForm                   productionDescriptorsEditionForm;
-    private GroupDynamicForm                   diffusionDescriptorsEditionForm;
-    private GroupDynamicForm                   versionResponsibilityEditionForm;
-    private GroupDynamicForm                   visualisationMetadataEditionForm;
-    private GroupDynamicForm                   commentsEditionForm;
-    private AnnotationsPanel                   annotationsEditionPanel;
+    private GroupDynamicForm identifiersEditionForm;
+    private GroupDynamicForm contentDescriptorsEditionForm;
+    private GroupDynamicForm classDescriptorsEditionForm;
+    private GroupDynamicForm productionDescriptorsEditionForm;
+    private GroupDynamicForm diffusionDescriptorsEditionForm;
+    private GroupDynamicForm versionResponsibilityEditionForm;
+    private GroupDynamicForm visualisationMetadataEditionForm;
+    private GroupDynamicForm commentsEditionForm;
+    private AnnotationsPanel annotationsEditionPanel;
 
-    private DataStructureDefinitionMetamacDto  dataStructureDefinitionMetamacDto;
+    private DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
 
     private SearchStatisticalOperationLinkItem operationItem;
 
@@ -174,7 +175,16 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
             public void onClick(ClickEvent event) {
                 if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && classDescriptorsEditionForm.validate(false)
                         && diffusionDescriptorsEditionForm.validate(false) && visualisationMetadataEditionForm.validate(false)) {
-                    getUiHandlers().saveDsd(getDataStructureDefinitionDto());
+                    // See: METAMAC-2516
+                    // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                    getDataStructureDefinitionDto();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                        @Override
+                        public void execute() {
+                            getUiHandlers().saveDsd(getDataStructureDefinitionDto());
+                        }
+                    });
                 }
             }
         });
@@ -272,7 +282,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
     /**
      * Creates and returns the view layout
-     * 
+     *
      * @return
      */
     private void createViewForm() {
@@ -335,8 +345,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         DimensionsVisualisationItem dimensionsVisualisationItem = new DimensionsVisualisationItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS, getConstants().dsdDimensionsVisualisation(),
                 false);
         ShowDecimalsPrecisionItem showDecimalsPrecision = new ShowDecimalsPrecisionItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getConstants().dsdShowDecimalsPrecision(), false);
-        DsdDimensionCodesVisualisationItem dimensionCodesVisualisationItem = new DsdDimensionCodesVisualisationItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION, getConstants()
-                .dsdDimensionCodesVisualisation(), false);
+        DsdDimensionCodesVisualisationItem dimensionCodesVisualisationItem = new DsdDimensionCodesVisualisationItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION,
+                getConstants().dsdDimensionCodesVisualisation(), false);
         visualisationMetadataForm.setFields(autoOpen, showDecimals, dimensionCodesVisualisationItem, showDecimalsPrecision, dimensionsVisualisationItem);
 
         // Comments
@@ -360,7 +370,7 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
     /**
      * Creates and returns the edition layout
-     * 
+     *
      * @return
      */
     private void createEditionForm() {
@@ -443,8 +453,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         DimensionsVisualisationItem dimensionsVisualisationItem = new DimensionsVisualisationItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS, getConstants().dsdDimensionsVisualisation(),
                 true);
         ShowDecimalsPrecisionItem showDecimalsPrecision = new ShowDecimalsPrecisionItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION, getConstants().dsdShowDecimalsPrecision(), true);
-        DsdDimensionCodesVisualisationItem dimensionCodesVisualisationItem = new DsdDimensionCodesVisualisationItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION, getConstants()
-                .dsdDimensionCodesVisualisation(), true);
+        DsdDimensionCodesVisualisationItem dimensionCodesVisualisationItem = new DsdDimensionCodesVisualisationItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION,
+                getConstants().dsdDimensionCodesVisualisation(), true);
         visualisationMetadataEditionForm.setFields(autoOpen, showDecimals, dimensionCodesVisualisationItem, showDecimalsPrecision, dimensionsVisualisationItem);
 
         // Comments
@@ -510,8 +520,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Content Descriptors form
         contentDescriptorsForm.setValue(DataStructureDefinitionDS.DESCRIPTION, dsd.getDescription());
-        contentDescriptorsForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants()
-                .no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(DataStructureDefinitionDS.FINAL,
+                dsd.getFinalLogic() != null ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Class descriptors form
         classDescriptorsForm.setValue(DataStructureDefinitionDS.STATISTICAL_OPERATION, dsd.getStatisticalOperation());
@@ -527,9 +537,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         diffusionDescriptorsForm.setValue(DataStructureDefinitionDS.REPLACE_TO_VERSION, dsd.getReplaceToVersion());
         diffusionDescriptorsForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
         diffusionDescriptorsForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
-        diffusionDescriptorsForm.setValue(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, dsd.getIsExternalReference() != null ? (dsd.getIsExternalReference()
-                ? MetamacWebCommon.getConstants().yes()
-                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        diffusionDescriptorsForm.setValue(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE,
+                dsd.getIsExternalReference() != null ? (dsd.getIsExternalReference() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Version responsibility
         versionResponsibilityForm.setValue(DataStructureDefinitionDS.PRODUCTION_VALIDATION_USER, dsd.getLifeCycle().getProductionValidationUser());
@@ -574,8 +583,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
         // CONTENT DESCRIPTORS FORM
 
         contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.DESCRIPTION, dsd.getDescription());
-        contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.FINAL, dsd.getFinalLogic() != null ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
-                .getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(DataStructureDefinitionDS.FINAL,
+                dsd.getFinalLogic() != null ? (dsd.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
         // CLASS DESCRIPTORS FORM
@@ -595,8 +604,8 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         diffusionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.VALID_FROM, dsd.getValidFrom());
         diffusionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.VALID_TO, dsd.getValidTo());
-        diffusionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE, dsd.getIsExternalReference() != null ? (dsd.getIsExternalReference() ? MetamacWebCommon
-                .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        diffusionDescriptorsEditionForm.setValue(DataStructureDefinitionDS.IS_EXTERNAL_REFERENCE,
+                dsd.getIsExternalReference() != null ? (dsd.getIsExternalReference() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         diffusionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
         // VERSION RESPONSIBILITY
@@ -657,20 +666,21 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
 
         // Visualisation metadata
         dataStructureDefinitionMetamacDto.setAutoOpen(((BooleanSelectItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.AUTO_OPEN)).getBooleanValue());
-        dataStructureDefinitionMetamacDto.setShowDecimals(!StringUtils.isBlank(visualisationMetadataEditionForm.getValueAsString(DataStructureDefinitionDS.SHOW_DECIMALS)) ? Integer
-                .valueOf(visualisationMetadataEditionForm.getValueAsString(DataStructureDefinitionDS.SHOW_DECIMALS)) : null);
+        dataStructureDefinitionMetamacDto.setShowDecimals(!StringUtils.isBlank(visualisationMetadataEditionForm.getValueAsString(DataStructureDefinitionDS.SHOW_DECIMALS))
+                ? Integer.valueOf(visualisationMetadataEditionForm.getValueAsString(DataStructureDefinitionDS.SHOW_DECIMALS))
+                : null);
         dataStructureDefinitionMetamacDto.getHeadingDimensions().clear();
-        dataStructureDefinitionMetamacDto.getHeadingDimensions().addAll(
-                ((DimensionsVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).getHeadingDimensions());
+        dataStructureDefinitionMetamacDto.getHeadingDimensions()
+                .addAll(((DimensionsVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).getHeadingDimensions());
         dataStructureDefinitionMetamacDto.getStubDimensions().clear();
-        dataStructureDefinitionMetamacDto.getStubDimensions().addAll(
-                ((DimensionsVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).getStubDimensions());
+        dataStructureDefinitionMetamacDto.getStubDimensions()
+                .addAll(((DimensionsVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSIONS_VISUALISATIONS)).getStubDimensions());
         dataStructureDefinitionMetamacDto.getShowDecimalsPrecisions().clear();
-        dataStructureDefinitionMetamacDto.getShowDecimalsPrecisions().addAll(
-                ((ShowDecimalsPrecisionItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).getMeasureDimensionPrecisionDtos());
+        dataStructureDefinitionMetamacDto.getShowDecimalsPrecisions()
+                .addAll(((ShowDecimalsPrecisionItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).getMeasureDimensionPrecisionDtos());
         dataStructureDefinitionMetamacDto.getDimensionVisualisationInfos().clear();
-        dataStructureDefinitionMetamacDto.getDimensionVisualisationInfos().addAll(
-                ((DsdDimensionCodesVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION)).getDimensionVisualisationInfoDtos());
+        dataStructureDefinitionMetamacDto.getDimensionVisualisationInfos()
+                .addAll(((DsdDimensionCodesVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION)).getDimensionVisualisationInfoDtos());
 
         // Comments
         dataStructureDefinitionMetamacDto.setComment(commentsEditionForm.getValueAsInternationalStringDto(DataStructureDefinitionDS.COMMENTS));
@@ -751,10 +761,10 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     @Override
     public void setDimensionsAndCandidateVisualisations(List<DimensionComponentDto> dimensionComponentDtos, Map<String, List<RelatedResourceDto>> candidateOrderVisualisations,
             Map<String, List<RelatedResourceDto>> candidateOpennessLevelVisualisations) {
-        ((DsdDimensionCodesVisualisationItem) visualisationMetadataForm.getItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION)).setDimensionsAndCandidateVisualisations(
-                dataStructureDefinitionMetamacDto, dimensionComponentDtos, candidateOrderVisualisations, candidateOpennessLevelVisualisations);
-        ((DsdDimensionCodesVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION)).setDimensionsAndCandidateVisualisations(
-                dataStructureDefinitionMetamacDto, dimensionComponentDtos, candidateOrderVisualisations, candidateOpennessLevelVisualisations);
+        ((DsdDimensionCodesVisualisationItem) visualisationMetadataForm.getItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION))
+                .setDimensionsAndCandidateVisualisations(dataStructureDefinitionMetamacDto, dimensionComponentDtos, candidateOrderVisualisations, candidateOpennessLevelVisualisations);
+        ((DsdDimensionCodesVisualisationItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.DIMENSION_CODES_VISUALISATION))
+                .setDimensionsAndCandidateVisualisations(dataStructureDefinitionMetamacDto, dimensionComponentDtos, candidateOrderVisualisations, candidateOpennessLevelVisualisations);
     }
 
     private void setDimensionsForStubAndHeading(List<DimensionComponentDto> dimensionComponentDtos) {
