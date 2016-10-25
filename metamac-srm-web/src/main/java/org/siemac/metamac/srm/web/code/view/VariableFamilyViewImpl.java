@@ -34,6 +34,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -57,23 +58,23 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiHandlers> implements VariableFamilyPresenter.VariableFamilyView {
 
-    private VLayout                                      panel;
-    private InternationalMainFormLayout                  mainFormLayout;
+    private VLayout panel;
+    private InternationalMainFormLayout mainFormLayout;
 
     // View forms
-    private GroupDynamicForm                             identifiersForm;
+    private GroupDynamicForm identifiersForm;
 
     // Edition forms
-    private GroupDynamicForm                             identifiersEditionForm;
+    private GroupDynamicForm identifiersEditionForm;
 
-    private PaginatedCheckListGrid                       variableListGrid;
-    private ToolStripButton                              addVariableToFamilyButton;
-    private ToolStripButton                              removeVariableToFamilyButton;
+    private PaginatedCheckListGrid variableListGrid;
+    private ToolStripButton addVariableToFamilyButton;
+    private ToolStripButton removeVariableToFamilyButton;
     private SearchMultipleRelatedResourcePaginatedWindow variablesWindow;
-    private DeleteConfirmationWindow                     removeConfirmationWindow;
-    private SearchSectionStack                           variablesSectionStack;
+    private DeleteConfirmationWindow removeConfirmationWindow;
+    private SearchSectionStack variablesSectionStack;
 
-    private VariableFamilyDto                            variableFamilyDto;
+    private VariableFamilyDto variableFamilyDto;
 
     @Inject
     public VariableFamilyViewImpl() {
@@ -205,7 +206,16 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
             @Override
             public void onClick(ClickEvent event) {
                 if (identifiersEditionForm.validate(false)) {
-                    getUiHandlers().saveVariableFamily(getVariableFamilyDto());
+                    // See: METAMAC-2516
+                    // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                    getVariableFamilyDto();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                        @Override
+                        public void execute() {
+                            getUiHandlers().saveVariableFamily(getVariableFamilyDto());
+                        }
+                    });
                 }
             }
         });
@@ -240,7 +250,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
 
     @Override
     public void setVariableFamily(VariableFamilyDto family) {
-        this.variableFamilyDto = family;
+        variableFamilyDto = family;
 
         String defaultLocalized = InternationalStringUtils.getLocalisedString(family.getName());
         String title = defaultLocalized != null ? defaultLocalized : StringUtils.EMPTY;

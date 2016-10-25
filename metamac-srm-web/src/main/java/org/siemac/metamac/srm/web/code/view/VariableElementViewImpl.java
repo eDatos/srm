@@ -161,7 +161,16 @@ public class VariableElementViewImpl extends ViewWithUiHandlers<VariableElementU
 
                         @Override
                         public void execute() {
-                            getUiHandlers().saveVariableElement(getVariableElementDto());
+                            // See: METAMAC-2516
+                            // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                            getVariableElementDto();
+                            Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                                @Override
+                                public void execute() {
+                                    getUiHandlers().saveVariableElement(getVariableElementDto());
+                                }
+                            });
                         }
                     });
 

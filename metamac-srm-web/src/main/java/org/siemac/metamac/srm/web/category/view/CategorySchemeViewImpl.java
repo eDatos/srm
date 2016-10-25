@@ -45,6 +45,7 @@ import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavig
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.v2_1.domain.dto.category.CategorisationDto;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -61,40 +62,40 @@ import com.smartgwt.client.widgets.tab.Tab;
 
 public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiHandlers> implements CategorySchemePresenter.CategorySchemeView {
 
-    private final TitleLabel                         titleLabel;
-    private final VLayout                            panel;
-    private final CategorySchemeMainFormLayout       mainFormLayout;
+    private final TitleLabel titleLabel;
+    private final VLayout panel;
+    private final CategorySchemeMainFormLayout mainFormLayout;
 
-    private final CustomTabSet                       tabSet;
-    private final Tab                                categorySchemeTab;
+    private final CustomTabSet tabSet;
+    private final Tab categorySchemeTab;
 
     // View forms
-    private GroupDynamicForm                         identifiersForm;
-    private GroupDynamicForm                         contentDescriptorsForm;
-    private GroupDynamicForm                         productionDescriptorsForm;
-    private GroupDynamicForm                         diffusionDescriptorsForm;
-    private GroupDynamicForm                         versionResponsibilityForm;
-    private GroupDynamicForm                         commentsForm;
-    private AnnotationsPanel                         annotationsPanel;
+    private GroupDynamicForm identifiersForm;
+    private GroupDynamicForm contentDescriptorsForm;
+    private GroupDynamicForm productionDescriptorsForm;
+    private GroupDynamicForm diffusionDescriptorsForm;
+    private GroupDynamicForm versionResponsibilityForm;
+    private GroupDynamicForm commentsForm;
+    private AnnotationsPanel annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                         identifiersEditionForm;
-    private GroupDynamicForm                         contentDescriptorsEditionForm;
-    private GroupDynamicForm                         productionDescriptorsEditionForm;
-    private GroupDynamicForm                         diffusionDescriptorsEditionForm;
-    private GroupDynamicForm                         versionResponsibilityEditionForm;
-    private GroupDynamicForm                         commentsEditionForm;
-    private AnnotationsPanel                         annotationsEditionPanel;
+    private GroupDynamicForm identifiersEditionForm;
+    private GroupDynamicForm contentDescriptorsEditionForm;
+    private GroupDynamicForm productionDescriptorsEditionForm;
+    private GroupDynamicForm diffusionDescriptorsEditionForm;
+    private GroupDynamicForm versionResponsibilityEditionForm;
+    private GroupDynamicForm commentsEditionForm;
+    private AnnotationsPanel annotationsEditionPanel;
 
     // Versions
     private final CategorySchemeVersionsSectionStack versionsSectionStack;
 
-    private final CategorySchemeCategoriesPanel      categoriesPanel;
+    private final CategorySchemeCategoriesPanel categoriesPanel;
 
     // Categorisations
     private final CategorySchemeCategorisationsPanel categorisationsPanel;
 
-    private CategorySchemeMetamacDto                 categorySchemeDto;
+    private CategorySchemeMetamacDto categorySchemeDto;
 
     @Inject
     public CategorySchemeViewImpl() {
@@ -174,8 +175,8 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
     @Override
     public void setUiHandlers(CategorySchemeUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
-        this.categoriesPanel.setUiHandlers(uiHandlers);
-        this.categorisationsPanel.setUiHandlers(uiHandlers);
+        categoriesPanel.setUiHandlers(uiHandlers);
+        categorisationsPanel.setUiHandlers(uiHandlers);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -232,7 +233,17 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
             public void onClick(ClickEvent event) {
                 if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && productionDescriptorsEditionForm.validate(false)
                         && diffusionDescriptorsEditionForm.validate(false)) {
-                    getUiHandlers().saveCategoryScheme(getCategorySchemeDto());
+                    // See: METAMAC-2516
+                    // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                    getCategorySchemeDto();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                        @Override
+                        public void execute() {
+                            getUiHandlers().saveCategoryScheme(getCategorySchemeDto());
+                        }
+                    });
+
                 }
             }
         });
@@ -539,11 +550,11 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         // Content descriptors
         contentDescriptorsForm.setValue(CategorySchemeDS.DESCRIPTION, categorySchemeDto.getDescription());
         contentDescriptorsForm.setValue(CategorySchemeDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(categorySchemeDto.getIsPartial()));
-        contentDescriptorsForm.setValue(CategorySchemeDS.IS_EXTERNAL_REFERENCE, categorySchemeDto.getIsExternalReference() != null ? (categorySchemeDto.getIsExternalReference() ? MetamacWebCommon
-                .getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
-        contentDescriptorsForm.setValue(CategorySchemeDS.FINAL, categorySchemeDto.getFinalLogic() != null ? (categorySchemeDto.getFinalLogic()
-                ? MetamacWebCommon.getConstants().yes()
-                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(CategorySchemeDS.IS_EXTERNAL_REFERENCE, categorySchemeDto.getIsExternalReference() != null
+                ? (categorySchemeDto.getIsExternalReference() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no())
+                : StringUtils.EMPTY);
+        contentDescriptorsForm.setValue(CategorySchemeDS.FINAL,
+                categorySchemeDto.getFinalLogic() != null ? (categorySchemeDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
 
         // Production descriptors
         ((RelatedResourceLinkItem) productionDescriptorsForm.getItem(CategorySchemeDS.MAINTAINER)).setRelatedResource(categorySchemeDto.getMaintainer());
@@ -595,20 +606,19 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
 
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.DESCRIPTION, categorySchemeDto.getDescription());
         contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_PARTIAL, BooleanWebUtils.getBooleanLabel(categorySchemeDto.getIsPartial()));
-        contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_EXTERNAL_REFERENCE, categorySchemeDto.getIsExternalReference() != null ? (categorySchemeDto.getIsExternalReference()
-                ? MetamacWebCommon.getConstants().yes()
-                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
-        contentDescriptorsEditionForm.setValue(CategorySchemeDS.FINAL, categorySchemeDto.getFinalLogic() != null ? (categorySchemeDto.getFinalLogic()
-                ? MetamacWebCommon.getConstants().yes()
-                : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(CategorySchemeDS.IS_EXTERNAL_REFERENCE, categorySchemeDto.getIsExternalReference() != null
+                ? (categorySchemeDto.getIsExternalReference() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no())
+                : StringUtils.EMPTY);
+        contentDescriptorsEditionForm.setValue(CategorySchemeDS.FINAL,
+                categorySchemeDto.getFinalLogic() != null ? (categorySchemeDto.getFinalLogic() ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no()) : StringUtils.EMPTY);
         contentDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
         contentDescriptorsEditionForm.markForRedraw();
 
         // PRODUCTION DESCRIPTORS
 
         ((RelatedResourceLinkItem) productionDescriptorsEditionForm.getItem(CategorySchemeDS.MAINTAINER)).setRelatedResource(categorySchemeDto.getMaintainer());
-        productionDescriptorsEditionForm
-                .setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
+        productionDescriptorsEditionForm.setValue(CategorySchemeDS.PROC_STATUS,
+                org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
         productionDescriptorsEditionForm.setValue(CategorySchemeDS.VERSION_CREATION_DATE, categorySchemeDto.getCreatedDate());
         productionDescriptorsEditionForm.setValue(CategorySchemeDS.RESOURCE_CREATION_DATE, categorySchemeDto.getResourceCreatedDate());
         productionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);

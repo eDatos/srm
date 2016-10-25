@@ -38,6 +38,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.organisation.ContactDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.OrganisationSchemeTypeEnum;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -63,41 +64,41 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandlers> implements OrganisationPresenter.OrganisationView {
 
-    private TitleLabel                            titleLabel;
-    private VLayout                               panel;
-    private OrganisationMainFormLayout            mainFormLayout;
+    private TitleLabel titleLabel;
+    private VLayout panel;
+    private OrganisationMainFormLayout mainFormLayout;
 
-    private CustomTabSet                          tabSet;
-    private Tab                                   organisationTab;
+    private CustomTabSet tabSet;
+    private Tab organisationTab;
 
-    private CustomVLayout                         organisationsTreeGridLayout;
-    private OrganisationsTreeGrid                 organisationsTreeGrid;
+    private CustomVLayout organisationsTreeGridLayout;
+    private OrganisationsTreeGrid organisationsTreeGrid;
 
     // View forms
-    private GroupDynamicForm                      identifiersForm;
-    private GroupDynamicForm                      productionDescriptorsForm;
-    private GroupDynamicForm                      contentDescriptorsForm;
-    private GroupDynamicForm                      commentsForm;
-    private AnnotationsPanel                      annotationsPanel;
+    private GroupDynamicForm identifiersForm;
+    private GroupDynamicForm productionDescriptorsForm;
+    private GroupDynamicForm contentDescriptorsForm;
+    private GroupDynamicForm commentsForm;
+    private AnnotationsPanel annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm                      identifiersEditionForm;
-    private GroupDynamicForm                      productionDescriptorsEditionForm;
-    private GroupDynamicForm                      contentDescriptorsEditionForm;
-    private GroupDynamicForm                      commentsEditionForm;
-    private AnnotationsPanel                      annotationsEditionPanel;
+    private GroupDynamicForm identifiersEditionForm;
+    private GroupDynamicForm productionDescriptorsEditionForm;
+    private GroupDynamicForm contentDescriptorsEditionForm;
+    private GroupDynamicForm commentsEditionForm;
+    private AnnotationsPanel annotationsEditionPanel;
 
     // Contacts
     private OrganisationContactSearchSectionStack searchSectionStack;
-    private CustomListGrid                        contactListGrid;
-    private ContactMainFormLayout                 contactMainFormLayout;
-    private ToolStripButton                       contactNewButton;
-    private ToolStripButton                       contactDeleteButton;
-    private DeleteConfirmationWindow              contactDeleteConfirmationWindow;
+    private CustomListGrid contactListGrid;
+    private ContactMainFormLayout contactMainFormLayout;
+    private ToolStripButton contactNewButton;
+    private ToolStripButton contactDeleteButton;
+    private DeleteConfirmationWindow contactDeleteConfirmationWindow;
 
-    private OrganisationSchemeMetamacDto          organisationSchemeMetamacDto;
-    private OrganisationMetamacDto                organisationDto;
-    private List<ContactDto>                      contactDtos;
+    private OrganisationSchemeMetamacDto organisationSchemeMetamacDto;
+    private OrganisationMetamacDto organisationDto;
+    private List<ContactDto> contactDtos;
 
     @Inject
     public OrganisationViewImpl() {
@@ -325,7 +326,16 @@ public class OrganisationViewImpl extends ViewWithUiHandlers<OrganisationUiHandl
             @Override
             public void onClick(ClickEvent event) {
                 if (validateEditionForms()) {
-                    getUiHandlers().updateOrganisation(getOrganisationDto());
+                    // See: METAMAC-2516
+                    // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                    getOrganisationDto();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                        @Override
+                        public void execute() {
+                            getUiHandlers().updateOrganisation(getOrganisationDto());
+                        }
+                    });
                 }
             }
         });

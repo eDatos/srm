@@ -39,6 +39,7 @@ import com.arte.statistic.sdmx.v2_1.domain.dto.srm.ComponentDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.FacetDto;
 import com.arte.statistic.sdmx.v2_1.domain.dto.srm.RepresentationDto;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEnum;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -56,25 +57,25 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryMeasureTabUiHandlers> implements DsdPrimaryMeasureTabPresenter.DsdPrimaryMeasureTabView {
 
-    private VLayout                              panel;
+    private VLayout panel;
 
-    private InternationalMainFormLayout          mainFormLayout;
+    private InternationalMainFormLayout mainFormLayout;
 
     // VIEW FORM
-    private GroupDynamicForm                     form;
-    private StaticFacetForm                      facetForm;
-    private AnnotationsPanel                     viewAnnotationsPanel;
+    private GroupDynamicForm form;
+    private StaticFacetForm facetForm;
+    private AnnotationsPanel viewAnnotationsPanel;
 
     // EDITION FORM
-    private GroupDynamicForm                     editionForm;
-    private DsdFacetForm                         facetEditionForm;
-    private StaticFacetForm                      facetStaticEditionForm;
-    private AnnotationsPanel                     editionAnnotationsPanel;
+    private GroupDynamicForm editionForm;
+    private DsdFacetForm facetEditionForm;
+    private StaticFacetForm facetStaticEditionForm;
+    private AnnotationsPanel editionAnnotationsPanel;
 
     private SearchRelatedResourcePaginatedWindow searchCodelistForEnumeratedRepresentationWindow;
 
-    private DataStructureDefinitionMetamacDto    dataStructureDefinitionMetamacDto;
-    private ComponentDto                         primaryMeasure;
+    private DataStructureDefinitionMetamacDto dataStructureDefinitionMetamacDto;
+    private ComponentDto primaryMeasure;
 
     @Inject
     public DsdPrimaryMeasureTabViewImpl() {
@@ -96,7 +97,16 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
             @Override
             public void onClick(ClickEvent event) {
                 if (validate()) {
-                    getUiHandlers().savePrimaryMeasure(getDsdPrimaryMeasure());
+                    // See: METAMAC-2516
+                    // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                    getDsdPrimaryMeasure();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                        @Override
+                        public void execute() {
+                            getUiHandlers().savePrimaryMeasure(getDsdPrimaryMeasure());
+                        }
+                    });
                 }
             }
         });
@@ -109,7 +119,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     /**
      * Creates and returns the view layout
-     * 
+     *
      * @return
      */
     private void createViewForm() {
@@ -136,7 +146,7 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     /**
      * Creates and returns the edition layout
-     * 
+     *
      * @return
      */
     private void createEditionForm() {
@@ -199,14 +209,14 @@ public class DsdPrimaryMeasureTabViewImpl extends ViewWithUiHandlers<DsdPrimaryM
 
     @Override
     public void setConceptSchemes(GetRelatedResourcesResult result) {
-        ((SearchSrmItemLinkItemWithSchemeFilterItem) editionForm.getItem(PrimaryMeasureDS.CONCEPT)).setFilterResources(result.getRelatedResourceDtos(), result.getFirstResultOut(), result
-                .getRelatedResourceDtos().size(), result.getTotalResults());
+        ((SearchSrmItemLinkItemWithSchemeFilterItem) editionForm.getItem(PrimaryMeasureDS.CONCEPT)).setFilterResources(result.getRelatedResourceDtos(), result.getFirstResultOut(),
+                result.getRelatedResourceDtos().size(), result.getTotalResults());
     }
 
     @Override
     public void setConcepts(GetRelatedResourcesResult result) {
-        ((SearchSrmItemLinkItemWithSchemeFilterItem) editionForm.getItem(PrimaryMeasureDS.CONCEPT)).setResources(result.getRelatedResourceDtos(), result.getFirstResultOut(), result
-                .getRelatedResourceDtos().size(), result.getTotalResults());
+        ((SearchSrmItemLinkItemWithSchemeFilterItem) editionForm.getItem(PrimaryMeasureDS.CONCEPT)).setResources(result.getRelatedResourceDtos(), result.getFirstResultOut(),
+                result.getRelatedResourceDtos().size(), result.getTotalResults());
     }
 
     @Override

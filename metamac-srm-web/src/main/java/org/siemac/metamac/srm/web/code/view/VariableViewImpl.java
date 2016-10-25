@@ -62,6 +62,7 @@ import org.siemac.metamac.web.common.client.widgets.handlers.ListRecordNavigatio
 import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -92,47 +93,47 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> implements VariablePresenter.VariableView {
 
-    private final VLayout                                panel;
-    private final VariableMainFormLayout                 mainFormLayout;
+    private final VLayout panel;
+    private final VariableMainFormLayout mainFormLayout;
 
     // View forms
-    private GroupDynamicForm                             identifiersForm;
-    private GroupDynamicForm                             contentDescriptorsForm;
-    private GroupDynamicForm                             diffusionDescriptorsForm;
+    private GroupDynamicForm identifiersForm;
+    private GroupDynamicForm contentDescriptorsForm;
+    private GroupDynamicForm diffusionDescriptorsForm;
 
     // Edition forms
-    private GroupDynamicForm                             identifiersEditionForm;
-    private GroupDynamicForm                             contentDescriptorsEditionForm;
-    private GroupDynamicForm                             diffusionDescriptorsEditionForm;
+    private GroupDynamicForm identifiersEditionForm;
+    private GroupDynamicForm contentDescriptorsEditionForm;
+    private GroupDynamicForm diffusionDescriptorsEditionForm;
 
     // Variable elements
 
-    private final PaginatedCheckListGrid                 variableElementListGrid;
-    private final CustomToolStripButton                  createVariableElementButton;
-    private final CustomToolStripButton                  importVariableElementButton;
-    private final CustomToolStripButton                  exportVariableElementButton;
-    private final CustomToolStripButton                  deleteVariableElementButton;
-    private final CustomToolStripButton                  fusionVariableElementButton;
-    private final CustomToolStripButton                  segregateVariableElementButton;
-    private NewVariableElementWindow                     newVariableElementWindow;
-    private final DeleteConfirmationWindow               deleteConfirmationWindow;
-    private SearchSectionStack                           elementsSectionStack;
+    private final PaginatedCheckListGrid variableElementListGrid;
+    private final CustomToolStripButton createVariableElementButton;
+    private final CustomToolStripButton importVariableElementButton;
+    private final CustomToolStripButton exportVariableElementButton;
+    private final CustomToolStripButton deleteVariableElementButton;
+    private final CustomToolStripButton fusionVariableElementButton;
+    private final CustomToolStripButton segregateVariableElementButton;
+    private NewVariableElementWindow newVariableElementWindow;
+    private final DeleteConfirmationWindow deleteConfirmationWindow;
+    private SearchSectionStack elementsSectionStack;
 
-    private SearchRelatedResourcePaginatedWindow         createFusionWindow;
+    private SearchRelatedResourcePaginatedWindow createFusionWindow;
     private SearchMultipleRelatedResourcePaginatedWindow createSegregationWindow;
 
     // Variable elements importation
 
-    private final ImportVariableElementsWindow           importVariableElementsWindow;
+    private final ImportVariableElementsWindow importVariableElementsWindow;
 
     // Variable element operations
 
-    private final CustomSectionStack                     operationsSectionStack;
-    private final VariableElementOperationLayout         variableElementOperationsLayout;
+    private final CustomSectionStack operationsSectionStack;
+    private final VariableElementOperationLayout variableElementOperationsLayout;
 
-    private final ImportVariableElementShapeWindow       importVariableElementShapeWindow;
+    private final ImportVariableElementShapeWindow importVariableElementShapeWindow;
 
-    private VariableDto                                  variableDto;
+    private VariableDto variableDto;
 
     @Inject
     public VariableViewImpl() {
@@ -254,8 +255,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().deleteVariableElements(
-                        org.siemac.metamac.srm.web.code.utils.CommonUtils.getUrnsFromSelectedVariableElements(variableElementListGrid.getListGrid().getSelectedRecords()));
+                getUiHandlers()
+                        .deleteVariableElements(org.siemac.metamac.srm.web.code.utils.CommonUtils.getUrnsFromSelectedVariableElements(variableElementListGrid.getListGrid().getSelectedRecords()));
                 deleteConfirmationWindow.hide();
             }
         });
@@ -337,7 +338,16 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
             @Override
             public void onClick(ClickEvent event) {
                 if (identifiersEditionForm.validate(false) && contentDescriptorsEditionForm.validate(false) && diffusionDescriptorsEditionForm.validate(false)) {
-                    getUiHandlers().saveVariable(getVariableDto());
+                    // See: METAMAC-2516
+                    // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                    getVariableDto();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                        @Override
+                        public void execute() {
+                            getUiHandlers().saveVariable(getVariableDto());
+                        }
+                    });
                 }
             }
         });
@@ -487,8 +497,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         identifiersForm.setValue(VariableDS.SHORT_NAME, variableDto.getShortName());
 
         // Content descriptors
-        contentDescriptorsForm.setValue(VariableDS.IS_GEOGRAPHICAL, VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType()) ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
-                .getConstants().no());
+        contentDescriptorsForm.setValue(VariableDS.IS_GEOGRAPHICAL,
+                VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType()) ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no());
         ((RelatedResourceListItem) contentDescriptorsForm.getItem(VariableDS.FAMILIES)).setRelatedResources(variableDto.getFamilies());
 
         // Diffusion descriptors
@@ -506,8 +516,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         identifiersEditionForm.setValue(VariableDS.SHORT_NAME, variableDto.getShortName());
 
         // Content descriptors
-        contentDescriptorsEditionForm.setValue(VariableDS.IS_GEOGRAPHICAL_VIEW, VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType()) ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon
-                .getConstants().no());
+        contentDescriptorsEditionForm.setValue(VariableDS.IS_GEOGRAPHICAL_VIEW,
+                VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType()) ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no());
         contentDescriptorsEditionForm.setValue(VariableDS.IS_GEOGRAPHICAL, VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType()));
         ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(VariableDS.FAMILIES)).setRelatedResources(variableDto.getFamilies());
 
@@ -542,14 +552,14 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
     @Override
     public void setVariableFamilies(GetVariableFamiliesResult result) {
-        ((SearchMultiRelatedResourceSimpleItem) contentDescriptorsEditionForm.getItem(VariableDS.FAMILIES)).setResources(
-                RelatedResourceUtils.getVariableFamilyBasicDtosAsRelatedResourceDtos(result.getFamilies()), result.getFirstResultOut(), result.getTotalResults());
+        ((SearchMultiRelatedResourceSimpleItem) contentDescriptorsEditionForm.getItem(VariableDS.FAMILIES))
+                .setResources(RelatedResourceUtils.getVariableFamilyBasicDtosAsRelatedResourceDtos(result.getFamilies()), result.getFirstResultOut(), result.getTotalResults());
     }
 
     @Override
     public void setVariables(GetVariablesResult result) {
-        ((SearchMultiRelatedResourceSimpleItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES)).setResources(
-                RelatedResourceUtils.getVariableBasicDtosAsRelatedResourceDtos(result.getVariables()), result.getFirstResultOut(), result.getTotalResults());
+        ((SearchMultiRelatedResourceSimpleItem) diffusionDescriptorsEditionForm.getItem(VariableDS.REPLACE_TO_VARIABLES))
+                .setResources(RelatedResourceUtils.getVariableBasicDtosAsRelatedResourceDtos(result.getVariables()), result.getFirstResultOut(), result.getTotalResults());
     }
 
     @Override
@@ -645,8 +655,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
                 if (variableDto != null && variableDto.getType() == null && !BooleanUtils.isTrue(variableDto.getHasVariableElements())) {
                     // If it is not a geographical variable and the first variable element is going to be created, show an information message saying that once a variable had a variable element,
                     // cannot be turned into a geographical variable
-                    final InformationWindow informationWindow = new InformationWindow(getConstants().variableElementCreate(), getConstants()
-                            .variableElementCreateInANonGeographicalVariableInfoMessage());
+                    final InformationWindow informationWindow = new InformationWindow(getConstants().variableElementCreate(),
+                            getConstants().variableElementCreateInANonGeographicalVariableInfoMessage());
                     informationWindow.show();
                     informationWindow.getAcceptButtonHandlerRegistration().removeHandler();
                     informationWindow.getAcceptButton().addClickHandler(new ClickHandler() {
@@ -681,8 +691,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     }
 
     private CustomToolStripButton createImportVariableElementsButton() {
-        CustomToolStripButton importButton = new CustomToolStripButton(getConstants().actionImportVariableElements(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE
-                .importResource().getURL());
+        CustomToolStripButton importButton = new CustomToolStripButton(getConstants().actionImportVariableElements(),
+                org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.importResource().getURL());
         importButton.setVisible(CodesClientSecurityUtils.canImportVariableElements());
         importButton.addClickHandler(new ClickHandler() {
 
@@ -695,8 +705,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     }
 
     private CustomToolStripButton createExportVariableElementsButton() {
-        CustomToolStripButton exportButton = new CustomToolStripButton(getConstants().actionExportVariableElements(), org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE
-                .exportResource().getURL());
+        CustomToolStripButton exportButton = new CustomToolStripButton(getConstants().actionExportVariableElements(),
+                org.siemac.metamac.web.common.client.resources.GlobalResources.RESOURCE.exportResource().getURL());
         exportButton.setVisible(CodesClientSecurityUtils.canExportVariableElements());
         exportButton.addClickHandler(new ClickHandler() {
 

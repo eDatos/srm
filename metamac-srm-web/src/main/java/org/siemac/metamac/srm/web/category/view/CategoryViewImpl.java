@@ -26,6 +26,7 @@ import org.siemac.metamac.web.common.client.widgets.form.fields.ViewMultiLanguag
 import org.siemac.metamac.web.common.client.widgets.form.fields.ViewTextItem;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Overflow;
@@ -38,27 +39,27 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> implements CategoryPresenter.CategoryView {
 
-    private VLayout                  panel;
-    private CategoryMainFormLayout   mainFormLayout;
+    private VLayout panel;
+    private CategoryMainFormLayout mainFormLayout;
 
-    private CategoriesTreeGrid       categoriesTreeGrid;
+    private CategoriesTreeGrid categoriesTreeGrid;
 
     // View forms
-    private GroupDynamicForm         identifiersForm;
-    private GroupDynamicForm         productionDescriptorsForm;
-    private GroupDynamicForm         contentDescriptorsForm;
-    private GroupDynamicForm         commentsForm;
-    private AnnotationsPanel         annotationsPanel;
+    private GroupDynamicForm identifiersForm;
+    private GroupDynamicForm productionDescriptorsForm;
+    private GroupDynamicForm contentDescriptorsForm;
+    private GroupDynamicForm commentsForm;
+    private AnnotationsPanel annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm         identifiersEditionForm;
-    private GroupDynamicForm         productionDescriptorsEditionForm;
-    private GroupDynamicForm         contentDescriptorsEditionForm;
-    private GroupDynamicForm         commentsEditionForm;
-    private AnnotationsPanel         annotationsEditionPanel;
+    private GroupDynamicForm identifiersEditionForm;
+    private GroupDynamicForm productionDescriptorsEditionForm;
+    private GroupDynamicForm contentDescriptorsEditionForm;
+    private GroupDynamicForm commentsEditionForm;
+    private AnnotationsPanel annotationsEditionPanel;
 
     private CategorySchemeMetamacDto categorySchemeDto;
-    private CategoryMetamacDto       categoryDto;
+    private CategoryMetamacDto categoryDto;
 
     public CategoryViewImpl() {
         super();
@@ -315,7 +316,16 @@ public class CategoryViewImpl extends ViewWithUiHandlers<CategoryUiHandlers> imp
             @Override
             public void onClick(ClickEvent event) {
                 if (validateEditionForms()) {
-                    getUiHandlers().saveCategory(getCategoryDto());
+                    // See: METAMAC-2516
+                    // Two invokes to getXXXDto() is needed for Chrome, please don't remove this two call fix.
+                    getCategoryDto();
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+                        @Override
+                        public void execute() {
+                            getUiHandlers().saveCategory(getCategoryDto());
+                        }
+                    });
                 }
             }
         });
