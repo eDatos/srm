@@ -40,7 +40,15 @@
     <filter-mapping>
             <filter-name>UrlRewriteFilter</filter-name>
             <url-pattern>/apis/*</url-pattern>
-    </filter-mapping>    
+    </filter-mapping> 
+    <filter>
+        <filter-name>CORSFilter</filter-name>
+        <filter-class>org.siemac.metamac.core.common.filter.CORSFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CORSFilter</filter-name>
+        <url-pattern>/apis/*</url-pattern>
+    </filter-mapping>
 
     <!-- Spring dispatcher for GWT-RPC services.
         See: http://code.google.com/p/gwt-platform/source/browse/gwtp-samples/gwtp-sample-basic-spring/src/main/webapp/WEB-INF/web.xml?r=7efb6ee3ef7b9458693830e713d679f1c78e98dd -->
