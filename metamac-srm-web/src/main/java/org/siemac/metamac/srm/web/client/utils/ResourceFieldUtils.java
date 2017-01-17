@@ -165,7 +165,7 @@ public class ResourceFieldUtils {
             }
         });
 
-        return new CustomListGridField[]{code, urn, version, name, maintainer, procStatus, creationDate, resourceCreationDate, externalPublicationDate, resourceId};
+        return new CustomListGridField[]{code, urn, maintainer, version, name, procStatus, creationDate, resourceCreationDate, externalPublicationDate, resourceId};
     }
 
     //
