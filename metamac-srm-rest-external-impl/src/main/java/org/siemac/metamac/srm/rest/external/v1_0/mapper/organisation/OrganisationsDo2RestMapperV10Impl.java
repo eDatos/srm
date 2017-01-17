@@ -476,7 +476,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
 
         Contacts targets = new Contacts();
         for (com.arte.statistic.sdmx.srm.core.organisation.domain.Contact source : sources) {
-            if (!OrganisationsUtils.checkPublicContact(source, organisationTypeEnum, false, getMaintainerUrnDefault())) {
+            if (!OrganisationsUtils.checkPublicContact(source, organisationTypeEnum, false)) {
                 continue;
             }
             Contact target = toContact(source);
