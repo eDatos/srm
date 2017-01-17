@@ -9,7 +9,6 @@ public class VersionableResourceCustomListGrid extends NavigableListGrid {
         ListGridUtils.setCheckBoxSelectionType(this);
         setShowGroupSummary(true);
         setGroupStartOpen(com.smartgwt.client.types.GroupStartOpen.ALL);
-        setGroupByField(VersionableResourceDS.RESOURCE_ID);
         setGroupTitleField(VersionableResourceDS.CODE);
         setGroupNodeStyle("customGroupNode");
         setCanSort(false);
