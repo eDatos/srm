@@ -23,6 +23,9 @@ public class VersionableResourceDS extends DataSource {
     // PRODUCTION DESCRIPTORS
     public static final String PROC_STATUS                = "lc-status";
     public static final String VERSION_CREATION_DATE      = "lc-creation-date";
+    public static final String VERSION_CREATION_USER      = "lc-creation-user";
+    public static final String VERSION_LAST_UPDATE_DATE   = "lc-last-update-date";
+    public static final String VERSION_LAST_UPDATE_USER   = "lc-last-update-user";
     public static final String RESOURCE_CREATION_DATE     = "lc-resource-creation-date";
     public static final String PRODUCTION_VALIDATION_DATE = "lc-prod-date";
     public static final String PRODUCTION_VALIDATION_USER = "lc-prod-user";

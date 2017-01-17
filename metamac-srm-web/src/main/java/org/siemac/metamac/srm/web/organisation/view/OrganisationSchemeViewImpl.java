@@ -365,8 +365,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         RelatedResourceLinkItem agency = new RelatedResourceLinkItem(OrganisationSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         ViewTextItem creationDate = new ViewTextItem(OrganisationSchemeDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem creationUser = new ViewTextItem(OrganisationSchemeDS.VERSION_CREATION_USER, getConstants().maintainableArtefactVersionCreationUser());
+        ViewTextItem lastUpdateDate = new ViewTextItem(OrganisationSchemeDS.VERSION_LAST_UPDATE_DATE, getConstants().maintainableArtefactVersionLastUpdateDate());
+        ViewTextItem lastUpdateUser = new ViewTextItem(OrganisationSchemeDS.VERSION_LAST_UPDATE_USER, getConstants().maintainableArtefactVersionLastUpdateUser());
         ViewTextItem resourceCreationDate = new ViewTextItem(OrganisationSchemeDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
-        productionDescriptorsForm.setFields(agency, procStatus, creationDate, resourceCreationDate);
+        productionDescriptorsForm.setFields(agency, procStatus, creationDate, creationUser, lastUpdateDate, lastUpdateUser, resourceCreationDate);
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -439,8 +442,11 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         RelatedResourceLinkItem agency = new RelatedResourceLinkItem(OrganisationSchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(OrganisationSchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         ViewTextItem creationDate = new ViewTextItem(OrganisationSchemeDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem creationUser = new ViewTextItem(OrganisationSchemeDS.VERSION_CREATION_USER, getConstants().maintainableArtefactVersionCreationUser());
+        ViewTextItem lastUpdateDate = new ViewTextItem(OrganisationSchemeDS.VERSION_LAST_UPDATE_DATE, getConstants().maintainableArtefactVersionLastUpdateDate());
+        ViewTextItem lastUpdateUser = new ViewTextItem(OrganisationSchemeDS.VERSION_LAST_UPDATE_USER, getConstants().maintainableArtefactVersionLastUpdateUser());
         ViewTextItem resourceCreationDate = new ViewTextItem(OrganisationSchemeDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
-        productionDescriptorsEditionForm.setFields(agency, procStatus, creationDate, resourceCreationDate);
+        productionDescriptorsEditionForm.setFields(agency, procStatus, creationDate, creationUser, lastUpdateDate, lastUpdateUser, resourceCreationDate);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -577,6 +583,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         productionDescriptorsForm.setValue(OrganisationSchemeDS.PROC_STATUS,
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
         productionDescriptorsForm.setValue(OrganisationSchemeDS.VERSION_CREATION_DATE, organisationSchemeDto.getCreatedDate());
+        productionDescriptorsForm.setValue(OrganisationSchemeDS.VERSION_CREATION_USER, organisationSchemeDto.getCreatedBy());
+        productionDescriptorsForm.setValue(OrganisationSchemeDS.VERSION_LAST_UPDATE_DATE, organisationSchemeDto.getLastUpdated());
+        productionDescriptorsForm.setValue(OrganisationSchemeDS.VERSION_LAST_UPDATE_USER, organisationSchemeDto.getLastUpdatedBy());
         productionDescriptorsForm.setValue(OrganisationSchemeDS.RESOURCE_CREATION_DATE, organisationSchemeDto.getResourceCreatedDate());
 
         // Diffusion descriptors
@@ -638,6 +647,9 @@ public class OrganisationSchemeViewImpl extends ViewWithUiHandlers<OrganisationS
         productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.PROC_STATUS,
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(organisationSchemeDto.getLifeCycle().getProcStatus()));
         productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VERSION_CREATION_DATE, organisationSchemeDto.getCreatedDate());
+        productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VERSION_CREATION_USER, organisationSchemeDto.getCreatedBy());
+        productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VERSION_LAST_UPDATE_DATE, organisationSchemeDto.getLastUpdated());
+        productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.VERSION_LAST_UPDATE_USER, organisationSchemeDto.getLastUpdatedBy());
         productionDescriptorsEditionForm.setValue(OrganisationSchemeDS.RESOURCE_CREATION_DATE, organisationSchemeDto.getResourceCreatedDate());
         productionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 

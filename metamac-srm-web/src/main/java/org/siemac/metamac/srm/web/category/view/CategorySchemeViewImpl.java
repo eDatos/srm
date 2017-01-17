@@ -62,40 +62,40 @@ import com.smartgwt.client.widgets.tab.Tab;
 
 public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiHandlers> implements CategorySchemePresenter.CategorySchemeView {
 
-    private final TitleLabel titleLabel;
-    private final VLayout panel;
-    private final CategorySchemeMainFormLayout mainFormLayout;
+    private final TitleLabel                         titleLabel;
+    private final VLayout                            panel;
+    private final CategorySchemeMainFormLayout       mainFormLayout;
 
-    private final CustomTabSet tabSet;
-    private final Tab categorySchemeTab;
+    private final CustomTabSet                       tabSet;
+    private final Tab                                categorySchemeTab;
 
     // View forms
-    private GroupDynamicForm identifiersForm;
-    private GroupDynamicForm contentDescriptorsForm;
-    private GroupDynamicForm productionDescriptorsForm;
-    private GroupDynamicForm diffusionDescriptorsForm;
-    private GroupDynamicForm versionResponsibilityForm;
-    private GroupDynamicForm commentsForm;
-    private AnnotationsPanel annotationsPanel;
+    private GroupDynamicForm                         identifiersForm;
+    private GroupDynamicForm                         contentDescriptorsForm;
+    private GroupDynamicForm                         productionDescriptorsForm;
+    private GroupDynamicForm                         diffusionDescriptorsForm;
+    private GroupDynamicForm                         versionResponsibilityForm;
+    private GroupDynamicForm                         commentsForm;
+    private AnnotationsPanel                         annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm identifiersEditionForm;
-    private GroupDynamicForm contentDescriptorsEditionForm;
-    private GroupDynamicForm productionDescriptorsEditionForm;
-    private GroupDynamicForm diffusionDescriptorsEditionForm;
-    private GroupDynamicForm versionResponsibilityEditionForm;
-    private GroupDynamicForm commentsEditionForm;
-    private AnnotationsPanel annotationsEditionPanel;
+    private GroupDynamicForm                         identifiersEditionForm;
+    private GroupDynamicForm                         contentDescriptorsEditionForm;
+    private GroupDynamicForm                         productionDescriptorsEditionForm;
+    private GroupDynamicForm                         diffusionDescriptorsEditionForm;
+    private GroupDynamicForm                         versionResponsibilityEditionForm;
+    private GroupDynamicForm                         commentsEditionForm;
+    private AnnotationsPanel                         annotationsEditionPanel;
 
     // Versions
     private final CategorySchemeVersionsSectionStack versionsSectionStack;
 
-    private final CategorySchemeCategoriesPanel categoriesPanel;
+    private final CategorySchemeCategoriesPanel      categoriesPanel;
 
     // Categorisations
     private final CategorySchemeCategorisationsPanel categorisationsPanel;
 
-    private CategorySchemeMetamacDto categorySchemeDto;
+    private CategorySchemeMetamacDto                 categorySchemeDto;
 
     @Inject
     public CategorySchemeViewImpl() {
@@ -362,8 +362,11 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         RelatedResourceLinkItem agency = new RelatedResourceLinkItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(CategorySchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         ViewTextItem creationDate = new ViewTextItem(CategorySchemeDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem creationUser = new ViewTextItem(CategorySchemeDS.VERSION_CREATION_USER, getConstants().maintainableArtefactVersionCreationUser());
+        ViewTextItem lastUpdateDate = new ViewTextItem(CategorySchemeDS.VERSION_LAST_UPDATE_DATE, getConstants().maintainableArtefactVersionLastUpdateDate());
+        ViewTextItem lastUpdateUser = new ViewTextItem(CategorySchemeDS.VERSION_LAST_UPDATE_USER, getConstants().maintainableArtefactVersionLastUpdateUser());
         ViewTextItem resourceCreationDate = new ViewTextItem(CategorySchemeDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
-        productionDescriptorsForm.setFields(agency, procStatus, creationDate, resourceCreationDate);
+        productionDescriptorsForm.setFields(agency, procStatus, creationDate, creationUser, lastUpdateDate, lastUpdateUser, resourceCreationDate);
 
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -435,8 +438,11 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         RelatedResourceLinkItem agency = new RelatedResourceLinkItem(CategorySchemeDS.MAINTAINER, getConstants().maintainableArtefactMaintainer(), getCustomLinkItemNavigationClickHandler());
         ViewTextItem procStatus = new ViewTextItem(CategorySchemeDS.PROC_STATUS, getConstants().lifeCycleProcStatus());
         ViewTextItem creationDate = new ViewTextItem(CategorySchemeDS.VERSION_CREATION_DATE, getConstants().maintainableArtefactVersionCreationDate());
+        ViewTextItem creationUser = new ViewTextItem(CategorySchemeDS.VERSION_CREATION_USER, getConstants().maintainableArtefactVersionCreationUser());
+        ViewTextItem lastUpdateDate = new ViewTextItem(CategorySchemeDS.VERSION_LAST_UPDATE_DATE, getConstants().maintainableArtefactVersionLastUpdateDate());
+        ViewTextItem lastUpdateUser = new ViewTextItem(CategorySchemeDS.VERSION_LAST_UPDATE_USER, getConstants().maintainableArtefactVersionLastUpdateUser());
         ViewTextItem resourceCreationDate = new ViewTextItem(CategorySchemeDS.RESOURCE_CREATION_DATE, getConstants().maintainableArtefactResourceCreationDate());
-        productionDescriptorsEditionForm.setFields(agency, procStatus, creationDate, resourceCreationDate);
+        productionDescriptorsEditionForm.setFields(agency, procStatus, creationDate, creationUser, lastUpdateDate, lastUpdateUser, resourceCreationDate);
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
@@ -560,6 +566,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         ((RelatedResourceLinkItem) productionDescriptorsForm.getItem(CategorySchemeDS.MAINTAINER)).setRelatedResource(categorySchemeDto.getMaintainer());
         productionDescriptorsForm.setValue(CategorySchemeDS.PROC_STATUS, org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
         productionDescriptorsForm.setValue(CategorySchemeDS.VERSION_CREATION_DATE, categorySchemeDto.getCreatedDate());
+        productionDescriptorsForm.setValue(CategorySchemeDS.VERSION_CREATION_USER, categorySchemeDto.getCreatedBy());
+        productionDescriptorsForm.setValue(CategorySchemeDS.VERSION_LAST_UPDATE_DATE, categorySchemeDto.getLastUpdated());
+        productionDescriptorsForm.setValue(CategorySchemeDS.VERSION_LAST_UPDATE_USER, categorySchemeDto.getLastUpdatedBy());
         productionDescriptorsForm.setValue(CategorySchemeDS.RESOURCE_CREATION_DATE, categorySchemeDto.getResourceCreatedDate());
 
         // Diffusion descriptors
@@ -620,6 +629,9 @@ public class CategorySchemeViewImpl extends ViewWithUiHandlers<CategorySchemeUiH
         productionDescriptorsEditionForm.setValue(CategorySchemeDS.PROC_STATUS,
                 org.siemac.metamac.srm.web.client.utils.CommonUtils.getProcStatusName(categorySchemeDto.getLifeCycle().getProcStatus()));
         productionDescriptorsEditionForm.setValue(CategorySchemeDS.VERSION_CREATION_DATE, categorySchemeDto.getCreatedDate());
+        productionDescriptorsEditionForm.setValue(CategorySchemeDS.VERSION_CREATION_USER, categorySchemeDto.getCreatedBy());
+        productionDescriptorsEditionForm.setValue(CategorySchemeDS.VERSION_LAST_UPDATE_DATE, categorySchemeDto.getLastUpdated());
+        productionDescriptorsEditionForm.setValue(CategorySchemeDS.VERSION_LAST_UPDATE_USER, categorySchemeDto.getLastUpdatedBy());
         productionDescriptorsEditionForm.setValue(CategorySchemeDS.RESOURCE_CREATION_DATE, categorySchemeDto.getResourceCreatedDate());
         productionDescriptorsEditionForm.setRequiredTitleSuffix(requiredFieldsToNextProcStatus);
 
