@@ -478,9 +478,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Retrieve the original artifact
         CodelistVersionMetamac codelistVersion = retrieveCodelistOriginalFromUrnTemporal(ctx, urnToCopy);
 
+        String nextVersion = SdmxVersionUtils.createNextVersion(codelistVersion.getMaintainableArtefact().getVersionLogic(), codelistVersion.getItemScheme().getVersionPattern(), versionTypeEnum);
+
         // Set the new version in the temporal artifact
-        codelistVersionTemporal.getMaintainableArtefact().setVersionLogic(
-                SdmxVersionUtils.createNextVersion(codelistVersion.getMaintainableArtefact().getVersionLogic(), codelistVersion.getItemScheme().getVersionPattern(), versionTypeEnum));
+        codelistVersionTemporal.getMaintainableArtefact().setVersionLogic(nextVersion);
 
         codelistVersionTemporal.getMaintainableArtefact().setIsCodeUpdated(Boolean.TRUE); // For calculates new urns
         codelistVersionTemporal = (CodelistVersionMetamac) codesService.updateCodelist(ctx, codelistVersionTemporal);
@@ -490,6 +491,10 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
         // Convert categorisations in no temporal
         categoriesMetamacService.createVersionFromTemporalCategorisations(ctx, codelistVersionTemporal.getMaintainableArtefact());
+
+        // Convert order and openness visualisations in no temporal
+        createOrderVisualisationVersionFromTemporalOrderVisualisation(ctx, codelistVersionTemporal);
+        createOpennessVisualisationVersionFromTemporalOpennessVisualisation(ctx, codelistVersionTemporal);
 
         TaskInfo versioningResult = new TaskInfo();
         versioningResult.setUrnResult(codelistVersionTemporal.getMaintainableArtefact().getUrn());
@@ -509,7 +514,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         CodelistVersionMetamac codelistVersion = retrieveCodelistOriginalFromUrnTemporal(ctx, codelistTemporalVersion.getMaintainableArtefact().getUrn());
 
         // Inherit InternationalStrings
-        BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToItemSchemeVersionWithoutItems(codelistVersion, codelistTemporalVersion, internationalStringRepository);
+        BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToCodelist(codelistVersion, codelistTemporalVersion, internationalStringRepository);
 
         // Merge Metamac metadata of ItemScheme
         codelistVersion.setLifeCycleMetadata(BaseReplaceFromTemporalMetamac.replaceProductionAndDifussionLifeCycleMetadataFromTemporal(codelistVersion.getLifeCycleMetadata(),
@@ -574,12 +579,16 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // FLUSH AND CLEAR NEEDED, see the next lines
         // ===============================================================
 
+        setDefaultCodelistOrdenVisualisation(codelistTemporalVersion, codelistVersion);
+        setDefaultCodelistOpennessVisualisation(codelistTemporalVersion, codelistVersion);
+
         // Delete temporal version
         // ===============================================================
         // DANGEROUS CODE: Also clear is necessary because items are already loaded
         entityManager.flush();
         entityManager.clear();
         // ===============================================================
+
         codelistTemporalVersion = retrieveCodelistByUrn(ctx, urnTemporal);
         deleteCodelist(ctx, codelistTemporalVersion, Boolean.FALSE);
 
@@ -3074,6 +3083,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return target;
     }
 
+    private void createOrderVisualisationVersionFromTemporalOrderVisualisation(ServiceContext ctx, CodelistVersionMetamac codelistVersionTemporal) throws MetamacException {
+        for (CodelistOrderVisualisation codelistOrderVisualisation : codelistVersionTemporal.getOrderVisualisations()) {
+            setCodelistOrderVisualisationUrnUnique(codelistVersionTemporal, codelistOrderVisualisation, true);
+        }
+
+        getCodelistVersionMetamacRepository().save(codelistVersionTemporal);
+    }
+
     @Override
     public CodelistVersionMetamac versioningCodelistOpennessVisualisations(ServiceContext ctx, CodelistVersionMetamac source, CodelistVersionMetamac target) throws MetamacException {
         for (CodelistOpennessVisualisation codelistOpennessVisualisationSource : source.getOpennessVisualisations()) {
@@ -3098,6 +3115,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         setCodelistOpennessVisualisationUrnUnique(codelistTarget, target, false);
         codelistTarget.addOpennessVisualisation(target);
         return target;
+    }
+
+    private void createOpennessVisualisationVersionFromTemporalOpennessVisualisation(ServiceContext ctx, CodelistVersionMetamac codelistVersionTemporal) throws MetamacException {
+        for (CodelistOpennessVisualisation codelistOpennessVisualisation : codelistVersionTemporal.getOpennessVisualisations()) {
+            setCodelistOpennessVisualisationUrnUnique(codelistVersionTemporal, codelistOpennessVisualisation, true);
+        }
+
+        getCodelistVersionMetamacRepository().save(codelistVersionTemporal);
     }
 
     private NameableArtefact versioningCodelistVisualisationNameableArtefact(NameableArtefact source) {
@@ -3657,4 +3682,28 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         return retrieveCodelistByUrn(ctx, urnOriginal);
     }
 
+    private void setDefaultCodelistOrdenVisualisation(CodelistVersionMetamac temporaryCodelist, CodelistVersionMetamac codelist) {
+        String defaultOrderVisualisationCode = temporaryCodelist.getDefaultOrderVisualisation() == null ? null : temporaryCodelist.getDefaultOrderVisualisation().getNameableArtefact().getCode();
+
+        CodelistOrderVisualisation codelistOrderVisualisation = null;
+        for (CodelistOrderVisualisation orderVisualisation : codelist.getOrderVisualisations()) {
+            if (StringUtils.equals(defaultOrderVisualisationCode, orderVisualisation.getNameableArtefact().getCode())) {
+                codelistOrderVisualisation = orderVisualisation;
+            }
+        }
+        codelist.setDefaultOrderVisualisation(codelistOrderVisualisation);
+    }
+
+    private void setDefaultCodelistOpennessVisualisation(CodelistVersionMetamac temporaryCodelist, CodelistVersionMetamac codelist) {
+        String defaultOpennessVisualisationCode = temporaryCodelist.getDefaultOpennessVisualisation() == null ? null : temporaryCodelist.getDefaultOpennessVisualisation().getNameableArtefact()
+                .getCode();
+
+        CodelistOpennessVisualisation codelistOpennessVisualisation = null;
+        for (CodelistOpennessVisualisation opennessVisualisation : codelist.getOpennessVisualisations()) {
+            if (StringUtils.equals(defaultOpennessVisualisationCode, opennessVisualisation.getNameableArtefact().getCode())) {
+                codelistOpennessVisualisation = opennessVisualisation;
+            }
+        }
+        codelist.setDefaultOpennessVisualisation(codelistOpennessVisualisation);
+    }
 }
