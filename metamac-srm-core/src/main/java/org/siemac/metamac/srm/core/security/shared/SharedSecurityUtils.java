@@ -8,6 +8,7 @@ import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_APOYO_PRODUCCION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_NORMALIZACION;
 import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.TECNICO_PRODUCCION;
+import static org.siemac.metamac.srm.core.enume.domain.SrmRoleEnum.LECTOR;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -157,7 +158,7 @@ public class SharedSecurityUtils {
      */
     protected static boolean isAnySrmRole(MetamacPrincipal metamacPrincipal) {
         return isAdministrador(metamacPrincipal) || isTecnicoApoyoNormalizacion(metamacPrincipal) || isTecnicoNormalizacion(metamacPrincipal) || isJefeNormalizacion(metamacPrincipal)
-                || isTecnicoApoyoProduccion(metamacPrincipal) || isTecnicoProduccion(metamacPrincipal) || isJefeProduccion(metamacPrincipal);
+                || isTecnicoApoyoProduccion(metamacPrincipal) || isTecnicoProduccion(metamacPrincipal) || isJefeProduccion(metamacPrincipal) || isLector(metamacPrincipal);
     }
 
     protected static boolean isAnyNormalizationRole(SrmRoleEnum role) {
@@ -186,6 +187,10 @@ public class SharedSecurityUtils {
 
     protected static boolean isJefeProduccion(MetamacPrincipal metamacPrincipal) {
         return isRoleInAccesses(metamacPrincipal, JEFE_PRODUCCION);
+    }
+
+    protected static boolean isLector(MetamacPrincipal metamacPrincipal) {
+        return isRoleInAccesses(metamacPrincipal, LECTOR);
     }
 
     protected static boolean isOperationConceptSchemeType(ConceptSchemeTypeEnum type) {

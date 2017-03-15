@@ -104,6 +104,8 @@ public class CodelistCodesVariableElementsPanel extends VLayout {
     private void showEditButton() {
         if (CodesClientSecurityUtils.canUpdateCodeVariableElement(codelistMetamacDto)) {
             editButton.show();
+        } else {
+            editButton.hide();
         }
     }
 
