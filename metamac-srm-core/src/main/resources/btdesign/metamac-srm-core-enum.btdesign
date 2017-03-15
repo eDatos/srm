@@ -21,6 +21,7 @@ Application EnumsSrmDomain {
     		TECNICO_APOYO_PRODUCCION,
     		TECNICO_PRODUCCION,
     		JEFE_PRODUCCION,
+    		LECTOR,
     		ANY_ROLE_ALLOWED;
     	}
 
