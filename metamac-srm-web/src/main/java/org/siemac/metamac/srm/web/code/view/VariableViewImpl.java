@@ -99,11 +99,13 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     // View forms
     private GroupDynamicForm identifiersForm;
     private GroupDynamicForm contentDescriptorsForm;
+    private GroupDynamicForm productionDescriptorsForm;
     private GroupDynamicForm diffusionDescriptorsForm;
 
     // Edition forms
     private GroupDynamicForm identifiersEditionForm;
     private GroupDynamicForm contentDescriptorsEditionForm;
+    private GroupDynamicForm productionDescriptorsEditionForm;
     private GroupDynamicForm diffusionDescriptorsEditionForm;
 
     // Variable elements
@@ -428,6 +430,14 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         RelatedResourceListItem families = new RelatedResourceListItem(VariableDS.FAMILIES, getConstants().variableFamilies(), false, getListRecordNavigationClickHandler());
         contentDescriptorsForm.setFields(isGeographicalVariable, families);
 
+        // Production descriptors
+        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(VariableDS.CREATION_DATE, getConstants().resourceCreationDate());
+        ViewTextItem creationUser = new ViewTextItem(VariableDS.CREATION_USER, getConstants().resourceCreationUser());
+        ViewTextItem lastUpdateDate = new ViewTextItem(VariableDS.LAST_UPDATE_DATE, getConstants().resourceLastUpdateDate());
+        ViewTextItem lastUpdateUser = new ViewTextItem(VariableDS.LAST_UPDATE_USER, getConstants().resourceLastUpdateUser());
+        productionDescriptorsForm.setFields(creationDate, creationUser, lastUpdateDate, lastUpdateUser);
+
         // Diffusion descriptors
         diffusionDescriptorsForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         ViewTextItem validFrom = new ViewTextItem(VariableDS.VALID_FROM, getConstants().variableValidFrom());
@@ -439,6 +449,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         mainFormLayout.addViewCanvas(identifiersForm);
         mainFormLayout.addViewCanvas(contentDescriptorsForm);
+        mainFormLayout.addViewCanvas(productionDescriptorsForm);
         mainFormLayout.addViewCanvas(diffusionDescriptorsForm);
     }
 
@@ -472,6 +483,14 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         contentDescriptorsEditionForm.setFields(staticIsGeographical, isGeographical, families);
 
+        // Production descriptors
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(VariableDS.CREATION_DATE, getConstants().resourceCreationDate());
+        ViewTextItem creationUser = new ViewTextItem(VariableDS.CREATION_USER, getConstants().resourceCreationUser());
+        ViewTextItem lastUpdateDate = new ViewTextItem(VariableDS.LAST_UPDATE_DATE, getConstants().resourceLastUpdateDate());
+        ViewTextItem lastUpdateUser = new ViewTextItem(VariableDS.LAST_UPDATE_USER, getConstants().resourceLastUpdateUser());
+        productionDescriptorsEditionForm.setFields(creationDate, creationUser, lastUpdateDate, lastUpdateUser);
+
         // Diffusion descriptors
         diffusionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formDiffusionDescriptors());
         CustomDateItem validFrom = new CustomDateItem(VariableDS.VALID_FROM, getConstants().variableValidFrom());
@@ -482,6 +501,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
 
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
         mainFormLayout.addEditionCanvas(contentDescriptorsEditionForm);
+        mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
         mainFormLayout.addEditionCanvas(diffusionDescriptorsEditionForm);
     }
 
@@ -500,6 +520,12 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         contentDescriptorsForm.setValue(VariableDS.IS_GEOGRAPHICAL,
                 VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType()) ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no());
         ((RelatedResourceListItem) contentDescriptorsForm.getItem(VariableDS.FAMILIES)).setRelatedResources(variableDto.getFamilies());
+
+        // Production descriptors
+        productionDescriptorsForm.setValue(VariableDS.CREATION_DATE, variableDto.getCreatedDate());
+        productionDescriptorsForm.setValue(VariableDS.CREATION_USER, variableDto.getCreatedBy());
+        productionDescriptorsForm.setValue(VariableDS.LAST_UPDATE_DATE, variableDto.getLastUpdated());
+        productionDescriptorsForm.setValue(VariableDS.LAST_UPDATE_USER, variableDto.getLastUpdatedBy());
 
         // Diffusion descriptors
         diffusionDescriptorsForm.setValue(VariableDS.VALID_FROM, DateUtils.getFormattedDate(variableDto.getValidFrom()));
@@ -520,6 +546,12 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
                 VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType()) ? MetamacWebCommon.getConstants().yes() : MetamacWebCommon.getConstants().no());
         contentDescriptorsEditionForm.setValue(VariableDS.IS_GEOGRAPHICAL, VariableTypeEnum.GEOGRAPHICAL.equals(variableDto.getType()));
         ((RelatedResourceListItem) contentDescriptorsEditionForm.getItem(VariableDS.FAMILIES)).setRelatedResources(variableDto.getFamilies());
+
+        // Production descriptors
+        productionDescriptorsEditionForm.setValue(VariableDS.CREATION_DATE, variableDto.getCreatedDate());
+        productionDescriptorsEditionForm.setValue(VariableDS.CREATION_USER, variableDto.getCreatedBy());
+        productionDescriptorsEditionForm.setValue(VariableDS.LAST_UPDATE_DATE, variableDto.getLastUpdated());
+        productionDescriptorsEditionForm.setValue(VariableDS.LAST_UPDATE_USER, variableDto.getLastUpdatedBy());
 
         // Diffusion descriptors
         diffusionDescriptorsEditionForm.setValue(VariableDS.VALID_FROM, variableDto.getValidFrom());

@@ -59,9 +59,11 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
 
     // View forms
     private GroupDynamicForm identifiersForm;
+    private GroupDynamicForm productionDescriptorsForm;
 
     // Edition forms
     private GroupDynamicForm identifiersEditionForm;
+    private GroupDynamicForm productionDescriptorsEditionForm;
 
     private PaginatedCheckListGrid codelistListGrid;
     private ToolStripButton addCodelistToFamilyButton;
@@ -245,7 +247,16 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         ViewTextItem urn = new ViewTextItem(CodelistFamilyDS.URN, getConstants().identifiableArtefactUrn());
         identifiersForm.setFields(code, name, urn);
 
+        // Production descriptors
+        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(CodelistFamilyDS.CREATION_DATE, getConstants().resourceCreationDate());
+        ViewTextItem creationUser = new ViewTextItem(CodelistFamilyDS.CREATION_USER, getConstants().resourceCreationUser());
+        ViewTextItem lastUpdateDate = new ViewTextItem(CodelistFamilyDS.LAST_UPDATE_DATE, getConstants().resourceLastUpdateDate());
+        ViewTextItem lastUpdateUser = new ViewTextItem(CodelistFamilyDS.LAST_UPDATE_USER, getConstants().resourceLastUpdateUser());
+        productionDescriptorsForm.setFields(creationDate, creationUser, lastUpdateDate, lastUpdateUser);
+
         mainFormLayout.addViewCanvas(identifiersForm);
+        mainFormLayout.addViewCanvas(productionDescriptorsForm);
     }
 
     private void createEditionForm() {
@@ -257,7 +268,16 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         ViewTextItem urn = new ViewTextItem(CodelistFamilyDS.URN, getConstants().identifiableArtefactUrn());
         identifiersEditionForm.setFields(code, name, urn);
 
+        // Production descriptors
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(CodelistFamilyDS.CREATION_DATE, getConstants().resourceCreationDate());
+        ViewTextItem creationUser = new ViewTextItem(CodelistFamilyDS.CREATION_USER, getConstants().resourceCreationUser());
+        ViewTextItem lastUpdateDate = new ViewTextItem(CodelistFamilyDS.LAST_UPDATE_DATE, getConstants().resourceLastUpdateDate());
+        ViewTextItem lastUpdateUser = new ViewTextItem(CodelistFamilyDS.LAST_UPDATE_USER, getConstants().resourceLastUpdateUser());
+        productionDescriptorsEditionForm.setFields(creationDate, creationUser, lastUpdateDate, lastUpdateUser);
+
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
+        mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
     }
 
     public void setEditionMode() {
@@ -269,6 +289,12 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         identifiersForm.setValue(CodelistFamilyDS.CODE, codelistFamilyDto.getCode());
         identifiersForm.setValue(CodelistFamilyDS.URN, codelistFamilyDto.getUrn());
         identifiersForm.setValue(CodelistFamilyDS.NAME, codelistFamilyDto.getName());
+
+        // Production descriptors
+        productionDescriptorsForm.setValue(CodelistFamilyDS.CREATION_DATE, codelistFamilyDto.getCreatedDate());
+        productionDescriptorsForm.setValue(CodelistFamilyDS.CREATION_USER, codelistFamilyDto.getCreatedBy());
+        productionDescriptorsForm.setValue(CodelistFamilyDS.LAST_UPDATE_DATE, codelistFamilyDto.getLastUpdated());
+        productionDescriptorsForm.setValue(CodelistFamilyDS.LAST_UPDATE_USER, codelistFamilyDto.getLastUpdatedBy());
     }
 
     public void setCodelistFamilyEditionMode(CodelistFamilyDto codelistFamilyDto) {
@@ -276,6 +302,12 @@ public class CodelistFamilyViewImpl extends ViewWithUiHandlers<CodelistFamilyUiH
         identifiersEditionForm.setValue(CodelistFamilyDS.CODE, codelistFamilyDto.getCode());
         identifiersEditionForm.setValue(CodelistFamilyDS.URN, codelistFamilyDto.getUrn());
         identifiersEditionForm.setValue(CodelistFamilyDS.NAME, codelistFamilyDto.getName());
+
+        // Production descriptors
+        productionDescriptorsEditionForm.setValue(CodelistFamilyDS.CREATION_DATE, codelistFamilyDto.getCreatedDate());
+        productionDescriptorsEditionForm.setValue(CodelistFamilyDS.CREATION_USER, codelistFamilyDto.getCreatedBy());
+        productionDescriptorsEditionForm.setValue(CodelistFamilyDS.LAST_UPDATE_DATE, codelistFamilyDto.getLastUpdated());
+        productionDescriptorsEditionForm.setValue(CodelistFamilyDS.LAST_UPDATE_USER, codelistFamilyDto.getLastUpdatedBy());
     }
 
     public CodelistFamilyDto getCodelistFamilyDto() {

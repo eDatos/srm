@@ -58,23 +58,25 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiHandlers> implements VariableFamilyPresenter.VariableFamilyView {
 
-    private VLayout panel;
-    private InternationalMainFormLayout mainFormLayout;
+    private VLayout                                      panel;
+    private InternationalMainFormLayout                  mainFormLayout;
 
     // View forms
-    private GroupDynamicForm identifiersForm;
+    private GroupDynamicForm                             identifiersForm;
+    private GroupDynamicForm                             productionDescriptorsForm;
 
     // Edition forms
-    private GroupDynamicForm identifiersEditionForm;
+    private GroupDynamicForm                             identifiersEditionForm;
+    private GroupDynamicForm                             productionDescriptorsEditionForm;
 
-    private PaginatedCheckListGrid variableListGrid;
-    private ToolStripButton addVariableToFamilyButton;
-    private ToolStripButton removeVariableToFamilyButton;
+    private PaginatedCheckListGrid                       variableListGrid;
+    private ToolStripButton                              addVariableToFamilyButton;
+    private ToolStripButton                              removeVariableToFamilyButton;
     private SearchMultipleRelatedResourcePaginatedWindow variablesWindow;
-    private DeleteConfirmationWindow removeConfirmationWindow;
-    private SearchSectionStack variablesSectionStack;
+    private DeleteConfirmationWindow                     removeConfirmationWindow;
+    private SearchSectionStack                           variablesSectionStack;
 
-    private VariableFamilyDto variableFamilyDto;
+    private VariableFamilyDto                            variableFamilyDto;
 
     @Inject
     public VariableFamilyViewImpl() {
@@ -275,7 +277,16 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         ViewTextItem urn = new ViewTextItem(VariableFamilyDS.URN, getConstants().identifiableArtefactUrn());
         identifiersForm.setFields(code, name, urn);
 
+        // Production descriptors
+        productionDescriptorsForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(VariableFamilyDS.CREATION_DATE, getConstants().resourceCreationDate());
+        ViewTextItem creationUser = new ViewTextItem(VariableFamilyDS.CREATION_USER, getConstants().resourceCreationUser());
+        ViewTextItem lastUpdateDate = new ViewTextItem(VariableFamilyDS.LAST_UPDATE_DATE, getConstants().resourceLastUpdateDate());
+        ViewTextItem lastUpdateUser = new ViewTextItem(VariableFamilyDS.LAST_UPDATE_USER, getConstants().resourceLastUpdateUser());
+        productionDescriptorsForm.setFields(creationDate, creationUser, lastUpdateDate, lastUpdateUser);
+
         mainFormLayout.addViewCanvas(identifiersForm);
+        mainFormLayout.addViewCanvas(productionDescriptorsForm);
     }
 
     private void createEditionForm() {
@@ -287,7 +298,16 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         ViewTextItem urn = new ViewTextItem(VariableFamilyDS.URN, getConstants().identifiableArtefactUrn());
         identifiersEditionForm.setFields(code, name, urn);
 
+        // Production descriptors
+        productionDescriptorsEditionForm = new GroupDynamicForm(getConstants().formProductionDescriptors());
+        ViewTextItem creationDate = new ViewTextItem(VariableFamilyDS.CREATION_DATE, getConstants().resourceCreationDate());
+        ViewTextItem creationUser = new ViewTextItem(VariableFamilyDS.CREATION_USER, getConstants().resourceCreationUser());
+        ViewTextItem lastUpdateDate = new ViewTextItem(VariableFamilyDS.LAST_UPDATE_DATE, getConstants().resourceLastUpdateDate());
+        ViewTextItem lastUpdateUser = new ViewTextItem(VariableFamilyDS.LAST_UPDATE_USER, getConstants().resourceLastUpdateUser());
+        productionDescriptorsEditionForm.setFields(creationDate, creationUser, lastUpdateDate, lastUpdateUser);
+
         mainFormLayout.addEditionCanvas(identifiersEditionForm);
+        mainFormLayout.addEditionCanvas(productionDescriptorsEditionForm);
     }
 
     public void setEditionMode() {
@@ -299,6 +319,12 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         identifiersForm.setValue(VariableFamilyDS.CODE, variableFamilyDto.getCode());
         identifiersForm.setValue(VariableFamilyDS.URN, variableFamilyDto.getUrn());
         identifiersForm.setValue(VariableFamilyDS.NAME, variableFamilyDto.getName());
+
+        // Production descriptors
+        productionDescriptorsForm.setValue(VariableFamilyDS.CREATION_DATE, variableFamilyDto.getCreatedDate());
+        productionDescriptorsForm.setValue(VariableFamilyDS.CREATION_USER, variableFamilyDto.getCreatedBy());
+        productionDescriptorsForm.setValue(VariableFamilyDS.LAST_UPDATE_DATE, variableFamilyDto.getLastUpdated());
+        productionDescriptorsForm.setValue(VariableFamilyDS.LAST_UPDATE_USER, variableFamilyDto.getLastUpdatedBy());
     }
 
     public void setVariableFamilyEditionMode(VariableFamilyDto variableFamilyDto) {
@@ -306,6 +332,12 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
         identifiersEditionForm.setValue(VariableFamilyDS.CODE, variableFamilyDto.getCode());
         identifiersEditionForm.setValue(VariableFamilyDS.URN, variableFamilyDto.getUrn());
         identifiersEditionForm.setValue(VariableFamilyDS.NAME, variableFamilyDto.getName());
+
+        // Production descriptors
+        productionDescriptorsEditionForm.setValue(VariableFamilyDS.CREATION_DATE, variableFamilyDto.getCreatedDate());
+        productionDescriptorsEditionForm.setValue(VariableFamilyDS.CREATION_USER, variableFamilyDto.getCreatedBy());
+        productionDescriptorsEditionForm.setValue(VariableFamilyDS.LAST_UPDATE_DATE, variableFamilyDto.getLastUpdated());
+        productionDescriptorsEditionForm.setValue(VariableFamilyDS.LAST_UPDATE_USER, variableFamilyDto.getLastUpdatedBy());
     }
 
     public VariableFamilyDto getVariableFamilyDto() {
