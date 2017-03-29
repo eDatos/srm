@@ -1,3 +1,4 @@
+<%@page import="org.siemac.metamac.core.common.util.swagger.SwaggerUtils"%>
 <%@page pageEncoding="UTF-8"%>
 {
    "swagger":"2.0",
@@ -6,7 +7,7 @@
       "version":"1.0",
       "title":"API de recursos estructurales"
    },
-   "host":"<%=org.siemac.metamac.core.common.util.WebUtils.getApiBaseURL()%>",
+   "host":"<%=SwaggerUtils.getApiBaseURLForSwagger()%>",
    "schemes":[
 
    ],
