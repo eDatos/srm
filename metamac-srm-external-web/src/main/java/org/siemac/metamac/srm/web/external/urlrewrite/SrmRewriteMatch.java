@@ -40,4 +40,10 @@ class SrmRewriteMatch extends AbstractRewriteMatch {
         }
         return configurationService;
     }
+
+    @Override
+    protected String getApiVersionsListResource() {
+        return "/index.jsp";
+    }
+
 }
