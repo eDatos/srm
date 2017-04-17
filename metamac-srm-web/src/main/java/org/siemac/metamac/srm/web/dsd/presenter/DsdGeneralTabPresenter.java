@@ -111,6 +111,7 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
         void setLatestDsdForInternalPublication(GetDsdsResult result);
 
         void setConceptsForShowDecimalsPrecision(ConceptSchemeMetamacDto conceptSchemeMetamacDto, List<ConceptMetamacVisualisationResult> itemVisualisationResults);
+        void resetMeasureDimensionConcepts();
         void setDimensionsAndCandidateVisualisations(List<DimensionComponentDto> dimensionComponentDtos, Map<String, List<RelatedResourceDto>> candidateOrderVisualisations,
                 Map<String, List<RelatedResourceDto>> candidateOpennessLevelVisualisations);
 
@@ -202,12 +203,12 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
                 List<DimensionComponentDto> dimensionComponentDtos = CommonUtils.getDimensionComponents(result.getDimensions());
 
+                setConceptSchemeOfTheMeasureDimension(dimensionComponentDtos);
                 getView().setDsd(result.getDsd(), dimensionComponentDtos);
                 if (startDsdEdition) {
                     getView().startDsdEdition();
                 }
 
-                setConceptSchemeOfTheMeasureDimension(dimensionComponentDtos);
                 retrieveDimensionsAndCandidateVisualisations(dsdUrn);
             }
         });
@@ -462,13 +463,19 @@ public class DsdGeneralTabPresenter extends Presenter<DsdGeneralTabPresenter.Dsd
 
     private void setConceptSchemeOfTheMeasureDimension(List<DimensionComponentDto> dimensionComponentDtos) {
         String conceptSchemeUrn = CommonUtils.getConceptSchemeUrnOfMeasureDimensionRepresentation(dimensionComponentDtos);
+        
         // Load the concepts if the conceptScheme is not null and has not been retrieved previously
         // The concepts are used to fill 'showDecimalsPrecision' (a DSD visualisation metadata)
         if (conceptSchemeUrn != null && !StringUtils.equals(conceptSchemeUrn, conceptSchemeUrnOfMeasureDimensionRepresentation)) {
             this.conceptSchemeUrnOfMeasureDimensionRepresentation = conceptSchemeUrn;
             // Load concepts of the specified concept scheme
             retrieveConcepts(conceptSchemeUrn);
-        } else {
+        } else if (conceptSchemeUrn == null && conceptSchemeUrnOfMeasureDimensionRepresentation != null) {
+            // If previous concepts scheme was not null and now is null, then clear the tree items
+            this.conceptSchemeUrnOfMeasureDimensionRepresentation = conceptSchemeUrn;
+            getView().resetMeasureDimensionConcepts();
+        }
+        else {
             conceptSchemeUrn = null;
         }
     }

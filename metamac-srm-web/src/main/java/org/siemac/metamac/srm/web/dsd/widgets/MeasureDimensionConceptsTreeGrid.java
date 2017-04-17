@@ -27,12 +27,15 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.ListGridFieldType;
+import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.CellClickEvent;
 import com.smartgwt.client.widgets.grid.events.CellClickHandler;
+import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGridField;
+import com.smartgwt.client.widgets.tree.TreeNode;
 
 public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
 
@@ -136,6 +139,23 @@ public class MeasureDimensionConceptsTreeGrid extends ConceptsTreeGrid {
             }
         }
         return null;
+    }
+
+    public void clearTree() {
+        // Clear filter editor
+        setFilterEditorCriteria(null);
+
+        this.conceptSchemeMetamacDto = null;
+        this.itemSchemeDto = null;
+
+        TreeNode[] treeNodes = new TreeNode[0];
+
+        tree = new Tree();
+        tree.setModelType(TreeModelType.PARENT);
+        tree.linkNodes(treeNodes);
+        setData(tree);
+        getData().openAll();
+        recoverOpenState();
     }
 
     @Override

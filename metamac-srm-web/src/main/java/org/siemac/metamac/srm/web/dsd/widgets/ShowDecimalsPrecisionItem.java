@@ -56,4 +56,8 @@ public class ShowDecimalsPrecisionItem extends CustomCanvasItem {
     public void setUiHandlers(DsdGeneralTabUiHandlers uiHandlers) {
         measureDimensionConceptsTreeGrid.setUiHandlers(uiHandlers);
     }
+
+    public void resetMeasureDimensionConceptsTreeGrid(boolean editionMode) {
+        measureDimensionConceptsTreeGrid.clearTree();
+    }
 }

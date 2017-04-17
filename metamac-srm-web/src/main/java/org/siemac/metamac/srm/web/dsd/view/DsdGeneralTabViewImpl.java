@@ -794,6 +794,14 @@ public class DsdGeneralTabViewImpl extends ViewWithUiHandlers<DsdGeneralTabUiHan
     }
 
     @Override
+    public void resetMeasureDimensionConcepts() {
+        ((ShowDecimalsPrecisionItem) visualisationMetadataForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).resetMeasureDimensionConceptsTreeGrid(false);
+        ((ShowDecimalsPrecisionItem) visualisationMetadataEditionForm.getItem(DataStructureDefinitionDS.SHOW_DECIMALS_PRECISION)).resetMeasureDimensionConceptsTreeGrid(true);
+        visualisationMetadataForm.markForRedraw();
+        visualisationMetadataEditionForm.markForRedraw();
+    }
+
+    @Override
     public void setOperations(GetStatisticalOperationsResult result) {
         operationItem.setOperations(result.getOperations(), result.getFirstResultOut(), result.getTotalResults());
     }
