@@ -11,7 +11,7 @@ import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.ExceptionUtils;
-import org.siemac.metamac.core.common.util.TimeUtils;
+import org.siemac.metamac.core.common.util.SdmxTimeUtils;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.SrmValidationUtils;
@@ -305,7 +305,8 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
                 exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_MULTIPLIER));
             }
         }
-        if (!ValidationUtils.isEmpty(quantity.getBaseTime()) && !TimeUtils.isTimeValue(quantity.getBaseTime())) {
+
+        if (!ValidationUtils.isEmpty(quantity.getBaseTime()) && !SdmxTimeUtils.isObservationalTimePeriod(quantity.getBaseTime())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_TIME));
         }
         // checks required
