@@ -116,6 +116,7 @@ public class StructuralResourcesMenu extends ToolStrip {
                     @Override
                     protected void uploadFailed(String error) {
                         getUiHandlers().sDMXResourceImportationFailed(error);
+                        this.markForDestroy();
                     }
 
                     @Override
