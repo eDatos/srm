@@ -29,7 +29,7 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
     private MenuItem                 createConceptMenuItem;
     private MenuItem                 deleteConceptMenuItem;
 
-    private ConceptSchemeMetamacDto  conceptSchemeMetamacDto;
+    protected ConceptSchemeMetamacDto conceptSchemeMetamacDto;
     private ItemVisualisationResult  selectedConcept;
 
     public ConceptsTreeGrid() {

@@ -383,6 +383,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                     dataStructureDefinitionVersionMetamac.removeStubDimension(dimensionOrder);
                 }
             }
+
             for (DimensionOrder dimensionOrder : new ArrayList<DimensionOrder>(dataStructureDefinitionVersionMetamac.getHeadingDimensions())) {
                 if (StringUtils.equals(((DimensionComponent) component).getCode(), dimensionOrder.getDimension().getCode())) {
                     dataStructureDefinitionVersionMetamac.removeHeadingDimension(dimensionOrder);
@@ -394,6 +395,11 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
                 if (StringUtils.equals(((DimensionComponent) component).getCode(), dimensionVisualizationInfo.getDimension().getCode())) {
                     dataStructureDefinitionVersionMetamac.removeDimensionVisualisationInfo(dimensionVisualizationInfo);
                 }
+            }
+
+            // Remove show decimals by concept if the dimension is a measure dimension.
+            if (component instanceof MeasureDimension) {
+                dataStructureDefinitionVersionMetamac.removeAllShowDecimalsPrecisions();
             }
 
             // Note: Is not necessary re-calculate the dimension OrderLogic because in Metamac, this metadata never set it. See METAMAC-2148 for more info.
