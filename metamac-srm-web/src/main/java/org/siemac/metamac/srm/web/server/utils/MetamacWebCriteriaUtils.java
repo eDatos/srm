@@ -332,6 +332,11 @@ public class MetamacWebCriteriaUtils {
                 lastVersionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODELIST_LATEST_FINAL.name(), true, OperationType.EQ));
                 conjunctionRestriction.getRestrictions().add(lastVersionRestriction);
             }
+            if (StringUtils.isNotBlank(criteria.getItemSchemeUrn())) {
+                MetamacCriteriaPropertyRestriction codePropertyRestriction = new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.CODELIST_URN.name(), criteria.getItemSchemeUrn(),
+                        OperationType.EQ);
+                conjunctionRestriction.getRestrictions().add(codePropertyRestriction);
+            }
             if (StringUtils.isNotBlank(criteria.getShortName())) {
                 conjunctionRestriction.getRestrictions().add(new MetamacCriteriaPropertyRestriction(CodeMetamacCriteriaPropertyEnum.SHORT_NAME.name(), criteria.getShortName(), OperationType.ILIKE));
             }
