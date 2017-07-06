@@ -41,6 +41,21 @@
         <filter-name>CORSFilter</filter-name>
         <url-pattern>/apis/*</url-pattern>
     </filter-mapping>
+    
+   <!-- Encoding -->
+   <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.siemac.metamac.core.common.filter.URIEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encodings</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <servlet>
         <servlet-name>dispatch</servlet-name>
