@@ -423,39 +423,11 @@
             <groupId>org.geotools</groupId>
             <artifactId>gt-geojson</artifactId>
             <version>${geotools.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jai_core</artifactId>
-                    <groupId>javax.media</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jdom</artifactId>
-                    <groupId>jdom</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-shapefile</artifactId>
             <version>${geotools.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jgridshift</artifactId>
-                    <groupId>jgridshift</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>vecmath</artifactId>
-                    <groupId>java3d</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jdom</artifactId>
-                    <groupId>jdom</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jai_core</artifactId>
-                    <groupId>javax.media</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
