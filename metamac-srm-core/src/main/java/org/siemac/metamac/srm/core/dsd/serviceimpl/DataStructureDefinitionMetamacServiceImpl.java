@@ -228,6 +228,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
         dataStructureDefinitionVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         dataStructureDefinitionVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         dataStructureDefinitionVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+        dataStructureDefinitionVersion.setAutoOpen(Boolean.TRUE);
 
         return dataStructureDefinitionVersion;
     }
@@ -1138,7 +1139,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
 
     /**
      * Check required local or inherited representation
-     * 
+     *
      * @param component
      * @param representationTypeEnum type of representation to be checked
      * @param exceptions
@@ -1333,6 +1334,7 @@ public class DataStructureDefinitionMetamacServiceImpl extends DataStructureDefi
             }
         }
     }
+
     protected boolean attributeCheckRepresentation(ServiceContext ctx, Component component, Representation representation) throws MetamacException {
         if (RepresentationTypeEnum.ENUMERATION.equals(representation.getRepresentationType())) {
             PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
