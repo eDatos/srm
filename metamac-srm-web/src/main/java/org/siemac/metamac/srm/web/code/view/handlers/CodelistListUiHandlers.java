@@ -19,4 +19,6 @@ public interface CodelistListUiHandlers extends BaseUiHandlers {
     void cancelValidity(List<String> urns);
 
     void retrieveVariables(int firstResult, int maxResults, VariableWebCriteria criteria);
+
+    void retrieveVariablesForSearch(int firstResult, int maxResults, VariableWebCriteria criteria);
 }

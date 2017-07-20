@@ -90,6 +90,8 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
         // Search
         void clearSearchSection();
         CodelistWebCriteria getCodelistWebCriteria();
+
+        void setVariablesForSearch(GetVariablesResult result);
     }
 
     @Inject
@@ -214,6 +216,22 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             @Override
             public void onWaitSuccess(GetVariablesResult result) {
                 getView().setVariables(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveVariablesForSearch(int firstResult, int maxResults, VariableWebCriteria criteria) {
+        dispatcher.execute(new GetVariablesAction(firstResult, maxResults, criteria, null), new WaitingAsyncCallbackHandlingError<GetVariablesResult>(this) {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(CodelistListPresenter.this, caught);
+            }
+
+            @Override
+            public void onWaitSuccess(GetVariablesResult result) {
+                getView().setVariablesForSearch(result);
             }
         });
     }

@@ -17,7 +17,9 @@ public enum CodelistVersionMetamacCriteriaPropertyEnum {
     INTERNAL_PUBLICATION_DATE,
     INTERNAL_PUBLICATION_USER,
     EXTERNAL_PUBLICATION_DATE,
-    EXTERNAL_PUBLICATION_USER;
+    EXTERNAL_PUBLICATION_USER,
+    VARIABLE,
+    VARIABLE_FAMILY;
 
     public String value() {
         return name();

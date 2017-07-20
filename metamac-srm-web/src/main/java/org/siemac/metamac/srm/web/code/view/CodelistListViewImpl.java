@@ -245,6 +245,11 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         }
     }
 
+    @Override
+    public void setVariablesForSearch(GetVariablesResult result) {
+        searchSectionStack.setVariables(result);
+    }
+
     private void setCodelistList(List<CodelistMetamacBasicDto> codelistDtos) {
         CodelistRecord[] records = new CodelistRecord[codelistDtos.size()];
         int index = 0;

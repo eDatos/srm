@@ -5,18 +5,33 @@ import static org.siemac.metamac.srm.web.client.MetamacSrmWeb.getConstants;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.web.client.constants.SrmWebConstants;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourceLinkItem;
+import org.siemac.metamac.srm.web.client.widgets.SearchRelatedResourcePaginatedWindow;
 import org.siemac.metamac.srm.web.client.widgets.VersionableResourceSearchSectionStack;
 import org.siemac.metamac.srm.web.code.model.ds.CodelistDS;
 import org.siemac.metamac.srm.web.code.utils.CommonUtils;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistListUiHandlers;
+import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
+import org.siemac.metamac.srm.web.shared.utils.RelatedResourceUtils;
+import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
+import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.actions.SearchPaginatedAction;
+import org.siemac.metamac.web.common.client.widgets.handlers.CustomLinkItemNavigationClickHandler;
 
+import com.arte.statistic.sdmx.v2_1.domain.dto.common.RelatedResourceDto;
+import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 
 public class CodelistSearchSectionStack extends VersionableResourceSearchSectionStack {
 
-    private CodelistListUiHandlers uiHandlers;
+    private CodelistListUiHandlers               uiHandlers;
+
+    private SearchRelatedResourcePaginatedWindow searchVariableWindow;
 
     public CodelistSearchSectionStack() {
     }
@@ -26,18 +41,36 @@ public class CodelistSearchSectionStack extends VersionableResourceSearchSection
         SelectItem accessType = new SelectItem(CodelistDS.ACCESS_TYPE, getConstants().codelistAccessType());
         accessType.setValueMap(CommonUtils.getAccessTypeHashMap());
 
+        // Variable filter
+        SearchRelatedResourceLinkItem variableItem = createVariableItem(CodelistDS.VARIABLE, getConstants().variable());
+
+        // Variable family filter
+
         // Add replaceTo and accessType items to advanvedSearchForm (before the save button in the advancedSearchFormItems)
-        FormItem[] codelistFields = new FormItem[advancedSearchFormItems.length + 1];
+        FormItem[] codelistFields = new FormItem[advancedSearchFormItems.length + 2];
+        // FormItem[] codelistFields = new FormItem[advancedSearchFormItems.length + 3];
         System.arraycopy(advancedSearchFormItems, 0, codelistFields, 0, advancedSearchFormItems.length - 1);
         System.arraycopy(advancedSearchFormItems, advancedSearchFormItems.length - 1, codelistFields, codelistFields.length - 1, 1);
-        codelistFields[codelistFields.length - 2] = accessType;
+        // codelistFields[codelistFields.length - 4] = accessType;
+        // codelistFields[codelistFields.length - 3] = variableItem;
+        // codelistFields[codelistFields.length - 2] = variableFamilyItem;
+        codelistFields[codelistFields.length - 3] = accessType;
+        codelistFields[codelistFields.length - 2] = variableItem;
+
         advancedSearchForm.setFields(codelistFields);
     }
 
     public CodelistWebCriteria getCodelistWebCriteria() {
         CodelistWebCriteria codelistWebCriteria = (CodelistWebCriteria) getVersionableResourceWebCriteria(new CodelistWebCriteria());
-        codelistWebCriteria.setAccessType(!StringUtils.isBlank(advancedSearchForm.getValueAsString(CodelistDS.ACCESS_TYPE)) ? AccessTypeEnum.valueOf(advancedSearchForm
-                .getValueAsString(CodelistDS.ACCESS_TYPE)) : null);
+        codelistWebCriteria.setAccessType(
+                !StringUtils.isBlank(advancedSearchForm.getValueAsString(CodelistDS.ACCESS_TYPE)) ? AccessTypeEnum.valueOf(advancedSearchForm.getValueAsString(CodelistDS.ACCESS_TYPE)) : null);
+        RelatedResourceDto variableDto = ((SearchRelatedResourceLinkItem) advancedSearchForm.getItem(CodelistDS.VARIABLE)).getRelatedResourceDto();
+        if (variableDto != null) {
+            String variableUrn = variableDto.getUrn();
+            if (!StringUtils.isBlank(variableUrn)) {
+                codelistWebCriteria.setVariableUrn(variableUrn);
+            }
+        }
         return codelistWebCriteria;
     }
 
@@ -52,5 +85,60 @@ public class CodelistSearchSectionStack extends VersionableResourceSearchSection
 
     public CodelistListUiHandlers getUiHandlers() {
         return uiHandlers;
+    }
+
+    public void setVariables(GetVariablesResult result) {
+        searchVariableWindow.setRelatedResources(RelatedResourceUtils.getVariableBasicDtosAsRelatedResourceDtos(result.getVariables()));
+        searchVariableWindow.refreshSourcePaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
+    }
+
+    private SearchRelatedResourceLinkItem createVariableItem(String name, String title) {
+        final int FIRST_RESULST = 0;
+        final int MAX_RESULTS = 8;
+        final SearchRelatedResourceLinkItem variableItem = new SearchRelatedResourceLinkItem(name, title, getCustomLinkItemNavigationClickHandler());
+        variableItem.getSearchIcon().addFormItemClickHandler(new FormItemClickHandler() {
+
+            @Override
+            public void onFormItemClick(FormItemIconClickEvent event) {
+
+                searchVariableWindow = new SearchRelatedResourcePaginatedWindow(getConstants().variableSelection(), MAX_RESULTS, new PaginatedAction() {
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults) {
+                        getUiHandlers().retrieveVariablesForSearch(firstResult, maxResults, new VariableWebCriteria(searchVariableWindow.getRelatedResourceCriteria()));
+                    }
+                });
+
+                // Load variables (to populate the selection window)
+                getUiHandlers().retrieveVariablesForSearch(FIRST_RESULST, MAX_RESULTS, null);
+
+                searchVariableWindow.getListGridItem().getListGrid().setSelectionType(SelectionStyle.SINGLE);
+                searchVariableWindow.getListGridItem().setSearchAction(new SearchPaginatedAction() {
+                    @Override
+                    public void retrieveResultSet(int firstResult, int maxResults, String criteria) {
+                        getUiHandlers().retrieveVariablesForSearch(firstResult, maxResults, new VariableWebCriteria(criteria));
+                    }
+                });
+
+                searchVariableWindow.getSave().addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+                    @Override
+                    public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent arg0) {
+                        RelatedResourceDto selectedVariable = searchVariableWindow.getSelectedRelatedResource();
+                        searchVariableWindow.markForDestroy();
+                        ((SearchRelatedResourceLinkItem) advancedSearchForm.getItem(CodelistDS.VARIABLE)).setRelatedResource(selectedVariable);
+                    }
+                });
+            }
+        });
+        return variableItem;
+    }
+
+    private CustomLinkItemNavigationClickHandler getCustomLinkItemNavigationClickHandler() {
+        return new CustomLinkItemNavigationClickHandler() {
+
+            @Override
+            public BaseUiHandlers getBaseUiHandlers() {
+                return getUiHandlers();
+            }
+        };
     }
 }
