@@ -12,6 +12,7 @@ public class CodelistWebCriteria extends VersionableResourceWebCriteria {
     private String            isNotCodelistUrn;
     private String            variableUrn;
     private String            variableElementUrn;
+    private String            variableFamilyUrn;
     private String            codelisUrnToReplaceCodelist;
 
     public CodelistWebCriteria() {
@@ -72,6 +73,14 @@ public class CodelistWebCriteria extends VersionableResourceWebCriteria {
 
     public void setVariableElementUrn(String variableElementUrn) {
         this.variableElementUrn = variableElementUrn;
+    }
+
+    public String getVariableFamilyUrn() {
+        return variableFamilyUrn;
+    }
+
+    public void setVariableFamilyUrn(String variableFamilyUrn) {
+        this.variableFamilyUrn = variableFamilyUrn;
     }
 
     public String getCodelisUrnToReplaceCodelist() {

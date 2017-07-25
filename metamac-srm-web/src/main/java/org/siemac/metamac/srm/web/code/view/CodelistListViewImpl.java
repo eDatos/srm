@@ -23,6 +23,7 @@ import org.siemac.metamac.srm.web.code.widgets.NewCodelistWindow;
 import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
+import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.web.common.client.resources.GlobalResources;
@@ -254,6 +255,11 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
     @Override
     public void setVariableElementsForSearch(GetVariableElementsResult result) {
         searchSectionStack.setVariableElements(result);
+    }
+
+    @Override
+    public void setVariableFamiliesForSearch(GetVariableFamiliesResult result) {
+        searchSectionStack.setVariableFamilies(result);
     }
 
     private void setCodelistList(List<CodelistMetamacBasicDto> codelistDtos) {

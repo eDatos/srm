@@ -22,6 +22,7 @@ public interface CodelistListUiHandlers extends BaseUiHandlers {
     void retrieveVariables(int firstResult, int maxResults, VariableWebCriteria criteria);
 
     void retrieveVariablesForSearch(int firstResult, int maxResults, VariableWebCriteria criteria);
-
     void retrieveVariableElementsForSearch(int firstResult, int maxResults, MetamacWebCriteria criteria);
+
+    void retrieveVariableFamiliesForSearch(int firstResult, int maxResults, String criteria);
 }

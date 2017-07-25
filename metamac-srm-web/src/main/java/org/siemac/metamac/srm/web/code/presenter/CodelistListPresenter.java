@@ -31,6 +31,8 @@ import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
+import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
@@ -96,8 +98,9 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
         CodelistWebCriteria getCodelistWebCriteria();
 
         void setVariablesForSearch(GetVariablesResult result);
-
         void setVariableElementsForSearch(GetVariableElementsResult result);
+
+        void setVariableFamiliesForSearch(GetVariableFamiliesResult result);
     }
 
     @Inject
@@ -257,6 +260,23 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             @Override
                     public void onWaitSuccess(GetVariableElementsResult result) {
                         getView().setVariableElementsForSearch(result);
+            }
+        });
+    }
+
+    @Override
+    public void retrieveVariableFamiliesForSearch(int firstResult, int maxResults, String criteria) {
+
+        dispatcher.execute(new GetVariableFamiliesAction(firstResult, maxResults, criteria), new WaitingAsyncCallbackHandlingError<GetVariableFamiliesResult>(this) {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(CodelistListPresenter.this, caught);
+            }
+
+            @Override
+            public void onWaitSuccess(GetVariableFamiliesResult result) {
+                getView().setVariableFamiliesForSearch(result);
             }
         });
     }
