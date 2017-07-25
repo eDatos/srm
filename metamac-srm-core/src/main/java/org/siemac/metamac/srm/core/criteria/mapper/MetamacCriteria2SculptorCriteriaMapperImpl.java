@@ -869,8 +869,8 @@ public class MetamacCriteria2SculptorCriteriaMapperImpl implements MetamacCriter
                 case VARIABLE:
                     return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.variable().nameableArtefact().urn(), propertyRestriction.getStringValue(),
                             propertyRestriction.getOperationType());
-                case VARIABLE_FAMILY:
-                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.variable().families().nameableArtefact().name(), propertyRestriction.getStringValue(),
+                case VARIABLE_ELEMENT:
+                    return new SculptorPropertyCriteria(CodelistVersionMetamacProperties.variable().variableElements().identifiableArtefact().urn(), propertyRestriction.getStringValue(),
                             propertyRestriction.getOperationType());
                 default:
                     throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, propertyRestriction.getPropertyName());

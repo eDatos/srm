@@ -29,15 +29,19 @@ import org.siemac.metamac.srm.web.shared.code.DeleteCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.DeleteCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsAction;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementsAction;
+import org.siemac.metamac.srm.web.shared.code.GetVariableElementsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistResult;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
+import org.siemac.metamac.srm.web.shared.criteria.VariableElementWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 import org.siemac.metamac.web.common.client.events.SetTitleEvent;
 import org.siemac.metamac.web.common.client.events.ShowMessageEvent;
 import org.siemac.metamac.web.common.client.utils.WaitingAsyncCallbackHandlingError;
+import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RelatedResourceTypeEnum;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -92,6 +96,8 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
         CodelistWebCriteria getCodelistWebCriteria();
 
         void setVariablesForSearch(GetVariablesResult result);
+
+        void setVariableElementsForSearch(GetVariableElementsResult result);
     }
 
     @Inject
@@ -236,6 +242,25 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
         });
     }
 
+    @Override
+    public void retrieveVariableElementsForSearch(int firstResult, int maxResults, MetamacWebCriteria metamacCriteria) {
+        VariableElementWebCriteria criteria = new VariableElementWebCriteria(metamacCriteria != null ? metamacCriteria.getCriteria() : "");
+
+        dispatcher.execute(new GetVariableElementsAction(firstResult, maxResults, criteria),
+                new WaitingAsyncCallbackHandlingError<GetVariableElementsResult>(this) {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(CodelistListPresenter.this, caught);
+            }
+
+            @Override
+                    public void onWaitSuccess(GetVariableElementsResult result) {
+                        getView().setVariableElementsForSearch(result);
+            }
+        });
+    }
+
     //
     // NAVIGATION
     //
@@ -253,4 +278,5 @@ public class CodelistListPresenter extends Presenter<CodelistListPresenter.Codel
             placeManager.revealRelativePlace(PlaceRequestUtils.buildRelativeCodelistPlaceRequest(urn));
         }
     }
+
 }

@@ -292,6 +292,11 @@ public class MetamacWebCriteriaUtils {
                         OperationType.EQ);
                 conjunctionRestriction.getRestrictions().add(restriction);
             }
+            if (StringUtils.isNotBlank(criteria.getVariableElementUrn())) {
+                MetamacCriteriaRestriction restriction = new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.VARIABLE_ELEMENT.name(), criteria.getVariableElementUrn(),
+                        OperationType.EQ);
+                conjunctionRestriction.getRestrictions().add(restriction);
+            }
 
         }
         return conjunctionRestriction;

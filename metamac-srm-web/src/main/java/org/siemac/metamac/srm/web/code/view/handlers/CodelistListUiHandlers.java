@@ -8,6 +8,7 @@ import org.siemac.metamac.srm.web.client.enums.ExportReferencesEnum;
 import org.siemac.metamac.srm.web.shared.criteria.CodelistWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.VariableWebCriteria;
 import org.siemac.metamac.web.common.client.view.handlers.BaseUiHandlers;
+import org.siemac.metamac.web.common.shared.criteria.MetamacWebCriteria;
 
 public interface CodelistListUiHandlers extends BaseUiHandlers {
 
@@ -21,4 +22,6 @@ public interface CodelistListUiHandlers extends BaseUiHandlers {
     void retrieveVariables(int firstResult, int maxResults, VariableWebCriteria criteria);
 
     void retrieveVariablesForSearch(int firstResult, int maxResults, VariableWebCriteria criteria);
+
+    void retrieveVariableElementsForSearch(int firstResult, int maxResults, MetamacWebCriteria criteria);
 }
