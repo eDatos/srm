@@ -1,6 +1,7 @@
 package org.siemac.metamac.srm.rest.external.v1_0.mapper.code;
 
 import java.util.List;
+import java.util.Set;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.joda.time.DateTime;
@@ -30,7 +31,8 @@ public interface CodesDo2RestMapperV10 {
     public Resource toResource(CodelistVersion source);
 
     public Codes toCodes(PagedResult<CodeMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
-    public Codes toCodes(List<ItemResult> sources, CodelistVersionMetamac codelistVersion);
+
+    public Codes toCodes(List<ItemResult> sources, CodelistVersionMetamac codelistVersion, Set<String> fields);
     public Code toCode(CodeMetamac source);
     public ItemResource toResource(CodeMetamac source);
 

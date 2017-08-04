@@ -1358,6 +1358,12 @@
                   "in":"query",
                   "type":"string",
                   "description":""
+               },
+               {
+                  "name":"fields",
+                  "in":"query",
+                  "type":"string",
+                  "description":""
                }
             ],
             "responses":{
