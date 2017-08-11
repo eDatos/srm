@@ -325,7 +325,7 @@ public class CodesDo2RestMapperTest {
         sources.add(mockCodeItemResult(ITEM_3_CODE, null, 3, false));
 
         // Transform
-        Codes target = do2RestInternalMapper.toCodes(sources, codelist);
+        Codes target = do2RestInternalMapper.toCodes(sources, codelist, null);
 
         // Validate
         assertEquals(SrmRestConstants.KIND_CODES, target.getKind());

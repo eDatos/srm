@@ -15,6 +15,7 @@ import static org.siemac.metamac.srm.rest.external.constants.SrmRestExternalCons
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.core.Response.Status;
 
@@ -154,7 +155,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @Override
-    public Codes toCodes(List<ItemResult> sources, CodelistVersionMetamac codelistVersion) {
+    public Codes toCodes(List<ItemResult> sources, CodelistVersionMetamac codelistVersion, Set<String> fields) {
 
         Codes targets = new Codes();
         targets.setKind(SrmRestConstants.KIND_CODES);
@@ -166,7 +167,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         // Values
         String variableID = codelistVersion.getVariable() != null ? codelistVersion.getVariable().getNameableArtefact().getCode() : null;
         for (ItemResult source : sources) {
-            CodeResource target = toCodeResource(source, codelistVersion, variableID);
+            CodeResource target = toCodeResource(source, codelistVersion, variableID, fields);
             targets.getCodes().add(target);
         }
         return targets;
@@ -220,17 +221,36 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    private CodeResource toCodeResource(ItemResult source, CodelistVersionMetamac codelistVersion, String variableID) {
+    private CodeResource toCodeResource(ItemResult source, CodelistVersionMetamac codelistVersion, String variableID, Set<String> fields) {
         if (source == null) {
             return null;
         }
         CodeResource target = new CodeResource();
         toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), target, codelistVersion.getMaintainableArtefact().getIsImported());
-        target.setVariableElement(toResource(variableID, ((CodeMetamacResultExtensionPoint) source.getExtensionPoint()).getVariableElement()));
-        target.setOrder(SrmServiceUtils.getCodeItemResultOrder(source) + 1); // add 1 to start in 1, instead of 0
-        target.setOpen(SrmServiceUtils.getCodeItemResultOpenness(source));
+
+        setVisibleFields(source, target, variableID, fields);
+
         return target;
     }
+
+    private void setVisibleFields(ItemResult source, CodeResource target, String variableID, Set<String> fields) {
+        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
+            target.setVariableElement(toResource(variableID, ((CodeMetamacResultExtensionPoint) source.getExtensionPoint()).getVariableElement()));
+        }
+
+        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_ORDER)) {
+            target.setOrder(SrmServiceUtils.getCodeItemResultOrder(source) + 1); // add 1 to start in 1, instead of 0
+        }
+
+        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_OPENNES)) {
+            target.setOpen(SrmServiceUtils.getCodeItemResultOpenness(source));
+        }
+    }
+
+    protected boolean containsField(Set<String> fields, String field) {
+        return fields != null && fields.contains(field);
+    }
+
 
     @Override
     protected boolean canItemSchemeVersionBeProvidedByApi(ItemSchemeVersion source) {

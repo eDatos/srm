@@ -886,7 +886,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     @Override
-    public Codes findCodes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset, String order, String openness) {
+    public Codes findCodes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset, String order, String openness, String fields) {
         try {
             checkParameterNotWildcardFindItems(agencyID, resourceID, version);
 
@@ -927,17 +927,28 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                     // check exist
                     retrieveCodelistOpennessVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), openness);
                 }
-                List<ItemResult> items = codesService
-                        .retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), CodeMetamacResultSelection.API, order, openness);
+
+                List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), CodeMetamacResultSelection.API, order,
+                        openness);
+
+                // We are filtering the result from DB this way becasue the method that really gathers the results are required by other operations that need more information (variable elements).
+                // Refactoring that method is more difficult and should be taken with care
+                if (limit != null || offset != null) {
+                    int offsetInt = offset != null ? Integer.parseInt(offset) : 0;
+                    int limitInt = limit != null ? Integer.parseInt(limit) : items.size();
+                    items = items.subList(offsetInt, offsetInt + limitInt);
+                }
 
                 // Transform
-                Codes codes = codesDo2RestMapper.toCodes(items, codelistVersion);
+                Set<String> fieldsToShow = parseFieldsParameter(fields);
+                Codes codes = codesDo2RestMapper.toCodes(items, codelistVersion, fieldsToShow);
                 return codes;
             }
         } catch (Exception e) {
             throw manageException(e);
         }
     }
+
     @Override
     public VariableFamily retrieveVariableFamilyById(String id) {
         try {
@@ -1981,7 +1992,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         if (SrmRestConstants.WILDCARD_ALL.equals(agencyID) || SrmRestConstants.WILDCARD_ALL.equals(resourceID) || SrmRestConstants.WILDCARD_ALL.equals(version)) {
             return true;
         }
-        if (query != null || orderBy != null || limit != null || offset != null) {
+
+        if (query != null || orderBy != null) {
             return true;
         }
         // can retrieve all items of itemScheme
@@ -2104,6 +2116,23 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         // Update keys
         RegionValue updateRegionValue = constraintsService.updateRegionKeys(serviceContext, contentConstraintUrn, regionValue.getCode(), keysToPersist);
         return updateRegionValue;
+    }
+
+    private Set<String> parseFieldsParameter(String fieldsParam) {
+        Set<String> showFields = new HashSet<>();
+        if (fieldsParam != null) {
+            Set<String> validFields = new HashSet<>();
+            validFields.add(SrmRestConstants.FIELD_INCLUDE_OPENNES);
+            validFields.add(SrmRestConstants.FIELD_INCLUDE_ORDER);
+            validFields.add(SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT);
+            List<String> fieldList = Arrays.asList(fieldsParam.split(","));
+            for (String value : validFields) {
+                if (fieldList.contains(value)) {
+                    showFields.add(value);
+                }
+            }
+        }
+        return showFields;
     }
 
 }
