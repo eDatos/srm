@@ -287,6 +287,22 @@ public class MetamacWebCriteriaUtils {
                         new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.MAINTAINER_URN.name(), criteria.getMaintainerUrn(), OperationType.EQ));
             }
 
+            if (StringUtils.isNotBlank(criteria.getVariableUrn())) {
+                MetamacCriteriaRestriction restriction = new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.VARIABLE.name(), criteria.getVariableUrn(),
+                        OperationType.EQ);
+                conjunctionRestriction.getRestrictions().add(restriction);
+            }
+            if (StringUtils.isNotBlank(criteria.getVariableElementUrn())) {
+                MetamacCriteriaRestriction restriction = new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.VARIABLE_ELEMENT.name(), criteria.getVariableElementUrn(),
+                        OperationType.EQ);
+                conjunctionRestriction.getRestrictions().add(restriction);
+            }
+            if (StringUtils.isNotBlank(criteria.getVariableFamilyUrn())) {
+                MetamacCriteriaRestriction restriction = new MetamacCriteriaPropertyRestriction(CodelistVersionMetamacCriteriaPropertyEnum.VARIABLE_FAMILY.name(), criteria.getVariableFamilyUrn(),
+                        OperationType.EQ);
+                conjunctionRestriction.getRestrictions().add(restriction);
+            }
+
         }
         return conjunctionRestriction;
     }
