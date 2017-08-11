@@ -126,6 +126,10 @@ public class CodesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implements 
                             CodelistVersionMetamac.class, true);
                 case LATEST:
                     return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.maintainableArtefact().latestPublic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
+                case VARIABLE_URN:
+                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.variable().nameableArtefact().urn(), PropertyTypeEnum.STRING, propertyRestriction);
+                case VARIABLE_FAMILY_URN:
+                    return buildSculptorPropertyCriteria(CodelistVersionMetamacProperties.variable().families().nameableArtefact().urn(), PropertyTypeEnum.STRING, propertyRestriction);
                 default:
                     throw toRestExceptionParameterUnexpected(propertyNameCriteria.name());
             }
