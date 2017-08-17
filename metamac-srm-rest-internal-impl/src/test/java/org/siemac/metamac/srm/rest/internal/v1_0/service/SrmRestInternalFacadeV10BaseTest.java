@@ -25,6 +25,7 @@ import org.siemac.metamac.rest.common.test.MetamacRestBaseTest;
 import org.siemac.metamac.rest.common.test.ServerResource;
 import org.siemac.metamac.rest.constants.RestConstants;
 import org.siemac.metamac.rest.utils.RestUtils;
+import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.constraint.ContentConstraintsDo2RestMapperV10;
 import org.springframework.context.ApplicationContext;
 
@@ -114,16 +115,17 @@ public abstract class SrmRestInternalFacadeV10BaseTest extends MetamacRestBaseTe
         return uri.toString();
     }
 
-    protected String getUriItems(String agencyID, String resourceID, String version, String query, String limit, String offset) throws Exception {
+    protected String getUriItems(String agencyID, String resourceID, String version, String query, String limit, String offset, String fields) throws Exception {
         String uri = getUriItemSchemes(agencyID, resourceID, version) + "/" + getSupathItems();
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_QUERY, RestUtils.encodeParameter(query));
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_LIMIT, RestUtils.encodeParameter(limit));
         uri = RestUtils.createLinkWithQueryParam(uri, RestConstants.PARAMETER_OFFSET, RestUtils.encodeParameter(offset));
+        uri = RestUtils.createLinkWithQueryParam(uri, SrmRestConstants.FIELDS, RestUtils.encodeParameter(fields));
         return uri.toString();
     }
 
     protected String getUriItem(String agencyID, String resourceID, String version, String itemID) throws Exception {
-        return getUriItems(agencyID, resourceID, version, null, null, null) + "/" + itemID;
+        return getUriItems(agencyID, resourceID, version, null, null, null, null) + "/" + itemID;
     }
 
     @SuppressWarnings("rawtypes")
