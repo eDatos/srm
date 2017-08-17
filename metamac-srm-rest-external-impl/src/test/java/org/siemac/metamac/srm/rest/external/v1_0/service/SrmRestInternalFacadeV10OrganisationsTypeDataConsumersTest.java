@@ -298,7 +298,7 @@ public class SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest extends 
 
     @Test
     public void testFindDataConsumersXml() throws Exception {
-        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4", null);
         InputStream responseExpected = SrmRestInternalFacadeV10OrganisationsTypeDataConsumersTest.class.getResourceAsStream("/responses/organisations/findDataConsumers.xml");
 
         // Request and validate

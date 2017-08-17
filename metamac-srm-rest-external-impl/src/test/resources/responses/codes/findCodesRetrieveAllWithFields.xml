@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sr:codes xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#codes" total="4" selfLink="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes">
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>code1</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code1</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes/code1"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-code1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-code1 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:variableElement kind="structuralResources#variableElement">
+            <cdomain:id>variableElement-code1</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=variableElement-code1</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable1/variableelements/variableElement-code1"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">shortName-variableElement-code1 in English</cdomain:text>
+                <cdomain:text xml:lang="es">shortName-variableElement-code1 en Español</cdomain:text>
+            </cdomain:name>
+        </sr:variableElement>
+        <sr:order>1</sr:order>
+        <sr:open>true</sr:open>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>code2</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code2</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes/code2"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-code2 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-code2 en Español</cdomain:text>
+        </cdomain:name>
+        <sr:variableElement kind="structuralResources#variableElement">
+            <cdomain:id>variableElement-code2</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=variableElement-code2</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable1/variableelements/variableElement-code2"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">shortName-variableElement-code2 in English</cdomain:text>
+                <cdomain:text xml:lang="es">shortName-variableElement-code2 en Español</cdomain:text>
+            </cdomain:name>
+        </sr:variableElement>
+        <sr:order>2</sr:order>
+        <sr:open>false</sr:open>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>code2A</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code2A</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes/code2A"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-code2A in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-code2A en Español</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code2</sr:parent>
+        <sr:variableElement kind="structuralResources#variableElement">
+            <cdomain:id>variableElement-code2A</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=variableElement-code2A</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable1/variableelements/variableElement-code2A"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">shortName-variableElement-code2A in English</cdomain:text>
+                <cdomain:text xml:lang="es">shortName-variableElement-code2A en Español</cdomain:text>
+            </cdomain:name>
+        </sr:variableElement>
+        <sr:order>1</sr:order>
+        <sr:open>true</sr:open>
+    </sr:code>
+    <sr:code kind="structuralResources#code">
+        <cdomain:id>code2B</cdomain:id>
+        <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code2B</cdomain:urn>
+        <cdomain:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes/code2B"/>
+        <cdomain:name>
+            <cdomain:text xml:lang="en">name-code2B in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-code2B en Español</cdomain:text>
+        </cdomain:name>
+        <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code2</sr:parent>
+        <sr:variableElement kind="structuralResources#variableElement">
+            <cdomain:id>variableElement-code2B</cdomain:id>
+            <cdomain:urn>urn:sdmx:org.sdmx.infomodel.xxx=variableElement-code2B</cdomain:urn>
+            <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable1/variableelements/variableElement-code2B"/>
+            <cdomain:name>
+                <cdomain:text xml:lang="en">shortName-variableElement-code2B in English</cdomain:text>
+                <cdomain:text xml:lang="es">shortName-variableElement-code2B en Español</cdomain:text>
+            </cdomain:name>
+        </sr:variableElement>
+        <sr:order>2</sr:order>
+        <sr:open>true</sr:open>
+    </sr:code>
+</sr:codes>

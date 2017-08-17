@@ -341,7 +341,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
     @Test
     public void testFindCategoriesXml() throws Exception {
-        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4", null);
         InputStream responseExpected = SrmRestInternalFacadeV10CategoriesTest.class.getResourceAsStream("/responses/categories/findCategories.xml");
 
         // Request and validate
@@ -371,7 +371,7 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
     @Test
     public void testFindCategoriesRetrieveAllXml() throws Exception {
-        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null);
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null);
         InputStream responseExpected = SrmRestInternalFacadeV10CategoriesTest.class.getResourceAsStream("/responses/categories/findCategoriesRetrieveAll.xml");
 
         // Request and validate
@@ -543,8 +543,8 @@ public class SrmRestInternalFacadeV10CategoriesTest extends SrmRestInternalFacad
 
     @SuppressWarnings("unchecked")
     private void mockFindCategorySchemesByCondition() throws MetamacException {
-        when(categoriesService.findCategorySchemesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(
-                new Answer<PagedResult<CategorySchemeVersionMetamac>>() {
+        when(categoriesService.findCategorySchemesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class)))
+                .thenAnswer(new Answer<PagedResult<CategorySchemeVersionMetamac>>() {
 
                     @Override
                     public org.fornax.cartridges.sculptor.framework.domain.PagedResult<CategorySchemeVersionMetamac> answer(InvocationOnMock invocation) throws Throwable {

@@ -358,7 +358,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @Test
     public void testFindCodesXml() throws Exception {
-        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4");
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4", null);
         InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodes.xml");
 
         // Request and validate
@@ -395,8 +395,18 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @Test
     public void testFindCodesRetrieveAllXml() throws Exception {
-        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null);
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null);
         InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodesRetrieveAll.xml");
+
+        // Request and validate
+        testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
+    }
+
+    @Test
+    public void testFindCodesRetrieveAllXmlWithFields() throws Exception {
+        String FIELDS = SrmRestConstants.FIELD_INCLUDE_OPENNES + "," + SrmRestConstants.FIELD_INCLUDE_ORDER + "," + SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT;
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, FIELDS);
+        InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodesRetrieveAllWithFields.xml");
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.OK, responseExpected);
@@ -1034,8 +1044,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @SuppressWarnings("unchecked")
     private void mockFindVariableFamiliesByCondition() throws MetamacException {
-        when(codesService.findVariableFamiliesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(
-                new Answer<PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily>>() {
+        when(codesService.findVariableFamiliesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class)))
+                .thenAnswer(new Answer<PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily>>() {
 
                     @Override
                     public org.fornax.cartridges.sculptor.framework.domain.PagedResult<org.siemac.metamac.srm.core.code.domain.VariableFamily> answer(InvocationOnMock invocation) throws Throwable {
@@ -1073,8 +1083,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @SuppressWarnings("unchecked")
     private void mockFindVariablesByCondition() throws MetamacException {
-        when(codesService.findVariablesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(
-                new Answer<PagedResult<org.siemac.metamac.srm.core.code.domain.Variable>>() {
+        when(codesService.findVariablesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class)))
+                .thenAnswer(new Answer<PagedResult<org.siemac.metamac.srm.core.code.domain.Variable>>() {
 
                     @Override
                     public org.fornax.cartridges.sculptor.framework.domain.PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> answer(InvocationOnMock invocation) throws Throwable {
@@ -1111,8 +1121,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @SuppressWarnings("unchecked")
     private void mockFindVariableElementsByCondition() throws MetamacException {
-        when(codesService.findVariableElementsByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(
-                new Answer<PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement>>() {
+        when(codesService.findVariableElementsByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class)))
+                .thenAnswer(new Answer<PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement>>() {
 
                     @Override
                     public org.fornax.cartridges.sculptor.framework.domain.PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> answer(InvocationOnMock invocation) throws Throwable {
@@ -1141,8 +1151,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
                             variableElements.add(CodesDoMocks.mockVariableElement(ARTEFACT_3_CODE));
                             variableElements.add(CodesDoMocks.mockVariableElement(ARTEFACT_4_CODE));
 
-                            return new PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement>(variableElements, variableElements.size(), variableElements.size(),
-                                    variableElements.size(), variableElements.size() * 10, 0);
+                            return new PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement>(variableElements, variableElements.size(), variableElements.size(), variableElements.size(),
+                                    variableElements.size() * 10, 0);
                         }
                     };
                 });
@@ -1150,8 +1160,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @SuppressWarnings("unchecked")
     private void mockFindVariableElementsByVariableEfficiently() throws MetamacException {
-        when(codesService.findVariableElementsByVariableEfficiently(any(ServiceContext.class), any(String.class), any(List.class), any(VariableElementResultSelection.class))).thenAnswer(
-                new Answer<List<org.siemac.metamac.srm.core.code.domain.VariableElementResult>>() {
+        when(codesService.findVariableElementsByVariableEfficiently(any(ServiceContext.class), any(String.class), any(List.class), any(VariableElementResultSelection.class)))
+                .thenAnswer(new Answer<List<org.siemac.metamac.srm.core.code.domain.VariableElementResult>>() {
 
                     @Override
                     public List<org.siemac.metamac.srm.core.code.domain.VariableElementResult> answer(InvocationOnMock invocation) throws Throwable {
@@ -1166,8 +1176,8 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @SuppressWarnings("unchecked")
     private void mockFindCodelistFamiliesByCondition() throws MetamacException {
-        when(codesService.findCodelistFamiliesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class))).thenAnswer(
-                new Answer<PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily>>() {
+        when(codesService.findCodelistFamiliesByCondition(any(ServiceContext.class), any(List.class), any(PagingParameter.class)))
+                .thenAnswer(new Answer<PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily>>() {
 
                     @Override
                     public org.fornax.cartridges.sculptor.framework.domain.PagedResult<org.siemac.metamac.srm.core.code.domain.CodelistFamily> answer(InvocationOnMock invocation) throws Throwable {
