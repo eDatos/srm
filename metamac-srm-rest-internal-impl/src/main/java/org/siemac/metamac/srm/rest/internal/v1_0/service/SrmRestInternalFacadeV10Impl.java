@@ -940,7 +940,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 }
 
                 // Transform
-                Set<String> fieldsToShow = parseFieldsParameter(fields);
+                Set<String> fieldsToShow = SrmRestInternalUtils.parseFieldsParameter(fields);
                 Codes codes = codesDo2RestMapper.toCodes(items, codelistVersion, fieldsToShow);
                 return codes;
             }
@@ -2116,23 +2116,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         // Update keys
         RegionValue updateRegionValue = constraintsService.updateRegionKeys(serviceContext, contentConstraintUrn, regionValue.getCode(), keysToPersist);
         return updateRegionValue;
-    }
-
-    private Set<String> parseFieldsParameter(String fieldsParam) {
-        Set<String> showFields = new HashSet<>();
-        if (fieldsParam != null) {
-            Set<String> validFields = new HashSet<>();
-            validFields.add(SrmRestConstants.FIELD_INCLUDE_OPENNES);
-            validFields.add(SrmRestConstants.FIELD_INCLUDE_ORDER);
-            validFields.add(SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT);
-            List<String> fieldList = Arrays.asList(fieldsParam.split(","));
-            for (String value : validFields) {
-                if (fieldList.contains(value)) {
-                    showFields.add(value);
-                }
-            }
-        }
-        return showFields;
     }
 
 }

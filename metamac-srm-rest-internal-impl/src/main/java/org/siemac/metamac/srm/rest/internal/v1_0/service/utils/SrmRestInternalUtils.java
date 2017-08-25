@@ -1,7 +1,10 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.service.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
@@ -200,5 +203,33 @@ public class SrmRestInternalUtils {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(entity).lbrace().withProperty(nameableArtefactProperty.code()).eq(code).or()
                     .withProperty(nameableArtefactProperty.codeFull()).eq(code).rbrace().buildSingle());
         }
+    }
+
+    private static final String SPACE = " ";
+    private static final String PLUS  = "+";
+
+    public static Set<String> parseFieldsParameter(String fieldsParam) {
+        Set<String> showFields = new HashSet<>();
+        if (fieldsParam != null) {
+            Set<String> validFields = new HashSet<>();
+            validFields.add(SrmRestConstants.FIELD_INCLUDE_OPENNES);
+            validFields.add(SrmRestConstants.FIELD_INCLUDE_ORDER);
+            validFields.add(SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT);
+            List<String> fieldList = Arrays.asList(fieldsParam.split(","));
+            List<String> parsedFieldList = new ArrayList<String>();
+            for (String field : fieldList) {
+                if (field.startsWith(SPACE)) {
+                    parsedFieldList.add(field.replaceFirst(SPACE, PLUS));
+                } else {
+                    parsedFieldList.add(field);
+                }
+            }
+            for (String value : validFields) {
+                if (parsedFieldList.contains(value)) {
+                    showFields.add(value);
+                }
+            }
+        }
+        return showFields;
     }
 }
