@@ -4,7 +4,6 @@ import static org.siemac.metamac.srm.rest.external.v1_0.service.utils.SrmRestInt
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -927,7 +926,7 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
                 }
 
                 // Transform
-                Set<String> fieldsToShow = parseFieldsParameter(fields);
+                Set<String> fieldsToShow = SrmRestInternalUtils.parseFieldsParameter(fields);
                 Codes codes = codesDo2RestMapper.toCodes(items, codelistVersion, fieldsToShow);
                 return codes;
             }
@@ -1945,20 +1944,4 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
         return miscMetamacService.findLastUpdatedVariableElementsGeographicalInformation(ctx);
     }
 
-    private Set<String> parseFieldsParameter(String fieldsParam) {
-        Set<String> showFields = new HashSet<>();
-        if (fieldsParam != null) {
-            Set<String> validFields = new HashSet<>();
-            validFields.add(SrmRestConstants.FIELD_INCLUDE_OPENNES);
-            validFields.add(SrmRestConstants.FIELD_INCLUDE_ORDER);
-            validFields.add(SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT);
-            List<String> fieldList = Arrays.asList(fieldsParam.split(","));
-            for (String value : validFields) {
-                if (fieldList.contains(value)) {
-                    showFields.add(value);
-                }
-            }
-        }
-        return showFields;
-    }
 }

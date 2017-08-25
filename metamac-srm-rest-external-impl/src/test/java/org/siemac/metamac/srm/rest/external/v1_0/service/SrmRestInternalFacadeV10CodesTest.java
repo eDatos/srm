@@ -74,6 +74,7 @@ import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.external.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.external.v1_0.code.utils.CodesDoMocks;
+import org.siemac.metamac.srm.rest.external.v1_0.service.utils.SrmRestInternalUtils;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
@@ -901,6 +902,22 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
         // Request and validate
         testRequestWithoutJaxbTransformation(requestUri, APPLICATION_XML, Status.NOT_FOUND, responseExpected);
+    }
+
+    @Test
+    public void testParseFields() {
+        assertTrue(SrmRestInternalUtils.parseFieldsParameter("").isEmpty());
+        assertTrue(SrmRestInternalUtils.parseFieldsParameter(null).isEmpty());
+        assertTrue(SrmRestInternalUtils.parseFieldsParameter("dummyword").isEmpty());
+
+        assertTrue(SrmRestInternalUtils.parseFieldsParameter(SrmRestConstants.FIELD_INCLUDE_OPENNES).contains(SrmRestConstants.FIELD_INCLUDE_OPENNES));
+        assertTrue(SrmRestInternalUtils.parseFieldsParameter(SrmRestConstants.FIELD_INCLUDE_OPENNES + SrmRestConstants.COMMA + SrmRestConstants.FIELD_INCLUDE_ORDER)
+                .contains(SrmRestConstants.FIELD_INCLUDE_OPENNES));
+        assertTrue(SrmRestInternalUtils.parseFieldsParameter(SrmRestConstants.FIELD_INCLUDE_OPENNES + SrmRestConstants.COMMA + SrmRestConstants.FIELD_INCLUDE_ORDER)
+                .contains(SrmRestConstants.FIELD_INCLUDE_ORDER));
+        assertFalse(SrmRestInternalUtils.parseFieldsParameter(SrmRestConstants.FIELD_INCLUDE_OPENNES + SrmRestConstants.FIELD_INCLUDE_ORDER).contains(SrmRestConstants.FIELD_INCLUDE_OPENNES));
+
+        assertTrue(SrmRestInternalUtils.parseFieldsParameter(" open").contains(SrmRestConstants.FIELD_INCLUDE_OPENNES));
     }
 
     private void testFindCodelists(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
