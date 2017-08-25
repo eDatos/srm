@@ -41,8 +41,8 @@ public class SrmRestInternalUtils {
     }
 
     @SuppressWarnings({"rawtypes"})
-    public static List<ConditionalCriteria> buildConditionalCriteriaCategorisations(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity)
-            throws MetamacException {
+    public static List<ConditionalCriteria> buildConditionalCriteriaCategorisations(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
+            Class entity) throws MetamacException {
         return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, null, conditionalCriteriaQuery, entity, CategorisationProperties.maintainableArtefact());
     }
 

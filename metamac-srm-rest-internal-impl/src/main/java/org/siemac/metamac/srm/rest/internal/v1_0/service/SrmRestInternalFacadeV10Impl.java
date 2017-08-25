@@ -365,8 +365,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             } else {
                 // Retrieve all categories of categoryScheme, without pagination
                 CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemePublished(agencyID, resourceID, version);
-                List<ItemResult> items = categoriesService
-                        .retrieveCategoriesByCategorySchemeUrnUnordered(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn(), ItemMetamacResultSelection.API);
+                List<ItemResult> items = categoriesService.retrieveCategoriesByCategorySchemeUrnUnordered(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn(),
+                        ItemMetamacResultSelection.API);
 
                 // Transform
                 Categories categories = categoriesDo2RestMapper.toCategories(items, categorySchemeVersion);
@@ -385,8 +385,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             // Find one
             PagedResult<CategoryMetamac> entitiesPagedResult = findCategoriesCore(agencyID, resourceID, version, categoryID, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils
-                        .getException(RestServiceExceptionType.CATEGORY_NOT_FOUND, categoryID, version, resourceID, agencyID);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CATEGORY_NOT_FOUND, categoryID, version, resourceID,
+                        agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -1429,8 +1429,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             PagingParameter pagingParameter) throws MetamacException {
 
         // Criteria to find items by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, conceptID, ConceptMetamacProperties.itemSchemeVersion()
-                .maintainableArtefact(), ConceptMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, ConceptMetamac.class);
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, conceptID,
+                ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact(), ConceptMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, ConceptMetamac.class);
 
         // Find
         PagedResult<ConceptMetamac> entitiesPagedResult = conceptsService.findConceptsByCondition(ctx, conditionalCriteria, pagingParameter);
@@ -1494,8 +1494,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             PagingParameter pagingParameter) throws MetamacException {
 
         // Criteria to find items by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, categoryID, CategoryMetamacProperties.itemSchemeVersion()
-                .maintainableArtefact(), CategoryMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, CategoryMetamac.class);
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, categoryID,
+                CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact(), CategoryMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, CategoryMetamac.class);
 
         // Find
         PagedResult<CategoryMetamac> entitiesPagedResult = categoriesService.findCategoriesByCondition(ctx, conditionalCriteria, pagingParameter);
@@ -1693,8 +1693,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
         // Criteria to find item schemes by criteria
         List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItemSchemes(agencyID, resourceID, version, conditionalCriteriaQuery, CodelistVersionMetamac.class);
-        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC)
-                .buildSingle());
+        conditionalCriteria
+                .add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
 
         // Find
         PagedResult<CodelistVersionMetamac> entitiesPagedResult = codesService.findCodelistsByCondition(ctx, conditionalCriteria, pagingParameter);
@@ -1705,8 +1705,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter) throws MetamacException {
 
         // Criteria to find items by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, organisationID, OrganisationMetamacProperties
-                .itemSchemeVersion().maintainableArtefact(), OrganisationMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, OrganisationMetamac.class);
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, organisationID,
+                OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact(), OrganisationMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, OrganisationMetamac.class);
         if (type != null) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).withProperty(OrganisationMetamacProperties.organisationType()).eq(type).buildSingle());
         }
@@ -1834,8 +1834,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                     .eq(variableID).buildSingle());
         }
         if (familyID != null && !SrmRestConstants.WILDCARD_ALL.equals(familyID)) {
-            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.Variable.class)
-                    .withProperty(VariableProperties.families().nameableArtefact().code()).eq(familyID).buildSingle());
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.Variable.class).withProperty(VariableProperties.families().nameableArtefact().code())
+                    .eq(familyID).buildSingle());
         }
         // Find
         PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = codesService.findVariablesByCondition(ctx, conditionalCriteria, pagingParameter);
@@ -1846,8 +1846,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             PagingParameter pagingParameter) throws MetamacException {
 
         // Criteria to find items by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, codeID, CodeMetamacProperties.itemSchemeVersion()
-                .maintainableArtefact(), CodeMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, CodeMetamac.class);
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, codeID,
+                CodeMetamacProperties.itemSchemeVersion().maintainableArtefact(), CodeMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, CodeMetamac.class);
         // Only codelists with access == public
         conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
                 .withProperty(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.accessType().getName(), false, CodeMetamac.class))
@@ -2083,8 +2083,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint createContentConstraint = null;
         if (StringUtils.isEmpty(contentConstraintEntity.getMaintainableArtefact().getUrn())) {
             // Create
-            createContentConstraint = constraintsService.createContentConstraint(serviceContext, contentConstraintEntity.getConstraintAttachment(), contentConstraintEntity.getMaintainableArtefact()
-                    .getMaintainer().getNameableArtefact().getUrn(), VersionPatternEnum.XX_YYY);
+            createContentConstraint = constraintsService.createContentConstraint(serviceContext, contentConstraintEntity.getConstraintAttachment(),
+                    contentConstraintEntity.getMaintainableArtefact().getMaintainer().getNameableArtefact().getUrn(), VersionPatternEnum.XX_YYY);
         } else {
             // Update
             throw new UnsupportedOperationException("Cannot update a content constraint");
