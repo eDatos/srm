@@ -352,8 +352,8 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
             } else {
                 // Retrieve all categories of categoryScheme, without pagination
                 CategorySchemeVersionMetamac categorySchemeVersion = retrieveCategorySchemePublished(agencyID, resourceID, version);
-                List<ItemResult> items = categoriesService
-                        .retrieveCategoriesByCategorySchemeUrnUnordered(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn(), ItemMetamacResultSelection.API);
+                List<ItemResult> items = categoriesService.retrieveCategoriesByCategorySchemeUrnUnordered(ctx, categorySchemeVersion.getMaintainableArtefact().getUrn(),
+                        ItemMetamacResultSelection.API);
 
                 // Transform
                 Categories categories = categoriesDo2RestMapper.toCategories(items, categorySchemeVersion);
@@ -372,8 +372,8 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
             // Find one
             PagedResult<CategoryMetamac> entitiesPagedResult = findCategoriesCore(agencyID, resourceID, version, categoryID, null, pagingParameterOneResult);
             if (entitiesPagedResult.getValues().size() != 1) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils
-                        .getException(RestServiceExceptionType.CATEGORY_NOT_FOUND, categoryID, version, resourceID, agencyID);
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.CATEGORY_NOT_FOUND, categoryID, version, resourceID,
+                        agencyID);
                 throw new RestException(exception, Status.NOT_FOUND);
             }
 
@@ -914,8 +914,8 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
                     // check exist
                     retrieveCodelistOpennessVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), openness);
                 }
-                List<ItemResult> items = codesService
-                        .retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), CodeMetamacResultSelection.API, order, openness);
+                List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), CodeMetamacResultSelection.API, order,
+                        openness);
 
                 // We are filtering the result from DB this way becasue the method that really gathers the results are required by other operations that need more information (variable elements).
                 // Refactoring that method is more difficult and should be taken with care
@@ -1297,8 +1297,8 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
             PagingParameter pagingParameter) throws MetamacException {
 
         // Criteria to find items by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, conceptID, ConceptMetamacProperties.itemSchemeVersion()
-                .maintainableArtefact(), ConceptMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, ConceptMetamac.class);
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, conceptID,
+                ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact(), ConceptMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, ConceptMetamac.class);
 
         // Find
         PagedResult<ConceptMetamac> entitiesPagedResult = conceptsService.findConceptsByCondition(ctx, conditionalCriteria, pagingParameter);
@@ -1362,8 +1362,8 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
             PagingParameter pagingParameter) throws MetamacException {
 
         // Criteria to find items by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, categoryID, CategoryMetamacProperties.itemSchemeVersion()
-                .maintainableArtefact(), CategoryMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, CategoryMetamac.class);
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, categoryID,
+                CategoryMetamacProperties.itemSchemeVersion().maintainableArtefact(), CategoryMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, CategoryMetamac.class);
 
         // Find
         PagedResult<CategoryMetamac> entitiesPagedResult = categoriesService.findCategoriesByCondition(ctx, conditionalCriteria, pagingParameter);
@@ -1564,8 +1564,8 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
 
         // Only Codelists with access-type = PUBLIC, are public. But in LLCC-75, the codelist that are access-type = RESTRICTED never were marked as publicLogic=true,
         // for this is unnecessary to check this condition.
-        conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC)
-                .buildSingle());
+        conditionalCriteria
+                .add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
 
         // Find
         PagedResult<CodelistVersionMetamac> entitiesPagedResult = codesService.findCodelistsByCondition(ctx, conditionalCriteria, pagingParameter);
@@ -1576,8 +1576,8 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
             List<ConditionalCriteria> conditionalCriteriaQuery, PagingParameter pagingParameter) throws MetamacException {
 
         // Criteria to find items by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, organisationID, OrganisationMetamacProperties
-                .itemSchemeVersion().maintainableArtefact(), OrganisationMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, OrganisationMetamac.class);
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, organisationID,
+                OrganisationMetamacProperties.itemSchemeVersion().maintainableArtefact(), OrganisationMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, OrganisationMetamac.class);
         if (type != null) {
             conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(OrganisationMetamac.class).withProperty(OrganisationMetamacProperties.organisationType()).eq(type).buildSingle());
         }
@@ -1706,8 +1706,8 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
                     .eq(variableID).buildSingle());
         }
         if (familyID != null && !SrmRestConstants.WILDCARD_ALL.equals(familyID)) {
-            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.Variable.class)
-                    .withProperty(VariableProperties.families().nameableArtefact().code()).eq(familyID).buildSingle());
+            conditionalCriteria.add(ConditionalCriteriaBuilder.criteriaFor(org.siemac.metamac.srm.core.code.domain.Variable.class).withProperty(VariableProperties.families().nameableArtefact().code())
+                    .eq(familyID).buildSingle());
         }
         // Find
         PagedResult<org.siemac.metamac.srm.core.code.domain.Variable> entitiesPagedResult = codesService.findVariablesByCondition(ctx, conditionalCriteria, pagingParameter);
@@ -1718,8 +1718,8 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
             PagingParameter pagingParameter) throws MetamacException {
 
         // Criteria to find items by criteria
-        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, codeID, CodeMetamacProperties.itemSchemeVersion()
-                .maintainableArtefact(), CodeMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, CodeMetamac.class);
+        List<ConditionalCriteria> conditionalCriteria = SrmRestInternalUtils.buildConditionalCriteriaItems(agencyID, resourceID, version, codeID,
+                CodeMetamacProperties.itemSchemeVersion().maintainableArtefact(), CodeMetamacProperties.nameableArtefact(), conditionalCriteriaQuery, CodeMetamac.class);
 
         // Only Codelists with access-type = PUBLIC, are public. But in LLCC-75, the codelist that are access-type = RESTRICTED never were marked as publicLogic=true,
         // for this is unnecessary to check this condition.
