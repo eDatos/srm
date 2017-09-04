@@ -38,6 +38,22 @@
       }
    ],
    "definitions": <jsp:include page="definitions.jsp" /> ,
+   "components":{
+        "parameters": {
+            "limitParam" : {
+                "name":"limit",
+                "in":"query",
+                "type":"string",
+                "description":"Límite de resultados (número máximo), por defecto 25.<br/>Ejemplo: limit=10."
+            },
+            "offsetParam":{
+                  "name":"offset",
+                  "in":"query",
+                  "type":"string",
+                  "description":" Desplazamiento. Resultado a partir del que se devuelve. El valor por defecto es 0. Ejemplo: offset=2."
+            },
+        },
+   },
    "paths":{
       "/v1.0/agencyschemes":{
          "get":{
@@ -987,29 +1003,19 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
+               {"$ref":"#/components/parameters/limitParam"},
+               {"$ref":"#/components/parameters/offsetParam"},
                {
                   "name":"orderBy",
                   "in":"query",
                   "type":"string",
-                  "description":""
+                  "description":"Campo por el que ordenar los resultados<br>Campos válidos<ul><li>ID</li></ul>Criterios de Orden<ul><li>ASC: ascendente</li><li>DESC: descendente</li></ul><br>Ejemplo: orderBy=\"ID ASC\""
                },
                {
                   "name":"query",
                   "in":"query",
                   "type":"string",
-                  "description":""
+                  "description":"<div>Consulta para filtrar los resultados</div><div>Operadores válidos:<ul><li>EQ: igual, </li><li>IEQ: igual sin distinción de mayúsculas, </li><li>LIKE: patrón de búsqueda, </li><li>ILIKE: pátron sin distinción de mayúsculas, </li><li>NE: no igual, </li><li>LT: menor que, </li><li>LE: menor o igual, </li><li>GT: mayor que, </li><li>GE: mayor o igual, </li><li>IS_NULL. valor nulo, </li><li>IS_NOT_NULL: valor no nulo, </li><li>IN: valor dentro de un conjunto</li></ul><div>Campos válidos:<ul><li>ID</li> <li>URN</li> <li>NAME</li></ul>Ejemplo: query=\"ID EQ 2090\"</div>"
                }
             ],
             "responses":{
