@@ -1308,30 +1308,15 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
+             {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
                {
                   "name":"codeID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador del código"
                },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
             ],
             "responses":{
                "200":{
