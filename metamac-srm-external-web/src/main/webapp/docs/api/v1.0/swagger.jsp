@@ -77,7 +77,7 @@
                     "description":"<div>Consulta para filtrar los resultados</div><div>Operadores válidos:<ul><li>EQ: igual, </li><li>IEQ: igual sin distinción de mayúsculas, </li><li>LIKE: patrón de búsqueda, </li><li>ILIKE: pátron sin distinción de mayúsculas, </li><li>NE: no igual, </li><li>LT: menor que, </li><li>LE: menor o igual, </li><li>GT: mayor que, </li><li>GE: mayor o igual, </li><li>IS_NULL. valor nulo, </li><li>IS_NOT_NULL: valor no nulo, </li><li>IN: valor dentro de un conjunto</li></ul><div>Campos válidos:<ul><li>ID</li><li>URN</li><li>NAME</li><li>DESCRIPTION</li><li>DESCRIPTION_SOURCE</li><li>VALID_FROM</li><li>VALID_TO</li><li>LAST_UPDATED_DATE</li><li>LATEST</li><li>VARIABLE_URN</li><li>VARIABLE_FAMILY_URN</li></ul>
                     Ejemplo: query=\"ID EQ 2090\"</div>"
                 },
-              "codelistOrderParam": {
+              "codelistOrderByParam": {
                   "name":"orderBy",
                   "in":"query",
                   "type":"string",
@@ -1117,7 +1117,7 @@
                 {"$ref":"#/components/parameters/limitParam"},
                 {"$ref":"#/components/parameters/offsetParam"},
                 {"$ref":"#/components/parameters/codelistQueryParam"},
-                {"$ref":"#/components/parameters/codelistOrderParam"},
+                {"$ref":"#/components/parameters/codelistOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -1152,7 +1152,7 @@
                 {"$ref":"#/components/parameters/limitParam"},
                 {"$ref":"#/components/parameters/offsetParam"},
                 {"$ref":"#/components/parameters/codelistQueryParam"},
-                {"$ref":"#/components/parameters/codelistOrderParam"},
+                {"$ref":"#/components/parameters/codelistOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -1188,7 +1188,7 @@
                 {"$ref":"#/components/parameters/limitParam"},
                 {"$ref":"#/components/parameters/offsetParam"},
                 {"$ref":"#/components/parameters/codelistQueryParam"},
-                {"$ref":"#/components/parameters/codelistOrderParam"},
+                {"$ref":"#/components/parameters/codelistOrderByParam"},
               
             ],
             "responses":{
@@ -1253,65 +1253,30 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/codelistQueryParam"},
+                {"$ref":"#/components/parameters/codelistOrderByParam"},
                {
                   "name":"openness",
                   "in":"query",
                   "type":"string",
-                  "description":""
+                  "description":"Apertura establecida para la visualización"
                },
                {
                   "name":"order",
                   "in":"query",
                   "type":"string",
-                  "description":""
+                  "description":"Orden establecido para la visualización"
                },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
+              {
                   "name":"fields",
                   "in":"query",
                   "type":"string",
-                  "description":""
+                  "description":"Campos adicionales que se desean mostrar en la respuesta. Los valores pueden ser: <ul><li>+open: muestra la apertura del elemento</li><li>+order: muestra el orden establecido para el elemento</li><li>+variableElement: muestra su variable de elemento </li></ul> Ejemplo: fields=\"+opennes,+order\""
                }
             ],
             "responses":{
