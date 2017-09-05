@@ -151,5 +151,42 @@
           "type":"string",
           "description":"Campo por el que ordenar los resultados<br>Campos válidos<ul><li>ID</li></ul>Criterios de Orden<ul><li>ASC: ascendente</li><li>DESC: descendente</li></ul><br>Ejemplo: orderBy=\"ID ASC\""
         },
+        "variableFamilyQueryParam": {
+            "name":"query",
+            "in":"query",
+            "type":"string",
+            "description":"<div>Consulta para filtrar los resultados</div><div>Operadores válidos:<ul><li>EQ: igual, </li><li>IEQ: igual sin distinción de mayúsculas, </li><li>LIKE: patrón de búsqueda, </li><li>ILIKE: pátron sin distinción de mayúsculas, </li><li>NE: no igual, </li><li>LT: menor que, </li><li>LE: menor o igual, </li><li>GT: mayor que, </li><li>GE: mayor o igual, </li><li>IS_NULL. valor nulo, </li><li>IS_NOT_NULL: valor no nulo, </li><li>IN: valor dentro de un conjunto</li></ul><div>Campos válidos:   <ul><li>ID</li><li>URN</li><li>NAME</li></ul>Ejemplo: query=\"ID EQ 2090\"</div>"
+        },
+        "variableFamilyOrderByParam": {
+          "name":"orderBy",
+          "in":"query",
+          "type":"string",
+          "description":"Campo por el que ordenar los resultados<br>Campos válidos<ul><li>ID</li></ul>Criterios de Orden<ul><li>ASC: ascendente</li><li>DESC: descendente</li></ul><br>Ejemplo: orderBy=\"ID ASC\""
+        },
+        "variableQueryParam": {
+            "name":"query",
+            "in":"query",
+            "type":"string",
+            "description":"<div>Consulta para filtrar los resultados</div><div>Operadores válidos:<ul><li>EQ: igual, </li><li>IEQ: igual sin distinción de mayúsculas, </li><li>LIKE: patrón de búsqueda, </li><li>ILIKE: pátron sin distinción de mayúsculas, </li><li>NE: no igual, </li><li>LT: menor que, </li><li>LE: menor o igual, </li><li>GT: mayor que, </li><li>GE: mayor o igual, </li><li>IS_NULL. valor nulo, </li><li>IS_NOT_NULL: valor no nulo, </li><li>IN: valor dentro de un conjunto</li></ul><div>Campos válidos:   <ul><li>ID</li><li>URN</li><li>NAME</li><li>SHORT_NAME</li><li>FAMILY_URN</li><li>VARIABLE_TYPE</li></ul>Ejemplo: query=\"ID EQ 2090\"</div>"
+        },
+        "variableOrderByParam": {
+          "name":"orderBy",
+          "in":"query",
+          "type":"string",
+          "description":"Campo por el que ordenar los resultados<br>Campos válidos<ul><li>ID</li></ul>Criterios de Orden<ul><li>ASC: ascendente</li><li>DESC: descendente</li></ul><br>Ejemplo: orderBy=\"ID ASC\""
+        },
+        "variableElementQueryParam": {
+            "name":"query",
+            "in":"query",
+            "type":"string",
+            "description":"<div>Consulta para filtrar los resultados</div><div>Operadores válidos:<ul><li>EQ: igual, </li><li>IEQ: igual sin distinción de mayúsculas, </li><li>LIKE: patrón de búsqueda, </li><li>ILIKE: pátron sin distinción de mayúsculas, </li><li>NE: no igual, </li><li>LT: menor que, </li><li>LE: menor o igual, </li><li>GT: mayor que, </li><li>GE: mayor o igual, </li><li>IS_NULL. valor nulo, </li><li>IS_NOT_NULL: valor no nulo, </li><li>IN: valor dentro de un conjunto</li></ul><div>Campos válidos:<ul><li>ID</li><li>URN</li><li>NAME</li><li>GEOGRAPHICAL_GRANULARITY_URN</li><li>VARIABLE_TYPE</li></ul>Ejemplo: query=\"ID EQ 2090\"</div>"
+        },
+        "variableElementOrderByParam": {
+          "name":"orderBy",
+          "in":"query",
+          "type":"string",
+          "description":"Campo por el que ordenar los resultados<br>Campos válidos<ul><li>ID</li></ul>Criterios de Orden<ul><li>ASC: ascendente</li><li>DESC: descendente</li></ul><br>Ejemplo: orderBy=\"ID ASC\""
+        },
+        
     }
 },

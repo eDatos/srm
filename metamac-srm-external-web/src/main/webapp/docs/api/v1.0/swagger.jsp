@@ -2353,30 +2353,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/variableFamilyQueryParam"},
+                {"$ref":"#/components/parameters/variableFamilyOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2411,7 +2391,7 @@
                   "name":"id",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la familia de variables"
                }
             ],
             "responses":{
@@ -2447,32 +2427,12 @@
                   "name":"id",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la familia de variables"
                },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/variableQueryParam"},
+                {"$ref":"#/components/parameters/variableOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2503,30 +2463,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/variableQueryParam"},
+                {"$ref":"#/components/parameters/variableOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2561,7 +2501,7 @@
                   "name":"id",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la variable"
                }
             ],
             "responses":{
@@ -2597,32 +2537,12 @@
                   "name":"variableID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la variable"
                },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/variableElementQueryParam"},
+                {"$ref":"#/components/parameters/variableElementOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2653,17 +2573,12 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
+                {"$ref":"#/components/parameters/resourceIdParam"},
                {
                   "name":"variableID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la variable"
                }
             ],
             "responses":{
@@ -2695,48 +2610,23 @@
                "application/json"
             ],
             "parameters":[
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
+                 {
                   "name":"variableID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la variable"
                },
                {
                   "name":"fields",
                   "in":"query",
                   "type":"string",
-                  "description":""
+                  "description":"Campos en la respuesta que pueden mostrarse/ocultarse. <br>Valores válidos:<ul><li>\"-point\": Ocultar campo punto</li><li>\"-geometry\": Ocultar el campo geometría</li><li>\"-geographicalGranularity\": Ocultar la granularidad geográfica</li></ul>Ejemplo: fields=\"-geometry\""
                },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/variableQueryParam"},
+                {"$ref":"#/components/parameters/variableOrderByParam"},
             ],
             "responses":{
                "200":{
