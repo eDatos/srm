@@ -38,6 +38,7 @@
       }
    ],
    "definitions": <jsp:include page="definitions.jsp" /> ,
+   "components":  <jsp:include page="components.jsp" /> 
    "paths":{
       "/v1.0/agencyschemes":{
          "get":{
@@ -51,30 +52,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -105,36 +86,11 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -165,42 +121,12 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -231,24 +157,9 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
             ],
             "responses":{
                "200":{
@@ -279,48 +190,13 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationQueryParam"},
+                {"$ref":"#/components/parameters/organizationOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -351,30 +227,16 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
                {
                   "name":"organisationID",
                   "in":"path",
                   "type":"string",
                   "description":""
                },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+              
             ],
             "responses":{
                "200":{
@@ -405,30 +267,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/categorisationQueryParam"},
+                {"$ref":"#/components/parameters/categorisationOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -459,36 +301,11 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/categorisationQueryParam"},
+                {"$ref":"#/components/parameters/categorisationOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -519,42 +336,12 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/categorisationQueryParam"},
+                {"$ref":"#/components/parameters/categorisationOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -585,24 +372,9 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
             ],
             "responses":{
                "200":{
@@ -633,30 +405,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/categorySchemeQueryParam"},
+                {"$ref":"#/components/parameters/categorySchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -687,36 +439,11 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/categorySchemeQueryParam"},
+                {"$ref":"#/components/parameters/categorySchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -747,42 +474,12 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/categorySchemeQueryParam"},
+                {"$ref":"#/components/parameters/categorySchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -813,24 +510,9 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
             ],
             "responses":{
                "200":{
@@ -861,48 +543,13 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/categoryQueryParam"},
+                {"$ref":"#/components/parameters/categoryOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -933,30 +580,16 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
                {
                   "name":"categoryID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la categoría"
                },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+              
             ],
             "responses":{
                "200":{
@@ -987,29 +620,19 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
+               {"$ref":"#/components/parameters/limitParam"},
+               {"$ref":"#/components/parameters/offsetParam"},
                {
                   "name":"orderBy",
                   "in":"query",
                   "type":"string",
-                  "description":""
+                  "description":"Campo por el que ordenar los resultados<br>Campos válidos<ul><li>ID</li></ul>Criterios de Orden<ul><li>ASC: ascendente</li><li>DESC: descendente</li></ul><br>Ejemplo: orderBy=\"ID ASC\""
                },
                {
                   "name":"query",
                   "in":"query",
                   "type":"string",
-                  "description":""
+                  "description":"<div>Consulta para filtrar los resultados</div><div>Operadores válidos:<ul><li>EQ: igual, </li><li>IEQ: igual sin distinción de mayúsculas, </li><li>LIKE: patrón de búsqueda, </li><li>ILIKE: pátron sin distinción de mayúsculas, </li><li>NE: no igual, </li><li>LT: menor que, </li><li>LE: menor o igual, </li><li>GT: mayor que, </li><li>GE: mayor o igual, </li><li>IS_NULL. valor nulo, </li><li>IS_NOT_NULL: valor no nulo, </li><li>IN: valor dentro de un conjunto</li></ul><div>Campos válidos:<ul><li>ID</li> <li>URN</li> <li>NAME</li></ul>Ejemplo: query=\"ID EQ 2090\"</div>"
                }
             ],
             "responses":{
@@ -1045,7 +668,7 @@
                   "name":"id",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la familia de codelist"
                }
             ],
             "responses":{
@@ -1077,30 +700,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/codelistQueryParam"},
+                {"$ref":"#/components/parameters/codelistOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -1131,36 +734,11 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/codelistQueryParam"},
+                {"$ref":"#/components/parameters/codelistOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -1191,42 +769,13 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/codelistQueryParam"},
+                {"$ref":"#/components/parameters/codelistOrderByParam"},
+              
             ],
             "responses":{
                "200":{
@@ -1257,24 +806,9 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
             ],
             "responses":{
                "200":{
@@ -1305,65 +839,30 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/codelistQueryParam"},
+                {"$ref":"#/components/parameters/codelistOrderByParam"},
                {
                   "name":"openness",
                   "in":"query",
                   "type":"string",
-                  "description":""
+                  "description":"Apertura establecida para la visualización"
                },
                {
                   "name":"order",
                   "in":"query",
                   "type":"string",
-                  "description":""
+                  "description":"Orden establecido para la visualización"
                },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
+              {
                   "name":"fields",
                   "in":"query",
                   "type":"string",
-                  "description":""
+                  "description":"Campos adicionales que se desean mostrar en la respuesta. Los valores pueden ser: <ul><li>+open: muestra la apertura del elemento</li><li>+order: muestra el orden establecido para el elemento</li><li>+variableElement: muestra su variable de elemento </li></ul> Ejemplo: fields=\"+opennes,+order\""
                }
             ],
             "responses":{
@@ -1395,30 +894,15 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
+             {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
                {
                   "name":"codeID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador del código"
                },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
             ],
             "responses":{
                "200":{
@@ -1480,30 +964,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/conceptSchemasQueryParam"},
+                {"$ref":"#/components/parameters/conceptSchemasOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -1534,36 +998,11 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/conceptSchemasQueryParam"},
+                {"$ref":"#/components/parameters/conceptSchemasOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -1594,42 +1033,12 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/conceptSchemasQueryParam"},
+                {"$ref":"#/components/parameters/conceptSchemasOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -1660,24 +1069,9 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
             ],
             "responses":{
                "200":{
@@ -1708,48 +1102,13 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/conceptQueryParam"},
+                {"$ref":"#/components/parameters/conceptOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -1780,30 +1139,16 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
+                {
                   "name":"conceptID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador del concepto"
                },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+             
             ],
             "responses":{
                "200":{
@@ -1834,30 +1179,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/contentConstraintQueryParam"},
+                {"$ref":"#/components/parameters/contentConstraintOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -1888,36 +1213,11 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/contentConstraintQueryParam"},
+                {"$ref":"#/components/parameters/contentConstraintOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -1948,42 +1248,12 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/contentConstraintQueryParam"},
+                {"$ref":"#/components/parameters/contentConstraintOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2014,24 +1284,9 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
             ],
             "responses":{
                "200":{
@@ -2062,30 +1317,15 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
+             {
                   "name":"regionCode",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Código de la región"
                },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
             ],
             "responses":{
                "200":{
@@ -2116,30 +1356,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2170,36 +1390,11 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2230,42 +1425,12 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2296,24 +1461,9 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
             ],
             "responses":{
                "200":{
@@ -2344,48 +1494,13 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationQueryParam"},
+                {"$ref":"#/components/parameters/organizationOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2416,30 +1531,16 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
                {
                   "name":"organisationID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la organización"
                },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+              
             ],
             "responses":{
                "200":{
@@ -2470,30 +1571,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2524,36 +1605,11 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2584,42 +1640,12 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2650,24 +1676,9 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
             ],
             "responses":{
                "200":{
@@ -2698,48 +1709,13 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationQueryParam"},
+                {"$ref":"#/components/parameters/organizationOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2770,30 +1746,15 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
                {
                   "name":"organisationID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la organización"
                },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
             ],
             "responses":{
                "200":{
@@ -2824,30 +1785,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/dataStructuresQueryParam"},
+                {"$ref":"#/components/parameters/dataStructuresOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2878,36 +1819,11 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/dataStructuresQueryParam"},
+                {"$ref":"#/components/parameters/dataStructuresOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -2938,42 +1854,12 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/dataStructuresQueryParam"},
+                {"$ref":"#/components/parameters/dataStructuresOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -3004,24 +1890,9 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
             ],
             "responses":{
                "200":{
@@ -3052,30 +1923,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -3106,36 +1957,11 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+               {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -3166,42 +1992,12 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -3232,24 +2028,9 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
             ],
             "responses":{
                "200":{
@@ -3280,48 +2061,13 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationQueryParam"},
+                {"$ref":"#/components/parameters/organizationOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -3352,30 +2098,16 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
                {
                   "name":"organisationID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la organización"
                },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+              
             ],
             "responses":{
                "200":{
@@ -3406,30 +2138,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -3460,36 +2172,11 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -3520,42 +2207,12 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -3586,24 +2243,9 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
             ],
             "responses":{
                "200":{
@@ -3634,48 +2276,13 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/organizationSchemeQueryParam"},
+                {"$ref":"#/components/parameters/organizationSchemeOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -3706,30 +2313,16 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"agencyID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
+                {"$ref":"#/components/parameters/agencyIdParam"},
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/versionParam"},
                {
                   "name":"organisationID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la organización"
                },
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"version",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               }
+              
             ],
             "responses":{
                "200":{
@@ -3760,30 +2353,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/variableFamilyQueryParam"},
+                {"$ref":"#/components/parameters/variableFamilyOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -3818,7 +2391,7 @@
                   "name":"id",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la familia de variables"
                }
             ],
             "responses":{
@@ -3854,32 +2427,12 @@
                   "name":"id",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la familia de variables"
                },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/variableQueryParam"},
+                {"$ref":"#/components/parameters/variableOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -3910,30 +2463,10 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/variableQueryParam"},
+                {"$ref":"#/components/parameters/variableOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -3968,7 +2501,7 @@
                   "name":"id",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la variable"
                }
             ],
             "responses":{
@@ -4004,32 +2537,12 @@
                   "name":"variableID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la variable"
                },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/variableElementQueryParam"},
+                {"$ref":"#/components/parameters/variableElementOrderByParam"},
             ],
             "responses":{
                "200":{
@@ -4060,17 +2573,12 @@
                "application/xml"
             ],
             "parameters":[
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
+                {"$ref":"#/components/parameters/resourceIdParam"},
                {
                   "name":"variableID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la variable"
                }
             ],
             "responses":{
@@ -4102,48 +2610,23 @@
                "application/json"
             ],
             "parameters":[
-               {
-                  "name":"resourceID",
-                  "in":"path",
-                  "type":"string",
-                  "description":""
-               },
-               {
+                 {
                   "name":"variableID",
                   "in":"path",
                   "type":"string",
-                  "description":""
+                  "description":"Identificador de la variable"
                },
                {
                   "name":"fields",
                   "in":"query",
                   "type":"string",
-                  "description":""
+                  "description":"Campos en la respuesta que pueden mostrarse/ocultarse. <br>Valores válidos:<ul><li>\"-point\": Ocultar campo punto</li><li>\"-geometry\": Ocultar el campo geometría</li><li>\"-geographicalGranularity\": Ocultar la granularidad geográfica</li></ul>Ejemplo: fields=\"-geometry\""
                },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"offset",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"orderBy",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               },
-               {
-                  "name":"query",
-                  "in":"query",
-                  "type":"string",
-                  "description":""
-               }
+                {"$ref":"#/components/parameters/resourceIdParam"},
+                {"$ref":"#/components/parameters/limitParam"},
+                {"$ref":"#/components/parameters/offsetParam"},
+                {"$ref":"#/components/parameters/variableQueryParam"},
+                {"$ref":"#/components/parameters/variableOrderByParam"},
             ],
             "responses":{
                "200":{
