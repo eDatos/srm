@@ -636,12 +636,16 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     @SuppressWarnings("rawtypes")
     private void executeQueryFullVariableElementAndUpdateCodeMetamacResult(Long idCodelist, Map<Long, ItemResult> mapCodeByItemId) {
         StringBuilder sbVariableElements = new StringBuilder();
-        sbVariableElements.append("SELECT c.TB_CODES as ITEM_ID, ave.URN as VE_URN, ave.CODE as VE_CODE, ls.LOCALE as SHORT_NAME_LOCALE, ls.LABEL as SHORT_NAME_LABEL ");
+        sbVariableElements.append("SELECT c.TB_CODES as ITEM_ID, ave.URN as VE_URN, ave.CODE as VE_CODE, ls.LOCALE as SHORT_NAME_LOCALE, ls.LABEL as SHORT_NAME_LABEL, ");
+        sbVariableElements.append("graAn.CODE AS GRA_CODE, graAn.URN AS GRA_URN, graLs.LOCALE AS GRA_CODE_NAME_LOCALE, graLs.LABEL AS GRA_CODE_NAME_LABEL ");
         sbVariableElements.append("FROM TB_M_CODES c ");
         sbVariableElements.append("INNER JOIN TB_CODES cb on c.TB_CODES = cb.ID ");
         sbVariableElements.append("INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK ");
         sbVariableElements.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS ave on ve.IDENTIFIABLE_ARTEFACT_FK = ave.ID ");
         sbVariableElements.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls ON ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK ");
+        sbVariableElements.append("INNER JOIN TB_CODES graCod ON graCod.ID = ve.GEOGRAPHICAL_GRANULARITY_FK ");
+        sbVariableElements.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS graAn on graCod.NAMEABLE_ARTEFACT_FK = graAn.ID ");
+        sbVariableElements.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS graLs ON graLs.INTERNATIONAL_STRING_FK = graAn.NAME_FK ");
         sbVariableElements.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
 
         Query queryVariableElements = getEntityManager().createNativeQuery(sbVariableElements.toString());
@@ -659,8 +663,8 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
                 variableElementResult.setUrn(getString(variableElementResultSqlArray[i++]));
                 variableElementResult.setCode(getString(variableElementResultSqlArray[i++]));
             } else {
-                i++;
-                i++;
+                i++; // code
+                i++; // urn
             }
             String locale = getString(variableElementResultSqlArray[i++]);
             if (locale == null) {
@@ -668,6 +672,25 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             } else {
                 String label = getString(variableElementResultSqlArray[i++]);
                 variableElementResult.getShortName().put(locale, label);
+            }
+
+            // Granularity
+            ItemResult geographicalGranularity = variableElementResult.getGeographicalGranularity();
+            if (geographicalGranularity == null) {
+                geographicalGranularity = new ItemResult();
+                variableElementResult.setGeographicalGranularity(geographicalGranularity);
+                geographicalGranularity.setCode(getString(variableElementResultSqlArray[i++]));
+                geographicalGranularity.setUrn(getString(variableElementResultSqlArray[i++]));
+            } else {
+                i++; // code
+                i++; // urn
+            }
+            String localeGranularity = getString(variableElementResultSqlArray[i++]);
+            if (localeGranularity == null) {
+                i++; // label
+            } else {
+                String labelGranularity = getString(variableElementResultSqlArray[i++]);
+                geographicalGranularity.getName().put(localeGranularity, labelGranularity);
             }
         }
     }

@@ -43,6 +43,7 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.ItemResource;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ReplaceToResources;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Variable;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElement;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElementResource;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElements;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElementsGeoInfo;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.VariableElementsGeoInfoFeature;
@@ -361,7 +362,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (org.siemac.metamac.srm.core.code.domain.VariableElement source : sources.getValues()) {
-            Resource target = toResource(source);
+            VariableElementResource target = toResource(source);
             targets.getVariableElements().add(target);
         }
         return targets;
@@ -378,7 +379,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (org.siemac.metamac.srm.core.code.domain.VariableElementResult source : sources) {
-            Resource target = toResource(variableID, source);
+            VariableElementResource target = toResource(variableID, source);
             targets.getVariableElements().add(target);
         }
         return targets;
@@ -470,23 +471,32 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    private Resource toResource(org.siemac.metamac.srm.core.code.domain.VariableElement source) {
+    private VariableElementResource toResource(org.siemac.metamac.srm.core.code.domain.VariableElement source) {
         if (source == null) {
             return null;
         }
-        Resource target = new Resource();
+        VariableElementResource target = new VariableElementResource();
         toResource(source.getIdentifiableArtefact(), SrmRestConstants.KIND_VARIABLE_ELEMENT, toVariableElementSelfLink(source), target, false);
         target.setName(toInternationalString(source.getShortName()));
+
+        if (source.getGeographicalGranularity() != null) {
+            target.setGeographicalGranularity(toResource(source.getGeographicalGranularity()));
+        }
         return target;
     }
 
-    private Resource toResource(String variableID, org.siemac.metamac.srm.core.code.domain.VariableElementResult source) {
+    private VariableElementResource toResource(String variableID, org.siemac.metamac.srm.core.code.domain.VariableElementResult source) {
         if (source == null) {
             return null;
         }
-        Resource target = new Resource();
+        VariableElementResource target = new VariableElementResource();
         toResource(source, SrmRestConstants.KIND_VARIABLE_ELEMENT, toVariableElementSelfLink(variableID, source), target, false);
         target.setName(toInternationalString(source.getShortName()));
+
+        if (source.getGeographicalGranularity() != null) {
+            ItemResource resource = toResource(source.getGeographicalGranularity());
+            target.setGeographicalGranularity(resource);
+        }
         return target;
     }
 
