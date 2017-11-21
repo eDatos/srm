@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sr:codes xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="structuralResources#codes" total="40" limit="4" offset="4" selfLink="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=4" firstLink="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=0" previousLink="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=0" nextLink="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=8" lastLink="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=36">
+<sr:codes xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" xmlns:sr="http://www.siemac.org/metamac/rest/structural-resources/v1.0/domain" kind="structuralResources#codes" total="40" limit="4" offset="4" selfLink="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=4" firstLink="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=0" previousLink="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=0" nextLink="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=8" lastLink="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes?query=ID LIKE &quot;1&quot; AND NAME LIKE &quot;2&quot;&amp;limit=4&amp;offset=36">
     <sr:code kind="structuralResources#code">
         <cdomain:id>item1</cdomain:id>
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item1</cdomain:urn>
@@ -8,13 +8,13 @@
             <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
         </cdomain:name>
-        <sr:variableElement kind="structuralResources#variableElement">
+        <sr:variableElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sr:VariableElementResource" kind="structuralResources#variableElement">
             <cdomain:id>variableElement-item1</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElement-item1</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/variableElement-item1"/>
             <cdomain:name>
-                <cdomain:text xml:lang="en">shortName-variableElement-item1 in English</cdomain:text>
                 <cdomain:text xml:lang="es">shortName-variableElement-item1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">shortName-variableElement-item1 in English</cdomain:text>
             </cdomain:name>
         </sr:variableElement>
     </sr:code>
@@ -23,10 +23,10 @@
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item2</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme1/01.000/codes/item2"/>
         <cdomain:name>
-            <cdomain:text xml:lang="es">name-item2 en Español</cdomain:text>
             <cdomain:text xml:lang="en">name-item2 in English</cdomain:text>
+            <cdomain:text xml:lang="es">name-item2 en Español</cdomain:text>
         </cdomain:name>
-        <sr:variableElement kind="structuralResources#variableElement">
+        <sr:variableElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sr:VariableElementResource" kind="structuralResources#variableElement">
             <cdomain:id>variableElement-item2</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElement-item2</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/variableElement-item2"/>
@@ -45,13 +45,13 @@
             <cdomain:text xml:lang="es">name-item3 en Español</cdomain:text>
         </cdomain:name>
         <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).item2</sr:parent>
-        <sr:variableElement kind="structuralResources#variableElement">
+        <sr:variableElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sr:VariableElementResource" kind="structuralResources#variableElement">
             <cdomain:id>variableElement-item3</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElement-item3</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/variableElement-item3"/>
             <cdomain:name>
-                <cdomain:text xml:lang="en">shortName-variableElement-item3 in English</cdomain:text>
                 <cdomain:text xml:lang="es">shortName-variableElement-item3 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">shortName-variableElement-item3 in English</cdomain:text>
             </cdomain:name>
         </sr:variableElement>
     </sr:code>
@@ -60,16 +60,16 @@
         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme2(01.000).item1</cdomain:urn>
         <cdomain:selfLink kind="structuralResources#code" href="http://data.istac.es/apis/structural-resources/v1.0/codelists/agency1/itemScheme2/01.000/codes/item1"/>
         <cdomain:name>
-            <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-item1 en Español</cdomain:text>
+            <cdomain:text xml:lang="en">name-item1 in English</cdomain:text>
         </cdomain:name>
-        <sr:variableElement kind="structuralResources#variableElement">
+        <sr:variableElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sr:VariableElementResource" kind="structuralResources#variableElement">
             <cdomain:id>variableElement-item1</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=variable01.variableElement-item1</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#variableElement" href="http://data.istac.es/apis/structural-resources/v1.0/variables/variable01/variableelements/variableElement-item1"/>
             <cdomain:name>
-                <cdomain:text xml:lang="en">shortName-variableElement-item1 in English</cdomain:text>
                 <cdomain:text xml:lang="es">shortName-variableElement-item1 en Español</cdomain:text>
+                <cdomain:text xml:lang="en">shortName-variableElement-item1 in English</cdomain:text>
             </cdomain:name>
         </sr:variableElement>
     </sr:code>

@@ -114,6 +114,9 @@ public abstract class SrmRestInternalFacadeV10OrganisationsTest extends SrmRestI
                             if (NOT_EXISTS.equals(agencyID) || NOT_EXISTS.equals(resourceID) || NOT_EXISTS.equals(version)) {
                                 itemSchemeVersion = null;
                             } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_1_CODE.equals(resourceID) && (VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
+                                if (organisationSchemeTypeEnum == null) {
+                                    organisationSchemeTypeEnum = OrganisationSchemeTypeEnum.AGENCY_SCHEME;
+                                }
                                 itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, organisationSchemeTypeEnum);
                             } else if (AGENCY_1.equals(agencyID) && ITEM_SCHEME_ORGANISATION_TYPE_AGENCY_1_CODE.equals(resourceID) && (VERSION_1.equals(version) || Boolean.TRUE.equals(latest))) {
                                 itemSchemeVersion = OrganisationsDoMocks.mockOrganisationSchemeWithOrganisations(AGENCY_1, ITEM_SCHEME_ORGANISATION_TYPE_AGENCY_1_CODE, VERSION_1,
