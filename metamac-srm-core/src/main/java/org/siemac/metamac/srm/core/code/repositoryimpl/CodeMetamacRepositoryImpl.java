@@ -674,23 +674,24 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
                 variableElementResult.getShortName().put(locale, label);
             }
 
-            // Granularity
-            ItemResult geographicalGranularity = variableElementResult.getGeographicalGranularity();
-            if (geographicalGranularity == null) {
-                geographicalGranularity = new ItemResult();
-                variableElementResult.setGeographicalGranularity(geographicalGranularity);
-                geographicalGranularity.setCode(getString(variableElementResultSqlArray[i++]));
-                geographicalGranularity.setUrn(getString(variableElementResultSqlArray[i++]));
-            } else {
-                i++; // code
-                i++; // urn
-            }
-            String localeGranularity = getString(variableElementResultSqlArray[i++]);
-            if (localeGranularity == null) {
-                i++; // label
-            } else {
-                String labelGranularity = getString(variableElementResultSqlArray[i++]);
-                geographicalGranularity.getName().put(localeGranularity, labelGranularity);
+            // Granularity: Is Optional
+            int code = i++;
+            int urn = i++;
+            if (variableElementResultSqlArray[code] != null && variableElementResultSqlArray[urn] != null) {
+                ItemResult geographicalGranularity = variableElementResult.getGeographicalGranularity();
+                if (geographicalGranularity == null) {
+                    geographicalGranularity = new ItemResult();
+                    variableElementResult.setGeographicalGranularity(geographicalGranularity);
+                    geographicalGranularity.setCode(getString(variableElementResultSqlArray[code]));
+                    geographicalGranularity.setUrn(getString(variableElementResultSqlArray[urn]));
+                }
+                String localeGranularity = getString(variableElementResultSqlArray[i++]);
+                if (localeGranularity == null) {
+                    i++; // label
+                } else {
+                    String labelGranularity = getString(variableElementResultSqlArray[i++]);
+                    geographicalGranularity.getName().put(localeGranularity, labelGranularity);
+                }
             }
         }
     }
