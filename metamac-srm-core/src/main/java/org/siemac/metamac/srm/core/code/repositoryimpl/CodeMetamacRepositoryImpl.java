@@ -643,8 +643,8 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         sbVariableElements.append("INNER JOIN TB_M_VARIABLE_ELEMENTS ve on ve.ID = c.VARIABLE_ELEMENT_FK ");
         sbVariableElements.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS ave on ve.IDENTIFIABLE_ARTEFACT_FK = ave.ID ");
         sbVariableElements.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls ON ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK ");
-        sbVariableElements.append("INNER JOIN TB_CODES graCod ON graCod.ID = ve.GEOGRAPHICAL_GRANULARITY_FK ");
-        sbVariableElements.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS graAn on graCod.NAMEABLE_ARTEFACT_FK = graAn.ID ");
+        sbVariableElements.append("LEFT OUTER JOIN TB_CODES graCod ON graCod.ID = ve.GEOGRAPHICAL_GRANULARITY_FK ");
+        sbVariableElements.append("LEFT OUTER JOIN TB_ANNOTABLE_ARTEFACTS graAn on graCod.NAMEABLE_ARTEFACT_FK = graAn.ID ");
         sbVariableElements.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS graLs ON graLs.INTERNATIONAL_STRING_FK = graAn.NAME_FK ");
         sbVariableElements.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
 
