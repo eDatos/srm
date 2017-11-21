@@ -20,7 +20,7 @@ import com.google.gwt.core.client.GWT;
  */
 public class MetamacSrmWeb extends MetamacSecurityEntryPoint {
 
-    private static final Boolean               SECURITY_ENABLED = false;
+    private static final Boolean               SECURITY_ENABLED = true;
 
     private static Logger                      logger           = Logger.getLogger(MetamacSrmWeb.class.getName());
 
