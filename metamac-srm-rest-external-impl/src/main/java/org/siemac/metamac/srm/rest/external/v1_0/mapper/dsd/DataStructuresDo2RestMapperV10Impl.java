@@ -363,6 +363,12 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         for (DimensionVisualisationInfo source : sources) {
             DimensionVisualisation target = new DimensionVisualisation();
             target.setDimension(toDimensionReference(source.getDimension()));
+            if (source.getDisplayOrder() != null) {
+                target.setOrder(source.getDisplayOrder().getNameableArtefact().getCode());
+            }
+            if (source.getHierarchyLevelsOpen() != null) {
+                target.setOpenness(source.getHierarchyLevelsOpen().getNameableArtefact().getCode());
+            }
             targets.getDimensionVisualisations().add(target);
         }
         return targets;
