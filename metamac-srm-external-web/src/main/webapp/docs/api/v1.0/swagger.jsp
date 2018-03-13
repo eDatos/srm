@@ -66,10 +66,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                  "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal" 
                }
             }
          }
@@ -101,10 +107,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -137,10 +149,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -170,10 +188,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -207,10 +231,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -247,10 +277,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -281,10 +317,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -316,10 +358,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -352,10 +400,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -385,10 +439,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -419,10 +479,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -454,10 +520,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -490,10 +562,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -523,10 +601,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -560,10 +644,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -600,10 +690,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -613,7 +709,7 @@
             "tags":[
                "Clasificaciones"
             ],
-            "description":"",
+            "description":"Permite obtener el listado de familias de clasificaciones",
             "operationId":"resource__v1.0_codelistfamilies_findCodelistFamilies_GET",
             "produces":[
                "application/json",
@@ -644,10 +740,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -657,7 +759,7 @@
             "tags":[
                "Clasificaciones"
             ],
-            "description":"",
+            "description":"Permite obtener una familia de clasificaciones en particular",
             "operationId":"resource__v1.0_codelistfamilies__id__retrieveCodelistFamilyById_GET",
             "produces":[
                "application/json",
@@ -680,10 +782,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -693,7 +801,7 @@
             "tags":[
                "Clasificaciones"
             ],
-            "description":"",
+            "description":"Permite obtener el listado de clasificaciones",
             "operationId":"resource__v1.0_codelists_findCodelists_GET",
             "produces":[
                "application/json",
@@ -714,10 +822,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -727,7 +841,7 @@
             "tags":[
                "Clasificaciones"
             ],
-            "description":"",
+            "description":"Permite obtener el listado de todas las clasificaciones mantenidas por una determinada organización.",
             "operationId":"resource__v1.0_codelists__agencyID__findCodelists_GET",
             "produces":[
                "application/json",
@@ -749,10 +863,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -762,7 +882,7 @@
             "tags":[
                "Clasificaciones"
             ],
-            "description":"",
+            "description":"Permite obtener todas las versiones de una clasificación con un determinado identificador y que además es matenida por una organización determinada.",
             "operationId":"resource__v1.0_codelists__agencyID___resourceID__findCodelists_GET",
             "produces":[
                "application/json",
@@ -786,10 +906,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -799,7 +925,7 @@
             "tags":[
                "Clasificaciones"
             ],
-            "description":"",
+            "description":"Permite consultar una versión en particular de una clasificación",
             "operationId":"resource__v1.0_codelists__agencyID___resourceID___version__retrieveCodelist_GET",
             "produces":[
                "application/json",
@@ -819,10 +945,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -832,7 +964,7 @@
             "tags":[
                "Clasificaciones"
             ],
-            "description":"",
+            "description":"Permite consultar los códigos de una versión de una clasificación.",
             "operationId":"resource__v1.0_codelists__agencyID___resourceID___version__codes_findCodes_GET",
             "produces":[
                "application/json",
@@ -874,10 +1006,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -887,7 +1025,7 @@
             "tags":[
                "Clasificaciones"
             ],
-            "description":"",
+            "description":"Permite consultar un código concreto de una versión de una clasificación",
             "operationId":"resource__v1.0_codelists__agencyID___resourceID___version__codes__codeID__retrieveCode_GET",
             "produces":[
                "application/json",
@@ -913,10 +1051,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -944,10 +1088,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -978,10 +1128,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1013,10 +1169,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1049,10 +1211,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1082,10 +1250,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1119,10 +1293,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1159,10 +1339,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1193,10 +1379,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1228,10 +1420,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1264,10 +1462,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1297,10 +1501,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1336,10 +1546,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1370,10 +1586,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1405,10 +1627,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1441,10 +1669,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1474,10 +1708,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1511,10 +1751,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1551,10 +1797,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1585,10 +1837,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1620,10 +1878,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1656,10 +1920,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1689,10 +1959,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1726,10 +2002,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1765,10 +2047,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1799,10 +2087,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1834,10 +2128,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1870,10 +2170,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1903,10 +2209,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1937,10 +2249,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -1972,10 +2290,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2008,10 +2332,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2041,10 +2371,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2078,10 +2414,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2118,10 +2460,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2152,10 +2500,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2187,10 +2541,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2223,10 +2583,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2256,10 +2622,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2293,10 +2665,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2333,10 +2711,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2367,10 +2751,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2403,10 +2793,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2443,10 +2839,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2477,10 +2879,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2513,10 +2921,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2553,10 +2967,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2590,10 +3010,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
@@ -2637,10 +3063,16 @@
                   "headers":{
 
                   },
-                  "description":"Success"
+                  "description":"Éxito. Indica que la petición ha sido resuelta correctamente"
                },
-               "default":{
-                  "description":"Unexpected error."
+               "406":{
+                  "description":"No aceptable. El formato solicitado no es válido"
+               },
+               "500":{
+                  "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado"
+               },
+               "503":{
+                   "description":"Servicio no disponible. Indica que actualmente el servidor no está disponible y por tanto, la solicitud no puede procesarse. El error puede deberse a una sobrecarga temporal o a labores de mantenimiento del servidor. Se trata de una situación temporal"
                }
             }
          }
