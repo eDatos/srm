@@ -902,7 +902,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     }
 
     private List<ItemResult> memoryPagination(List<ItemResult> items, int offset, int limit) {
-        int realLimit = offset > 0 ? limit + 1 : limit;
+        int realLimit = offset + limit;
 
         if (offset > items.size()) {
             return new ArrayList<>();
