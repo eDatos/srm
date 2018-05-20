@@ -356,6 +356,55 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         testFindCodes(WILDCARD_ALL, ITEM_SCHEME_1_CODE, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, null); // query
         testFindCodes(AGENCY_1, WILDCARD_ALL, VERSION_1, "2", "0", QUERY_ID_LIKE_1_NAME_LIKE_2, ORDER_BY_ID_DESC); // query and order
     }
+    
+    @Test
+    public void testFindCodesWithOffsetGtZero() throws Exception {
+        resetMocks();
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, "2", null, null, null);
+        assertEquals(2, codes.getCodes().size());
+        assertEquals("code2A", codes.getCodes().get(0).getId());
+        assertEquals("code2B", codes.getCodes().get(1).getId());
+    }
+    
+    @Test
+    public void testFindCodesWithOffsetGtCodesSize() throws Exception {
+        resetMocks();
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, "100", null, null, null);
+        assertTrue(codes.getCodes().isEmpty());
+    }
+    
+    @Test
+    public void testFindCodesWithOffsetAndLimitSetted() throws Exception {
+        resetMocks();
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, "2", "1", null, null, null);
+        assertEquals(2, codes.getCodes().size());
+        assertEquals("code2", codes.getCodes().get(0).getId());
+        assertEquals("code2A", codes.getCodes().get(1).getId());
+    }
+    
+    @Test
+    public void testFindCodesWithLimitGtZero() throws Exception {
+        resetMocks();
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, "2", null, null, null, null);
+        assertEquals(2, codes.getCodes().size());
+        assertEquals("code1", codes.getCodes().get(0).getId());
+        assertEquals("code2", codes.getCodes().get(1).getId());
+    }
+    
+    @Test
+    public void testFindCodesWithLimitAndOffsetGtZero() throws Exception {
+        resetMocks(); 
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, "1", "1", null, null, null);
+        assertEquals(1, codes.getCodes().size());
+        assertEquals("code2", codes.getCodes().get(0).getId());
+    }
+    
+    @Test
+    public void testFindCodesWithLimitAndOffsetGtCodesSize() throws Exception {
+        resetMocks();
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, "100", "100", null, null, null);
+        assertTrue(codes.getCodes().isEmpty());
+    }
 
     @Test
     public void testFindCodesXml() throws Exception {

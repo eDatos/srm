@@ -28,6 +28,7 @@ import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
+import org.siemac.metamac.rest.api.constants.RestApiConstants;
 import org.siemac.metamac.rest.common.v1_0.domain.ComparisonOperator;
 import org.siemac.metamac.rest.exception.RestCommonServiceExceptionType;
 import org.siemac.metamac.rest.exception.RestException;
@@ -934,9 +935,9 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 // We are filtering the result from DB this way becasue the method that really gathers the results are required by other operations that need more information (variable elements).
                 // Refactoring that method is more difficult and should be taken with care
                 if (limit != null || offset != null) {
-                    int offsetInt = offset != null ? Integer.parseInt(offset) : 0;
-                    int limitInt = limit != null ? Integer.parseInt(limit) : items.size();
-                    items = items.subList(offsetInt, offsetInt + limitInt);
+                    int firstElement = offset != null ? Integer.parseInt(offset) : RestApiConstants.DEFAULT_OFFSET;
+                    int lastElement = limit != null ? Integer.parseInt(limit) : RestApiConstants.DEFAULT_LIMIT;
+                    items = memoryPagination(items, firstElement, lastElement);
                 }
 
                 // Transform
@@ -949,6 +950,18 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
     }
 
+    private List<ItemResult> memoryPagination(List<ItemResult> items, int offset, int limit) {
+        int realLimit = offset > 0? limit + 1 : limit;
+        
+        if (offset > items.size()) {
+            return new ArrayList<>();
+        } else if (realLimit > items.size()) {
+            return items.subList(offset, items.size());
+        } else {
+            return items.subList(offset, realLimit);
+        }
+    }
+    
     @Override
     public VariableFamily retrieveVariableFamilyById(String id) {
         try {
