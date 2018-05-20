@@ -898,7 +898,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         VisualisationConfigurations targets = new VisualisationConfigurations();
         for (org.siemac.metamac.srm.core.code.domain.CodelistOrderVisualisation source : sources) {
             VisualisationConfiguration target = toVisualisationConfiguration(source.getNameableArtefact());
-            if (defaultOrderVisualisation.getNameableArtefact().getCode().equals(source.getNameableArtefact().getCode())) {
+            if (defaultOrderVisualisation.getNameableArtefact().getCode().equals(source.getNameableArtefact().getCode()) && target != null) {
                 target.setDefault(Boolean.TRUE);
             }
             targets.getVisualisationConfigurations().add(target);
@@ -914,7 +914,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         VisualisationConfigurations targets = new VisualisationConfigurations();
         for (org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation source : sources) {
             VisualisationConfiguration target = toVisualisationConfiguration(source.getNameableArtefact());
-            if (defaultOpennessVisualisation.getNameableArtefact().getCode().equals(source.getNameableArtefact().getCode())) {
+            if (defaultOpennessVisualisation.getNameableArtefact().getCode().equals(source.getNameableArtefact().getCode()) && target != null) {
                 target.setDefault(Boolean.TRUE);
             }
             targets.getVisualisationConfigurations().add(target);

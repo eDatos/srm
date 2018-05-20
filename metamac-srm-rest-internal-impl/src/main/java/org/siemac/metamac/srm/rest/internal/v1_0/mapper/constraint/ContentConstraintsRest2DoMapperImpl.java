@@ -62,7 +62,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
 
     public ContentConstraintsRest2DoMapperImpl() {
         super();
-        contentConstraintCriteriaMapper = new RestCriteria2SculptorCriteria<ContentConstraint>(ContentConstraint.class, ContentConstraintCriteriaPropertyOrder.class,
+        contentConstraintCriteriaMapper = new RestCriteria2SculptorCriteria<>(ContentConstraint.class, ContentConstraintCriteriaPropertyOrder.class,
                 ContentConstraintCriteriaPropertyRestriction.class, new ContentConstraintCriteriaCallback());
     }
 
@@ -74,7 +74,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
     private class ContentConstraintCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) {
             ContentConstraintCriteriaPropertyRestriction propertyNameCriteria = ContentConstraintCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
 
             switch (propertyNameCriteria) {
@@ -89,10 +89,10 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
                 case LATEST:
                     return buildSculptorPropertyCriteria(ContentConstraintProperties.maintainableArtefact().latestFinal(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                 case PROC_STATUS:
-                    if (ProcStatus.INTERNALLY_PUBLISHED.equals(propertyRestriction.getValue())) {
+                    if (ProcStatus.INTERNALLY_PUBLISHED.toString().equals(propertyRestriction.getValue())) {
                         propertyRestriction.setValue(BooleanUtils.toStringTrueFalse(true));
                         return buildSculptorPropertyCriteria(ContentConstraintProperties.maintainableArtefact().finalLogicClient(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
-                    } else if (ProcStatus.EXTERNALLY_PUBLISHED.equals(propertyRestriction.getValue())) {
+                    } else if (ProcStatus.EXTERNALLY_PUBLISHED.toString().equals(propertyRestriction.getValue())) {
                         propertyRestriction.setValue(BooleanUtils.toStringTrueFalse(true));
                         return buildSculptorPropertyCriteria(ContentConstraintProperties.maintainableArtefact().publicLogic(), PropertyTypeEnum.BOOLEAN, propertyRestriction);
                     }
@@ -111,7 +111,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+        public Property retrievePropertyOrder(MetamacRestOrder order) {
             ContentConstraintCriteriaPropertyOrder propertyNameCriteria = ContentConstraintCriteriaPropertyOrder.fromValue(order.getPropertyName());
 
             switch (propertyNameCriteria) {
@@ -125,7 +125,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrderDefault() throws RestException {
+        public Property retrievePropertyOrderDefault() {
             return ContentConstraintProperties.maintainableArtefact().code();
         }
 
@@ -245,7 +245,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
         KeyParts keyParts = source.getKeyParts();
         if (keyParts != null) {
             for (org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPart keyPartSoruce : keyParts.getKeyParts()) {
-                KeyPart keyPartEntity = keyPartToEntity(ctx, keyPartSoruce);
+                KeyPart keyPartEntity = keyPartToEntity(keyPartSoruce);
                 if (keyPartEntity != null) {
                     target.addPart(keyPartEntity);
                 }
@@ -256,7 +256,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
         return target;
 
     }
-    private KeyPart keyPartToEntity(ServiceContext ctx, org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPart source) throws MetamacException {
+    private KeyPart keyPartToEntity(org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.KeyPart source) {
         if (source == null) {
             return null;
         }

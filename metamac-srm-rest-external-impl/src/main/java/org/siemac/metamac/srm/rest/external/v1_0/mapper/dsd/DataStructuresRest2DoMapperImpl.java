@@ -26,7 +26,7 @@ public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl im
     private RestCriteria2SculptorCriteria<DataStructureDefinitionVersionMetamac> conceptSchemeCriteriaMapper = null;
 
     public DataStructuresRest2DoMapperImpl() {
-        conceptSchemeCriteriaMapper = new RestCriteria2SculptorCriteria<DataStructureDefinitionVersionMetamac>(DataStructureDefinitionVersionMetamac.class, DataStructureCriteriaPropertyOrder.class,
+        conceptSchemeCriteriaMapper = new RestCriteria2SculptorCriteria<>(DataStructureDefinitionVersionMetamac.class, DataStructureCriteriaPropertyOrder.class,
                 DataStructureCriteriaPropertyRestriction.class, new DataStructureDefinitionCriteriaCallback());
     }
 
@@ -38,7 +38,7 @@ public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl im
     private class DataStructureDefinitionCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) {
             DataStructureCriteriaPropertyRestriction propertyNameCriteria = DataStructureCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -84,7 +84,7 @@ public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl im
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+        public Property retrievePropertyOrder(MetamacRestOrder order) {
             DataStructureCriteriaPropertyOrder propertyNameCriteria = DataStructureCriteriaPropertyOrder.fromValue(order.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -96,7 +96,7 @@ public class DataStructuresRest2DoMapperImpl extends BaseRest2DoMapperV10Impl im
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrderDefault() throws RestException {
+        public Property retrievePropertyOrderDefault() {
             return DataStructureDefinitionVersionMetamacProperties.maintainableArtefact().code();
         }
     }

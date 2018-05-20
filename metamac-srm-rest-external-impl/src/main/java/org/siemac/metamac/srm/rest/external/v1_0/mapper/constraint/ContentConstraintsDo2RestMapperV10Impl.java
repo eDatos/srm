@@ -30,6 +30,7 @@ import com.arte.statistic.sdmx.srm.core.constraint.domain.ContentConstraint;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.KeyPart;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.KeyValue;
 import com.arte.statistic.sdmx.srm.core.constraint.domain.RegionValue;
+import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.KeyPartTypeEnum;
 
 @org.springframework.stereotype.Component
 public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10Impl implements ContentConstraintsDo2RestMapperV10 {
@@ -249,7 +250,7 @@ public class ContentConstraintsDo2RestMapperV10Impl extends BaseDo2RestMapperV10
         keyPart.setPosition(source.getPosition());
         keyPart.setType(KeyPartType.valueOf(source.getType().getName()));
 
-        if (KeyPartType.TIME_RANGE.equals(source.getType())) {
+        if (KeyPartTypeEnum.TIME_RANGE.equals(source.getType())) {
             keyPart.setBeforePeriod(source.getBeforePeriod());
             keyPart.setBeforePeriodInclusive(source.getBeforePeriodInclusive());
 

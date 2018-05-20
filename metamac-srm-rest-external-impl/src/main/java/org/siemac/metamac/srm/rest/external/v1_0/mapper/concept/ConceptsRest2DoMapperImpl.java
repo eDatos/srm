@@ -26,9 +26,9 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
     private RestCriteria2SculptorCriteria<ConceptMetamac>              conceptCriteriaMapper       = null;
 
     public ConceptsRest2DoMapperImpl() {
-        conceptSchemeCriteriaMapper = new RestCriteria2SculptorCriteria<ConceptSchemeVersionMetamac>(ConceptSchemeVersionMetamac.class, ConceptSchemeCriteriaPropertyOrder.class,
+        conceptSchemeCriteriaMapper = new RestCriteria2SculptorCriteria<>(ConceptSchemeVersionMetamac.class, ConceptSchemeCriteriaPropertyOrder.class,
                 ConceptSchemeCriteriaPropertyRestriction.class, new ConceptSchemeCriteriaCallback());
-        conceptCriteriaMapper = new RestCriteria2SculptorCriteria<ConceptMetamac>(ConceptMetamac.class, ConceptCriteriaPropertyOrder.class, ConceptCriteriaPropertyRestriction.class,
+        conceptCriteriaMapper = new RestCriteria2SculptorCriteria<>(ConceptMetamac.class, ConceptCriteriaPropertyOrder.class, ConceptCriteriaPropertyRestriction.class,
                 new ConceptCriteriaCallback());
     }
 
@@ -45,7 +45,7 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
     private class ConceptSchemeCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) {
             ConceptSchemeCriteriaPropertyRestriction propertyNameCriteria = ConceptSchemeCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -78,7 +78,7 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+        public Property retrievePropertyOrder(MetamacRestOrder order) {
             ConceptSchemeCriteriaPropertyOrder propertyNameCriteria = ConceptSchemeCriteriaPropertyOrder.fromValue(order.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -90,7 +90,7 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrderDefault() throws RestException {
+        public Property retrievePropertyOrderDefault() {
             return ConceptSchemeVersionMetamacProperties.maintainableArtefact().code();
         }
     }
@@ -98,7 +98,7 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
     private class ConceptCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) {
             ConceptCriteriaPropertyRestriction propertyNameCriteria = ConceptCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -134,7 +134,7 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+        public Property retrievePropertyOrder(MetamacRestOrder order) {
             ConceptCriteriaPropertyOrder propertyNameCriteria = ConceptCriteriaPropertyOrder.fromValue(order.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -146,7 +146,7 @@ public class ConceptsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implemen
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrderDefault() throws RestException {
+        public Property retrievePropertyOrderDefault() {
             return ConceptMetamacProperties.nameableArtefact().code();
         }
     }

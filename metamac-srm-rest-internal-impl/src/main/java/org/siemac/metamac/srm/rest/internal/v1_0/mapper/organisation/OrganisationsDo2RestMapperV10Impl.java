@@ -158,14 +158,12 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         if (source == null) {
             return null;
         }
-        OrganisationScheme target = toOrganisationSchemeCommon(source);
-        return target;
+        return toOrganisationSchemeCommon(source);
     }
 
     @Override
     public AgencyScheme toAgencyScheme(OrganisationSchemeVersionMetamac source) throws MetamacException {
-        OrganisationScheme target = toOrganisationSchemeCommon(source);
-        return (AgencyScheme) target;
+        return (AgencyScheme) toOrganisationSchemeCommon(source);
     }
 
     @Override
@@ -369,14 +367,15 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         if (source == null) {
             return null;
         }
-        Organisation target = toOrganisationCommon(source);
-        return target;
+        return toOrganisationCommon(source);
     }
 
     @Override
     public Agency toAgency(OrganisationMetamac source) throws MetamacException {
         Organisation target = toOrganisationCommon(source);
-        target.setNestedId(source.getIdAsMaintainer()); // Overrided nestedId to agencies
+        if (source != null) {
+            target.setNestedId(source.getIdAsMaintainer()); // Overrided nestedId to agencies
+        }
         return (Agency) target;
     }
 

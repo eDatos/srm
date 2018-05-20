@@ -54,7 +54,8 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Impl implements OrganisationsDo2RestMapperV10 {
 
     @Override
-    public OrganisationSchemes toOrganisationSchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
+    public OrganisationSchemes toOrganisationSchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy,
+            Integer limit) {
 
         OrganisationSchemeTypeEnum type = null;
 
@@ -115,7 +116,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
     }
 
     @Override
-    public DataProviderSchemes toDataProviderSchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
+    public DataProviderSchemes toDataProviderSchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy,
+            Integer limit) {
 
         OrganisationSchemeTypeEnum type = OrganisationSchemeTypeEnum.DATA_PROVIDER_SCHEME;
 
@@ -135,7 +137,8 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
     }
 
     @Override
-    public DataConsumerSchemes toDataConsumerSchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy, Integer limit) {
+    public DataConsumerSchemes toDataConsumerSchemes(PagedResult<OrganisationSchemeVersionMetamac> sourcesPagedResult, String agencyID, String resourceID, String query, String orderBy,
+            Integer limit) {
 
         OrganisationSchemeTypeEnum type = OrganisationSchemeTypeEnum.DATA_CONSUMER_SCHEME;
 
@@ -159,14 +162,12 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         if (source == null) {
             return null;
         }
-        OrganisationScheme target = toOrganisationSchemeCommon(source);
-        return target;
+        return toOrganisationSchemeCommon(source);
     }
 
     @Override
     public AgencyScheme toAgencyScheme(OrganisationSchemeVersionMetamac source) throws MetamacException {
-        OrganisationScheme target = toOrganisationSchemeCommon(source);
-        return (AgencyScheme) target;
+        return (AgencyScheme) toOrganisationSchemeCommon(source);
     }
 
     @Override
@@ -370,14 +371,15 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         if (source == null) {
             return null;
         }
-        Organisation target = toOrganisationCommon(source);
-        return target;
+        return toOrganisationCommon(source);
     }
 
     @Override
     public Agency toAgency(OrganisationMetamac source) throws MetamacException {
         Organisation target = toOrganisationCommon(source);
-        target.setNestedId(source.getIdAsMaintainer()); // Overrided nestedId to agencies
+        if (source != null) {
+            target.setNestedId(source.getIdAsMaintainer()); // Overrided nestedId to agencies
+        }
         return (Agency) target;
     }
 

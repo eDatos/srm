@@ -128,13 +128,12 @@ public abstract class BaseRest2DoMapperV10Impl {
                     default:
                         throw toRestExceptionParameterIncorrect(propertyName);
                 }
+            } catch (RestException e) {
+                logger.error("Error parsing Rest query", e);
+                throw (RestException) e;
             } catch (Exception e) {
                 logger.error("Error parsing Rest query", e);
-                if (e instanceof RestException) {
-                    throw (RestException) e;
-                } else {
-                    throw toRestExceptionParameterIncorrect(propertyName);
-                }
+                throw toRestExceptionParameterIncorrect(propertyName);
             }
         }
     }
@@ -211,12 +210,6 @@ public abstract class BaseRest2DoMapperV10Impl {
         target.setValidFrom(CoreCommonUtil.transformDateToDateTime(source.getValidFrom()));
         target.setValidTo(CoreCommonUtil.transformDateToDateTime(source.getValidTo()));
 
-        // target.setFinalLogic(Boolean.FALSE);
-        // target.setFinalLogicClient(finalLogicClient);
-        // target.setLatestFinal(latestFinal);
-        // target.setPublicLogic(publicLogic);
-        // target.setLatestPublic(latestPublic);
-        // target.setIsLastVersion(isLastVersion);
         target.setReplacedByVersion(source.getReplacedByVersion());
         target.setReplaceToVersion(source.getReplaceToVersion());
         target.setIsImported(Boolean.FALSE);
@@ -282,7 +275,7 @@ public abstract class BaseRest2DoMapperV10Impl {
         // Related entities: Annotations
         int annotationCount = 1;
         Set<Annotation> targetsBefore = target.getAnnotations();
-        Set<Annotation> targets = new HashSet<Annotation>();
+        Set<Annotation> targets = new HashSet<>();
 
         Annotations annotations = source.getAnnotations();
         if (annotations != null) {
@@ -292,7 +285,7 @@ public abstract class BaseRest2DoMapperV10Impl {
 
                 boolean existsBefore = false;
                 for (Annotation targetAnnotation : targetsBefore) {
-                    if (targetAnnotation.getId().equals(sourceAnnotationDto.getId())) {
+                    if (targetAnnotation.getId().equals(Long.valueOf(sourceAnnotationDto.getId()))) {
                         Annotation annotationUpdate = annotationRestToEntity(sourceAnnotationDto, targetAnnotation, target);
                         annotationUpdate.setCode(code);
                         targets.add(annotationUpdate); // Update
@@ -302,8 +295,10 @@ public abstract class BaseRest2DoMapperV10Impl {
                 }
                 if (!existsBefore) {
                     Annotation annotationNew = annotationRestToEntity(sourceAnnotationDto, null, target);
-                    annotationNew.setCode(code);
-                    targets.add(annotationNew);
+                    if (annotationNew != null) {
+                        annotationNew.setCode(code);
+                        targets.add(annotationNew);
+                    }
                 }
             }
 
@@ -421,7 +416,7 @@ public abstract class BaseRest2DoMapperV10Impl {
             InternationalString internationalStringTarget) {
 
         Set<LocalisedString> targetsBefore = targets;
-        targets = new HashSet<LocalisedString>();
+        targets = new HashSet<>();
 
         for (org.siemac.metamac.rest.common.v1_0.domain.LocalisedString source : sources) {
             boolean existsBefore = false;
@@ -448,7 +443,6 @@ public abstract class BaseRest2DoMapperV10Impl {
     private LocalisedString localisedStringRestToEntity(org.siemac.metamac.rest.common.v1_0.domain.LocalisedString source, LocalisedString target, InternationalString internationalStringTarget) {
         target.setLabel(source.getValue());
         target.setLocale(source.getLang());
-        // target.setIsUnmodifiable(source.getIsUnmodifiable());
         target.setInternationalString(internationalStringTarget);
         return target;
     }

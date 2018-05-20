@@ -27,12 +27,12 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 
 public class InternalWebApplicationNavigation {
 
-    private final String      PATH_STRUCTURAL_RESOURCES = "#" + NameTokens.structuralResourcesPage;
-    private final String      SEPARATOR                 = "/";
-    private final String      ITEM_SCHEME_PARAMETER     = "itemSchemeParam";
-    private final String      RESOURCE_ID_PARAMETER     = "resourceParam";
-    private final String      RESOURCE_TYPE_PARAMETER   = "resourceTypeParam";
-    private final String      VARIABLE_PARAMETER        = "variableParam";
+    private static final String      PATH_STRUCTURAL_RESOURCES = "#" + NameTokens.structuralResourcesPage;
+    private static final String      SEPARATOR                 = "/";
+    private static final String      ITEM_SCHEME_PARAMETER     = "itemSchemeParam";
+    private static final String      RESOURCE_ID_PARAMETER     = "resourceParam";
+    private static final String      RESOURCE_TYPE_PARAMETER   = "resourceTypeParam";
+    private static final String      VARIABLE_PARAMETER        = "variableParam";
 
     private final UriTemplate dataStructureTemplate;
     private final UriTemplate organisationSchemeTemplate;
@@ -94,7 +94,7 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildContentConstraintUrl(ContentConstraint contentConstraint) {
-        Map<String, String> parameters = new HashMap<String, String>(1);
+        Map<String, String> parameters = new HashMap<>(1);
         String urlPart = UrnUtils.removePrefix(contentConstraint.getMaintainableArtefact().getUrn());
         parameters.put(RESOURCE_ID_PARAMETER, urlPart);
         return contentConstraintTemplate.expand(parameters).toString();
@@ -105,7 +105,7 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildDataStructureDefinitionUrl(String urn) {
-        Map<String, String> parameters = new HashMap<String, String>(1);
+        Map<String, String> parameters = new HashMap<>(1);
         String dsdUrlPart = UrnUtils.removePrefix(urn);
         parameters.put(RESOURCE_ID_PARAMETER, dsdUrlPart);
         return dataStructureTemplate.expand(parameters).toString();
@@ -116,7 +116,7 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildOrganisationSchemeUrl(OrganisationSchemeTypeEnum organisationSchemeType, String urn) {
-        Map<String, String> parameters = new HashMap<String, String>(2);
+        Map<String, String> parameters = new HashMap<>(2);
         String organisationSchemeUrlPart = UrnUtils.removePrefix(urn);
         parameters.put(RESOURCE_TYPE_PARAMETER, organisationSchemeType.getName());
         parameters.put(RESOURCE_ID_PARAMETER, organisationSchemeUrlPart);
@@ -130,7 +130,7 @@ public class InternalWebApplicationNavigation {
     public String buildOrganisationUrl(String organisationSchemeUrn, String organisationCode, OrganisationTypeEnum organisationType) {
         String organisationSchemeUrlPart = UrnUtils.removePrefix(organisationSchemeUrn);
         String organisationUrlPart = organisationCode;
-        Map<String, String> parameters = new HashMap<String, String>(3);
+        Map<String, String> parameters = new HashMap<>(3);
         parameters.put(ITEM_SCHEME_PARAMETER, organisationSchemeUrlPart);
         parameters.put(RESOURCE_TYPE_PARAMETER, SrmRestInternalUtils.toOrganisationSchemeType(organisationType).getName());
         parameters.put(RESOURCE_ID_PARAMETER, organisationUrlPart);
@@ -142,7 +142,7 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildCategorySchemeUrl(String urn) {
-        Map<String, String> parameters = new HashMap<String, String>(1);
+        Map<String, String> parameters = new HashMap<>(1);
         String categorySchemeUrlPart = UrnUtils.removePrefix(urn);
         parameters.put(RESOURCE_ID_PARAMETER, categorySchemeUrlPart);
         return categorySchemeTemplate.expand(parameters).toString();
@@ -155,7 +155,7 @@ public class InternalWebApplicationNavigation {
     public String buildCategoryUrl(String categorySchemeUrn, String categoryCodeFull) {
         String categorySchemeUrlPart = UrnUtils.removePrefix(categorySchemeUrn);
         String categoryUrlPart = categoryCodeFull;
-        Map<String, String> parameters = new HashMap<String, String>(2);
+        Map<String, String> parameters = new HashMap<>(2);
         parameters.put(ITEM_SCHEME_PARAMETER, categorySchemeUrlPart);
         parameters.put(RESOURCE_ID_PARAMETER, categoryUrlPart);
         return categoryTemplate.expand(parameters).toString();
@@ -166,7 +166,7 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildConceptSchemeUrl(String urn) {
-        Map<String, String> parameters = new HashMap<String, String>(1);
+        Map<String, String> parameters = new HashMap<>(1);
         String conceptSchemeUrlPart = UrnUtils.removePrefix(urn);
         parameters.put(RESOURCE_ID_PARAMETER, conceptSchemeUrlPart);
         return conceptSchemeTemplate.expand(parameters).toString();
@@ -179,7 +179,7 @@ public class InternalWebApplicationNavigation {
     public String buildConceptUrl(String conceptSchemeUrn, String conceptCode) {
         String conceptSchemeUrlPart = UrnUtils.removePrefix(conceptSchemeUrn);
         String conceptUrlPart = conceptCode;
-        Map<String, String> parameters = new HashMap<String, String>(2);
+        Map<String, String> parameters = new HashMap<>(2);
         parameters.put(ITEM_SCHEME_PARAMETER, conceptSchemeUrlPart);
         parameters.put(RESOURCE_ID_PARAMETER, conceptUrlPart);
         return conceptTemplate.expand(parameters).toString();
@@ -190,7 +190,7 @@ public class InternalWebApplicationNavigation {
     }
 
     public String buildCodelistUrl(String urn) {
-        Map<String, String> parameters = new HashMap<String, String>(1);
+        Map<String, String> parameters = new HashMap<>(1);
         String codelistUrlPart = UrnUtils.removePrefix(urn);
         parameters.put(RESOURCE_ID_PARAMETER, codelistUrlPart);
         return codelistTemplate.expand(parameters).toString();
@@ -203,26 +203,26 @@ public class InternalWebApplicationNavigation {
     public String buildCodeUrl(String codelistUrn, String codeCode) {
         String codelistUrlPart = UrnUtils.removePrefix(codelistUrn);
         String codeUrlPart = codeCode;
-        Map<String, String> parameters = new HashMap<String, String>(2);
+        Map<String, String> parameters = new HashMap<>(2);
         parameters.put(ITEM_SCHEME_PARAMETER, codelistUrlPart);
         parameters.put(RESOURCE_ID_PARAMETER, codeUrlPart);
         return codeTemplate.expand(parameters).toString();
     }
 
     public String buildVariableFamilyUrl(VariableFamily variableFamily) {
-        Map<String, String> parameters = new HashMap<String, String>(1);
+        Map<String, String> parameters = new HashMap<>(1);
         parameters.put(RESOURCE_ID_PARAMETER, variableFamily.getNameableArtefact().getCode());
         return variableFamilyTemplate.expand(parameters).toString();
     }
 
     public String buildCodelistFamilyUrl(CodelistFamily codelistFamily) {
-        Map<String, String> parameters = new HashMap<String, String>(1);
+        Map<String, String> parameters = new HashMap<>(1);
         parameters.put(RESOURCE_ID_PARAMETER, codelistFamily.getNameableArtefact().getCode());
         return codelistFamilyTemplate.expand(parameters).toString();
     }
 
     public String buildVariableUrl(Variable variable) {
-        Map<String, String> parameters = new HashMap<String, String>(1);
+        Map<String, String> parameters = new HashMap<>(1);
         parameters.put(RESOURCE_ID_PARAMETER, variable.getNameableArtefact().getCode());
         return variableTemplate.expand(parameters).toString();
     }
@@ -231,7 +231,7 @@ public class InternalWebApplicationNavigation {
         return buildVariableElementUrl(variableElement.getVariable().getNameableArtefact().getCode(), variableElement.getIdentifiableArtefact().getCode());
     }
     public String buildVariableElementUrl(String variableID, String variableElementID) {
-        Map<String, String> parameters = new HashMap<String, String>(2);
+        Map<String, String> parameters = new HashMap<>(2);
         parameters.put(VARIABLE_PARAMETER, variableID);
         parameters.put(RESOURCE_ID_PARAMETER, variableElementID);
         return variableElementTemplate.expand(parameters).toString();

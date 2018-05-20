@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.base;
 
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 

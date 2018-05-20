@@ -32,11 +32,11 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
 
     public CategoriesRest2DoMapperImpl() {
         super();
-        categorySchemeCriteriaMapper = new RestCriteria2SculptorCriteria<CategorySchemeVersionMetamac>(CategorySchemeVersionMetamac.class, CategorySchemeCriteriaPropertyOrder.class,
+        categorySchemeCriteriaMapper = new RestCriteria2SculptorCriteria<>(CategorySchemeVersionMetamac.class, CategorySchemeCriteriaPropertyOrder.class,
                 CategorySchemeCriteriaPropertyRestriction.class, new CategorySchemeCriteriaCallback());
-        categoryCriteriaMapper = new RestCriteria2SculptorCriteria<CategoryMetamac>(CategoryMetamac.class, CategoryCriteriaPropertyOrder.class, CategoryCriteriaPropertyRestriction.class,
+        categoryCriteriaMapper = new RestCriteria2SculptorCriteria<>(CategoryMetamac.class, CategoryCriteriaPropertyOrder.class, CategoryCriteriaPropertyRestriction.class,
                 new CategoryCriteriaCallback());
-        categorisationCriteriaMapper = new RestCriteria2SculptorCriteria<Categorisation>(Categorisation.class, CategorisationCriteriaPropertyOrder.class,
+        categorisationCriteriaMapper = new RestCriteria2SculptorCriteria<>(Categorisation.class, CategorisationCriteriaPropertyOrder.class,
                 CategorisationCriteriaPropertyRestriction.class, new CategorisationCriteriaCallback());
     }
 
@@ -58,7 +58,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
     private class CategorySchemeCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) {
             CategorySchemeCriteriaPropertyRestriction propertyNameCriteria = CategorySchemeCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -96,7 +96,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+        public Property retrievePropertyOrder(MetamacRestOrder order) {
             CategorySchemeCriteriaPropertyOrder propertyNameCriteria = CategorySchemeCriteriaPropertyOrder.fromValue(order.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -108,7 +108,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrderDefault() throws RestException {
+        public Property retrievePropertyOrderDefault() {
             return CategorySchemeVersionMetamacProperties.maintainableArtefact().code();
         }
     }
@@ -116,7 +116,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
     private class CategoryCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) {
             CategoryCriteriaPropertyRestriction propertyNameCriteria = CategoryCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -141,7 +141,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+        public Property retrievePropertyOrder(MetamacRestOrder order) {
             CategoryCriteriaPropertyOrder propertyNameCriteria = CategoryCriteriaPropertyOrder.fromValue(order.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -153,7 +153,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrderDefault() throws RestException {
+        public Property retrievePropertyOrderDefault() {
             return CategoryMetamacProperties.nameableArtefact().codeFull();
         }
     }
@@ -161,7 +161,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
     private class CategorisationCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) {
             CategorisationCriteriaPropertyRestriction propertyNameCriteria = CategorisationCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -183,7 +183,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+        public Property retrievePropertyOrder(MetamacRestOrder order) {
             CategorisationCriteriaPropertyOrder propertyNameCriteria = CategorisationCriteriaPropertyOrder.fromValue(order.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -195,7 +195,7 @@ public class CategoriesRest2DoMapperImpl extends BaseRest2DoMapperV10Impl implem
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrderDefault() throws RestException {
+        public Property retrievePropertyOrderDefault() {
             return CategorisationProperties.maintainableArtefact().code();
         }
     }

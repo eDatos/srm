@@ -28,33 +28,36 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 
 public class SrmRestInternalUtils {
 
+    private SrmRestInternalUtils() {
+    }
+
     public static boolean hasField(String fields, String field) {
         return fields != null && fields.contains(field);
     }
 
     @SuppressWarnings({"rawtypes"})
     public static List<ConditionalCriteria> buildConditionalCriteriaItemSchemes(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity)
-            throws MetamacException {
+            {
         return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, ItemSchemeVersionProperties.maintainableArtefact());
     }
 
     @SuppressWarnings({"rawtypes"})
     public static List<ConditionalCriteria> buildConditionalCriteriaItems(String agencyID, String resourceID, String version, String itemID,
             MaintainableArtefactProperty itemSchemeVersionMaintainableArtefactProperty, NameableArtefactProperty itemNameableArtefactProperty, List<ConditionalCriteria> conditionalCriteriaQuery,
-            Class entity) throws MetamacException {
+            Class entity) {
         return buildConditionalCriteriaNameableArtefacts(agencyID, resourceID, version, itemID, conditionalCriteriaQuery, entity, itemSchemeVersionMaintainableArtefactProperty,
                 itemNameableArtefactProperty);
     }
 
     @SuppressWarnings({"rawtypes"})
     public static List<ConditionalCriteria> buildConditionalCriteriaStructures(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery, Class entity)
-            throws MetamacException {
+            {
         return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, StructureVersionProperties.maintainableArtefact());
     }
 
     @SuppressWarnings({"rawtypes"})
     public static List<ConditionalCriteria> buildConditionalCriteriaContentConstraints(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
-            Class entity) throws MetamacException {
+            Class entity) {
         return buildConditionalCriteriaMaintainableArtefacts(agencyID, resourceID, version, conditionalCriteriaQuery, entity, ContentConstraintProperties.maintainableArtefact());
     }
 
@@ -100,9 +103,9 @@ public class SrmRestInternalUtils {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static List<ConditionalCriteria> buildConditionalCriteriaMaintainableArtefacts(String agencyID, String resourceID, String version, List<ConditionalCriteria> conditionalCriteriaQuery,
-            Class entity, MaintainableArtefactProperty maintainableArtefactProperty) throws MetamacException {
+            Class entity, MaintainableArtefactProperty maintainableArtefactProperty) {
 
-        List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
+        List<ConditionalCriteria> conditionalCriteria = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(conditionalCriteriaQuery)) {
             conditionalCriteria.addAll(conditionalCriteriaQuery);
         } else {
@@ -121,9 +124,9 @@ public class SrmRestInternalUtils {
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static List<ConditionalCriteria> buildConditionalCriteriaNameableArtefacts(String agencyID, String resourceID, String version, String itemID,
             List<ConditionalCriteria> conditionalCriteriaQuery, Class entity, MaintainableArtefactProperty maintainableArtefactProperty, NameableArtefactProperty nameableArtefactProperty)
-            throws MetamacException {
+            {
 
-        List<ConditionalCriteria> conditionalCriteria = new ArrayList<ConditionalCriteria>();
+        List<ConditionalCriteria> conditionalCriteria = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(conditionalCriteriaQuery)) {
             conditionalCriteria.addAll(conditionalCriteriaQuery);
         } else {
@@ -213,7 +216,7 @@ public class SrmRestInternalUtils {
             validFields.add(SrmRestConstants.FIELD_INCLUDE_ORDER);
             validFields.add(SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT);
             List<String> fieldList = Arrays.asList(fieldsParam.split(","));
-            List<String> parsedFieldList = new ArrayList<String>();
+            List<String> parsedFieldList = new ArrayList<>();
             for (String field : fieldList) {
                 if (field.startsWith(SPACE)) {
                     parsedFieldList.add(field.replaceFirst(SPACE, PLUS));

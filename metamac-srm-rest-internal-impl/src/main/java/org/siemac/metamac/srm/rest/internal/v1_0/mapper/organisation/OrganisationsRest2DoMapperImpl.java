@@ -25,9 +25,9 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
     private RestCriteria2SculptorCriteria<OrganisationMetamac>              organisationCriteriaMapper       = null;
 
     public OrganisationsRest2DoMapperImpl() {
-        organisationSchemeCriteriaMapper = new RestCriteria2SculptorCriteria<OrganisationSchemeVersionMetamac>(OrganisationSchemeVersionMetamac.class, OrganisationSchemeCriteriaPropertyOrder.class,
+        organisationSchemeCriteriaMapper = new RestCriteria2SculptorCriteria<>(OrganisationSchemeVersionMetamac.class, OrganisationSchemeCriteriaPropertyOrder.class,
                 OrganisationSchemeCriteriaPropertyRestriction.class, new OrganisationSchemeCriteriaCallback());
-        organisationCriteriaMapper = new RestCriteria2SculptorCriteria<OrganisationMetamac>(OrganisationMetamac.class, OrganisationCriteriaPropertyOrder.class,
+        organisationCriteriaMapper = new RestCriteria2SculptorCriteria<>(OrganisationMetamac.class, OrganisationCriteriaPropertyOrder.class,
                 OrganisationCriteriaPropertyRestriction.class, new OrganisationCriteriaCallback());
     }
 
@@ -44,7 +44,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
     private class OrganisationSchemeCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) {
             OrganisationSchemeCriteriaPropertyRestriction propertyNameCriteria = OrganisationSchemeCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -85,7 +85,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+        public Property retrievePropertyOrder(MetamacRestOrder order) {
             OrganisationSchemeCriteriaPropertyOrder propertyNameCriteria = OrganisationSchemeCriteriaPropertyOrder.fromValue(order.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -97,7 +97,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrderDefault() throws RestException {
+        public Property retrievePropertyOrderDefault() {
             return OrganisationSchemeVersionMetamacProperties.maintainableArtefact().code();
         }
     }
@@ -105,7 +105,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
     private class OrganisationCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) {
             OrganisationCriteriaPropertyRestriction propertyNameCriteria = OrganisationCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -132,7 +132,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+        public Property retrievePropertyOrder(MetamacRestOrder order) {
             OrganisationCriteriaPropertyOrder propertyNameCriteria = OrganisationCriteriaPropertyOrder.fromValue(order.getPropertyName());
             switch (propertyNameCriteria) {
                 case ID:
@@ -144,7 +144,7 @@ public class OrganisationsRest2DoMapperImpl extends BaseRest2DoMapperV10Impl imp
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrderDefault() throws RestException {
+        public Property retrievePropertyOrderDefault() {
             return OrganisationMetamacProperties.nameableArtefact().code();
         }
     }

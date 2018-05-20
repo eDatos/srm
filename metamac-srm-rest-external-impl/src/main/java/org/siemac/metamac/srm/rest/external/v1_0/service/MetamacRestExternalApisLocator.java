@@ -17,8 +17,8 @@ public class MetamacRestExternalApisLocator {
 
     private StatisticalOperationsV1_0 statisticalOperationsV1_0 = null;
 
-    public static String              FIELD_EXCLUDE_METADATA    = "-metadata";
-    public static String              FIELD_EXCLUDE_DATA        = "-data";
+    public static final String              FIELD_EXCLUDE_METADATA    = "-metadata";
+    public static final String              FIELD_EXCLUDE_DATA        = "-data";
 
     @PostConstruct
     public void initService() throws Exception {

@@ -79,13 +79,12 @@ public abstract class BaseRest2DoMapperV10Impl {
                     default:
                         throw toRestExceptionParameterIncorrect(propertyName);
                 }
+            } catch (RestException e) {
+                logger.error("Error parsing Rest query", e);
+                throw (RestException) e;
             } catch (Exception e) {
                 logger.error("Error parsing Rest query", e);
-                if (e instanceof RestException) {
-                    throw (RestException) e;
-                } else {
-                    throw toRestExceptionParameterIncorrect(propertyName);
-                }
+                throw toRestExceptionParameterIncorrect(propertyName);
             }
         }
     }

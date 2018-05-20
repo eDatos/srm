@@ -26,7 +26,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
 
     public ContentConstraintsRest2DoMapperImpl() {
         super();
-        contentConstraintCriteriaMapper = new RestCriteria2SculptorCriteria<ContentConstraint>(ContentConstraint.class, ContentConstraintCriteriaPropertyOrder.class,
+        contentConstraintCriteriaMapper = new RestCriteria2SculptorCriteria<>(ContentConstraint.class, ContentConstraintCriteriaPropertyOrder.class,
                 ContentConstraintCriteriaPropertyRestriction.class, new ContentConstraintCriteriaCallback());
     }
 
@@ -38,7 +38,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
     private class ContentConstraintCriteriaCallback implements CriteriaCallback {
 
         @Override
-        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) throws RestException {
+        public SculptorPropertyCriteriaBase retrieveProperty(MetamacRestQueryPropertyRestriction propertyRestriction) {
             ContentConstraintCriteriaPropertyRestriction propertyNameCriteria = ContentConstraintCriteriaPropertyRestriction.fromValue(propertyRestriction.getPropertyName());
 
             switch (propertyNameCriteria) {
@@ -66,7 +66,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrder(MetamacRestOrder order) throws RestException {
+        public Property retrievePropertyOrder(MetamacRestOrder order) {
             ContentConstraintCriteriaPropertyOrder propertyNameCriteria = ContentConstraintCriteriaPropertyOrder.fromValue(order.getPropertyName());
 
             switch (propertyNameCriteria) {
@@ -80,7 +80,7 @@ public class ContentConstraintsRest2DoMapperImpl extends BaseRest2DoMapperV10Imp
 
         @SuppressWarnings("rawtypes")
         @Override
-        public Property retrievePropertyOrderDefault() throws RestException {
+        public Property retrievePropertyOrderDefault() {
             return ContentConstraintProperties.maintainableArtefact().code();
         }
 

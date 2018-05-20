@@ -151,7 +151,7 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         toComponentList(source, target, isImported);
 
         // Dimensions must be returned in order
-        List<Component> componentsSorted = new ArrayList<Component>(source.getComponents());
+        List<Component> componentsSorted = new ArrayList<>(source.getComponents());
         Collections.sort(componentsSorted, StructuresComparator.STRUCTURE_COMPOENTN_ID_COMPARATOR);
         for (Component component : componentsSorted) {
             if (component instanceof com.arte.statistic.sdmx.srm.core.structure.domain.Dimension) {
@@ -280,9 +280,11 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         toDimensionCommon(source, target, isImported);
 
         target.setType(DimensionType.DIMENSION);
-        target.setRoleConcepts(conceptsDo2RestMapper.toRoleConcepts(source.getRole()));
-        if (SpecialDimensionTypeEnum.SPATIAL.equals(source.getSpecialDimensionType())) {
-            target.setIsSpatial(Boolean.TRUE);
+        if (source != null) {
+            target.setRoleConcepts(conceptsDo2RestMapper.toRoleConcepts(source.getRole()));
+            if (SpecialDimensionTypeEnum.SPATIAL.equals(source.getSpecialDimensionType())) {
+                target.setIsSpatial(Boolean.TRUE);
+            }
         }
         return target;
     }
@@ -292,7 +294,9 @@ public class DataStructuresDo2RestMapperV10Impl extends StructureBaseDo2RestMapp
         toDimensionCommon(source, target, isImported);
 
         target.setType(DimensionType.MEASURE_DIMENSION);
-        target.setRoleConcepts(conceptsDo2RestMapper.toRoleConcepts(source.getRole()));
+        if (source != null) {
+            target.setRoleConcepts(conceptsDo2RestMapper.toRoleConcepts(source.getRole()));
+        }
         return target;
     }
 

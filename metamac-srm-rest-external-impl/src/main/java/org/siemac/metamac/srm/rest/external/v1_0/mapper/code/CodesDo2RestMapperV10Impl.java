@@ -252,7 +252,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return fields != null && fields.contains(field);
     }
 
-
     @Override
     protected boolean canItemSchemeVersionBeProvidedByApi(ItemSchemeVersion source) {
         CodelistVersionMetamac codelistVersion = (CodelistVersionMetamac) source;
@@ -845,10 +844,12 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         VisualisationConfigurations targets = new VisualisationConfigurations();
         for (org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation source : sources) {
             VisualisationConfiguration target = toVisualisationConfiguration(source.getNameableArtefact());
-            if (defaultOpennessVisualisation.getNameableArtefact().getCode().equals(source.getNameableArtefact().getCode())) {
-                target.setDefault(Boolean.TRUE);
+            if (target != null) {
+                if (defaultOpennessVisualisation.getNameableArtefact().getCode().equals(source.getNameableArtefact().getCode())) {
+                    target.setDefault(Boolean.TRUE);
+                }
+                targets.getVisualisationConfigurations().add(target);
             }
-            targets.getVisualisationConfigurations().add(target);
         }
         targets.setTotal(BigInteger.valueOf(sources.size()));
         return targets;

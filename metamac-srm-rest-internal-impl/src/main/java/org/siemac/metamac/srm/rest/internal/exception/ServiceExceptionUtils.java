@@ -12,9 +12,12 @@ import com.arte.statistic.sdmx.srm.core.common.error.ServiceExceptionType;
 
 public class ServiceExceptionUtils {
 
-    private final static Logger logger = LoggerFactory.getLogger(ServiceExceptionUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(ServiceExceptionUtils.class);
+    
+    private ServiceExceptionUtils () {
+    }
 
-    public static MetamacException manageMetamacRestException(Exception e, String apiName, Object clientProxy) throws MetamacException {
+    public static MetamacException manageMetamacRestException(Exception e, String apiName, Object clientProxy) {
         logger.error("Error", e);
 
         if (e instanceof ServerWebApplicationException) {
@@ -24,7 +27,7 @@ public class ServiceExceptionUtils {
         }
     }
 
-    private static MetamacException manageMetamacServerWebApplicationException(ServerWebApplicationException e, String apiName, Object clientProxy) throws MetamacException {
+    private static MetamacException manageMetamacServerWebApplicationException(ServerWebApplicationException e, String apiName, Object clientProxy) {
         org.siemac.metamac.rest.common.v1_0.domain.Exception exception = e.toErrorObject(WebClient.client(clientProxy), org.siemac.metamac.rest.common.v1_0.domain.Exception.class);
         MetamacException metamacException;
 
