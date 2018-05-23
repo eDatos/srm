@@ -26,39 +26,39 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 
 public interface CodesDo2RestMapperV10 {
 
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists toCodelists(PagedResult<CodelistVersionMetamac> sources, String agencyID, String resourceID, String query,
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelists toCodelists(PagedResult<CodelistVersionMetamac> sources, String agencyID, String resourceID, String query,
             String orderBy, Integer limit);
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist toCodelist(CodelistVersionMetamac source) throws MetamacException;
-    public ResourceInternal toResource(CodelistVersion source);
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Codelist toCodelist(CodelistVersionMetamac source) throws MetamacException;
+    ResourceInternal toResource(CodelistVersion source);
 
-    public Codes toCodes(PagedResult<CodeMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
+    Codes toCodes(PagedResult<CodeMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit, Set<String> fields);
 
-    public Codes toCodes(List<ItemResult> sources, CodelistVersionMetamac codelistVersion, Set<String> fields);
-    public Code toCode(CodeMetamac source);
-    public ItemResourceInternal toResource(CodeMetamac source);
+    Codes toCodes(List<ItemResult> sources, CodelistVersionMetamac codelistVersion, Set<String> fields);
+    Code toCode(CodeMetamac source);
+    ItemResourceInternal toResource(CodeMetamac source);
 
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies toVariableFamilies(PagedResult<VariableFamily> sources, String query, String orderBy, Integer limit);
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily toVariableFamily(VariableFamily source) throws MetamacException;
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamilies toVariableFamilies(PagedResult<VariableFamily> sources, String query, String orderBy, Integer limit);
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableFamily toVariableFamily(VariableFamily source) throws MetamacException;
 
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables toVariablesByFamily(String variableFamilyID, PagedResult<Variable> sources, String query, String orderBy,
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables toVariablesByFamily(String variableFamilyID, PagedResult<Variable> sources, String query, String orderBy,
             Integer limit);
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables toVariables(PagedResult<Variable> sources, String query, String orderBy, Integer limit);
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable toVariable(Variable source) throws MetamacException;
-    public ResourceInternal toResource(Variable source);
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variables toVariables(PagedResult<Variable> sources, String query, String orderBy, Integer limit);
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Variable toVariable(Variable source) throws MetamacException;
+    ResourceInternal toResource(Variable source);
 
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements toVariableElements(PagedResult<VariableElement> sources, String variableID, String query, String orderBy,
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements toVariableElements(PagedResult<VariableElement> sources, String variableID, String query, String orderBy,
             Integer limit);
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements toVariableElements(List<VariableElementResult> sources, String variableID, String query);
-    public String toVariableElementsGeoJson(List<VariableElementResult> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
-    public VariableElementsGeoInfo toVariableElementsGeoXml(List<VariableElementResult> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
-    public String toVariableElementsGeoJson(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
-    public VariableElementsGeoInfo toVariableElementsGeoXml(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection,
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElements toVariableElements(List<VariableElementResult> sources, String variableID, String query);
+    String toVariableElementsGeoJson(List<VariableElementResult> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
+    VariableElementsGeoInfo toVariableElementsGeoXml(List<VariableElementResult> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
+    String toVariableElementsGeoJson(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection, DateTime globalLastUpdatedDate);
+    VariableElementsGeoInfo toVariableElementsGeoXml(PagedResult<org.siemac.metamac.srm.core.code.domain.VariableElement> sources, VariableElementResultSelection selection,
             DateTime globalLastUpdatedDate);
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElement toVariableElement(org.siemac.metamac.srm.core.code.domain.VariableElement source);
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.VariableElement toVariableElement(org.siemac.metamac.srm.core.code.domain.VariableElement source);
 
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilies toCodelistFamilies(PagedResult<CodelistFamily> sources, String query, String orderBy, Integer limit);
-    public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamily toCodelistFamily(CodelistFamily source) throws MetamacException;
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamilies toCodelistFamilies(PagedResult<CodelistFamily> sources, String query, String orderBy, Integer limit);
+    org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.CodelistFamily toCodelistFamily(CodelistFamily source) throws MetamacException;
 
-    public ResourceLink toCodelistSelfLink(String agencyID, String resourceID, String version);
-    public String toCodelistManagementApplicationLink(String codelistUrn);
+    ResourceLink toCodelistSelfLink(String agencyID, String resourceID, String version);
+    String toCodelistManagementApplicationLink(String codelistUrn);
 }

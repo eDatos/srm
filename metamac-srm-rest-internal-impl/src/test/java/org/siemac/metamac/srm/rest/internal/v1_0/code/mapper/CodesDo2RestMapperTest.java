@@ -34,6 +34,7 @@ import static org.siemac.metamac.srm.rest.internal.v1_0.utils.RestTestConstants.
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.joda.time.DateTime;
@@ -275,6 +276,7 @@ public class CodesDo2RestMapperTest {
         String orderBy = ORDER_BY_ID_DESC;
         Integer limit = Integer.valueOf(4);
         Integer offset = Integer.valueOf(4);
+        Set<String> fields = null; 
 
         CodelistVersionMetamac codeScheme1 = mockCodelist(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1);
         CodelistVersionMetamac codeScheme2 = mockCodelist(AGENCY_1, ITEM_SCHEME_2_CODE, VERSION_1);
@@ -288,7 +290,7 @@ public class CodesDo2RestMapperTest {
         PagedResult<CodeMetamac> sources = new PagedResult<CodeMetamac>(source, offset, source.size(), limit, totalRows, 0);
 
         // Transform
-        Codes target = do2RestInternalMapper.toCodes(sources, agencyID, codeSchemeID, version, query, orderBy, limit);
+        Codes target = do2RestInternalMapper.toCodes(sources, agencyID, codeSchemeID, version, query, orderBy, limit, fields);
 
         // Validate
         assertEquals(SrmRestConstants.KIND_CODES, target.getKind());

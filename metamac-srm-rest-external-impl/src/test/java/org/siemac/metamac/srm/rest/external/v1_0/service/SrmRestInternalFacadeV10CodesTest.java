@@ -413,10 +413,31 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, "100", "100", null, null, null);
         assertTrue(codes.getCodes().isEmpty());
     }
+    
+    @Test
+    public void testFindCodesWithoutVariableElementImplicit() throws Exception {
+        resetMocks();
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null, null, null, null);
+        assertNull(codes.getCodes().get(0).getVariableElement());
+    }
+    
+    @Test
+    public void testFindCodesWithoutVariableElementExplicit() throws Exception {
+        resetMocks();
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null, null, null, "-variableElement");
+        assertNull(codes.getCodes().get(0).getVariableElement());
+    }
+    
+    @Test
+    public void testFindCodesWithVariableElementExplicit() throws Exception {
+        resetMocks();
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null, null, null, "+variableElement");
+        assertNotNull(codes.getCodes().get(0).getVariableElement());
+    }
 
     @Test
     public void testFindCodesXml() throws Exception {
-        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4", null);
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, QUERY_ID_LIKE_1_NAME_LIKE_2, "4", "4", "+variableElement");
         InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodes.xml");
 
         // Request and validate

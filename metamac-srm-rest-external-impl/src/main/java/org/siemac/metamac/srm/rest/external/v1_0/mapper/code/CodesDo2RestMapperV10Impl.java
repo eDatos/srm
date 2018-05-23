@@ -138,7 +138,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     @Override
-    public Codes toCodes(PagedResult<CodeMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
+    public Codes toCodes(PagedResult<CodeMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit, Set<String> fields) {
 
         Codes targets = new Codes();
         targets.setKind(SrmRestConstants.KIND_CODES);
@@ -149,7 +149,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
 
         // Values
         for (CodeMetamac source : sourcesPagedResult.getValues()) {
-            CodeResource target = toCodeResource(source);
+            CodeResource target = toCodeResource(source, fields);
             targets.getCodes().add(target);
         }
         return targets;
@@ -207,20 +207,28 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         return target;
     }
 
-    private CodeResource toCodeResource(CodeMetamac source) {
+    private CodeResource toCodeResource(CodeMetamac source, Set<String> fields) {
         if (source == null) {
             return null;
         }
         CodeResource target = new CodeResource();
         toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), target);
-        target.setVariableElement(toResource(source.getVariableElement()));
-
-        // order and open are retrieved only one retrieve efficiently all codes in codelist
-        target.setOrder(null);
-        target.setOpen(null);
-
+        
+        setVisibleFields(source, target, fields);
+        
         return target;
     }
+    
+    
+    private void setVisibleFields(CodeMetamac source, CodeResource target, Set<String> fields) {
+        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
+            target.setVariableElement(toResource(source.getVariableElement()));
+        }
+        
+        target.setOpen(null);
+        target.setOrder(null);
+    }
+    
 
     private CodeResource toCodeResource(ItemResult source, CodelistVersionMetamac codelistVersion, String variableID, Set<String> fields) {
         if (source == null) {

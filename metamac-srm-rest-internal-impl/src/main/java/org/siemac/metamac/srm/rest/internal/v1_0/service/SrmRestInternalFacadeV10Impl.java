@@ -844,6 +844,8 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     @Override
     public Codes findCodes(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset, String order, String openness, String fields) {
         try {
+            Set<String> fieldsToShow = SrmRestInternalUtils.parseFieldsParameter(fields);
+            
             if (isFindByDefaultGeographicalGranularitiesCodelist(agencyID, resourceID, version, query, orderBy, limit, offset)) {
                 String codelistUrn = configurationService.retrieveDefaultCodelistGeographicalGranularityUrn();
                 String[] codelistUrnSplited = UrnUtils.splitUrnItemScheme(codelistUrn);
@@ -864,7 +866,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
 
                 // Transform
-                return codesDo2RestMapper.toCodes(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit());
+                return codesDo2RestMapper.toCodes(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit(), fieldsToShow);
             } else {
                 // Retrieve all codes of codelist, without pagination
                 CodelistVersionMetamac codelistVersion = retrieveCodelistPublished(agencyID, resourceID, version);
@@ -893,7 +895,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 }
 
                 // Transform
-                Set<String> fieldsToShow = SrmRestInternalUtils.parseFieldsParameter(fields);
                 return codesDo2RestMapper.toCodes(items, codelistVersion, fieldsToShow);
             }
         } catch (Exception e) {
@@ -901,15 +902,15 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         }
     }
 
-    private List<ItemResult> memoryPagination(List<ItemResult> items, int offset, int limit) {
-        int realLimit = offset + limit;
+    private List<ItemResult> memoryPagination(List<ItemResult> items, int firstElement, int totalToRetrieve) {
+        int lastElement = firstElement + totalToRetrieve;
 
-        if (offset > items.size()) {
+        if (firstElement > items.size()) {
             return new ArrayList<>();
-        } else if (realLimit > items.size()) {
-            return items.subList(offset, items.size());
+        } else if (lastElement > items.size()) {
+            return items.subList(firstElement, items.size());
         } else {
-            return items.subList(offset, realLimit);
+            return items.subList(firstElement, lastElement);
         }
     }
 
