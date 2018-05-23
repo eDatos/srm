@@ -860,39 +860,18 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             if (mustFindItemsInsteadRetrieveAllItemsOfItemScheme(agencyID, resourceID, version, query, orderBy, limit, offset)) {
                 checkParameterEmpty(SrmRestConstants.PARAMETER_ORDER_ID, order);
                 checkParameterEmpty(SrmRestConstants.PARAMETER_OPENNESS_ID, openness);
-
-                // Find. Retrieve codes paginated
-                SculptorCriteria sculptorCriteria = codesRest2DoMapper.getCodeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
-                PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
-
-                // Transform
-                return codesDo2RestMapper.toCodes(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit(), fieldsToShow);
+                return findCodesInMultipleCodelists(agencyID, resourceID, version, query, orderBy, limit, offset, fieldsToShow);
             } else {
                 // Retrieve all codes of codelist, without pagination
                 CodelistVersionMetamac codelistVersion = retrieveCodelistPublished(agencyID, resourceID, version);
-                if (order == null) {
-                    order = codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getCode();
-                } else {
-                    // check exist
-                    retrieveCodelistOrderVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), order);
-                }
-                if (openness == null) {
-                    openness = codelistVersion.getDefaultOpennessVisualisation().getNameableArtefact().getCode();
-                } else {
-                    // check exist
-                    retrieveCodelistOpennessVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), openness);
-                }
+                
+                String orderToUse = getOrderToUseToRetrieveCodelist(agencyID, resourceID, version, order, codelistVersion);
+                String opennessToUse = getOpennessToUseToRetrieveCodelist(agencyID, resourceID, version, openness, codelistVersion);
+                
+                List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), CodeMetamacResultSelection.API, orderToUse,
+                        opennessToUse);
 
-                List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), CodeMetamacResultSelection.API, order,
-                        openness);
-
-                // We are filtering the result from DB this way becasue the method that really gathers the results are required by other operations that need more information (variable elements).
-                // Refactoring that method is more difficult and should be taken with care
-                if (limit != null || offset != null) {
-                    int firstElement = offset != null ? Integer.parseInt(offset) : RestApiConstants.DEFAULT_OFFSET;
-                    int lastElement = limit != null ? Integer.parseInt(limit) : RestApiConstants.DEFAULT_LIMIT;
-                    items = memoryPagination(items, firstElement, lastElement);
-                }
+                items = paginateResultIfItsRequest(limit, offset, items);
 
                 // Transform
                 return codesDo2RestMapper.toCodes(items, codelistVersion, fieldsToShow);
@@ -900,6 +879,51 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         } catch (Exception e) {
             throw manageException(e);
         }
+    }
+    
+    private String getOpennessToUseToRetrieveCodelist(String agencyID, String resourceID, String version, String openness, CodelistVersionMetamac codelistVersion) throws MetamacException {
+        String opennessToUse = null;
+        if (openness == null) {
+            opennessToUse = codelistVersion.getDefaultOpennessVisualisation().getNameableArtefact().getCode();
+        } else {
+            // check exist
+            retrieveCodelistOpennessVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), openness);
+            opennessToUse = openness;
+        }
+        return opennessToUse;
+    }
+
+    private String getOrderToUseToRetrieveCodelist(String agencyID, String resourceID, String version, String order, CodelistVersionMetamac codelistVersion) throws MetamacException {
+        String orderToUse = null;
+        if (order == null) {
+            orderToUse = codelistVersion.getDefaultOrderVisualisation().getNameableArtefact().getCode();
+        } else {
+            // check exist
+            retrieveCodelistOrderVisualisation(agencyID, resourceID, version, codelistVersion.getMaintainableArtefact().getUrn(), order);
+            orderToUse = order;
+        }
+        return orderToUse;
+    }
+
+    private List<ItemResult> paginateResultIfItsRequest(String limit, String offset, List<ItemResult> items) {
+        // We are filtering the result from DB this way becasue the method that really gathers the results are required by other operations that need more information (variable elements).
+        // Refactoring that method is more difficult and should be taken with care
+        if (limit != null || offset != null) {
+            int firstElement = offset != null ? Integer.parseInt(offset) : RestApiConstants.DEFAULT_OFFSET;
+            int lastElement = limit != null ? Integer.parseInt(limit) : RestApiConstants.DEFAULT_LIMIT;
+            items = memoryPagination(items, firstElement, lastElement);
+        }
+        return items;
+    }
+
+    private Codes findCodesInMultipleCodelists(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset, Set<String> fieldsToShow)
+            throws MetamacException {
+        // Find. Retrieve codes paginated
+        SculptorCriteria sculptorCriteria = codesRest2DoMapper.getCodeCriteriaMapper().restCriteriaToSculptorCriteria(query, orderBy, limit, offset);
+        PagedResult<CodeMetamac> entitiesPagedResult = findCodesCore(agencyID, resourceID, version, null, sculptorCriteria.getConditions(), sculptorCriteria.getPagingParameter());
+
+        // Transform
+        return codesDo2RestMapper.toCodes(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit(), fieldsToShow);
     }
 
     private List<ItemResult> memoryPagination(List<ItemResult> items, int firstElement, int totalToRetrieve) {
