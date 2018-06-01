@@ -908,12 +908,13 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
     private List<ItemResult> paginateResultIfItsRequest(String limit, String offset, List<ItemResult> items) {
         // We are filtering the result from DB this way becasue the method that really gathers the results are required by other operations that need more information (variable elements).
         // Refactoring that method is more difficult and should be taken with care
+        List<ItemResult> itemsResult = items;
         if (limit != null || offset != null) {
             int firstElement = offset != null ? Integer.parseInt(offset) : RestApiConstants.DEFAULT_OFFSET;
             int lastElement = limit != null ? Integer.parseInt(limit) : RestApiConstants.DEFAULT_LIMIT;
-            items = memoryPagination(items, firstElement, lastElement);
+            itemsResult = memoryPagination(items, firstElement, lastElement);
         }
-        return items;
+        return itemsResult;
     }
 
     private Codes findCodesInMultipleCodelists(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset, Set<String> fieldsToShow)

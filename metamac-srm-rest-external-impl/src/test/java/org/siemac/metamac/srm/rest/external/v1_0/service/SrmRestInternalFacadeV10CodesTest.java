@@ -410,7 +410,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
     @Test
     public void testFindCodesWithLimitAndOffsetGtCodesSize() throws Exception {
         resetMocks();
-        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, "100", "100", null, null, null);
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, "50", "100", null, null, null);
         assertTrue(codes.getCodes().isEmpty());
     }
     
