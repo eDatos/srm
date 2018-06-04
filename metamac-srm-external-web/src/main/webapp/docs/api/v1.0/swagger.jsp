@@ -964,7 +964,7 @@
             "tags":[
                "Clasificaciones"
             ],
-            "description":"Permite consultar los códigos de una versión de una clasificación.",
+            "description":"Permite consultar los códigos de una versión de una clasificación. Nótese que si se hace uso de <i>wildcards</i> como \"~all\" o de alguno de los parámetros <i>limit, offset, query u orderBy</i>, el listado se devolverá paginado automáticamente.",
             "operationId":"resource__v1.0_codelists__agencyID___resourceID___version__codes_findCodes_GET",
             "produces":[
                "application/json",
