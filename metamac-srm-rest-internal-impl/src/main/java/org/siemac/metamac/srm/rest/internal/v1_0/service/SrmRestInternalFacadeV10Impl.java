@@ -28,7 +28,6 @@ import org.siemac.metamac.core.common.enume.domain.VersionPatternEnum;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
-import org.siemac.metamac.rest.api.constants.RestApiConstants;
 import org.siemac.metamac.rest.common.v1_0.domain.ComparisonOperator;
 import org.siemac.metamac.rest.exception.RestCommonServiceExceptionType;
 import org.siemac.metamac.rest.exception.RestException;
@@ -871,9 +870,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), CodeMetamacResultSelection.API, orderToUse,
                         opennessToUse);
 
-                items = paginateResultIfItsRequest(limit, offset, items);
-
-                // Transform
                 return codesDo2RestMapper.toCodes(items, codelistVersion, fieldsToShow);
             }
         } catch (Exception e) {
@@ -905,18 +901,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return orderToUse;
     }
 
-    private List<ItemResult> paginateResultIfItsRequest(String limit, String offset, List<ItemResult> items) {
-        // We are filtering the result from DB this way becasue the method that really gathers the results are required by other operations that need more information (variable elements).
-        // Refactoring that method is more difficult and should be taken with care
-        List<ItemResult> itemsResult = items;
-        if (limit != null || offset != null) {
-            int firstElement = offset != null ? Integer.parseInt(offset) : RestApiConstants.DEFAULT_OFFSET;
-            int lastElement = limit != null ? Integer.parseInt(limit) : RestApiConstants.DEFAULT_LIMIT;
-            itemsResult = memoryPagination(items, firstElement, lastElement);
-        }
-        return itemsResult;
-    }
-
     private Codes findCodesInMultipleCodelists(String agencyID, String resourceID, String version, String query, String orderBy, String limit, String offset, Set<String> fieldsToShow)
             throws MetamacException {
         // Find. Retrieve codes paginated
@@ -925,18 +909,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
         // Transform
         return codesDo2RestMapper.toCodes(entitiesPagedResult, agencyID, resourceID, version, query, orderBy, sculptorCriteria.getLimit(), fieldsToShow);
-    }
-
-    private List<ItemResult> memoryPagination(List<ItemResult> items, int firstElement, int totalToRetrieve) {
-        int lastElement = firstElement + totalToRetrieve;
-
-        if (firstElement > items.size()) {
-            return new ArrayList<>();
-        } else if (lastElement > items.size()) {
-            return items.subList(firstElement, items.size());
-        } else {
-            return items.subList(firstElement, lastElement);
-        }
     }
 
     @Override
@@ -1930,7 +1902,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
             return true;
         }
 
-        if (query != null || orderBy != null) {
+        if (query != null || orderBy != null || limit != null || offset != null) {
             return true;
         }
         // can retrieve all items of itemScheme
