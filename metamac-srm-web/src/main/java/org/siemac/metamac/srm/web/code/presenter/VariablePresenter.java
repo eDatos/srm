@@ -82,7 +82,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 public class VariablePresenter extends Presenter<VariablePresenter.VariableView, VariablePresenter.VariableProxy> implements VariableUiHandlers {
 
     public final static int               ELEMENT_LIST_FIRST_RESULT = 0;
-    public final static int               ELEMENT_LIST_MAX_RESULTS  = 15;
+    public final static int               ELEMENT_LIST_MAX_RESULTS  = 200;
 
     private final DispatchAsync           dispatcher;
     private final PlaceManager            placeManager;

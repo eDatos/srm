@@ -48,7 +48,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 public class VariableElementsPresenter extends Presenter<VariableElementsPresenter.VariableElementsView, VariableElementsPresenter.VariableElementsProxy> implements VariableElementsUiHandlers {
 
     public final static int                           ELEMENT_LIST_FIRST_RESULT              = 0;
-    public final static int                           ELEMENT_LIST_MAX_RESULTS               = 30;
+    public final static int                           ELEMENT_LIST_MAX_RESULTS               = 200;
 
     private final DispatchAsync                       dispatcher;
     private final PlaceManager                        placeManager;
