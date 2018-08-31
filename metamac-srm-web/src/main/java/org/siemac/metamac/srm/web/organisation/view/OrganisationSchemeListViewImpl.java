@@ -31,8 +31,6 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -151,7 +149,6 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
                 getUiHandlers().retrieveOrganisationSchemes(firstResult, maxResults, searchSectionStack.getOrganisationSchemeWebCriteria());
             }
         });
-        organisationSchemeList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         organisationSchemeList.getListGrid().setDataSource(new OrganisationSchemeDS());
         organisationSchemeList.getListGrid().setUseAllDataSourceFields(false);
         organisationSchemeList.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
@@ -183,6 +180,7 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
             }
         });
         organisationSchemeList.getListGrid().setFields(ResourceFieldUtils.getOrganisationSchemeListGridFields());
+        organisationSchemeList.setHeight100();
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().organisationSchemeDeleteConfirmationTitle(), getConstants().organisationSchemeDeleteConfirmation());
         deleteConfirmationWindow.setVisible(false);
@@ -196,15 +194,9 @@ public class OrganisationSchemeListViewImpl extends ViewWithUiHandlers<Organisat
         });
 
         panel = new VLayout();
-        panel.setHeight100();
-
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(toolStrip);
-        subPanel.addMember(searchSectionStack);
-        subPanel.addMember(organisationSchemeList);
-
-        panel.addMember(subPanel);
+        panel.addMember(toolStrip);
+        panel.addMember(searchSectionStack);
+        panel.addMember(organisationSchemeList);
     }
 
     @Override

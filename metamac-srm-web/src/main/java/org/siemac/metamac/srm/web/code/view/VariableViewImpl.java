@@ -140,8 +140,6 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Inject
     public VariableViewImpl() {
         super();
-        panel = new VLayout();
-        panel.setHeight100();
 
         //
         // VARIABLE
@@ -219,7 +217,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
                 getUiHandlers().retrieveVariableElementsByVariable(firstResult, maxResults, elementsSectionStack.getSearchCriteria(), variableDto.getUrn());
             }
         });
-        variableElementListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
+
         variableElementListGrid.getListGrid().setDataSource(new VariableElementDS());
         variableElementListGrid.getListGrid().setUseAllDataSourceFields(false);
         variableElementListGrid.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
@@ -248,6 +246,8 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         ListGridField fieldShortName = new ListGridField(VariableElementDS.SHORT_NAME, getConstants().variableElementShortName());
         CustomListGridField hasShape = new CustomListGridField(VariableElementDS.SHAPE_WKT, getConstants().variableElementHasPolygonShape());
         ListGridField urn = new ListGridField(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
+
+        variableElementListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         variableElementListGrid.getListGrid().setFields(fieldCode, fieldShortName, hasShape, urn);
 
         // Remove window
@@ -301,12 +301,10 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
         operationsSectionStack.getDefaultSection().addItem(variableElementOperationsLayout);
         layout.addMember(operationsSectionStack);
 
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(mainFormLayout);
-        subPanel.addMember(layout);
-
-        panel.addMember(subPanel);
+        panel = new VLayout();
+        panel.setOverflow(Overflow.SCROLL);
+        panel.addMember(mainFormLayout);
+        panel.addMember(layout);
     }
 
     @Override
@@ -597,6 +595,7 @@ public class VariableViewImpl extends ViewWithUiHandlers<VariableUiHandlers> imp
     @Override
     public void setVariableElements(GetVariableElementsResult result) {
         setVariableElements(result.getVariableElements());
+        variableElementListGrid.getListGrid().setAutoFitMaxRecords(result.getVariableElements().size());
         variableElementListGrid.refreshPaginationInfo(result.getFirstResultOut(), result.getVariableElements().size(), result.getTotalResults());
     }
 

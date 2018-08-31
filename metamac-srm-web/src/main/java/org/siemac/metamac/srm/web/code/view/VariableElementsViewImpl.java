@@ -20,8 +20,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -51,7 +49,6 @@ public class VariableElementsViewImpl extends ViewWithUiHandlers<VariableElement
                 getUiHandlers().retrieveVariableElements(firstResult, maxResults, searchSectionStack.getVariableElementWebCriteria());
             }
         });
-        variableElementsListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         variableElementsListGrid.getListGrid().setDataSource(new VariableElementDS());
         variableElementsListGrid.getListGrid().setUseAllDataSourceFields(false);
 
@@ -72,14 +69,11 @@ public class VariableElementsViewImpl extends ViewWithUiHandlers<VariableElement
         ListGridField urn = new ListGridField(VariableElementDS.URN, getConstants().identifiableArtefactUrn());
         variableElementsListGrid.getListGrid().setFields(fieldCode, fieldShortName, hasShape, urn);
 
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(searchSectionStack);
-        subPanel.addMember(variableElementsListGrid);
+        variableElementsListGrid.setHeight100();
 
         panel = new VLayout();
-        panel.setHeight100();
-        panel.addMember(subPanel);
+        panel.addMember(searchSectionStack);
+        panel.addMember(variableElementsListGrid);
     }
 
     @Override

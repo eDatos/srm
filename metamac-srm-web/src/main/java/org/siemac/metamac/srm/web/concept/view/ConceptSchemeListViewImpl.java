@@ -33,8 +33,6 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -153,7 +151,6 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
                 getUiHandlers().retrieveConceptSchemes(firstResult, maxResults, searchSectionStack.getConceptSchemeWebCriteria());
             }
         });
-        conceptSchemesList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         conceptSchemesList.getListGrid().setDataSource(new ConceptSchemeDS());
         conceptSchemesList.getListGrid().setUseAllDataSourceFields(false);
         conceptSchemesList.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
@@ -185,6 +182,7 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         });
 
         conceptSchemesList.getListGrid().setFields(ResourceFieldUtils.getConceptSchemeListGridFields());
+        conceptSchemesList.setHeight100();
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().conceptSchemeDeleteConfirmationTitle(), getConstants().conceptSchemeDeleteConfirmation());
         deleteConfirmationWindow.setVisible(false);
@@ -198,15 +196,9 @@ public class ConceptSchemeListViewImpl extends ViewWithUiHandlers<ConceptSchemeL
         });
 
         panel = new VLayout();
-        panel.setHeight100();
-
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(toolStrip);
-        subPanel.addMember(searchSectionStack);
-        subPanel.addMember(conceptSchemesList);
-
-        panel.addMember(subPanel);
+        panel.addMember(toolStrip);
+        panel.addMember(searchSectionStack);
+        panel.addMember(conceptSchemesList);
     }
 
     @Override

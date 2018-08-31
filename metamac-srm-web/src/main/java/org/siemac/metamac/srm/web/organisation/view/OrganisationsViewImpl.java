@@ -19,8 +19,6 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -49,7 +47,6 @@ public class OrganisationsViewImpl extends ViewWithUiHandlers<OrganisationsUiHan
                 getUiHandlers().retrieveOrganisations(firstResult, maxResults, searchSectionStack.getOrganisationWebCriteria());
             }
         });
-        organisationsListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         organisationsListGrid.getListGrid().setDataSource(new OrganisationDS());
         organisationsListGrid.getListGrid().setUseAllDataSourceFields(false);
 
@@ -65,15 +62,11 @@ public class OrganisationsViewImpl extends ViewWithUiHandlers<OrganisationsUiHan
         });
 
         organisationsListGrid.getListGrid().setFields(ResourceFieldUtils.getOrganisationListGridFields());
-
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(searchSectionStack);
-        subPanel.addMember(organisationsListGrid);
+        organisationsListGrid.setHeight100();
 
         panel = new VLayout();
-        panel.setHeight100();
-        panel.addMember(subPanel);
+        panel.addMember(searchSectionStack);
+        panel.addMember(organisationsListGrid);
     }
 
     @Override

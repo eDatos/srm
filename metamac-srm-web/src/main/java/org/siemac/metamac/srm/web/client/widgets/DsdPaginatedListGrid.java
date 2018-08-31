@@ -8,14 +8,11 @@ import org.siemac.metamac.srm.web.client.utils.ResourceFieldUtils;
 import org.siemac.metamac.srm.web.dsd.utils.DsdRecordUtils;
 import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 
-import com.smartgwt.client.types.Autofit;
-
 public class DsdPaginatedListGrid extends VersionableResourcePaginatedCheckListGrid {
 
     public DsdPaginatedListGrid(int maxResults, PaginatedAction action) {
         super(maxResults, action);
 
-        getListGrid().setAutoFitData(Autofit.VERTICAL);
         getListGrid().setShowAllRecords(true);
 
         getListGrid().setFields(ResourceFieldUtils.getDsdListGridFields());

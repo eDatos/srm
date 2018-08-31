@@ -29,8 +29,6 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -148,7 +146,6 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
                 getUiHandlers().retrieveCategorySchemes(firstResult, maxResults, searchSectionStack.getCategorySchemeWebCriteria());
             }
         });
-        categorySchemesList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         categorySchemesList.getListGrid().setDataSource(new CategorySchemeDS());
         categorySchemesList.getListGrid().setUseAllDataSourceFields(false);
         categorySchemesList.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
@@ -179,6 +176,7 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
             }
         });
         categorySchemesList.getListGrid().setFields(ResourceFieldUtils.getCategorySchemeListGridFields());
+        categorySchemesList.setHeight100();
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().categorySchemeDeleteConfirmationTitle(), getConstants().categorySchemeDeleteConfirmation());
         deleteConfirmationWindow.setVisible(false);
@@ -192,15 +190,9 @@ public class CategorySchemeListViewImpl extends ViewWithUiHandlers<CategorySchem
         });
 
         panel = new VLayout();
-        panel.setHeight100();
-
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(toolStrip);
-        subPanel.addMember(searchSectionStack);
-        subPanel.addMember(categorySchemesList);
-
-        panel.addMember(subPanel);
+        panel.addMember(toolStrip);
+        panel.addMember(searchSectionStack);
+        panel.addMember(categorySchemesList);
     }
 
     @Override

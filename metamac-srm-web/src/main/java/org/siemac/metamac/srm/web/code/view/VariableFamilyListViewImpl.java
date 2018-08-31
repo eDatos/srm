@@ -26,8 +26,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
@@ -131,7 +129,6 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
                 getUiHandlers().retrieveVariableFamilies(firstResult, maxResults, searchSectionStack.getSearchCriteria());
             }
         });
-        variableFamilyList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         variableFamilyList.getListGrid().setDataSource(new VariableFamilyDS());
         variableFamilyList.getListGrid().setUseAllDataSourceFields(false);
         variableFamilyList.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
@@ -164,6 +161,8 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
         ListGridField urn = new ListGridField(VariableFamilyDS.URN, getConstants().identifiableArtefactUrn());
         variableFamilyList.getListGrid().setFields(fieldCode, fieldName, urn);
 
+        variableFamilyList.setHeight100();
+
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().variableFamilyDeleteConfirmationTitle(), getConstants().variableFamilyDeleteConfirmation());
         deleteConfirmationWindow.setVisible(false);
         deleteConfirmationWindow.getYesButton().addClickHandler(new ClickHandler() {
@@ -176,15 +175,9 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
         });
 
         panel = new VLayout();
-        panel.setHeight100();
-
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(toolStrip);
-        subPanel.addMember(searchSectionStack);
-        subPanel.addMember(variableFamilyList);
-
-        panel.addMember(subPanel);
+        panel.addMember(toolStrip);
+        panel.addMember(searchSectionStack);
+        panel.addMember(variableFamilyList);
     }
 
     @Override
@@ -208,8 +201,8 @@ public class VariableFamilyListViewImpl extends ViewWithUiHandlers<VariableFamil
     @Override
     public void setVariableFamilyPaginatedList(GetVariableFamiliesResult variableFamiliesPaginatedList) {
         setVariableFamilies(variableFamiliesPaginatedList.getFamilies());
-        variableFamilyList
-                .refreshPaginationInfo(variableFamiliesPaginatedList.getFirstResultOut(), variableFamiliesPaginatedList.getFamilies().size(), variableFamiliesPaginatedList.getTotalResults());
+        variableFamilyList.refreshPaginationInfo(variableFamiliesPaginatedList.getFirstResultOut(), variableFamiliesPaginatedList.getFamilies().size(),
+                variableFamiliesPaginatedList.getTotalResults());
     }
 
     private void setVariableFamilies(List<VariableFamilyBasicDto> variableFamilyDtos) {

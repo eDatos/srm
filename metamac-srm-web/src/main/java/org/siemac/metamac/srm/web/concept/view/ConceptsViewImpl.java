@@ -18,8 +18,6 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -48,7 +46,6 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
                 getUiHandlers().retrieveConcepts(firstResult, maxResults, searchSectionStack.getConceptWebCriteria());
             }
         });
-        conceptsListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         conceptsListGrid.getListGrid().setDataSource(new ConceptDS());
         conceptsListGrid.getListGrid().setUseAllDataSourceFields(false);
 
@@ -63,15 +60,11 @@ public class ConceptsViewImpl extends ViewWithUiHandlers<ConceptsUiHandlers> imp
         });
 
         conceptsListGrid.getListGrid().setFields(ResourceFieldUtils.getConceptListGridFields());
-
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(searchSectionStack);
-        subPanel.addMember(conceptsListGrid);
+        conceptsListGrid.setHeight100();
 
         panel = new VLayout();
-        panel.setHeight100();
-        panel.addMember(subPanel);
+        panel.addMember(searchSectionStack);
+        panel.addMember(conceptsListGrid);
     }
 
     @Override

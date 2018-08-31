@@ -33,8 +33,6 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -152,7 +150,6 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
                 getUiHandlers().retrieveCodelists(firstResult, maxResults, searchSectionStack.getCodelistWebCriteria());
             }
         });
-        codelistsList.getListGrid().setAutoFitData(Autofit.VERTICAL);
         codelistsList.getListGrid().setDataSource(new CodelistDS());
         codelistsList.getListGrid().setUseAllDataSourceFields(false);
         codelistsList.getListGrid().addSelectionChangedHandler(new SelectionChangedHandler() {
@@ -184,6 +181,7 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         });
 
         codelistsList.getListGrid().setFields(ResourceFieldUtils.getCodelistListGridFields());
+        codelistsList.setHeight100();
 
         deleteConfirmationWindow = new DeleteConfirmationWindow(getConstants().codelistDeleteConfirmationTitle(), getConstants().codelistDeleteConfirmation());
         deleteConfirmationWindow.setVisible(false);
@@ -197,15 +195,9 @@ public class CodelistListViewImpl extends ViewWithUiHandlers<CodelistListUiHandl
         });
 
         panel = new VLayout();
-        panel.setHeight100();
-
-        VLayout subpanel = new VLayout();
-        subpanel.setOverflow(Overflow.SCROLL);
-        subpanel.addMember(toolStrip);
-        subpanel.addMember(searchSectionStack);
-        subpanel.addMember(codelistsList);
-
-        panel.addMember(subpanel);
+        panel.addMember(toolStrip);
+        panel.addMember(searchSectionStack);
+        panel.addMember(codelistsList);
     }
 
     @Override

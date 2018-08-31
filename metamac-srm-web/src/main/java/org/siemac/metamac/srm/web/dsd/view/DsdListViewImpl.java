@@ -29,7 +29,6 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -62,8 +61,6 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
     public DsdListViewImpl() {
         super();
         panel = new VLayout();
-        panel.setHeight100();
-        panel.setOverflow(Overflow.SCROLL);
 
         // ············
         // List of DSDs
@@ -185,11 +182,13 @@ public class DsdListViewImpl extends ViewWithUiHandlers<DsdListUiHandlers> imple
                 }
             }
         });
-
+        dsdListGrid.setHeight100();
+        
         panel.addMember(dsdGridToolStrip);
         panel.addMember(searchSectionStack);
         panel.addMember(dsdListGrid);
     }
+
     @Override
     public Widget asWidget() {
         return panel;

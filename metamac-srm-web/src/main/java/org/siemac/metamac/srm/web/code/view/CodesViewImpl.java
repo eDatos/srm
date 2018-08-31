@@ -17,8 +17,6 @@ import org.siemac.metamac.web.common.client.widgets.actions.PaginatedAction;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -47,7 +45,6 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
                 getUiHandlers().retrieveCodes(firstResult, maxResults, searchSectionStack.getCodeWebCriteria());
             }
         });
-        codesListGrid.getListGrid().setAutoFitData(Autofit.VERTICAL);
         codesListGrid.getListGrid().setDataSource(new CodeDS());
         codesListGrid.getListGrid().setUseAllDataSourceFields(false);
 
@@ -62,15 +59,11 @@ public class CodesViewImpl extends ViewWithUiHandlers<CodesUiHandlers> implement
         });
 
         codesListGrid.getListGrid().setFields(ResourceFieldUtils.getCodeListGridFields());
-
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(searchSectionStack);
-        subPanel.addMember(codesListGrid);
+        codesListGrid.setHeight100();
 
         panel = new VLayout();
-        panel.setHeight100();
-        panel.addMember(subPanel);
+        panel.addMember(searchSectionStack);
+        panel.addMember(codesListGrid);
     }
 
     @Override

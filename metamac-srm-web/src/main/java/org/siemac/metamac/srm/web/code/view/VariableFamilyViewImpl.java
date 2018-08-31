@@ -81,8 +81,6 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
     @Inject
     public VariableFamilyViewImpl() {
         super();
-        panel = new VLayout();
-        panel.setHeight100();
 
         //
         // VARIABLE FAMILY
@@ -183,12 +181,10 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
 
         variablesLayout.addMember(variablesSectionStack);
 
-        VLayout subPanel = new VLayout();
-        subPanel.setOverflow(Overflow.SCROLL);
-        subPanel.addMember(mainFormLayout);
-        subPanel.addMember(variablesLayout);
-
-        panel.addMember(subPanel);
+        panel = new VLayout();
+        panel.setOverflow(Overflow.SCROLL);
+        panel.addMember(mainFormLayout);
+        panel.addMember(variablesLayout);
     }
 
     private void bindMainFormLayoutEvents() {
@@ -358,6 +354,7 @@ public class VariableFamilyViewImpl extends ViewWithUiHandlers<VariableFamilyUiH
     @Override
     public void setVariablesOfFamily(GetVariablesResult result) {
         setVariablesOfFamily(result.getVariables());
+        variableListGrid.getListGrid().setAutoFitMaxRecords(result.getVariables().size());
         variableListGrid.refreshPaginationInfo(result.getFirstResultOut(), result.getVariables().size(), result.getTotalResults());
     }
 

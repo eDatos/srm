@@ -182,6 +182,7 @@ public abstract class CategorisationsPanel extends VLayout {
     }
 
     public void setCategorisations(List<CategorisationDto> categorisationDtos) {
+        categorisationListGrid.setAutoFitMaxRecords(categorisationDtos.size());
         categorisationListGrid.setData(RecordUtils.getCategorisationRecords(categorisationDtos));
     }
 
