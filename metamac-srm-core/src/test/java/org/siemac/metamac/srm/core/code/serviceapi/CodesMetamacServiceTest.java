@@ -6951,13 +6951,13 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             selection.setReturnOnlyGeographicalVariableElements(false);
             String variableUrn = VARIABLE_6;
-            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null, selection);
+            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null, selection, null);
             assertEquals(0, result.size());
         }
         {
             selection.setReturnOnlyGeographicalVariableElements(false);
             String variableUrn = VARIABLE_2;
-            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null, selection);
+            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null, selection, null);
             assertEquals(8, result.size());
             {
                 VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_2_VARIABLE_ELEMENT_1, result);
@@ -7032,14 +7032,14 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             selection.setReturnOnlyGeographicalVariableElements(true);
             String variableUrn = VARIABLE_2;
-            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null, selection);
+            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, null, selection, null);
             assertEquals(0, result.size());
         }
         {
             selection.setReturnOnlyGeographicalVariableElements(true);
             String variableUrn = VARIABLE_5;
             List<String> variableElementsCodes = Arrays.asList("VARIABLE_ELEMENT_01", "VARIABLE_ELEMENT_03", "VARIABLE_ELEMENT_04");
-            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, variableElementsCodes, selection);
+            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, variableElementsCodes, selection, null);
             assertEquals(3, result.size());
             {
                 VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_1, result);
@@ -7084,6 +7084,48 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(CODELIST_10_V1_CODE_2, ve.getGeographicalGranularity().getUrn());
                 assertEquals("code2 es", ve.getGeographicalGranularity().getName().get("es"));
                 assertEquals("code2 en", ve.getGeographicalGranularity().getName().get("en"));
+            }
+        }
+        {
+            selection.setReturnOnlyGeographicalVariableElements(true);
+            String variableUrn = VARIABLE_5;
+            List<String> variableElementsCodes = Arrays.asList("VARIABLE_ELEMENT_01", "VARIABLE_ELEMENT_03", "VARIABLE_ELEMENT_04");
+            List<String> geographicalGranularityUrns = Arrays.asList("urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX01:CODELIST10(01.000).CODE01");
+            List<VariableElementResult> result = codesService.findVariableElementsByVariableEfficiently(getServiceContextAdministrador(), variableUrn, variableElementsCodes, selection,
+                    geographicalGranularityUrns);
+            assertEquals(2, result.size());
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_1, result);
+                assertEquals(Long.valueOf(51), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_01", ve.getCode());
+                assertEquals(VARIABLE_5_VARIABLE_ELEMENT_1, ve.getUrn());
+                assertEquals("Nombre corto 5-1", ve.getShortName().get("es"));
+                assertEquals("Short name 5-1", ve.getShortName().get("en"));
+                assertEquals("MULTIPOLYGON (((-17.91900240266335 28.856725761393726)))", ve.getShapeWkt());
+                assertEquals("{(((-17.91900240266335 28.856725761393726)))}", ve.getShapeGeojson());
+                assertEquals(Double.valueOf("70.5559"), ve.getLatitude());
+                assertEquals(Double.valueOf("90.3045"), ve.getLongitude());
+                assertEquals("CODE01", ve.getGeographicalGranularity().getCode());
+                assertEquals(CODELIST_10_V1_CODE_1, ve.getGeographicalGranularity().getUrn());
+                assertEquals("code1 es", ve.getGeographicalGranularity().getName().get("es"));
+                assertEquals("code1 en", ve.getGeographicalGranularity().getName().get("en"));
+
+            }
+            {
+                VariableElementResult ve = assertContainsVariableElementResult(VARIABLE_5_VARIABLE_ELEMENT_3, result);
+                assertEquals(Long.valueOf(53), ve.getIdDatabase());
+                assertEquals("VARIABLE_ELEMENT_03", ve.getCode());
+                assertEquals(VARIABLE_5_VARIABLE_ELEMENT_3, ve.getUrn());
+                assertEquals("título ve5-3", ve.getShortName().get("es"));
+                assertEquals("short name ve5-3", ve.getShortName().get("en"));
+                assertEquals("MULTIPOLYGON (((-19.91900240266335 30.856725761393726)))", ve.getShapeWkt());
+                assertEquals("{(((-19.91900240266335 30.856725761393726)))}", ve.getShapeGeojson());
+                assertEquals(Double.valueOf("70.5559"), ve.getLatitude());
+                assertEquals(Double.valueOf("90.3045"), ve.getLongitude());
+                assertEquals("CODE01", ve.getGeographicalGranularity().getCode());
+                assertEquals(CODELIST_10_V1_CODE_1, ve.getGeographicalGranularity().getUrn());
+                assertEquals("code1 es", ve.getGeographicalGranularity().getName().get("es"));
+                assertEquals("code1 en", ve.getGeographicalGranularity().getName().get("en"));
             }
         }
     }
