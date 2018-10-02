@@ -389,12 +389,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         codelistVersionUpdated = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), urnUpdated);
 
         // Assert URN of CodelistOrder
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:codeNew(01.000).ALPHABETICAL", codelistVersionUpdated.getOrderVisualisations().iterator().next()
-                .getNameableArtefact().getUrn());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOrder=SDMX01:codeNew(01.000).ALPHABETICAL",
+                codelistVersionUpdated.getOrderVisualisations().iterator().next().getNameableArtefact().getUrn());
 
         // Assert URN of CodelistOpen
-        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:codeNew(01.000).ALL_EXPANDED", codelistVersionUpdated.getOpennessVisualisations()
-                .iterator().next().getNameableArtefact().getUrn());
+        assertEquals("urn:siemac:org.siemac.metamac.infomodel.structuralresources.CodelistOpennessLevels=SDMX01:codeNew(01.000).ALL_EXPANDED",
+                codelistVersionUpdated.getOpennessVisualisations().iterator().next().getNameableArtefact().getUrn());
 
     }
 
@@ -1169,8 +1169,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
                 // children
                 assertEquals(1, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
-                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME},
+                        exceptionItem.getExceptionItems().get(0));
             }
             // Codes
             {
@@ -1179,8 +1179,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CODELIST_2_V1_CODE_1);
                 // children
                 assertEquals(1, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION}, exceptionItem
-                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
             }
             {
                 // Code02
@@ -1188,8 +1188,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CODELIST_2_V1_CODE_2);
                 // children
                 assertEquals(1, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT}, exceptionItem
-                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT},
+                        exceptionItem.getExceptionItems().get(0));
             }
             assertEquals(e.getExceptionItems().size(), i);
         }
@@ -1621,12 +1621,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
                 // children
                 assertEquals(3, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION}, exceptionItem
-                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
                 assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.ANNOTATION},
                         exceptionItem.getExceptionItems().get(1));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CODELIST_SHORT_NAME}, exceptionItem
-                        .getExceptionItems().get(2));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CODELIST_SHORT_NAME},
+                        exceptionItem.getExceptionItems().get(2));
             }
             // Codelist order visualisation
             {
@@ -1635,8 +1635,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                         CODELIST_14_V1_ORDER_VISUALISATION_01_ALPHABETICAL);
                 // children
                 assertEquals(1, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
-                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME},
+                        exceptionItem.getExceptionItems().get(0));
             }
             // Codes
             {
@@ -1645,10 +1645,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CODELIST_14_V1_CODE_1);
                 // children
                 assertEquals(2, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
-                        .getExceptionItems().get(0));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT}, exceptionItem
-                        .getExceptionItems().get(1));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME},
+                        exceptionItem.getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT},
+                        exceptionItem.getExceptionItems().get(1));
             }
             {
                 // Code0101
@@ -1656,10 +1656,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CODELIST_14_V1_CODE_1_1);
                 // children
                 assertEquals(2, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION}, exceptionItem
-                        .getExceptionItems().get(0));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CODE_SHORT_NAME}, exceptionItem.getExceptionItems()
-                        .get(1));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CODE_SHORT_NAME},
+                        exceptionItem.getExceptionItems().get(1));
             }
             {
                 // Code02
@@ -1667,8 +1667,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CODELIST_14_V1_CODE_2);
                 // children
                 assertEquals(2, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
-                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME},
+                        exceptionItem.getExceptionItems().get(0));
                 assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.ANNOTATION},
                         exceptionItem.getExceptionItems().get(1));
             }
@@ -1680,8 +1680,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 assertEquals(2, exceptionItem.getExceptionItems().size());
                 assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.ANNOTATION},
                         exceptionItem.getExceptionItems().get(0));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CODE_SHORT_NAME}, exceptionItem.getExceptionItems()
-                        .get(1));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CODE_SHORT_NAME},
+                        exceptionItem.getExceptionItems().get(1));
             }
             assertEquals(e.getExceptionItems().size(), i);
         }
@@ -1699,10 +1699,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
             assertEquals(3, exceptionItem.getExceptionItems().size());
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_ACCESS_TYPE}, exceptionItem.getExceptionItems().get(0));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_DEFAULT_ORDER_VISUALISATION}, exceptionItem
-                    .getExceptionItems().get(1));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_DEFAULT_OPENNESS_VISUALISATION}, exceptionItem
-                    .getExceptionItems().get(2));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_DEFAULT_ORDER_VISUALISATION},
+                    exceptionItem.getExceptionItems().get(1));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CODELIST_DEFAULT_OPENNESS_VISUALISATION},
+                    exceptionItem.getExceptionItems().get(2));
         }
     }
 
@@ -3988,10 +3988,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         int i = 0;
         assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, 1, new Serializable[]{"CODE01"}, taskImportTsvInfo.getInformationItems().get(i++));
         assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, 1, new Serializable[]{"CODE02"}, taskImportTsvInfo.getInformationItems().get(i++));
-        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, 2, new Serializable[]{"VARIABLE_ELEMENT_NOT_EXISTS", "code01b"}, taskImportTsvInfo
-                .getInformationItems().get(i++));
-        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, 2, new Serializable[]{"VARIABLE_ELEMENT_NOT_EXISTS", "code8"}, taskImportTsvInfo
-                .getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, 2, new Serializable[]{"VARIABLE_ELEMENT_NOT_EXISTS", "code01b"},
+                taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, 2, new Serializable[]{"VARIABLE_ELEMENT_NOT_EXISTS", "code8"},
+                taskImportTsvInfo.getInformationItems().get(i++));
         assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, 1, new Serializable[]{"CODE03"}, taskImportTsvInfo.getInformationItems().get(i++));
         assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_UPDATED, 1, new Serializable[]{"CODE0201"}, taskImportTsvInfo.getInformationItems().get(i++));
         assertEquals(taskImportTsvInfo.getInformationItems().size(), i);
@@ -4493,10 +4493,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         int i = 0;
         assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"CODE01"}, taskImportTsvInfo.getInformationItems().get(i++));
         assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"CODE02"}, taskImportTsvInfo.getInformationItems().get(i++));
-        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, 2, new Serializable[]{"VARIABLE_ELEMENT_NOT_EXISTS", "code01b"}, taskImportTsvInfo
-                .getInformationItems().get(i++));
-        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, 2, new Serializable[]{"VARIABLE_ELEMENT_NOT_EXISTS", "code8"}, taskImportTsvInfo
-                .getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, 2, new Serializable[]{"VARIABLE_ELEMENT_NOT_EXISTS", "code01b"},
+                taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_VARIABLE_ELEMENT_NOT_FOUND, 2, new Serializable[]{"VARIABLE_ELEMENT_NOT_EXISTS", "code8"},
+                taskImportTsvInfo.getInformationItems().get(i++));
         assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"CODE03"}, taskImportTsvInfo.getInformationItems().get(i++));
         assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"CODE0201"}, taskImportTsvInfo.getInformationItems().get(i++));
         assertEquals(taskImportTsvInfo.getInformationItems().size(), i);
@@ -4606,8 +4606,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
             assertEquals(1, e.getExceptionItems().size());
             int i = 0;
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, 1, new Serializable[]{ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE}, e
-                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, 1, new Serializable[]{ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE},
+                    e.getExceptionItems().get(i++));
             assertEquals(e.getExceptionItems().size(), i);
         }
 
@@ -4661,8 +4661,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         int i = 0;
         TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN.getCode(), ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE, Boolean.FALSE, type, task
-                .getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN.getCode(), ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE, Boolean.FALSE, type,
+                task.getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
 
         // Validate item scheme
@@ -4687,12 +4687,12 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
             assertEquals(4, e.getExceptionItems().size());
             int i = 0;
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, 2, new Serializable[]{"%code1", "parameter.srm.importation.code"}, e
-                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, 2, new Serializable[]{"%code1", "parameter.srm.importation.code"},
+                    e.getExceptionItems().get(i++));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_PARENT_NOT_FOUND, 2, new Serializable[]{"parentNotExists", "codeParentNotExists"},
                     e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2, new Serializable[]{"codeWithoutName", "parameter.srm.importation.name"}, e.getExceptionItems()
-                    .get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2, new Serializable[]{"codeWithoutName", "parameter.srm.importation.name"},
+                    e.getExceptionItems().get(i++));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, 1, new Serializable[]{5}, e.getExceptionItems().get(i++));
             assertEquals(e.getExceptionItems().size(), i);
         }
@@ -4846,8 +4846,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
             assertEquals(1, e.getExceptionItems().size());
             int i = 0;
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, 1, new Serializable[]{ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE}, e
-                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, 1, new Serializable[]{ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE},
+                    e.getExceptionItems().get(i++));
             assertEquals(e.getExceptionItems().size(), i);
         }
 
@@ -4900,8 +4900,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         int i = 0;
         TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN.getCode(), ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE, Boolean.FALSE, type, task
-                .getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN.getCode(), ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE, Boolean.FALSE, type,
+                task.getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
 
         // Validate item scheme
@@ -4923,8 +4923,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
             assertEquals(1, e.getExceptionItems().size());
             int i = 0;
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, 1, new Serializable[]{ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_ORDER}, e
-                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, 1, new Serializable[]{ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_ORDER},
+                    e.getExceptionItems().get(i++));
             assertEquals(e.getExceptionItems().size(), i);
         }
     }
@@ -4981,8 +4981,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
             assertEquals(1, e.getExceptionItems().size());
             int i = 0;
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_ORDER_VISUALISATION_NOT_FOUND, 2, new Serializable[]{"VISUALISATION001",
-                    "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(02.000)"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_ORDER_VISUALISATION_NOT_FOUND, 2,
+                    new Serializable[]{"VISUALISATION001", "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST01(02.000)"}, e.getExceptionItems().get(i++));
             assertEquals(e.getExceptionItems().size(), i);
         }
     }
@@ -5003,7 +5003,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             int i = 0;
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2, new Serializable[]{"CODE0201", "parameter.srm.importation.order"},
                     e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2, new Serializable[]{"CODE04", "parameter.srm.importation.order"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2, new Serializable[]{"CODE04", "parameter.srm.importation.order"},
+                    e.getExceptionItems().get(i++));
             assertEquals(e.getExceptionItems().size(), i);
         }
     }
@@ -5991,8 +5992,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("updating type is unsupported with variable elements");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_TYPE_UPDATE_TO_GEOGRAPHICAL_UNSUPPORTED, 1, new String[]{variable.getNameableArtefact().getUrn()}, e.getExceptionItems()
-                    .get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.VARIABLE_TYPE_UPDATE_TO_GEOGRAPHICAL_UNSUPPORTED, 1, new String[]{variable.getNameableArtefact().getUrn()},
+                    e.getExceptionItems().get(0));
         }
     }
 
@@ -6485,8 +6486,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("metadata required");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY}, e.getExceptionItems()
-                    .get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY},
+                    e.getExceptionItems().get(0));
         }
     }
 
@@ -6524,8 +6525,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_LONGITUDE}, e.getExceptionItems().get(1));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHAPE_WKT}, e.getExceptionItems().get(2));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_SHAPE_GEOJSON}, e.getExceptionItems().get(3));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY}, e.getExceptionItems()
-                    .get(4));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY},
+                    e.getExceptionItems().get(4));
         }
     }
 
@@ -6656,8 +6657,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("metadata required");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY}, e.getExceptionItems()
-                    .get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY},
+                    e.getExceptionItems().get(0));
         }
     }
 
@@ -6672,8 +6673,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("must be empty");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY}, e.getExceptionItems()
-                    .get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY},
+                    e.getExceptionItems().get(0));
         }
     }
 
@@ -6688,8 +6689,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             fail("metadata required");
         } catch (MetamacException e) {
             assertEquals(1, e.getExceptionItems().size());
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY}, e.getExceptionItems()
-                    .get(0));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_UNEXPECTED, 1, new String[]{ServiceExceptionParameters.VARIABLE_ELEMENT_GEOGRAPHICAL_GRANULARITY},
+                    e.getExceptionItems().get(0));
         }
     }
 
@@ -8019,8 +8020,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Retrieve
         String codelistUrn = CODELIST_1_V2;
         String opennessVisualisationCode = "ALL_EXPANDED";
-        CodelistOpennessVisualisation codelistOpennessVisualisation = codesService
-                .retrieveCodelistOpennessVisualisationByCode(getServiceContextAdministrador(), codelistUrn, opennessVisualisationCode);
+        CodelistOpennessVisualisation codelistOpennessVisualisation = codesService.retrieveCodelistOpennessVisualisationByCode(getServiceContextAdministrador(), codelistUrn,
+                opennessVisualisationCode);
 
         // Validate
         assertNotNull(codelistOpennessVisualisation);
@@ -8082,8 +8083,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
     @Override
     @Test
     public void testUpdateCodelistOpennessVisualisation() throws Exception {
-        CodelistOpennessVisualisation codelistOpennessVisualisation = codesService
-                .retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_OPENNESS_VISUALISATION_02);
+        CodelistOpennessVisualisation codelistOpennessVisualisation = codesService.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(),
+                CODELIST_1_V2_OPENNESS_VISUALISATION_02);
         codelistOpennessVisualisation.getNameableArtefact().setName(BaseDoMocks.mockInternationalString());
         codelistOpennessVisualisation.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
 
@@ -8098,8 +8099,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
     @Test
     public void testUpdateCodelistOpennessVisualisationErrorDuplicatedCode() throws Exception {
-        CodelistOpennessVisualisation codelistOpennessVisualisation = codesService
-                .retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_OPENNESS_VISUALISATION_03);
+        CodelistOpennessVisualisation codelistOpennessVisualisation = codesService.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(),
+                CODELIST_1_V2_OPENNESS_VISUALISATION_03);
         codelistOpennessVisualisation.getNameableArtefact().setCode("VISUALISATION02");
         codelistOpennessVisualisation.getNameableArtefact().setIsCodeUpdated(Boolean.TRUE);
         try {
@@ -8487,8 +8488,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
                 "urn:sdmx:org.sdmx.infomodel.categoryscheme.Categorisation=SDMX01:cat3(01.000_temporal)");
 
         // -- No temporal
-        TaskInfo versioningTemporalToVersionResult = codesService.createVersionFromTemporalCodelist(getServiceContextAdministrador(),
-                temporalCodelistVersionMetamac.getMaintainableArtefact().getUrn(), VersionTypeEnum.MAJOR);
+        TaskInfo versioningTemporalToVersionResult = codesService.createVersionFromTemporalCodelist(getServiceContextAdministrador(), temporalCodelistVersionMetamac.getMaintainableArtefact().getUrn(),
+                VersionTypeEnum.MAJOR);
         entityManager.clear();
         CodelistVersionMetamac codelistVersionNewVersion = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), versioningTemporalToVersionResult.getUrnResult());
 
@@ -8643,8 +8644,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
 
                     // PublicationInternally phase
                     SdmxConstants.ITEMS_LIMIT_TO_EXECUTE_TASK_IN_BACKGROUND = 3; // modify to force in background
-                    TaskInfo versioningResult = codesService
-                            .publishInternallyCodelist(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn(), false, Boolean.TRUE);
+                    TaskInfo versioningResult = codesService.publishInternallyCodelist(getServiceContextAdministrador(), createTemporalCodelist.getMaintainableArtefact().getUrn(), false,
+                            Boolean.TRUE);
 
                     assertEquals(true, versioningResult.getIsPlannedInBackground());
                     assertEquals(null, versioningResult.getUrnResult());
@@ -8705,8 +8706,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Before
         {
             CodelistOpennessVisualisation visualisation = codesService.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), visualisationUrn);
-            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisation.getNameableArtefact()
-                    .getUrn());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null,
+                    visualisation.getNameableArtefact().getUrn());
             assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, codeUrn1).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, codeUrn2).getOpenness());
         }
@@ -8720,8 +8721,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Validate visualisation
         {
             CodelistOpennessVisualisation visualisation = codesService.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), visualisationUrn);
-            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisation.getNameableArtefact()
-                    .getUrn());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null,
+                    visualisation.getNameableArtefact().getUrn());
             assertEquals(9, codes.size());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, codeUrn1).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
@@ -8738,8 +8739,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             CodelistOpennessVisualisation visualisation = codesService.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(),
                     CODELIST_1_V2_OPENNESS_VISUALISATION_01_ALL_EXPANDED);
-            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisation.getNameableArtefact()
-                    .getUrn());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null,
+                    visualisation.getNameableArtefact().getUrn());
             assertEquals(9, codes.size());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, codeUrn1).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
@@ -8753,8 +8754,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         }
         {
             CodelistOpennessVisualisation visualisation = codesService.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_OPENNESS_VISUALISATION_03);
-            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisation.getNameableArtefact()
-                    .getUrn());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null,
+                    visualisation.getNameableArtefact().getUrn());
             assertEquals(9, codes.size());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, codeUrn1).getOpenness());
             assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
@@ -8780,8 +8781,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             CodelistOpennessVisualisation visualisation = codesService.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(),
                     CODELIST_1_V2_OPENNESS_VISUALISATION_01_ALL_EXPANDED);
-            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisation.getNameableArtefact()
-                    .getUrn());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null,
+                    visualisation.getNameableArtefact().getUrn());
             assertEquals(7, codes.size());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
@@ -8794,8 +8795,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Validate visualisation 02
         {
             CodelistOpennessVisualisation visualisation = codesService.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_OPENNESS_VISUALISATION_02);
-            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisation.getNameableArtefact()
-                    .getUrn());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null,
+                    visualisation.getNameableArtefact().getUrn());
             assertEquals(7, codes.size());
             assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
@@ -8808,8 +8809,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Validate visualisation 02
         {
             CodelistOpennessVisualisation visualisation = codesService.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_OPENNESS_VISUALISATION_03);
-            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisation.getNameableArtefact()
-                    .getUrn());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null,
+                    visualisation.getNameableArtefact().getUrn());
             assertEquals(7, codes.size());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOpenness());
             assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
@@ -8843,8 +8844,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         {
             CodelistOpennessVisualisation visualisation = codesService.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(),
                     CODELIST_1_V2_OPENNESS_VISUALISATION_01_ALL_EXPANDED);
-            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisation.getNameableArtefact()
-                    .getUrn());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null,
+                    visualisation.getNameableArtefact().getUrn());
             assertEquals(9, codes.size());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
@@ -8859,8 +8860,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Validate visualisation 02
         {
             CodelistOpennessVisualisation visualisation = codesService.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_OPENNESS_VISUALISATION_02);
-            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisation.getNameableArtefact()
-                    .getUrn());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null,
+                    visualisation.getNameableArtefact().getUrn());
             assertEquals(9, codes.size());
             assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOpenness());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
@@ -8876,8 +8877,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         // Validate visualisation 03
         {
             CodelistOpennessVisualisation visualisation = codesService.retrieveCodelistOpennessVisualisationByUrn(getServiceContextAdministrador(), CODELIST_1_V2_OPENNESS_VISUALISATION_03);
-            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null, visualisation.getNameableArtefact()
-                    .getUrn());
+            List<CodeMetamacVisualisationResult> codes = codesService.retrieveCodesByCodelistUrn(getServiceContextAdministrador(), codelistUrn, "es", null,
+                    visualisation.getNameableArtefact().getUrn());
             assertEquals(9, codes.size());
             assertEquals(Boolean.TRUE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_1).getOpenness());
             assertEquals(Boolean.FALSE, getCodeMetamacVisualisationResult(codes, CODELIST_1_V2_CODE_2).getOpenness());
@@ -9448,8 +9449,10 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         assertNull(taskImportTsvInfo.getJobKey());
         assertEquals(2, taskImportTsvInfo.getInformationItems().size());
         int i = 0;
-        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"VARIABLE_ELEMENT_02"}, taskImportTsvInfo.getInformationItems().get(i++));
-        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"VARIABLE_ELEMENT_04"}, taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"VARIABLE_ELEMENT_02"},
+                taskImportTsvInfo.getInformationItems().get(i++));
+        assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_INFO_RESOURCE_NOT_UPDATED, 1, new Serializable[]{"VARIABLE_ELEMENT_04"},
+                taskImportTsvInfo.getInformationItems().get(i++));
         assertEquals(taskImportTsvInfo.getInformationItems().size(), i);
 
         // Validate variable elements
@@ -9526,8 +9529,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
             assertEquals(1, e.getExceptionItems().size());
             int i = 0;
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, 1, new Serializable[]{ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE}, e
-                    .getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN, 1, new Serializable[]{ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE},
+                    e.getExceptionItems().get(i++));
             assertEquals(e.getExceptionItems().size(), i);
         }
     }
@@ -9574,8 +9577,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
         int i = 0;
         TaskResultTypeEnum type = TaskResultTypeEnum.ERROR;
         assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_ERROR.getCode(), fileName, Boolean.TRUE, type, task.getTaskResults().get(i++));
-        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN.getCode(), ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE, Boolean.FALSE, type, task
-                .getTaskResults().get(i++));
+        assertEqualsTaskResult(ServiceExceptionType.IMPORTATION_TSV_HEADER_INCORRECT_COLUMN.getCode(), ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE, Boolean.FALSE, type,
+                task.getTaskResults().get(i++));
         assertEquals(task.getTaskResults().size(), i);
     }
 
@@ -9599,8 +9602,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, 1, new Serializable[]{3}, e.getExceptionItems().get(i++));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2, new Serializable[]{"variableElement4WithoutShortName", "parameter.srm.importation.short_name"},
                     e.getExceptionItems().get(i++));
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, 2, new Serializable[]{"#variableNotSemanticCode",
-                    "parameter.srm.importation.code"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, 2,
+                    new Serializable[]{"#variableNotSemanticCode", "parameter.srm.importation.code"}, e.getExceptionItems().get(i++));
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, 1, new Serializable[]{7}, e.getExceptionItems().get(i++));
             assertEquals(e.getExceptionItems().size(), i);
         }
@@ -9655,8 +9658,8 @@ public class CodesMetamacServiceTest extends SrmBaseTest implements CodesMetamac
             assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR, 1, new Serializable[]{fileName}, e.getPrincipalException());
             assertEquals(1, e.getExceptionItems().size());
             int i = 0;
-            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2,
-                    new Serializable[]{"VARIABLE_ELEMENT_04", "parameter.srm.importation.geographical_granularity"}, e.getExceptionItems().get(i++));
+            assertEqualsMetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, 2, new Serializable[]{"VARIABLE_ELEMENT_04", "parameter.srm.importation.geographical_granularity"},
+                    e.getExceptionItems().get(i++));
             assertEquals(e.getExceptionItems().size(), i);
         }
     }

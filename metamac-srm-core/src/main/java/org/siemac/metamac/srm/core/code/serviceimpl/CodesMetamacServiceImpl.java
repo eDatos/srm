@@ -517,8 +517,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         BaseReplaceFromTemporalMetamac.replaceInternationalStringFromTemporalToCodelist(codelistVersion, codelistTemporalVersion, internationalStringRepository);
 
         // Merge Metamac metadata of ItemScheme
-        codelistVersion.setLifeCycleMetadata(BaseReplaceFromTemporalMetamac.replaceProductionAndDifussionLifeCycleMetadataFromTemporal(codelistVersion.getLifeCycleMetadata(),
-                codelistTemporalVersion.getLifeCycleMetadata()));
+        codelistVersion.setLifeCycleMetadata(
+                BaseReplaceFromTemporalMetamac.replaceProductionAndDifussionLifeCycleMetadataFromTemporal(codelistVersion.getLifeCycleMetadata(), codelistTemporalVersion.getLifeCycleMetadata()));
 
         // ShortName
         if (!BaseMergeAssert.assertEqualsInternationalString(codelistVersion.getShortName(), codelistTemporalVersion.getShortName())) {
@@ -1258,8 +1258,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         String codelistUrn = srmConfiguration.retrieveCodelistUrnForVariableElementGeographicalGranularity();
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().urn()).eq(codelistUrn).buildSingle());
         // scheme externally published (variable element has not lifecycle)
-        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE)
-                .buildSingle());
+        conditions.add(
+                ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class).withProperty(CodeMetamacProperties.itemSchemeVersion().maintainableArtefact().publicLogic()).eq(Boolean.TRUE).buildSingle());
         // Codelist with access type = PUBLIC
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
                 .withProperty(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.accessType().getName(), false, CodeMetamac.class))
@@ -3291,8 +3291,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             return null;
         }
         if (!SemanticIdentifierValidationUtils.isVariableElementSemanticIdentifier(codeIdentifier)) {
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, codeIdentifier,
-                    ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE));
+            exceptionItems
+                    .add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, codeIdentifier, ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE));
             return null;
         }
         // init variable element
@@ -3430,7 +3430,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         private final int columnIndex;
 
         public OrderIndexByLevelComparator(CodelistOrderVisualisation orderVisualisation) {
-            this.columnIndex = orderVisualisation.getColumnIndex();
+            columnIndex = orderVisualisation.getColumnIndex();
         }
 
         @Override
@@ -3471,8 +3471,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         for (String orderVisualisationCode : header.getOrderVisualisations()) {
             CodelistOrderVisualisation orderVisualisation = getCodelistOrderVisualisationRepository().findByCode(codelistVersion.getId(), orderVisualisationCode);
             if (orderVisualisation == null) {
-                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_ORDER_VISUALISATION_NOT_FOUND, orderVisualisationCode, codelistVersion.getMaintainableArtefact()
-                        .getUrn()));
+                exceptionItems.add(
+                        new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_ORDER_VISUALISATION_NOT_FOUND, orderVisualisationCode, codelistVersion.getMaintainableArtefact().getUrn()));
                 break;
             } else if (SrmServiceUtils.isAlphabeticalOrderVisualisation(orderVisualisation)) {
                 exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_ERROR_ALPHABETICAL_VISUALISATION_NOT_SUPPORTED));
@@ -3695,8 +3695,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     private void setDefaultCodelistOpennessVisualisation(CodelistVersionMetamac temporaryCodelist, CodelistVersionMetamac codelist) {
-        String defaultOpennessVisualisationCode = temporaryCodelist.getDefaultOpennessVisualisation() == null ? null : temporaryCodelist.getDefaultOpennessVisualisation().getNameableArtefact()
-                .getCode();
+        String defaultOpennessVisualisationCode = temporaryCodelist.getDefaultOpennessVisualisation() == null
+                ? null
+                : temporaryCodelist.getDefaultOpennessVisualisation().getNameableArtefact().getCode();
 
         CodelistOpennessVisualisation codelistOpennessVisualisation = null;
         for (CodelistOpennessVisualisation opennessVisualisation : codelist.getOpennessVisualisations()) {
