@@ -25,7 +25,6 @@ import org.joda.time.DateTime;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
-import org.siemac.metamac.rest.api.constants.RestApiConstants;
 import org.siemac.metamac.rest.common.v1_0.domain.ComparisonOperator;
 import org.siemac.metamac.rest.exception.RestCommonServiceExceptionType;
 import org.siemac.metamac.rest.exception.RestException;
@@ -1817,7 +1816,11 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
         if (queries.size() != 3) {
             return false;
         }
-        ConditionalCriteria query = extractQueryVariableElementWhenOnlyQueryByCode(queries);
+        ConditionalCriteria query = extractVariableElementQueryByCode(queries);
+        if (query == null) {
+            return false;
+        }
+
         if (!query.getPropertyFullName().equals(VariableElementProperties.identifiableArtefact().code().getName())) {
             return false;
         }
@@ -1842,7 +1845,11 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private List<String> extractVariableElementCodesIfOnlyQueryByCode(List<ConditionalCriteria> queries) {
-        ConditionalCriteria query = extractQueryVariableElementWhenOnlyQueryByCode(queries);
+        ConditionalCriteria query = extractVariableElementQueryByCode(queries);
+        if (query == null) {
+            return null;
+        }
+
         if (query.getOperator().equals(Operator.In)) {
             return (List) query.getFirstOperant();
         } else if (query.getOperator().equals(Operator.Equal)) {
@@ -1851,8 +1858,13 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
         return null;
     }
 
-    private ConditionalCriteria extractQueryVariableElementWhenOnlyQueryByCode(List<ConditionalCriteria> queries) {
-        return queries.get(1);
+    private ConditionalCriteria extractVariableElementQueryByCode(List<ConditionalCriteria> queries) {
+        for (ConditionalCriteria query : queries) {
+            if (VariableElementProperties.identifiableArtefact().code().toString().equals(query.getPropertyFullName())) {
+                return query;
+            }
+        }
+        return null;
     }
 
     private DateTime retrieveLastUpdatedDateVariableElementsGeographicalInformation() throws MetamacException {

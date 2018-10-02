@@ -1936,7 +1936,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         if (queries.size() != 3) {
             return false;
         }
-        ConditionalCriteria query = extractQueryVariableElementWhenOnlyQueryByCode(queries);
+        ConditionalCriteria query = extractQueryVariableElementByCode(queries);
+        if (query == null) {
+            return false;
+        }
         if (!query.getPropertyFullName().equals(VariableElementProperties.identifiableArtefact().code().getName())) {
             return false;
         }
@@ -1961,7 +1964,10 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private List<String> extractVariableElementCodesIfOnlyQueryByCode(List<ConditionalCriteria> queries) {
-        ConditionalCriteria query = extractQueryVariableElementWhenOnlyQueryByCode(queries);
+        ConditionalCriteria query = extractQueryVariableElementByCode(queries);
+        if (query == null) {
+            return null;
+        }
         if (query.getOperator().equals(Operator.In)) {
             return (List) query.getFirstOperant();
         } else if (query.getOperator().equals(Operator.Equal)) {
@@ -1970,8 +1976,13 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return null;
     }
 
-    private ConditionalCriteria extractQueryVariableElementWhenOnlyQueryByCode(List<ConditionalCriteria> queries) {
-        return queries.get(1);
+    private ConditionalCriteria extractQueryVariableElementByCode(List<ConditionalCriteria> queries) {
+        for (ConditionalCriteria query : queries) {
+            if (VariableElementProperties.identifiableArtefact().code().toString().equals(query.getPropertyFullName())) {
+                return query;
+            }
+        }
+        return null;
     }
 
     private DateTime retrieveLastUpdatedDateVariableElementsGeographicalInformation() throws MetamacException {
