@@ -1848,14 +1848,14 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public List<VariableElementResult> findVariableElementsByVariableEfficiently(ServiceContext ctx, String variableUrn, List<String> variableElementCodes, VariableElementResultSelection selection)
-            throws MetamacException {
+    public List<VariableElementResult> findVariableElementsByVariableEfficiently(ServiceContext ctx, String variableUrn, List<String> variableElementCodes, VariableElementResultSelection selection,
+            List<String> geographicalGranularityUrns) throws MetamacException {
         // Validation
         CodesMetamacInvocationValidator.checkFindVariableElementsByVariableEfficiently(variableUrn, variableElementCodes, selection, null);
 
         // Find
         Variable variable = retrieveVariableByUrn(variableUrn);
-        return getVariableElementRepository().findVariableElementsByVariableEfficiently(variable.getId(), variableElementCodes, selection);
+        return getVariableElementRepository().findVariableElementsByVariableEfficiently(variable.getId(), variableElementCodes, selection, geographicalGranularityUrns);
     }
 
     @Override
@@ -2286,7 +2286,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Find
         VariableElementResultSelection selection = new VariableElementResultSelection();
         selection.setGeographicalGranularity(true);
-        List<VariableElementResult> variableElements = getVariableElementRepository().findVariableElementsByVariableEfficiently(variable.getId(), null, selection);
+        List<VariableElementResult> variableElements = getVariableElementRepository().findVariableElementsByVariableEfficiently(variable.getId(), null, selection, null);
 
         List<String> languages = srmConfiguration.retrieveLanguages();
         return TsvExportationUtils.exportVariableElements(variableElements, languages);

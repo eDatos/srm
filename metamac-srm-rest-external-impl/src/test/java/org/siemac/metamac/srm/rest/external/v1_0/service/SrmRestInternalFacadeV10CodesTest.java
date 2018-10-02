@@ -1198,7 +1198,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @SuppressWarnings("unchecked")
     private void mockFindVariableElementsByVariableEfficiently() throws MetamacException {
-        when(codesService.findVariableElementsByVariableEfficiently(any(ServiceContext.class), any(String.class), any(List.class), any(VariableElementResultSelection.class)))
+        when(codesService.findVariableElementsByVariableEfficiently(any(ServiceContext.class), any(String.class), any(List.class), any(VariableElementResultSelection.class), any(List.class)))
                 .thenAnswer(new Answer<List<org.siemac.metamac.srm.core.code.domain.VariableElementResult>>() {
 
                     @Override

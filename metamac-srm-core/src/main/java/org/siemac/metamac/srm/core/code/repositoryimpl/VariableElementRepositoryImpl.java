@@ -73,7 +73,8 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
 
     @Override
     @SuppressWarnings("rawtypes")
-    public List<VariableElementResult> findVariableElementsByVariableEfficiently(Long variableId, List<String> variableElementCodes, VariableElementResultSelection selection) {
+    public List<VariableElementResult> findVariableElementsByVariableEfficiently(Long variableId, List<String> variableElementCodes, VariableElementResultSelection selection,
+            List<String> geographicalGranularityUrns) {
         if (CollectionUtils.isEmpty(variableElementCodes)) {
             variableElementCodes = new ArrayList<String>();
         }
@@ -102,6 +103,10 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
             if (selection.isReturnOnlyGeographicalVariableElements()) {
                 sb.append("INNER JOIN TB_M_VARIABLES v on ve.VARIABLE_FK = v.ID ");
             }
+            if (!CollectionUtils.isEmpty(geographicalGranularityUrns)) {
+                sb.append("INNER JOIN TB_CODES c on ve.GEOGRAPHICAL_GRANULARITY_FK = c.ID ");
+                sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS ac on c.NAMEABLE_ARTEFACT_FK = ac.ID ");
+            }
             sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS ls ON ls.INTERNATIONAL_STRING_FK = ve.SHORT_NAME_FK ");
             sb.append("WHERE ve.VARIABLE_FK = :variableId ");
             if (!CollectionUtils.isEmpty(variableElementCodes)) {
@@ -110,6 +115,10 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
             if (selection.isReturnOnlyGeographicalVariableElements()) {
                 sb.append("AND v.VARIABLE_TYPE = :variableType ");
             }
+            if (!CollectionUtils.isEmpty(geographicalGranularityUrns)) {
+                sb.append("AND ac.URN IN (:geographicalGranularityUrns) ");
+            }
+
             Query query = getEntityManager().createNativeQuery(sb.toString());
             query.setParameter("variableId", variableId);
             if (!CollectionUtils.isEmpty(variableElementCodes)) {
@@ -118,6 +127,10 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
             if (selection.isReturnOnlyGeographicalVariableElements()) {
                 query.setParameter("variableType", VariableTypeEnum.GEOGRAPHICAL.getName());
             }
+            if (!CollectionUtils.isEmpty(geographicalGranularityUrns)) {
+                query.setParameter("geographicalGranularityUrns", geographicalGranularityUrns);
+            }
+
             List variableElementsResultSql = query.getResultList();
 
             // Transform object[] results
@@ -150,6 +163,12 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
                     sbGeo.append(" ");
                     sbGeo.append("FROM TB_M_VARIABLE_ELEMENTS ve ");
                     sbGeo.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on ve.IDENTIFIABLE_ARTEFACT_FK = a.ID ");
+
+                    if (!CollectionUtils.isEmpty(geographicalGranularityUrns)) {
+                        sbGeo.append("INNER JOIN TB_CODES c on ve.GEOGRAPHICAL_GRANULARITY_FK = c.ID ");
+                        sbGeo.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS ac on c.NAMEABLE_ARTEFACT_FK = ac.ID ");
+                    }
+
                     sbGeo.append("WHERE ve.VARIABLE_FK = " + variableId);
                     if (!CollectionUtils.isEmpty(variableElementCodes)) {
                         // METAMAC-1653: Put parameter in this way instead of query.setParameter("variableElementCodes", variableElementCodes.subList(startIndex, endIndex)) to avoid
@@ -162,6 +181,17 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
                             }
                         }
                         sbGeo.append("AND a.CODE IN (" + variableElementsCodeParameter.toString() + ") ");
+                    }
+
+                    if (!CollectionUtils.isEmpty(geographicalGranularityUrns)) {
+                        StringBuilder geographicalGranularityUrnsParameter = new StringBuilder();
+                        for (int i = 0; i < geographicalGranularityUrns.size(); i++) {
+                            geographicalGranularityUrnsParameter.append("'" + geographicalGranularityUrns.get(i) + "'");
+                            if (i < geographicalGranularityUrns.size() - 1) {
+                                geographicalGranularityUrnsParameter.append(",");
+                            }
+                        }
+                        sbGeo.append("AND ac.URN IN (" + geographicalGranularityUrnsParameter.toString() + ") ");
                     }
 
                     // METAMAC-1653: addScalar is needed due to mssql can be determine that SHAPE_GEOJSON and SHAPE_WKT columns are 'Text' types
@@ -200,10 +230,16 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
                     if (!CollectionUtils.isEmpty(variableElementCodes)) {
                         sbGeo.append("AND a.CODE IN (:variableElementCodes) ");
                     }
+                    if (!CollectionUtils.isEmpty(geographicalGranularityUrns)) {
+                        sbGeo.append("AND ac.URN IN (:geographicalGranularityUrns) ");
+                    }
                     Query queryGeo = getEntityManager().createNativeQuery(sbGeo.toString());
                     queryGeo.setParameter("variableId", variableId);
                     if (!CollectionUtils.isEmpty(variableElementCodes)) {
                         queryGeo.setParameter("variableElementCodes", variableElementCodes.subList(startIndex, endIndex));
+                    }
+                    if (!CollectionUtils.isEmpty(geographicalGranularityUrns)) {
+                        queryGeo.setParameter("geographicalGranularityUrns", geographicalGranularityUrns);
                     }
                     List variableElementsResultSqlGeo = queryGeo.getResultList();
 

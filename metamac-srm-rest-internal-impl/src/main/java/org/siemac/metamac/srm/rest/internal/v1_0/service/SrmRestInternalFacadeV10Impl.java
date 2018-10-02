@@ -1039,8 +1039,12 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 if (query != null) {
                     variableElementsCodes = extractVariableElementCodesIfOnlyQueryByCode(sculptorCriteria.getConditions());
                 }
+                List<String> geographicalGranularityUrns = null;
+                if (query != null) {
+                    geographicalGranularityUrns = extractVariableElementGeographicalGranularityUrnIfOnlyQueryByGeographicalGRanularityUrn(sculptorCriteria.getConditions());
+                }
                 VariableElementResultSelection selection = new VariableElementResultSelection(); // do not retrieve nothing extra metadata as default
-                List<VariableElementResult> entities = codesService.findVariableElementsByVariableEfficiently(ctx, variableUrn, variableElementsCodes, selection);
+                List<VariableElementResult> entities = codesService.findVariableElementsByVariableEfficiently(ctx, variableUrn, variableElementsCodes, selection, geographicalGranularityUrns);
 
                 // Transform
                 return codesDo2RestMapper.toVariableElements(entities, variableID, query);
@@ -1826,8 +1830,12 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
                 if (query != null) {
                     variableElementsCodes = extractVariableElementCodesIfOnlyQueryByCode(sculptorCriteria.getConditions());
                 }
+                List<String> geographicalGranularityUrns = null;
+                if (query != null) {
+                    geographicalGranularityUrns = extractVariableElementGeographicalGranularityUrnIfOnlyQueryByGeographicalGRanularityUrn(sculptorCriteria.getConditions());
+                }
 
-                List<VariableElementResult> entities = codesService.findVariableElementsByVariableEfficiently(ctx, variableUrn, variableElementsCodes, selection);
+                List<VariableElementResult> entities = codesService.findVariableElementsByVariableEfficiently(ctx, variableUrn, variableElementsCodes, selection, geographicalGranularityUrns);
 
                 // Transform
                 if (MediaType.APPLICATION_JSON.equals(mediaType)) {
@@ -1901,7 +1909,6 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         if (SrmRestConstants.WILDCARD_ALL.equals(agencyID) || SrmRestConstants.WILDCARD_ALL.equals(resourceID) || SrmRestConstants.WILDCARD_ALL.equals(version)) {
             return true;
         }
-
         if (query != null || orderBy != null || limit != null || offset != null) {
             return true;
         }
@@ -1936,7 +1943,7 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         if (queries.size() != 3) {
             return false;
         }
-        ConditionalCriteria query = extractQueryVariableElementByCode(queries);
+        ConditionalCriteria query = extractVariableElementQueryByCode(queries);
         if (query == null) {
             return false;
         }
@@ -1962,25 +1969,43 @@ public class SrmRestInternalFacadeV10Impl implements SrmRestInternalFacadeV10 {
         return query.equalsIgnoreCase(CodeCriteriaPropertyRestriction.DEFAULT_GEOGRAPHICAL_GRANULARITIES_CODELIST + " " + ComparisonOperator.EQ.value() + " 'TRUE'");
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     private List<String> extractVariableElementCodesIfOnlyQueryByCode(List<ConditionalCriteria> queries) {
-        ConditionalCriteria query = extractQueryVariableElementByCode(queries);
-        if (query == null) {
-            return null;
-        }
-        if (query.getOperator().equals(Operator.In)) {
-            return (List) query.getFirstOperant();
-        } else if (query.getOperator().equals(Operator.Equal)) {
-            return Arrays.asList((String) query.getFirstOperant());
-        }
-        return null;
+        ConditionalCriteria query = extractVariableElementQueryByCode(queries);
+        return extractVariableElement(query);
     }
 
-    private ConditionalCriteria extractQueryVariableElementByCode(List<ConditionalCriteria> queries) {
+    private List<String> extractVariableElementGeographicalGranularityUrnIfOnlyQueryByGeographicalGRanularityUrn(List<ConditionalCriteria> queries) {
+        ConditionalCriteria query = extractVariableElementQueryByGeographicalGranularityUrn(queries);
+        return extractVariableElement(query);
+    }
+
+    private ConditionalCriteria extractVariableElementQueryByCode(List<ConditionalCriteria> queries) {
         for (ConditionalCriteria query : queries) {
             if (VariableElementProperties.identifiableArtefact().code().toString().equals(query.getPropertyFullName())) {
                 return query;
             }
+        }
+        return null;
+    }
+
+    private ConditionalCriteria extractVariableElementQueryByGeographicalGranularityUrn(List<ConditionalCriteria> queries) {
+        for (ConditionalCriteria query : queries) {
+            if (VariableElementProperties.geographicalGranularity().nameableArtefact().toString().equals(query.getPropertyFullName())) {
+                return query;
+            }
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<String> extractVariableElement(ConditionalCriteria query) {
+        if (query == null) {
+            return null;
+        }
+        if (query.getOperator().equals(Operator.In)) {
+            return (List<String>) query.getFirstOperant();
+        } else if (query.getOperator().equals(Operator.Equal)) {
+            return Arrays.asList((String) query.getFirstOperant());
         }
         return null;
     }
