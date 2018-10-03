@@ -3051,8 +3051,8 @@
                 {"$ref":"#/components/parameters/resourceIdParam"},
                 {"$ref":"#/components/parameters/limitParam"},
                 {"$ref":"#/components/parameters/offsetParam"},
-                {"$ref":"#/components/parameters/variableQueryParam"},
-                {"$ref":"#/components/parameters/variableOrderByParam"},
+                {"$ref":"#/components/parameters/variableElementQueryParam"},
+                {"$ref":"#/components/parameters/variableElementOrderByParam"}
             ],
             "responses":{
                "200":{
