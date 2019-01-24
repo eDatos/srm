@@ -253,16 +253,19 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setSelfLink(selfLink);
     }
 
-    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, Resource target, Boolean isImported) {
+    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, Resource target, Boolean isImported, Set<String> fields) {
         if (source == null) {
             return;
         }
         toResource((IdentifiableArtefact) source, kind, selfLink, target, isImported);
         target.setName(toInternationalString(source.getName()));
+        if (containsField(fields, SrmRestConstants.FIELD_DESCRIPTION)) {
+            target.setDescription(toInternationalString(source.getDescription()));
+        }
     }
 
     protected void toResource(MaintainableArtefact source, String kind, ResourceLink selfLink, Resource target) {
-        toResource(source, kind, selfLink, target, source.getIsImported());
+        toResource(source, kind, selfLink, target, source.getIsImported(), null);
     }
 
     protected void toResource(IdentifiableArtefactResult source, String kind, ResourceLink selfLink, Resource target, Boolean isImported) {
@@ -276,12 +279,15 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setSelfLink(selfLink);
     }
 
-    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, ItemResource target, Boolean isImported) {
+    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, ItemResource target, Boolean isImported, Set<String> fields) {
         if (source == null) {
             return;
         }
         toResource((IdentifiableArtefactResult) source, kind, selfLink, target, isImported);
         target.setName(toInternationalString(source.getName()));
+        if (containsField(fields, SrmRestConstants.FIELD_DESCRIPTION)) {
+            target.setDescription(toInternationalString(source.getDescription()));
+        }
         if (source.getParent() != null) {
             target.setParent(source.getParent().getUrn());
         }
@@ -370,5 +376,9 @@ public abstract class BaseDo2RestMapperV10Impl {
         statisticalResourcesApiExternalEndpoint = StringUtils.removeEnd(statisticalResourcesApiExternalEndpoint, "/");
 
         maintainerUrnDefault = configurationService.retrieveOrganisationUrn();
+    }
+    
+    protected boolean containsField(Set<String> fields, String field) {
+        return fields != null && fields.contains(field);
     }
 }
