@@ -1,5 +1,7 @@
 package org.siemac.metamac.srm.rest.internal.v1_0.mapper.base;
 
+import java.util.Set;
+
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ItemResourceInternal;
 import org.siemac.metamac.rest.utils.RestUtils;
@@ -49,11 +51,11 @@ public abstract class ItemSchemeBaseDo2RestMapperV10Impl extends BaseDo2RestMapp
         }
     }
 
-    protected void toResource(Item source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target) {
+    protected void toResource(Item source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target, Set<String> fields) {
         if (source == null) {
             return;
         }
-        toResource(source.getNameableArtefact(), kind, selfLink, managementAppUrl, target, source.getItemSchemeVersion().getMaintainableArtefact().getIsImported());
+        toResource(source.getNameableArtefact(), kind, selfLink, managementAppUrl, target, source.getItemSchemeVersion().getMaintainableArtefact().getIsImported(), fields);
         if (source.getParent() != null) {
             target.setParent(source.getParent().getNameableArtefact().getUrn());
         }

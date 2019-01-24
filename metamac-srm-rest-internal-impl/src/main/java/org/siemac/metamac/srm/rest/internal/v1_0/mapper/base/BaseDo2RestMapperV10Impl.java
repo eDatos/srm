@@ -279,16 +279,19 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setManagementAppLink(managementAppUrl);
     }
 
-    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, Boolean isImported) {
+    protected void toResource(NameableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, Boolean isImported, Set<String> fields) {
         if (source == null) {
             return;
         }
         toResource((IdentifiableArtefact) source, kind, selfLink, managementAppUrl, target, isImported);
         target.setName(toInternationalString(source.getName()));
+        if (containsField(fields, SrmRestConstants.FIELD_DESCRIPTION)) {
+            target.setDescription(toInternationalString(source.getDescription()));
+        }
     }
 
     protected void toResource(MaintainableArtefact source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target) {
-        toResource(source, kind, selfLink, managementAppUrl, target, source.getIsImported());
+        toResource(source, kind, selfLink, managementAppUrl, target, source.getIsImported(), null);
     }
 
     protected void toResource(IdentifiableArtefactResult source, String kind, ResourceLink selfLink, String managementAppUrl, ResourceInternal target, Boolean isImported) {
@@ -308,12 +311,15 @@ public abstract class BaseDo2RestMapperV10Impl {
         target.setManagementAppLink(managementAppUrl);
     }
 
-    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target, Boolean isImported) {
+    protected void toResource(ItemResult source, String kind, ResourceLink selfLink, String managementAppUrl, ItemResourceInternal target, Boolean isImported, Set<String> fields) {
         if (source == null) {
             return;
         }
         toResource((IdentifiableArtefactResult) source, kind, selfLink, managementAppUrl, target, isImported);
         target.setName(toInternationalString(source.getName()));
+        if (containsField(fields, SrmRestConstants.FIELD_DESCRIPTION)) {
+            target.setDescription(toInternationalString(source.getDescription()));
+        }
         if (source.getParent() != null) {
             target.setParent(source.getParent().getUrn());
         }
@@ -418,5 +424,9 @@ public abstract class BaseDo2RestMapperV10Impl {
         statisticalResourcesApiInternalEndpoint = configurationService.retrieveStatisticalResourcesInternalApiUrlBase();
         statisticalResourcesApiInternalEndpoint = StringUtils.removeEnd(statisticalResourcesApiInternalEndpoint, "/");
 
+    }
+
+    protected boolean containsField(Set<String> fields, String field) {
+        return fields != null && fields.contains(field);
     }
 }

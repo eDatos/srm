@@ -227,7 +227,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
             return null;
         }
         ItemResourceInternal target = new ItemResourceInternal();
-        toResource(source, SrmRestConstants.KIND_CATEGORY, toCategorySelfLink(source), toCategoryManagementApplicationLink(source), target);
+        toResource(source, SrmRestConstants.KIND_CATEGORY, toCategorySelfLink(source), toCategoryManagementApplicationLink(source), target, null);
         target.setNestedId(source.getNameableArtefact().getCodeFull());
         return target;
     }
@@ -238,7 +238,7 @@ public class CategoriesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV
         }
         ItemResourceInternal target = new ItemResourceInternal();
         toResource(source, SrmRestConstants.KIND_CATEGORY, toCategorySelfLink(source, categorySchemeVersion), toCategoryManagementApplicationLink(categorySchemeVersion, source), target,
-                categorySchemeVersion.getMaintainableArtefact().getIsImported());
+                categorySchemeVersion.getMaintainableArtefact().getIsImported(), null);
         target.setNestedId(source.getCodeFull());
         return target;
     }
