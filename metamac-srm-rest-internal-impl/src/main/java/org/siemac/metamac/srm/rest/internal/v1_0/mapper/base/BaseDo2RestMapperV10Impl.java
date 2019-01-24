@@ -285,7 +285,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
         toResource((IdentifiableArtefact) source, kind, selfLink, managementAppUrl, target, isImported);
         target.setName(toInternationalString(source.getName()));
-        if (containsField(fields, SrmRestConstants.FIELD_DESCRIPTION)) {
+        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_DESCRIPTION)) {
             target.setDescription(toInternationalString(source.getDescription()));
         }
     }
@@ -317,7 +317,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
         toResource((IdentifiableArtefactResult) source, kind, selfLink, managementAppUrl, target, isImported);
         target.setName(toInternationalString(source.getName()));
-        if (containsField(fields, SrmRestConstants.FIELD_DESCRIPTION)) {
+        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_DESCRIPTION)) {
             target.setDescription(toInternationalString(source.getDescription()));
         }
         if (source.getParent() != null) {

@@ -465,7 +465,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @Test
     public void testFindCodesRetrieveAllXmlWithFields() throws Exception {
-        String FIELDS = SrmRestConstants.FIELD_INCLUDE_OPENNES + "," + SrmRestConstants.FIELD_INCLUDE_ORDER + "," + SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT + "," + SrmRestConstants.FIELD_DESCRIPTION;
+        String FIELDS = SrmRestConstants.FIELD_INCLUDE_OPENNES + "," + SrmRestConstants.FIELD_INCLUDE_ORDER + "," + SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT + "," + SrmRestConstants.FIELD_INCLUDE_DESCRIPTION;
         String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, FIELDS);
         InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodesRetrieveAllWithFields.xml");
 
