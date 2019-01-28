@@ -8,6 +8,10 @@
             <cdomain:text xml:lang="en">name-code1 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-code1 en Español</cdomain:text>
         </cdomain:name>
+        <cdomain:description>
+            <cdomain:text xml:lang="en">description-code1 in English</cdomain:text>
+            <cdomain:text xml:lang="es">description-code1 en Español</cdomain:text>
+        </cdomain:description>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=code1</sr:managementAppLink>
         <sr:variableElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sr:VariableElementResourceInternal" kind="structuralResources#variableElement">
             <cdomain:id>variableElement-code1</cdomain:id>
@@ -30,6 +34,10 @@
             <cdomain:text xml:lang="en">name-code2 in English</cdomain:text>
             <cdomain:text xml:lang="es">name-code2 en Español</cdomain:text>
         </cdomain:name>
+        <cdomain:description>
+            <cdomain:text xml:lang="en">description-code2 in English</cdomain:text>
+            <cdomain:text xml:lang="es">description-code2 en Español</cdomain:text>
+        </cdomain:description>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=code2</sr:managementAppLink>
         <sr:variableElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sr:VariableElementResourceInternal" kind="structuralResources#variableElement">
             <cdomain:id>variableElement-code2</cdomain:id>
@@ -52,6 +60,10 @@
             <cdomain:text xml:lang="en">name-code2A in English</cdomain:text>
             <cdomain:text xml:lang="es">name-code2A en Español</cdomain:text>
         </cdomain:name>
+        <cdomain:description>
+            <cdomain:text xml:lang="en">description-code2A in English</cdomain:text>
+            <cdomain:text xml:lang="es">description-code2A en Español</cdomain:text>
+        </cdomain:description>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=code2A</sr:managementAppLink>
         <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code2</sr:parent>
         <sr:variableElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sr:VariableElementResourceInternal" kind="structuralResources#variableElement">
@@ -75,6 +87,10 @@
             <cdomain:text xml:lang="en">name-code2B in English</cdomain:text>
             <cdomain:text xml:lang="es">name-code2B en Español</cdomain:text>
         </cdomain:name>
+        <cdomain:description>
+            <cdomain:text xml:lang="en">description-code2B in English</cdomain:text>
+            <cdomain:text xml:lang="es">description-code2B en Español</cdomain:text>
+        </cdomain:description>
         <sr:managementAppLink>http://localhost:8080/metamac-srm-web/#structuralResources/codelists/codelist;id=agency1:itemScheme1(01.000)/code;id=code2B</sr:managementAppLink>
         <sr:parent>urn:sdmx:org.sdmx.infomodel.codelist.Code=agency1:itemScheme1(01.000).code2</sr:parent>
         <sr:variableElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sr:VariableElementResourceInternal" kind="structuralResources#variableElement">

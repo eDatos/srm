@@ -203,7 +203,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ItemResource target = new ItemResource();
-        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), target);
+        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), target, null);
         return target;
     }
 
@@ -212,7 +212,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         CodeResource target = new CodeResource();
-        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), target);
+        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), target, fields);
         
         setVisibleFields(source, target, fields);
         
@@ -235,7 +235,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         CodeResource target = new CodeResource();
-        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), target, codelistVersion.getMaintainableArtefact().getIsImported());
+        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), target, codelistVersion.getMaintainableArtefact().getIsImported(), fields);
 
         setVisibleFields(source, target, variableID, fields);
 
@@ -254,10 +254,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_OPENNES)) {
             target.setOpen(SrmServiceUtils.getCodeItemResultOpenness(source));
         }
-    }
-
-    protected boolean containsField(Set<String> fields, String field) {
-        return fields != null && fields.contains(field);
     }
 
     @Override
@@ -439,7 +435,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         Resource target = new Resource();
-        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_VARIABLE, toVariableSelfLink(source), target, false);
+        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_VARIABLE, toVariableSelfLink(source), target, false, null);
         return target;
     }
 
@@ -593,7 +589,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         Resource target = new Resource();
-        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source), target, false);
+        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source), target, false, null);
         return target;
     }
 
@@ -602,7 +598,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         Resource target = new Resource();
-        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source), target, false);
+        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source), target, false, null);
         return target;
     }
 
@@ -994,7 +990,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ItemResource target = new ItemResource();
-        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), target, false);
+        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), target, false, null);
         return target;
     }
 

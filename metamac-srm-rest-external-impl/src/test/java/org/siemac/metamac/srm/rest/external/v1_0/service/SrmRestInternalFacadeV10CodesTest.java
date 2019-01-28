@@ -377,6 +377,13 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
         Codes codes = getSrmRestInternalFacadeClientXml().findCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null, null, null, "+variableElement");
         assertNotNull(codes.getCodes().get(0).getVariableElement());
     }
+    
+    @Test
+    public void testFindCodesWithDescriptionExplicit() throws Exception {
+        resetMocks();
+        Codes codes = getSrmRestInternalFacadeClientXml().findCodes(WILDCARD_ALL, WILDCARD_ALL, WILDCARD_ALL, null, null, null, null, null, null, "+description");
+        assertTrue(!codes.getCodes().get(0).getDescription().getTexts().isEmpty());
+    }
 
     @Test
     public void testFindCodesXml() throws Exception {
@@ -426,7 +433,7 @@ public class SrmRestInternalFacadeV10CodesTest extends SrmRestInternalFacadeV10B
 
     @Test
     public void testFindCodesRetrieveAllXmlWithFields() throws Exception {
-        String FIELDS = SrmRestConstants.FIELD_INCLUDE_OPENNES + "," + SrmRestConstants.FIELD_INCLUDE_ORDER + "," + SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT;
+        String FIELDS = SrmRestConstants.FIELD_INCLUDE_OPENNES + "," + SrmRestConstants.FIELD_INCLUDE_ORDER + "," + SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT + "," + SrmRestConstants.FIELD_INCLUDE_DESCRIPTION;
         String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, FIELDS);
         InputStream responseExpected = SrmRestInternalFacadeV10CodesTest.class.getResourceAsStream("/responses/codes/findCodesRetrieveAllWithFields.xml");
 

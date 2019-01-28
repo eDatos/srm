@@ -215,6 +215,7 @@ public class SrmRestInternalUtils {
             validFields.add(SrmRestConstants.FIELD_INCLUDE_OPENNES);
             validFields.add(SrmRestConstants.FIELD_INCLUDE_ORDER);
             validFields.add(SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT);
+            validFields.add(SrmRestConstants.FIELD_INCLUDE_DESCRIPTION);
             List<String> fieldList = Arrays.asList(fieldsParam.split(","));
             List<String> parsedFieldList = new ArrayList<>();
             for (String field : fieldList) {

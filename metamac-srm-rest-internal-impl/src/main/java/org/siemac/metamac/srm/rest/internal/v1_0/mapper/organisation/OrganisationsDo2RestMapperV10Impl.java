@@ -561,7 +561,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
             return null;
         }
         ItemResourceInternal target = new ItemResourceInternal();
-        toResource(source, toKindItem(source.getOrganisationType()), toOrganisationSelfLink(source), toOrganisationManagementApplicationLink(source), target);
+        toResource(source, toKindItem(source.getOrganisationType()), toOrganisationSelfLink(source), toOrganisationManagementApplicationLink(source), target, null);
         if (OrganisationTypeEnum.AGENCY.equals(source.getOrganisationType())) {
             target.setNestedId(source.getIdAsMaintainer());
         }
@@ -575,7 +575,7 @@ public class OrganisationsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapp
         OrganisationTypeEnum organisationType = getOrganisationTypeEnum(source);
         ItemResourceInternal target = new ItemResourceInternal();
         toResource(source, toKindItem(organisationType), toOrganisationSelfLink(source, organisationSchemeVersion),
-                toOrganisationManagementApplicationLink(organisationSchemeVersion, source, organisationType), target, organisationSchemeVersion.getMaintainableArtefact().getIsImported());
+                toOrganisationManagementApplicationLink(organisationSchemeVersion, source, organisationType), target, organisationSchemeVersion.getMaintainableArtefact().getIsImported(), null);
         if (OrganisationTypeEnum.AGENCY.equals(organisationType)) {
             target.setNestedId(getIdAsMaintainer(source));
         }

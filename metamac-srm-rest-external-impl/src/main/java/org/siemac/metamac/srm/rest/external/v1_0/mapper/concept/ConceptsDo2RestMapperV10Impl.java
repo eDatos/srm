@@ -175,7 +175,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             return null;
         }
         ItemResource target = new ItemResource();
-        toResource(source, SrmRestConstants.KIND_CONCEPT, toConceptSelfLink(source), target);
+        toResource(source, SrmRestConstants.KIND_CONCEPT, toConceptSelfLink(source), target, null);
         return target;
     }
 
@@ -287,7 +287,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
             return null;
         }
         ItemResource target = new ItemResource();
-        toResource(source, SrmRestConstants.KIND_CONCEPT, toConceptSelfLink(source, conceptSchemeVersion), target, conceptSchemeVersion.getMaintainableArtefact().getIsImported());
+        toResource(source, SrmRestConstants.KIND_CONCEPT, toConceptSelfLink(source, conceptSchemeVersion), target, conceptSchemeVersion.getMaintainableArtefact().getIsImported(), null);
         return target;
     }
 

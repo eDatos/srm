@@ -211,7 +211,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ItemResourceInternal target = new ItemResourceInternal();
-        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target);
+        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target, null);
         return target;
     }
 
@@ -220,7 +220,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         CodeResourceInternal target = new CodeResourceInternal();
-        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target);
+        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source), target, fields);
         
         setVisibleFields(source, target, fields);
         
@@ -242,7 +242,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
         }
         CodeResourceInternal target = new CodeResourceInternal();
         toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source, codelistVersion), toCodeManagementApplicationLink(codelistVersion, source), target,
-                codelistVersion.getMaintainableArtefact().getIsImported());
+                codelistVersion.getMaintainableArtefact().getIsImported(), fields);
 
         setVisibleFields(source, target, variableID, fields);
 
@@ -256,11 +256,6 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             target.setVariableElement(toResource(variableID, ((CodeMetamacResultExtensionPoint) source.getExtensionPoint()).getVariableElement()));
         }
     }
-
-    protected boolean containsField(Set<String> fields, String field) {
-        return fields != null && fields.contains(field);
-    }
-
 
     @Override
     protected boolean canItemSchemeVersionBeProvidedByApi(ItemSchemeVersion source) {
@@ -449,7 +444,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_VARIABLE, toVariableSelfLink(source), toVariableManagementApplicationLink(source), target, false);
+        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_VARIABLE, toVariableSelfLink(source), toVariableManagementApplicationLink(source), target, false, null);
         return target;
     }
 
@@ -611,7 +606,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source), toVariableFamilyManagementApplicationLink(source), target, false);
+        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_VARIABLE_FAMILY, toVariableFamilySelfLink(source), toVariableFamilyManagementApplicationLink(source), target, false, null);
         return target;
     }
 
@@ -620,7 +615,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ResourceInternal target = new ResourceInternal();
-        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source), toCodelistFamilyManagementApplicationLink(source), target, false);
+        toResource(source.getNameableArtefact(), SrmRestConstants.KIND_CODELIST_FAMILY, toCodelistFamilySelfLink(source), toCodelistFamilyManagementApplicationLink(source), target, false, null);
         return target;
     }
 
@@ -1061,7 +1056,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
             return null;
         }
         ItemResourceInternal target = new ItemResourceInternal();
-        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source.getUrn()), target, false);
+        toResource(source, SrmRestConstants.KIND_CODE, toCodeSelfLink(source), toCodeManagementApplicationLink(source.getUrn()), target, false, null);
         return target;
     }
 
