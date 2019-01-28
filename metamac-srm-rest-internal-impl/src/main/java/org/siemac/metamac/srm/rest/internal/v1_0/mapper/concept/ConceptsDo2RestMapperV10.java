@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.concept;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
@@ -25,8 +26,8 @@ public interface ConceptsDo2RestMapperV10 {
     public org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.ConceptScheme toConceptScheme(ConceptSchemeVersionMetamac source);
     public ResourceInternal toResource(ConceptSchemeVersion source);
 
-    public Concepts toConcepts(PagedResult<ConceptMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit);
-    public Concepts toConcepts(List<ItemResult> sources, ConceptSchemeVersionMetamac conceptSchemeVersion);
+    public Concepts toConcepts(PagedResult<ConceptMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit, Set<String> fields);
+    public Concepts toConcepts(List<ItemResult> sources, ConceptSchemeVersionMetamac conceptSchemeVersion, Set<String> fields);
     public Concept toConcept(ConceptMetamac source);
     public ItemResourceInternal toResource(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source);
     @SuppressWarnings("rawtypes")

@@ -189,7 +189,7 @@ public class ConceptsDo2RestMapperTest {
         PagedResult<ConceptMetamac> sources = new PagedResult<ConceptMetamac>(source, offset, source.size(), limit, totalRows, 0);
 
         // Transform
-        Concepts target = do2RestInternalMapper.toConcepts(sources, agencyID, conceptSchemeID, version, query, orderBy, limit);
+        Concepts target = do2RestInternalMapper.toConcepts(sources, agencyID, conceptSchemeID, version, query, orderBy, limit, null);
 
         // Validate
         assertEquals(SrmRestConstants.KIND_CONCEPTS, target.getKind());
@@ -226,7 +226,7 @@ public class ConceptsDo2RestMapperTest {
         sources.add(mockConceptItemResult(ITEM_3_CODE, null));
 
         // Transform
-        Concepts target = do2RestInternalMapper.toConcepts(sources, conceptScheme1);
+        Concepts target = do2RestInternalMapper.toConcepts(sources, conceptScheme1, null);
 
         // Validate
         assertEquals(SrmRestConstants.KIND_CONCEPTS, target.getKind());
