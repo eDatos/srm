@@ -318,7 +318,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     public void testFindConceptsRetrieveAll() throws Exception {
 
         resetMocks();
-        Concepts concepts = getSrmRestInternalFacadeClientXml().findConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null);
+        Concepts concepts = getSrmRestInternalFacadeClientXml().findConcepts(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null, null);
 
         assertNotNull(concepts);
         assertEquals(SrmRestConstants.KIND_CONCEPTS, concepts.getKind());
@@ -337,7 +337,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     @Test
     public void testFindConceptsRetrieveAllXml() throws Exception {
-        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, null);
+        String requestUri = getUriItems(AGENCY_1, ITEM_SCHEME_1_CODE, VERSION_1, null, null, null, "+description");
         InputStream responseExpected = SrmRestInternalFacadeV10ConceptsTest.class.getResourceAsStream("/responses/concepts/findConceptsRetrieveAll.xml");
 
         // Request and validate
@@ -552,7 +552,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
     private void testFindConcepts(String agencyID, String resourceID, String version, String limit, String offset, String query, String orderBy) throws Exception {
         resetMocks();
-        Concepts concepts = getSrmRestInternalFacadeClientXml().findConcepts(agencyID, resourceID, version, query, orderBy, limit, offset);
+        Concepts concepts = getSrmRestInternalFacadeClientXml().findConcepts(agencyID, resourceID, version, query, orderBy, limit, offset, null);
 
         assertNotNull(concepts);
         assertEquals(SrmRestConstants.KIND_CONCEPTS, concepts.getKind());

@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.core.Response.Status;
 
@@ -102,7 +103,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
     }
 
     @Override
-    public Concepts toConcepts(PagedResult<ConceptMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit) {
+    public Concepts toConcepts(PagedResult<ConceptMetamac> sourcesPagedResult, String agencyID, String resourceID, String version, String query, String orderBy, Integer limit, Set<String> fields) {
 
         Concepts targets = new Concepts();
         targets.setKind(SrmRestConstants.KIND_CONCEPTS);
@@ -113,14 +114,23 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
 
         // Values
         for (ConceptMetamac source : sourcesPagedResult.getValues()) {
-            ItemResource target = toResource(source);
+            ItemResource target = toResource(source, fields);
             targets.getConcepts().add(target);
         }
         return targets;
     }
 
+    private ItemResource toResource(com.arte.statistic.sdmx.srm.core.concept.domain.Concept source, Set<String> fields) {
+        if (source == null) {
+            return null;
+        }
+        ItemResource target = new ItemResource();
+        toResource(source, SrmRestConstants.KIND_CONCEPT, toConceptSelfLink(source), target, fields);
+        return target;
+    }
+
     @Override
-    public Concepts toConcepts(List<ItemResult> sources, ConceptSchemeVersionMetamac conceptSchemeVersion) {
+    public Concepts toConcepts(List<ItemResult> sources, ConceptSchemeVersionMetamac conceptSchemeVersion, Set<String> fields) {
 
         Concepts targets = new Concepts();
         targets.setKind(SrmRestConstants.KIND_CONCEPTS);
@@ -131,7 +141,7 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
 
         // Values
         for (ItemResult source : sources) {
-            ItemResource target = toResource(source, conceptSchemeVersion);
+            ItemResource target = toResource(source, conceptSchemeVersion, fields);
             targets.getConcepts().add(target);
         }
         return targets;
@@ -282,12 +292,12 @@ public class ConceptsDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10
         return target;
     }
 
-    private ItemResource toResource(ItemResult source, ConceptSchemeVersionMetamac conceptSchemeVersion) {
+    private ItemResource toResource(ItemResult source, ConceptSchemeVersionMetamac conceptSchemeVersion, Set<String> fields) {
         if (source == null) {
             return null;
         }
         ItemResource target = new ItemResource();
-        toResource(source, SrmRestConstants.KIND_CONCEPT, toConceptSelfLink(source, conceptSchemeVersion), target, conceptSchemeVersion.getMaintainableArtefact().getIsImported(), null);
+        toResource(source, SrmRestConstants.KIND_CONCEPT, toConceptSelfLink(source, conceptSchemeVersion), target, conceptSchemeVersion.getMaintainableArtefact().getIsImported(), fields);
         return target;
     }
 
