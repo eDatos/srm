@@ -256,7 +256,10 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
             } else {
                 // Retrieve all concepts of conceptScheme, without pagination
                 ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemePublished(agencyID, resourceID, version);
-                List<ItemResult> items = conceptsService.retrieveConceptsByConceptSchemeUrnUnordered(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn(), ItemMetamacResultSelection.API);
+                
+                ItemMetamacResultSelection itemMetamacResultSelection = ItemMetamacResultSelection.API;
+                itemMetamacResultSelection.setDescriptions(SrmRestInternalUtils.containsField(fieldsToShow, SrmRestConstants.FIELD_INCLUDE_DESCRIPTION));
+                List<ItemResult> items = conceptsService.retrieveConceptsByConceptSchemeUrnUnordered(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn(), itemMetamacResultSelection);
 
                 // Transform
                 return conceptsDo2RestMapper.toConcepts(items, conceptSchemeVersion, fieldsToShow);
@@ -856,7 +859,9 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
                 String orderToUse = getOrderToUseToRetrieveCodelist(agencyID, resourceID, version, order, codelistVersion);
                 String opennessToUse = getOpennessToUseToRetrieveCodelist(agencyID, resourceID, version, openness, codelistVersion);
 
-                List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), CodeMetamacResultSelection.API, orderToUse,
+                ItemMetamacResultSelection codeMetamacResultSelection = CodeMetamacResultSelection.API;
+                codeMetamacResultSelection.setDescriptions(SrmRestInternalUtils.containsField(fieldsToShow, SrmRestConstants.FIELD_INCLUDE_DESCRIPTION));
+                List<ItemResult> items = codesService.retrieveCodesByCodelistUrnOrderedInDepth(ctx, codelistVersion.getMaintainableArtefact().getUrn(), codeMetamacResultSelection, orderToUse,
                         opennessToUse);
 
                 return codesDo2RestMapper.toCodes(items, codelistVersion, fieldsToShow);

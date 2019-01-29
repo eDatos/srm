@@ -10,7 +10,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
-import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationSchemeVersionMetamac;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
@@ -232,5 +231,9 @@ public class SrmRestInternalUtils {
             }
         }
         return showFields;
+    }
+
+    public static boolean containsField(Set<String> fields, String field) {
+        return fields != null && fields.contains(field);
     }
 }

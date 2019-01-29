@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.rest.internal.v1_0.mapper.base;
 
 import java.math.BigInteger;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,6 +35,7 @@ import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.invocation.StatisticalOperationsRestInternalFacade;
 import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.InternalWebApplicationNavigation;
+import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.arte.statistic.sdmx.srm.core.base.domain.AnnotableArtefact;
@@ -285,7 +285,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
         toResource((IdentifiableArtefact) source, kind, selfLink, managementAppUrl, target, isImported);
         target.setName(toInternationalString(source.getName()));
-        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_DESCRIPTION)) {
+        if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_DESCRIPTION)) {
             target.setDescription(toInternationalString(source.getDescription()));
         }
     }
@@ -317,7 +317,7 @@ public abstract class BaseDo2RestMapperV10Impl {
         }
         toResource((IdentifiableArtefactResult) source, kind, selfLink, managementAppUrl, target, isImported);
         target.setName(toInternationalString(source.getName()));
-        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_DESCRIPTION)) {
+        if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_DESCRIPTION)) {
             target.setDescription(toInternationalString(source.getDescription()));
         }
         if (source.getParent() != null) {
@@ -424,9 +424,5 @@ public abstract class BaseDo2RestMapperV10Impl {
         statisticalResourcesApiInternalEndpoint = configurationService.retrieveStatisticalResourcesInternalApiUrlBase();
         statisticalResourcesApiInternalEndpoint = StringUtils.removeEnd(statisticalResourcesApiInternalEndpoint, "/");
 
-    }
-
-    protected boolean containsField(Set<String> fields, String field) {
-        return fields != null && fields.contains(field);
     }
 }

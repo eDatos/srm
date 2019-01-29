@@ -71,6 +71,7 @@ import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.external.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.external.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
+import org.siemac.metamac.srm.rest.external.v1_0.service.utils.SrmRestInternalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -221,7 +222,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     
     
     private void setVisibleFields(CodeMetamac source, CodeResource target, Set<String> fields) {
-        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
+        if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
             target.setVariableElement(toResource(source.getVariableElement()));
         }
         
@@ -243,15 +244,15 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     private void setVisibleFields(ItemResult source, CodeResource target, String variableID, Set<String> fields) {
-        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
+        if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
             target.setVariableElement(toResource(variableID, ((CodeMetamacResultExtensionPoint) source.getExtensionPoint()).getVariableElement()));
         }
 
-        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_ORDER)) {
+        if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_ORDER)) {
             target.setOrder(SrmServiceUtils.getCodeItemResultOrder(source) + 1); // add 1 to start in 1, instead of 0
         }
 
-        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_OPENNES)) {
+        if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_OPENNES)) {
             target.setOpen(SrmServiceUtils.getCodeItemResultOpenness(source));
         }
     }

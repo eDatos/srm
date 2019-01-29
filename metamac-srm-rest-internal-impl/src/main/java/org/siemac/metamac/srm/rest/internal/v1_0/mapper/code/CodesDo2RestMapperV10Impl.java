@@ -72,6 +72,7 @@ import org.siemac.metamac.srm.core.common.service.utils.SrmServiceUtils;
 import org.siemac.metamac.srm.rest.common.SrmRestConstants;
 import org.siemac.metamac.srm.rest.internal.exception.RestServiceExceptionType;
 import org.siemac.metamac.srm.rest.internal.v1_0.mapper.base.ItemSchemeBaseDo2RestMapperV10Impl;
+import org.siemac.metamac.srm.rest.internal.v1_0.service.utils.SrmRestInternalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -228,7 +229,7 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
     
     private void setVisibleFields(CodeMetamac source, CodeResourceInternal target, Set<String> fields) {
-        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
+        if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
             target.setVariableElement(toResource(source.getVariableElement()));
         }
         
@@ -250,9 +251,9 @@ public class CodesDo2RestMapperV10Impl extends ItemSchemeBaseDo2RestMapperV10Imp
     }
 
     protected void setVisibleFields(ItemResult source, CodeResourceInternal target, String variableID, Set<String> fields) {
-        target.setOrder(containsField(fields, SrmRestConstants.FIELD_INCLUDE_ORDER) ? SrmServiceUtils.getCodeItemResultOrder(source) + 1 : null); // add 1 to start in 1, instead of 0
-        target.setOpen(containsField(fields, SrmRestConstants.FIELD_INCLUDE_OPENNES) ? SrmServiceUtils.getCodeItemResultOpenness(source) : null);
-        if (containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
+        target.setOrder(SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_ORDER) ? SrmServiceUtils.getCodeItemResultOrder(source) + 1 : null); // add 1 to start in 1, instead of 0
+        target.setOpen(SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_OPENNES) ? SrmServiceUtils.getCodeItemResultOpenness(source) : null);
+        if (SrmRestInternalUtils.containsField(fields, SrmRestConstants.FIELD_INCLUDE_VARIABLE_ELEMENT)) {
             target.setVariableElement(toResource(variableID, ((CodeMetamacResultExtensionPoint) source.getExtensionPoint()).getVariableElement()));
         }
     }
