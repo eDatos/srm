@@ -994,7 +994,7 @@
                   "name":"fields",
                   "in":"query",
                   "type":"string",
-                  "description":"Campos adicionales que se desean mostrar en la respuesta. Los valores pueden ser: <ul><li>+open: muestra la apertura del elemento. Sólo puede obtenerse en el caso de que no se esté haciendo uso del wildcard \"~all\".</li><li>+order: muestra el orden establecido para el elemento. Sólo puede obtenerse en el caso de que no se esté haciendo uso del wildcard \"~all\".</li><li>+variableElement: muestra su variable de elemento </li></ul> Ejemplo: fields=\"+open,+order\""
+                  "description":"Campos adicionales que se desean mostrar en la respuesta. Los valores pueden ser: <ul><li>+open: muestra la apertura del elemento. Sólo puede obtenerse en el caso de que no se esté haciendo uso del wildcard \"~all\".</li><li>+order: muestra el orden establecido para el elemento. Sólo puede obtenerse en el caso de que no se esté haciendo uso del wildcard \"~all\".</li><li>+variableElement: muestra su variable de elemento </li><li>+description: muestra la descripción de los códigos</li></ul> Ejemplo: fields=\"+open,+order\""
                }
             ],
             "responses":{
@@ -1283,6 +1283,12 @@
                 {"$ref":"#/components/parameters/offsetParam"},
                 {"$ref":"#/components/parameters/conceptQueryParam"},
                 {"$ref":"#/components/parameters/conceptOrderByParam"},
+              {
+                  "name":"fields",
+                  "in":"query",
+                  "type":"string",
+                  "description":"Campos adicionales que se desean mostrar en la respuesta. Los valores pueden ser: <ul><li>+description: muestra la descripción de los códigos</li></ul> Ejemplo: fields=\"+description\""
+               }
             ],
             "responses":{
                "200":{
