@@ -264,6 +264,7 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
 
             // Check mandatory attributes
             ValidationUtils.checkMetadataRequired(dataStructureDefinitionVersionMetamac.getAutoOpen(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_AUTOPEN, exceptions);
+            ValidationUtils.checkMetadataRequired(dataStructureDefinitionVersionMetamac.getShowDecimals(), ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_SHOW_DECIMALS, exceptions);
 
             // Check mutual exclusivity between dimensions in the heading and stub.
             for (DimensionOrder dimensionOrder : dataStructureDefinitionVersionMetamac.getHeadingDimensions()) {
@@ -298,13 +299,13 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
                         if (component instanceof Dimension) {
                             // Enumerated representation for Dimension always is a Codelist
                             if (component.getLocalRepresentation() != null && RepresentationTypeEnum.ENUMERATION.equals(component.getLocalRepresentation().getRepresentationType())) {
-                                checkMandatoryDimensionVisualizationInfo(ctx, dataStructureDefinitionVersionMetamac, (CodelistVersionMetamac) component.getLocalRepresentation()
-                                        .getEnumerationCodelist(), (DimensionComponent) component);
+                                checkMandatoryDimensionVisualizationInfo(ctx, dataStructureDefinitionVersionMetamac,
+                                        (CodelistVersionMetamac) component.getLocalRepresentation().getEnumerationCodelist(), (DimensionComponent) component);
                             } else {
                                 if (component.getCptIdRef().getCoreRepresentation() != null
                                         && RepresentationTypeEnum.ENUMERATION.equals(component.getCptIdRef().getCoreRepresentation().getRepresentationType())) {
-                                    checkMandatoryDimensionVisualizationInfo(ctx, dataStructureDefinitionVersionMetamac, (CodelistVersionMetamac) component.getCptIdRef().getCoreRepresentation()
-                                            .getEnumerationCodelist(), (DimensionComponent) component);
+                                    checkMandatoryDimensionVisualizationInfo(ctx, dataStructureDefinitionVersionMetamac,
+                                            (CodelistVersionMetamac) component.getCptIdRef().getCoreRepresentation().getEnumerationCodelist(), (DimensionComponent) component);
                                 }
                             }
                         }

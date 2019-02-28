@@ -46,7 +46,7 @@ public class RequiredFieldUtils {
     private static final String[] codelistFieldsToProductionValidation = new String[]{CodelistDS.IS_PARTIAL};
     private static final String[] codelistFieldsToDiffusionValidation  = codelistFieldsToProductionValidation;
     private static final String[] codelistFieldsToInternalPublication  = ArrayUtils.addStringElementsToStringArray(codelistFieldsToDiffusionValidation, CodelistDS.ACCESS_TYPE,
-                                                                               CodelistDS.DEFAULT_ORDER, CodelistDS.DEFAULT_OPENNESS_LEVEL);
+            CodelistDS.DEFAULT_ORDER, CodelistDS.DEFAULT_OPENNESS_LEVEL);
     private static final String[] codelistFieldsToExternalPublication  = codelistFieldsToInternalPublication;
 
     public static String[] getCodelistRequiredFieldsToNextProcStatus(ProcStatusEnum currentProcStatus) {
@@ -70,7 +70,7 @@ public class RequiredFieldUtils {
     // DSDs
     //
 
-    private static final String[] dsdFieldsToProductionValidation = new String[]{DataStructureDefinitionDS.AUTO_OPEN};
+    private static final String[] dsdFieldsToProductionValidation = new String[]{DataStructureDefinitionDS.AUTO_OPEN, DataStructureDefinitionDS.SHOW_DECIMALS};
     private static final String[] dsdFieldsToDiffusionValidation  = dsdFieldsToProductionValidation;
     private static final String[] dsdFieldsToInternalPublication  = dsdFieldsToDiffusionValidation;
     private static final String[] dsdFieldsToExternalPublication  = dsdFieldsToInternalPublication;

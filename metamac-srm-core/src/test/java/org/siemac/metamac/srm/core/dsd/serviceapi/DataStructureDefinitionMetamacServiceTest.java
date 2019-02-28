@@ -14,6 +14,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
 import org.fornax.cartridges.sculptor.framework.domain.PagedResult;
@@ -24,6 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.core.common.constants.shared.UrnConstants;
 import org.siemac.metamac.core.common.enume.domain.VersionTypeEnum;
+import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
@@ -310,11 +312,63 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
     }
 
     @Test
+    public void testSendDataStructureDefinitionToProductionValidationWithNullShowDecimals() throws Exception {
+        String dsdUrn = DSD_1_V2;
+
+        ServiceContext ctx = getServiceContextAdministrador();
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(ctx, dsdUrn);
+        assertNotNull(dataStructureDefinitionVersion);
+        assertNotNull(dataStructureDefinitionVersion.getShowDecimals());
+
+        dataStructureDefinitionVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        dataStructureDefinitionVersion.setShowDecimals(null);
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionUpdated = dataStructureDefinitionMetamacService.updateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
+        assertNotNull(dataStructureDefinitionVersionUpdated);
+        assertNull(dataStructureDefinitionVersionUpdated.getShowDecimals());
+
+        try {
+            dataStructureDefinitionMetamacService.sendDataStructureDefinitionToProductionValidation(ctx, dsdUrn);
+        } catch (MetamacException e) {
+            MetamacExceptionItem resourceWithIncorrectMetadataExceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, dsdUrn);
+            assertTrue(CollectionUtils.isNotEmpty(resourceWithIncorrectMetadataExceptionItem.getExceptionItems()));
+            assertListContainsExceptionItemOneParameter(resourceWithIncorrectMetadataExceptionItem.getExceptionItems(), CommonServiceExceptionType.METADATA_REQUIRED,
+                    ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_SHOW_DECIMALS);
+        }
+    }
+
+    @Test
     @Override
     @Ignore
     public void testSendDataStructureDefinitionToDiffusionValidation() throws Exception {
         // TODO Test dsd (METAMAC-2149)
 
+    }
+
+    @Test
+    public void testSendDataStructureDefinitionToDiffusionValidationWithNullShowDecimals() throws Exception {
+        String dsdUrn = DSD_8_V1;
+
+        ServiceContext ctx = getServiceContextAdministrador();
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(ctx, dsdUrn);
+        assertNotNull(dataStructureDefinitionVersion);
+        assertNotNull(dataStructureDefinitionVersion.getShowDecimals());
+
+        dataStructureDefinitionVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        dataStructureDefinitionVersion.setShowDecimals(null);
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionUpdated = dataStructureDefinitionMetamacService.updateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
+        assertNotNull(dataStructureDefinitionVersionUpdated);
+        assertNull(dataStructureDefinitionVersionUpdated.getShowDecimals());
+
+        try {
+            dataStructureDefinitionMetamacService.sendDataStructureDefinitionToDiffusionValidation(ctx, dsdUrn);
+        } catch (MetamacException e) {
+            MetamacExceptionItem resourceWithIncorrectMetadataExceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, dsdUrn);
+            assertTrue(CollectionUtils.isNotEmpty(resourceWithIncorrectMetadataExceptionItem.getExceptionItems()));
+            assertListContainsExceptionItemOneParameter(resourceWithIncorrectMetadataExceptionItem.getExceptionItems(), CommonServiceExceptionType.METADATA_REQUIRED,
+                    ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_SHOW_DECIMALS);
+        }
     }
 
     @Test
@@ -341,6 +395,32 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
     }
 
+    @Test
+    public void testPublishInternallyDataStructureDefinitionWithNullShowDecimals() throws Exception {
+        String dsdUrn = DSD_7_V1;
+
+        ServiceContext ctx = getServiceContextAdministrador();
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(ctx, dsdUrn);
+        assertNotNull(dataStructureDefinitionVersion);
+        assertNotNull(dataStructureDefinitionVersion.getShowDecimals());
+
+        dataStructureDefinitionVersion.getMaintainableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        dataStructureDefinitionVersion.setShowDecimals(null);
+
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersionUpdated = dataStructureDefinitionMetamacService.updateDataStructureDefinition(ctx, dataStructureDefinitionVersion);
+        assertNotNull(dataStructureDefinitionVersionUpdated);
+        assertNull(dataStructureDefinitionVersionUpdated.getShowDecimals());
+
+        try {
+            dataStructureDefinitionMetamacService.publishInternallyDataStructureDefinition(ctx, dsdUrn, Boolean.FALSE);
+        } catch (MetamacException e) {
+            MetamacExceptionItem resourceWithIncorrectMetadataExceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, dsdUrn);
+            assertTrue(CollectionUtils.isNotEmpty(resourceWithIncorrectMetadataExceptionItem.getExceptionItems()));
+            assertListContainsExceptionItemOneParameter(resourceWithIncorrectMetadataExceptionItem.getExceptionItems(), CommonServiceExceptionType.METADATA_REQUIRED,
+                    ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_SHOW_DECIMALS);
+        }
+    }
+
     @Override
     public void testCheckDataStructureDefinitionTranslations() throws Exception {
         // Tested in testPublishInternallyDataStructureDefinitionCheckTranslations
@@ -363,8 +443,8 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
                 // children
                 assertEquals(2, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION}, exceptionItem
-                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
                 assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.ANNOTATION},
                         exceptionItem.getExceptionItems().get(1));
             }
@@ -463,6 +543,25 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
         // TODO Test dsd (METAMAC-2149)
     }
 
+    @Test
+    public void testPublishExternallyDataStructureDefinitionWithNullShowDecimals() throws Exception {
+        String dsdUrn = DSD_9_V1;
+
+        ServiceContext ctx = getServiceContextAdministrador();
+        DataStructureDefinitionVersionMetamac dataStructureDefinitionVersion = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(ctx, dsdUrn);
+        assertNotNull(dataStructureDefinitionVersion);
+        assertNull(dataStructureDefinitionVersion.getShowDecimals());
+
+        try {
+            dataStructureDefinitionMetamacService.publishExternallyDataStructureDefinition(ctx, dsdUrn);
+        } catch (MetamacException e) {
+            MetamacExceptionItem resourceWithIncorrectMetadataExceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, dsdUrn);
+            assertTrue(CollectionUtils.isNotEmpty(resourceWithIncorrectMetadataExceptionItem.getExceptionItems()));
+            assertListContainsExceptionItemOneParameter(resourceWithIncorrectMetadataExceptionItem.getExceptionItems(), CommonServiceExceptionType.METADATA_REQUIRED,
+                    ServiceExceptionParameters.DATA_STRUCTURE_DEFINITION_SHOW_DECIMALS);
+        }
+    }
+
     @Override
     @Ignore
     public void testCheckDataStructureDefinitionWithRelatedResourcesExternallyPublished() throws Exception {
@@ -532,8 +631,8 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
                 DimensionVisualisationInfo dimensionVisualizationInfoToNew = dataStructureDefinitionVersionNewArtefact.getDimensionVisualisationInfos().get(i);
                 assertEquals(dimensionVisualizationInfoToCopy.getDimension().getCode(), dimensionVisualizationInfoToNew.getDimension().getCode());
                 assertEquals(dimensionVisualizationInfoToCopy.getDisplayOrder().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getDisplayOrder().getNameableArtefact().getUrn());
-                assertEquals(dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact()
-                        .getUrn());
+                assertEquals(dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact().getUrn(),
+                        dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact().getUrn());
             }
         }
     }
@@ -591,8 +690,8 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
                 DimensionVisualisationInfo dimensionVisualizationInfoToNew = dsdNewVersion.getDimensionVisualisationInfos().get(i);
                 assertEquals(dimensionVisualizationInfoToCopy.getDimension().getCode(), dimensionVisualizationInfoToNew.getDimension().getCode());
                 assertEquals(dimensionVisualizationInfoToCopy.getDisplayOrder().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getDisplayOrder().getNameableArtefact().getUrn());
-                assertEquals(dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact()
-                        .getUrn());
+                assertEquals(dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact().getUrn(),
+                        dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact().getUrn());
             }
         }
     }
@@ -687,8 +786,8 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
                 DimensionVisualisationInfo dimensionVisualizationInfoToCopy = dsdToCopy.getDimensionVisualisationInfos().get(i);
                 DimensionVisualisationInfo dimensionVisualizationInfoToNew = dsdNewVersion.getDimensionVisualisationInfos().get(i);
                 assertTrue(dimensionVisualizationInfoToNew.getDimension().getUrn().contains(UrnConstants.URN_SDMX_TEMPORAL_SUFFIX));
-                assertEquals(dimensionVisualizationInfoToCopy.getHierarchyLevelsOpen().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact()
-                        .getUrn());
+                assertEquals(dimensionVisualizationInfoToCopy.getHierarchyLevelsOpen().getNameableArtefact().getUrn(),
+                        dimensionVisualizationInfoToNew.getHierarchyLevelsOpen().getNameableArtefact().getUrn());
                 assertEquals(dimensionVisualizationInfoToCopy.getDisplayOrder().getNameableArtefact().getUrn(), dimensionVisualizationInfoToNew.getDisplayOrder().getNameableArtefact().getUrn());
             }
         }
@@ -701,8 +800,8 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
         TaskInfo versioningResult1 = dataStructureDefinitionMetamacService.createTemporalDataStructureDefinition(getServiceContextAdministrador(), urn);
         entityManager.clear();
-        DataStructureDefinitionVersionMetamac temporalDataStructureDefinitionVersionMetamac = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(
-                getServiceContextAdministrador(), versioningResult1.getUrnResult());
+        DataStructureDefinitionVersionMetamac temporalDataStructureDefinitionVersionMetamac = dataStructureDefinitionMetamacService
+                .retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), versioningResult1.getUrnResult());
 
         assertEquals(3, temporalDataStructureDefinitionVersionMetamac.getMaintainableArtefact().getCategorisations().size());
         {
@@ -764,8 +863,8 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
             TaskInfo versioningResult = dataStructureDefinitionMetamacService.createTemporalDataStructureDefinition(getServiceContextAdministrador(), urn);
 
             entityManager.clear();
-            DataStructureDefinitionVersionMetamac temporalDataStructureDefinitionVersionMetamac = dataStructureDefinitionMetamacService.retrieveDataStructureDefinitionByUrn(
-                    getServiceContextAdministrador(), versioningResult.getUrnResult());
+            DataStructureDefinitionVersionMetamac temporalDataStructureDefinitionVersionMetamac = dataStructureDefinitionMetamacService
+                    .retrieveDataStructureDefinitionByUrn(getServiceContextAdministrador(), versioningResult.getUrnResult());
             // Change temporal version *********************
 
             // DataStructure: Change Name
@@ -1028,8 +1127,8 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
         String dsdUrn = DSD_1_V2;
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = dataStructureDefinitionMetamacService.findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(getServiceContextAdministrador(),
-                conditions, pagingParameter, dsdUrn);
+        PagedResult<ConceptSchemeVersionMetamac> result = dataStructureDefinitionMetamacService.findConceptSchemesWithConceptsCanBeDsdDimensionByCondition(getServiceContextAdministrador(), conditions,
+                pagingParameter, dsdUrn);
 
         // Validate
         assertEquals(3, result.getTotalRows());
@@ -1170,8 +1269,8 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
         // Find
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
-        PagedResult<ConceptSchemeVersionMetamac> result = dataStructureDefinitionMetamacService.findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(
-                getServiceContextAdministrador(), conditions, pagingParameter);
+        PagedResult<ConceptSchemeVersionMetamac> result = dataStructureDefinitionMetamacService
+                .findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureDimensionByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
         // Validate
         assertEquals(1, result.getTotalRows());
@@ -1187,8 +1286,8 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
 
         // Find
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).orderBy(CodelistVersionMetamacProperties.maintainableArtefact().urn()).build();
-        PagedResult<ConceptSchemeVersionMetamac> result = dataStructureDefinitionMetamacService.findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureAttributeByCondition(
-                getServiceContextAdministrador(), conditions, pagingParameter);
+        PagedResult<ConceptSchemeVersionMetamac> result = dataStructureDefinitionMetamacService
+                .findConceptSchemesCanBeEnumeratedRepresentationForDsdMeasureAttributeByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
         // Validate
         assertEquals(1, result.getTotalRows());
@@ -1223,8 +1322,8 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
         String dsdUrn = DSD_1_V2;
 
         // Find
-        PagedResult<ConceptSchemeVersionMetamac> result = dataStructureDefinitionMetamacService.findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(getServiceContextAdministrador(),
-                conditions, pagingParameter, dsdUrn);
+        PagedResult<ConceptSchemeVersionMetamac> result = dataStructureDefinitionMetamacService.findConceptSchemesWithConceptsCanBeDsdAttributeByCondition(getServiceContextAdministrador(), conditions,
+                pagingParameter, dsdUrn);
 
         // Validate
         assertEquals(2, result.getTotalRows());
@@ -1438,8 +1537,8 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
             String dimensionUrn = DSD_6_V1_DIMENSION_1;
             List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(CodelistOrderVisualisation.class).orderBy(CodelistOrderVisualisationProperties.nameableArtefact().urn())
                     .build();
-            PagedResult<CodelistOpennessVisualisation> result = dataStructureDefinitionMetamacService.findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(
-                    getServiceContextAdministrador(), conditions, pagingParameter, dimensionUrn);
+            PagedResult<CodelistOpennessVisualisation> result = dataStructureDefinitionMetamacService
+                    .findOpennessVisualisationCanBeHierarchylevelopenForDsdDimensionByCondition(getServiceContextAdministrador(), conditions, pagingParameter, dimensionUrn);
 
             // Validate
             assertEquals(1, result.getTotalRows());
@@ -1525,33 +1624,33 @@ public class DataStructureDefinitionMetamacServiceTest extends SrmBaseTest imple
         Concept concept02 = conceptMetamacRepository.findByUrn(CONCEPT_SCHEME_1_V2_CONCEPT_3);
         ConceptSchemeVersion conceptScheme = conceptSchemeVersionMetamacRepository.findByUrn(CONCEPT_SCHEME_3_V1);
         Component measureDim = DataStructureDefinitionDoMocks.mockMeasureDimension(concept01, Arrays.asList(concept01, concept02), conceptScheme);
-        Component measureDimCreated = dataStructureDefinitionMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac
-                .getMaintainableArtefact().getUrn(), measureDim);
+        Component measureDimCreated = dataStructureDefinitionMetamacService.saveComponentForDataStructureDefinition(getServiceContext(),
+                dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), measureDim);
 
         CodelistVersion codelist = codelistVersionMetamacRepository.findByUrn(CODELIST_7_V1);
         Component dim = DataStructureDefinitionDoMocks.mockDimension(concept01, Arrays.asList(concept01, concept02), codelist);
-        Component dimCreated = dataStructureDefinitionMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac.getMaintainableArtefact()
-                .getUrn(), dim);
+        Component dimCreated = dataStructureDefinitionMetamacService.saveComponentForDataStructureDefinition(getServiceContext(),
+                dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), dim);
 
         Component timeDim = DataStructureDefinitionDoMocks.mockTimeDimension(concept01);
-        /* Component timeDimCreated = */dataStructureDefinitionMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac
-                .getMaintainableArtefact().getUrn(), timeDim);
+        /* Component timeDimCreated = */dataStructureDefinitionMetamacService.saveComponentForDataStructureDefinition(getServiceContext(),
+                dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), timeDim);
 
         // Create GroupDimension Descriptor
         ComponentList groupDescriptor = DataStructureDefinitionDoMocks.mockGroupDimensionDescriptor((DimensionComponent) measureDimCreated);
-        ComponentList groupDescriptorCreated = dataStructureDefinitionMetamacService.saveDescriptorForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac
-                .getMaintainableArtefact().getUrn(), groupDescriptor);
+        ComponentList groupDescriptorCreated = dataStructureDefinitionMetamacService.saveDescriptorForDataStructureDefinition(getServiceContext(),
+                dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), groupDescriptor);
 
         // Create Attribute Descriptor and components
         Component dataAttribute = DataStructureDefinitionDoMocks.mockDataAttribute((GroupDimensionDescriptor) groupDescriptorCreated, (DimensionComponent) dimCreated, concept01,
                 Arrays.asList(concept01, concept02), codelist);
-        /* Component dataAttributeCreated = */dataStructureDefinitionMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac
-                .getMaintainableArtefact().getUrn(), dataAttribute);
+        /* Component dataAttributeCreated = */dataStructureDefinitionMetamacService.saveComponentForDataStructureDefinition(getServiceContext(),
+                dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), dataAttribute);
 
         // Create Measure Descriptor and component
         Component primaryMeasure = DataStructureDefinitionDoMocks.mockPrimaryMeasure(concept01, codelist);
-        /* Component componentCreated = */dataStructureDefinitionMetamacService.saveComponentForDataStructureDefinition(getServiceContext(), dataStructureDefinitionVersionMetamac
-                .getMaintainableArtefact().getUrn(), primaryMeasure);
+        /* Component componentCreated = */dataStructureDefinitionMetamacService.saveComponentForDataStructureDefinition(getServiceContext(),
+                dataStructureDefinitionVersionMetamac.getMaintainableArtefact().getUrn(), primaryMeasure);
 
         return dataStructureDefinitionVersionMetamac;
     }
