@@ -468,7 +468,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
     }
 
     @Override
-    public TaskInfo createVersionFromTemporalCodelist(ServiceContext ctx, String urnToCopy, VersionTypeEnum versionTypeEnum) throws MetamacException {
+    public TaskInfo createVersionFromTemporalCodelist(ServiceContext ctx, String urnToCopy, Boolean versioningCodes, VersionTypeEnum versionTypeEnum) throws MetamacException {
 
         CodelistVersionMetamac codelistVersionTemporal = retrieveCodelistByUrn(ctx, urnToCopy);
 
@@ -495,6 +495,9 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         // Convert order and openness visualisations in no temporal
         createOrderVisualisationVersionFromTemporalOrderVisualisation(ctx, codelistVersionTemporal);
         createOpennessVisualisationVersionFromTemporalOpennessVisualisation(ctx, codelistVersionTemporal);
+
+        // Delete all codes if user decided not included them in the versioned codelist
+        deleteAllCodesIfProceed(codelistVersionTemporal, versioningCodes);
 
         TaskInfo versioningResult = new TaskInfo();
         versioningResult.setUrnResult(codelistVersionTemporal.getMaintainableArtefact().getUrn());
@@ -3123,6 +3126,12 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         }
 
         getCodelistVersionMetamacRepository().save(codelistVersionTemporal);
+    }
+
+    private void deleteAllCodesIfProceed(CodelistVersionMetamac codelistVersionTemporal, Boolean versioningCodes) throws MetamacException {
+        if (Boolean.FALSE.equals(versioningCodes)) {
+            getCodeMetamacRepository().deleteAllCodesEfficiently(codelistVersionTemporal.getId());
+        }
     }
 
     private NameableArtefact versioningCodelistVisualisationNameableArtefact(NameableArtefact source) {
