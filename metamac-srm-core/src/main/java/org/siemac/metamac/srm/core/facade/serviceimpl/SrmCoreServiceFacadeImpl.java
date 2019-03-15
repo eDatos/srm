@@ -499,8 +499,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         ComponentList componentListDescriptor = getDto2DoMapper().componentListDtoToComponentList(descriptorDto);
 
         // Delete descriptor for DSD
-        getDataStructureDefinitionMetamacService()
-                .deleteDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld.getMaintainableArtefact().getUrn(), componentListDescriptor);
+        getDataStructureDefinitionMetamacService().deleteDescriptorForDataStructureDefinition(ctx, dataStructureDefinitionVersionMetamacOld.getMaintainableArtefact().getUrn(),
+                componentListDescriptor);
     }
 
     /**************************************************************************
@@ -1368,7 +1368,7 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
 
         TaskInfo versioningResult = null;
         if (GeneratorUrnUtils.isTemporalUrn(urnToCopy)) {
-            versioningResult = getCodesMetamacService().createVersionFromTemporalCodelist(ctx, urnToCopy, versionType);
+            versioningResult = getCodesMetamacService().createVersionFromTemporalCodelist(ctx, urnToCopy, versioningCodes, versionType);
         } else {
             versioningResult = getCodesMetamacService().versioningCodelist(ctx, urnToCopy, versioningCodes, versionType);
         }
@@ -3341,8 +3341,8 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
-    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn, String variableUrn)
-            throws MetamacException {
+    public MetamacCriteriaResult<RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ServiceContext ctx, MetamacCriteria criteria, String conceptUrn,
+            String variableUrn) throws MetamacException {
         // Security
         CodesSecurityUtils.canFindCodelistsByCondition(ctx);
 

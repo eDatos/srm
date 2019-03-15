@@ -72,7 +72,7 @@ Application CodesMetamac {
     		"Creates a temporal version of a codelist, copying metadata from version with provided urn"
     		TaskInfo createTemporalCodelist(String urnToCopy) throws MetamacException;
     		"Creates a new version of a code list from temporal version with provided urn"
-    		TaskInfo createVersionFromTemporalCodelist(String urnToCopy, @VersionTypeEnum versionTypeEnum) throws MetamacException;
+    		TaskInfo createVersionFromTemporalCodelist(String urnToCopy, Boolean versioningCodes, @VersionTypeEnum versionTypeEnum) throws MetamacException;
     		"Merge temporal version into published version"
     		@CodelistVersionMetamac mergeTemporalVersion(String urnTemporal) throws MetamacException;
     		"Starts the codelist validity"
