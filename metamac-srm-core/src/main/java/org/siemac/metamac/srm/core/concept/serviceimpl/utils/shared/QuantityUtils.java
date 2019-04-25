@@ -14,6 +14,9 @@ import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
  */
 public class QuantityUtils {
 
+    private QuantityUtils() {
+    }
+
     public static Boolean isQuantityOrExtension(QuantityTypeEnum type) {
         return QuantityTypeEnum.QUANTITY.equals(type) || isAmountOrExtension(type) || isMagnitudeOrExtension(type);
     }
@@ -44,5 +47,29 @@ public class QuantityUtils {
 
     public static Boolean isChangeRateOrExtension(QuantityTypeEnum type) {
         return QuantityTypeEnum.CHANGE_RATE.equals(type);
+    }
+
+    public static boolean isPowerOfTen(Object value) {
+        Boolean isPowerOfTen = Boolean.FALSE;
+
+        if (value != null) {
+            Integer intValue = null;
+            if (value instanceof Integer) {
+                intValue = (Integer) value;
+            } else if (value instanceof String) {
+                try {
+                    intValue = Integer.parseInt(value.toString());
+                } catch (Exception e) {
+                    // NOTHING TO DO HERE!
+                }
+            }
+            if ((intValue != null) && (intValue > 0)) {
+                while (intValue > 9 && intValue % 10 == 0) {
+                    intValue /= 10;
+                }
+                isPowerOfTen = intValue == 1;
+            }
+        }
+        return isPowerOfTen;
     }
 }

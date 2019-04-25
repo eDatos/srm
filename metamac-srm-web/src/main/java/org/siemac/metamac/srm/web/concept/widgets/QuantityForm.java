@@ -267,8 +267,9 @@ public class QuantityForm extends BaseQuantityForm {
             if (quantityDto == null) {
                 quantityDto = new QuantityDto();
             }
-            quantityDto.setQuantityType((getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !getValueAsString(ConceptDS.QUANTITY_TYPE).isEmpty()) ? QuantityTypeEnum
-                    .valueOf(getValueAsString(ConceptDS.QUANTITY_TYPE)) : null);
+            quantityDto.setQuantityType((getValueAsString(ConceptDS.QUANTITY_TYPE) != null && !getValueAsString(ConceptDS.QUANTITY_TYPE).isEmpty())
+                    ? QuantityTypeEnum.valueOf(getValueAsString(ConceptDS.QUANTITY_TYPE))
+                    : null);
             quantityDto.setUnitSymbolPosition((getValueAsString(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION) != null && !getValueAsString(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION).isEmpty())
                     ? QuantityUnitSymbolPositionEnum.valueOf(getValueAsString(ConceptDS.QUANTITY_UNIT_SYMBOL_POSITION))
                     : null);
@@ -284,12 +285,12 @@ public class QuantityForm extends BaseQuantityForm {
             quantityDto.setDenominator(getRelatedResourceDtoValue(ConceptDS.QUANTITY_DENOMINATOR));
             quantityDto.setNumerator(getRelatedResourceDtoValue(ConceptDS.QUANTITY_NUMERATOR));
 
-            quantityDto.setIsPercentage(getItem(ConceptDS.QUANTITY_IS_PERCENTAGE).isVisible() ? (getValue(ConceptDS.QUANTITY_IS_PERCENTAGE) != null ? Boolean
-                    .valueOf((Boolean) getValue(ConceptDS.QUANTITY_IS_PERCENTAGE)) : false) : null);
-            quantityDto.setPercentageOf(getItem(ConceptDS.QUANTITY_PERCENTAGE_OF).isVisible() ? getValueAsInternationalStringDto(ConceptDS.QUANTITY_PERCENTAGE_OF) : null);
-            quantityDto.setBaseValue(getItem(ConceptDS.QUANTITY_BASE_VALUE).isVisible()
-                    ? (getValue(ConceptDS.QUANTITY_BASE_VALUE) != null ? (Integer) getValue(ConceptDS.QUANTITY_BASE_VALUE) : null)
+            quantityDto.setIsPercentage(getItem(ConceptDS.QUANTITY_IS_PERCENTAGE).isVisible()
+                    ? (getValue(ConceptDS.QUANTITY_IS_PERCENTAGE) != null ? Boolean.valueOf((Boolean) getValue(ConceptDS.QUANTITY_IS_PERCENTAGE)) : false)
                     : null);
+            quantityDto.setPercentageOf(getItem(ConceptDS.QUANTITY_PERCENTAGE_OF).isVisible() ? getValueAsInternationalStringDto(ConceptDS.QUANTITY_PERCENTAGE_OF) : null);
+            quantityDto.setBaseValue(
+                    getItem(ConceptDS.QUANTITY_BASE_VALUE).isVisible() ? (getValue(ConceptDS.QUANTITY_BASE_VALUE) != null ? (Integer) getValue(ConceptDS.QUANTITY_BASE_VALUE) : null) : null);
             quantityDto.setBaseTime(getItem(ConceptDS.QUANTITY_BASE_TIME).isVisible() ? getValueAsString(ConceptDS.QUANTITY_BASE_TIME) : null);
 
             quantityDto.setBaseLocation(getRelatedResourceDtoValue(ConceptDS.QUANTITY_BASE_LOCATION));
@@ -377,28 +378,7 @@ public class QuantityForm extends BaseQuantityForm {
 
             @Override
             protected boolean condition(Object value) {
-                if (value != null) {
-                    Integer intValue = null;
-                    if (value instanceof Integer) {
-                        intValue = (Integer) value;
-                    } else if (value instanceof String) {
-                        try {
-                            intValue = Integer.parseInt(value.toString());
-                        } catch (Exception e) {
-                        }
-                    }
-                    if (intValue != null) {
-                        if (intValue > 0) {
-                            double log = Math.log(intValue);
-                            if (Math.pow(10, log) == Double.valueOf(intValue)) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-                    return false;
-                }
-                return true;
+                return QuantityUtils.isPowerOfTen(value);
             }
         };
         validator.setErrorMessage(MetamacSrmWeb.getMessages().errorConceptQuantityUnitMultiplier());

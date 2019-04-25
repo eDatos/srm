@@ -298,14 +298,6 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
             return;
         }
 
-        // checks invalid
-        if (!ValidationUtils.isEmpty(quantity.getUnitMultiplier())) {
-            if (quantity.getUnitMultiplier().intValue() != 1 && quantity.getUnitMultiplier().intValue() % 10 != 0) {
-                // must be 1, 10, 100...
-                exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_MULTIPLIER));
-            }
-        }
-
         if (!ValidationUtils.isEmpty(quantity.getBaseTime()) && !SdmxTimeUtils.isObservationalTimePeriod(quantity.getBaseTime())) {
             exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_BASE_TIME));
         }
@@ -313,7 +305,12 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ValidationUtils.checkMetadataRequired(quantity.getQuantityType(), ServiceExceptionParameters.CONCEPT_QUANTITY_TYPE, exceptions);
         ValidationUtils.checkMetadataRequired(quantity.getUnitCode(), ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_CODE, exceptions);
         ValidationUtils.checkMetadataRequired(quantity.getUnitSymbolPosition(), ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_SYMBOL_POSITION, exceptions);
-        ValidationUtils.checkMetadataRequired(quantity.getUnitMultiplier(), ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_MULTIPLIER, exceptions);
+
+        // checks invalid quantity unit multiplier: must be 1, 10, 100...
+        if (ValidationUtils.isEmpty(quantity.getUnitMultiplier()) || !QuantityUtils.isPowerOfTen(quantity.getUnitMultiplier())) {
+            exceptions.add(new MetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_MULTIPLIER));
+        }
+
         // required by quantity type
         if (QuantityUtils.isRatioOrExtension(quantity.getQuantityType())) {
             ValidationUtils.checkMetadataRequired(quantity.getIsPercentage(), ServiceExceptionParameters.CONCEPT_QUANTITY_IS_PERCENTAGE, exceptions);
