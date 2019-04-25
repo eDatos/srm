@@ -69,6 +69,8 @@ public class QuantityUtils {
                 }
                 isPowerOfTen = intValue == 1;
             }
+        } else {
+            isPowerOfTen = Boolean.TRUE;
         }
         return isPowerOfTen;
     }
