@@ -584,8 +584,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class).orderBy(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn())
                 .build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService.findConceptSchemesCanBeEnumeratedRepresentationForConceptsByCondition(
-                getServiceContextAdministrador(), conditions, pagingParameter, CONCEPT_SCHEME_15_V1_CONCEPT_1);
+        PagedResult<ConceptSchemeVersionMetamac> conceptSchemeVersionPagedResult = conceptsService
+                .findConceptSchemesCanBeEnumeratedRepresentationForConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter, CONCEPT_SCHEME_15_V1_CONCEPT_1);
 
         // Validate
         assertEquals(2, conceptSchemeVersionPagedResult.getTotalRows());
@@ -921,8 +921,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
                 // children
                 assertEquals(1, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
-                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME},
+                        exceptionItem.getExceptionItems().get(0));
             }
             // Concepts
             {
@@ -931,8 +931,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CONCEPT_SCHEME_2_V1_CONCEPT_1);
                 // children
                 assertEquals(1, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION}, exceptionItem
-                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
             }
             {
                 // Concept02
@@ -940,8 +940,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CONCEPT_SCHEME_2_V1_CONCEPT_2);
                 // children
                 assertEquals(1, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_ACRONYM}, exceptionItem.getExceptionItems()
-                        .get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_ACRONYM},
+                        exceptionItem.getExceptionItems().get(0));
             }
             assertEquals(e.getExceptionItems().size(), i);
         }
@@ -1002,22 +1002,22 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         } catch (MetamacException e) {
             assertEquals(2, e.getExceptionItems().size());
             {
-                MetamacExceptionItem exceptionItemConcept = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, concept1.getNameableArtefact()
-                        .getUrn());
+                MetamacExceptionItem exceptionItemConcept = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA,
+                        concept1.getNameableArtefact().getUrn());
                 // children
                 assertEquals(1, exceptionItemConcept.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT}, exceptionItemConcept
-                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT},
+                        exceptionItemConcept.getExceptionItems().get(0));
             }
             {
-                MetamacExceptionItem exceptionItemConcept = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, concept211.getNameableArtefact()
-                        .getUrn());
+                MetamacExceptionItem exceptionItemConcept = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA,
+                        concept211.getNameableArtefact().getUrn());
                 // children
                 assertEquals(2, exceptionItemConcept.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT}, exceptionItemConcept
-                        .getExceptionItems().get(0));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.CONCEPT_REPRESENTATION}, exceptionItemConcept.getExceptionItems()
-                        .get(1));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_REQUIRED, 1, new String[]{ServiceExceptionParameters.CONCEPT_SDMX_RELATED_ARTEFACT},
+                        exceptionItemConcept.getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_INCORRECT, 1, new String[]{ServiceExceptionParameters.CONCEPT_REPRESENTATION},
+                        exceptionItemConcept.getExceptionItems().get(1));
             }
         }
     }
@@ -1398,8 +1398,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, urn);
                 // children
                 assertEquals(2, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION}, exceptionItem
-                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
                 assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.ANNOTATION},
                         exceptionItem.getExceptionItems().get(1));
             }
@@ -1410,14 +1410,14 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CONCEPT_SCHEME_14_V1_CONCEPT_1);
                 // children
                 assertEquals(4, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
-                        .getExceptionItems().get(0));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT}, exceptionItem
-                        .getExceptionItems().get(1));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_ACRONYM}, exceptionItem.getExceptionItems()
-                        .get(2));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_DERIVATION}, exceptionItem
-                        .getExceptionItems().get(3));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME},
+                        exceptionItem.getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_COMMENT},
+                        exceptionItem.getExceptionItems().get(1));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_ACRONYM},
+                        exceptionItem.getExceptionItems().get(2));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_DERIVATION},
+                        exceptionItem.getExceptionItems().get(3));
             }
             {
                 // Concept0101
@@ -1425,12 +1425,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CONCEPT_SCHEME_14_V1_CONCEPT_1_1);
                 // children
                 assertEquals(3, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION}, exceptionItem
-                        .getExceptionItems().get(0));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_PLURAL_NAME}, exceptionItem
-                        .getExceptionItems().get(1));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_CONTEXT}, exceptionItem.getExceptionItems()
-                        .get(2));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_DESCRIPTION},
+                        exceptionItem.getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_PLURAL_NAME},
+                        exceptionItem.getExceptionItems().get(1));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_CONTEXT},
+                        exceptionItem.getExceptionItems().get(2));
             }
             {
                 // Concept02
@@ -1438,12 +1438,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 MetamacExceptionItem exceptionItem = assertListContainsExceptionItemOneParameter(e, ServiceExceptionType.RESOURCE_WITH_INCORRECT_METADATA, CONCEPT_SCHEME_14_V1_CONCEPT_2);
                 // children
                 assertEquals(3, exceptionItem.getExceptionItems().size());
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME}, exceptionItem
-                        .getExceptionItems().get(0));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.NAMEABLE_ARTEFACT_NAME},
+                        exceptionItem.getExceptionItems().get(0));
                 assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.ANNOTATION},
                         exceptionItem.getExceptionItems().get(1));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_DOC_METHOD}, exceptionItem
-                        .getExceptionItems().get(2));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_DOC_METHOD},
+                        exceptionItem.getExceptionItems().get(2));
             }
             {
                 // Concept03
@@ -1453,12 +1453,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals(4, exceptionItem.getExceptionItems().size());
                 assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.ANNOTATION},
                         exceptionItem.getExceptionItems().get(0));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_PLURAL_NAME}, exceptionItem
-                        .getExceptionItems().get(1));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE}, exceptionItem
-                        .getExceptionItems().get(2));
-                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_LEGAL_ACTS}, exceptionItem
-                        .getExceptionItems().get(3));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_PLURAL_NAME},
+                        exceptionItem.getExceptionItems().get(1));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_DESCRIPTION_SOURCE},
+                        exceptionItem.getExceptionItems().get(2));
+                assertEqualsMetamacExceptionItem(ServiceExceptionType.METADATA_WITHOUT_DEFAULT_LANGUAGE, 1, new String[]{ServiceExceptionParameters.CONCEPT_LEGAL_ACTS},
+                        exceptionItem.getExceptionItems().get(3));
             }
 
             assertEquals(e.getExceptionItems().size(), i);
@@ -2197,8 +2197,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertFalse(conceptSchemeVersionLast.getMaintainableArtefact().getIsLastVersion());
 
             // All versions
-            List<ConceptSchemeVersionMetamac> allVersions = conceptsService.retrieveConceptSchemeVersions(getServiceContextAdministrador(), conceptSchemeVersionNewVersion.getMaintainableArtefact()
-                    .getUrn());
+            List<ConceptSchemeVersionMetamac> allVersions = conceptsService.retrieveConceptSchemeVersions(getServiceContextAdministrador(),
+                    conceptSchemeVersionNewVersion.getMaintainableArtefact().getUrn());
             assertEquals(3, allVersions.size());
             assertEquals(urnToCopy, allVersions.get(0).getMaintainableArtefact().getUrn());
             assertEquals(urnLastVersion, allVersions.get(1).getMaintainableArtefact().getUrn());
@@ -3386,6 +3386,84 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
+    public void testCreateConceptErrorNullQuantityUnitMultiplier() throws Exception {
+
+        ServiceContext ctx = getServiceContextAdministrador();
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+
+        ConceptType conceptType = null;
+        String unitCodeUrn = CODELIST_7_V2_CODE_1;
+        String conceptNumerator = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
+        String conceptDenominator = CONCEPT_SCHEME_1_V2_CONCEPT_3;
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1), ConceptRoleEnum.ATTRIBUTE);
+        concept.setQuantity(new Quantity());
+        concept.getQuantity().setQuantityType(QuantityTypeEnum.INDEX);
+        concept.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), unitCodeUrn));
+        concept.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+        concept.getQuantity().setSignificantDigits(Integer.valueOf(2));
+        concept.getQuantity().setDecimalPlaces(Integer.valueOf(3));
+        concept.getQuantity().setMinimum(Integer.valueOf(1000));
+        concept.getQuantity().setMaximum(Integer.valueOf(2000));
+        concept.getQuantity().setNumerator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptNumerator));
+        concept.getQuantity().setDenominator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptDenominator));
+        concept.getQuantity().setIsPercentage(Boolean.FALSE);
+        concept.getQuantity().setPercentageOf(BaseDoMocks.mockInternationalString());
+        concept.getQuantity().setBaseTime("2011");
+
+        concept.getQuantity().setUnitMultiplier(null);
+
+        // Create
+        try {
+            conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+            fail("Quantity unit multiplier null");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_MULTIPLIER, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testCreateConceptErrorQuantityUnitMultiplierNotPowerOfTen() throws Exception {
+
+        ServiceContext ctx = getServiceContextAdministrador();
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+
+        ConceptType conceptType = null;
+        String unitCodeUrn = CODELIST_7_V2_CODE_1;
+        String conceptNumerator = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
+        String conceptDenominator = CONCEPT_SCHEME_1_V2_CONCEPT_3;
+        ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_8_V1), ConceptRoleEnum.ATTRIBUTE);
+        concept.setQuantity(new Quantity());
+        concept.getQuantity().setQuantityType(QuantityTypeEnum.INDEX);
+        concept.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), unitCodeUrn));
+        concept.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+        concept.getQuantity().setSignificantDigits(Integer.valueOf(2));
+        concept.getQuantity().setDecimalPlaces(Integer.valueOf(3));
+        concept.getQuantity().setMinimum(Integer.valueOf(1000));
+        concept.getQuantity().setMaximum(Integer.valueOf(2000));
+        concept.getQuantity().setNumerator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptNumerator));
+        concept.getQuantity().setDenominator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptDenominator));
+        concept.getQuantity().setIsPercentage(Boolean.FALSE);
+        concept.getQuantity().setPercentageOf(BaseDoMocks.mockInternationalString());
+        concept.getQuantity().setBaseTime("2011");
+
+        concept.getQuantity().setUnitMultiplier(11);
+
+        // Create
+        try {
+            conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+            fail("Quantity unit multiplier not power of ten");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_MULTIPLIER, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
     public void testCreateConceptErrorConceptExtendsWrongProcStatus() throws Exception {
 
         ServiceContext ctx = getServiceContextAdministrador();
@@ -3658,6 +3736,86 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
     }
 
+    @Test
+    public void testUpdateConceptErrorNullQuantityUnitMultiplier() throws Exception {
+        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        concept.getNameableArtefact().setName(ConceptsDoMocks.mockInternationalString());
+        concept.setConceptExtends(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1_CONCEPT_1));
+        assertTrue(RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType()));
+        concept.setCoreRepresentation(ConceptsDoMocks.mockTextFormatRepresentation());
+
+        String unitCodeUrn = CODELIST_7_V2_CODE_1;
+        String conceptNumerator = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
+        String conceptDenominator = CONCEPT_SCHEME_1_V2_CONCEPT_3;
+
+        concept.setQuantity(new Quantity());
+        concept.getQuantity().setQuantityType(QuantityTypeEnum.INDEX);
+        concept.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), unitCodeUrn));
+        concept.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+        concept.getQuantity().setSignificantDigits(Integer.valueOf(2));
+        concept.getQuantity().setDecimalPlaces(Integer.valueOf(3));
+        concept.getQuantity().setMinimum(Integer.valueOf(1000));
+        concept.getQuantity().setMaximum(Integer.valueOf(2000));
+        concept.getQuantity().setNumerator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptNumerator));
+        concept.getQuantity().setDenominator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptDenominator));
+        concept.getQuantity().setIsPercentage(Boolean.FALSE);
+        concept.getQuantity().setPercentageOf(BaseDoMocks.mockInternationalString());
+        concept.getQuantity().setBaseTime("2011");
+
+        concept.getQuantity().setUnitMultiplier(null);
+
+        try {
+            conceptsService.updateConcept(getServiceContextAdministrador(), concept);
+            fail("Quantity unit multiplier null");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_MULTIPLIER, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
+    @Test
+    public void testUpdateConceptErrorQuantityUnitMultiplierNotPowerOfTen() throws Exception {
+        ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
+        concept.getNameableArtefact().setIsCodeUpdated(Boolean.FALSE);
+        concept.getNameableArtefact().setName(ConceptsDoMocks.mockInternationalString());
+        concept.setConceptExtends(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_7_V1_CONCEPT_1));
+        assertTrue(RepresentationTypeEnum.ENUMERATION.equals(concept.getCoreRepresentation().getRepresentationType()));
+        concept.setCoreRepresentation(ConceptsDoMocks.mockTextFormatRepresentation());
+
+        String unitCodeUrn = CODELIST_7_V2_CODE_1;
+        String conceptNumerator = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
+        String conceptDenominator = CONCEPT_SCHEME_1_V2_CONCEPT_3;
+
+        concept.setQuantity(new Quantity());
+        concept.getQuantity().setQuantityType(QuantityTypeEnum.INDEX);
+        concept.getQuantity().setUnitCode(codesService.retrieveCodeByUrn(getServiceContextAdministrador(), unitCodeUrn));
+        concept.getQuantity().setUnitSymbolPosition(QuantityUnitSymbolPositionEnum.START);
+        concept.getQuantity().setSignificantDigits(Integer.valueOf(2));
+        concept.getQuantity().setDecimalPlaces(Integer.valueOf(3));
+        concept.getQuantity().setMinimum(Integer.valueOf(1000));
+        concept.getQuantity().setMaximum(Integer.valueOf(2000));
+        concept.getQuantity().setNumerator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptNumerator));
+        concept.getQuantity().setDenominator(conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptDenominator));
+        concept.getQuantity().setIsPercentage(Boolean.FALSE);
+        concept.getQuantity().setPercentageOf(BaseDoMocks.mockInternationalString());
+        concept.getQuantity().setBaseTime("2011");
+
+        concept.getQuantity().setUnitMultiplier(11);
+
+        try {
+            conceptsService.updateConcept(getServiceContextAdministrador(), concept);
+            fail("Quantity unit multiplier not power of ten");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.METADATA_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+            assertEquals(1, e.getExceptionItems().get(0).getMessageParameters().length);
+            assertEquals(ServiceExceptionParameters.CONCEPT_QUANTITY_UNIT_MULTIPLIER, e.getExceptionItems().get(0).getMessageParameters()[0]);
+        }
+    }
+
     @Override
     @Test
     public void testRetrieveConceptByUrn() throws Exception {
@@ -3845,9 +4003,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(conceptMetamac.getNameableArtefact().getUrn(), conceptMetamac.getNameableArtefact().getUrnProvider());
             assertEquals(null, conceptMetamac.getParent());
             assertEqualsInternationalString(conceptMetamac.getNameableArtefact().getName(), "es", "Correlación", null, null);
-            assertEqualsInternationalString(
-                    conceptMetamac.getNameableArtefact().getDescription(),
-                    "es",
+            assertEqualsInternationalString(conceptMetamac.getNameableArtefact().getDescription(), "es",
                     "<span style=\"color: rgb(84, 84, 84); font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 18px; text-align: justify; background-color: rgb(255, 255, 255);\">Medida de la relación existente entre dos variables. Su valor está comprendido entre –1 y 1. Si es negativo la relación entre las variables es inversa, es decir, a medida que aumentan los valores de una decrecen los de la otra. Si es positivo la asociación es directa, es decir, los valores de una variable aumentan con la otra. Un valor de cero indica ausencia de relación. Cuando las variables son continuas y tienen una relación lineal, el coeficiente de correlación lineal de Pearson es una medida de asociación adecuada. Cuando las variables no son continuas se utilizan otros coeficientes de correlación.</span>",
                     null, null);
             assertEqualsInternationalString(conceptMetamac.getNameableArtefact().getComment(), "ru", "Comment RU", "zh", "Comment ZH");
@@ -4323,8 +4479,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         // Find all
         {
-            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().id()).ascending()
-                    .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
+            List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().id()).ascending().orderBy(ConceptProperties.id())
+                    .ascending().distinctRoot().build();
             PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
             PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsByCondition(getServiceContextAdministrador(), conditions, pagingParameter);
 
@@ -4596,8 +4752,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(Concept.class).orderBy(ConceptProperties.itemSchemeVersion().maintainableArtefact().urn()).ascending()
                 .orderBy(ConceptProperties.id()).ascending().distinctRoot().build();
         PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
-        PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService
-                .findConceptsCanBeQuantityNumeratorByCondition(getServiceContextAdministrador(), conceptSchemeUrn, conditions, pagingParameter);
+        PagedResult<ConceptMetamac> conceptsPagedResult = conceptsService.findConceptsCanBeQuantityNumeratorByCondition(getServiceContextAdministrador(), conceptSchemeUrn, conditions,
+                pagingParameter);
 
         // Validate
         assertEquals(6, conceptsPagedResult.getTotalRows());
