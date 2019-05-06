@@ -9,7 +9,7 @@ public class QuantityUtilsTest {
 
     @Test
     public void isPowerOfTenTest() {
-        assertTrue(QuantityUtils.isPowerOfTen(null));
+        assertFalse(QuantityUtils.isPowerOfTen(null));
 
         assertTrue(QuantityUtils.isPowerOfTen(1));
         assertTrue(QuantityUtils.isPowerOfTen(10));
@@ -57,8 +57,25 @@ public class QuantityUtilsTest {
         assertFalse(QuantityUtils.isPowerOfTen(1110));
         assertFalse(QuantityUtils.isPowerOfTen(1111));
 
+        assertFalse(QuantityUtils.isPowerOfTen(1.0));
+
+        assertTrue(QuantityUtils.isPowerOfTen("1"));
+        assertTrue(QuantityUtils.isPowerOfTen("+1"));
+        assertTrue(QuantityUtils.isPowerOfTen("01"));
+        assertTrue(QuantityUtils.isPowerOfTen("+01"));
+        assertTrue(QuantityUtils.isPowerOfTen("10"));
+        assertTrue(QuantityUtils.isPowerOfTen("100000000"));
+        assertTrue(QuantityUtils.isPowerOfTen("+100000000"));
+
         assertFalse(QuantityUtils.isPowerOfTen(""));
         assertFalse(QuantityUtils.isPowerOfTen("prueba"));
-    }
+        assertFalse(QuantityUtils.isPowerOfTen("2"));
+        assertFalse(QuantityUtils.isPowerOfTen("100010000"));
+        assertFalse(QuantityUtils.isPowerOfTen("-1"));
+        assertFalse(QuantityUtils.isPowerOfTen("-100000000"));
+        assertFalse(QuantityUtils.isPowerOfTen(" "));
+        assertFalse(QuantityUtils.isPowerOfTen("-"));
 
+        assertFalse(QuantityUtils.isPowerOfTen("1.0"));
+    }
 }

@@ -14,6 +14,8 @@ import org.siemac.metamac.srm.core.concept.enume.domain.QuantityTypeEnum;
  */
 public class QuantityUtils {
 
+    private static final String INTEGER_REGULAR_EXPRESSION = "(\\+|-)?\\d+";
+
     private QuantityUtils() {
     }
 
@@ -50,28 +52,29 @@ public class QuantityUtils {
     }
 
     public static boolean isPowerOfTen(Object value) {
-        Boolean isPowerOfTen = Boolean.FALSE;
-
-        if (value != null) {
-            Integer intValue = null;
-            if (value instanceof Integer) {
-                intValue = (Integer) value;
-            } else if (value instanceof String) {
-                try {
-                    intValue = Integer.parseInt(value.toString());
-                } catch (Exception e) {
-                    // NOTHING TO DO HERE!
-                }
-            }
-            if ((intValue != null) && (intValue > 0)) {
-                while (intValue > 9 && intValue % 10 == 0) {
-                    intValue /= 10;
-                }
-                isPowerOfTen = intValue == 1;
-            }
-        } else {
-            isPowerOfTen = Boolean.TRUE;
+        if (value instanceof Integer) {
+            return isPowerOfTen((Integer) value);
         }
-        return isPowerOfTen;
+
+        if (value instanceof String) {
+            return isPowerOfTen((String) value);
+        }
+
+        return Boolean.FALSE;
+    }
+
+    private static boolean isPowerOfTen(String value) {
+        return (value.matches(QuantityUtils.INTEGER_REGULAR_EXPRESSION) && isPowerOfTen(Integer.parseInt(value)));
+    }
+
+    private static boolean isPowerOfTen(Integer value) {
+        if ((value != null) && (value > 0)) {
+            while (value > 9 && value % 10 == 0) {
+                value /= 10;
+            }
+            return value == 1;
+        }
+
+        return Boolean.FALSE;
     }
 }
