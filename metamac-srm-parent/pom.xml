@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.siemac.metamac</groupId>
         <artifactId>metamac-parent</artifactId>
-        <version>3.0.3-SNAPSHOT</version>
+        <version>3.1.0</version>
     </parent>
 
     <groupId>org.siemac.metamac.metamac-srm</groupId>
@@ -19,10 +19,10 @@
         <metamac-srm-rest-external-api.version>2.2.0</metamac-srm-rest-external-api.version>
         <metamac-srm-rest-api-common.version>2.0.0</metamac-srm-rest-api-common.version>
         <metamac-statistical-resources-rest-internal-api.version>3.2.0</metamac-statistical-resources-rest-internal-api.version>
-        <metamac-web-common.version>3.5.1-SNAPSHOT</metamac-web-common.version>
+        <metamac-web-common.version>3.6.0</metamac-web-common.version>
         <metamac-statistical-operations-rest-internal-api.version>2.2.0</metamac-statistical-operations-rest-internal-api.version>
         <metamac-statistical-operations-rest-external-api.version>3.2.0</metamac-statistical-operations-rest-external-api.version>
-        <metamac-sso.version>2.2.2-SNAPSHOT</metamac-sso.version>
+        <metamac-sso.version>3.0.0</metamac-sso.version>
         <metamac-core-common.version>5.5.0</metamac-core-common.version>
         <metamac-rest-common.version>2.2.0</metamac-rest-common.version>
         <metamac-notifications-rest-internal-api.version>3.1.0</metamac-notifications-rest-internal-api.version>
