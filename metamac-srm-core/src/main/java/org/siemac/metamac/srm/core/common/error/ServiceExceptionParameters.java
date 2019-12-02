@@ -20,6 +20,8 @@ public class ServiceExceptionParameters extends com.arte.statistic.sdmx.srm.core
     public static final String  CONCEPT_SCHEME_TYPE_TRANSVERSAL                            = createCode(CONCEPT_SCHEME_PREFIX, "type.transversal");
     public static final String  CONCEPT_SCHEME_TYPE_MEASURE                                = createCode(CONCEPT_SCHEME_PREFIX, "type.measure");
 
+    public static final String  CONCEPT_SCHEME_ORDER_INDEX                                 = createCode(CONCEPT_SCHEME_PREFIX, "concept_scheme_order.index");
+
     // CONCEPT
     private static final String CONCEPT_PREFIX                                             = "concept";
     public static final String  CONCEPT_PLURAL_NAME                                        = createCode(CONCEPT_PREFIX, "plural_name");

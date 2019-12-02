@@ -5212,4 +5212,16 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         return "dbunit/SrmConceptsTest.xml";
     }
 
+    @Override
+    public void testUpdateConceptParent() throws Exception {
+        // TODO EDATOS-2872 Check this!
+
+    }
+
+    @Override
+    public void testUpdateConceptInOrder() throws Exception {
+        // TODO EDATOS-2872 Check this!
+
+    }
+
 }

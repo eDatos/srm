@@ -147,6 +147,11 @@ Application ConceptsMetamac {
     		
     		"Find codelists belong to same variable of concept. Can specify variable instead concept"
     		PagedResult<@CodelistVersionMetamac> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(List<ConditionalCriteria> conditions, PagingParameter pagingParameter, String conceptUrn, String variableUrn) throws MetamacException;
+    		
+    		"Updates parent of concept. parentUrn is null when code is moved to first level. Concept is moved at the end of new level"
+			updateConceptParent(String conceptUrn, String newParentUrn) throws MetamacException;
+			"Updates position of concept"
+			updateConceptInOrder(String conceptUrn, String urn, Integer newConceptIndex) throws MetamacException;
 		}
 
 		// ----------------------------------------------------------------
@@ -210,6 +215,8 @@ Application ConceptsMetamac {
 			- @Variable variable nullable cascade="none" fetch="lazy" databaseColumn="VARIABLE_FK" <-> concepts;
 			"Quantity"
 			- @Quantity quantity nullable cascade="all" fetch="lazy" databaseColumn="QUANTITY_FK";
+			"Order"
+			Integer orderValue nullable;
 
 			Repository ConceptMetamacRepository {
 				save;
@@ -227,6 +234,10 @@ Application ConceptsMetamac {
 				checkConceptsWithConceptRoleExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 				checkConceptsWithQuantityExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 				checkConceptsWithRepresentationExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
+				
+				Integer getConceptMaximumOrderInLevel(@ConceptSchemeVersionMetamac conceptSchemeVersion, @Concept parent);
+				reorderConceptsDeletingOneConcept(@ConceptSchemeVersionMetamac conceptSchemeVersion, @ConceptMetamac concept);
+				reorderConceptsAddingOneConceptInMiddle(@ConceptSchemeVersionMetamac conceptSchemeVersion, @ConceptMetamac concept, Integer newConceptIndex);
 			}
 		}
 

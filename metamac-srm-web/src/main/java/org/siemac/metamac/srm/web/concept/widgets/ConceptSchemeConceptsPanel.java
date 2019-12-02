@@ -21,17 +21,17 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class ConceptSchemeConceptsPanel extends VLayout {
 
-    private ToolStrip               toolStrip;
-    private ToolStripButton         importConceptsButton;
-    private ToolStripButton         exportConceptsButton;
-    private ImportConceptsWindow    importConceptsWindow;
+    private ToolStrip                    toolStrip;
+    private ToolStripButton              importConceptsButton;
+    private ToolStripButton              exportConceptsButton;
+    private ImportConceptsWindow         importConceptsWindow;
 
-    private final InformationLabel  conceptsNoVisibleInfoMessage;
-    private final ConceptsTreeGrid  conceptsTreeGrid;
+    private final InformationLabel       conceptsNoVisibleInfoMessage;
+    private final ConceptsOrderTreeGrid conceptsTreeGrid;
 
-    private ConceptSchemeUiHandlers uiHandlers;
+    private ConceptSchemeUiHandlers      uiHandlers;
 
-    private ConceptSchemeMetamacDto conceptSchemeDto;
+    private ConceptSchemeMetamacDto      conceptSchemeDto;
 
     public ConceptSchemeConceptsPanel() {
         setMargin(15);
@@ -74,7 +74,7 @@ public class ConceptSchemeConceptsPanel extends VLayout {
         conceptsNoVisibleInfoMessage = new InformationLabel(getConstants().conceptSchemeConceptsNoVisibleInfoMessage());
         conceptsNoVisibleInfoMessage.setMargin(10);
 
-        conceptsTreeGrid = new ConceptsTreeGrid();
+        conceptsTreeGrid = new ConceptsOrderTreeGrid();
 
         addMember(conceptsNoVisibleInfoMessage);
         addMember(toolStrip);

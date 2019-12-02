@@ -349,8 +349,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeQuantityDenominatorByCondition(ServiceContext ctx, String conceptSchemeUrn,
-            List<ConditionalCriteria> conditions, PagingParameter pagingParameter) throws MetamacException {
+    public PagedResult<ConceptSchemeVersionMetamac> findConceptSchemesWithConceptsCanBeQuantityDenominatorByCondition(ServiceContext ctx, String conceptSchemeUrn, List<ConditionalCriteria> conditions,
+            PagingParameter pagingParameter) throws MetamacException {
         return findConceptSchemesCanBeQuantity(ctx, conceptSchemeUrn, conditions, pagingParameter);
     }
 
@@ -385,8 +385,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Codelist with access type = PUBLIC
         conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.accessType()).eq(AccessTypeEnum.PUBLIC).buildSingle());
         // Codelist with geographical variable
-        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.variable().type()).eq(VariableTypeEnum.GEOGRAPHICAL)
-                .buildSingle());
+        conditions.add(
+                ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class).withProperty(CodelistVersionMetamacProperties.variable().type()).eq(VariableTypeEnum.GEOGRAPHICAL).buildSingle());
         return codesMetamacService.findCodelistsByCondition(ctx, conditions, pagingParameter);
     }
 
@@ -664,7 +664,22 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         srmValidation.checkItemsStructureCanBeModified(ctx, conceptSchemeVersion);
 
         // Save concept
-        return (ConceptMetamac) conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+        concept = (ConceptMetamac) conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+        // Set order to created concept
+        concept = setOrderToCodeCreated(conceptSchemeVersion, concept);
+
+        return concept;
+    }
+
+    private ConceptMetamac setOrderToCodeCreated(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) {
+
+        Integer actualMaximumOrderInLevel = getConceptMetamacRepository().getConceptMaximumOrderInLevel(conceptSchemeVersion, concept.getParent());
+
+        concept.setOrderValue((actualMaximumOrderInLevel == null) ? 0 : actualMaximumOrderInLevel + 1);
+
+        concept = getConceptMetamacRepository().save(concept);
+
+        return concept;
     }
 
     @Override
@@ -727,8 +742,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 Long codelistId = concept.getCoreRepresentation().getEnumerationCodelist().getId();
                 List<ConditionalCriteria> criteriaToVerifyCodelistRepresentation = ConditionalCriteriaBuilder.criteriaFor(CodelistVersionMetamac.class)
                         .withProperty(CodelistVersionMetamacProperties.id()).eq(codelistId).build();
-                PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ctx, criteriaToVerifyCodelistRepresentation, pagingParameter, concept
-                        .getVariable().getId());
+                PagedResult<CodelistVersionMetamac> result = findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(ctx, criteriaToVerifyCodelistRepresentation, pagingParameter,
+                        concept.getVariable().getId());
                 if (result.getValues().size() != 1 || !result.getValues().get(0).getId().equals(codelistId)) {
                     return SrmServiceUtils.returnOrThrowException(ServiceExceptionType.METADATA_INCORRECT, throwException, ServiceExceptionParameters.CONCEPT_REPRESENTATION);
                 }
@@ -977,8 +992,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
         // Add restrictions to be Role
         // concept scheme must be Role
-        ConditionalCriteria roleCondition = ConditionalCriteriaBuilder
-                .criteriaFor(ConceptMetamac.class)
+        ConditionalCriteria roleCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
                 .withProperty(
                         new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class))
                 .eq(ConceptSchemeTypeEnum.ROLE).buildSingle();
@@ -1000,8 +1014,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             conditions = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class).distinctRoot().build();
         }
         // concept scheme must be Glossary
-        ConditionalCriteria roleCondition = ConditionalCriteriaBuilder
-                .criteriaFor(ConceptMetamac.class)
+        ConditionalCriteria roleCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
                 .withProperty(
                         new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class))
                 .eq(ConceptSchemeTypeEnum.GLOSSARY).buildSingle();
@@ -1068,8 +1081,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                 .withProperty(new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.accessType().getName(), false, CodeMetamac.class))
                 .eq(AccessTypeEnum.PUBLIC).buildSingle());
         // codelist with geographical variable
-        conditions.add(ConditionalCriteriaBuilder
-                .criteriaFor(CodeMetamac.class)
+        conditions.add(ConditionalCriteriaBuilder.criteriaFor(CodeMetamac.class)
                 .withProperty(
                         new LeafProperty<CodeMetamac>(CodeMetamacProperties.itemSchemeVersion().getName(), CodelistVersionMetamacProperties.variable().type().getName(), false, CodeMetamac.class))
                 .eq(VariableTypeEnum.GEOGRAPHICAL).buildSingle());
@@ -1085,6 +1097,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         checkConceptSchemeCanBeModified(conceptSchemeVersion);
         srmValidation.checkItemsStructureCanBeModified(ctx, conceptSchemeVersion);
         checkNoQuantityRelated(concept);
+
+        // Before delete concept, update order of other concepts in level
+        getConceptMetamacRepository().reorderConceptsDeletingOneConcept(conceptSchemeVersion, concept);
 
         // Delete bidirectional relations of concepts relate this concept and its children (will be removed in cascade)
         removeRelatedConceptsBidirectional(concept);
@@ -1451,8 +1466,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (conceptToCopy.getRelatedConcepts().size() == 0) {
             return;
         }
-        ConceptMetamac conceptInNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptToCopy.getNameableArtefact().getCode(), conceptSchemeNewVersion
-                .getMaintainableArtefact().getUrn());
+        ConceptMetamac conceptInNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptToCopy.getNameableArtefact().getCode(),
+                conceptSchemeNewVersion.getMaintainableArtefact().getUrn());
 
         if (conceptInNewVersion == null) {
             // concept only can not exist in new version when importing: in this case, do not copy related concepts to this concept
@@ -1462,8 +1477,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         // Copy relations with concepts in new version
         for (ConceptMetamac relatedConcept : conceptToCopy.getRelatedConcepts()) {
-            ConceptMetamac relatedConceptIntNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(relatedConcept.getNameableArtefact().getCode(), conceptSchemeNewVersion
-                    .getMaintainableArtefact().getUrn());
+            ConceptMetamac relatedConceptIntNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(relatedConcept.getNameableArtefact().getCode(),
+                    conceptSchemeNewVersion.getMaintainableArtefact().getUrn());
             if (relatedConceptIntNewVersion == null) {
                 // concept only can not exist in new version when importing: in this case, do not copy
                 SrmValidationUtils.checkMaintainableArtefactImported(conceptSchemeNewVersion.getMaintainableArtefact());
@@ -1475,8 +1490,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
     private void versioningConceptQuantity(ConceptMetamac conceptToCopy, ConceptSchemeVersionMetamac conceptSchemeNewVersion) throws MetamacException {
 
-        ConceptMetamac conceptInNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptToCopy.getNameableArtefact().getCode(), conceptSchemeNewVersion
-                .getMaintainableArtefact().getUrn());
+        ConceptMetamac conceptInNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptToCopy.getNameableArtefact().getCode(),
+                conceptSchemeNewVersion.getMaintainableArtefact().getUrn());
         if (conceptInNewVersion == null) {
             // concept only can not exist in new version when importing: in this case, do not copy quantity to this concept
             SrmValidationUtils.checkMaintainableArtefactImported(conceptSchemeNewVersion.getMaintainableArtefact());
@@ -1530,8 +1545,8 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             return conceptInQuantityToCopy;
         } else {
             // belong to same concept scheme
-            ConceptMetamac numeratorInNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptInQuantityToCopy.getNameableArtefact().getCode(), conceptSchemeNewVersion
-                    .getMaintainableArtefact().getUrn());
+            ConceptMetamac numeratorInNewVersion = (ConceptMetamac) conceptRepository.findByCodeInConceptSchemeVersion(conceptInQuantityToCopy.getNameableArtefact().getCode(),
+                    conceptSchemeNewVersion.getMaintainableArtefact().getUrn());
             if (numeratorInNewVersion == null) {
                 // concept only can not exist in new version when importing: in this case, do not copy
                 SrmValidationUtils.checkMaintainableArtefactImported(conceptSchemeNewVersion.getMaintainableArtefact());
@@ -1610,7 +1625,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         PagingParameter pagingParameter = PagingParameter.pageAccess(1, 1);
         Long conceptExtendId = concept.getConceptExtends().getId();
         List<ConditionalCriteria> criteriaToVerifyConceptExtends = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
-        // concept extends select must be in result
+                // concept extends select must be in result
                 .withProperty(ConceptMetamacProperties.id()).eq(conceptExtendId)
                 // must belong to different schemes
                 .not().withProperty(ConceptMetamacProperties.itemSchemeVersion().itemScheme().id()).eq(conceptSchemeVersionSource.getItemScheme().getId()).build();
@@ -1700,22 +1715,17 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         }
         // Add restrictions to be numerated. IMPORTANT! If any condition change, review findConceptSchemesCanBeQuantity
         // concept scheme can be same scheme or another concept scheme type Measure without operation
-        ConditionalCriteria quantityCondition = ConditionalCriteriaBuilder
-                .criteriaFor(ConceptMetamac.class)
+        ConditionalCriteria quantityCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptMetamac.class)
                 // same scheme
-                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urn())
-                .eq(conceptSchemeUrn)
-                .or()
+                .withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().urn()).eq(conceptSchemeUrn).or()
                 // in another scheme, internally or externally published and specific type
                 .lbrace()
                 .withProperty(
                         new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.type().getName(), true, ConceptMetamac.class))
-                .eq(ConceptSchemeTypeEnum.MEASURE)
-                .and()
-                .withProperty(
-                        new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.relatedOperation().getName(), true,
-                                ConceptMetamac.class)).isNull().and().withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).rbrace()
-                .buildSingle();
+                .eq(ConceptSchemeTypeEnum.MEASURE).and()
+                .withProperty(new LeafProperty<ConceptMetamac>(ConceptMetamacProperties.itemSchemeVersion().getName(), ConceptSchemeVersionMetamacProperties.relatedOperation().getName(), true,
+                        ConceptMetamac.class))
+                .isNull().and().withProperty(ConceptMetamacProperties.itemSchemeVersion().maintainableArtefact().finalLogicClient()).eq(Boolean.TRUE).rbrace().buildSingle();
         conditions.add(quantityCondition);
 
         PagedResult<Concept> conceptsPagedResult = conceptsService.findConceptsByCondition(ctx, conditions, pagingParameter);
@@ -1735,7 +1745,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Add restrictions to be numerated. IMPORTANT! If any condition change, review findConceptsCanBeQuantity
         // concept scheme can be same scheme or another concept scheme type Measure without operation
         ConditionalCriteria quantityCondition = ConditionalCriteriaBuilder.criteriaFor(ConceptSchemeVersionMetamac.class)
-        // 1) same scheme
+                // 1) same scheme
                 .withProperty(ConceptSchemeVersionMetamacProperties.maintainableArtefact().urn()).eq(conceptSchemeUrn).or()
                 // 2) or another scheme...
                 .lbrace()
@@ -1770,5 +1780,73 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             // update reference after save to assign to children
             conceptsToPersistByCode.put(conceptMetamac.getNameableArtefact().getCode(), conceptMetamac);
         }
+    }
+
+    @Override
+    public void updateConceptParent(ServiceContext ctx, String conceptUrn, String newParentUrn) throws MetamacException {
+        // Validation
+        ConceptsMetamacInvocationValidator.checkUpdateConceptParent(conceptUrn, newParentUrn, null);
+        ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = retrieveConceptSchemeByConceptUrn(ctx, conceptUrn);
+        checkConceptSchemeCanBeModified(conceptSchemeVersionMetamac);
+        srmValidation.checkItemsStructureCanBeModified(ctx, conceptSchemeVersionMetamac);
+
+        ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
+        Concept parentActual = concept.getParent() != null ? concept.getParent() : null;
+        ConceptMetamac parentTarget = newParentUrn != null ? retrieveConceptByUrn(ctx, newParentUrn) : null;
+        if (!SdmxSrmUtils.isItemParentChanged(parentActual, parentTarget)) {
+            // nothing
+            return;
+        }
+
+        // Check target parent is not children of this code
+        if (newParentUrn != null) {
+            checkItemIsNotChildren(ctx, concept, newParentUrn);
+        }
+
+        // Update target parent
+        if (parentTarget == null) {
+            concept.setParent(null);
+            concept.setItemSchemeVersionFirstLevel(conceptSchemeVersionMetamac);
+        } else {
+            concept.setParent(parentTarget);
+            concept.setItemSchemeVersionFirstLevel(null);
+        }
+
+        // Update orders, in previous and new level
+        getConceptMetamacRepository().reorderConceptsDeletingOneConcept(conceptSchemeVersionMetamac, concept);
+        setOrderToCodeCreated(conceptSchemeVersionMetamac, concept);
+
+        // Update concept
+        getConceptMetamacRepository().save(concept);
+        baseService.updateItemSchemeLastUpdated(ctx, conceptSchemeVersionMetamac);
+    }
+
+    private void checkItemIsNotChildren(ServiceContext ctx, Item item, String newParentUrn) throws MetamacException {
+        Item parentTarget = retrieveConceptByUrn(ctx, newParentUrn);
+        while (parentTarget != null) {
+            if (parentTarget.getId().equals(item.getId())) {
+                throw new MetamacException(ServiceExceptionType.PARAMETER_INCORRECT, ServiceExceptionParameters.ITEM_PARENT);
+            }
+            parentTarget = parentTarget.getParent();
+        }
+    }
+
+    @Override
+    public void updateConceptInOrder(ServiceContext ctx, String conceptUrn, String urn, Integer newConceptIndex) throws MetamacException {
+        // Validation
+        ConceptsMetamacInvocationValidator.checkUpdateConceptInOrder(conceptUrn, urn, newConceptIndex, null);
+        ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = retrieveConceptSchemeByConceptUrn(ctx, conceptUrn);
+        checkConceptSchemeCanBeModified(conceptSchemeVersionMetamac);
+
+        ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
+
+        // Reorder concepts in same level
+        getConceptMetamacRepository().reorderConceptsDeletingOneConcept(conceptSchemeVersionMetamac, concept);
+        getConceptMetamacRepository().reorderConceptsAddingOneConceptInMiddle(conceptSchemeVersionMetamac, concept, newConceptIndex);
+
+        // Update concept
+        concept.setOrderValue(newConceptIndex);
+        getConceptMetamacRepository().save(concept);
+        baseService.updateItemSchemeLastUpdated(ctx, conceptSchemeVersionMetamac);
     }
 }

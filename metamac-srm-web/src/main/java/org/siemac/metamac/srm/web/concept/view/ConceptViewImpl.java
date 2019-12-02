@@ -35,8 +35,8 @@ import org.siemac.metamac.srm.web.concept.view.handlers.ConceptUiHandlers;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptFacetForm;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptMainFormLayout;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsListItem;
-import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeGrid;
 import org.siemac.metamac.srm.web.concept.widgets.ConceptsTreeWindow;
+import org.siemac.metamac.srm.web.concept.widgets.ConceptsOrderTreeGrid;
 import org.siemac.metamac.srm.web.concept.widgets.QuantityForm;
 import org.siemac.metamac.srm.web.concept.widgets.ViewQuantityForm;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
@@ -94,44 +94,44 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> implements ConceptPresenter.ConceptView {
 
-    private VLayout panel;
-    private ConceptMainFormLayout mainFormLayout;
+    private VLayout                                 panel;
+    private ConceptMainFormLayout                   mainFormLayout;
 
-    private ConceptsTreeGrid conceptsTreeGrid;
+    private ConceptsOrderTreeGrid                  conceptsTreeGrid;
 
     // View forms
-    private GroupDynamicForm identifiersForm;
-    private GroupDynamicForm productionDescriptorsForm;
-    private GroupDynamicForm contentDescriptorsForm;
-    private StaticFacetForm facetForm;
-    private GroupDynamicForm classDescriptorsForm;
-    private GroupDynamicForm relationBetweenConceptsForm;
-    private ViewQuantityForm quantityForm;
-    private GroupDynamicForm legalActsForm;
-    private GroupDynamicForm commentsForm;
-    private AnnotationsPanel annotationsPanel;
+    private GroupDynamicForm                        identifiersForm;
+    private GroupDynamicForm                        productionDescriptorsForm;
+    private GroupDynamicForm                        contentDescriptorsForm;
+    private StaticFacetForm                         facetForm;
+    private GroupDynamicForm                        classDescriptorsForm;
+    private GroupDynamicForm                        relationBetweenConceptsForm;
+    private ViewQuantityForm                        quantityForm;
+    private GroupDynamicForm                        legalActsForm;
+    private GroupDynamicForm                        commentsForm;
+    private AnnotationsPanel                        annotationsPanel;
 
     // Edition forms
-    private GroupDynamicForm identifiersEditionForm;
-    private GroupDynamicForm productionDescriptorsEditionForm;
-    private GroupDynamicForm contentDescriptorsEditionForm;
-    private ConceptFacetForm facetEditionForm;
-    private StaticFacetForm facetStaticEditionForm;
-    private GroupDynamicForm classDescriptorsEditionForm;
-    private GroupDynamicForm relationBetweenConceptsEditionForm;
-    private QuantityForm quantityEditionForm;
-    private GroupDynamicForm legalActsEditionForm;
-    private GroupDynamicForm commentsEditionForm;
-    private AnnotationsPanel annotationsEditionPanel;
+    private GroupDynamicForm                        identifiersEditionForm;
+    private GroupDynamicForm                        productionDescriptorsEditionForm;
+    private GroupDynamicForm                        contentDescriptorsEditionForm;
+    private ConceptFacetForm                        facetEditionForm;
+    private StaticFacetForm                         facetStaticEditionForm;
+    private GroupDynamicForm                        classDescriptorsEditionForm;
+    private GroupDynamicForm                        relationBetweenConceptsEditionForm;
+    private QuantityForm                            quantityEditionForm;
+    private GroupDynamicForm                        legalActsEditionForm;
+    private GroupDynamicForm                        commentsEditionForm;
+    private AnnotationsPanel                        annotationsEditionPanel;
 
-    private List<ConceptTypeDto> conceptTypeDtos;
+    private List<ConceptTypeDto>                    conceptTypeDtos;
 
-    private ConceptSchemeMetamacDto conceptSchemeMetamacDto;
+    private ConceptSchemeMetamacDto                 conceptSchemeMetamacDto;
     private List<ConceptMetamacVisualisationResult> itemVisualisationResults;
-    private ConceptMetamacDto conceptDto;
+    private ConceptMetamacDto                       conceptDto;
 
-    private SearchRelatedResourcePaginatedWindow searchVariableWindow;
-    private SearchRelatedResourcePaginatedWindow searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow;
+    private SearchRelatedResourcePaginatedWindow    searchVariableWindow;
+    private SearchRelatedResourcePaginatedWindow    searchCodelistOrConceptSchemesForEnumeratedRepresentationWindow;
 
     @Inject
     public ConceptViewImpl() {
@@ -143,7 +143,7 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         // CONCEPTS HIERARCHY
         //
 
-        conceptsTreeGrid = new ConceptsTreeGrid();
+        conceptsTreeGrid = new ConceptsOrderTreeGrid();
         conceptsTreeGrid.setAutoFitMaxRecords(10);
 
         CustomVLayout conceptsListGridLayout = new CustomVLayout();
@@ -537,9 +537,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         contentDescriptorsForm.setValue(ConceptDS.DOC_METHOD, conceptDto.getDocMethod());
         ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(ConceptDS.VARIABLE)).setRelatedResource(conceptDto.getVariable());
         contentDescriptorsForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getRepresentationType().name() : null);
-        contentDescriptorsForm.setValue(RepresentationDS.TYPE_VIEW, conceptDto.getCoreRepresentation() != null
-                ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation().getRepresentationType())
-                : null);
+        contentDescriptorsForm.setValue(RepresentationDS.TYPE_VIEW,
+                conceptDto.getCoreRepresentation() != null
+                        ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation().getRepresentationType())
+                        : null);
         ((RelatedResourceLinkItem) contentDescriptorsForm.getItem(RepresentationDS.ENUMERATED))
                 .setRelatedResource(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getEnumeration() : null);
         contentDescriptorsForm.setValue(ConceptDS.TYPE,
@@ -600,9 +601,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
         ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE)).setRelatedResource(conceptDto.getVariable());
         ((RelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(ConceptDS.VARIABLE_VIEW)).setRelatedResource(conceptDto.getVariable());
         contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE, conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getRepresentationType().name() : null);
-        contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE_VIEW, conceptDto.getCoreRepresentation() != null
-                ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation().getRepresentationType())
-                : null);
+        contentDescriptorsEditionForm.setValue(RepresentationDS.TYPE_VIEW,
+                conceptDto.getCoreRepresentation() != null
+                        ? org.siemac.metamac.srm.web.client.utils.CommonUtils.getTypeRepresentationName(conceptDto.getCoreRepresentation().getRepresentationType())
+                        : null);
 
         ((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED))
                 .setRelatedResource(conceptDto.getCoreRepresentation() != null ? conceptDto.getCoreRepresentation().getEnumeration() : null);
@@ -659,9 +661,10 @@ public class ConceptViewImpl extends ViewWithUiHandlers<ConceptUiHandlers> imple
             if (conceptDto.getCoreRepresentation() == null) {
                 conceptDto.setCoreRepresentation(new RepresentationDto());
             }
-            conceptDto.getCoreRepresentation().setRepresentationType(!StringUtils.isEmpty(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE))
-                    ? RepresentationTypeEnum.valueOf(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE))
-                    : null);
+            conceptDto.getCoreRepresentation()
+                    .setRepresentationType(!StringUtils.isEmpty(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE))
+                            ? RepresentationTypeEnum.valueOf(contentDescriptorsEditionForm.getValueAsString(RepresentationDS.TYPE))
+                            : null);
             if (RepresentationTypeEnum.ENUMERATION.equals(conceptDto.getCoreRepresentation().getRepresentationType())) {
                 conceptDto.getCoreRepresentation().setTextFormat(null);
                 conceptDto.getCoreRepresentation().setEnumeration(((SearchRelatedResourceLinkItem) contentDescriptorsEditionForm.getItem(RepresentationDS.ENUMERATED)).getRelatedResourceDto());
