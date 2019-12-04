@@ -194,7 +194,6 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canExportConceptsTsv(MetamacSrmWeb.getCurrentUser());
     }
 
-    // TODO EDATOS-2872 check this validation!
     public static boolean canUpdateConceptParent(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
         if (isTaskInBackground(conceptSchemeMetamacDto.getIsTaskInBackground())) {
             return false;
@@ -206,8 +205,7 @@ public class ConceptsClientSecurityUtils {
                 && CommonUtils.canSdmxMetadataAndStructureBeModified(conceptSchemeMetamacDto);
     }
 
-    // TODO EDATOS-2872 check this validation!
-    public static boolean canUpdateConcept(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+    public static boolean canUpdateConceptOrderInLevel(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
         if (isTaskInBackground(conceptSchemeMetamacDto.getIsTaskInBackground())) {
             return false;
         }

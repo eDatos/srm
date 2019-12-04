@@ -25,7 +25,7 @@ public class UpdateConceptParentActionHandler extends SecurityActionHandler<Upda
     @Override
     public UpdateConceptParentResult executeSecurityAction(UpdateConceptParentAction action) throws ActionException {
         try {
-            srmCoreServiceFacade.updateConceptParent(ServiceContextHolder.getCurrentServiceContext(), action.getConceptUrn(), action.getNewParentUrn());
+            srmCoreServiceFacade.updateConceptParent(ServiceContextHolder.getCurrentServiceContext(), action.getConceptUrn(), action.getNewParentUrn(), action.getNewConceptIndex());
             return new UpdateConceptParentResult();
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

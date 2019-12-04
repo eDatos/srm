@@ -13,5 +13,5 @@ public class UpdateConceptInOrder {
     String  urn;
 
     @In(3)
-    Integer newCodeIndex;
+    Integer newConceptIndex;
 }

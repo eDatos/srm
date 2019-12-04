@@ -108,11 +108,11 @@ public class ConceptsOrderTreeGrid extends ConceptsTreeGrid {
                                 // The code will be moved to the first level. The parent is null.
                                 newItemParent = null;
                             }
-                            getBaseConceptUiHandlers().updateConceptParent(droppedNode.getAttribute(ConceptDS.URN), newItemParent);
+                            getBaseConceptUiHandlers().updateConceptParent(droppedNode.getAttribute(ConceptDS.URN), newItemParent, relativePosition);
                         }
                     } else {
                         // UPDATE ORDER
-                        if (ConceptsClientSecurityUtils.canUpdateConcept(conceptSchemeMetamacDto)) {
+                        if (ConceptsClientSecurityUtils.canUpdateConceptOrderInLevel(conceptSchemeMetamacDto)) {
                             getBaseConceptUiHandlers().updateConceptInOrder(droppedNode.getAttribute(ConceptDS.URN), conceptSchemeMetamacDto.getUrn(), relativePosition);
                         }
                     }

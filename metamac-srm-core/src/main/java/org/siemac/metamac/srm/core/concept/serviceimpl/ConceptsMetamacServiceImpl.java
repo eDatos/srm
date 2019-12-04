@@ -672,7 +672,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     private ConceptMetamac setOrderToCodeCreated(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) {
-
         Integer actualMaximumOrderInLevel = getConceptMetamacRepository().getConceptMaximumOrderInLevel(conceptSchemeVersion, concept.getParent());
 
         concept.setOrderValue((actualMaximumOrderInLevel == null) ? 0 : actualMaximumOrderInLevel + 1);
@@ -1783,7 +1782,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public void updateConceptParent(ServiceContext ctx, String conceptUrn, String newParentUrn) throws MetamacException {
+    public void updateConceptParent(ServiceContext ctx, String conceptUrn, String newParentUrn, Integer newConceptIndex) throws MetamacException {
         // Validation
         ConceptsMetamacInvocationValidator.checkUpdateConceptParent(conceptUrn, newParentUrn, null);
         ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = retrieveConceptSchemeByConceptUrn(ctx, conceptUrn);
@@ -1803,6 +1802,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             checkItemIsNotChildren(ctx, concept, newParentUrn);
         }
 
+        // Update orders in previous level
+        getConceptMetamacRepository().reorderConceptsDeletingOneConcept(conceptSchemeVersionMetamac, concept);
+
         // Update target parent
         if (parentTarget == null) {
             concept.setParent(null);
@@ -1812,11 +1814,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             concept.setItemSchemeVersionFirstLevel(null);
         }
 
-        // Update orders, in previous and new level
-        getConceptMetamacRepository().reorderConceptsDeletingOneConcept(conceptSchemeVersionMetamac, concept);
-        setOrderToCodeCreated(conceptSchemeVersionMetamac, concept);
+        // Update orders in new level
+        getConceptMetamacRepository().reorderConceptsAddingOneConceptInMiddle(conceptSchemeVersionMetamac, concept, newConceptIndex);
 
         // Update concept
+        concept.setOrderValue(newConceptIndex);
         getConceptMetamacRepository().save(concept);
         baseService.updateItemSchemeLastUpdated(ctx, conceptSchemeVersionMetamac);
     }
@@ -1840,13 +1842,16 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
 
-        // Reorder concepts in same level
-        getConceptMetamacRepository().reorderConceptsDeletingOneConcept(conceptSchemeVersionMetamac, concept);
-        getConceptMetamacRepository().reorderConceptsAddingOneConceptInMiddle(conceptSchemeVersionMetamac, concept, newConceptIndex);
+        // To avoid unexpected behaviors, only reorder codes if the concept order value changes
+        if (newConceptIndex.compareTo(concept.getOrderValue()) != 0) {
+            // Reorder concepts in same level
+            getConceptMetamacRepository().reorderConceptsDeletingOneConcept(conceptSchemeVersionMetamac, concept);
+            getConceptMetamacRepository().reorderConceptsAddingOneConceptInMiddle(conceptSchemeVersionMetamac, concept, newConceptIndex);
 
-        // Update concept
-        concept.setOrderValue(newConceptIndex);
-        getConceptMetamacRepository().save(concept);
-        baseService.updateItemSchemeLastUpdated(ctx, conceptSchemeVersionMetamac);
+            // Update concept
+            concept.setOrderValue(newConceptIndex);
+            getConceptMetamacRepository().save(concept);
+            baseService.updateItemSchemeLastUpdated(ctx, conceptSchemeVersionMetamac);
+        }
     }
 }

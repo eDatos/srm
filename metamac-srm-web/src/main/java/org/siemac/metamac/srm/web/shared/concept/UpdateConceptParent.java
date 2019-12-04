@@ -7,8 +7,11 @@ import com.gwtplatform.dispatch.annotation.In;
 public class UpdateConceptParent {
 
     @In(1)
-    String conceptUrn;
+    String  conceptUrn;
 
     @In(2)
-    String newParentUrn;
+    String  newParentUrn;
+
+    @In(3)
+    Integer newConceptIndex;
 }

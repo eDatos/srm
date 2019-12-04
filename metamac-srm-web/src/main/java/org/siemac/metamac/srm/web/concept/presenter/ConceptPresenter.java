@@ -703,8 +703,8 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void updateConceptParent(String conceptUrn, String newParentUrn) {
-        dispatcher.execute(new UpdateConceptParentAction(conceptUrn, newParentUrn), new WaitingAsyncCallbackHandlingError<UpdateConceptParentResult>(this) {
+    public void updateConceptParent(String conceptUrn, String newParentUrn, int newConceptIndex) {
+        dispatcher.execute(new UpdateConceptParentAction(conceptUrn, newParentUrn, newConceptIndex), new WaitingAsyncCallbackHandlingError<UpdateConceptParentResult>(this) {
 
             @Override
             public void onWaitFailure(Throwable caught) {
