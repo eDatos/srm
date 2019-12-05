@@ -54,9 +54,11 @@ import com.google.inject.Singleton;
 @SuppressWarnings("serial")
 public class ResourceImportationServlet extends HttpServlet {
 
-    private static Logger logger = Logger.getLogger(ResourceImportationServlet.class.getName());
+    private static Logger  logger = Logger.getLogger(ResourceImportationServlet.class.getName());
 
-    private File          tmpDir;
+    WebTranslateExceptions webTranslateExceptions;
+
+    private File           tmpDir;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -196,7 +198,8 @@ public class ResourceImportationServlet extends HttpServlet {
                 List<MetamacExceptionItem> infoItems = taskImportationInfo.getInformationItems();
                 MetamacException infoItemsContainer = new MetamacException();
                 infoItemsContainer.getExceptionItems().addAll(infoItems);
-                return WebExceptionUtils.serializeToJson(infoItemsContainer);
+
+                return WebExceptionUtils.serializeToJson((MetamacException) getWebTranslateExceptions().translateException(ServiceContextHolder.getCurrentServiceContext(), infoItemsContainer));
             }
         }
         return updateSuccessMessage(successMessage, taskImportationInfo.getIsPlannedInBackground());
@@ -308,8 +311,8 @@ public class ResourceImportationServlet extends HttpServlet {
 
     // Variable element shape
 
-    private TaskImportationInfo importVariableElementShape(SrmCoreServiceFacade srmCoreServiceFacade, String fileName, InputStream inputStream, HashMap<String, String> args) throws MetamacException,
-            IOException, MetamacWebException {
+    private TaskImportationInfo importVariableElementShape(SrmCoreServiceFacade srmCoreServiceFacade, String fileName, InputStream inputStream, HashMap<String, String> args)
+            throws MetamacException, IOException, MetamacWebException {
 
         VariableElementShapeTypeEnum shapeType = VariableElementShapeTypeEnum.valueOf(args.get(SrmSharedTokens.UPLOAD_PARAM_VARIABLE_ELEMENT_SHAPE_TYPE));
         String variableUrn = args.get(SrmSharedTokens.UPLOAD_PARAM_VARIABLE_URN);
@@ -441,9 +444,16 @@ public class ResourceImportationServlet extends HttpServlet {
 
     private String getTranslatedMessage(String messageCode) {
 
-        WebTranslateExceptions webTranslateExceptions = (WebTranslateExceptions) ApplicationContextProvider.getApplicationContext().getBean("webTranslateExceptions");
-
         Locale locale = (Locale) ServiceContextHolder.getCurrentServiceContext().getProperty(LocaleConstants.locale);
-        return webTranslateExceptions.getTranslatedMessage(messageCode, locale);
+        return getWebTranslateExceptions().getTranslatedMessage(messageCode, locale);
     }
+
+    private WebTranslateExceptions getWebTranslateExceptions() {
+        if (webTranslateExceptions == null) {
+            webTranslateExceptions = (WebTranslateExceptions) ApplicationContextProvider.getApplicationContext().getBean("webTranslateExceptions");
+        }
+
+        return webTranslateExceptions;
+    }
+
 }
