@@ -5214,13 +5214,19 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
     @Override
     public void testUpdateConceptParent() throws Exception {
-        // TODO EDATOS-2872 Check this!
+        // TODO EDATOS-2872 create test?
 
     }
 
     @Override
     public void testUpdateConceptInOrder() throws Exception {
-        // TODO EDATOS-2872 Check this!
+        // TODO EDATOS-2872 create test?
+
+    }
+
+    @Override
+    public void testRetrieveConceptsByConceptSchemeUrnOrderedInDepth() throws Exception {
+        // TODO EDATOS-2872 create test?
 
     }
 
