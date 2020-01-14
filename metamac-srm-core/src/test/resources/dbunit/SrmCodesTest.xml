@@ -6825,6 +6825,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="3"
               TB_CONCEPTS="999802"
+              ORDER_VALUE="0"
             />
         
             <TB_ANNOTABLE_ARTEFACTS 

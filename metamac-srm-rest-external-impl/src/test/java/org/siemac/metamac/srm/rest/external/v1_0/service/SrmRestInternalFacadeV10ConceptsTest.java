@@ -48,6 +48,7 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concepts;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -622,6 +623,20 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                 return Arrays.asList(concept1, concept2, concept2A, concept2B);
             };
         });
+
+        when(conceptsService.retrieveConceptsByConceptSchemeUrnOrderedInDepth(any(ServiceContext.class), any(String.class), any(ItemMetamacResultSelection.class)))
+                .thenAnswer(new Answer<List<ItemResult>>() {
+
+                    @Override
+                    public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {
+                        // any
+                        ItemResult concept1 = ConceptsDoMocks.mockConceptItemResult("concept1", null);
+                        ItemResult concept2 = ConceptsDoMocks.mockConceptItemResult("concept2", null);
+                        ItemResult concept2A = ConceptsDoMocks.mockConceptItemResult("concept2A", concept2);
+                        ItemResult concept2B = ConceptsDoMocks.mockConceptItemResult("concept2B", concept2);
+                        return Arrays.asList(concept1, concept2, concept2A, concept2B);
+                    };
+                });
     }
 
     @SuppressWarnings("unchecked")

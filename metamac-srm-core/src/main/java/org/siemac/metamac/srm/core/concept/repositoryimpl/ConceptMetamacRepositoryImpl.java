@@ -172,11 +172,14 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         if (srmConfiguration.isDatabaseOracle()) {
             sb.append("SELECT c1.ID ");
-            sb.append("FROM TB_CONCEPTS c1 ");
+            sb.append("FROM TB_CONCEPTS c1, TB_M_CONCEPTS mc1 ");
             sb.append("WHERE c1.ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
+            sb.append("AND mc1.TB_CONCEPTS = c1.ID ");
             sb.append("START WITH c1.PARENT_FK is null ");
             sb.append("CONNECT BY PRIOR c1.ID = c1.PARENT_FK ");
+            sb.append("ORDER SIBLINGS BY mc1.ORDER_VALUE ASC ");
         } else if (srmConfiguration.isDatabaseSqlServer()) {
+            // TODO EDATOS-2872 Change the query for sql server?
             sb.append("WITH parents(ID) AS ");
             sb.append("   (SELECT ID ");
             sb.append("    FROM TB_CONCEPTS ");

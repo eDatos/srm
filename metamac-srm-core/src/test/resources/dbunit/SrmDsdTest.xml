@@ -740,6 +740,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="[null]"              
               TB_CONCEPTS="10211"
+              ORDER_VALUE="0"
              /> 
                          
             <TB_CONCEPTS
@@ -799,6 +800,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="1"              
               TB_CONCEPTS="10212"
+              ORDER_VALUE="1"
              /> 
                          
             <TB_CONCEPTS
@@ -974,6 +976,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="1"              
               TB_CONCEPTS="10311"
+              ORDER_VALUE="0"
              />            
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -1033,6 +1036,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="1"              
               TB_CONCEPTS="10312"
+              ORDER_VALUE="1"
              />            
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -1092,6 +1096,7 @@
                   EXTENDS_FK="[null]"
                   VARIABLE_FK="2"              
                   TB_CONCEPTS="103121"
+                  ORDER_VALUE="0"
                  />            
             
                 <TB_ANNOTABLE_ARTEFACTS 
@@ -1251,6 +1256,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="[null]"              
               TB_CONCEPTS="10411"
+              ORDER_VALUE="0"
              />            
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -1408,6 +1414,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="[null]"              
               TB_CONCEPTS="10511"
+              ORDER_VALUE="0"
              />            
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -1565,6 +1572,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="[null]"              
               TB_CONCEPTS="10611"
+              ORDER_VALUE="0"
              />            
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -1722,6 +1730,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="[null]"              
               TB_CONCEPTS="10711"
+              ORDER_VALUE="0"
              />            
         
             <TB_ANNOTABLE_ARTEFACTS 
@@ -1879,6 +1888,7 @@
               EXTENDS_FK="[null]"
               VARIABLE_FK="[null]"              
               TB_CONCEPTS="10811"
+              ORDER_VALUE="0"
              />            
         
             <TB_ANNOTABLE_ARTEFACTS 
