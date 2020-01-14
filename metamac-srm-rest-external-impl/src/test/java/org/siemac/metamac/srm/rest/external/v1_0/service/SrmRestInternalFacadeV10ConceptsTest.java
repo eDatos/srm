@@ -327,13 +327,13 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
         // Verify with mockito
         ArgumentCaptor<String> conceptSchemeUrnArgument = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<ItemResultSelection> itemResultSelectionArgument = ArgumentCaptor.forClass(ItemResultSelection.class);
-        verify(conceptsService).retrieveConceptsByConceptSchemeUrnUnordered(any(ServiceContext.class), conceptSchemeUrnArgument.capture(), itemResultSelectionArgument.capture());
+        ArgumentCaptor<ItemMetamacResultSelection> itemMetamacResultSelectionArgument = ArgumentCaptor.forClass(ItemMetamacResultSelection.class);
+        verify(conceptsService).retrieveConceptsByConceptSchemeUrnOrderedInDepth(any(ServiceContext.class), conceptSchemeUrnArgument.capture(), itemMetamacResultSelectionArgument.capture());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=agency1:itemScheme1(01.000)", conceptSchemeUrnArgument.getValue());
-        assertEquals(true, itemResultSelectionArgument.getValue().isNames());
-        assertEquals(false, itemResultSelectionArgument.getValue().isDescriptions());
-        assertEquals(false, itemResultSelectionArgument.getValue().isComments());
-        assertEquals(false, itemResultSelectionArgument.getValue().isAnnotations());
+        assertEquals(true, itemMetamacResultSelectionArgument.getValue().isNames());
+        assertEquals(false, itemMetamacResultSelectionArgument.getValue().isDescriptions());
+        assertEquals(false, itemMetamacResultSelectionArgument.getValue().isComments());
+        assertEquals(false, itemMetamacResultSelectionArgument.getValue().isAnnotations());
     }
 
     @Test
