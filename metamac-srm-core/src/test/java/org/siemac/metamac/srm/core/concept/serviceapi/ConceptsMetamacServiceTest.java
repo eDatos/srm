@@ -4124,6 +4124,15 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertTrue(readConceptCodes.contains("CONCEPT04"));
         assertTrue(readConceptCodes.contains("CONCEPT0401"));
         assertTrue(readConceptCodes.contains("CONCEPT040101"));
+
+        assertEquals("CONCEPT01", concepts.get(0).getCode());
+        assertEquals("CONCEPT02", concepts.get(1).getCode());
+        assertEquals("CONCEPT0201", concepts.get(2).getCode());
+        assertEquals("CONCEPT020101", concepts.get(3).getCode());
+        assertEquals("CONCEPT03", concepts.get(4).getCode());
+        assertEquals("CONCEPT04", concepts.get(5).getCode());
+        assertEquals("CONCEPT0401", concepts.get(6).getCode());
+        assertEquals("CONCEPT040101", concepts.get(7).getCode());
     }
 
     @Test
