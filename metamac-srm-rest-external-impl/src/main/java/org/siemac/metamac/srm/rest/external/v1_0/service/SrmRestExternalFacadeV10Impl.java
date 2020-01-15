@@ -259,7 +259,6 @@ public class SrmRestExternalFacadeV10Impl implements SrmRestExternalFacadeV10 {
 
                 ItemMetamacResultSelection itemMetamacResultSelection = ItemMetamacResultSelection.API;
                 itemMetamacResultSelection.setDescriptions(SrmRestInternalUtils.containsField(fieldsToShow, SrmRestConstants.FIELD_INCLUDE_DESCRIPTION));
-                // TODO EDATOS-2872 Check if this method call works properly
                 List<ItemResult> items = conceptsService.retrieveConceptsByConceptSchemeUrnOrderedInDepth(ctx, conceptSchemeVersion.getMaintainableArtefact().getUrn(), itemMetamacResultSelection);
 
                 // Transform

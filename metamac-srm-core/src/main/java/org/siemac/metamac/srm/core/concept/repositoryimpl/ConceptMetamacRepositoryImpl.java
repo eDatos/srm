@@ -179,16 +179,16 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
             sb.append("CONNECT BY PRIOR c1.ID = c1.PARENT_FK ");
             sb.append("ORDER SIBLINGS BY mc1.ORDER_VALUE ASC ");
         } else if (srmConfiguration.isDatabaseSqlServer()) {
-            // TODO EDATOS-2872 Change the query for sql server?
-            sb.append("WITH parents(ID) AS ");
-            sb.append("   (SELECT ID ");
-            sb.append("    FROM TB_CONCEPTS ");
-            sb.append("    WHERE PARENT_FK is null and ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
+            sb.append("WITH parents(ID, OV) AS ");
+            sb.append("   (SELECT c1.ID, Cast(mc1.ORDER_VALUE AS VARCHAR) OV ");
+            sb.append("    FROM TB_CONCEPTS as c1, TB_M_CONCEPTS mc1  ");
+            sb.append("    WHERE mc1.TB_CONCEPTS = c1.ID and c1.PARENT_FK is null and c1.ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
             sb.append("        UNION ALL ");
-            sb.append("    SELECT c2.ID ");
-            sb.append("    FROM TB_CONCEPTS as c2, parents ");
-            sb.append("    WHERE parents.ID = c2.PARENT_FK) ");
+            sb.append("    SELECT c2.ID, Cast(p.OV + '-' + Cast(mc2.ORDER_VALUE AS VARCHAR) AS VARCHAR) OV ");
+            sb.append("    FROM TB_CONCEPTS as c2, TB_M_CONCEPTS mc2, parents p");
+            sb.append("    WHERE mc2.TB_CONCEPTS = c2.ID and p.ID = c2.PARENT_FK) ");
             sb.append("SELECT ID FROM parents ");
+            sb.append("ORDER BY OV ASC ");
         } else {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN).withMessageParameters("Database unsupported").build();
         }
