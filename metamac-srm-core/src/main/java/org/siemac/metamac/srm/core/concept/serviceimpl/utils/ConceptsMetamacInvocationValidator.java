@@ -89,17 +89,6 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkRetrieveConceptsByConceptSchemeUrnUnordered(String conceptSchemeUrn, ItemResultSelection itemResultSelection, List<MetamacExceptionItem> exceptions)
-            throws MetamacException {
-        if (exceptions == null) {
-            exceptions = new ArrayList<MetamacExceptionItem>();
-        }
-
-        ValidationUtils.checkParameterRequired(conceptSchemeUrn, ServiceExceptionParameters.URN, exceptions);
-
-        ExceptionUtils.throwIfException(exceptions);
-    }
-
     public static void checkRetrieveConceptsByConceptSchemeUrnOrderedInDepth(String conceptSchemeUrn, ItemResultSelection itemResultSelection, List<MetamacExceptionItem> exceptions)
             throws MetamacException {
         if (exceptions == null) {

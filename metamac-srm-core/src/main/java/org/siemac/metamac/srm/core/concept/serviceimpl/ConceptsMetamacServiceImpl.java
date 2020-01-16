@@ -96,7 +96,6 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItem;
 import com.arte.statistic.sdmx.srm.core.common.domain.ExternalItemRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.InternationalStringRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
-import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.TaskInfo;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.GeneratorUrnUtils;
 import com.arte.statistic.sdmx.srm.core.common.service.utils.SdmxSrmUtils;
@@ -1196,19 +1195,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // Retrieve
         ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
         return getConceptMetamacRepository().findConceptsByConceptSchemeUnorderedToVisualisation(conceptSchemeVersion.getId(), locale);
-    }
-
-    @Override
-    public List<ItemResult> retrieveConceptsByConceptSchemeUrnUnordered(ServiceContext ctx, String conceptSchemeUrn, ItemResultSelection itemResultSelection) throws MetamacException {
-
-        // Validation
-        ConceptsMetamacInvocationValidator.checkRetrieveConceptsByConceptSchemeUrnUnordered(conceptSchemeUrn, itemResultSelection, null);
-
-        if (itemResultSelection == null) {
-            itemResultSelection = ItemResultSelection.RETRIEVE; // default
-        }
-        ConceptSchemeVersionMetamac conceptSchemeVersion = retrieveConceptSchemeByUrn(ctx, conceptSchemeUrn);
-        return conceptRepository.findConceptsByConceptSchemeUnordered(conceptSchemeVersion.getId(), itemResultSelection);
     }
 
     @Override
