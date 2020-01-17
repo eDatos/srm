@@ -466,10 +466,10 @@ Application SrmFacadeCore {
     		"Find codelists belong to same variable of concept. Can specify variable instead concept"
     		MetamacCriteriaResult<@RelatedResourceDto> findCodelistsCanBeEnumeratedRepresentationForConceptByCondition(MetamacCriteria criteria, String conceptUrn, String variableUrn) throws MetamacException;
     		
-    		"Updates parent of concept. parentUrn is null when code is moved to first level. Concept is moved at the end of new level"
-			updateConceptParent(String conceptUrn, String newParentUrn, Integer newConceptIndex) throws MetamacException;
+    		"Updates parent of concept. parentUrn is null when concept is moved to first level. Concept is moved at the end of new level"
+			updateConceptParent(String conceptUrn, String newConceptParentUrn, Integer newConceptIndex) throws MetamacException;
 			"Updates position of concept"
-			updateConceptInOrder(String conceptUrn, String urn, Integer newConceptIndex) throws MetamacException;
+			updateConceptInOrder(String conceptUrn, String conceptSchemeUrn, Integer newConceptIndex) throws MetamacException;
 
 	    	/**************************************************************************
 		     * CATEGORIES

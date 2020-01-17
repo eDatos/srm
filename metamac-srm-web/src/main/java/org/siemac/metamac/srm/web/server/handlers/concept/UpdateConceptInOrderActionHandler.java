@@ -25,7 +25,7 @@ public class UpdateConceptInOrderActionHandler extends SecurityActionHandler<Upd
     @Override
     public UpdateConceptInOrderResult executeSecurityAction(UpdateConceptInOrderAction action) throws ActionException {
         try {
-            srmCoreServiceFacade.updateConceptInOrder(ServiceContextHolder.getCurrentServiceContext(), action.getConceptUrn(), action.getUrn(), action.getNewConceptIndex());
+            srmCoreServiceFacade.updateConceptInOrder(ServiceContextHolder.getCurrentServiceContext(), action.getConceptUrn(), action.getConceptSchemeUrn(), action.getNewConceptIndex());
             return new UpdateConceptInOrderResult();
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);

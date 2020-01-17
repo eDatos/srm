@@ -102,16 +102,16 @@ public class ConceptsOrderTreeGrid extends ConceptsTreeGrid {
                     String newItemParent = SCHEME_NODE_NAME.equals(dropFolder.getName()) ? SCHEME_NODE_NAME : dropFolder.getAttribute(ConceptDS.URN);
 
                     if (!StringUtils.equals(oldItemParent, newItemParent)) {
-                        // UPDATE CODE PARENT
+                        // UPDATE CONCEPT PARENT
                         if (ConceptsClientSecurityUtils.canUpdateConceptParent(conceptSchemeMetamacDto)) {
                             if (SCHEME_NODE_NAME.equals(newItemParent)) {
-                                // The code will be moved to the first level. The parent is null.
+                                // The concept will be moved to the first level. The parent is null.
                                 newItemParent = null;
                             }
                             getBaseConceptUiHandlers().updateConceptParent(droppedNode.getAttribute(ConceptDS.URN), newItemParent, relativePosition);
                         }
                     } else {
-                        // UPDATE ORDER
+                        // UPDATE CONCEPT ORDER
                         if (ConceptsClientSecurityUtils.canUpdateConceptOrderInLevel(conceptSchemeMetamacDto)) {
                             getBaseConceptUiHandlers().updateConceptInOrder(droppedNode.getAttribute(ConceptDS.URN), conceptSchemeMetamacDto.getUrn(), relativePosition);
                         }

@@ -10,7 +10,7 @@ public class UpdateConceptParent {
     String  conceptUrn;
 
     @In(2)
-    String  newParentUrn;
+    String  newConceptParentUrn;
 
     @In(3)
     Integer newConceptIndex;

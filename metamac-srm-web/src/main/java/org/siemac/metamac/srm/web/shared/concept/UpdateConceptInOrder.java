@@ -10,7 +10,7 @@ public class UpdateConceptInOrder {
     String  conceptUrn;
 
     @In(2)
-    String  urn;
+    String  conceptSchemeUrn;
 
     @In(3)
     Integer newConceptIndex;

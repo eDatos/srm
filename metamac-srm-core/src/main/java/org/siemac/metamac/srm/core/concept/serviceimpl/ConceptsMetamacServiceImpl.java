@@ -1860,24 +1860,24 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public void updateConceptParent(ServiceContext ctx, String conceptUrn, String newParentUrn, Integer newConceptIndex) throws MetamacException {
+    public void updateConceptParent(ServiceContext ctx, String conceptUrn, String newConceptParentUrn, Integer newConceptIndex) throws MetamacException {
         // Validation
-        ConceptsMetamacInvocationValidator.checkUpdateConceptParent(conceptUrn, newParentUrn, null);
+        ConceptsMetamacInvocationValidator.checkUpdateConceptParent(conceptUrn, newConceptParentUrn, null);
         ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = retrieveConceptSchemeByConceptUrn(ctx, conceptUrn);
         checkConceptSchemeCanBeModified(conceptSchemeVersionMetamac);
         srmValidation.checkItemsStructureCanBeModified(ctx, conceptSchemeVersionMetamac);
 
         ConceptMetamac concept = retrieveConceptByUrn(ctx, conceptUrn);
         Concept parentActual = concept.getParent() != null ? concept.getParent() : null;
-        ConceptMetamac parentTarget = newParentUrn != null ? retrieveConceptByUrn(ctx, newParentUrn) : null;
+        ConceptMetamac parentTarget = newConceptParentUrn != null ? retrieveConceptByUrn(ctx, newConceptParentUrn) : null;
         if (!SdmxSrmUtils.isItemParentChanged(parentActual, parentTarget)) {
             // nothing
             return;
         }
 
         // Check target parent is not children of this code
-        if (newParentUrn != null) {
-            checkItemIsNotChildren(ctx, concept, newParentUrn);
+        if (newConceptParentUrn != null) {
+            checkItemIsNotChildren(ctx, concept, newConceptParentUrn);
         }
 
         // Update orders in previous level
@@ -1912,9 +1912,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     }
 
     @Override
-    public void updateConceptInOrder(ServiceContext ctx, String conceptUrn, String urn, Integer newConceptIndex) throws MetamacException {
+    public void updateConceptInOrder(ServiceContext ctx, String conceptUrn, String conceptSchemeUrn, Integer newConceptIndex) throws MetamacException {
         // Validation
-        ConceptsMetamacInvocationValidator.checkUpdateConceptInOrder(conceptUrn, urn, newConceptIndex, null);
+        ConceptsMetamacInvocationValidator.checkUpdateConceptInOrder(conceptUrn, conceptSchemeUrn, newConceptIndex, null);
         ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = retrieveConceptSchemeByConceptUrn(ctx, conceptUrn);
         checkConceptSchemeCanBeModified(conceptSchemeVersionMetamac);
 
