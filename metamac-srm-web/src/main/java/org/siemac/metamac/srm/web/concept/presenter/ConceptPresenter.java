@@ -703,7 +703,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     }
 
     @Override
-    public void updateConceptParent(String conceptUrn, String newConceptParentUrn, int newConceptIndex) {
+    public void updateConceptParent(final String conceptUrn, String newConceptParentUrn, int newConceptIndex) {
         dispatcher.execute(new UpdateConceptParentAction(conceptUrn, newConceptParentUrn, newConceptIndex), new WaitingAsyncCallbackHandlingError<UpdateConceptParentResult>(this) {
 
             @Override
@@ -713,13 +713,13 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitSuccess(UpdateConceptParentResult result) {
-                retrieveConceptsByScheme(conceptSchemeUrn);
+                retrieveConcept(conceptUrn);
             }
         });
     }
 
     @Override
-    public void updateConceptInOrder(String conceptUrn, String conceptScheme, int newConceptIndex) {
+    public void updateConceptInOrder(final String conceptUrn, String conceptScheme, int newConceptIndex) {
         dispatcher.execute(new UpdateConceptInOrderAction(conceptUrn, conceptScheme, newConceptIndex), new WaitingAsyncCallbackHandlingError<UpdateConceptInOrderResult>(this) {
 
             @Override
@@ -729,7 +729,7 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
 
             @Override
             public void onWaitSuccess(UpdateConceptInOrderResult result) {
-                retrieveConceptsByScheme(conceptSchemeUrn);
+                retrieveConcept(conceptUrn);
             }
         });
     }
