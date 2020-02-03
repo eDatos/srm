@@ -236,8 +236,8 @@ Application ConceptsMetamac {
 				checkConceptsWithRepresentationExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
 				
 				Integer getConceptMaximumOrderInLevel(@ConceptSchemeVersionMetamac conceptSchemeVersion, @Concept parent);
-				reorderConceptsDeletingOneConcept(@ConceptSchemeVersionMetamac conceptSchemeVersion, @ConceptMetamac concept);
-				reorderConceptsAddingOneConceptInMiddle(@ConceptSchemeVersionMetamac conceptSchemeVersion, @ConceptMetamac concept, Integer sournewConceptIndex);
+				Integer reorderConceptsDeletingOneConcept(@ConceptSchemeVersionMetamac conceptSchemeVersion, @ConceptMetamac concept);
+				Integer reorderConceptsAddingOneConceptInMiddle(@ConceptSchemeVersionMetamac conceptSchemeVersion, @ConceptMetamac concept, Integer sournewConceptIndex);
 			}
 		}
 

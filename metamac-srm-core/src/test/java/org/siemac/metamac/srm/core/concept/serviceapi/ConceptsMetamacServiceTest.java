@@ -24,6 +24,7 @@ import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -48,6 +49,7 @@ import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.common.service.utils.GeneratorUrnUtils;
@@ -5123,6 +5125,458 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         // tested in createConcept
     }
 
+    @Test
+    @Override
+    public void testUpdateConceptParent() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1;
+        String newConceptParentUrn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
+        String previousConceptParentUrn = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
+        Integer newConceptIndex = 0;
+
+        DateTime previousResourceLastUpdated = getConceptResourceLastUpdated(conceptSchemeUrn);
+
+        // Validate the previous order value of the concepts
+        validateOrderValuePreviousConcepts();
+
+        // Validate previous parent concept
+        assertParentConcept(conceptUrn, previousConceptParentUrn);
+
+        conceptsService.updateConceptParent(getServiceContextAdministrador(), conceptUrn, newConceptParentUrn, newConceptIndex);
+        entityManager.clear();
+
+        // Validate concept order value updated
+        assertConceptOrderValue(conceptUrn, newConceptIndex);
+
+        // Validate parent concept updated
+        assertParentConcept(conceptUrn, newConceptParentUrn);
+
+        // Validate reordered concepts
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 2);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 3);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, 0);
+
+        // Validate concept scheme updated
+        assertConceptSchemeItemSchemeLastUpdated(previousResourceLastUpdated, getConceptResourceLastUpdated(conceptSchemeUrn));
+    }
+
+    @Test
+    public void testUpdateConceptParentNoParentFirstPosition() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1;
+        String newConceptParentUrn = null;
+        String previousConceptParentUrn = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
+        Integer newConceptIndex = 0;
+
+        DateTime previousResourceLastUpdated = getConceptResourceLastUpdated(conceptSchemeUrn);
+
+        // Validate the previous order value of the concepts
+        validateOrderValuePreviousConcepts();
+
+        // Validate previous parent concept
+        assertParentConcept(conceptUrn, previousConceptParentUrn);
+
+        conceptsService.updateConceptParent(getServiceContextAdministrador(), conceptUrn, newConceptParentUrn, newConceptIndex);
+        entityManager.clear();
+
+        // Validate concept order value updated
+        assertConceptOrderValue(conceptUrn, newConceptIndex);
+
+        // Validate parent concept updated
+        assertParentConcept(conceptUrn, newConceptParentUrn);
+
+        // Validate reordered concepts
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 2);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 3);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 4);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, 0);
+
+        // Validate concept scheme updated
+        assertConceptSchemeItemSchemeLastUpdated(previousResourceLastUpdated, getConceptResourceLastUpdated(conceptSchemeUrn));
+    }
+
+    @Test
+    public void testUpdateConceptParentNoParentLastPosition() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1;
+        String newConceptParentUrn = null;
+        String previousConceptParentUrn = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
+        Integer newConceptIndex = 4;
+
+        DateTime previousResourceLastUpdated = getConceptResourceLastUpdated(conceptSchemeUrn);
+
+        // Validate the previous order value of the concepts
+        validateOrderValuePreviousConcepts();
+
+        // Validate previous parent concept
+        assertParentConcept(conceptUrn, previousConceptParentUrn);
+
+        conceptsService.updateConceptParent(getServiceContextAdministrador(), conceptUrn, newConceptParentUrn, newConceptIndex);
+        entityManager.clear();
+
+        // Validate concept order value updated
+        assertConceptOrderValue(conceptUrn, newConceptIndex);
+
+        // Validate parent concept updated
+        assertParentConcept(conceptUrn, newConceptParentUrn);
+
+        // Validate reordered concepts
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 2);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 3);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, 0);
+
+        // Validate concept scheme updated
+        assertConceptSchemeItemSchemeLastUpdated(previousResourceLastUpdated, getConceptResourceLastUpdated(conceptSchemeUrn));
+    }
+
+    @Test
+    public void testUpdateConceptParentConceptWithChildMoveToAnotherChild() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_4_1;
+        String newConceptParentUrn = CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1;
+        String previousConceptParentUrn = CONCEPT_SCHEME_1_V2_CONCEPT_4;
+        Integer newConceptIndex = 0;
+
+        DateTime previousResourceLastUpdated = getConceptResourceLastUpdated(conceptSchemeUrn);
+
+        // Validate the previous order value of the concepts
+        validateOrderValuePreviousConcepts();
+
+        // Validate previous parent concept
+        assertParentConcept(conceptUrn, previousConceptParentUrn);
+
+        conceptsService.updateConceptParent(getServiceContextAdministrador(), conceptUrn, newConceptParentUrn, newConceptIndex);
+        entityManager.clear();
+
+        // Validate concept order value updated
+        assertConceptOrderValue(conceptUrn, newConceptIndex);
+
+        // Validate parent concept updated
+        assertParentConcept(conceptUrn, newConceptParentUrn);
+
+        // Validate reordered concepts
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 2);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 3);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, 0);
+
+        // Validate child concept parent not updated
+        assertParentConcept(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, conceptUrn);
+
+        // Validate concept scheme updated
+        assertConceptSchemeItemSchemeLastUpdated(previousResourceLastUpdated, getConceptResourceLastUpdated(conceptSchemeUrn));
+    }
+
+    @Test
+    public void testUpdateConceptParentConceptWithChildMoveToConceptWithChild() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_4_1;
+        String newConceptParentUrn = CONCEPT_SCHEME_1_V2_CONCEPT_2;
+        String previousConceptParentUrn = CONCEPT_SCHEME_1_V2_CONCEPT_4;
+        Integer newConceptIndex = 0;
+
+        DateTime previousResourceLastUpdated = getConceptResourceLastUpdated(conceptSchemeUrn);
+
+        // Validate the previous order value of the concepts
+        validateOrderValuePreviousConcepts();
+
+        // Validate previous parent concept
+        assertParentConcept(conceptUrn, previousConceptParentUrn);
+
+        conceptsService.updateConceptParent(getServiceContextAdministrador(), conceptUrn, newConceptParentUrn, newConceptIndex);
+        entityManager.clear();
+
+        // Validate concept order value updated
+        assertConceptOrderValue(conceptUrn, newConceptIndex);
+
+        // Validate parent concept updated
+        assertParentConcept(conceptUrn, newConceptParentUrn);
+
+        // Validate reordered concepts
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 2);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 3);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, 0);
+
+        // Validate child concept parent not updated
+        assertParentConcept(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, conceptUrn);
+
+        // Validate concept scheme updated
+        assertConceptSchemeItemSchemeLastUpdated(previousResourceLastUpdated, getConceptResourceLastUpdated(conceptSchemeUrn));
+    }
+
+    @Test
+    public void testUpdateConceptParentNoParentThirdPosition() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_2_1;
+        String newConceptParentUrn = null;
+        String previousConceptParentUrn = CONCEPT_SCHEME_1_V2_CONCEPT_2;
+        Integer newConceptIndex = 2;
+
+        DateTime previousResourceLastUpdated = getConceptResourceLastUpdated(conceptSchemeUrn);
+
+        // Validate the previous order value of the concepts
+        validateOrderValuePreviousConcepts();
+
+        // Validate previous parent concept
+        assertParentConcept(conceptUrn, previousConceptParentUrn);
+
+        conceptsService.updateConceptParent(getServiceContextAdministrador(), conceptUrn, newConceptParentUrn, newConceptIndex);
+        entityManager.clear();
+
+        // Validate concept order value updated
+        assertConceptOrderValue(conceptUrn, newConceptIndex);
+
+        // Validate parent concept updated
+        assertParentConcept(conceptUrn, newConceptParentUrn);
+
+        // Validate reordered concepts
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 3);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 4);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, 0);
+
+        // Validate child concept parent not updated
+        assertParentConcept(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, conceptUrn);
+
+        // Validate concept scheme updated
+        assertConceptSchemeItemSchemeLastUpdated(previousResourceLastUpdated, getConceptResourceLastUpdated(conceptSchemeUrn));
+    }
+
+    @Test
+    @Override
+    public void testUpdateConceptInOrder() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_3;
+        Integer newOrderValue = 0;
+
+        DateTime previousResourceLastUpdated = getConceptResourceLastUpdated(conceptSchemeUrn);
+
+        // Validate the previous order value of the concepts
+        validateOrderValuePreviousConcepts();
+
+        // Update the order value of the concept
+        conceptsService.updateConceptInOrder(getServiceContextAdministrador(), conceptUrn, conceptSchemeUrn, newOrderValue);
+        entityManager.clear();
+
+        // Validate concept order value updated
+        assertConceptOrderValue(conceptUrn, newOrderValue);
+
+        // Validate reordered concepts at same level
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 2);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 3);
+
+        // Validate concept scheme updated
+        assertConceptSchemeItemSchemeLastUpdated(previousResourceLastUpdated, getConceptResourceLastUpdated(conceptSchemeUrn));
+    }
+
+    @Test
+    public void testUpdateConceptInOrderUpThirdToSecondPosition() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_3;
+        Integer newOrderValue = 1;
+
+        DateTime previousResourceLastUpdated = getConceptResourceLastUpdated(conceptSchemeUrn);
+
+        // Validate the previous order value of the concepts
+        validateOrderValuePreviousConcepts();
+
+        // Update the order value of the concept
+        conceptsService.updateConceptInOrder(getServiceContextAdministrador(), conceptUrn, conceptSchemeUrn, newOrderValue);
+        entityManager.clear();
+
+        // Validate concept order value updated
+        assertConceptOrderValue(conceptUrn, newOrderValue);
+
+        // Validate reordered concepts at same level
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 2);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 3);
+
+        // Validate concept scheme updated
+        assertConceptSchemeItemSchemeLastUpdated(previousResourceLastUpdated, getConceptResourceLastUpdated(conceptSchemeUrn));
+    }
+
+    @Test
+    public void testUpdateConceptInOrderFirstDownToLastPosition() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_1;
+        Integer newOrderValue = 3;
+
+        DateTime previousResourceLastUpdated = getConceptResourceLastUpdated(conceptSchemeUrn);
+
+        // Validate the previous order value of the concepts
+        validateOrderValuePreviousConcepts();
+
+        // Update the order value of the concept
+        conceptsService.updateConceptInOrder(getServiceContextAdministrador(), conceptUrn, conceptSchemeUrn, newOrderValue);
+        entityManager.clear();
+
+        // Validate concept order value updated
+        assertConceptOrderValue(conceptUrn, newOrderValue);
+
+        // Validate reordered concepts at same level
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 2);
+
+        // Validate concept scheme updated
+        assertConceptSchemeItemSchemeLastUpdated(previousResourceLastUpdated, getConceptResourceLastUpdated(conceptSchemeUrn));
+    }
+
+    @Test
+    public void testUpdateConceptInOrderSecondDownToThirdPosition() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_2;
+        Integer newOrderValue = 2;
+
+        DateTime previousResourceLastUpdated = getConceptResourceLastUpdated(conceptSchemeUrn);
+
+        // Validate the previous order value of the concepts
+        validateOrderValuePreviousConcepts();
+
+        // Update the order value of the concept
+        conceptsService.updateConceptInOrder(getServiceContextAdministrador(), conceptUrn, conceptSchemeUrn, newOrderValue);
+        entityManager.clear();
+
+        // Validate concept order value updated
+        assertConceptOrderValue(conceptUrn, newOrderValue);
+
+        // Validate reordered concepts at same level
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 3);
+
+        // Validate concept scheme updated
+        assertConceptSchemeItemSchemeLastUpdated(previousResourceLastUpdated, getConceptResourceLastUpdated(conceptSchemeUrn));
+    }
+
+    @Test
+    public void testUpdateConceptInOrderLastUpToFirstPosition() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_4;
+        Integer newOrderValue = 0;
+
+        DateTime previousResourceLastUpdated = getConceptResourceLastUpdated(conceptSchemeUrn);
+
+        // Validate the previous order value of the concepts
+        validateOrderValuePreviousConcepts();
+
+        // Update the order value of the concept
+        conceptsService.updateConceptInOrder(getServiceContextAdministrador(), conceptUrn, conceptSchemeUrn, newOrderValue);
+        entityManager.clear();
+
+        // Validate concept order value updated
+        assertConceptOrderValue(conceptUrn, newOrderValue);
+
+        // Validate reordered concepts at same level
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 2);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 3);
+
+        // Validate concept scheme updated
+        assertConceptSchemeItemSchemeLastUpdated(previousResourceLastUpdated, getConceptResourceLastUpdated(conceptSchemeUrn));
+    }
+
+    @Test
+    public void testUpdateConceptInOrderMoveToTheSamePosition() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String conceptUrn = CONCEPT_SCHEME_1_V2_CONCEPT_3;
+        Integer newOrderValue = 2;
+
+        DateTime previousResourceLastUpdated = getConceptResourceLastUpdated(conceptSchemeUrn);
+
+        // Validate the previous order value of the concepts
+        validateOrderValuePreviousConcepts();
+
+        // Try to update the order value of the concept with the current value
+        conceptsService.updateConceptInOrder(getServiceContextAdministrador(), conceptUrn, conceptSchemeUrn, newOrderValue);
+        entityManager.clear();
+
+        // Validate that nothing has happens: the order value of the concepts has not been modified
+        validateOrderValuePreviousConcepts();
+
+        // Validate concept scheme not updated
+        assertTrue(previousResourceLastUpdated.isEqual(getConceptResourceLastUpdated(conceptSchemeUrn)));
+    }
+
+    private void assertParentConcept(String conceptUrn, String expectedNewConceptParentUrn) throws MetamacException {
+        ConceptMetamac conceptMetamac = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptUrn);
+        String actualNewConceptParentUrn = conceptMetamac.getParent() != null ? conceptMetamac.getParent().getNameableArtefact().getUrn() : null;
+        assertTrue(StringUtils.equals(expectedNewConceptParentUrn, actualNewConceptParentUrn));
+    }
+
+    private DateTime getConceptResourceLastUpdated(String conceptSchemeUrn) throws MetamacException {
+        ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+        return conceptSchemeVersionMetamac.getItemScheme().getResourceLastUpdated();
+    }
+
+    private void validateOrderValuePreviousConcepts() throws MetamacException {
+        // Validate previous concepts
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 2);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 3);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, 0);
+    }
+
+    private void assertConceptOrderValue(String conceptUrn, int expectedOrderValue) throws MetamacException {
+        ConceptMetamac conceptMetamac = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), conceptUrn);
+        assertNotNull(conceptMetamac.getOrderValue());
+        assertEquals(expectedOrderValue, conceptMetamac.getOrderValue().intValue());
+    }
+
+    private void assertConceptSchemeItemSchemeLastUpdated(DateTime previousResourceLastUpdated, DateTime currentResourceLastUpdated) {
+        assertNotNull(previousResourceLastUpdated);
+        assertTrue(previousResourceLastUpdated.isBefore(currentResourceLastUpdated));
+    }
+
+    @Test
+    @Override
+    public void testRetrieveConceptsByConceptSchemeUrnOrderedInDepth() throws Exception {
+        // Retrieve
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+
+        List<ItemResult> concepts = conceptsService.retrieveConceptsByConceptSchemeUrnOrderedInDepth(getServiceContextAdministrador(), conceptSchemeUrn, ItemMetamacResultSelection.API);
+
+        // Validate
+        assertEquals(8, concepts.size());
+
+        assertEquals("CONCEPT01", concepts.get(0).getCode());
+        assertEquals("CONCEPT02", concepts.get(1).getCode());
+        assertEquals("CONCEPT0201", concepts.get(2).getCode());
+        assertEquals("CONCEPT020101", concepts.get(3).getCode());
+        assertEquals("CONCEPT03", concepts.get(4).getCode());
+        assertEquals("CONCEPT04", concepts.get(5).getCode());
+        assertEquals("CONCEPT0401", concepts.get(6).getCode());
+        assertEquals("CONCEPT040101", concepts.get(7).getCode());
+
+    }
+
     private ConceptMetamacVisualisationResult getConceptMetamacVisualisationResult(List<ConceptMetamacVisualisationResult> actuals, String codeUrn) {
         for (ConceptMetamacVisualisationResult actual : actuals) {
             if (actual.getUrn().equals(codeUrn)) {
@@ -5137,23 +5591,4 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     protected String getDataSetFile() {
         return "dbunit/SrmConceptsTest.xml";
     }
-
-    @Override
-    public void testUpdateConceptParent() throws Exception {
-        // TODO EDATOS-2872 create test?
-
-    }
-
-    @Override
-    public void testUpdateConceptInOrder() throws Exception {
-        // TODO EDATOS-2872 create test?
-
-    }
-
-    @Override
-    public void testRetrieveConceptsByConceptSchemeUrnOrderedInDepth() throws Exception {
-        // TODO EDATOS-2872 create test?
-
-    }
-
 }

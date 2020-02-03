@@ -336,7 +336,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     }
 
     @Override
-    public void reorderConceptsDeletingOneConcept(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) {
+    public Integer reorderConceptsDeletingOneConcept(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) {
         Concept parent = concept.getParent();
 
         StringBuilder sb = new StringBuilder();
@@ -358,11 +358,12 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         if (parent != null) {
             queryUpdate.setParameter("parent", parent.getId());
         }
-        queryUpdate.executeUpdate();
+
+        return queryUpdate.executeUpdate();
     }
 
     @Override
-    public void reorderConceptsAddingOneConceptInMiddle(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept, Integer newConceptIndex) {
+    public Integer reorderConceptsAddingOneConceptInMiddle(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept, Integer newConceptIndex) {
         Concept parent = concept.getParent();
 
         StringBuilder sb = new StringBuilder();
@@ -384,7 +385,8 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         if (parent != null) {
             queryUpdate.setParameter("parent", parent.getId());
         }
-        queryUpdate.executeUpdate();
+
+        return queryUpdate.executeUpdate();
     }
 
     @SuppressWarnings("rawtypes")

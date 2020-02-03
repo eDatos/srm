@@ -1923,8 +1923,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         // To avoid unexpected behaviors, only reorder codes if the concept order value changes
         if (newConceptIndex.compareTo(concept.getOrderValue()) != 0) {
             // Reorder concepts in same level
-            getConceptMetamacRepository().reorderConceptsDeletingOneConcept(conceptSchemeVersionMetamac, concept);
-            getConceptMetamacRepository().reorderConceptsAddingOneConceptInMiddle(conceptSchemeVersionMetamac, concept, newConceptIndex);
+            int numberOfReorderedConceptsDeletingOne = getConceptMetamacRepository().reorderConceptsDeletingOneConcept(conceptSchemeVersionMetamac, concept);
+            logger.debug("Number of reordered concepts after deleting one at the old position ({}): {}", concept.getOrderValue(), numberOfReorderedConceptsDeletingOne);
+
+            int numberOfReorderedConceptsAddingOne = getConceptMetamacRepository().reorderConceptsAddingOneConceptInMiddle(conceptSchemeVersionMetamac, concept, newConceptIndex);
+            logger.debug("Number of reordered concepts after adding one at the new position ({}): {}", newConceptIndex, numberOfReorderedConceptsAddingOne);
 
             // Update concept
             concept.setOrderValue(newConceptIndex);
