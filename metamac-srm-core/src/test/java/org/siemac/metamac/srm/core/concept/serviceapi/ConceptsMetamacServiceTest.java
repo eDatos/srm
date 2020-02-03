@@ -2891,6 +2891,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
         assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
         assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), conceptRetrieved.getNameableArtefact().getUrn());
+
+        // Check order value of the new concept
+        assertConceptOrderValue(urn, 4);
     }
 
     @Test
@@ -2967,6 +2970,9 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
         Concept concept1 = assertListConceptsContainsConcept(conceptSchemeVersion.getItemsFirstLevel(), CONCEPT_SCHEME_1_V2_CONCEPT_1);
         assertListConceptsContainsConcept(concept1.getChildren(), conceptRetrieved.getNameableArtefact().getUrn());
+
+        // Check order value of the new concept
+        assertConceptOrderValue(urn, 0);
     }
 
     @Test
@@ -3899,8 +3905,15 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptMetamac conceptMetamac = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urn);
         assertEquals(conceptExtendsBeforeDeleteUrn, conceptMetamac.getConceptExtends().getNameableArtefact().getUrn());
 
+        // Check order value of the rest of concepts before delete concept
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 2);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 3);
+
         // Delete concept
         conceptsService.deleteConcept(getServiceContextAdministrador(), urn);
+        entityManager.clear();
 
         // Validation
         try {
@@ -3929,6 +3942,11 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
         assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1);
         assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1);
+
+        // Check order value of the rest of concepts after delete concept
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 2);
     }
 
     @Test
@@ -3940,6 +3958,16 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
         assertEquals(4, conceptSchemeVersion.getItemsFirstLevel().size());
         assertEquals(8, conceptSchemeVersion.getItems().size());
+
+        // Check order value of the rest of concepts before delete concept
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 2);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 3);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4_1_1, 0);
 
         // Delete concept
         conceptsService.deleteConcept(getServiceContextAdministrador(), urn);
@@ -3968,6 +3996,14 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1);
         assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_3);
         assertListConceptsContainsConcept(conceptSchemeVersion.getItems(), CONCEPT_SCHEME_1_V2_CONCEPT_4);
+
+        // Check order value of the rest of concepts after delete concept
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2, 1);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_2_1_1, 0);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_3, 2);
+        assertConceptOrderValue(CONCEPT_SCHEME_1_V2_CONCEPT_4, 3);
     }
 
     @Test
