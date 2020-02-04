@@ -2597,15 +2597,17 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 conceptSchemeVersionTemporal.getMaintainableArtefact().getName().addText(localisedString);
             }
 
-            // Item 1: Change plural name
+            // Item 1: Change plural name and order value (0 -> 1)
             {
                 ConceptMetamac conceptTemporal = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CONCEPT_SCHEME_3_V1_CONCEPT_1));
                 conceptTemporal.setSdmxRelatedArtefact(ConceptRoleEnum.MEASURE_DIMENSION);
 
                 LocalisedString localisedString = new LocalisedString("fr", "fr - text sample");
                 conceptTemporal.getPluralName().addText(localisedString);
+
+                conceptTemporal.setOrderValue(1);
             }
-            // Item 2: Add legal acts
+            // Item 2: Add legal acts and order value (1 -> 0)
             {
                 ConceptMetamac conceptTemporal = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), GeneratorUrnUtils.makeUrnAsTemporal(CONCEPT_SCHEME_3_V1_CONCEPT_2));
                 conceptTemporal.setSdmxRelatedArtefact(ConceptRoleEnum.MEASURE_DIMENSION);
@@ -2613,6 +2615,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 conceptTemporal.setLegalActs(new InternationalString());
                 conceptTemporal.getLegalActs().addText(new LocalisedString("fr", "fr - text sample legal acts"));
                 conceptTemporal.getLegalActs().addText(new LocalisedString("es", "es - text sample legal acts"));
+
+                conceptTemporal.setOrderValue(0);
             }
             // Merge
             conceptSchemeVersionTemporal = conceptsService.sendConceptSchemeToProductionValidation(getServiceContextAdministrador(), conceptSchemeVersionTemporal.getMaintainableArtefact().getUrn());
@@ -2639,6 +2643,13 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals("fr - text sample legal acts", conceptTemporal.getLegalActs().getLocalisedLabel("fr"));
                 assertEquals("es - text sample legal acts", conceptTemporal.getLegalActs().getLocalisedLabel("es"));
             }
+
+            // Check order value was changed
+            {
+                assertConceptOrderValue(CONCEPT_SCHEME_3_V1_CONCEPT_1, 1);
+                assertConceptOrderValue(CONCEPT_SCHEME_3_V1_CONCEPT_2, 0);
+            }
+
         }
 
         {
@@ -2786,6 +2797,12 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             {
                 ConceptMetamac concept = conceptsService.retrieveConceptByUrn(getServiceContextAdministrador(), urnExpectedConcept3);
                 assertNull(concept.getQuantity());
+            }
+
+            // Check order value was keeped
+            {
+                assertConceptOrderValue(urnExpectedConcept1, 0);
+                assertConceptOrderValue(urnExpectedConcept2, 1);
             }
         }
     }

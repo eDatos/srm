@@ -575,6 +575,9 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
             // Extends : can copy "extend" because they are concepts in another concept scheme
             concept.setConceptExtends(conceptTemp.getConceptExtends());
 
+            // Order value
+            concept.setOrderValue(conceptTemp.getOrderValue());
+
             concept.removeAllRelatedConcepts(); // Clean related concepts, at the final the new related concepts will be added
         }
 
