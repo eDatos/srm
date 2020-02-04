@@ -90,6 +90,7 @@ public class ConceptsCopyCallbackMetamacImpl extends ConceptsCopyCallbackImpl {
         target.setSdmxRelatedArtefact(source.getSdmxRelatedArtefact());
         target.setConceptType(source.getConceptType());
         target.setVariable(source.getVariable());
+        target.setOrderValue(source.getOrderValue());
 
         // can copy "extends" and "roles", because they are concepts in another concept scheme
         target.setConceptExtends(source.getConceptExtends());

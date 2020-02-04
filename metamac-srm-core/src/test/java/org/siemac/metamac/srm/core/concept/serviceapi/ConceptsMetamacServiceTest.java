@@ -1940,6 +1940,15 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
 
             assertEquals(0, concept.getChildren().size());
         }
+
+        // Check order value of concepts was keeped when a concept scheme was copied
+        {
+            assertConceptOrderValue(urnExpectedConcept1, 0);
+            assertConceptOrderValue(urnExpectedConcept11, 0);
+            assertConceptOrderValue(urnExpectedConcept2, 1);
+            assertConceptOrderValue(urnExpectedConcept3, 2);
+        }
+
     }
 
     @Test
@@ -2135,6 +2144,15 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
             assertEquals(2, allVersions.size());
             assertEquals(urn, allVersions.get(0).getMaintainableArtefact().getUrn());
             assertEquals(urnExpected, allVersions.get(1).getMaintainableArtefact().getUrn());
+        }
+
+        // Check order value of concepts was keeped when a concept scheme was versioned
+        {
+            assertConceptOrderValue(urnExpectedConcept1, 0);
+            assertConceptOrderValue(urnExpectedConcept2, 1);
+            assertConceptOrderValue(urnExpectedConcept21, 0);
+            assertConceptOrderValue(urnExpectedConcept211, 0);
+            assertConceptOrderValue(urnExpectedConcept22, 1);
         }
     }
 
@@ -2644,7 +2662,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertEquals("es - text sample legal acts", conceptTemporal.getLegalActs().getLocalisedLabel("es"));
             }
 
-            // Check order value was changed
+            // Check order value of concepts was changed when a temporal concept scheme was merge with another one
             {
                 assertConceptOrderValue(CONCEPT_SCHEME_3_V1_CONCEPT_1, 1);
                 assertConceptOrderValue(CONCEPT_SCHEME_3_V1_CONCEPT_2, 0);
@@ -2799,7 +2817,7 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
                 assertNull(concept.getQuantity());
             }
 
-            // Check order value was keeped
+            // Check order value of concepts was keeped when a temporal concept scheme was merge with another one
             {
                 assertConceptOrderValue(urnExpectedConcept1, 0);
                 assertConceptOrderValue(urnExpectedConcept2, 1);
