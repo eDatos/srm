@@ -10,6 +10,7 @@ import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
+import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -39,8 +40,7 @@ public class ConceptsOrderTreeGrid extends ConceptsTreeGrid {
         setShowDropIcons(true);
 
         orderField = new TreeGridField(ConceptDS.ORDER, getConstants().conceptOrder());
-        // TODO EDATOS-2872 commented for debugging
-        // orderField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
+        orderField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
         orderField.setCanSort(true);
         orderField.setShowHover(false);
 
