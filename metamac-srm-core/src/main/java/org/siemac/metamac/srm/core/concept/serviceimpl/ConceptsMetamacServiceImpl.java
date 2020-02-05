@@ -957,7 +957,6 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         if (i1.getParent() == null && i2.getParent() == null) {
             return true;
             // id can be null when save operation is executed when transaction is closed
-            // } else if (i1.getParent() != null && i2.getParent() != null && i1.getParent().getId().equals(i2.getParent().getId())) {
         } else if (i1.getParent() != null && i2.getParent() != null && i1.getParent().getUuid().equals(i2.getParent().getUuid())) {
             return true;
         }
