@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -46,6 +47,7 @@ import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
 import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
 import org.siemac.metamac.srm.core.code.domain.ConceptMetamacResultSelection;
 import org.siemac.metamac.srm.core.code.domain.TaskImportationInfo;
+import org.siemac.metamac.srm.core.code.domain.Variable;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.code.serviceapi.utils.CodesMetamacDoMocks;
 import org.siemac.metamac.srm.core.common.SrmBaseTest;
@@ -85,6 +87,7 @@ import com.arte.statistic.sdmx.srm.core.base.serviceapi.utils.BaseAsserts;
 import com.arte.statistic.sdmx.srm.core.category.domain.Categorisation;
 import com.arte.statistic.sdmx.srm.core.code.domain.Code;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeProperties;
+import com.arte.statistic.sdmx.srm.core.code.domain.CodelistVersion;
 import com.arte.statistic.sdmx.srm.core.common.domain.InternationalString;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.LocalisedString;
@@ -4205,6 +4208,273 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         assertEquals("CONCEPT04", concepts.get(5).getCode());
         assertEquals("CONCEPT0401", concepts.get(6).getCode());
         assertEquals("CONCEPT040101", concepts.get(7).getCode());
+    }
+
+    @Test
+    public void testRetrieveConceptsOrderedInDepthByConceptSchemeUrnMoreThanTenConceptsWithNoParent() throws Exception {
+        // @formatter:off
+        /*
+         * - CONCEPT_SCHEME
+         * - |_ CONCEPT_0
+         * - |_ CONCEPT_1
+         * - |_ ....
+         * - |_ CONCEPT_10
+         */
+        // @formatter:on
+
+        int conceptsNumber = 11;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Create concept scheme
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme(organisationMetamac);
+
+        ConceptSchemeVersionMetamac conceptSchemeVersionCreated = conceptsService.createConceptScheme(ctx, conceptSchemeVersion);
+        String conceptSchemeUrn = conceptSchemeVersionCreated.getMaintainableArtefact().getUrn();
+
+        CodelistVersionMetamac coreRepresentation = codesService.retrieveCodelistByUrn(ctx, CODELIST_9_V1);
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
+        ConceptMetamac conceptExtends = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V1_CONCEPT_1);
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
+        CodelistVersion enumerationCodelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_7_V1);
+
+        Representation enumeratedRepresentation = new Representation();
+        enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+        enumeratedRepresentation.setEnumerationCodelist(enumerationCodelist);
+
+        // Create child concepts for parent concept
+        List<String> urnConcepts = new ArrayList<>(conceptsNumber);
+
+        for (int i = 0; i < conceptsNumber; i++) {
+            ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, coreRepresentation, ConceptRoleEnum.ATTRIBUTE);
+            concept.setParent(null);
+            concept.setConceptExtends(conceptExtends);
+            concept.setVariable(variable);
+            concept.setCoreRepresentation(enumeratedRepresentation);
+
+            ConceptMetamac conceptCreated = conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+            urnConcepts.add(conceptCreated.getNameableArtefact().getUrn());
+        }
+
+        List<ItemResult> concepts = conceptMetamacRepository.findConceptsByConceptSchemeOrderedInDepth(conceptSchemeVersionCreated.getId(), new ConceptMetamacResultSelection(true, true, true, true));
+
+        // Validation
+        // The number of concepts must be 11
+        assertFalse(concepts.isEmpty());
+        assertEquals(conceptsNumber, concepts.size());
+        assertEquals(conceptsNumber, urnConcepts.size());
+
+        // Concepts are in the expected position
+        for (int i = 0; i < conceptsNumber; i++) {
+            assertConceptOrderValue(urnConcepts.get(i), i);
+            assertNull(concepts.get(i).getParent());
+            assertEquals(urnConcepts.get(i), concepts.get(i).getUrn());
+        }
+
+    }
+
+    @Test
+    public void testRetrieveConceptsOrderedInDepthByConceptSchemeUrnMoreThanTenConceptsWithParent() throws Exception {
+        // @formatter:off
+        /*
+         * - CONCEPT_SCHEME
+         * - |_CONCEPT_PARENT
+         * -   |_ CONCEPT_0
+         * -   |_ CONCEPT_1
+         * -   |_ ....
+         * -   |_ CONCEPT_10
+         */
+        // @formatter:on
+
+        int conceptsNumber = 11;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Create concept scheme
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme(organisationMetamac);
+
+        ConceptSchemeVersionMetamac conceptSchemeVersionCreated = conceptsService.createConceptScheme(ctx, conceptSchemeVersion);
+        String conceptSchemeUrn = conceptSchemeVersionCreated.getMaintainableArtefact().getUrn();
+
+        CodelistVersionMetamac coreRepresentation = codesService.retrieveCodelistByUrn(ctx, CODELIST_9_V1);
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
+        ConceptMetamac conceptExtends = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V1_CONCEPT_1);
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
+        CodelistVersion enumerationCodelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_7_V1);
+
+        Representation enumeratedRepresentation = new Representation();
+        enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+        enumeratedRepresentation.setEnumerationCodelist(enumerationCodelist);
+
+        List<String> urnConcepts = new ArrayList<>(conceptsNumber);
+
+        // Create parent concept
+        ConceptMetamac conceptParent = ConceptsMetamacDoMocks.mockConcept(conceptType, coreRepresentation, ConceptRoleEnum.ATTRIBUTE);
+        conceptParent.setParent(null);
+        conceptParent.setConceptExtends(conceptExtends);
+        conceptParent.setVariable(variable);
+        conceptParent.setCoreRepresentation(enumeratedRepresentation);
+
+        ConceptMetamac conceptParentCreated = conceptsService.createConcept(ctx, conceptSchemeUrn, conceptParent);
+        String conceptParentUrn = conceptParentCreated.getNameableArtefact().getUrn();
+
+        // Create child concepts for parent concept
+        for (int i = 0; i < conceptsNumber; i++) {
+            ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, coreRepresentation, ConceptRoleEnum.ATTRIBUTE);
+            concept.setParent(conceptParentCreated);
+            concept.setConceptExtends(conceptExtends);
+            concept.setVariable(variable);
+            concept.setCoreRepresentation(enumeratedRepresentation);
+
+            ConceptMetamac conceptCreated = conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+            urnConcepts.add(conceptCreated.getNameableArtefact().getUrn());
+        }
+
+        List<ItemResult> concepts = conceptMetamacRepository.findConceptsByConceptSchemeOrderedInDepth(conceptSchemeVersionCreated.getId(), new ConceptMetamacResultSelection(true, true, true, true));
+
+        // Validation
+        // The number of concepts must be 12: 1 parent concept and 11 child concepts
+        assertFalse(concepts.isEmpty());
+        assertEquals(conceptsNumber + 1, concepts.size());
+        assertEquals(conceptsNumber, urnConcepts.size());
+
+        // Parent concept is in the expected position
+        assertEquals(conceptParentUrn, concepts.get(0).getUrn());
+        assertNull(concepts.get(0).getParent());
+
+        // Child concepts are in the expected position
+        List<ItemResult> siblingsConcepts = concepts.subList(1, concepts.size());
+
+        for (int i = 0; i < conceptsNumber; i++) {
+            assertConceptOrderValue(urnConcepts.get(i), i);
+            assertEquals(urnConcepts.get(i), siblingsConcepts.get(i).getUrn());
+            assertNotNull(siblingsConcepts.get(i).getParent());
+            assertEquals(conceptParentUrn, siblingsConcepts.get(i).getParent().getUrn());
+        }
+    }
+
+    @Test
+    public void testRetrieveConceptsOrderedInDepthByConceptSchemeUrnMoreThanTenConceptsWithTwoParents() throws Exception {
+        // @formatter:off
+        /*
+         * - CONCEPT_SCHEME
+         * - |_PARENT_CONCEPT_0
+         * -   |_ CONCEPT_0
+         * -   |_ CONCEPT_1
+         * -   |_ ....
+         * -   |_ CONCEPT_10
+         * - |_PARENT_CONCEPT_1
+         * -   |_ CONCEPT_0
+         * -   |_ CONCEPT_1
+         * -   |_ ....
+         * -   |_ CONCEPT_10
+         */
+        // @formatter:on
+
+        int conceptsNumber = 11;
+        ServiceContext ctx = getServiceContextAdministrador();
+
+        // Create concept scheme
+        OrganisationMetamac organisationMetamac = organisationMetamacRepository.findByUrn(AGENCY_ROOT_1_V1);
+        ConceptSchemeVersionMetamac conceptSchemeVersion = ConceptsMetamacDoMocks.mockConceptScheme(organisationMetamac);
+
+        ConceptSchemeVersionMetamac conceptSchemeVersionCreated = conceptsService.createConceptScheme(ctx, conceptSchemeVersion);
+        String conceptSchemeUrn = conceptSchemeVersionCreated.getMaintainableArtefact().getUrn();
+
+        CodelistVersionMetamac coreRepresentation = codesService.retrieveCodelistByUrn(ctx, CODELIST_9_V1);
+        ConceptType conceptType = conceptsService.retrieveConceptTypeByIdentifier(ctx, CONCEPT_TYPE_DIRECT);
+        ConceptMetamac conceptExtends = conceptsService.retrieveConceptByUrn(ctx, CONCEPT_SCHEME_7_V1_CONCEPT_1);
+        Variable variable = codesService.retrieveVariableByUrn(ctx, VARIABLE_1);
+        CodelistVersion enumerationCodelist = codesService.retrieveCodelistByUrn(getServiceContextAdministrador(), CODELIST_7_V1);
+
+        Representation enumeratedRepresentation = new Representation();
+        enumeratedRepresentation.setRepresentationType(RepresentationTypeEnum.ENUMERATION);
+        enumeratedRepresentation.setEnumerationCodelist(enumerationCodelist);
+
+        List<String> urnConcepts1 = new ArrayList<>(conceptsNumber);
+
+        // Create parent concept 1
+        ConceptMetamac parentConcept1 = ConceptsMetamacDoMocks.mockConcept(conceptType, coreRepresentation, ConceptRoleEnum.ATTRIBUTE);
+        parentConcept1.setParent(null);
+        parentConcept1.setConceptExtends(conceptExtends);
+        parentConcept1.setVariable(variable);
+        parentConcept1.setCoreRepresentation(enumeratedRepresentation);
+
+        ConceptMetamac parentConcept1Created = conceptsService.createConcept(ctx, conceptSchemeUrn, parentConcept1);
+        String parentConcept1Urn = parentConcept1Created.getNameableArtefact().getUrn();
+
+        // Create child concepts for parent concept 1
+        for (int i = 0; i < conceptsNumber; i++) {
+            ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, coreRepresentation, ConceptRoleEnum.ATTRIBUTE);
+            concept.setParent(parentConcept1Created);
+            concept.setConceptExtends(conceptExtends);
+            concept.setVariable(variable);
+            concept.setCoreRepresentation(enumeratedRepresentation);
+
+            ConceptMetamac conceptCreated = conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+            urnConcepts1.add(conceptCreated.getNameableArtefact().getUrn());
+        }
+
+        List<String> urnConcepts2 = new ArrayList<>(conceptsNumber);
+
+        // Create parent concept 2
+        ConceptMetamac parentConcept2 = ConceptsMetamacDoMocks.mockConcept(conceptType, coreRepresentation, ConceptRoleEnum.ATTRIBUTE);
+        parentConcept2.setParent(null);
+        parentConcept2.setConceptExtends(conceptExtends);
+        parentConcept2.setVariable(variable);
+        parentConcept2.setCoreRepresentation(enumeratedRepresentation);
+
+        ConceptMetamac parentConcept2Created = conceptsService.createConcept(ctx, conceptSchemeUrn, parentConcept2);
+        String parentConcept2Urn = parentConcept2Created.getNameableArtefact().getUrn();
+
+        // Create child concepts for parent concept 2
+        for (int i = 0; i < conceptsNumber; i++) {
+            ConceptMetamac concept = ConceptsMetamacDoMocks.mockConcept(conceptType, coreRepresentation, ConceptRoleEnum.ATTRIBUTE);
+            concept.setParent(parentConcept2Created);
+            concept.setConceptExtends(conceptExtends);
+            concept.setVariable(variable);
+            concept.setCoreRepresentation(enumeratedRepresentation);
+
+            ConceptMetamac conceptCreated = conceptsService.createConcept(ctx, conceptSchemeUrn, concept);
+            urnConcepts2.add(conceptCreated.getNameableArtefact().getUrn());
+        }
+
+        List<ItemResult> concepts = conceptMetamacRepository.findConceptsByConceptSchemeOrderedInDepth(conceptSchemeVersionCreated.getId(), new ConceptMetamacResultSelection(true, true, true, true));
+
+        // Validation
+        // The number of concepts must be 24: 2 parent concepts and 11 child concepts for each parent
+        assertFalse(concepts.isEmpty());
+        assertEquals(conceptsNumber * 2 + 2, concepts.size());
+        assertEquals(conceptsNumber, urnConcepts1.size());
+        assertEquals(conceptsNumber, urnConcepts2.size());
+
+        // Parent concepts are in the expected position
+        assertEquals(parentConcept1Urn, concepts.get(0).getUrn());
+        assertNull(concepts.get(0).getParent());
+
+        assertEquals(parentConcept2Urn, concepts.get(conceptsNumber + 1).getUrn());
+        assertNull(concepts.get(0).getParent());
+
+        // Child concepts are in the expected position
+        List<ItemResult> siblingsConcepts1 = concepts.subList(1, conceptsNumber + 1);
+        List<ItemResult> siblingsConcepts2 = concepts.subList(conceptsNumber + 2, concepts.size());
+
+        assertEquals(conceptsNumber, siblingsConcepts1.size());
+        assertEquals(conceptsNumber, siblingsConcepts2.size());
+
+        for (int i = 0; i < conceptsNumber; i++) {
+            assertConceptOrderValue(urnConcepts1.get(i), i);
+            assertEquals(urnConcepts1.get(i), siblingsConcepts1.get(i).getUrn());
+            assertNotNull(siblingsConcepts1.get(i).getParent());
+            assertEquals(parentConcept1Urn, siblingsConcepts1.get(i).getParent().getUrn());
+        }
+
+        for (int i = 0; i < conceptsNumber; i++) {
+            assertConceptOrderValue(urnConcepts2.get(i), i);
+            assertEquals(urnConcepts2.get(i), siblingsConcepts2.get(i).getUrn());
+            assertNotNull(siblingsConcepts2.get(i).getParent());
+            assertEquals(parentConcept2Urn, siblingsConcepts2.get(i).getParent().getUrn());
+        }
     }
 
     @Test

@@ -180,11 +180,11 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
             sb.append("ORDER SIBLINGS BY mc1.ORDER_VALUE ASC ");
         } else if (srmConfiguration.isDatabaseSqlServer()) {
             sb.append("WITH parents(ID, OV) AS ");
-            sb.append("   (SELECT c1.ID, Cast(mc1.ORDER_VALUE AS VARCHAR) OV ");
+            sb.append("   (SELECT c1.ID, format(mc1.ORDER_VALUE , '000000') OV ");
             sb.append("    FROM TB_CONCEPTS as c1, TB_M_CONCEPTS mc1  ");
             sb.append("    WHERE mc1.TB_CONCEPTS = c1.ID and c1.PARENT_FK is null and c1.ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
             sb.append("        UNION ALL ");
-            sb.append("    SELECT c2.ID, Cast(p.OV + '-' + Cast(mc2.ORDER_VALUE AS VARCHAR) AS VARCHAR) OV ");
+            sb.append("    SELECT c2.ID, p.OV + '-' + format(mc2.ORDER_VALUE , '000000') OV ");
             sb.append("    FROM TB_CONCEPTS as c2, TB_M_CONCEPTS mc2, parents p");
             sb.append("    WHERE mc2.TB_CONCEPTS = c2.ID and p.ID = c2.PARENT_FK) ");
             sb.append("SELECT ID FROM parents ");
