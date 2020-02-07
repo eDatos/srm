@@ -66,6 +66,13 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     private static final String COLUMN_NAME_DERIVATION         = "DERIVATION_FK";
     private static final String COLUMN_NAME_LEGAL_ACTS         = "LEGAL_ACTS_FK";
 
+    // This constant is used in the query destined to order concepts for a SQL Server database.
+    // Specifically, it is used to compare sibling concepts at the same level and, because of the comparison must be done lexicographically, it is necessary to format the value of the order value by
+    // completing with leading zeros.
+    // Moreover, because of there are no padding functions in SQL Server, the format function should be used to complete the value with as many zeros as specified in the mask.
+    // The current value is sufficient for a million concepts, if necessary it can be extended.
+    private static final String ORDER_VALUE_FORMAT_PATTERN     = "000000";
+
     public ConceptMetamacRepositoryImpl() {
     }
 
@@ -180,11 +187,11 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
             sb.append("ORDER SIBLINGS BY mc1.ORDER_VALUE ASC ");
         } else if (srmConfiguration.isDatabaseSqlServer()) {
             sb.append("WITH parents(ID, OV) AS ");
-            sb.append("   (SELECT c1.ID, format(mc1.ORDER_VALUE , '000000') OV ");
+            sb.append("   (SELECT c1.ID, format(mc1.ORDER_VALUE , '" + ORDER_VALUE_FORMAT_PATTERN + "') OV ");
             sb.append("    FROM TB_CONCEPTS as c1, TB_M_CONCEPTS mc1  ");
             sb.append("    WHERE mc1.TB_CONCEPTS = c1.ID and c1.PARENT_FK is null and c1.ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
             sb.append("        UNION ALL ");
-            sb.append("    SELECT c2.ID, p.OV + '-' + format(mc2.ORDER_VALUE , '000000') OV ");
+            sb.append("    SELECT c2.ID, p.OV + '-' + format(mc2.ORDER_VALUE , '" + ORDER_VALUE_FORMAT_PATTERN + "') OV ");
             sb.append("    FROM TB_CONCEPTS as c2, TB_M_CONCEPTS mc2, parents p");
             sb.append("    WHERE mc2.TB_CONCEPTS = c2.ID and p.ID = c2.PARENT_FK) ");
             sb.append("SELECT ID FROM parents ");

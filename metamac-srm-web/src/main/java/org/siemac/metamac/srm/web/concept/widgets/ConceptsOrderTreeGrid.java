@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
+import org.siemac.metamac.srm.web.client.model.ds.ItemDS;
 import org.siemac.metamac.srm.web.concept.model.ds.ConceptDS;
 import org.siemac.metamac.srm.web.concept.utils.ConceptsClientSecurityUtils;
-import org.siemac.metamac.web.common.client.utils.ListGridUtils;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -39,10 +39,17 @@ public class ConceptsOrderTreeGrid extends ConceptsTreeGrid {
         setShowOpenIcons(true);
         setShowDropIcons(true);
 
+        // The header context menu is enabled to display the order column if necessary
+        setShowHeaderContextMenu(Boolean.TRUE);
+
+        // Disable the option to autofit specific columns
+        setCanAutoFitFields(Boolean.FALSE);
+
         orderField = new TreeGridField(ConceptDS.ORDER, getConstants().conceptOrder());
-        orderField.setShowIfCondition(ListGridUtils.getFalseListGridFieldIfFunction());
-        orderField.setCanSort(true);
-        orderField.setShowHover(false);
+        orderField.setCanSort(Boolean.FALSE);
+        orderField.setShowHover(Boolean.FALSE);
+        orderField.setHidden(Boolean.TRUE); // By default the order column is not shown (it could be show choosing it in the header context menu)
+        orderField.setCanFreeze(Boolean.FALSE);
 
         List<ListGridField> fields = new ArrayList<ListGridField>(Arrays.asList(getAllFields()));
 
@@ -50,6 +57,14 @@ public class ConceptsOrderTreeGrid extends ConceptsTreeGrid {
         for (ListGridField field : fields) {
             field.setCanSort(Boolean.FALSE);
         }
+
+        // Disable the option to display freezing/unfreezing options in its header context menu.
+        for (ListGridField field : fields) {
+            field.setCanFreeze(Boolean.FALSE);
+        }
+
+        // Disable the option to hide info column
+        getField(ItemDS.INFO).setCanHide(Boolean.FALSE);
 
         // The order field is added in the penultimate position
         fields.add(fields.size() - 1, orderField);
