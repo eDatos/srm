@@ -194,6 +194,26 @@ public class ConceptsClientSecurityUtils {
         return SharedConceptsSecurityUtils.canExportConceptsTsv(MetamacSrmWeb.getCurrentUser());
     }
 
+    public static boolean canUpdateConceptParent(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        if (isTaskInBackground(conceptSchemeMetamacDto.getIsTaskInBackground())) {
+            return false;
+        }
+
+        // Maintainer and temporal version are checked because the structure of an imported resource (or a resource in temporal version) can not be modified
+        String operationCode = org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
+        return SharedConceptsSecurityUtils.canUpdateConcept(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(), operationCode)
+                && CommonUtils.canSdmxMetadataAndStructureBeModified(conceptSchemeMetamacDto);
+    }
+
+    public static boolean canUpdateConceptOrderInLevel(ConceptSchemeMetamacDto conceptSchemeMetamacDto) {
+        if (isTaskInBackground(conceptSchemeMetamacDto.getIsTaskInBackground())) {
+            return false;
+        }
+
+        String operationCode = org.siemac.metamac.srm.web.concept.utils.CommonUtils.getRelatedOperationCode(conceptSchemeMetamacDto);
+        return SharedConceptsSecurityUtils.canUpdateConcept(MetamacSrmWeb.getCurrentUser(), conceptSchemeMetamacDto.getLifeCycle().getProcStatus(), conceptSchemeMetamacDto.getType(), operationCode);
+    }
+
     //
     // PRIVATE METHODS
     //

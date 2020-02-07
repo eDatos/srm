@@ -3874,4 +3874,24 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         }
     }
 
+    @Override
+    public void updateConceptParent(ServiceContext ctx, String conceptUrn, String newConceptParentUrn, Integer newConceptIndex) throws MetamacException {
+        // Security
+        ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = getConceptsMetamacService().retrieveConceptSchemeByConceptUrn(ctx, conceptUrn);
+        ConceptsSecurityUtils.canUpdateConcept(ctx, conceptSchemeVersionMetamac);
+
+        // Update parent
+        getConceptsMetamacService().updateConceptParent(ctx, conceptUrn, newConceptParentUrn, newConceptIndex);
+    }
+
+    @Override
+    public void updateConceptInOrder(ServiceContext ctx, String conceptUrn, String conceptSchemeUrn, Integer newConceptIndex) throws MetamacException {
+        // Security
+        ConceptSchemeVersionMetamac conceptSchemeVersionMetamac = getConceptsMetamacService().retrieveConceptSchemeByConceptUrn(ctx, conceptUrn);
+        ConceptsSecurityUtils.canUpdateConcept(ctx, conceptSchemeVersionMetamac);
+
+        // Update order
+        getConceptsMetamacService().updateConceptInOrder(ctx, conceptUrn, conceptSchemeUrn, newConceptIndex);
+    }
+
 }

@@ -14,4 +14,6 @@ public interface BaseConceptUiHandlers extends CategorisationUiHandlers {
     void deleteConcept(ItemVisualisationResult itemVisualisationResult);
     void goToConceptScheme(String urn);
     void goToConcept(String urn);
+    void updateConceptParent(String conceptUrn, String newConceptParentUrn, int newConceptIndex);
+    void updateConceptInOrder(String conceptUrn, String conceptSchemeUrn, int newConceptIndex);
 }

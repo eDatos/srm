@@ -44,6 +44,10 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
+import org.siemac.metamac.srm.web.shared.concept.UpdateConceptInOrderAction;
+import org.siemac.metamac.srm.web.shared.concept.UpdateConceptInOrderResult;
+import org.siemac.metamac.srm.web.shared.concept.UpdateConceptParentAction;
+import org.siemac.metamac.srm.web.shared.concept.UpdateConceptParentResult;
 import org.siemac.metamac.srm.web.shared.criteria.CategorySchemeWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CategoryWebCriteria;
 import org.siemac.metamac.srm.web.shared.criteria.CodeWebCriteria;
@@ -696,5 +700,37 @@ public class ConceptPresenter extends Presenter<ConceptPresenter.ConceptView, Co
     @Override
     public void goToConceptScheme(String urn) {
         goTo(PlaceRequestUtils.buildAbsoluteConceptSchemePlaceRequest(urn));
+    }
+
+    @Override
+    public void updateConceptParent(final String conceptUrn, String newConceptParentUrn, int newConceptIndex) {
+        dispatcher.execute(new UpdateConceptParentAction(conceptUrn, newConceptParentUrn, newConceptIndex), new WaitingAsyncCallbackHandlingError<UpdateConceptParentResult>(this) {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
+            }
+
+            @Override
+            public void onWaitSuccess(UpdateConceptParentResult result) {
+                retrieveConcept(conceptUrn);
+            }
+        });
+    }
+
+    @Override
+    public void updateConceptInOrder(final String conceptUrn, String conceptScheme, int newConceptIndex) {
+        dispatcher.execute(new UpdateConceptInOrderAction(conceptUrn, conceptScheme, newConceptIndex), new WaitingAsyncCallbackHandlingError<UpdateConceptInOrderResult>(this) {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(ConceptPresenter.this, caught);
+            }
+
+            @Override
+            public void onWaitSuccess(UpdateConceptInOrderResult result) {
+                retrieveConcept(conceptUrn);
+            }
+        });
     }
 }

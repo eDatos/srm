@@ -48,6 +48,7 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptScheme;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptSchemes;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.ConceptTypes;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concepts;
+import org.siemac.metamac.srm.core.common.domain.ItemMetamacResultSelection;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacProperties;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
@@ -62,7 +63,6 @@ import org.siemac.metamac.srm.rest.external.v1_0.utils.StatisticalOperationsRest
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersion;
 import com.arte.statistic.sdmx.srm.core.base.domain.ItemSchemeVersionRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
-import com.arte.statistic.sdmx.srm.core.common.domain.ItemResultSelection;
 
 public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV10BaseTest {
 
@@ -326,8 +326,8 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
 
         // Verify with mockito
         ArgumentCaptor<String> conceptSchemeUrnArgument = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<ItemResultSelection> itemResultSelectionArgument = ArgumentCaptor.forClass(ItemResultSelection.class);
-        verify(conceptsService).retrieveConceptsByConceptSchemeUrnUnordered(any(ServiceContext.class), conceptSchemeUrnArgument.capture(), itemResultSelectionArgument.capture());
+        ArgumentCaptor<ItemMetamacResultSelection> itemResultSelectionArgument = ArgumentCaptor.forClass(ItemMetamacResultSelection.class);
+        verify(conceptsService).retrieveConceptsByConceptSchemeUrnOrderedInDepth(any(ServiceContext.class), conceptSchemeUrnArgument.capture(), itemResultSelectionArgument.capture());
         assertEquals("urn:sdmx:org.sdmx.infomodel.conceptscheme.ConceptScheme=agency1:itemScheme1(01.000)", conceptSchemeUrnArgument.getValue());
         assertEquals(true, itemResultSelectionArgument.getValue().isNames());
         assertEquals(false, itemResultSelectionArgument.getValue().isDescriptions());
@@ -610,7 +610,12 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
     }
 
     private void mockRetrieveConceptsByConceptScheme() throws MetamacException {
-        when(conceptsService.retrieveConceptsByConceptSchemeUrnUnordered(any(ServiceContext.class), any(String.class), any(ItemResultSelection.class))).thenAnswer(new Answer<List<ItemResult>>() {
+        when(conceptsService.retrieveConceptsByConceptSchemeUrnOrderedInDepth(any(ServiceContext.class), any(String.class), any(ItemMetamacResultSelection.class)))
+                .thenAnswer(getRetrieveConceptSchemeUrnAnswer());
+    }
+
+    private Answer<List<ItemResult>> getRetrieveConceptSchemeUrnAnswer() {
+        return new Answer<List<ItemResult>>() {
 
             @Override
             public List<ItemResult> answer(InvocationOnMock invocation) throws Throwable {
@@ -621,7 +626,7 @@ public class SrmRestInternalFacadeV10ConceptsTest extends SrmRestInternalFacadeV
                 ItemResult concept2B = ConceptsDoMocks.mockConceptItemResult("concept2B", concept2);
                 return Arrays.asList(concept1, concept2, concept2A, concept2B);
             };
-        });
+        };
     }
 
     @SuppressWarnings("unchecked")

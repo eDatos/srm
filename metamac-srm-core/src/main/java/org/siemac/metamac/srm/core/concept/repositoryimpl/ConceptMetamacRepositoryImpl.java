@@ -2,6 +2,7 @@ package org.siemac.metamac.srm.core.concept.repositoryimpl;
 
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.booleanToBooleanDatabase;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getDate;
+import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getInteger;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getLong;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.withoutTranslation;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionBuilder;
@@ -24,6 +26,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
@@ -63,6 +66,13 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     private static final String COLUMN_NAME_DERIVATION         = "DERIVATION_FK";
     private static final String COLUMN_NAME_LEGAL_ACTS         = "LEGAL_ACTS_FK";
 
+    // This constant is used in the query destined to order concepts for a SQL Server database.
+    // Specifically, it is used to compare sibling concepts at the same level and, because of the comparison must be done lexicographically, it is necessary to format the value of the order value by
+    // completing with leading zeros.
+    // Moreover, because of there are no padding functions in SQL Server, the format function should be used to complete the value with as many zeros as specified in the mask.
+    // The current value is sufficient for a million concepts, if necessary it can be extended.
+    private static final String ORDER_VALUE_FORMAT_PATTERN     = "000000";
+
     public ConceptMetamacRepositoryImpl() {
     }
 
@@ -82,14 +92,15 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     public List<ConceptMetamacVisualisationResult> findConceptsByConceptSchemeUnorderedToVisualisation(Long itemSchemeVersionId, String locale) throws MetamacException {
         // Find items. Returns only one row by item. NOTE: this query return null label if locale not exits for a code.
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT cb.ID as ITEM_ID, cb.CREATED_DATE, cb.CREATED_DATE_TZ, a.URN, a.CODE, cb.PARENT_FK as ITEM_PARENT_ID, lsName.LABEL as NAME, lsAcronym.LABEL as ACRONYM, c.SDMX_RELATED_ARTEFACT ");
+        sb.append(
+                "SELECT cb.ID as ITEM_ID, cb.CREATED_DATE, cb.CREATED_DATE_TZ, a.URN, a.CODE, cb.PARENT_FK as ITEM_PARENT_ID, lsName.LABEL as NAME, lsAcronym.LABEL as ACRONYM, c.SDMX_RELATED_ARTEFACT, c.ORDER_VALUE ");
         sb.append("FROM TB_M_CONCEPTS c ");
         sb.append("INNER JOIN TB_CONCEPTS cb on c.TB_CONCEPTS = cb.ID ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS a on cb.NAMEABLE_ARTEFACT_FK = a.ID ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsName on lsName.INTERNATIONAL_STRING_FK = a.NAME_FK and lsName.locale = :locale ");
         sb.append("LEFT OUTER JOIN TB_LOCALISED_STRINGS lsAcronym on lsAcronym.INTERNATIONAL_STRING_FK = c.ACRONYM_FK and lsAcronym.locale = :locale ");
         sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
-        sb.append("ORDER BY a.CODE ASC ");
+        sb.append("ORDER BY c.ORDER_VALUE ASC ");
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
         query.setParameter("locale", locale);
@@ -168,20 +179,23 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         StringBuilder sb = new StringBuilder();
         if (srmConfiguration.isDatabaseOracle()) {
             sb.append("SELECT c1.ID ");
-            sb.append("FROM TB_CONCEPTS c1 ");
+            sb.append("FROM TB_CONCEPTS c1, TB_M_CONCEPTS mc1 ");
             sb.append("WHERE c1.ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
+            sb.append("AND mc1.TB_CONCEPTS = c1.ID ");
             sb.append("START WITH c1.PARENT_FK is null ");
             sb.append("CONNECT BY PRIOR c1.ID = c1.PARENT_FK ");
+            sb.append("ORDER SIBLINGS BY mc1.ORDER_VALUE ASC ");
         } else if (srmConfiguration.isDatabaseSqlServer()) {
-            sb.append("WITH parents(ID) AS ");
-            sb.append("   (SELECT ID ");
-            sb.append("    FROM TB_CONCEPTS ");
-            sb.append("    WHERE PARENT_FK is null and ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
+            sb.append("WITH parents(ID, OV) AS ");
+            sb.append("   (SELECT c1.ID, format(mc1.ORDER_VALUE , '" + ORDER_VALUE_FORMAT_PATTERN + "') OV ");
+            sb.append("    FROM TB_CONCEPTS as c1, TB_M_CONCEPTS mc1  ");
+            sb.append("    WHERE mc1.TB_CONCEPTS = c1.ID and c1.PARENT_FK is null and c1.ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
             sb.append("        UNION ALL ");
-            sb.append("    SELECT c2.ID ");
-            sb.append("    FROM TB_CONCEPTS as c2, parents ");
-            sb.append("    WHERE parents.ID = c2.PARENT_FK) ");
+            sb.append("    SELECT c2.ID, p.OV + '-' + format(mc2.ORDER_VALUE , '" + ORDER_VALUE_FORMAT_PATTERN + "') OV ");
+            sb.append("    FROM TB_CONCEPTS as c2, TB_M_CONCEPTS mc2, parents p");
+            sb.append("    WHERE mc2.TB_CONCEPTS = c2.ID and p.ID = c2.PARENT_FK) ");
             sb.append("SELECT ID FROM parents ");
+            sb.append("ORDER BY OV ASC ");
         } else {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN).withMessageParameters("Database unsupported").build();
         }
@@ -300,6 +314,86 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     public void checkConceptsWithRepresentationExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
         checkConceptsWithRepresentationExternallyPublished(itemSchemeVersionId, "CODELIST_FK", exceptionItemsByUrn, ServiceExceptionType.CODELIST_NOT_EXTERNALLY_PUBLISHED);
         checkConceptsWithRepresentationExternallyPublished(itemSchemeVersionId, "CONCEPT_SCHEME_FK", exceptionItemsByUrn, ServiceExceptionType.CONCEPT_SCHEME_NOT_EXTERNALLY_PUBLISHED);
+    }
+
+    @Override
+    public Integer getConceptMaximumOrderInLevel(ConceptSchemeVersionMetamac conceptSchemeVersion, Concept parent) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT max(order_value) ");
+        sb.append("FROM tb_m_concepts c, tb_concepts cb where c.tb_concepts = cb.id AND cb.item_scheme_version_fk = :conceptSchemeVersion ");
+        if (parent == null) {
+            sb.append("AND cb.PARENT_FK is null");
+        } else {
+            sb.append("AND cb.PARENT_FK = :parent");
+        }
+
+        Query query = getEntityManager().createNativeQuery(sb.toString());
+        if (parent != null) {
+            query.setParameter("parent", parent.getId());
+        }
+
+        query.setParameter("conceptSchemeVersion", conceptSchemeVersion.getId());
+
+        List resultsOrder = query.getResultList();
+        if (CollectionUtils.isEmpty(resultsOrder) || resultsOrder.get(0) == null) {
+            return null;
+        } else {
+            return Integer.valueOf(resultsOrder.get(0).toString());
+        }
+    }
+
+    @Override
+    public Integer reorderConceptsDeletingOneConcept(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept) {
+        Concept parent = concept.getParent();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE tb_m_concepts set ORDER_VALUE = ORDER_VALUE - 1 ");
+        sb.append("WHERE tb_concepts in ");
+        sb.append("(SELECT cb.ID ");
+        sb.append("FROM tb_concepts cb ");
+        sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
+        if (parent == null) {
+            sb.append("AND cb.PARENT_FK is null");
+        } else {
+            sb.append("AND cb.PARENT_FK = :parent");
+        }
+        sb.append(") AND ORDER_VALUE > :order");
+
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
+        queryUpdate.setParameter("conceptSchemeVersion", conceptSchemeVersion.getId());
+        queryUpdate.setParameter("order", concept.getOrderValue());
+        if (parent != null) {
+            queryUpdate.setParameter("parent", parent.getId());
+        }
+
+        return queryUpdate.executeUpdate();
+    }
+
+    @Override
+    public Integer reorderConceptsAddingOneConceptInMiddle(ConceptSchemeVersionMetamac conceptSchemeVersion, ConceptMetamac concept, Integer newConceptIndex) {
+        Concept parent = concept.getParent();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE tb_m_concepts set ORDER_VALUE = ORDER_VALUE + 1 ");
+        sb.append("WHERE tb_concepts in ");
+        sb.append("(SELECT cb.ID ");
+        sb.append("FROM tb_concepts cb ");
+        sb.append("WHERE cb.ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
+        if (parent == null) {
+            sb.append("AND cb.PARENT_FK is null");
+        } else {
+            sb.append("AND cb.PARENT_FK = :parent");
+        }
+        sb.append(") AND ORDER_VALUE >= :order");
+
+        Query queryUpdate = getEntityManager().createNativeQuery(sb.toString());
+        queryUpdate.setParameter("conceptSchemeVersion", conceptSchemeVersion.getId());
+        queryUpdate.setParameter("order", newConceptIndex);
+        if (parent != null) {
+            queryUpdate.setParameter("parent", parent.getId());
+        }
+
+        return queryUpdate.executeUpdate();
     }
 
     @SuppressWarnings("rawtypes")
@@ -703,6 +797,8 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         target.setAcronym(getString(source[i++]));
         String sdmxRelatedArtefact = getString(source[i++]);
         target.setSdmxRelatedArtefact(sdmxRelatedArtefact != null ? ConceptRoleEnum.valueOf(sdmxRelatedArtefact) : null);
+        target.setOrder(getInteger(source[i++]));
+
         return target;
     }
 

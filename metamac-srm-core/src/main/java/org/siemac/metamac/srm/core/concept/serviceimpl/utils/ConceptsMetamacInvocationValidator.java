@@ -89,7 +89,7 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         ExceptionUtils.throwIfException(exceptions);
     }
 
-    public static void checkRetrieveConceptsByConceptSchemeUrnUnordered(String conceptSchemeUrn, ItemResultSelection itemResultSelection, List<MetamacExceptionItem> exceptions)
+    public static void checkRetrieveConceptsByConceptSchemeUrnOrderedInDepth(String conceptSchemeUrn, ItemResultSelection itemResultSelection, List<MetamacExceptionItem> exceptions)
             throws MetamacException {
         if (exceptions == null) {
             exceptions = new ArrayList<MetamacExceptionItem>();
@@ -372,6 +372,29 @@ public class ConceptsMetamacInvocationValidator extends ConceptsInvocationValida
         if (conceptUrn == null && variableUrn == null) {
             exceptions.add(new MetamacExceptionItem(CommonServiceExceptionType.PARAMETER_REQUIRED, ServiceExceptionParameters.URN));
         }
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkUpdateConceptParent(String conceptUrn, String newParentUrn, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(conceptUrn, ServiceExceptionParameters.URN, exceptions);
+        // newParentUrn is optional. When it is null, move to first level
+
+        ExceptionUtils.throwIfException(exceptions);
+    }
+
+    public static void checkUpdateConceptInOrder(String conceptUrn, String urn, Integer newConceptIndex, List<MetamacExceptionItem> exceptions) throws MetamacException {
+        if (exceptions == null) {
+            exceptions = new ArrayList<MetamacExceptionItem>();
+        }
+
+        ValidationUtils.checkParameterRequired(conceptUrn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(urn, ServiceExceptionParameters.URN, exceptions);
+        ValidationUtils.checkParameterRequired(newConceptIndex, ServiceExceptionParameters.CONCEPT_SCHEME_ORDER_INDEX, exceptions);
 
         ExceptionUtils.throwIfException(exceptions);
     }

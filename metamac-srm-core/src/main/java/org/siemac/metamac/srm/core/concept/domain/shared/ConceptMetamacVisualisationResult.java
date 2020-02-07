@@ -12,6 +12,7 @@ public class ConceptMetamacVisualisationResult extends ItemVisualisationResult {
     private String                             acronym;
     private RelatedResourceVisualisationResult variable;
     private ConceptRoleEnum                    sdmxRelatedArtefact;
+    private Integer                            order;
 
     public ConceptMetamacVisualisationResult() {
     }
@@ -38,5 +39,13 @@ public class ConceptMetamacVisualisationResult extends ItemVisualisationResult {
 
     public void setSdmxRelatedArtefact(ConceptRoleEnum sdmxRelatedArtefact) {
         this.sdmxRelatedArtefact = sdmxRelatedArtefact;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 }

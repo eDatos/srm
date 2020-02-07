@@ -50,4 +50,6 @@ public class ConceptDS extends ItemDS {
     public static String       QUANTITY_PERCENTAGE_OF        = "q-perc-of";
 
     public static final String CONCEPT_SCHEME_TYPE           = "con-sch-type";        // Not mapped in DTO
+
+    public static final String ORDER                         = "item-order";
 }

@@ -23,17 +23,16 @@ import com.smartgwt.client.widgets.tree.TreeNode;
 
 public class ConceptsTreeGrid extends ItemsTreeGrid {
 
-    private NewConceptWindow         newConceptWindow;
-    private DeleteConfirmationWindow deleteConfirmationWindow;
+    private NewConceptWindow          newConceptWindow;
+    private DeleteConfirmationWindow  deleteConfirmationWindow;
 
-    private MenuItem                 createConceptMenuItem;
-    private MenuItem                 deleteConceptMenuItem;
+    private MenuItem                  createConceptMenuItem;
+    private MenuItem                  deleteConceptMenuItem;
 
     protected ConceptSchemeMetamacDto conceptSchemeMetamacDto;
-    private ItemVisualisationResult  selectedConcept;
+    private ItemVisualisationResult   selectedConcept;
 
     public ConceptsTreeGrid() {
-
         // Context menu
 
         createConceptMenuItem = new MenuItem(MetamacSrmWeb.getConstants().conceptCreate());
@@ -128,7 +127,7 @@ public class ConceptsTreeGrid extends ItemsTreeGrid {
         return ResourceFieldUtils.getConceptDetailViewerFields();
     }
 
-    private BaseConceptUiHandlers getBaseConceptUiHandlers() {
+    protected BaseConceptUiHandlers getBaseConceptUiHandlers() {
         return (BaseConceptUiHandlers) uiHandlers;
     }
 }

@@ -97,6 +97,8 @@ import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsBySchemeAct
 import org.siemac.metamac.srm.web.server.handlers.concept.GetStatisticalOperationsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptSchemeActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.UpdateConceptInOrderActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.UpdateConceptParentActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.UpdateConceptSchemeProcStatusActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.VersionConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.dsd.CancelDsdValidityActionHandler;
@@ -232,6 +234,8 @@ import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementAction;
+import org.siemac.metamac.srm.web.shared.concept.UpdateConceptInOrderAction;
+import org.siemac.metamac.srm.web.shared.concept.UpdateConceptParentAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.dsd.CancelDsdValidityAction;
@@ -339,6 +343,8 @@ public class ServerModule extends HandlerModule {
         bindHandler(CreateConceptSchemeTemporalVersionAction.class, CreateConceptSchemeTemporalVersionActionHandler.class);
         bindHandler(CopyConceptSchemeAction.class, CopyConceptSchemeActionHandler.class);
         bindHandler(ExportConceptsAction.class, ExportConceptsActionHandler.class);
+        bindHandler(UpdateConceptInOrderAction.class, UpdateConceptInOrderActionHandler.class);
+        bindHandler(UpdateConceptParentAction.class, UpdateConceptParentActionHandler.class);
 
         // Organisations
         bindHandler(GetOrganisationSchemesAction.class, GetOrganisationSchemesActionHandler.class);

@@ -67,6 +67,10 @@ import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeResult;
+import org.siemac.metamac.srm.web.shared.concept.UpdateConceptInOrderAction;
+import org.siemac.metamac.srm.web.shared.concept.UpdateConceptInOrderResult;
+import org.siemac.metamac.srm.web.shared.concept.UpdateConceptParentAction;
+import org.siemac.metamac.srm.web.shared.concept.UpdateConceptParentResult;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateConceptSchemeProcStatusResult;
 import org.siemac.metamac.srm.web.shared.concept.VersionConceptSchemeAction;
@@ -735,5 +739,37 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
     private void updateUrl() {
         PlaceRequest placeRequest = PlaceRequestUtils.buildRelativeConceptSchemePlaceRequest(conceptSchemeDto.getUrn());
         placeManager.updateHistory(placeRequest, true);
+    }
+
+    @Override
+    public void updateConceptParent(String conceptUrn, String newConceptParentUrn, int newConceptIndex) {
+        dispatcher.execute(new UpdateConceptParentAction(conceptUrn, newConceptParentUrn, newConceptIndex), new WaitingAsyncCallbackHandlingError<UpdateConceptParentResult>(this) {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(ConceptSchemePresenter.this, caught);
+            }
+
+            @Override
+            public void onWaitSuccess(UpdateConceptParentResult result) {
+                retrieveConceptsByScheme(conceptSchemeDto.getUrn());
+            }
+        });
+    }
+
+    @Override
+    public void updateConceptInOrder(String conceptUrn, String conceptSchemeUrn, int newConceptIndex) {
+        dispatcher.execute(new UpdateConceptInOrderAction(conceptUrn, conceptSchemeUrn, newConceptIndex), new WaitingAsyncCallbackHandlingError<UpdateConceptInOrderResult>(this) {
+
+            @Override
+            public void onWaitFailure(Throwable caught) {
+                ShowMessageEvent.fireErrorMessage(ConceptSchemePresenter.this, caught);
+            }
+
+            @Override
+            public void onWaitSuccess(UpdateConceptInOrderResult result) {
+                retrieveConceptsByScheme(conceptSchemeDto.getUrn());
+            }
+        });
     }
 }
