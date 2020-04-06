@@ -12,11 +12,10 @@ if [ "$1" == "--no-restart" ]; then
     RESTART=0
 fi
 
-
-scp -r etc/deploy deploy@estadisticas.arte-consultores.com:$TRANSFER_PATH
-scp metamac-srm-web/target/structural-resources-internal-*.war deploy@estadisticas.arte-consultores.com:$TRANSFER_PATH/structural-resources-internal.war
-scp metamac-srm-external-web/target/structural-resources-*.war deploy@estadisticas.arte-consultores.com:$TRANSFER_PATH/structural-resources.war
-ssh deploy@estadisticas.arte-consultores.com <<EOF
+scp -o ProxyCommand="ssh -W %h:%p deploy@estadisticas.arte-consultores.com" -r etc/deploy deploy@192.168.10.16:$TRANSFER_PATH
+scp -o ProxyCommand="ssh -W %h:%p deploy@estadisticas.arte-consultores.com" metamac-srm-web/target/structural-resources-internal-*.war deploy@192.168.10.16:$TRANSFER_PATH/structural-resources-internal.war
+scp -o ProxyCommand="ssh -W %h:%p deploy@estadisticas.arte-consultores.com" metamac-srm-external-web/target/structural-resources-*.war deploy@192.168.10.16:$TRANSFER_PATH/structural-resources.war
+ssh -o ProxyCommand="ssh -W %h:%p deploy@estadisticas.arte-consultores.com" deploy@192.168.10.16 <<EOF
 
     chmod a+x $TRANSFER_PATH/deploy/*.sh;
     . $TRANSFER_PATH/deploy/utilities.sh
@@ -38,7 +37,8 @@ ssh deploy@estadisticas.arte-consultores.com <<EOF
 
     # Restore Configuration
     sudo cp $HOME_PATH/environment_internal.xml $DEPLOY_TARGET_PATH_INTERNAL/structural-resources-internal/$ENVIRONMENT_RELATIVE_PATH_FILE
-    sudo cp $HOME_PATH/logback_internal.xml $DEPLOY_TARGET_PATH_INTERNAL/structural-resources-internal/$LOGBACK_RELATIVE_PATH_FILE
+    # Take care!, it's not necessary to restore the logback.xml file, it's externally configured in the applicationContext.xml file    
+    # sudo cp $HOME_PATH/logback_internal.xml $DEPLOY_TARGET_PATH_INTERNAL/structural-resources-internal/$LOGBACK_RELATIVE_PATH_FILE
 
     if [ $RESTART -eq 1 ]; then
         sudo chown -R edatos-internal.edatos-internal /servers/edatos-internal     
