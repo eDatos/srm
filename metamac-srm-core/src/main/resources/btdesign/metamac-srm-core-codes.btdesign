@@ -306,7 +306,7 @@ Application CodesMetamac {
 				@CodelistVersionMetamac findByCode(String urn);
 				
 				checkCodelistVersionTranslations(Long itemSchemeVersionId, String locale, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
-				checkCodelistWithReplaceToExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn);
+				checkCodelistWithReplaceToExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException;
 			}			
 		}
 
@@ -388,9 +388,9 @@ Application CodesMetamac {
 
 				clearCodesOpennessColumnByCodelist(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex);
 				copyCodesOpennessColumnByCodelist(@CodelistVersionMetamac codelistVersion, Integer columnIndexSource, Integer columnIndexTarget);
-				updateCodesOpennessColumnByCodelist(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded);
-				updateCodeOpennessColumn(@CodelistVersionMetamac codelistVersion, String codeUrn, Integer opennessColumnIndex, Boolean expanded);
-				updateCodeOpennessColumnToLeafCodes(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded);
+				updateCodesOpennessColumnByCodelist(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded) throws MetamacException;
+				updateCodeOpennessColumn(@CodelistVersionMetamac codelistVersion, String codeUrn, Integer opennessColumnIndex, Boolean expanded) throws MetamacException;
+				updateCodeOpennessColumnToLeafCodes(@CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded) throws MetamacException;
 			}
 		}
 		
@@ -570,7 +570,7 @@ Application CodesMetamac {
 				findByCondition(PagingParameter pagingParameter);
 				@VariableElement findByUrn(String urn);
 				List<VariableElementVisualisationResult> retrieveVariableElementsByVariableEfficientlyToVisualisation(Long variableId, String locale);
-				List<VariableElementResult> findVariableElementsByVariableEfficiently(Long variableUrn, List<String> variableElementCodes, VariableElementResultSelection selection, List<String> geographicalGranularityUrns);
+				List<VariableElementResult> findVariableElementsByVariableEfficiently(Long variableUrn, List<String> variableElementCodes, VariableElementResultSelection selection, List<String> geographicalGranularityUrns) throws MetamacException;
 				Long countVariableElementsByVariable(Long variableId);
 				clearGeographicalInformationByVariable(Long variableId);
 			}

@@ -37,7 +37,7 @@
                 <prop key="query.substitutions">true 1, false 0</prop>
                 <prop key="hibernate.cache.use_query_cache">true</prop>
                 <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
-                <prop key="hibernate.default_schema">${metamac.srm.db.username}</prop>
+                <prop key="hibernate.default_schema">${metamac.srm.db.default_schema}</prop>
             </props>
         </property>
     </bean>

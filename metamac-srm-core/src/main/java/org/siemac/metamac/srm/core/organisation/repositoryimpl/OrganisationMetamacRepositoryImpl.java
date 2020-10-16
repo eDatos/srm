@@ -38,13 +38,13 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.organisation.domain.Organisatio
 public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacRepositoryBase {
 
     @Autowired
-    private ItemRepository         itemRepository;
+    private ItemRepository itemRepository;
 
     @Autowired
     private OrganisationRepository organisationRepository;
 
     @Autowired
-    private SrmConfiguration       srmConfiguration;
+    private SrmConfiguration srmConfiguration;
 
     public OrganisationMetamacRepositoryImpl() {
     }
@@ -90,6 +90,16 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
             sb.append("CONNECT BY PRIOR c1.ID = c1.PARENT_FK ");
         } else if (srmConfiguration.isDatabaseSqlServer()) {
             sb.append("WITH parents(ID) AS ");
+            sb.append("   (SELECT ID ");
+            sb.append("    FROM TB_ORGANISATIONS ");
+            sb.append("    WHERE PARENT_FK is null and ITEM_SCHEME_VERSION_FK = :organisationSchemeVersion ");
+            sb.append("        UNION ALL ");
+            sb.append("    SELECT c2.ID ");
+            sb.append("    FROM TB_ORGANISATIONS as c2, parents ");
+            sb.append("    WHERE parents.ID = c2.PARENT_FK) ");
+            sb.append("SELECT ID FROM parents ");
+        } else if (srmConfiguration.isDatabasePostgreSQL()) {
+            sb.append("WITH RECURSIVE parents(ID) AS ");
             sb.append("   (SELECT ID ");
             sb.append("    FROM TB_ORGANISATIONS ");
             sb.append("    WHERE PARENT_FK is null and ITEM_SCHEME_VERSION_FK = :organisationSchemeVersion ");
@@ -164,9 +174,8 @@ public class OrganisationMetamacRepositoryImpl extends OrganisationMetamacReposi
 
     @Override
     public void updateHasBeenPublishedEfficiently(Long itemSchemeVersionId) {
-        Query queryUpdate = getEntityManager()
-                .createNativeQuery(
-                        "UPDATE TB_M_ORGANISATIONS SET SPECIAL_ORG_HAS_BEEN_PUBLISHED = :hasBeenPublished WHERE TB_ORGANISATIONS IN (SELECT ID FROM TB_ORGANISATIONS WHERE ITEM_SCHEME_VERSION_FK = :itemSchemeVersion)");
+        Query queryUpdate = getEntityManager().createNativeQuery(
+                "UPDATE TB_M_ORGANISATIONS SET SPECIAL_ORG_HAS_BEEN_PUBLISHED = :hasBeenPublished WHERE TB_ORGANISATIONS IN (SELECT ID FROM TB_ORGANISATIONS WHERE ITEM_SCHEME_VERSION_FK = :itemSchemeVersion)");
         queryUpdate.setParameter("itemSchemeVersion", itemSchemeVersionId);
         queryUpdate.setParameter("hasBeenPublished", true);
         queryUpdate.executeUpdate();

@@ -11,5 +11,6 @@
     <entry key="metamac.srm.db.dialect">org.siemac.metamac.hibernate.dialect.Oracle10gDialectMetamac</entry>
     <entry key="metamac.srm.db.driver_name">oracle.jdbc.OracleDriver</entry>
     <entry key="metamac.srm.db.provider">ORACLE</entry>
+    <entry key="metamac.srm.db.default_schema">JENKINS_METAMAC_SRM</entry>
     
 </properties>

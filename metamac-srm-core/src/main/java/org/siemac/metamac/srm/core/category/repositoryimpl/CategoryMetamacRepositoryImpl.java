@@ -91,6 +91,16 @@ public class CategoryMetamacRepositoryImpl extends CategoryMetamacRepositoryBase
             sb.append("    FROM TB_CATEGORIES as c2, parents ");
             sb.append("    WHERE parents.ID = c2.PARENT_FK) ");
             sb.append("SELECT ID FROM parents ");
+        } else if (srmConfiguration.isDatabasePostgreSQL()) {
+            sb.append("WITH RECURSIVE parents(ID) AS ");
+            sb.append("   (SELECT ID ");
+            sb.append("    FROM TB_CATEGORIES ");
+            sb.append("    WHERE PARENT_FK is null and ITEM_SCHEME_VERSION_FK = :categorySchemeVersion ");
+            sb.append("        UNION ALL ");
+            sb.append("    SELECT c2.ID ");
+            sb.append("    FROM TB_CATEGORIES as c2, parents ");
+            sb.append("    WHERE parents.ID = c2.PARENT_FK) ");
+            sb.append("SELECT ID FROM parents ");
         } else {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN).withMessageParameters("Database unsupported").build();
         }

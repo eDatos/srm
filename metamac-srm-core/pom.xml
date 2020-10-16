@@ -386,6 +386,12 @@
             <version>${oracle.version}</version>
             <scope>test</scope>
         </dependency>
+         <dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
+			<scope>test</scope>
+		</dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
@@ -502,6 +508,38 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+			<id>postgresql</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.6</version><!--$NO-MVN-MAN-VER$ -->
+						<executions>
+							<execution>
+								<id>clean-sculptor-conf</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<delete file="src/main/resources/generator/sculptor-generator.properties" />
+										<delete file="src/main/resources/generator/CustomDDL.xpt" />
+										<copy file="src/main/resources/generator/sculptor-generator.postgresql.properties" tofile="src/main/resources/generator/sculptor-generator.properties" verbose="true" />
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+        
     </profiles>
 
     <build>
@@ -590,6 +628,20 @@
                             <reportsDirectory>${project.build.directory}/surefire-reports/mssql</reportsDirectory>
                         </configuration>
                     </execution>
+                    <execution>
+						<id>postgresql</id>
+						<phase>test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<skipTests>${maven.surefire.execution.postgresql.skip}</skipTests>
+							<systemPropertyVariables>
+								<TEST_DATABASE_PROVIDER>POSTGRESQL</TEST_DATABASE_PROVIDER>
+							</systemPropertyVariables>
+							<reportsDirectory>${project.build.directory}/surefire-reports/postgresql</reportsDirectory>
+						</configuration>
+					</execution>
                 </executions>
             </plugin>
 

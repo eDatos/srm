@@ -50,6 +50,7 @@ import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.InternationalStringRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
+import com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.DatabaseProvider;
 
 /**
  * Repository implementation for CodeMetamac
@@ -273,7 +274,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public void updateCodesOpennessColumnByCodelist(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded) {
+    public void updateCodesOpennessColumnByCodelist(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded) throws MetamacException {
         String opennessColumn = getOpennessColumnName(opennessColumnIndex);
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValue(expanded) + " ");
@@ -284,7 +285,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public void updateCodeOpennessColumn(CodelistVersionMetamac codelistVersion, String codeUrn, Integer opennessColumnIndex, Boolean expanded) {
+    public void updateCodeOpennessColumn(CodelistVersionMetamac codelistVersion, String codeUrn, Integer opennessColumnIndex, Boolean expanded) throws MetamacException {
         String opennessColumn = getOpennessColumnName(opennessColumnIndex);
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValue(expanded) + " ");
@@ -296,7 +297,7 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
     }
 
     @Override
-    public void updateCodeOpennessColumnToLeafCodes(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded) {
+    public void updateCodeOpennessColumnToLeafCodes(CodelistVersionMetamac codelistVersion, Integer opennessColumnIndex, Boolean expanded) throws MetamacException {
         String opennessColumn = getOpennessColumnName(opennessColumnIndex);
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE TB_M_CODES set " + opennessColumn + " = " + getOpennessColumnValue(expanded) + " ");
@@ -545,6 +546,22 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
             sb.append("INNER JOIN TB_CODES AS cb2 ON cb2.ID = c2.TB_CODES ");
             sb.append("INNER JOIN Parents AS p ON p.R_ID = cb2.PARENT_FK ) ");
             sb.append("SELECT * FROM Parents ORDER BY R_SORT_STRING");
+        } else if (srmConfiguration.isDatabasePostgreSQL()) {
+            resultOrderIndex = 3;
+            sb.append("WITH RECURSIVE Parents(R_ID, R_SORT, R_ITEM_SCHEME_VERSION_FK, R_SORT_STRING) AS ");
+            sb.append("( ");
+            sb.append("SELECT c1.TB_CODES AS R_ID, c1." + orderColumn + " AS R_SORT, cb1.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
+            sb.append("concat('/', lpad(cast(c1." + orderColumn + " as varchar), " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + ", '0')) AS R_SORT_STRING ");
+            sb.append("FROM TB_M_CODES AS c1 ");
+            sb.append("INNER JOIN TB_CODES AS cb1 ON cb1.ID = c1.TB_CODES ");
+            sb.append("WHERE cb1.PARENT_FK IS NULL and cb1.ITEM_SCHEME_VERSION_FK = :codelistVersion ");
+            sb.append("UNION ALL ");
+            sb.append("SELECT c2.TB_CODES, c2." + orderColumn + ", cb2.ITEM_SCHEME_VERSION_FK AS R_ITEM_SCHEME_VERSION_FK, ");
+            sb.append("concat(p.R_SORT_STRING, '/', lpad(cast(c2." + orderColumn + " as varchar), " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + ", '0')) AS R_SORT_STRING ");
+            sb.append("FROM TB_M_CODES AS c2 ");
+            sb.append("INNER JOIN TB_CODES AS cb2 ON cb2.ID = c2.TB_CODES ");
+            sb.append("INNER JOIN Parents AS p ON p.R_ID = cb2.PARENT_FK ) ");
+            sb.append("SELECT * FROM Parents ORDER BY R_SORT_STRING");
         } else {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN).withMessageParameters("Database unsupported").build();
         }
@@ -784,8 +801,9 @@ public class CodeMetamacRepositoryImpl extends CodeMetamacRepositoryBase {
         return "OPENNESS" + columnIndex;
     }
 
-    private String getOpennessColumnValue(Boolean expanded) {
-        return booleanToBooleanDatabase(expanded);
+    private String getOpennessColumnValue(Boolean expanded) throws MetamacException {
+        DatabaseProvider databaseProvider = srmConfiguration.getDataBaseProvider();
+        return booleanToBooleanDatabase(databaseProvider, expanded);
     }
 
     /**

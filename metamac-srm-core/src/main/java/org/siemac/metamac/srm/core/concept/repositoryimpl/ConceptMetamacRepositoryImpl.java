@@ -30,6 +30,7 @@ import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
 import org.siemac.metamac.srm.core.concept.domain.shared.ConceptMetamacVisualisationResult;
 import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
+import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.task.domain.RepresentationsTsv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -38,6 +39,7 @@ import com.arte.statistic.sdmx.srm.core.base.domain.ItemRepository;
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.ItemVisualisationResult;
 import com.arte.statistic.sdmx.srm.core.common.domain.shared.RelatedResourceVisualisationResult;
+import com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.DatabaseProvider;
 import com.arte.statistic.sdmx.srm.core.concept.domain.Concept;
 import com.arte.statistic.sdmx.srm.core.concept.domain.ConceptRepository;
 import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.FacetValueTypeEnum;
@@ -196,6 +198,17 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
             sb.append("    WHERE mc2.TB_CONCEPTS = c2.ID and p.ID = c2.PARENT_FK) ");
             sb.append("SELECT ID FROM parents ");
             sb.append("ORDER BY OV ASC ");
+        } else if (srmConfiguration.isDatabasePostgreSQL()) {
+            sb.append("WITH RECURSIVE parents(ID, OV) AS ");
+            sb.append("   (SELECT c1.ID, lpad(cast(mc1.ORDER_VALUE as varchar), " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + ", '0') OV ");
+            sb.append("    FROM TB_CONCEPTS as c1, TB_M_CONCEPTS mc1  ");
+            sb.append("    WHERE mc1.TB_CONCEPTS = c1.ID and c1.PARENT_FK is null and c1.ITEM_SCHEME_VERSION_FK = :conceptSchemeVersion ");
+            sb.append("        UNION ALL ");
+            sb.append("    SELECT c2.ID, concat(p.OV, '-', lpad(cast(mc2.ORDER_VALUE as varchar), " + SrmConstants.CODE_QUERY_COLUMN_ORDER_LENGTH + ", '0')) OV ");
+            sb.append("    FROM TB_CONCEPTS as c2, TB_M_CONCEPTS mc2, parents p");
+            sb.append("    WHERE mc2.TB_CONCEPTS = c2.ID and p.ID = c2.PARENT_FK) ");
+            sb.append("SELECT ID FROM parents ");
+            sb.append("ORDER BY OV ASC ");
         } else {
             throw MetamacExceptionBuilder.builder().withExceptionItems(ServiceExceptionType.UNKNOWN).withMessageParameters("Database unsupported").build();
         }
@@ -257,7 +270,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
 
     @SuppressWarnings("rawtypes")
     @Override
-    public void checkConceptsWithConceptExtendsExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+    public void checkConceptsWithConceptExtendsExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT DISTINCT(acb2.URN) ");
         sb.append("FROM TB_M_CONCEPTS c1 ");
@@ -267,7 +280,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS aisv2 ON aisv2.ID = isv2.MAINTAINABLE_ARTEFACT_FK ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS acb2 ON acb2.ID = cb2.NAMEABLE_ARTEFACT_FK ");
         sb.append("WHERE cb1.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
-        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(true));
+        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(getDatabaseProvider(), true));
 
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
@@ -280,7 +293,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
 
     @SuppressWarnings("rawtypes")
     @Override
-    public void checkConceptsWithConceptRoleExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+    public void checkConceptsWithConceptRoleExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT DISTINCT(acb2.URN) ");
         sb.append("FROM TB_M_CONCEPT_ROLES cr ");
@@ -290,7 +303,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS aisv2 ON aisv2.ID = isv2.MAINTAINABLE_ARTEFACT_FK ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS acb2 ON acb2.ID = cb2.NAMEABLE_ARTEFACT_FK ");
         sb.append("WHERE cb1.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
-        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(true));
+        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(getDatabaseProvider(), true));
 
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
@@ -302,7 +315,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     }
 
     @Override
-    public void checkConceptsWithQuantityExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+    public void checkConceptsWithQuantityExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException {
         checkConceptsWithQuantityConceptMetadataExternallyPublished(itemSchemeVersionId, "NUMERATOR_FK", exceptionItemsByUrn);
         checkConceptsWithQuantityConceptMetadataExternallyPublished(itemSchemeVersionId, "DENOMINATOR_FK", exceptionItemsByUrn);
         checkConceptsWithQuantityConceptMetadataExternallyPublished(itemSchemeVersionId, "BASE_QUANTITY_FK", exceptionItemsByUrn);
@@ -311,7 +324,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     }
 
     @Override
-    public void checkConceptsWithRepresentationExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+    public void checkConceptsWithRepresentationExternallyPublished(Long itemSchemeVersionId, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException {
         checkConceptsWithRepresentationExternallyPublished(itemSchemeVersionId, "CODELIST_FK", exceptionItemsByUrn, ServiceExceptionType.CODELIST_NOT_EXTERNALLY_PUBLISHED);
         checkConceptsWithRepresentationExternallyPublished(itemSchemeVersionId, "CONCEPT_SCHEME_FK", exceptionItemsByUrn, ServiceExceptionType.CONCEPT_SCHEME_NOT_EXTERNALLY_PUBLISHED);
     }
@@ -397,7 +410,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     }
 
     @SuppressWarnings("rawtypes")
-    private void checkConceptsWithQuantityConceptMetadataExternallyPublished(Long itemSchemeVersionId, String columnName, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+    private void checkConceptsWithQuantityConceptMetadataExternallyPublished(Long itemSchemeVersionId, String columnName, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT DISTINCT(acb2.URN) ");
         sb.append("FROM TB_M_CONCEPTS c1 ");
@@ -408,7 +421,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS aisv2 ON aisv2.ID = isv2.MAINTAINABLE_ARTEFACT_FK ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS acb2 ON acb2.ID = cb2.NAMEABLE_ARTEFACT_FK ");
         sb.append("WHERE cb1.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
-        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(true));
+        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(getDatabaseProvider(), true));
 
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
@@ -420,7 +433,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
     }
 
     @SuppressWarnings("rawtypes")
-    private void checkConceptsWithQuantityCodeMetadataExternallyPublished(Long itemSchemeVersionId, String columnName, Map<String, MetamacExceptionItem> exceptionItemsByUrn) {
+    private void checkConceptsWithQuantityCodeMetadataExternallyPublished(Long itemSchemeVersionId, String columnName, Map<String, MetamacExceptionItem> exceptionItemsByUrn) throws MetamacException {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT DISTINCT(acb2.URN) ");
         sb.append("FROM TB_M_CONCEPTS c1 ");
@@ -431,7 +444,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS aisv2 ON aisv2.ID = isv2.MAINTAINABLE_ARTEFACT_FK ");
         sb.append("INNER JOIN TB_ANNOTABLE_ARTEFACTS acb2 ON acb2.ID = cb2.NAMEABLE_ARTEFACT_FK ");
         sb.append("WHERE cb1.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
-        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(true));
+        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(getDatabaseProvider(), true));
 
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
@@ -444,7 +457,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
 
     @SuppressWarnings("rawtypes")
     private void checkConceptsWithRepresentationExternallyPublished(Long itemSchemeVersionId, String columnName, Map<String, MetamacExceptionItem> exceptionItemsByUrn,
-            CommonServiceExceptionType serviceExceptionType) {
+            CommonServiceExceptionType serviceExceptionType) throws MetamacException {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT DISTINCT(aisv2.URN) ");
         sb.append("FROM TB_CONCEPTS cb1 ");
@@ -454,7 +467,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         sb.append("WHERE cb1.ITEM_SCHEME_VERSION_FK = :itemSchemeVersionId ");
         sb.append("AND r1.REPRESENTATION_TYPE = :representationType ");
         sb.append("AND r1." + columnName + " IS NOT NULL ");
-        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(true));
+        sb.append("AND aisv2.PUBLIC_LOGIC != " + booleanToBooleanDatabase(getDatabaseProvider(), true));
 
         Query query = getEntityManager().createNativeQuery(sb.toString());
         query.setParameter("itemSchemeVersionId", itemSchemeVersionId);
@@ -632,7 +645,7 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         }
         return itemSchemeVersionUrn;
     }
-    @SuppressWarnings("rawtypes")
+
     private String getUrnFromItemSchemeVersionId(Long itemSchemeVersionId) {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT aa.urn ");
@@ -645,7 +658,6 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         return (String) query.getSingleResult();
     }
 
-    @SuppressWarnings("rawtypes")
     private FacetValueTypeEnum getFacetValueTypeEnum(Long facetId) {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT f.FACET_VALUE ");
@@ -812,5 +824,9 @@ public class ConceptMetamacRepositoryImpl extends ConceptMetamacRepositoryBase {
         target.setCode(getString(source[i++]));
         target.setTitle(getString(source[i++]));
         return target;
+    }
+    
+    private DatabaseProvider getDatabaseProvider() throws MetamacException {
+        return srmConfiguration.getDataBaseProvider();
     }
 }
