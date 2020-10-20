@@ -42,6 +42,7 @@
     <inherits name="org.siemac.metamac.srm.SrmCore" />
     <inherits name="com.arte.statistic.sdmx.srm.core.StatisticSdmxSrmCore" />
     <inherits name="com.arte.statistic.sdmx.v2_1.domain.StatisticSdmxV2_1Domain" />
+    <inherits name="org.siemac.EDatosCoreUtils" />
 
     <!-- Specify the app entry point class. -->
     <entry-point class='org.siemac.metamac.srm.web.client.MetamacSrmWeb' />
