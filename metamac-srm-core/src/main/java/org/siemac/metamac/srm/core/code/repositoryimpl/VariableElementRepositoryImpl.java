@@ -2,7 +2,6 @@ package org.siemac.metamac.srm.core.code.repositoryimpl;
 
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getDouble;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getLong;
-import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getString;
 import static com.arte.statistic.sdmx.srm.core.common.repository.utils.SdmxSrmRepositoryUtils.getStringFromClob;
 
 import java.util.ArrayList;
@@ -16,11 +15,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.siemac.metamac.core.common.constants.CoreCommonConstants;
+import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.srm.core.code.domain.VariableElement;
 import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
 import org.siemac.metamac.srm.core.code.domain.VariableElementResultSelection;
 import org.siemac.metamac.srm.core.code.domain.shared.VariableElementVisualisationResult;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
+import org.siemac.metamac.srm.core.conf.SrmConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
@@ -30,6 +32,9 @@ import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
  */
 @Repository("variableElementRepository")
 public class VariableElementRepositoryImpl extends VariableElementRepositoryBase {
+
+    @Autowired
+    private SrmConfiguration srmConfiguration;
 
     public VariableElementRepositoryImpl() {
     }
@@ -74,7 +79,7 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
     @Override
     @SuppressWarnings("rawtypes")
     public List<VariableElementResult> findVariableElementsByVariableEfficiently(Long variableId, List<String> variableElementCodes, VariableElementResultSelection selection,
-            List<String> geographicalGranularityUrns) {
+            List<String> geographicalGranularityUrns) throws MetamacException {
         if (CollectionUtils.isEmpty(variableElementCodes)) {
             variableElementCodes = new ArrayList<String>();
         }
@@ -198,10 +203,10 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
                     SQLQuery queryGeo = ((Session) getEntityManager().getDelegate()).createSQLQuery(sbGeo.toString());
                     queryGeo = queryGeo.addScalar("VARIABLE_ELEMENT_ID", org.hibernate.Hibernate.LONG);
                     if (selection.isShapeWkt()) {
-                        queryGeo = queryGeo.addScalar("SHAPE_WKT", org.hibernate.Hibernate.CLOB);
+                        queryGeo = queryGeo.addScalar("SHAPE_WKT", isDatabasePostgreSQL() ? org.hibernate.Hibernate.TEXT : org.hibernate.Hibernate.CLOB);
                     }
                     if (selection.isShapeGeojson()) {
-                        queryGeo = queryGeo.addScalar("SHAPE_GEOJSON", org.hibernate.Hibernate.CLOB);
+                        queryGeo = queryGeo.addScalar("SHAPE_GEOJSON", isDatabasePostgreSQL() ? org.hibernate.Hibernate.TEXT : org.hibernate.Hibernate.CLOB);
                     }
                     if (selection.isLongitudeLatitude()) {
                         queryGeo = queryGeo.addScalar("LATITUDE", org.hibernate.Hibernate.FLOAT).addScalar("LONGITUDE", org.hibernate.Hibernate.FLOAT);
@@ -304,13 +309,15 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
         }
     }
 
-    private void variableElementGeoResultSqlToVariableElementResult(Object[] source, VariableElementResult target, VariableElementResultSelection selection) {
+    private void variableElementGeoResultSqlToVariableElementResult(Object[] source, VariableElementResult target, VariableElementResultSelection selection) throws MetamacException {
         int i = 1; // skip id
         if (selection.isShapeWkt()) {
-            target.setShapeWkt(getStringFromClob(source[i++]));
+            String shapeWkt = isDatabasePostgreSQL() ? getString(source[i++]) : getStringFromClob(source[i++]);
+            target.setShapeWkt(shapeWkt);
         }
         if (selection.isShapeGeojson()) {
-            target.setShapeGeojson(getStringFromClob(source[i++]));
+            String shapeGeoJson = isDatabasePostgreSQL() ? getString(source[i++]) : getStringFromClob(source[i++]);
+            target.setShapeGeojson(shapeGeoJson);
         }
         if (selection.isLongitudeLatitude()) {
             target.setLatitude(getDouble(source[i++]));
@@ -339,4 +346,11 @@ public class VariableElementRepositoryImpl extends VariableElementRepositoryBase
         }
     }
 
+    private boolean isDatabasePostgreSQL() throws MetamacException {
+        return srmConfiguration.isDatabasePostgreSQL();
+    }
+
+    private String getString(Object source) {
+        return source == null ? null : source.toString();
+    }
 }

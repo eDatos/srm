@@ -21,6 +21,7 @@ public class SrmConfigurationConstants extends ConfigurationConstants {
     public static final String DB_DRIVER_NAME                                 = "metamac.srm.db.driver_name";
     public static final String DB_DRIVER_NAME_ORACLE                          = "oracle.jdbc.OracleDriver";
     public static final String DB_DRIVER_NAME_MSSQL                           = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    public static final String DB_DRIVER_NAME_POSTGRESQL                      = "org.postgresql.Driver";
 
     // Misc
     public static final String VARIABLE_WORLD                                 = "metamac.srm.variables.variable_world.urn";

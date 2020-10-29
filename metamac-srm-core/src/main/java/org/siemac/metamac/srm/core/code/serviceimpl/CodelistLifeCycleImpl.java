@@ -169,7 +169,7 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
         }
 
         @Override
-        public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion) {
+        public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion) throws MetamacException {
             // Mark leaf codes with openness = false
             CodelistVersionMetamac codelistVersion = getCodelistVersionMetamac(srmResourceVersion);
             for (CodelistOpennessVisualisation codelistOpennessVisualisation : codelistVersion.getOpennessVisualisations()) {

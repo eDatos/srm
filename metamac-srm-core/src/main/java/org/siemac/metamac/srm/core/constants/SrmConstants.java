@@ -67,6 +67,7 @@ public class SrmConstants {
     // Misc
     public static final int                METADATA_SHORT_NAME_MAXIMUM_LENGTH                                     = 100;
     public static final int                CODE_QUERY_COLUMN_ORDER_LENGTH                                         = 6;
+    public static final int                CONCEPT_QUERY_COLUMN_ORDER_LENGTH                                      = 6;
     public static final String             TABLE_INTERNATIONAL_STRINGS                                            = "TB_INTERNATIONAL_STRINGS";
     public static final String             MISC_VALUE_VARIABLE_ELEMENT_GEOGRAPHICAL_INFORMATION_LAST_UPDATED_DATE = "variable_element.geographical_information.last_updated_date";
 }

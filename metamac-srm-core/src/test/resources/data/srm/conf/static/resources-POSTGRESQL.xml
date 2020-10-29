@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Configurations</comment>
+    
+    <!-- Database -->
+    <!-- POSTGRESQL -->
+    <entry key="metamac.srm.db.url">jdbc:postgresql://teide.arte:5432/ARTE</entry>
+    <entry key="metamac.srm.db.username">istac_metamac_srm_ci</entry>
+    <entry key="metamac.srm.db.password">istac_metamac_srm_ci</entry>
+    <entry key="metamac.srm.db.dialect">org.hibernate.dialect.PostgreSQLDialect</entry>
+    <entry key="metamac.srm.db.driver_name">org.postgresql.Driver</entry>
+    <entry key="metamac.srm.db.provider">POSTGRESQL</entry>
+    <entry key="metamac.srm.db.default_schema">istac_metamac_srm_ci</entry>
+
+</properties>

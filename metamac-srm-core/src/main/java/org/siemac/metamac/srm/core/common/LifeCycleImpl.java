@@ -453,7 +453,7 @@ public abstract class LifeCycleImpl implements LifeCycle {
 
         // Validity, final, public, additional actions
         public Object executeBeforeSendProductionValidation(ServiceContext ctx, Object srmResourceVersion);
-        public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion);
+        public Object publishInternallyConcreteResource(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
         public Object markSrmResourceAsFinal(ServiceContext ctx, Object srmResourceVersion, Boolean forceLastestFinal) throws MetamacException;
         public Object markSrmResourceAsPublic(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;
         public Object startSrmResourceValidity(ServiceContext ctx, Object srmResourceVersion) throws MetamacException;

@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.criteria.MetamacCriteriaPaginator;
@@ -348,6 +351,9 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
     @Value("${metamac.srm.db.provider}")
     private String                databaseProvider;
 
+    @Value("${metamac.srm.db.default_schema}")
+    private String                defaultSchema;
+
     // Note: can not use global attributes to ServiceContexts because they can be modified in some tests
 
     // --------------------------------------------------------------------------------------------------------------
@@ -501,11 +507,25 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         tablePrimaryKeys.put("TB_M_DATASTRUCTURE_VERSIONS", Arrays.asList("TB_DATASTRUCTURE_VERSIONS"));
         tablePrimaryKeys.put("TB_M_VAR_ELEM_OP_TARGETS", Arrays.asList("TARGET_FK", "OPERATION_FK"));
         tablePrimaryKeys.put("TB_M_VAR_ELEM_OP_SOURCES", Arrays.asList("SOURCE_FK", "OPERATION_FK"));
+        // It is necessary to specify the table name and the column name in upper and lower case for compatibility with the different database providers.
+        Map<String, List<String>> primaryKeysInLowerCase = new HashMap<>();
+        for (Entry<String, List<String>> primaryKey : tablePrimaryKeys.entrySet()) {
+            List<String> values = new ArrayList<>(primaryKey.getValue());
+            toLowerCase(values);
+            primaryKeysInLowerCase.put(primaryKey.getKey().toLowerCase(), values);
+        }
+        tablePrimaryKeys.putAll(primaryKeysInLowerCase);
         return tablePrimaryKeys;
     }
+
     @Override
     protected DataBaseProvider getDatabaseProvider() {
         return DataBaseProvider.valueOf(databaseProvider);
+    }
+
+    @Override
+    protected String getDefaultSchema() {
+        return defaultSchema;
     }
 
     protected ServiceContext getServiceContextWithoutPrincipal() {
@@ -630,5 +650,12 @@ public abstract class SrmBaseTest extends SdmxSrmBaseTest {
         String tempFilePath = absolutePath.substring(0, absolutePath.lastIndexOf(File.separator));
         temp.delete();
         return tempFilePath;
+    }
+
+    private void toLowerCase(List<String> strings) {
+        ListIterator<String> iterator = strings.listIterator();
+        while (iterator.hasNext()) {
+            iterator.set(iterator.next().toLowerCase());
+        }
     }
 }
