@@ -121,6 +121,7 @@ public class TsvExportationUtils {
                 writeConceptType(writer, itemResult);
                 writeRepresentation(writer, itemResult);
                 writeConceptExtends(writer, itemResult);
+                writeSdmxRelatedArtefact(writer, itemResult);
             }
             writer.flush();
             return file.getName();
@@ -184,6 +185,8 @@ public class TsvExportationUtils {
         writer.write(SrmConstants.TSV_HEADER_REPRESENTATION + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + SrmConstants.TSV_HEADER_REPRESENTATION_SUB_VALUE);
         writer.write(SrmConstants.TSV_SEPARATOR);
         writer.write(SrmConstants.TSV_HEADER_CONCEPT_EXTENDS);
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        writer.write(SrmConstants.TSV_HEADER_SDMX_RELATED_ARTEFACT);
     }
 
     // ---------------------------------------------------------------------------------------------------------------
@@ -497,6 +500,14 @@ public class TsvExportationUtils {
         writer.write(SrmConstants.TSV_SEPARATOR);
         if (!StringUtils.isBlank(extensionPoint.getConceptExtendsUrn())) {
             writer.write(extensionPoint.getConceptExtendsUrn());
+        }
+    }
+
+    private static void writeSdmxRelatedArtefact(OutputStreamWriter writer, ItemResult itemResult) throws IOException {
+        ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+        writer.write(SrmConstants.TSV_SEPARATOR);
+        if (extensionPoint.getSdmxRelatedArtefact() != null) {
+            writer.write(extensionPoint.getSdmxRelatedArtefact().toString());
         }
     }
 

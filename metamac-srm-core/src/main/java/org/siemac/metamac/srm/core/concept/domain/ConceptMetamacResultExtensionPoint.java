@@ -3,22 +3,24 @@ package org.siemac.metamac.srm.core.concept.domain;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.task.domain.RepresentationsTsv;
 
 public class ConceptMetamacResultExtensionPoint {
 
-    private final Map<String, String>            pluralName            = new HashMap<String, String>();
-    private final Map<String, String>            acronym               = new HashMap<String, String>();
-    private final Map<String, String>            descriptionSource     = new HashMap<String, String>();
-    private final Map<String, String>            context               = new HashMap<String, String>();
-    private final Map<String, String>            docMethod             = new HashMap<String, String>();
-    private final Map<String, String>            derivation            = new HashMap<String, String>();
-    private final Map<String, String>            legalActs             = new HashMap<String, String>();
+    private final Map<String, String> pluralName = new HashMap<String, String>();
+    private final Map<String, String> acronym = new HashMap<String, String>();
+    private final Map<String, String> descriptionSource = new HashMap<String, String>();
+    private final Map<String, String> context = new HashMap<String, String>();
+    private final Map<String, String> docMethod = new HashMap<String, String>();
+    private final Map<String, String> derivation = new HashMap<String, String>();
+    private final Map<String, String> legalActs = new HashMap<String, String>();
 
-    private String                               conceptTypeIdentifier = null;
-    private String                               conceptExtendsUrn     = null;
-    private RepresentationsTsv.RepresentationEum representationType    = null;
-    private String                               representationValue   = null;
+    private String conceptTypeIdentifier = null;
+    private String conceptExtendsUrn = null;
+    private RepresentationsTsv.RepresentationEum representationType = null;
+    private String representationValue = null;
+    private ConceptRoleEnum sdmxRelatedArtefact = null;
 
     public Map<String, String> getPluralName() {
         return pluralName;
@@ -78,5 +80,13 @@ public class ConceptMetamacResultExtensionPoint {
 
     public void setRepresentationValue(String representationValue) {
         this.representationValue = representationValue;
+    }
+
+    public ConceptRoleEnum getSdmxRelatedArtefact() {
+        return sdmxRelatedArtefact;
+    }
+
+    public void setSdmxRelatedArtefact(ConceptRoleEnum sdmxRelatedArtefact) {
+        this.sdmxRelatedArtefact = sdmxRelatedArtefact;
     }
 }
