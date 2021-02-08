@@ -25,6 +25,7 @@ import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamac;
 import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptRoleEnum;
 import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvocationValidator;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
@@ -141,7 +142,7 @@ public class TsvImportationUtils {
         List<String> headersExpected = Arrays.asList(SrmConstants.TSV_HEADER_CODE, SrmConstants.TSV_HEADER_PARENT, SrmConstants.TSV_HEADER_NAME, SrmConstants.TSV_HEADER_DESCRIPTION,
                 SrmConstants.TSV_HEADER_COMMENT, SrmConstants.TSV_HEADER_PLURAL_NAME, SrmConstants.TSV_HEADER_ACRONYM, SrmConstants.TSV_HEADER_DESCRIPTION_SOURCE, SrmConstants.TSV_HEADER_CONTEXT,
                 SrmConstants.TSV_HEADER_DOC_METHOD, SrmConstants.TSV_HEADER_DERIVATION, SrmConstants.TSV_HEADER_LEGAL_ACTS, SrmConstants.TSV_HEADER_CONCEPT_TYPE,
-                SrmConstants.TSV_HEADER_REPRESENTATION, SrmConstants.TSV_HEADER_CONCEPT_EXTENDS);
+                SrmConstants.TSV_HEADER_REPRESENTATION, SrmConstants.TSV_HEADER_CONCEPT_EXTENDS, SrmConstants.TSV_HEADER_SDMX_RELATED_ARTEFACT);
 
         String[] headerColumns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
         if (headerColumns == null || headerColumns.length < headersExpected.size()) {
@@ -257,6 +258,9 @@ public class TsvImportationUtils {
                 }
             } else if (SrmConstants.TSV_HEADER_CONCEPT_EXTENDS.equals(columnName)) {
                 header.setConceptExtendsPosition(i);
+                headerExpectedIndex++;
+            } else if (SrmConstants.TSV_HEADER_SDMX_RELATED_ARTEFACT.equals(columnName)) {
+                header.setSdmxRelatedArtefactPosition(i);
                 headerExpectedIndex++;
             }
         }
@@ -414,8 +418,8 @@ public class TsvImportationUtils {
             return null;
         }
         if (!SemanticIdentifierValidationUtils.isCodeSemanticIdentifier(codeIdentifier)) {
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, codeIdentifier,
-                    ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE));
+            exceptionItems
+                    .add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, codeIdentifier, ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE));
             return null;
         }
         // parent
@@ -471,8 +475,8 @@ public class TsvImportationUtils {
         }
         code.getNameableArtefact().setName(TsvImportationUtils.tsvLineToInternationalString(header.getName(), columns, code.getNameableArtefact().getName()));
         if (code.getNameableArtefact().getName() == null) {
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, code.getNameableArtefact().getCode(),
-                    ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_NAME));
+            exceptionItems.add(
+                    new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, code.getNameableArtefact().getCode(), ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_NAME));
         }
         code.getNameableArtefact().setDescription(TsvImportationUtils.tsvLineToInternationalString(header.getDescription(), columns, code.getNameableArtefact().getDescription()));
         code.getNameableArtefact().setComment(TsvImportationUtils.tsvLineToInternationalString(header.getComment(), columns, code.getNameableArtefact().getComment()));
@@ -731,8 +735,8 @@ public class TsvImportationUtils {
         }
         if (!isSemanticIdentifier(itemIdentifier, itemType)) {
 
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, itemIdentifier,
-                    ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE));
+            exceptionItems
+                    .add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_INCORRECT_SEMANTIC_IDENTIFIER, itemIdentifier, ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_CODE));
             return null;
         }
         // parent
@@ -754,9 +758,9 @@ public class TsvImportationUtils {
             }
         }
         // initialize item
-        Item item = TypeExternalArtefactsEnum.CATEGORY.equals(itemType) ? (itemsPreviousInItemScheme.get(StringUtils.isNotBlank(itemParentIdentifier)
-                ? itemParentIdentifier + "." + itemIdentifier
-                : itemIdentifier)) : itemsPreviousInItemScheme.get(itemIdentifier);
+        Item item = TypeExternalArtefactsEnum.CATEGORY.equals(itemType)
+                ? (itemsPreviousInItemScheme.get(StringUtils.isNotBlank(itemParentIdentifier) ? itemParentIdentifier + "." + itemIdentifier : itemIdentifier))
+                : itemsPreviousInItemScheme.get(itemIdentifier);
         if (item == null) {
             item = createItem(itemType);
             item.setNameableArtefact(new NameableArtefact());
@@ -787,11 +791,15 @@ public class TsvImportationUtils {
         }
         item.getNameableArtefact().setName(TsvImportationUtils.tsvLineToInternationalString(header.getName(), columns, item.getNameableArtefact().getName()));
         if (item.getNameableArtefact().getName() == null) {
-            exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, item.getNameableArtefact().getCode(),
-                    ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_NAME));
+            exceptionItems.add(
+                    new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_REQUIRED, item.getNameableArtefact().getCode(), ServiceExceptionParameters.IMPORTATION_TSV_COLUMN_NAME));
         }
         item.getNameableArtefact().setDescription(TsvImportationUtils.tsvLineToInternationalString(header.getDescription(), columns, item.getNameableArtefact().getDescription()));
         item.getNameableArtefact().setComment(TsvImportationUtils.tsvLineToInternationalString(header.getComment(), columns, item.getNameableArtefact().getComment()));
+
+        if (TypeExternalArtefactsEnum.CONCEPT.equals(itemType)) {
+            ((ConceptMetamac) item).setSdmxRelatedArtefact(tsvLineToSdmxRelatedArtefact(header, columns, item, exceptionItems));
+        }
 
         // Do not persist if any error ocurrs
         if (!CollectionUtils.isEmpty(exceptionItems)) {
@@ -819,6 +827,38 @@ public class TsvImportationUtils {
         }
 
         return item;
+    }
+
+    private static ConceptRoleEnum tsvLineToSdmxRelatedArtefact(ImportationItemsTsvHeader header, String[] columns, Item item, List<MetamacExceptionItem> exceptionItems) {
+        Integer sdmxRelatedArtefactPosition = ((ImportationConceptsTsvHeader) header).getSdmxRelatedArtefactPosition();
+
+        if (sdmxRelatedArtefactPosition != null) {
+            String sdmxRelatedArtefact = columns[sdmxRelatedArtefactPosition];
+            if (!StringUtils.isBlank(sdmxRelatedArtefact)) {
+                if (checkSdmxRelatedArtefactExists(sdmxRelatedArtefact)) {
+                    return ConceptRoleEnum.valueOf(sdmxRelatedArtefact);
+                } else {
+                    exceptionItems
+                            .add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED_SDMX_RELATED_ARTEFACT, item.getNameableArtefact().getCode(), sdmxRelatedArtefact));
+                    return null;
+                }
+            } else {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED_SDMX_RELATED_ARTEFACT, item.getNameableArtefact().getCode(), sdmxRelatedArtefact));
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    private static boolean checkSdmxRelatedArtefactExists(String sdmxRelatedArtefact) {
+        for (ConceptRoleEnum concept : ConceptRoleEnum.values()) {
+            if (concept.name().equals(sdmxRelatedArtefact)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static void checkCanCreateItem(ItemSchemeVersion itemSchemeVersion, Item item, TypeExternalArtefactsEnum itemType) throws MetamacException {

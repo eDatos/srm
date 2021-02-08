@@ -48,6 +48,7 @@ public class SrmConstants {
     public static final String             TSV_HEADER_REPRESENTATION_SUB_TYPE                                     = "type";
     public static final String             TSV_HEADER_REPRESENTATION_SUB_VALUE                                    = "value";
     public static final String             TSV_HEADER_CONCEPT_EXTENDS                                             = "concept_extends";
+    public static final String             TSV_HEADER_SDMX_RELATED_ARTEFACT                                                   = "sdmx_role";
 
     public static final String             TSV_EXPORTATION_ENCODING                                               = "UTF-8";
 

@@ -107,28 +107,28 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEn
 public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsMetamacServiceTestBase {
 
     @Autowired
-    private ConceptsMetamacService        conceptsService;
+    private ConceptsMetamacService conceptsService;
 
     @Autowired
-    private CodesMetamacService           codesService;
+    private CodesMetamacService codesService;
 
     @Autowired
     private OrganisationMetamacRepository organisationMetamacRepository;
 
     @Autowired
-    private ConceptMetamacRepository      conceptMetamacRepository;
+    private ConceptMetamacRepository conceptMetamacRepository;
 
     @Autowired
-    private ItemSchemeVersionRepository   itemSchemeRepository;
+    private ItemSchemeVersionRepository itemSchemeRepository;
 
     @Autowired
-    private ItemRepository                itemRepository;
+    private ItemRepository itemRepository;
 
     @Autowired
-    private QuantityRepository            quantityRepository;
+    private QuantityRepository quantityRepository;
 
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
-    protected EntityManager               entityManager;
+    protected EntityManager entityManager;
 
     @Override
     @Test
@@ -4104,6 +4104,109 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
+    public void testImportConceptsTsvSdmxRole() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+        String fileName = "importation-concept-02.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        TaskImportationInfo taskImportTsvInfo = conceptsService.importConceptsTsv(getServiceContextAdministrador(), conceptSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+
+        // Validate
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(0, taskImportTsvInfo.getInformationItems().size());
+
+        // Validate item scheme
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+        assertEqualsDate("2011-01-01 01:02:03", conceptSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+        assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
+        assertEquals(false, conceptSchemeVersion.getItemScheme().getIsTaskInBackground());
+
+        // Validate concepts
+
+        List<ConceptMetamacVisualisationResult> result = conceptsService.retrieveConceptsByConceptSchemeUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_8_V1, "es");
+        assertEquals(result.size(), 6);
+
+        for (int i = 0; i < result.size(); i++) {
+            assertEquals(ConceptRoleEnum.ATTRIBUTE, result.get(i).getSdmxRelatedArtefact());
+        }
+
+    }
+
+    @Test
+    public void testImportConceptsTsvSdmxRoleWithEmptyValues() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_9_V1;
+        String fileName = "importation-concept-02-error_01.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        try {
+            conceptsService.importConceptsTsv(getServiceContextAdministrador(), conceptSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+            fail("expected tsv import error");
+        } catch (MetamacException e) {
+            assertEquals(5, e.getExceptionItems().size());
+            for (int i = 0; i < 5; i++) {
+                assertEquals(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED_SDMX_RELATED_ARTEFACT.getCode(), e.getExceptionItems().get(i).getCode());
+                assertEquals(2, e.getExceptionItems().get(i).getMessageParameters().length);
+                assertEquals("", e.getExceptionItems().get(i).getMessageParameters()[1]);
+            }
+        }
+    }
+
+    @Test
+    public void testImportConceptsTsvSdmxRoleWrongConceptScheme() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_9_V1;
+        String fileName = "importation-concept-02-error_02.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        try {
+            conceptsService.importConceptsTsv(getServiceContextAdministrador(), conceptSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+            fail("expected tsv import error");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
+    @Test
+    public void testImportConceptsTsvSdmxRoleWrongRole() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String fileName = "importation-concept-02-error_03.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        try {
+            conceptsService.importConceptsTsv(getServiceContextAdministrador(), conceptSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+            fail("expected tsv import error");
+        } catch (MetamacException e) {
+            assertEquals(5, e.getExceptionItems().size());
+            for (int i = 0; i < 5; i++) {
+                assertEquals(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED_SDMX_RELATED_ARTEFACT.getCode(), e.getExceptionItems().get(i).getCode());
+                assertEquals(2, e.getExceptionItems().get(i).getMessageParameters().length);
+                assertEquals("DIMEN1SION", e.getExceptionItems().get(i).getMessageParameters()[1]);
+            }
+        }
+    }
+
+    @Test
+    public void testImportConceptsTsvSdmxRoleNoRole() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String fileName = "importation-concept-02-error_04.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        try {
+            conceptsService.importConceptsTsv(getServiceContextAdministrador(), conceptSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+            fail("expected tsv import error");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
+    @Test
     @Override
     public void testExportConceptsTsv() throws Exception {
         String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
@@ -4138,6 +4241,8 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         header.append("\t" + legalActsHeader);
         String conceptTypeHeader = "concept_type\trepresentation#type\trepresentation#value\tconcept_extends";
         header.append("\t" + conceptTypeHeader);
+        String sdmxRelatedArtefact = "sdmx_role";
+        header.append("\t" + sdmxRelatedArtefact);
 
         assertEquals(header.toString(), bufferedReader.readLine());
         Set<String> lines = new HashSet<String>();
@@ -4148,28 +4253,30 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
         }
         assertEquals(8, lines.size());
 
-        String concepto01Line = "CONCEPT01\t\tNombre conceptScheme-1-v2-concept-1\t\tName conceptScheme-1-v2-concept-1\t\tDescripción conceptScheme-1-v2-concept-1\t\t\t\tComentario conceptScheme-1-v2-concept-1\t\tComment conceptScheme-1-v2-concept-1\t\tPluralName conceptScheme-1-v2-concept-1\t\t\t\tAcrónimo conceptScheme-1-v2-concept-1\t\tAcronym conceptScheme-1-v2-concept-1\t\tDescriptionSource conceptScheme-1-v2-concept-1\t\t\t\tContext conceptScheme-1-v2-concept-1\t\t\t\tDocMethod conceptScheme-1-v2-concept-1\t\t\t\tDerivation conceptScheme-1-v2-concept-1\t\t\t\tLegalActs conceptScheme-1-v2-concept-1\t\t\t\tDIRECT\tENUMERATED\turn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST07(01.000)\turn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME07(01.000).CONCEPT01";
+        System.out.println(lines);
+
+        String concepto01Line = "CONCEPT01\t\tNombre conceptScheme-1-v2-concept-1\t\tName conceptScheme-1-v2-concept-1\t\tDescripción conceptScheme-1-v2-concept-1\t\t\t\tComentario conceptScheme-1-v2-concept-1\t\tComment conceptScheme-1-v2-concept-1\t\tPluralName conceptScheme-1-v2-concept-1\t\t\t\tAcrónimo conceptScheme-1-v2-concept-1\t\tAcronym conceptScheme-1-v2-concept-1\t\tDescriptionSource conceptScheme-1-v2-concept-1\t\t\t\tContext conceptScheme-1-v2-concept-1\t\t\t\tDocMethod conceptScheme-1-v2-concept-1\t\t\t\tDerivation conceptScheme-1-v2-concept-1\t\t\t\tLegalActs conceptScheme-1-v2-concept-1\t\t\t\tDIRECT\tENUMERATED\turn:sdmx:org.sdmx.infomodel.codelist.Codelist=SDMX01:CODELIST07(01.000)\turn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME07(01.000).CONCEPT01\tATTRIBUTE";
         assertTrue(lines.contains(concepto01Line));
 
-        String concepto02Line = "CONCEPT02\t\tNombre conceptScheme-1-v2-concept-2\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        String concepto02Line = "CONCEPT02\t\tNombre conceptScheme-1-v2-concept-2\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDIMENSION";
         assertTrue(lines.contains(concepto02Line));
 
-        String concepto0201Line = "CONCEPT0201\tCONCEPT02\tNombre conceptScheme-1-v2-concept-2-1\t\tName conceptScheme-1-v2-concept-2-1\t\tDescripción conceptScheme-1-v2-concept-2-1\t\tDescription conceptScheme-1-v2-concept-2-1\t\t\t\t\t\t\t\t\t\tAcrónimo conceptScheme-1-v2-concept-2-1\t\tAcronym conceptScheme-1-v2-concept-2-1\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        String concepto0201Line = "CONCEPT0201\tCONCEPT02\tNombre conceptScheme-1-v2-concept-2-1\t\tName conceptScheme-1-v2-concept-2-1\t\tDescripción conceptScheme-1-v2-concept-2-1\t\tDescription conceptScheme-1-v2-concept-2-1\t\t\t\t\t\t\t\t\t\tAcrónimo conceptScheme-1-v2-concept-2-1\t\tAcronym conceptScheme-1-v2-concept-2-1\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPRIMARY_MEASURE";
         assertTrue(lines.contains(concepto0201Line));
 
-        String concepto020101Line = "CONCEPT020101\tCONCEPT0201\tNombre conceptScheme-1-v2-concept-2-1-1\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        String concepto020101Line = "CONCEPT020101\tCONCEPT0201\tNombre conceptScheme-1-v2-concept-2-1-1\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tATTRIBUTE";
         assertTrue(lines.contains(concepto020101Line));
 
-        String concepto03Line = "CONCEPT03\t\tnombre concept-3\t\tname concept-3\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDIRECT\t\t\turn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME07(01.000).CONCEPT01";
+        String concepto03Line = "CONCEPT03\t\tnombre concept-3\t\tname concept-3\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDIRECT\t\t\turn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=SDMX01:CONCEPTSCHEME07(01.000).CONCEPT01\tATTRIBUTE";
         assertTrue(lines.contains(concepto03Line));
 
-        String concepto04Line = "CONCEPT04\t\tnombre concept-4\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        String concepto04Line = "CONCEPT04\t\tnombre concept-4\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tATTRIBUTE";
         assertTrue(lines.contains(concepto04Line));
 
-        String concepto0401Line = "CONCEPT0401\tCONCEPT04\tnombre concept 4-1\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        String concepto0401Line = "CONCEPT0401\tCONCEPT04\tnombre concept 4-1\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tATTRIBUTE";
         assertTrue(lines.contains(concepto0401Line));
 
-        String concepto040101Line = "CONCEPT040101\tCONCEPT0401\tNombre conceptScheme-1-v2-concept-4-1-1\t\tName conceptScheme-1-v2-concept-4-1-1\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+        String concepto040101Line = "CONCEPT040101\tCONCEPT0401\tNombre conceptScheme-1-v2-concept-4-1-1\t\tName conceptScheme-1-v2-concept-4-1-1\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tATTRIBUTE";
         assertTrue(lines.contains(concepto040101Line));
 
         bufferedReader.close();

@@ -115,68 +115,68 @@ import com.arte.statistic.sdmx.v2_1.domain.enume.srm.domain.RepresentationTypeEn
 @Service("conceptsMetamacService")
 public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
-    private static Logger                         logger = LoggerFactory.getLogger(ConceptsMetamacServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(ConceptsMetamacServiceImpl.class);
 
     @Autowired
-    private BaseService                           baseService;
+    private BaseService baseService;
 
     @Autowired
-    private ConceptsService                       conceptsService;
+    private ConceptsService conceptsService;
 
     @Autowired
-    private CategoriesMetamacService              categoriesMetamacService;
+    private CategoriesMetamacService categoriesMetamacService;
 
     @Autowired
-    private CodesMetamacService                   codesMetamacService;
+    private CodesMetamacService codesMetamacService;
 
     @Autowired
-    private ItemSchemeVersionRepository           itemSchemeVersionRepository;
+    private ItemSchemeVersionRepository itemSchemeVersionRepository;
 
     @Autowired
-    private ConceptRepository                     conceptRepository;
+    private ConceptRepository conceptRepository;
 
     @Autowired
-    private ItemSchemeRepository                  itemSchemeRepository;
+    private ItemSchemeRepository itemSchemeRepository;
 
     @Autowired
     @Qualifier("conceptSchemeLifeCycle")
-    private LifeCycle                             conceptSchemeLifeCycle;
+    private LifeCycle conceptSchemeLifeCycle;
 
     @Autowired
-    private SrmConfiguration                      srmConfiguration;
+    private SrmConfiguration srmConfiguration;
 
     @Autowired
-    private SrmValidation                         srmValidation;
+    private SrmValidation srmValidation;
 
     @Autowired
-    private CodelistVersionMetamacRepository      codelistVersionMetamacRepository;
+    private CodelistVersionMetamacRepository codelistVersionMetamacRepository;
 
     @Autowired
     private ConceptSchemeVersionMetamacRepository conceptSchemeVersionMetamacRepository;
 
     @Autowired
     @Qualifier("conceptsVersioningCallbackMetamac")
-    private ItemSchemesCopyCallback               conceptsVersioningCallback;
+    private ItemSchemesCopyCallback conceptsVersioningCallback;
 
     @Autowired
     @Qualifier("conceptsCopyCallbackMetamac")
-    private ItemSchemesCopyCallback               conceptsCopyCallback;
+    private ItemSchemesCopyCallback conceptsCopyCallback;
 
     @Autowired
     @Qualifier("conceptsDummyVersioningCallbackMetamac")
-    private ItemSchemesCopyCallback               conceptsDummyVersioningCallback;
+    private ItemSchemesCopyCallback conceptsDummyVersioningCallback;
 
     @Autowired
-    private TasksMetamacService                   tasksMetamacService;
+    private TasksMetamacService tasksMetamacService;
 
     @Autowired
-    private InternationalStringRepository         internationalStringRepository;
+    private InternationalStringRepository internationalStringRepository;
 
     @Autowired
-    private ExternalItemRepository                externalItemRepository;
+    private ExternalItemRepository externalItemRepository;
 
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
-    protected EntityManager                       entityManager;
+    protected EntityManager entityManager;
 
     public ConceptsMetamacServiceImpl() {
     }
@@ -839,7 +839,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                     }
                     String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
                     if (columns.length != header.getColumnsSize()) {
-                        exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber));
+                        exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber++));
                         continue;
                     }
                     // Transform concept and add to list to persist
@@ -1053,7 +1053,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         List<String> languages = srmConfiguration.retrieveLanguages();
 
-        return TsvExportationUtils.exportConcepts(items, languages);
+        return TsvExportationUtils.exportConcepts(conceptSchemeVersion, items, languages);
     }
 
     @Override
