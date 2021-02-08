@@ -4104,6 +4104,109 @@ public class ConceptsMetamacServiceTest extends SrmBaseTest implements ConceptsM
     }
 
     @Test
+    public void testImportConceptsTsvSdmxRole() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_8_V1;
+        String fileName = "importation-concept-02.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        TaskImportationInfo taskImportTsvInfo = conceptsService.importConceptsTsv(getServiceContextAdministrador(), conceptSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+
+        // Validate
+        assertEquals(false, taskImportTsvInfo.getIsPlannedInBackground());
+        assertNull(taskImportTsvInfo.getJobKey());
+        assertEquals(0, taskImportTsvInfo.getInformationItems().size());
+
+        // Validate item scheme
+        ConceptSchemeVersionMetamac conceptSchemeVersion = conceptsService.retrieveConceptSchemeByUrn(getServiceContextAdministrador(), conceptSchemeUrn);
+        assertEqualsDate("2011-01-01 01:02:03", conceptSchemeVersion.getItemScheme().getResourceCreatedDate().toDate());
+        assertTrue(DateUtils.isSameDay(new Date(), conceptSchemeVersion.getItemScheme().getResourceLastUpdated().toDate()));
+        assertEquals(false, conceptSchemeVersion.getItemScheme().getIsTaskInBackground());
+
+        // Validate concepts
+
+        List<ConceptMetamacVisualisationResult> result = conceptsService.retrieveConceptsByConceptSchemeUrn(getServiceContextAdministrador(), CONCEPT_SCHEME_8_V1, "es");
+        assertEquals(result.size(), 6);
+
+        for (int i = 0; i < result.size(); i++) {
+            assertEquals(ConceptRoleEnum.ATTRIBUTE, result.get(i).getSdmxRelatedArtefact());
+        }
+
+    }
+
+    @Test
+    public void testImportConceptsTsvSdmxRoleWithEmptyValues() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_9_V1;
+        String fileName = "importation-concept-02-error_01.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        try {
+            conceptsService.importConceptsTsv(getServiceContextAdministrador(), conceptSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+            fail("expected tsv import error");
+        } catch (MetamacException e) {
+            assertEquals(5, e.getExceptionItems().size());
+            for (int i = 0; i < 5; i++) {
+                assertEquals(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED_SDMX_RELATED_ARTEFACT.getCode(), e.getExceptionItems().get(i).getCode());
+                assertEquals(2, e.getExceptionItems().get(i).getMessageParameters().length);
+                assertEquals("", e.getExceptionItems().get(i).getMessageParameters()[1]);
+            }
+        }
+    }
+
+    @Test
+    public void testImportConceptsTsvSdmxRoleWrongConceptScheme() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_9_V1;
+        String fileName = "importation-concept-02-error_02.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        try {
+            conceptsService.importConceptsTsv(getServiceContextAdministrador(), conceptSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+            fail("expected tsv import error");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
+    @Test
+    public void testImportConceptsTsvSdmxRoleWrongRole() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String fileName = "importation-concept-02-error_03.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        try {
+            conceptsService.importConceptsTsv(getServiceContextAdministrador(), conceptSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+            fail("expected tsv import error");
+        } catch (MetamacException e) {
+            assertEquals(5, e.getExceptionItems().size());
+            for (int i = 0; i < 5; i++) {
+                assertEquals(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED_SDMX_RELATED_ARTEFACT.getCode(), e.getExceptionItems().get(i).getCode());
+                assertEquals(2, e.getExceptionItems().get(i).getMessageParameters().length);
+                assertEquals("DIMEN1SION", e.getExceptionItems().get(i).getMessageParameters()[1]);
+            }
+        }
+    }
+
+    @Test
+    public void testImportConceptsTsvSdmxRoleNoRole() throws Exception {
+        String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
+        String fileName = "importation-concept-02-error_04.tsv";
+        File file = new File(this.getClass().getResource("/tsv/" + fileName).getFile());
+        boolean updateAlreadyExisting = false;
+
+        try {
+            conceptsService.importConceptsTsv(getServiceContextAdministrador(), conceptSchemeUrn, file, fileName, updateAlreadyExisting, Boolean.TRUE);
+            fail("expected tsv import error");
+        } catch (MetamacException e) {
+            assertEquals(1, e.getExceptionItems().size());
+            assertEquals(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT.getCode(), e.getExceptionItems().get(0).getCode());
+        }
+    }
+
+    @Test
     @Override
     public void testExportConceptsTsv() throws Exception {
         String conceptSchemeUrn = CONCEPT_SCHEME_1_V2;
