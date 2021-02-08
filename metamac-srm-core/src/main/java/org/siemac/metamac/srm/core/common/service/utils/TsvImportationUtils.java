@@ -842,6 +842,9 @@ public class TsvImportationUtils {
                             .add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED_SDMX_RELATED_ARTEFACT, item.getNameableArtefact().getCode(), sdmxRelatedArtefact));
                     return null;
                 }
+            } else {
+                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED_SDMX_RELATED_ARTEFACT, item.getNameableArtefact().getCode(), sdmxRelatedArtefact));
+                return null;
             }
         }
 

@@ -839,7 +839,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
                     }
                     String[] columns = StringUtils.splitPreserveAllTokens(line, SrmConstants.TSV_SEPARATOR);
                     if (columns.length != header.getColumnsSize()) {
-                        exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber));
+                        exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_LINE_INCORRECT, lineNumber++));
                         continue;
                     }
                     // Transform concept and add to list to persist
