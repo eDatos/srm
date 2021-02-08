@@ -13,7 +13,7 @@ public class ImportationConceptsTsvHeader extends ImportationItemsTsvHeader {
     private int conceptTypePosition; // Number of columns of TSV File
     private RepresentationsTsv representation;
     private int conceptExtendsPosition; // Number of column for Parent field (zero-index based)
-    private int sdmxRelatedArtefactPosition;
+    private Integer sdmxRelatedArtefactPosition = null;
 
     public InternationalStringTsv getPluralName() {
         return pluralName;
@@ -95,11 +95,11 @@ public class ImportationConceptsTsvHeader extends ImportationItemsTsvHeader {
         this.conceptExtendsPosition = conceptExtendsPosition;
     }
 
-    public int getSdmxRelatedArtefactPosition() {
+    public Integer getSdmxRelatedArtefactPosition() {
         return sdmxRelatedArtefactPosition;
     }
 
-    public void setSdmxRelatedArtefactPosition(int sdmxRelatedArtefactPosition) {
+    public void setSdmxRelatedArtefactPosition(Integer sdmxRelatedArtefactPosition) {
         this.sdmxRelatedArtefactPosition = sdmxRelatedArtefactPosition;
     }
 

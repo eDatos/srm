@@ -830,13 +830,18 @@ public class TsvImportationUtils {
     }
 
     private static ConceptRoleEnum tsvLineToSdmxRelatedArtefact(ImportationItemsTsvHeader header, String[] columns, Item item, List<MetamacExceptionItem> exceptionItems) {
-        String sdmxRelatedArtefact = columns[((ImportationConceptsTsvHeader) header).getSdmxRelatedArtefactPosition()];
-        if (!StringUtils.isBlank(sdmxRelatedArtefact)) {
-            if (checkSdmxRelatedArtefactExists(sdmxRelatedArtefact)) {
-                return ConceptRoleEnum.valueOf(sdmxRelatedArtefact);
-            } else {
-                exceptionItems.add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED_SDMX_RELATED_ARTEFACT, item.getNameableArtefact().getCode(), sdmxRelatedArtefact));
-                return null;
+        Integer sdmxRelatedArtefactPosition = ((ImportationConceptsTsvHeader) header).getSdmxRelatedArtefactPosition();
+
+        if (sdmxRelatedArtefactPosition != null) {
+            String sdmxRelatedArtefact = columns[sdmxRelatedArtefactPosition];
+            if (!StringUtils.isBlank(sdmxRelatedArtefact)) {
+                if (checkSdmxRelatedArtefactExists(sdmxRelatedArtefact)) {
+                    return ConceptRoleEnum.valueOf(sdmxRelatedArtefact);
+                } else {
+                    exceptionItems
+                            .add(new MetamacExceptionItem(ServiceExceptionType.IMPORTATION_TSV_METADATA_UNEXPECTED_SDMX_RELATED_ARTEFACT, item.getNameableArtefact().getCode(), sdmxRelatedArtefact));
+                    return null;
+                }
             }
         }
 

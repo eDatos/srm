@@ -15,6 +15,8 @@ import org.siemac.metamac.srm.core.code.domain.CodeMetamacResultExtensionPoint;
 import org.siemac.metamac.srm.core.code.domain.VariableElementResult;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.concept.domain.ConceptMetamacResultExtensionPoint;
+import org.siemac.metamac.srm.core.concept.domain.ConceptSchemeVersionMetamac;
+import org.siemac.metamac.srm.core.concept.enume.domain.ConceptSchemeTypeEnum;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 
 import com.arte.statistic.sdmx.srm.core.common.domain.ItemResult;
@@ -94,7 +96,7 @@ public class TsvExportationUtils {
     // CONCEPTS
     // ---------------------------------------------------------------------------------------------------------------
 
-    public static String exportConcepts(List<ItemResult> items, List<String> languages) throws MetamacException {
+    public static String exportConcepts(ConceptSchemeVersionMetamac conceptSchemeVersion, List<ItemResult> items, List<String> languages) throws MetamacException {
         OutputStream outputStream = null;
         OutputStreamWriter writer = null;
         try {
@@ -102,7 +104,7 @@ public class TsvExportationUtils {
             outputStream = new FileOutputStream(file);
             writer = new OutputStreamWriter(outputStream, SrmConstants.TSV_EXPORTATION_ENCODING);
 
-            writeConceptsHeader(writer, languages);
+            writeConceptsHeader(conceptSchemeVersion, writer, languages);
 
             for (ItemResult itemResult : items) {
                 writer.write(SrmConstants.TSV_LINE_SEPARATOR);
@@ -121,7 +123,7 @@ public class TsvExportationUtils {
                 writeConceptType(writer, itemResult);
                 writeRepresentation(writer, itemResult);
                 writeConceptExtends(writer, itemResult);
-                writeSdmxRelatedArtefact(writer, itemResult);
+                writeSdmxRelatedArtefact(conceptSchemeVersion, writer, itemResult);
             }
             writer.flush();
             return file.getName();
@@ -133,7 +135,7 @@ public class TsvExportationUtils {
         }
     }
 
-    private static void writeConceptsHeader(OutputStreamWriter writer, List<String> languages) throws IOException {
+    private static void writeConceptsHeader(ConceptSchemeVersionMetamac conceptSchemeVersion, OutputStreamWriter writer, List<String> languages) throws IOException {
         writer.write(SrmConstants.TSV_HEADER_CODE);
         writer.write(SrmConstants.TSV_SEPARATOR);
         writer.write(SrmConstants.TSV_HEADER_PARENT);
@@ -185,8 +187,11 @@ public class TsvExportationUtils {
         writer.write(SrmConstants.TSV_HEADER_REPRESENTATION + SrmConstants.TSV_HEADER_INTERNATIONAL_STRING_SEPARATOR + SrmConstants.TSV_HEADER_REPRESENTATION_SUB_VALUE);
         writer.write(SrmConstants.TSV_SEPARATOR);
         writer.write(SrmConstants.TSV_HEADER_CONCEPT_EXTENDS);
-        writer.write(SrmConstants.TSV_SEPARATOR);
-        writer.write(SrmConstants.TSV_HEADER_SDMX_RELATED_ARTEFACT);
+
+        if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersion.getType())) {
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            writer.write(SrmConstants.TSV_HEADER_SDMX_RELATED_ARTEFACT);
+        }
     }
 
     // ---------------------------------------------------------------------------------------------------------------
@@ -503,11 +508,13 @@ public class TsvExportationUtils {
         }
     }
 
-    private static void writeSdmxRelatedArtefact(OutputStreamWriter writer, ItemResult itemResult) throws IOException {
-        ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
-        writer.write(SrmConstants.TSV_SEPARATOR);
-        if (extensionPoint.getSdmxRelatedArtefact() != null) {
-            writer.write(extensionPoint.getSdmxRelatedArtefact().toString());
+    private static void writeSdmxRelatedArtefact(ConceptSchemeVersionMetamac conceptSchemeVersion, OutputStreamWriter writer, ItemResult itemResult) throws IOException {
+        if (ConceptSchemeTypeEnum.OPERATION.equals(conceptSchemeVersion.getType()) || ConceptSchemeTypeEnum.TRANSVERSAL.equals(conceptSchemeVersion.getType())) {
+            ConceptMetamacResultExtensionPoint extensionPoint = (ConceptMetamacResultExtensionPoint) itemResult.getExtensionPoint();
+            writer.write(SrmConstants.TSV_SEPARATOR);
+            if (extensionPoint.getSdmxRelatedArtefact() != null) {
+                writer.write(extensionPoint.getSdmxRelatedArtefact().toString());
+            }
         }
     }
 

@@ -1053,7 +1053,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
 
         List<String> languages = srmConfiguration.retrieveLanguages();
 
-        return TsvExportationUtils.exportConcepts(items, languages);
+        return TsvExportationUtils.exportConcepts(conceptSchemeVersion, items, languages);
     }
 
     @Override
