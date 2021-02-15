@@ -1985,12 +1985,6 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
 
             // Variable elements
             if (CollectionUtils.isEmpty(exceptionItems)) {
-
-                // Retrieve previous variable elements and prepare map with variable elements must be updated
-                Map<String, VariableElement> variableElementsPreviousInVariableByCode = new HashMap<String, VariableElement>();
-                for (VariableElement variableElement : variable.getVariableElements()) {
-                    variableElementsPreviousInVariableByCode.put(variableElement.getIdentifiableArtefact().getCode(), variableElement);
-                }
                 variableElementsToPersistByCode = new HashMap<String, VariableElement>();
 
                 // If geographical, retrieve all codes can be geographical granularity. To improve efficiency, In one query instead one query for line
@@ -2015,8 +2009,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
                         continue;
                     }
                     // Transform variable element and add to list to persist
-                    VariableElement variableElement = tsvLineToVariableElement(header, columns, lineNumber, variable, updateAlreadyExisting, variableElementsPreviousInVariableByCode,
-                            variableElementsToPersistByCode, codesCanBeGeographicalGranularityByCode, exceptionItems, informationItems);
+                    VariableElement variableElement = tsvLineToVariableElement(header, columns, lineNumber, variable, updateAlreadyExisting, variableElementsToPersistByCode,
+                            codesCanBeGeographicalGranularityByCode, exceptionItems, informationItems);
                     if (variableElement != null) {
                         variableElementsToPersistByCode.put(variableElement.getIdentifiableArtefact().getCode(), variableElement);
                     }
@@ -3285,8 +3279,8 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
      * Transforms tsv line to VariableElement. IMPORTANT: Do not execute save or update operation
      */
     private VariableElement tsvLineToVariableElement(ImportationVariableElementsTsvHeader header, String[] columns, int lineNumber, Variable variable, boolean updateAlreadyExisting,
-            Map<String, VariableElement> variableElementsPreviousInVariable, Map<String, VariableElement> variableElementsToPersistByCode,
-            Map<String, CodeMetamac> codesCanBeGeographicalGranularityByCode, List<MetamacExceptionItem> exceptionItems, List<MetamacExceptionItem> infoItems) throws MetamacException {
+            Map<String, VariableElement> variableElementsToPersistByCode, Map<String, CodeMetamac> codesCanBeGeographicalGranularityByCode, List<MetamacExceptionItem> exceptionItems,
+            List<MetamacExceptionItem> infoItems) throws MetamacException {
 
         // semantic identifier
         String codeIdentifier = columns[header.getCodePosition()];
@@ -3304,7 +3298,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             return null;
         }
         // init variable element
-        VariableElement variableElement = variableElementsPreviousInVariable.get(codeIdentifier);
+        VariableElement variableElement = getVariableElementsPreviousInVariable(variable, codeIdentifier);
         if (variableElement == null) {
             variableElement = new VariableElement();
             variableElement.setVariable(variable);
@@ -3366,6 +3360,21 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
             exceptionItems.add(metamacExceptionItem);
         }
         return variableElement;
+    }
+
+    private VariableElement getVariableElementsPreviousInVariable(Variable variable, String codeIdentifier) {
+        // @formatter:off
+        List<ConditionalCriteria> conditions = ConditionalCriteriaBuilder.criteriaFor(VariableElement.class)
+                .withProperty(VariableElementProperties.variable().nameableArtefact().urn()).eq(variable.getNameableArtefact().getUrn())
+            .and()
+                .withProperty(VariableElementProperties.identifiableArtefact().code()).eq(codeIdentifier).distinctRoot().build();;
+        // @formatter:on
+
+        PagingParameter pagingParameter = PagingParameter.rowAccess(0, Integer.MAX_VALUE, true);
+
+        PagedResult<VariableElement> variableElementPagedResult = getVariableElementRepository().findByCondition(conditions, pagingParameter);
+
+        return (!CollectionUtils.isEmpty(variableElementPagedResult.getValues()) ? variableElementPagedResult.getValues().get(0) : null);
     }
 
     /**
