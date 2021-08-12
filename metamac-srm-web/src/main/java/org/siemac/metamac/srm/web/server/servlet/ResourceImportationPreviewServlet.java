@@ -114,7 +114,7 @@ public class ResourceImportationPreviewServlet extends HttpServlet {
 
             String jsonMessage = serializeResourcesJson(resources);
 
-            sendSuccessImportationJsonResponse(response, jsonMessage);
+            sendSuccessImportationJsonResponse(response, StringEscapeUtils.escapeJavaScript(jsonMessage));
 
         } catch (Exception e) {
             String errorMessage = null;
