@@ -60,11 +60,12 @@
 
     <!-- Languages -->
     <extend-property name="locale" values="es" />
+    <extend-property name="locale" values="ca" />
     <extend-property name="locale" values="en" />
     <extend-property name="locale" values="pt" />
 
     <!-- Default locale -->
-    <set-property name="locale" value="en,es,pt" />
+    <set-property name="locale" value="en,es,ca,pt" />
 
     <!-- Fallback locale -->
     <set-property-fallback name="locale" value="en" />
