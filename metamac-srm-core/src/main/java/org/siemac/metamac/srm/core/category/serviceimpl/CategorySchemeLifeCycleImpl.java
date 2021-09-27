@@ -214,6 +214,11 @@ public class CategorySchemeLifeCycleImpl extends LifeCycleImpl {
             return Boolean.FALSE;
         }
 
+        @Override
+        public void notifyPublication(Object message) {
+            // TODO EDATOS-3433
+        }
+
         private CategorySchemeVersionMetamac getCategorySchemeVersionMetamac(Object srmResource) {
             return (CategorySchemeVersionMetamac) srmResource;
         }

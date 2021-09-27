@@ -1,9 +1,6 @@
 package org.siemac.metamac.srm.core.code.serviceimpl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
 import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder;
@@ -15,18 +12,17 @@ import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItemBuilder;
 import org.siemac.metamac.core.common.util.shared.VersionUtil;
 import org.siemac.metamac.srm.core.base.domain.SrmLifeCycleMetadata;
-import org.siemac.metamac.srm.core.code.domain.CodeMetamacRepository;
-import org.siemac.metamac.srm.core.code.domain.CodelistOpennessVisualisation;
-import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
-import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
-import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
+import org.siemac.metamac.srm.core.code.domain.*;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableTypeEnum;
+import org.siemac.metamac.srm.core.code.mapper.CodesDo2DtoMapper;
 import org.siemac.metamac.srm.core.code.serviceapi.CodesMetamacService;
 import org.siemac.metamac.srm.core.common.LifeCycleImpl;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionParameters;
 import org.siemac.metamac.srm.core.common.error.ServiceExceptionType;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.stream.mappers.impl.CodelistDo2AvroMapper;
+import org.siemac.metamac.srm.core.serviceapi.StreamMessagingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +32,8 @@ import com.arte.statistic.sdmx.srm.core.base.serviceapi.BaseService;
 import com.arte.statistic.sdmx.srm.core.base.serviceimpl.utils.ValidationUtils;
 import com.arte.statistic.sdmx.srm.core.code.domain.CodeRepository;
 import com.arte.statistic.sdmx.srm.core.code.serviceapi.CodesService;
+
+import javax.annotation.PostConstruct;
 
 @Service("codelistLifeCycle")
 public class CodelistLifeCycleImpl extends LifeCycleImpl {
@@ -61,8 +59,24 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
     @Autowired
     private BaseService                      baseService;
 
+    @Autowired
+    private CodelistDo2AvroMapper            codelistDo2AvroMapper;
+
+    @Autowired
+    private CodesDo2DtoMapper                codelistDo2DtoMapper;
+
+    @Autowired
+    private StreamMessagingService           streamMessagingService;
+
+    CodelistStreamMessagingCallbackImpl codelistStreamMessagingCallback;
+
     public CodelistLifeCycleImpl() {
         this.callback = new CodelistLifeCycleCallback();
+    }
+
+    @PostConstruct
+    public void initCodelistStreamMessagingCallback() {
+        this.codelistStreamMessagingCallback = new CodelistStreamMessagingCallbackImpl(codelistDo2AvroMapper);
     }
 
     private class CodelistLifeCycleCallback implements LifeCycleCallback {
@@ -251,6 +265,11 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
                 return Boolean.TRUE;
             }
             return Boolean.FALSE;
+        }
+
+        @Override
+        public void notifyPublication(Object message) {
+            streamMessagingService.sendMessage(codelistDo2DtoMapper.codelistMetamacDoToDto((CodelistVersionMetamac) message), codelistStreamMessagingCallback);
         }
 
         private CodelistVersionMetamac getCodelistVersionMetamac(Object srmResource) {

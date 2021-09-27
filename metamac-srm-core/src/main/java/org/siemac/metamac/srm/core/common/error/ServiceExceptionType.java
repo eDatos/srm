@@ -131,4 +131,8 @@ public class ServiceExceptionType extends com.arte.statistic.sdmx.srm.core.commo
     public static final CommonServiceExceptionType PUBLISH_INTERNALLY_CODELIST_JOB_ERROR_AND_CANT_MARK_AS_ERROR = create(
             "notice_message.srm.exception.publish_internally_codelist_job.fails_and_cant_mark_as_error");
 
+    // Kafka
+    public static final CommonServiceExceptionType UNABLE_TO_SEND_STREAM_MESSAGING_TO_STREAM_MESSAGING_SERVER = create("stream_message.srm.exception.send_message.fails");
+    public static final CommonServiceExceptionType STREAM_MESSAGING_MISSING_MANDATORY_SETTINGS                = create("stream_message.srm.exception.config.missing_settings");
+
 }

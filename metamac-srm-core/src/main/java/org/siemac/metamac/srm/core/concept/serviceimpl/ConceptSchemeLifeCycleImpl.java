@@ -258,6 +258,11 @@ public class ConceptSchemeLifeCycleImpl extends LifeCycleImpl {
             return Boolean.FALSE;
         }
 
+        @Override
+        public void notifyPublication(Object message) {
+            // TODO EDATOS-3433
+        }
+
         private ConceptSchemeVersionMetamac getConceptSchemeVersionMetamac(Object srmResource) {
             return (ConceptSchemeVersionMetamac) srmResource;
         }

@@ -235,6 +235,11 @@ public class DsdLifeCycleImpl extends LifeCycleImpl {
             return Boolean.FALSE;
         }
 
+        @Override
+        public void notifyPublication(Object message) {
+            // TODO EDATOS-3433
+        }
+
         /**********************************************************************
          * PRIVATES
          **********************************************************************/

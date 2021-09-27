@@ -238,6 +238,11 @@ public class OrganisationSchemeLifeCycleImpl extends LifeCycleImpl {
             return Boolean.FALSE;
         }
 
+        @Override
+        public void notifyPublication(Object message) {
+            // TODO EDATOS-3433
+        }
+
         private OrganisationSchemeVersionMetamac getOrganisationSchemeVersionMetamac(Object srmResource) {
             return (OrganisationSchemeVersionMetamac) srmResource;
         }

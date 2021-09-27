@@ -1,0 +1,107 @@
+{
+  "type": "record",
+  "name": "CategorisationAvro",
+  "namespace": "org.siemac.metamac.srm.core.stream.message",
+  "fields": [
+    {
+      "name": "category",
+      "type": "RelatedResourceAvro"
+    },
+    {
+      "name": "versionLogic",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "validFrom",
+      "type": ["null", "DatetimeAvro"]
+    },
+    {
+      "name": "validTo",
+      "type": ["null", "DatetimeAvro"]
+    },
+    {
+      "name": "finalLogic",
+      "type": ["null", "boolean"]
+    },
+    {
+      "name": "isExternalReference",
+      "type": ["null", "boolean"]
+    },
+    {
+      "name": "structureURL",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "serviceURL",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "replacedByVersion",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "replaceToVersion",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "maintainer",
+      "type": ["null", "RelatedResourceAvro"]
+    },
+    {
+      "name": "name",
+      "type": ["null", "InternationalStringAvro"]
+    },
+    {
+      "name": "description",
+      "type": ["null", "InternationalStringAvro"]
+    },
+    {
+      "name": "comment",
+      "type": ["null", "InternationalStringAvro"]
+    },
+    {
+      "name": "code",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "uriProvider",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "urn",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "urnProvider",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "createdDate",
+      "type": ["null", "DatetimeAvro"]
+    },
+    {
+      "name": "createdBy",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "lastUpdated",
+      "type": ["null", "DatetimeAvro"]
+    },
+    {
+      "name": "lastUpdatedBy",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "uuid",
+      "type": "string"
+    },
+    {
+      "name": "version",
+      "type": "long"
+    },
+    {
+      "name": "artefactCategorisedUrn",
+      "type": ["null", "string"]
+    }
+  ]
+}
