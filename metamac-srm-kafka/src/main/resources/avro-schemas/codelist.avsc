@@ -14,47 +14,36 @@
     "namespace": "org.siemac.metamac.srm.core.stream.message",
     "fields": [
       {
-        "name": "isRecommended",
-        "type": ["null", "boolean"]
+        "name": "uuid",
+        "type": [
+          "null",
+          "string"
+        ]
+      },
+      {
+        "name": "name",
+        "type": ["null", "InternationalStringAvro"]
       },
       {
         "name": "shortName",
-        "type": ["null", "InternationalStringAvro"]
-      },
-      {
-        "name": "descriptionSource",
-        "type": ["null", "InternationalStringAvro"]
-      },
-      {
-        "name": "accessType",
-        "type": ["null", "AccessTypeEnumAvro"]
-      },
-      {
-        "name": "family",
-        "type": ["null", "RelatedResourceAvro"]
-      },
-      {
-        "name": "variable",
-        "type": ["null", "RelatedResourceAvro"]
-      },
-      {
-        "name": "isPartial",
-        "type": ["null", "boolean"]
-      },
-      {
-        "name": "uuid",
-        "type": "string"
-      },
-      {
-        "name": "version",
-        "type": "long"
-      },
-      {
-        "name": "uriProvider",
-        "type": ["null", "string"]
+        "type": [
+          "null",
+          "InternationalStringAvro"
+        ]
       },
       {
         "name": "urn",
+        "type": ["null", "string"]
+      },
+      {
+        "name": "version",
+        "type": [
+          "null",
+          "long"
+        ]
+      },
+      {
+        "name": "uriProvider",
         "type": ["null", "string"]
       },
       {
@@ -62,31 +51,63 @@
         "type": ["null", "string"]
       },
       {
-        "name": "name",
+        "name": "description",
         "type": ["null", "InternationalStringAvro"]
       },
       {
-        "name": "description",
-        "type": ["null", "InternationalStringAvro"]
+        "name": "descriptionSource",
+        "type": [
+          "null",
+          "InternationalStringAvro"
+        ]
+      },
+      {
+        "name": "isPartial",
+        "type": [
+          "null",
+          "boolean"
+        ]
       },
       {
         "name": "finalLogic",
         "type": ["null", "boolean"]
       },
       {
-        "name": "isExternalReference",
-        "type": "boolean"
-      },
-      {
         "name": "maintainer",
         "type": ["null", "RelatedResourceAvro"]
+      },
+      {
+        "name": "procStatus",
+        "type": ["null", "ProcStatusEnumAvro"]
       },
       {
         "name": "categorizations",
         "type": {
           "type": "array",
-          "items": "CategorisationAvro"
+          "items": "RelatedResourceAvro"
         }
+      },
+      {
+        "name": "accessType",
+        "type": [
+          "null",
+          "AccessTypeEnumAvro"
+        ]
+      },
+      {
+        "name": "isRecommended",
+        "type": [
+          "null",
+          "boolean"
+        ]
+      },
+      {
+        "name": "family",
+        "type": ["null", "RelatedResourceAvro"]
+      },
+      {
+        "name": "variable",
+        "type": "RelatedResourceAvro"
       }
     ]
   }
