@@ -111,7 +111,7 @@ public class StreamMessagingServiceImpl implements StreamMessagingService, Appli
         A messageContentAvro = mapper.toAvro(messageContent);
 
         MessageBase<Object, SpecificRecordBase> message = new AvroMessage<>(key, messageContentAvro);
-        String topic = configurationService.retrieveKafkaTopicOperationsPublication(); // TODO EDATOS-3433: choose between having a unique topic for every message (and change the retrieve method) or getting each one from streamMessagingCallback
+        String topic = "CODELIST_PUBLICATIONS"; // TODO EDATOS-3433: choose between having a unique topic for every message (and change the retrieve method) or getting each one from streamMessagingCallback
 
         getProducer().sendMessage(message, topic);
     }

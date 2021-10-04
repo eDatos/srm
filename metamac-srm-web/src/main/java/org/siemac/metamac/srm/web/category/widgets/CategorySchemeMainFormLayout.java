@@ -101,6 +101,11 @@ public class CategorySchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showLifeCycleReSendStreamMessage() {
+        // TODO EDATOS-3433
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (CategoriesClientSecurityUtils.canAnnounceCategoryScheme()) {

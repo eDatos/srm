@@ -100,6 +100,7 @@ import org.siemac.metamac.srm.core.security.ConceptsSecurityUtils;
 import org.siemac.metamac.srm.core.security.DataStructureDefinitionSecurityUtils;
 import org.siemac.metamac.srm.core.security.OrganisationsSecurityUtils;
 import org.siemac.metamac.srm.core.security.TasksSecurityUtils;
+import org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1350,6 +1351,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
         // Transform to DTO
         CodelistMetamacDto codelistDto = codesDo2DtoMapper.codelistMetamacDoToDto(codelistVersionPublished);
         return codelistDto;
+    }
+
+    @Override
+    public SendStreamMessageResult resendCodelist(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CodesSecurityUtils.canResendCodelist(ctx);
+
+        // Send codelist
+        CodelistVersionMetamac codelist = getCodesMetamacService().retrieveCodelistByUrn(ctx, urn);
+        SendStreamMessageResult sendStreamMessageResult = getCodesMetamacService().resendCodelist(ctx, codelist);
+
+        // Return
+        return sendStreamMessageResult;
     }
 
     @Override

@@ -66,6 +66,7 @@ import org.siemac.metamac.srm.web.server.handlers.code.GetVariablesActionHandler
 import org.siemac.metamac.srm.web.server.handlers.code.NormaliseVariableElementsToCodesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.RemoveCodelistsFromCodelistFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.RemoveVariablesFromVariableFamilyActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.ReSendCodelistStreamMessageActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodelistFamilyActionHandler;
@@ -141,6 +142,7 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.VersionOrganisati
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
 import org.siemac.metamac.srm.web.shared.GetHelpUrlAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
+import org.siemac.metamac.srm.web.shared.ReSendCodelistStreamMessageAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
@@ -447,6 +449,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(ExportCodesAction.class, ExportCodesActionHandler.class);
         bindHandler(ExportCodesOrderAction.class, ExportCodesOrderActionHandler.class);
         bindHandler(ExportVariableElementsAction.class, ExportVariableElementsActionHandler.class);
+        bindHandler(ReSendCodelistStreamMessageAction.class, ReSendCodelistStreamMessageActionHandler.class);
 
         // Common
         bindHandler(GetHelpUrlAction.class, GetHelpUrlActionHandler.class);

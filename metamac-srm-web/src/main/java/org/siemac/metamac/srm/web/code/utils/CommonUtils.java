@@ -1,9 +1,12 @@
 package org.siemac.metamac.srm.web.code.utils;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
@@ -11,6 +14,7 @@ import org.siemac.metamac.srm.core.code.dto.VariableDto;
 import org.siemac.metamac.srm.core.code.dto.VariableElementDto;
 import org.siemac.metamac.srm.core.code.enume.domain.AccessTypeEnum;
 import org.siemac.metamac.srm.core.code.enume.domain.VariableElementOperationTypeEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.siemac.metamac.srm.web.client.MetamacSrmWeb;
 import org.siemac.metamac.srm.web.code.model.record.CodelistRecord;
 import org.siemac.metamac.srm.web.code.model.record.CodelistVisualisationRecord;
@@ -19,6 +23,7 @@ import org.siemac.metamac.srm.web.code.model.record.VariableElementRecord;
 import org.siemac.metamac.srm.web.code.model.record.VariableRecord;
 import org.siemac.metamac.srm.web.shared.code.enums.VariableElementShapeTypeEnum;
 import org.siemac.metamac.web.common.client.utils.CommonWebUtils;
+import org.siemac.metamac.web.common.client.resources.GlobalResources;
 
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
@@ -26,6 +31,13 @@ public class CommonUtils {
 
     private static String variableWorldUrn;
     private static String variableElementWorldUrn;
+
+    private static final EnumMap<StreamMessageStatusEnum, ImageResource> ICON_STREAM_MESSAGE_STATUS = new EnumMap(StreamMessageStatusEnum.class);
+    static {
+        ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.FAILED, GlobalResources.RESOURCE.errorSmart());
+        ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.PENDING, GlobalResources.RESOURCE.warn());
+        ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.SENT, GlobalResources.RESOURCE.success());
+    }
 
     public static LinkedHashMap<String, String> getAccessTypeHashMap() {
         LinkedHashMap<String, String> accessTypeHashMap = new LinkedHashMap<String, String>();
@@ -168,4 +180,17 @@ public class CommonUtils {
     public static boolean isVariableElementWorld(String variableElementUrn) {
         return StringUtils.equals(variableElementUrn, getVariableElementWorldUrn());
     }
+
+    // STATUS KAFKA MESSAGE
+
+    public static FormItemIcon getPublicationStreamStatusIcon(StreamMessageStatusEnum status) {
+        if (status == null) {
+            return null;
+        }
+        FormItemIcon icon = new FormItemIcon();
+        icon.setSrc(ICON_STREAM_MESSAGE_STATUS.get(status).getURL());
+
+        return icon;
+    }
+
 }

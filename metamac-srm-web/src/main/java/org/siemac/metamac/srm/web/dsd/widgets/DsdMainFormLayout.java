@@ -106,6 +106,11 @@ public class DsdMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showLifeCycleReSendStreamMessage() {
+        // TODO EDATOS-3433
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (DsdClientSecurityUtils.canAnnounceDsd(operationCode)) {

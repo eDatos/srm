@@ -50,6 +50,10 @@ public interface CodelistUiHandlers extends BaseCodeUiHandlers {
     void deleteCodelistOpennessLevel(List<String> opennessLevelsUrns);
     void updateCodesOpennessLevel(String opennessLevelUrn, Map<String, Boolean> opennessLevels);
 
+    // Stream messages
+
+    void reSendStreamMessageCodelist(CodelistMetamacDto codelistDto);
+
     // Life cycle
 
     void sendToProductionValidation(String urn, ProcStatusEnum currentProcStatus);

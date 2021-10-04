@@ -87,6 +87,14 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canPublishCodelistExternally(MetamacSrmWeb.getCurrentUser());
     }
 
+    public static boolean canResendStreamMessage(Boolean isTaskInBackground) {
+        if (isTaskInBackground(isTaskInBackground)) {
+            return false;
+        }
+
+        return SharedCodesSecurityUtils.canResendCodelistStreamMessage(MetamacSrmWeb.getCurrentUser());
+    }
+
     public static boolean canVersioningCodelist(RelatedResourceDto maintainer, String versionLogic, Boolean isTaskInBackground) {
         if (isTaskInBackground(isTaskInBackground)) {
             return false;

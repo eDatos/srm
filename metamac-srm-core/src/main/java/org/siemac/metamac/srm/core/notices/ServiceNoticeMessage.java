@@ -10,4 +10,7 @@ public class ServiceNoticeMessage {
     public static final String PUBLISH_INTERNALLY_CODELIST_JOB_OK = "notice_message.srm.message.publish_internally_codelist_job.ok";
     public static final String RESOURCE_INTERNAL_PUBLICATION_OK   = "notice_message.srm.action.internal_publication.ok";
     public static final String RESOURCE_EXTERNAL_PUBLICATION_OK   = "notice_message.srm.action.external_publication.ok";
+
+    // Errors
+    public static final String STREAM_MESSAGE_SEND_ERROR          = "notice_message.srm.action.stream_messaging.send.error";
 }

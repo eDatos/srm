@@ -63,6 +63,8 @@ Application CodesMetamac {
 	    	TaskInfo publishInternallyCodelist(String urn, Boolean forceLatestFinal, Boolean canBeBackground) throws MetamacException;
 	    	"Publish externally a codelist"
 	    	@CodelistVersionMetamac publishExternallyCodelist(String urn) throws MetamacException;
+	    	"Resend a codelist"
+            org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult resendCodelist(@CodelistVersionMetamac codelistVersion) throws MetamacException;
 			"Deletes codelist version. This must be last version and no published"
     		deleteCodelist(String urn) throws MetamacException;
     		"Copies a codelist version, creating a new codelist, newCode is optional, skip to reuse before, but if the maintainer of source and target are the same the newCode is mandatory"
@@ -296,6 +298,9 @@ Application CodesMetamac {
 			- Bag<@CodelistOpennessVisualisation> opennessVisualisations cascade="all-delete-orphan" fetch="lazy" inverse orderby="id asc" <-> codelistVersion;
 			"Default openness visualisation"
 			- @CodelistOpennessVisualisation defaultOpennessVisualisation nullable cascade="persist,merge,refresh" fetch="lazy" databaseColumn="DEFAULT_OPENNESS_VISUAL_FK";
+
+			"Stream message status"
+            - @StreamMessageStatusEnum streamMessageStatus;
 			
 			Repository CodelistVersionMetamacRepository {
 				save;

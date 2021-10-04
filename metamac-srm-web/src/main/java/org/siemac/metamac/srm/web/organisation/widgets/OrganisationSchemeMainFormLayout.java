@@ -110,6 +110,11 @@ public class OrganisationSchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showLifeCycleReSendStreamMessage() {
+        // TODO EDATOS-3433
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (OrganisationsClientSecurityUtils.canAnnounceOrganisationScheme()) {

@@ -97,6 +97,7 @@
                         <configuration>
                             <!-- It's necessary to import the classes to resolve schema dependencies -->
                             <imports>
+                                <import>${project.basedir}/src/main/resources/avro-schemas/proc-status-enum.avsc</import>
                                 <import>${project.basedir}/src/main/resources/avro-schemas/datetime.avsc</import>
                                 <import>${project.basedir}/src/main/resources/avro-schemas/international-string.avsc</import>
                                 <import>${project.basedir}/src/main/resources/avro-schemas/related-resource.avsc</import>

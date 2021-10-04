@@ -1,36 +1,60 @@
 package org.siemac.metamac.srm.core.code.serviceimpl;
 
+import static org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteriaBuilder.criteriaFor;
+
+import org.fornax.cartridges.sculptor.framework.accessapi.ConditionalCriteria;
+import org.fornax.cartridges.sculptor.framework.domain.PagingParameter;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamac;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacProperties;
+import org.siemac.metamac.srm.core.code.domain.CodelistVersionMetamacRepository;
+import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
 import org.siemac.metamac.srm.core.stream.mappers.impl.CodelistDo2AvroMapper;
 import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.siemac.metamac.srm.core.stream.message.CodelistAvro;
 import org.siemac.metamac.srm.core.serviceapi.StreamMessagingService.StreamMessagingCallback;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
-class CodelistStreamMessagingCallbackImpl implements StreamMessagingCallback<CodelistMetamacDto, CodelistAvro, CodelistDo2AvroMapper> {
+@Component("codelistStreamMessagingCallback")
+class CodelistStreamMessagingCallbackImpl implements StreamMessagingCallback<CodelistVersionMetamac, CodelistAvro, CodelistDo2AvroMapper> {
 
+    @Autowired
     private CodelistDo2AvroMapper codelistDo2AvroMapper;
 
-    public CodelistStreamMessagingCallbackImpl(CodelistDo2AvroMapper codelistDo2AvroMapper) {
-        this.codelistDo2AvroMapper = codelistDo2AvroMapper;
+    @Autowired
+    private CodelistVersionMetamacRepository codelistVersionMetamacRepository;
+
+    @Override
+    public String getUniqueIdentifier(CodelistVersionMetamac messageContent) {
+        return messageContent.getMaintainableArtefact().getCode();
     }
 
     @Override
-    public String getUniqueIdentifier(CodelistMetamacDto messageContent) {
-        return messageContent.getCode();
+    public String getProducerRecordKey(CodelistVersionMetamac messageContent){
+        return messageContent.getMaintainableArtefact().getUrn();
     }
 
     @Override
-    public String getProducerRecordKey(CodelistMetamacDto messageContent){
-        return messageContent.getUrn();
-    }
-
-    @Override
-    public List<CodelistMetamacDto> getPendingOrFailedMessages() throws MetamacException {
-        return new ArrayList<>(); // TODO EDATOS-3433
+    public List<CodelistVersionMetamac> getPendingOrFailedMessages() throws MetamacException {
+        // @formatter:off
+        List<ConditionalCriteria> criteria = criteriaFor(CodelistVersionMetamac.class)
+                .lbrace()
+                .withProperty(CodelistVersionMetamacProperties.streamMessageStatus()).eq(StreamMessageStatusEnum.PENDING)
+                .or()
+                .withProperty(CodelistVersionMetamacProperties.streamMessageStatus()).eq(StreamMessageStatusEnum.FAILED)
+                .rbrace()
+                .and()
+                .lbrace()
+                .withProperty(CodelistVersionMetamacProperties.lifeCycleMetadata().procStatus()).eq(ProcStatusEnum.EXTERNALLY_PUBLISHED)
+                .or()
+                .withProperty(CodelistVersionMetamacProperties.lifeCycleMetadata().procStatus()).eq(ProcStatusEnum.INTERNALLY_PUBLISHED)
+                .rbrace()
+                .build();
+        // @formatter:on
+        return codelistVersionMetamacRepository.findByCondition(criteria, PagingParameter.noLimits()).getValues();
     }
 
     @Override
@@ -39,12 +63,12 @@ class CodelistStreamMessagingCallbackImpl implements StreamMessagingCallback<Cod
     }
 
     @Override
-    public StreamMessageStatusEnum getStreamMessageStatus(CodelistMetamacDto messageContent) {
-        return null; // TODO EDATOS-3433
+    public StreamMessageStatusEnum getStreamMessageStatus(CodelistVersionMetamac messageContent) {
+        return messageContent.getStreamMessageStatus();
     }
 
     @Override
-    public void setStreamMessageStatus(CodelistMetamacDto messageContent, StreamMessageStatusEnum streamMessageStatus) {
-        // TODO EDATOS-3433
+    public void setStreamMessageStatus(CodelistVersionMetamac messageContent, StreamMessageStatusEnum streamMessageStatus) {
+        messageContent.setStreamMessageStatus(streamMessageStatus);
     }
 }

@@ -34,12 +34,10 @@ import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.utils.WaitingAsyncCallbackHandlingExportResult;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
+import org.siemac.metamac.srm.web.code.view.CodelistViewImpl;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
-import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
-import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
-import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
-import org.siemac.metamac.srm.web.shared.StructuralResourcesRelationEnum;
+import org.siemac.metamac.srm.web.shared.*;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityResult;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
@@ -399,6 +397,27 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
                     retrieveCompleteCodelistByUrn(urn); // Reload the current codelist (the metadata isPlannedInBackground has changed)
                 } else {
                     fireSuccessMessage(getMessages().maintainableArtefactCopied());
+                }
+            }
+        });
+    }
+
+    //
+    // CODELIST STREAM MESSAGES
+    //
+
+    @Override
+    public void reSendStreamMessageCodelist(final CodelistMetamacDto codelistDto) {
+        dispatcher.execute(new ReSendCodelistStreamMessageAction(codelistDto.getUrn()), new WaitingAsyncCallbackHandlingError<ReSendCodelistStreamMessageResult>(this) {
+
+            @Override
+            public void onWaitSuccess(ReSendCodelistStreamMessageResult result) {
+                retrieveCodelistVersions(codelistDto.getUrn());
+
+                if (result.getNotificationException() != null) {
+                    ShowMessageEvent.fireWarningMessageWithError(CodelistPresenter.this, getMessages().lifeCycleReSendStreamMessageError(), result.getNotificationException());
+                } else {
+                    ShowMessageEvent.fireSuccessMessage(CodelistPresenter.this, getMessages().lifeCycleReSendStreamMessagePublished());
                 }
             }
         });

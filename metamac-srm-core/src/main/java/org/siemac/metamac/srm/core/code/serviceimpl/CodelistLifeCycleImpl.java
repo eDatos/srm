@@ -60,23 +60,13 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
     private BaseService                      baseService;
 
     @Autowired
-    private CodelistDo2AvroMapper            codelistDo2AvroMapper;
-
-    @Autowired
-    private CodesDo2DtoMapper                codelistDo2DtoMapper;
-
-    @Autowired
     private StreamMessagingService           streamMessagingService;
 
-    CodelistStreamMessagingCallbackImpl codelistStreamMessagingCallback;
+    @Autowired
+    private CodelistStreamMessagingCallbackImpl codelistStreamMessagingCallback;
 
     public CodelistLifeCycleImpl() {
         this.callback = new CodelistLifeCycleCallback();
-    }
-
-    @PostConstruct
-    public void initCodelistStreamMessagingCallback() {
-        this.codelistStreamMessagingCallback = new CodelistStreamMessagingCallbackImpl(codelistDo2AvroMapper);
     }
 
     private class CodelistLifeCycleCallback implements LifeCycleCallback {
@@ -269,7 +259,7 @@ public class CodelistLifeCycleImpl extends LifeCycleImpl {
 
         @Override
         public void notifyPublication(Object message) {
-            streamMessagingService.sendMessage(codelistDo2DtoMapper.codelistMetamacDoToDto((CodelistVersionMetamac) message), codelistStreamMessagingCallback);
+            streamMessagingService.sendMessage((CodelistVersionMetamac) message, codelistStreamMessagingCallback);
         }
 
         private CodelistVersionMetamac getCodelistVersionMetamac(Object srmResource) {

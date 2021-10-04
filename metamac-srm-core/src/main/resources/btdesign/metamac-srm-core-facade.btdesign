@@ -575,6 +575,8 @@ Application SrmFacadeCore {
 	    	TaskInfo publishCodelistInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a Codelist"
 	    	@CodelistMetamacDto publishCodelistExternally(String urn) throws MetamacException;
+	    	"Resend a Codelist"
+	    	org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult resendCodelist(String urn) throws MetamacException;
     		"Copies a codelist version, creating a new codelist, newCode is optional, skip to reuse before, but if the maintainer of source and target are the same the newCode is mandatory"
     		TaskInfo copyCodelist(String urnToCopy, String newCode) throws MetamacException;
     		"Creates a new version of a Codelist, copying metadata from version with provided urn"

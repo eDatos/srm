@@ -115,6 +115,11 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
         }
     }
 
+    @Override
+    protected void showLifeCycleReSendStreamMessage() {
+        // TODO EDATOS-3433
+    }
+
     // @Override
     // protected void showAnnounceButton() {
     // if (ConceptsClientSecurityUtils.canAnnounceConceptScheme(type, relatedOperationCode)) {
