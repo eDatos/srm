@@ -71,4 +71,9 @@ class CodelistStreamMessagingCallbackImpl implements StreamMessagingCallback<Cod
     public void setStreamMessageStatus(CodelistVersionMetamac messageContent, StreamMessageStatusEnum streamMessageStatus) {
         messageContent.setStreamMessageStatus(streamMessageStatus);
     }
+
+    @Override
+    public String getTopic() {
+        return "CODELIST_PUBLICATIONS";
+    }
 }

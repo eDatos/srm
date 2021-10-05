@@ -51,7 +51,7 @@ public class StreamMessagingServiceImpl implements StreamMessagingService, Appli
     public <E, A extends SpecificRecordBase, M extends Do2AvroMapper<E, A>> SendStreamMessageResult sendMessage(E messageContent, StreamMessagingCallback<E, A, M> streamMessagingCallback) {
         try {
             updateMessageStatus(messageContent, StreamMessageStatusEnum.PENDING, streamMessagingCallback);
-            buildAndSendMessage(messageContent, streamMessagingCallback.getProducerRecordKey(messageContent), streamMessagingCallback.getMapper());
+            buildAndSendMessage(messageContent, streamMessagingCallback);
             updateMessageStatus(messageContent, StreamMessageStatusEnum.SENT, streamMessagingCallback);
             return new SendStreamMessageResult(streamMessagingCallback.getStreamMessageStatus(messageContent), null);
         } catch (MetamacException e) {
@@ -103,15 +103,15 @@ public class StreamMessagingServiceImpl implements StreamMessagingService, Appli
         }
     }
 
-    private <E, A extends SpecificRecordBase, M extends Do2AvroMapper<E, A>> void buildAndSendMessage(E messageContent, Object key, M mapper) throws MetamacException {
+    private <E, A extends SpecificRecordBase, M extends Do2AvroMapper<E, A>> void buildAndSendMessage(E messageContent, StreamMessagingCallback<E, A, M> streamMessagingCallback) throws MetamacException {
         if (messageContent == null) {
             return;
         }
 
-        A messageContentAvro = mapper.toAvro(messageContent);
+        A messageContentAvro = streamMessagingCallback.getMapper().toAvro(messageContent);
 
-        MessageBase<Object, SpecificRecordBase> message = new AvroMessage<>(key, messageContentAvro);
-        String topic = "CODELIST_PUBLICATIONS"; // TODO EDATOS-3433: choose between having a unique topic for every message (and change the retrieve method) or getting each one from streamMessagingCallback
+        MessageBase<Object, SpecificRecordBase> message = new AvroMessage<>(streamMessagingCallback.getProducerRecordKey(messageContent), messageContentAvro);
+        String topic = streamMessagingCallback.getTopic(); // TODO EDATOS-3433: choose between having a unique topic for every message (and change the retrieve method) or getting each one from streamMessagingCallback
 
         getProducer().sendMessage(message, topic);
     }
