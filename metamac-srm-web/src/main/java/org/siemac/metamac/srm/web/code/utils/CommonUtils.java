@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.google.gwt.resources.client.ImageResource;
-import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 import org.siemac.metamac.core.common.util.shared.StringUtils;
 import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.code.dto.CodelistVisualisationDto;
@@ -31,13 +30,6 @@ public class CommonUtils {
 
     private static String variableWorldUrn;
     private static String variableElementWorldUrn;
-
-    private static final EnumMap<StreamMessageStatusEnum, ImageResource> ICON_STREAM_MESSAGE_STATUS = new EnumMap(StreamMessageStatusEnum.class);
-    static {
-        ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.FAILED, GlobalResources.RESOURCE.errorSmart());
-        ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.PENDING, GlobalResources.RESOURCE.warn());
-        ICON_STREAM_MESSAGE_STATUS.put(StreamMessageStatusEnum.SENT, GlobalResources.RESOURCE.success());
-    }
 
     public static LinkedHashMap<String, String> getAccessTypeHashMap() {
         LinkedHashMap<String, String> accessTypeHashMap = new LinkedHashMap<String, String>();
@@ -179,18 +171,6 @@ public class CommonUtils {
 
     public static boolean isVariableElementWorld(String variableElementUrn) {
         return StringUtils.equals(variableElementUrn, getVariableElementWorldUrn());
-    }
-
-    // STATUS KAFKA MESSAGE
-
-    public static FormItemIcon getPublicationStreamStatusIcon(StreamMessageStatusEnum status) {
-        if (status == null) {
-            return null;
-        }
-        FormItemIcon icon = new FormItemIcon();
-        icon.setSrc(ICON_STREAM_MESSAGE_STATUS.get(status).getURL());
-
-        return icon;
     }
 
 }

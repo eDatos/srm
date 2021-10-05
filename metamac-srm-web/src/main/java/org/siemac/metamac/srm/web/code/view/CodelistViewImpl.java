@@ -44,6 +44,7 @@ import org.siemac.metamac.srm.web.code.widgets.CodelistOpennesssLevelsPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistOrdersPanel;
 import org.siemac.metamac.srm.web.code.widgets.CodelistVersionsSectionStack;
 import org.siemac.metamac.srm.web.dsd.widgets.ExportSdmxResourceWindow;
+import org.siemac.metamac.srm.web.shared.CommonSharedUtils;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesResult;
 import org.siemac.metamac.srm.web.shared.code.GetCodelistsResult;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
@@ -813,7 +814,7 @@ public class CodelistViewImpl extends ViewWithUiHandlers<CodelistUiHandlers> imp
         identifiersForm.setValue(CodelistDS.NAME, codelistDto.getName());
         identifiersForm.setValue(CodelistDS.SHORT_NAME, codelistDto.getShortName());
         identifiersForm.getItem(CodelistDS.PUBLICATION_STREAM_STATUS)
-                .setIcons(StreamMessageStatusEnum.PENDING.equals(codelistDto.getStreamMessageStatus()) ? null : CommonUtils.getPublicationStreamStatusIcon(codelistDto.getStreamMessageStatus()));
+                .setIcons(StreamMessageStatusEnum.PENDING.equals(codelistDto.getStreamMessageStatus()) ? null : CommonSharedUtils.getPublicationStreamStatusIcon(codelistDto.getStreamMessageStatus()));
 
         // CONTENT DESCRIPTORS
 
