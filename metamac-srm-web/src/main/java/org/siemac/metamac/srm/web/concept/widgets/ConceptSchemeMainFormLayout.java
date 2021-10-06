@@ -117,7 +117,9 @@ public class ConceptSchemeMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showLifeCycleReSendStreamMessage() {
-        // TODO EDATOS-3433
+        if (ConceptsClientSecurityUtils.canResendConceptSchemeStreamMessage(type, relatedOperationCode)) {
+            lifeCycleReSendStreamMessage.show();
+        }
     }
 
     // @Override

@@ -2963,6 +2963,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public SendStreamMessageResult resendConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        ConceptSchemeVersionMetamac conceptSchemeVersion = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urn);
+        ConceptsSecurityUtils.canResendConceptScheme(ctx, conceptSchemeVersion);
+
+        // Send concept schemes
+        SendStreamMessageResult sendStreamMessageResult = getConceptsMetamacService().resendConceptScheme(ctx, conceptSchemeVersion);
+
+        // Return
+        return sendStreamMessageResult;
+    }
+
+    @Override
     public TaskInfo copyConceptScheme(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         // Security
         ConceptSchemeVersionMetamac conceptSchemeVersionToCopy = getConceptsMetamacService().retrieveConceptSchemeByUrn(ctx, urnToCopy);

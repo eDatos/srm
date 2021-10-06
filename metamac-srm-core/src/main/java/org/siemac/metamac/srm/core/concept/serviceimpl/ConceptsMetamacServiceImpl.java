@@ -72,6 +72,9 @@ import org.siemac.metamac.srm.core.concept.serviceimpl.utils.ConceptsMetamacInvo
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
+import org.siemac.metamac.srm.core.serviceapi.StreamMessagingService;
+import org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult;
 import org.siemac.metamac.srm.core.task.domain.ImportationConceptsTsvHeader;
 import org.siemac.metamac.srm.core.task.domain.RepresentationsTsv;
 import org.siemac.metamac.srm.core.task.domain.RepresentationsTsv.RepresentationEum;
@@ -167,6 +170,12 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     private ItemSchemesCopyCallback conceptsDummyVersioningCallback;
 
     @Autowired
+    private ConceptSchemeStreamMessagingCallbackImpl conceptSchemeStreamMessagingCallback;
+
+    @Autowired
+    private StreamMessagingService streamMessagingService;
+
+    @Autowired
     private TasksMetamacService tasksMetamacService;
 
     @Autowired
@@ -200,6 +209,7 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
         conceptSchemeVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         conceptSchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         conceptSchemeVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+        conceptSchemeVersion.setStreamMessageStatus(StreamMessageStatusEnum.PENDING);
 
         return conceptSchemeVersion;
     }
@@ -419,6 +429,11 @@ public class ConceptsMetamacServiceImpl extends ConceptsMetamacServiceImplBase {
     @Override
     public ConceptSchemeVersionMetamac publishExternallyConceptScheme(ServiceContext ctx, String urn) throws MetamacException {
         return (ConceptSchemeVersionMetamac) conceptSchemeLifeCycle.publishExternally(ctx, urn);
+    }
+
+    @Override
+    public SendStreamMessageResult resendConceptScheme(ServiceContext ctx, ConceptSchemeVersionMetamac conceptSchemeVersion) throws MetamacException {
+        return streamMessagingService.sendMessage(conceptSchemeVersion, conceptSchemeStreamMessagingCallback);
     }
 
     @Override

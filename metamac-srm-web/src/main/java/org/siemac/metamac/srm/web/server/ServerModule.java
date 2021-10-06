@@ -96,6 +96,7 @@ import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptSchemesActio
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetConceptsBySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.GetStatisticalOperationsActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.concept.ReSendConceptSchemeStreamMessageActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.SaveConceptSchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.concept.UpdateConceptInOrderActionHandler;
@@ -233,6 +234,7 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptSchemesAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
+import org.siemac.metamac.srm.web.shared.concept.ReSendConceptSchemeStreamMessageAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.UpdateCodeVariableElementAction;
@@ -450,6 +452,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(ExportCodesOrderAction.class, ExportCodesOrderActionHandler.class);
         bindHandler(ExportVariableElementsAction.class, ExportVariableElementsActionHandler.class);
         bindHandler(ReSendCodelistStreamMessageAction.class, ReSendCodelistStreamMessageActionHandler.class);
+        bindHandler(ReSendConceptSchemeStreamMessageAction.class, ReSendConceptSchemeStreamMessageActionHandler.class);
 
         // Common
         bindHandler(GetHelpUrlAction.class, GetHelpUrlActionHandler.class);

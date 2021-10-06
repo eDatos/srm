@@ -19,6 +19,8 @@ Application DtosMetamacConceptDomain {
 			- @ExternalItemDto relatedOperation nullable;
 			"Life cycle"
 			- @LifeCycleDto lifeCycle required;
+			"Stream message status"
+            - @StreamMessageStatusEnum streamMessageStatus;
 		}
 
 		"Dto for ConceptSchemeMetamac"

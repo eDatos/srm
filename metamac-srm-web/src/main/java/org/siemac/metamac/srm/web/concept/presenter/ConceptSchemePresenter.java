@@ -63,6 +63,8 @@ import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeAction;
 import org.siemac.metamac.srm.web.shared.concept.GetConceptsBySchemeResult;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsAction;
 import org.siemac.metamac.srm.web.shared.concept.GetStatisticalOperationsResult;
+import org.siemac.metamac.srm.web.shared.concept.ReSendConceptSchemeStreamMessageAction;
+import org.siemac.metamac.srm.web.shared.concept.ReSendConceptSchemeStreamMessageResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptAction;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptResult;
 import org.siemac.metamac.srm.web.shared.concept.SaveConceptSchemeAction;
@@ -323,6 +325,28 @@ public class ConceptSchemePresenter extends Presenter<ConceptSchemePresenter.Con
             @Override
             public void onWaitSuccess(CopyConceptSchemeResult result) {
                 fireSuccessMessage(getMessages().maintainableArtefactCopied());
+            }
+        });
+    }
+
+    //
+    // CONCEPT SCHEME STREAM MESSAGES
+    //
+
+    @Override
+    public void reSendStreamMessageConceptScheme(final String urn) {
+        dispatcher.execute(new ReSendConceptSchemeStreamMessageAction(urn), new WaitingAsyncCallbackHandlingError<ReSendConceptSchemeStreamMessageResult>(this) {
+
+            @Override
+            public void onWaitSuccess(ReSendConceptSchemeStreamMessageResult result) {
+                retrieveConceptSchemeByUrn(urn);
+                getView().setConceptScheme(result.getConceptSchemeMetamacDto());
+
+                if (result.getNotificationException() != null) {
+                    ShowMessageEvent.fireWarningMessageWithError(ConceptSchemePresenter.this, getMessages().lifeCycleReSendStreamMessageError(), result.getNotificationException());
+                } else {
+                    ShowMessageEvent.fireSuccessMessage(ConceptSchemePresenter.this, getMessages().lifeCycleReSendStreamMessagePublished());
+                }
             }
         });
     }

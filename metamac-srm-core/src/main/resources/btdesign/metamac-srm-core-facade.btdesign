@@ -405,6 +405,8 @@ Application SrmFacadeCore {
 	    	@ConceptSchemeMetamacDto publishConceptSchemeInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a concept scheme"
 	    	@ConceptSchemeMetamacDto publishConceptSchemeExternally(String urn) throws MetamacException;
+	    	"Resend a concept scheme"
+	    	org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult resendConceptScheme(String urn) throws MetamacException;
     		"Copies a concept scheme version, creating a new concept scheme, newCode is optional, skip to reuse before, but if the maintainer of source and target are the same the newCode is mandatory"
     		TaskInfo copyConceptScheme(String urnToCopy, String newCode) throws MetamacException;
     		"Creates a new version of a concept scheme, copying metadata from version with provided urn"
