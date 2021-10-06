@@ -504,6 +504,8 @@ Application SrmFacadeCore {
 	    	@CategorySchemeMetamacDto publishCategorySchemeInternally(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publishes externally a category scheme"
 	    	@CategorySchemeMetamacDto publishCategorySchemeExternally(String urn) throws MetamacException;
+	    	"Resend a category scheme"
+            org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult resendCategoryScheme(String urn) throws MetamacException;
     		"Copies a category scheme version, creating a new category scheme, newCode is optional, skip to reuse before, but if the maintainer of source and target are the same the newCode is mandatory"
     		TaskInfo copyCategoryScheme(String urnToCopy, String newCode) throws MetamacException;
     		"Creates a new version of a category scheme, copying metadata from version with provided urn"

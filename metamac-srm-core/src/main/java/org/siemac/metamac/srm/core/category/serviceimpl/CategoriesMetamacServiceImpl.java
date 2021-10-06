@@ -54,9 +54,12 @@ import org.siemac.metamac.srm.core.common.service.utils.TsvImportationUtils;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamac;
 import org.siemac.metamac.srm.core.organisation.domain.OrganisationMetamacProperties;
 import org.siemac.metamac.srm.core.organisation.serviceapi.OrganisationsMetamacService;
+import org.siemac.metamac.srm.core.serviceapi.StreamMessagingService;
+import org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult;
 import org.siemac.metamac.srm.core.task.domain.ImportationCategoriesTsvHeader;
 import org.siemac.metamac.srm.core.task.serviceapi.TasksMetamacService;
 import org.slf4j.Logger;
@@ -96,62 +99,68 @@ import com.arte.statistic.sdmx.srm.core.organisation.domain.Organisation;
 @Service("categoriesMetamacService")
 public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBase {
 
-    private static Logger                  logger = LoggerFactory.getLogger(CategoriesMetamacServiceImpl.class);
+    private static Logger                             logger = LoggerFactory.getLogger(CategoriesMetamacServiceImpl.class);
 
     @Autowired
-    private BaseService                    baseService;
+    private BaseService                               baseService;
 
     @Autowired
-    private CategoriesService              categoriesService;
+    private CategoriesService                         categoriesService;
 
     @Autowired
-    private OrganisationsMetamacService    organisationsService;
+    private OrganisationsMetamacService               organisationsService;
 
     @Autowired
     @Qualifier("categorySchemeLifeCycle")
-    private LifeCycle                      categorySchemeLifeCycle;
+    private LifeCycle                                 categorySchemeLifeCycle;
 
     @Autowired
-    private SrmValidation                  srmValidation;
+    private SrmValidation                             srmValidation;
 
     @Autowired
-    private SrmConfiguration               srmConfiguration;
+    private SrmConfiguration                          srmConfiguration;
 
     @Autowired
     @Qualifier("categoriesVersioningCallbackMetamac")
-    private ItemSchemesCopyCallback        categoriesVersioningCallback;
+    private ItemSchemesCopyCallback                   categoriesVersioningCallback;
 
     @Autowired
     @Qualifier("categoriesDummyVersioningCallbackMetamac")
-    private ItemSchemesCopyCallback        categoriesDummyVersioningCallback;
+    private ItemSchemesCopyCallback                   categoriesDummyVersioningCallback;
 
     @Autowired
     @Qualifier("categoriesCopyCallbackMetamac")
-    private ItemSchemesCopyCallback        categoriesCopyCallback;
+    private ItemSchemesCopyCallback                   categoriesCopyCallback;
 
     @Autowired
-    private TasksMetamacService            tasksMetamacService;
+    private CategorySchemeStreamMessagingCallbackImpl categorySchemeStreamMessagingCallback;
 
     @Autowired
-    private MaintainableArtefactRepository maintainableArtefactRepository;
+    private StreamMessagingService                    streamMessagingService;
 
     @Autowired
-    private ItemSchemeVersionRepository    itemSchemeVersionRepository;
+    private TasksMetamacService                       tasksMetamacService;
 
     @Autowired
-    private CategoryRepository             categoryRepository;
+    private MaintainableArtefactRepository            maintainableArtefactRepository;
 
     @Autowired
-    private CategorisationRepository       categorisationRepository;
+    private ItemSchemeVersionRepository               itemSchemeVersionRepository;
 
     @Autowired
-    private InternationalStringRepository  internationalStringRepository;
+    private CategoryRepository                        categoryRepository;
 
     @Autowired
-    private ItemSchemeRepository           itemSchemeRepository;
+    private CategorisationRepository                  categorisationRepository;
+
+    @Autowired
+    private InternationalStringRepository             internationalStringRepository;
+
+    @Autowired
+    private ItemSchemeRepository                      itemSchemeRepository;
 
     @PersistenceContext(unitName = "SrmCoreEntityManagerFactory")
-    protected EntityManager                entityManager;
+    protected EntityManager                           entityManager;
 
     public CategoriesMetamacServiceImpl() {
     }
@@ -175,6 +184,7 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
         categorySchemeVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         categorySchemeVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         categorySchemeVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+        categorySchemeVersion.setStreamMessageStatus(StreamMessageStatusEnum.PENDING);
 
         return categorySchemeVersion;
     }
@@ -259,6 +269,11 @@ public class CategoriesMetamacServiceImpl extends CategoriesMetamacServiceImplBa
     @Override
     public CategorySchemeVersionMetamac publishExternallyCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
         return (CategorySchemeVersionMetamac) categorySchemeLifeCycle.publishExternally(ctx, urn);
+    }
+
+    @Override
+    public SendStreamMessageResult resendCategoryScheme(ServiceContext ctx, CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException {
+        return streamMessagingService.sendMessage(categorySchemeVersion, categorySchemeStreamMessagingCallback);
     }
 
     @Override

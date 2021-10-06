@@ -54,6 +54,10 @@ public class CategoriesClientSecurityUtils {
         return SharedCategoriesSecurityUtils.canPublishCategorySchemeExternally(MetamacSrmWeb.getCurrentUser());
     }
 
+    public static boolean canResendCategorySchemeStreamMessage() {
+        return SharedCategoriesSecurityUtils.canResendCategoryScheme(MetamacSrmWeb.getCurrentUser());
+    }
+
     public static boolean canVersioningCategoryScheme(RelatedResourceDto maintainer, String versionLogic) {
         if (!org.siemac.metamac.srm.web.client.utils.CommonUtils.isDefaultMaintainer(maintainer)) {
             return false;

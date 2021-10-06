@@ -53,6 +53,10 @@ public class SharedCategoriesSecurityUtils extends SharedItemsSecurityUtils {
         return canPublishItemSchemeExternally(metamacPrincipal);
     }
 
+    public static boolean canResendCategoryScheme(MetamacPrincipal metamacPrincipal) {
+        return canResendItemSchemeStreamMessage(metamacPrincipal);
+    }
+
     public static boolean canCopyCategoryScheme(MetamacPrincipal metamacPrincipal) {
         return canCopyItemScheme(metamacPrincipal);
     }

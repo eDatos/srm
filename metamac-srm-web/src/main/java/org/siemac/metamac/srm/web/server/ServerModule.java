@@ -21,6 +21,7 @@ import org.siemac.metamac.srm.web.server.handlers.category.GetCategoryActionHand
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemeVersionsActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.GetCategorySchemesActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.category.ReSendCategorySchemeStreamMessageActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.SaveCategoryActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.SaveCategorySchemeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.category.UpdateCategorySchemeProcStatusActionHandler;
@@ -159,6 +160,7 @@ import org.siemac.metamac.srm.web.shared.category.GetCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemeVersionsAction;
 import org.siemac.metamac.srm.web.shared.category.GetCategorySchemesAction;
+import org.siemac.metamac.srm.web.shared.category.ReSendCategorySchemeStreamMessageAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategoryAction;
 import org.siemac.metamac.srm.web.shared.category.SaveCategorySchemeAction;
 import org.siemac.metamac.srm.web.shared.category.UpdateCategorySchemeProcStatusAction;
@@ -349,6 +351,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(ExportConceptsAction.class, ExportConceptsActionHandler.class);
         bindHandler(UpdateConceptInOrderAction.class, UpdateConceptInOrderActionHandler.class);
         bindHandler(UpdateConceptParentAction.class, UpdateConceptParentActionHandler.class);
+        bindHandler(ReSendConceptSchemeStreamMessageAction.class, ReSendConceptSchemeStreamMessageActionHandler.class);
 
         // Organisations
         bindHandler(GetOrganisationSchemesAction.class, GetOrganisationSchemesActionHandler.class);
@@ -392,6 +395,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(CopyCategorySchemeAction.class, CopyCategorySchemeActionHandler.class);
         bindHandler(CancelCategorisationValidityAction.class, CancelCategorisationValidityActionHandler.class);
         bindHandler(ExportCategoriesAction.class, ExportCategoriesActionHandler.class);
+        bindHandler(ReSendCategorySchemeStreamMessageAction.class, ReSendCategorySchemeStreamMessageActionHandler.class);
 
         // Codes
         bindHandler(DeleteCodelistsAction.class, DeleteCodelistsActionHandler.class);
@@ -452,7 +456,6 @@ public class ServerModule extends HandlerModule {
         bindHandler(ExportCodesOrderAction.class, ExportCodesOrderActionHandler.class);
         bindHandler(ExportVariableElementsAction.class, ExportVariableElementsActionHandler.class);
         bindHandler(ReSendCodelistStreamMessageAction.class, ReSendCodelistStreamMessageActionHandler.class);
-        bindHandler(ReSendConceptSchemeStreamMessageAction.class, ReSendConceptSchemeStreamMessageActionHandler.class);
 
         // Common
         bindHandler(GetHelpUrlAction.class, GetHelpUrlActionHandler.class);

@@ -3575,6 +3575,19 @@ public class SrmCoreServiceFacadeImpl extends SrmCoreServiceFacadeImplBase {
     }
 
     @Override
+    public SendStreamMessageResult resendCategoryScheme(ServiceContext ctx, String urn) throws MetamacException {
+        // Security
+        CategorySchemeVersionMetamac categorySchemeVersion = getCategoriesMetamacService().retrieveCategorySchemeByUrn(ctx, urn);
+        CategoriesSecurityUtils.canResendCategoryScheme(ctx);
+
+        // Send category schemes
+        SendStreamMessageResult sendStreamMessageResult = getCategoriesMetamacService().resendCategoryScheme(ctx, categorySchemeVersion);
+
+        // Return
+        return sendStreamMessageResult;
+    }
+
+    @Override
     public TaskInfo copyCategoryScheme(ServiceContext ctx, String urnToCopy, String newCode) throws MetamacException {
         // Security
         CategoriesSecurityUtils.canCopyCategoryScheme(ctx);

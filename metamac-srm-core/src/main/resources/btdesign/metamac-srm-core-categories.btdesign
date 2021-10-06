@@ -47,6 +47,8 @@ Application CategoriesMetamac {
 	    	@CategorySchemeVersionMetamac publishInternallyCategoryScheme(String urn, Boolean forceLatestFinal) throws MetamacException;
 	    	"Publish externally a category scheme"
 	    	@CategorySchemeVersionMetamac publishExternallyCategoryScheme(String urn) throws MetamacException;
+	    	"Resend a category scheme"
+            org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult resendCategoryScheme(@CategorySchemeVersionMetamac categorySchemeVersion) throws MetamacException;
 			"Deletes category scheme version. This must be last version and no published"
     		deleteCategoryScheme(String urn) throws MetamacException;
     		"Copies a category scheme version, creating a new category scheme, newCode is optional, skip to reuse before"
@@ -131,6 +133,8 @@ Application CategoriesMetamac {
 			
 			"Life cycle information"
 			- @SrmLifeCycleMetadata lifeCycleMetadata databaseColumn="";
+			"Stream message status"
+            - @StreamMessageStatusEnum streamMessageStatus;
 			
 			Repository CategorySchemeVersionMetamacRepository {
 				findByQuery(String query, Map<String, Object> parameters, int maxResult);

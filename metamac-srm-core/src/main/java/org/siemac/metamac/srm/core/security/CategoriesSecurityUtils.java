@@ -73,6 +73,12 @@ public class CategoriesSecurityUtils extends CommonSecurityUtils {
         }
     }
 
+    public static void canResendCategoryScheme(ServiceContext ctx) throws MetamacException {
+        if (!SharedCategoriesSecurityUtils.canResendCategoryScheme(getMetamacPrincipal(ctx))) {
+            throwExceptionIfOperationNotAllowed(ctx);
+        }
+    }
+
     public static void canCopyCategoryScheme(ServiceContext ctx) throws MetamacException {
         if (!SharedCategoriesSecurityUtils.canCopyCategoryScheme(getMetamacPrincipal(ctx))) {
             throwExceptionIfOperationNotAllowed(ctx);
