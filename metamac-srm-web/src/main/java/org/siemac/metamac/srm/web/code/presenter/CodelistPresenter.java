@@ -34,7 +34,6 @@ import org.siemac.metamac.srm.web.client.utils.CommonUtils;
 import org.siemac.metamac.srm.web.client.utils.PlaceRequestUtils;
 import org.siemac.metamac.srm.web.client.utils.WaitingAsyncCallbackHandlingExportResult;
 import org.siemac.metamac.srm.web.code.enums.CodesToolStripButtonEnum;
-import org.siemac.metamac.srm.web.code.view.CodelistViewImpl;
 import org.siemac.metamac.srm.web.code.view.handlers.CodelistUiHandlers;
 import org.siemac.metamac.srm.web.code.widgets.presenter.CodesToolStripPresenterWidget;
 import org.siemac.metamac.srm.web.shared.*;
@@ -415,6 +414,7 @@ public class CodelistPresenter extends Presenter<CodelistPresenter.CodelistView,
             @Override
             public void onWaitSuccess(ReSendCodelistStreamMessageResult result) {
                 retrieveCodelistVersions(codelistDto.getUrn());
+                getView().setCodelist(result.getCodelistMetamacDto());
 
                 if (result.getNotificationException() != null) {
                     ShowMessageEvent.fireWarningMessageWithError(CodelistPresenter.this, getMessages().lifeCycleReSendStreamMessageError(), result.getNotificationException());

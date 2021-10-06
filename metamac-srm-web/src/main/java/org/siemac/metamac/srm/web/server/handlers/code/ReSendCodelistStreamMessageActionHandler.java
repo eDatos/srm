@@ -5,6 +5,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
+import org.siemac.metamac.srm.core.code.dto.CodelistMetamacDto;
 import org.siemac.metamac.srm.core.facade.serviceapi.SrmCoreServiceFacade;
 import org.siemac.metamac.srm.core.serviceimpl.result.SendStreamMessageResult;
 import org.siemac.metamac.srm.web.server.rest.NoticesRestInternalFacade;
@@ -39,13 +40,15 @@ public class ReSendCodelistStreamMessageActionHandler extends SecurityActionHand
         ServiceContext serviceContext = ServiceContextHolder.getCurrentServiceContext();
 
         SendStreamMessageResult result;
+        CodelistMetamacDto codelistMetamacDto;
+        MetamacWebException codelistStreamMessageException = null;
         try {
             result = srmCoreServiceFacade.resendCodelist(serviceContext, action.getCodelistUrn());
+            codelistMetamacDto = srmCoreServiceFacade.retrieveCodelistByUrn(serviceContext, action.getCodelistUrn());
         } catch (MetamacException e) {
             throw WebExceptionUtils.createMetamacWebException(e);
         }
 
-        MetamacWebException codelistStreamMessageException = null;
         if (!result.isOk()) {
             MetamacException e = result.getMainException();
             List<MetamacExceptionItem> list = new ArrayList<>();
@@ -55,14 +58,12 @@ public class ReSendCodelistStreamMessageActionHandler extends SecurityActionHand
             e.getExceptionItems().addAll(list);
             codelistStreamMessageException = WebExceptionUtils.createMetamacWebException(e);
             try {
-                noticesRestInternalFacade.createStreamMessageErrorNotification(serviceContext, srmCoreServiceFacade.retrieveCodelistByUrn(serviceContext, action.getCodelistUrn()), TypeExternalArtefactsEnum.CODELIST);
+                noticesRestInternalFacade.createStreamMessageErrorNotification(serviceContext, codelistMetamacDto, TypeExternalArtefactsEnum.CODELIST);
             } catch (MetamacWebException noticeException) {
                 codelistStreamMessageException.getWebExceptionItems().addAll(noticeException.getWebExceptionItems());
-            } catch (MetamacException retieveCodelistException) {
-                throw WebExceptionUtils.createMetamacWebException(retieveCodelistException);
             }
         }
 
-        return new ReSendCodelistStreamMessageResult(codelistStreamMessageException);
+        return new ReSendCodelistStreamMessageResult(codelistMetamacDto, codelistStreamMessageException);
     }
 }

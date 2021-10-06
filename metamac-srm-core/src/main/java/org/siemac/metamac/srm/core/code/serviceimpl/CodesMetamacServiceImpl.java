@@ -102,6 +102,7 @@ import org.siemac.metamac.srm.core.common.service.utils.TsvImportationUtils;
 import org.siemac.metamac.srm.core.conf.SrmConfiguration;
 import org.siemac.metamac.srm.core.constants.SrmConstants;
 import org.siemac.metamac.srm.core.enume.domain.ProcStatusEnum;
+import org.siemac.metamac.srm.core.enume.domain.StreamMessageStatusEnum;
 import org.siemac.metamac.srm.core.normalisation.DiceLuceneRamAproxStringMatch;
 import org.siemac.metamac.srm.core.normalisation.MatchResult;
 import org.siemac.metamac.srm.core.notices.serviceimpl.utils.NoticesCallbackMetamacImpl;
@@ -264,6 +265,7 @@ public class CodesMetamacServiceImpl extends CodesMetamacServiceImplBase {
         codelistVersion.setLifeCycleMetadata(new SrmLifeCycleMetadata(ProcStatusEnum.DRAFT));
         codelistVersion.getMaintainableArtefact().setIsExternalReference(Boolean.FALSE);
         codelistVersion.getMaintainableArtefact().setFinalLogicClient(Boolean.FALSE);
+        codelistVersion.setStreamMessageStatus(StreamMessageStatusEnum.PENDING);
 
         return codelistVersion;
     }
