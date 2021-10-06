@@ -1,4 +1,4 @@
-package org.siemac.metamac.srm.web.shared;
+package org.siemac.metamac.srm.web.shared.code;
 
 import com.gwtplatform.dispatch.annotation.GenDispatch;
 import com.gwtplatform.dispatch.annotation.In;

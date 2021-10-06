@@ -87,7 +87,7 @@ public class CodesClientSecurityUtils {
         return SharedCodesSecurityUtils.canPublishCodelistExternally(MetamacSrmWeb.getCurrentUser());
     }
 
-    public static boolean canResendStreamMessage(Boolean isTaskInBackground) {
+    public static boolean canResendCodelistStreamMessage(Boolean isTaskInBackground) {
         if (isTaskInBackground(isTaskInBackground)) {
             return false;
         }

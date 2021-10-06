@@ -64,9 +64,9 @@ import org.siemac.metamac.srm.web.server.handlers.code.GetVariableFamiliesAction
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariableFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.GetVariablesActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.NormaliseVariableElementsToCodesActionHandler;
+import org.siemac.metamac.srm.web.server.handlers.code.ReSendCodelistStreamMessageActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.RemoveCodelistsFromCodelistFamilyActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.RemoveVariablesFromVariableFamilyActionHandler;
-import org.siemac.metamac.srm.web.server.handlers.code.ReSendCodelistStreamMessageActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodeActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodelistActionHandler;
 import org.siemac.metamac.srm.web.server.handlers.code.SaveCodelistFamilyActionHandler;
@@ -142,7 +142,6 @@ import org.siemac.metamac.srm.web.server.handlers.organisation.VersionOrganisati
 import org.siemac.metamac.srm.web.shared.ExportSDMXResourceAction;
 import org.siemac.metamac.srm.web.shared.GetHelpUrlAction;
 import org.siemac.metamac.srm.web.shared.GetRelatedResourcesAction;
-import org.siemac.metamac.srm.web.shared.ReSendCodelistStreamMessageAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorisationValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CancelCategorySchemeValidityAction;
 import org.siemac.metamac.srm.web.shared.category.CreateCategorisationAction;
@@ -202,6 +201,7 @@ import org.siemac.metamac.srm.web.shared.code.GetVariableFamiliesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.NormaliseVariableElementsToCodesAction;
+import org.siemac.metamac.srm.web.shared.code.ReSendCodelistStreamMessageAction;
 import org.siemac.metamac.srm.web.shared.code.RemoveCodelistsFromCodelistFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.RemoveVariablesFromVariableFamilyAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;

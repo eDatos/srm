@@ -86,6 +86,8 @@ import org.siemac.metamac.srm.web.shared.code.GetVariablesAction;
 import org.siemac.metamac.srm.web.shared.code.GetVariablesResult;
 import org.siemac.metamac.srm.web.shared.code.NormaliseVariableElementsToCodesAction;
 import org.siemac.metamac.srm.web.shared.code.NormaliseVariableElementsToCodesResult;
+import org.siemac.metamac.srm.web.shared.code.ReSendCodelistStreamMessageAction;
+import org.siemac.metamac.srm.web.shared.code.ReSendCodelistStreamMessageResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeAction;
 import org.siemac.metamac.srm.web.shared.code.SaveCodeResult;
 import org.siemac.metamac.srm.web.shared.code.SaveCodelistAction;

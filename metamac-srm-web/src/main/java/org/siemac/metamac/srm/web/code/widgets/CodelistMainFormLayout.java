@@ -139,7 +139,7 @@ public class CodelistMainFormLayout extends LifeCycleMainFormLayout {
 
     @Override
     protected void showLifeCycleReSendStreamMessage() {
-        if (CodesClientSecurityUtils.canResendStreamMessage(isTaskInBackground)) {
+        if (CodesClientSecurityUtils.canResendCodelistStreamMessage(isTaskInBackground)) {
             lifeCycleReSendStreamMessage.show();
         }
     }
